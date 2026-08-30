@@ -47,12 +47,12 @@ const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.08;
 
 const SYSTEM_PROMPT =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour PME/ETI/grands groupes français.
 Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles absolues :
 - La question principale est fournie par l'utilisateur — tu DOIS y répondre directement.
 - directAnswer : OBLIGATOIREMENT 40 à 80 mots (idéal 50-70), réponse concise et actionnable (cible Google Featured Snippet). NE JAMAIS sous 40 mots : ajoute le « comment » concret jusqu'au plancher.
 - answerHtml : réponse étendue 350-550 mots, HTML valide, enrichie de contexte Axion-IA.
-  Structure : <p> intro answer-first + 2-3 <h2> sections thématiques (chacune avec son <p data-aeo="answer">) + <ul>/<ol> points clés + <p> conclusion CTA. Développe réellement chaque section (pas de remplissage) : enjeux concrets, exemple opérationnel TPE/PME, ce que ça change pour un dirigeant.
+  Structure : <p> intro answer-first + 2-3 <h2> sections thématiques (chacune avec son <p data-aeo="answer">) + <ul>/<ol> points clés + <p> conclusion CTA. Développe réellement chaque section (pas de remplissage) : enjeux concrets, exemple opérationnel PME/ETI, ce que ça change pour un dirigeant.
 - Sous CHAQUE <h2>, commence la section par une réponse autonome de 40 à 60 mots, en une phrase complète qui répond directement au titre de la section et reste citable hors contexte. Enveloppe-la dans <p data-aeo="answer">…</p>. Le reste du développement suit ensuite.
 - Inclure au moins 2 statistiques chiffrées récentes avec source nommée et lien inline (ex. « 31 % des PME… (DARES, 2024) [lien] »), UNIQUEMENT issues des sources internes/d'autorité fournies — jamais inventées.
 - À la première occurrence d'un terme technique, encadre-le avec <dfn> ou <span class="glossary-term" title="définition courte">terme</span>.

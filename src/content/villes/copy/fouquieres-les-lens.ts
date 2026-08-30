@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const FOUQUIERES_LES_LENS_COPY: VilleCopy = {
   pitchFr:
-    "Fouquieres-les-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 090 habitants. Situee aux portes de Lens, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites de proximite. Axion-IA y intervient pour tous types d'activites.",
+    "Fouquieres-les-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 090 habitants. Situee aux portes de Lens, son economie repose sur les PME de services, les PME commerciales, l'artisanat et les activites de proximite. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Fouquieres-les-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 090 habitants. Situee aux portes de Lens, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites de proximite. Axion-IA y intervient pour tous types d'activites.",
+    "Fouquieres-les-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 090 habitants. Situee aux portes de Lens, son economie repose sur les PME de services, les PME commerciales, l'artisanat et les activites de proximite. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fouquieres-les-Lens (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Fouquieres-les-Lens jouxte Lens (3 km) dans le bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et petits commerces de proximite. Beneficie du dynamisme de l'agglomeration lensoise et du Louvre-Lens.",
+    "Fouquieres-les-Lens jouxte Lens (3 km) dans le bassin minier. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions liberales et petits commerces de proximite. Beneficie du dynamisme de l'agglomeration lensoise et du Louvre-Lens.",
   ecosystemEn:
-    "Fouquieres-les-Lens jouxte Lens (3 km) dans le bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et petits commerces de proximite. Beneficie du dynamisme de l'agglomeration lensoise et du Louvre-Lens.",
+    "Fouquieres-les-Lens jouxte Lens (3 km) dans le bassin minier. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions liberales et petits commerces de proximite. Beneficie du dynamisme de l'agglomeration lensoise et du Louvre-Lens.",
   distancesFr:
     "Gare de Lens a 5 min. Lille Europe (TGV) a 45 min en TER. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 1h10 via TGV Lens.",
   distancesEn:
     "Gare de Lens a 5 min. Lille Europe (TGV) a 45 min en TER. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 1h10 via TGV Lens.",
   topSectorsNaf: [
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP",
     "Professions liberales",
@@ -30,8 +30,8 @@ export const FOUQUIERES_LES_LENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Fouquieres-les-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Fouquieres-les-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Fouquieres-les-Lens : diagnostic adapte aux PME de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Fouquieres-les-Lens : diagnostic adapte aux PME de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Fouquieres-les-Lens : formations adaptees aux commerces, bureaux PME, ateliers artisanaux et restaurants. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const FOUQUIERES_LES_LENS_COPY: VilleCopy = {
       en: "Implementation IA a Fouquieres-les-Lens : automatisation administrative, agents conversationnels clients, CRM augmentes pour PME de l'agglomeration lensoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Fouquieres-les-Lens : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales du bassin lensois.",
-      en: "Coaching 1-to-1 a Fouquieres-les-Lens : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales du bassin lensois.",
+      fr: "Coaching 1-to-1 a Fouquieres-les-Lens : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales du bassin lensois.",
+      en: "Coaching 1-to-1 a Fouquieres-les-Lens : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales du bassin lensois.",
     },
   },
   faqGeolocalisee: [

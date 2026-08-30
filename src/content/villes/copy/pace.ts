@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const PACE_COPY: VilleCopy = {
   pitchFr:
-    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
+    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu PME et ETI de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
+    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu PME et ETI de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacé (35). Nous accompagnons tous types d'activités : PME et ETI de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacé (35). Nous accompagnons tous types d'activités : PME et ETI de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
   seoHook: "proche rennes",
   ecosystemFr:
-    "Pacé est une commune résidentielle dynamique de l'ouest de Rennes Métropole, en forte croissance démographique. Tissu économique de services et tertiaire, complété par TPE artisanat BTP, commerces de proximité, professions libérales et agriculture périurbaine résiduelle. Proximité immédiate de la rocade ouest de Rennes et bon maillage bus STAR.",
+    "Pacé est une commune résidentielle dynamique de l'ouest de Rennes Métropole, en forte croissance démographique. Tissu économique de services et tertiaire, complété par PME du BTP, commerces de proximité, professions libérales et agriculture périurbaine résiduelle. Proximité immédiate de la rocade ouest de Rennes et bon maillage bus STAR.",
   ecosystemEn:
-    "Pacé est une commune résidentielle dynamique de l'ouest de Rennes Métropole, en forte croissance démographique. Tissu économique de services et tertiaire, complété par TPE artisanat BTP, commerces de proximité, professions libérales et agriculture périurbaine résiduelle. Proximité immédiate de la rocade ouest de Rennes et bon maillage bus STAR.",
+    "Pacé est une commune résidentielle dynamique de l'ouest de Rennes Métropole, en forte croissance démographique. Tissu économique de services et tertiaire, complété par PME du BTP, commerces de proximité, professions libérales et agriculture périurbaine résiduelle. Proximité immédiate de la rocade ouest de Rennes et bon maillage bus STAR.",
   distancesFr:
     "Pacé à 10 min du centre de Rennes (D29). Gare Rennes TGV à 15 min. Aéroport Rennes-Bretagne à 15 min. Bus réseau STAR direct centre Rennes. Accès rocade ouest N136.",
   distancesEn:
     "Pacé à 10 min du centre de Rennes (D29). Gare Rennes TGV à 15 min. Aéroport Rennes-Bretagne à 15 min. Bus réseau STAR direct centre Rennes. Accès rocade ouest N136.",
   topSectorsNaf: [
     "Services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales et santé",
     "Agriculture périurbaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Pacé : diagnostic adapté aux PME et ETI de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Pacé : diagnostic adapté aux PME et ETI de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pacé : formats adaptés aux cabinets, TPE de services, commerces, exploitations agricoles. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pacé : formats adaptés aux cabinets, TPE de services, commerces, exploitations agricoles. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pacé : formats adaptés aux cabinets, PME de services, commerces, exploitations agricoles. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Pacé : formats adaptés aux cabinets, PME de services, commerces, exploitations agricoles. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
       fr: "Implémentation IA à Pacé : automatisation tâches administratives, agents conversationnels, gestion planning, outils productivité, prédiction stocks commerces. Ouest Rennes Métropole.",
       en: "Implémentation IA à Pacé : automatisation tâches administratives, agents conversationnels, gestion planning, outils productivité, prédiction stocks commerces. Ouest Rennes Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pacé : sessions dans vos bureaux, cabinet, commerce ou en visio. Dirigeants TPE/PME, professions libérales, gérants commerces de l'ouest Rennes Métropole.",
-      en: "Coaching 1-to-1 à Pacé : sessions dans vos bureaux, cabinet, commerce ou en visio. Dirigeants TPE/PME, professions libérales, gérants commerces de l'ouest Rennes Métropole.",
+      fr: "Coaching 1-to-1 à Pacé : sessions dans vos bureaux, cabinet, commerce ou en visio. Dirigeants PME et ETI, professions libérales, gérants commerces de l'ouest Rennes Métropole.",
+      en: "Coaching 1-to-1 à Pacé : sessions dans vos bureaux, cabinet, commerce ou en visio. Dirigeants PME et ETI, professions libérales, gérants commerces de l'ouest Rennes Métropole.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const PACE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pacé et tout l'ouest de Rennes Métropole (Le Rheu, Vezin-le-Coquet, Mordelles, L'Hermitage). Nos consultants se déplacent directement dans vos locaux depuis le centre de Rennes (10 min).",
     },
     {
-      q: "Travaillez-vous avec les TPE et artisans pacéens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Pacé sur leurs cas IA. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
+      q: "Travaillez-vous avec les PME et artisans pacéens ?",
+      a: "Oui, nous accompagnons les PME du BTP, commerçants et indépendants de Pacé sur leurs cas IA. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Pacé ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LIMOURS_COPY: VilleCopy = {
   pitchFr:
-    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu PME artisanales, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu PME artisanales, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limours (91). Nous accompagnons PME et ETI : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limours (91). Nous accompagnons PME et ETI : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
-    "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu TPE artisans BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",
+    "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu PME du BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",
   ecosystemEn:
-    "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu TPE artisans BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",
+    "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu PME du BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",
   distancesFr:
     "Orsay à 15 min. Massy TGV à 20 min. Paris centre à 40 min (N118/A10). Dourdan à 15 min. Aéroport Paris-Orly à 25 min.",
   distancesEn:
     "Orsay à 15 min. Massy TGV à 20 min. Paris centre à 40 min (N118/A10). Dourdan à 15 min. Aéroport Paris-Orly à 25 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Commerce de proximité & marché local",
     "Professions libérales (santé, conseil)",
     "Agriculture & exploitation forestière",
@@ -60,7 +60,7 @@ export const LIMOURS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons cabinets médicaux, juridiques et de conseil : automatisation gestion RDV, classification documents, CRM patients/clients, conformité RGPD, dictée IA.",
     },
     {
-      q: "Quels services pour les commerces et TPE du Hurepoix ?",
+      q: "Quels services pour les commerces et PME du Hurepoix ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {

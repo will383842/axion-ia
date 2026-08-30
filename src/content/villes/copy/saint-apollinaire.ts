@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, PME artisanales, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, PME artisanales, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Apollinaire (21). Nous accompagnons PME et ETI : PME logistique et distribution Cap Nord, commerces, PME artisanales, services aux entreprises et résidentiel périurbain dijonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Apollinaire (21). Nous accompagnons PME et ETI : PME logistique et distribution Cap Nord, commerces, PME artisanales, services aux entreprises et résidentiel périurbain dijonnais. Audit sur place sur mesure.",
   seoHook: "logistique distribution & commerce gros",
   ecosystemFr:
-    "Saint-Apollinaire est positionnée au nord-est immédiat de Dijon, en première couronne. Zones d'activités Cap Nord (logistique, distribution, services). Économie : PME logistique, commerce de gros, TPE artisans, services aux entreprises, résidentiel familial périurbain.",
+    "Saint-Apollinaire est positionnée au nord-est immédiat de Dijon, en première couronne. Zones d'activités Cap Nord (logistique, distribution, services). Économie : PME logistique, commerce de gros, PME artisanales, services aux entreprises, résidentiel familial périurbain.",
   ecosystemEn:
-    "Saint-Apollinaire est positionnée au nord-est immédiat de Dijon, en première couronne. Zones d'activités Cap Nord (logistique, distribution, services). Économie : PME logistique, commerce de gros, TPE artisans, services aux entreprises, résidentiel familial périurbain.",
+    "Saint-Apollinaire est positionnée au nord-est immédiat de Dijon, en première couronne. Zones d'activités Cap Nord (logistique, distribution, services). Économie : PME logistique, commerce de gros, PME artisanales, services aux entreprises, résidentiel familial périurbain.",
   distancesFr:
     "Dijon centre à 10 min. A31 à 5 min (Paris-Lyon). Aéroport Dijon-Bourgogne à 15 min. Gare SNCF Dijon-Ville (TGV Paris 1h35).",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME logistique distribution Cap Nord",
     "Commerce de gros",
-    "TPE artisanat services",
+    "PME de l'artisanat services",
     "Services aux entreprises",
     "Résidentiel périurbain",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, PME artisanales, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, PME artisanales, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Apollinaire : formats adaptés à l'entrepôt logistique, plateforme distribution, atelier, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Apollinaire : optimisation supply chain, prévision demande, automatisation préparation commandes, routage tournées, gestion stocks.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Apollinaire : sessions dans votre entrepôt, PME, atelier, commerce ou en visio. Dirigeants logistique, PME, artisans, gérants TPE apollinairois.",
-      en: "Coaching 1-to-1 à Saint-Apollinaire : sessions dans votre entrepôt, PME, atelier, commerce ou en visio. Dirigeants logistique, PME, artisans, gérants TPE apollinairois.",
+      fr: "Coaching 1-to-1 à Saint-Apollinaire : sessions dans votre entrepôt, PME, atelier, commerce ou en visio. Dirigeants logistique, PME, artisans, gérants PME apollinairois.",
+      en: "Coaching 1-to-1 à Saint-Apollinaire : sessions dans votre entrepôt, PME, atelier, commerce ou en visio. Dirigeants logistique, PME, artisans, gérants PME apollinairois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
       a: "Oui, CRM B2B, prédiction ruptures, automatisation devis, gestion catalogue et tarification dynamique.",
     },
     {
-      q: "Quels services pour les TPE artisans et services apollinairois ?",
+      q: "Quels services pour les PME artisanales et services apollinairois ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

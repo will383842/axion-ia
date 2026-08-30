@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VERNON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des petites structures de la vallée de la Seine.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des PME de la vallée de la Seine.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des petites structures de la vallée de la Seine.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des PME de la vallée de la Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les PME puis les ETI : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les PME puis les ETI : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   seoHook: "spatial & tourisme Giverny",
   ecosystemFr:
-    "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de TPE artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
+    "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de PME artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
   ecosystemEn:
-    "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de TPE artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
+    "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de PME artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
   distancesFr:
     "Gare de Vernon-Giverny (ligne Paris-Saint-Lazare-Rouen, Paris ~45 min). Jardins de Monet à Giverny à 5 km. Rouen à 65 km, Paris à 80 km par l'A13. Aéroport de Paris-Charles-de-Gaulle à environ 100 km.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VERNON_COPY: VilleCopy = {
       en: "Implémentation IA à Vernon : gestion documentaire technique, automatisation des devis, agents conversationnels multilingues pour le tourisme de Giverny et CRM augmentés pour les commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vernon : sessions individuelles pour dirigeants de TPE et PME industrielles, touristiques ou de services, sur site ou en visio, pour piloter l'IA en autonomie.",
-      en: "Coaching 1-to-1 à Vernon : sessions individuelles pour dirigeants de TPE et PME industrielles, touristiques ou de services, sur site ou en visio, pour piloter l'IA en autonomie.",
+      fr: "Coaching 1-to-1 à Vernon : sessions individuelles pour dirigeants de PME et d'ETI industrielles, touristiques ou de services, sur site ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Vernon : sessions individuelles pour dirigeants de PME et d'ETI industrielles, touristiques ou de services, sur site ou en visio, pour piloter l'IA en autonomie.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Vernon : plateformes et SaaS IA sur mesure pour acteurs touristiques de Giverny et commerces — réservations, agents IA d'accueil multilingues, portails clients connectés.",
@@ -57,7 +57,7 @@ export const VERNON_COPY: VilleCopy = {
         whyHere: [
           "Pôle spatial structurant : autour du site ArianeGroup, premier employeur du bassin avec près de 1 000 salariés et trois bancs d'essai cryogéniques, gravitent les sous-traitants et bureaux d'études du Campus de l'Espace (Safran, SKF). Leurs exigences documentaires fortes appellent des portails techniques, des moteurs de recherche sémantique sur normes et plans, et l'automatisation des devis et appels d'offres.",
           "Tourisme international de Giverny : les visiteurs des jardins de Monet, à 5 km, viennent du monde entier et débordent sur l'hôtellerie et la restauration vernonnaises, jusqu'aux abords du Vieux-Moulin et de la collégiale Notre-Dame. Nos chatbots et parcours de réservation sont multilingues par défaut, calibrés pour l'accueil saisonnier, la billetterie et la gestion d'avis.",
-          "Tissu dense de TPE du commerce de centre-ville et de l'artisanat le long de la Seine, des quais aux rues piétonnes près de la place de Paris : on greffe l'IA sur l'existant (widget, plugin, API WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce de produits et services locaux, du cidre normand à l'art de vivre giverniste.",
+          "Tissu dense de PME du commerce de centre-ville et de l'artisanat le long de la Seine, des quais aux rues piétonnes près de la place de Paris : on greffe l'IA sur l'existant (widget, plugin, API WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce de produits et services locaux, du cidre normand à l'art de vivre giverniste.",
           "Écosystème de formation et clientèle francilienne : le Campus de l'Espace héberge écoles d'ingénieurs (INSA, CNAM, AFPA) et la filière Normandie AeroEspace, tandis que la gare Vernon-Giverny met Paris-Saint-Lazare à ~45 min et l'A13 à portée. Une clientèle de week-end et un bassin de PME dont les données de réservation et clients restent hébergeables en UE, conformes RGPD, sans transit hors Europe.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const VERNON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue d'accueil, recherche sémantique, moteur de réservation — sur le site existant d'un commerce de centre-ville, d'un hôtel proche de Giverny ou d'un artisan vernonnais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const VERNON_COPY: VilleCopy = {
         whyHere: [
           "Pôle spatial structurant : autour du site ArianeGroup, premier employeur du bassin avec près de 1 000 salariés et trois bancs d'essai cryogéniques, gravitent les sous-traitants et bureaux d'études du Campus de l'Espace (Safran, SKF). Leurs exigences documentaires fortes appellent des portails techniques, des moteurs de recherche sémantique sur normes et plans, et l'automatisation des devis et appels d'offres.",
           "Tourisme international de Giverny : les visiteurs des jardins de Monet, à 5 km, viennent du monde entier et débordent sur l'hôtellerie et la restauration vernonnaises, jusqu'aux abords du Vieux-Moulin et de la collégiale Notre-Dame. Nos chatbots et parcours de réservation sont multilingues par défaut, calibrés pour l'accueil saisonnier, la billetterie et la gestion d'avis.",
-          "Tissu dense de TPE du commerce de centre-ville et de l'artisanat le long de la Seine, des quais aux rues piétonnes près de la place de Paris : on greffe l'IA sur l'existant (widget, plugin, API WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce de produits et services locaux, du cidre normand à l'art de vivre giverniste.",
+          "Tissu dense de PME du commerce de centre-ville et de l'artisanat le long de la Seine, des quais aux rues piétonnes près de la place de Paris : on greffe l'IA sur l'existant (widget, plugin, API WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce de produits et services locaux, du cidre normand à l'art de vivre giverniste.",
           "Écosystème de formation et clientèle francilienne : le Campus de l'Espace héberge écoles d'ingénieurs (INSA, CNAM, AFPA) et la filière Normandie AeroEspace, tandis que la gare Vernon-Giverny met Paris-Saint-Lazare à ~45 min et l'A13 à portée. Une clientèle de week-end et un bassin de PME dont les données de réservation et clients restent hébergeables en UE, conformes RGPD, sans transit hors Europe.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const VERNON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue d'accueil, recherche sémantique, moteur de réservation — sur le site existant d'un commerce de centre-ville, d'un hôtel proche de Giverny ou d'un artisan vernonnais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,11 +218,11 @@ export const VERNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vernon ?",
-      a: "Oui, Axion-IA intervient à Vernon et dans toute la vallée de la Seine, dans l'Eure. Nos consultants se déplacent depuis Paris (gare de Vernon-Giverny, ~45 min) pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Vernon et dans toute la vallée de la Seine, dans l'Eure. Nos consultants se déplacent depuis Paris (gare de Vernon-Giverny, ~45 min) pour rencontrer PME et ETI sur site.",
     },
     {
       q: "Combien coûte un audit IA à Vernon ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME vernonnaises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux PME et ETI vernonnaises, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les sous-traitants de l'écosystème ArianeGroup ?",

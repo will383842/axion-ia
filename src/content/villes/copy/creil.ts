@@ -85,12 +85,6 @@ export const CREIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-assisté",
-            detail:
-              "Pour artisans, commerces de la zone de Saint-Maximin et indépendants creillois : site rapide, mobile-first, avec assistant IA de réponse client et briques e-commerce si vente en ligne.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
             detail:
@@ -170,12 +164,6 @@ export const CREIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or AI-assisted e-commerce",
-            detail:
-              "For craftspeople, Saint-Maximin retail-zone shops and Creil freelancers: fast, mobile-first site with an AI customer-response assistant and e-commerce components if selling online.",
-          },
           {
             sizeLabel: "SME",
             price: "Trade platform or advanced e-commerce",

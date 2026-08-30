@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const FEGERSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Fegersheim (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, conjugue activité industrielle structurée (zones industrielles, pharmaceutique, sous-traitance), tissu commercial et cadre résidentiel périurbain proche du Rhin. Tissu de TPE/PME sous-traitance industrielle, logistique, services aux entreprises, BTP, commerce, hôtellerie-restauration et professions libérales. Axion-IA y intervient pour tous types d''activités.",
+    "Fegersheim (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, conjugue activité industrielle structurée (zones industrielles, pharmaceutique, sous-traitance), tissu commercial et cadre résidentiel périurbain proche du Rhin. Tissu de PME et ETI sous-traitance industrielle, logistique, services aux entreprises, BTP, commerce, hôtellerie-restauration et professions libérales. Axion-IA y intervient pour tous types d''activités.",
   pitchEn:
-    "Fegersheim (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, conjugue activité industrielle structurée (zones industrielles, pharmaceutique, sous-traitance), tissu commercial et cadre résidentiel périurbain proche du Rhin. Tissu de TPE/PME sous-traitance industrielle, logistique, services aux entreprises, BTP, commerce, hôtellerie-restauration et professions libérales. Axion-IA y intervient pour tous types d''activités.",
+    "Fegersheim (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, conjugue activité industrielle structurée (zones industrielles, pharmaceutique, sous-traitance), tissu commercial et cadre résidentiel périurbain proche du Rhin. Tissu de PME et ETI sous-traitance industrielle, logistique, services aux entreprises, BTP, commerce, hôtellerie-restauration et professions libérales. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Fegersheim (67). Nous accompagnons PME et ETI : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Bas-Rhin",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Fegersheim (67). Nous accompagnons PME et ETI : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
+  seoHook: "PME & PME Bas-Rhin",
   ecosystemFr:
     "Fegersheim est une commune de l''Eurométropole de Strasbourg, située au sud de l''agglomération sur l''axe A35. La commune accueille une zone industrielle importante (industrie pharmaceutique notamment, sous-traitance, logistique) ainsi qu''un tissu commercial et résidentiel périurbain. L''économie locale repose sur l''industrie pharmaceutique et chimique, la sous-traitance industrielle, la logistique, les services aux entreprises, l''artisanat BTP, le commerce et la restauration.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const FEGERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Fegersheim : diagnostic adapté aux PME et ETI des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fegersheim : diagnostic adapté aux PME et ETI des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
-      en: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      fr: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la PME de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la PME de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Fegersheim : planification production industrielle, gestion approvisionnements logistique, automatisation contrôle qualité, agents conversationnels services B2B, CRM donneurs d''ordre et outils IA métier pour PME alsaciennes.",
       en: "Implémentation IA à Fegersheim : planification production industrielle, gestion approvisionnements logistique, automatisation contrôle qualité, agents conversationnels services B2B, CRM donneurs d''ordre et outils IA métier pour PME alsaciennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fegersheim : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants TPE/PME du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
-      en: "Coaching 1-to-1 à Fegersheim : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants TPE/PME du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
+      fr: "Coaching 1-to-1 à Fegersheim : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants PME et ETI du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
+      en: "Coaching 1-to-1 à Fegersheim : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants PME et ETI du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FEGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Fegersheim ?",
-      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Fegersheim et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, logistique, BTP ou de services.",
+      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Fegersheim et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, logistique, BTP ou de services.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Fegersheim ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SENS_COPY: VilleCopy = {
   pitchFr:
-    "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu TPE commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
+    "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu PME du commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
   pitchEn:
-    "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu TPE commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
+    "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu PME du commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sens (89). Nous accompagnons PME du commerce et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sens (89). Nous accompagnons PME du commerce et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "commerce détail agroalimentaire & logistique",
   ecosystemFr:
-    "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu TPE commerces et artisans, PME agroalimentaires et industrielles, professions libérales.",
+    "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu PME du commerce et artisans, PME agroalimentaires et industrielles, professions libérales.",
   ecosystemEn:
-    "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu TPE commerces et artisans, PME agroalimentaires et industrielles, professions libérales.",
+    "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu PME du commerce et artisans, PME agroalimentaires et industrielles, professions libérales.",
   distancesFr:
     "Paris-Bercy à 55 min en TER direct. Paris à 100 km. Autoroute A19 dessert Sens, A5 et A6 à proximité. Gare SNCF Sens (TER Paris-Auxerre-Dijon). Communes voisines : Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sens : diagnostic adapté aux PME du commerce de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sens : diagnostic adapté aux PME du commerce de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sens : formats adaptés au commerce, à l'agroalimentaire, à l'industrie et à la logistique. Vos équipes repartent autonomes sur les outils IA métier.",
       en: "Interventions IA sur site à Sens : formats adaptés au commerce, à l'agroalimentaire, à l'industrie et à la logistique. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Sens : traçabilité agroalimentaire, gestion stocks et production industrielle, CRM commerce et négoce, automatisation facturation logistique, agents conversationnels clients pour TPE et PME sénonaises.",
-      en: "Implémentation IA à Sens : traçabilité agroalimentaire, gestion stocks et production industrielle, CRM commerce et négoce, automatisation facturation logistique, agents conversationnels clients pour TPE et PME sénonaises.",
+      fr: "Implémentation IA à Sens : traçabilité agroalimentaire, gestion stocks et production industrielle, CRM commerce et négoce, automatisation facturation logistique, agents conversationnels clients pour PME et ETI sénonaises.",
+      en: "Implémentation IA à Sens : traçabilité agroalimentaire, gestion stocks et production industrielle, CRM commerce et négoce, automatisation facturation logistique, agents conversationnels clients pour PME et ETI sénonaises.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sens : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et industrielles, professions libérales souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Sens : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et industrielles, professions libérales souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Sens : sessions dans vos locaux ou en visio. Dirigeants PME du commerce et artisans, gérants PME agroalimentaires et industrielles, professions libérales souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Sens : sessions dans vos locaux ou en visio. Dirigeants PME du commerce et artisans, gérants PME agroalimentaires et industrielles, professions libérales souhaitant intégrer l'IA.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const SENS_COPY: VilleCopy = {
           "Filière industrielle câble et équipements : le site Prysmian Group de Gron (câbles moyenne et haute tension) et les entreprises de la zone des Vauguillettes (126 ha, ~164 sociétés, équipements pétroliers, câblage, dont Senaxes en impression 3D) ont besoin de catalogues techniques en ligne, configurateurs produits et portails revendeurs pilotés par l'IA.",
           "Plasturgie et emballage : Plast'n Bio (plastiques bio-sourcés), Solodem (emballage carton/papier), Plastikpack à Gron et la nouvelle usine de plasturgie portée par les frères Allemandou (11 M€) sont des cibles e-commerce B2B et fiches produits multi-références où le search sémantique et la génération de descriptifs font gagner un temps réel.",
           "Logistique multimodale du Sénonais : le port fluvial de Gron (créé en 2010 par la CCI, ~12 000 m², conteneurs et colis lourds, relié au Havre), l'embranchement ferré de la zone de Salcy sur la ligne Paris-Lyon et les flux A5/A6/A19 appellent des portails de suivi, espaces transporteurs et automatisations documentaires (CMR, douane, facturation).",
-          "Commerce de centre-ville, artisans et santé : les TPE du cœur de Sens, les professions libérales et l'écosystème autour du Centre Hospitalier Gaston Ramon (site pivot du GHT Nord Yonne) gagnent à un site rapide, mobile et e-commerce de proximité, avec prise de rendez-vous et agent conversationnel — sans dépendance à un éditeur.",
+          "Commerce de centre-ville, artisans et santé : les PME du cœur de Sens, les professions libérales et l'écosystème autour du Centre Hospitalier Gaston Ramon (site pivot du GHT Nord Yonne) gagnent à un site rapide, mobile et e-commerce de proximité, avec prise de rendez-vous et agent conversationnel — sans dépendance à un éditeur.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const SENS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce de proximité",
-            detail:
-              "Pour commerçants du centre-ville de Sens, artisans, professions libérales et indépendants : site mobile rapide, prise de rendez-vous, boutique en ligne légère, chatbot FAQ. Mise en ligne et autonomie sur le CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce B2B + IA",
@@ -171,12 +165,6 @@ export const SENS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or local e-commerce",
-            detail:
-              "For Sens town-centre retailers, craftspeople, liberal professions and freelancers: fast mobile site, booking, lightweight online shop, FAQ chatbot. Go-live and CMS autonomy.",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B e-commerce platform + AI",
             detail:
@@ -229,8 +217,8 @@ export const SENS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Sens et dans les communes voisines (Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny). Déplacement depuis Paris en 55 min TER direct.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Sens ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME sénonaises. Diagnostic complet des processus, cartographie IA (commerce, agroalimentaire, logistique) et plan d'action ROI chiffré.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Sens ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI sénonaises. Diagnostic complet des processus, cartographie IA (commerce, agroalimentaire, logistique) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires et industrielles du Sénonais ?",
@@ -242,7 +230,7 @@ export const SENS_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Sens ?",
-      a: "Nos interventions à Sens respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux TPE et PME icaunaises.",
+      a: "Nos interventions à Sens respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux PME et ETI icaunaises.",
     },
   ],
 };

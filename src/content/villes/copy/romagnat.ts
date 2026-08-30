@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROMAGNAT_COPY: VilleCopy = {
   pitchFr:
-    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
+    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, PME du BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
+    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, PME du BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romagnat (63). Nous accompagnons PME et ETI : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romagnat (63). Nous accompagnons PME et ETI : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
   seoHook: "tertiaires services & patrimoine tourisme",
   ecosystemFr:
-    "Romagnat est une commune résidentielle prisée au sud immédiat de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. Le château d'Opme (monument historique classé, jardins à la française attribués à Le Nôtre) est un atout patrimonial majeur. Tissu professions libérales dense, PME tertiaires de services, TPE artisans BTP, commerces de proximité. Proximité directe Beaumont et Ceyrat.",
+    "Romagnat est une commune résidentielle prisée au sud immédiat de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. Le château d'Opme (monument historique classé, jardins à la française attribués à Le Nôtre) est un atout patrimonial majeur. Tissu professions libérales dense, PME tertiaires de services, PME du BTP, commerces de proximité. Proximité directe Beaumont et Ceyrat.",
   ecosystemEn:
-    "Romagnat est une commune résidentielle prisée au sud immédiat de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. Le château d'Opme (monument historique classé, jardins à la française attribués à Le Nôtre) est un atout patrimonial majeur. Tissu professions libérales dense, PME tertiaires de services, TPE artisans BTP, commerces de proximité. Proximité directe Beaumont et Ceyrat.",
+    "Romagnat est une commune résidentielle prisée au sud immédiat de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. Le château d'Opme (monument historique classé, jardins à la française attribués à Le Nôtre) est un atout patrimonial majeur. Tissu professions libérales dense, PME tertiaires de services, PME du BTP, commerces de proximité. Proximité directe Beaumont et Ceyrat.",
   distancesFr:
     "Clermont-Ferrand centre à 10 min voiture. Beaumont à 5 min. Ceyrat à 5 min. Aéroport Clermont-Ferrand Auvergne à 30 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const ROMAGNAT_COPY: VilleCopy = {
   topSectorsNaf: [
     "Professions libérales",
     "PME tertiaires & services",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Patrimoine & tourisme (château d'Opme)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, TPE artisans BTP et commerçants du sud clermontois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, TPE artisans BTP et commerçants du sud clermontois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, PME du BTP et du commerce du sud clermontois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, PME du BTP et du commerce du sud clermontois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Romagnat : formats adaptés aux cabinets libéraux, bureaux PME, ateliers artisans ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const ROMAGNAT_COPY: VilleCopy = {
       en: "Implémentation IA à Romagnat : automatisation gestion cabinet (agenda, facturation, relances), agents IA relation client PME, classification documentaire, outils IA gestion patrimoine château d'Opme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Romagnat : sessions dans votre cabinet, bureau ou en visio. Professions libérales, dirigeants PME tertiaires, artisans BTP, gérants TPE sud clermontois.",
-      en: "Coaching 1-to-1 à Romagnat : sessions dans votre cabinet, bureau ou en visio. Professions libérales, dirigeants PME tertiaires, artisans BTP, gérants TPE sud clermontois.",
+      fr: "Coaching 1-to-1 à Romagnat : sessions dans votre cabinet, bureau ou en visio. Professions libérales, dirigeants PME tertiaires, artisans BTP, gérants PME sud clermontois.",
+      en: "Coaching 1-to-1 à Romagnat : sessions dans votre cabinet, bureau ou en visio. Professions libérales, dirigeants PME tertiaires, artisans BTP, gérants PME sud clermontois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const ROMAGNAT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du patrimoine à Romagnat (château d'Opme, jardins historiques) sur leurs cas IA : agents conversationnels visiteurs, automatisation réservations événementielles, classification archives, gestion billetterie.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces de Romagnat ?",
-      a: "Pour les TPE artisans et commerçants à Romagnat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      q: "Quels services pour les PME de l'artisanat et du commerce de Romagnat ?",
+      a: "Pour les PME de l'artisanat et du commerce à Romagnat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

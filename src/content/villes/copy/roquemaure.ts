@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEMAURE_COPY: VilleCopy = {
   pitchFr:
-    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA collabore avec toutes les structures locales du Gard rhodanien viticole.",
+    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu PME et ETI viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA collabore avec toutes les structures locales du Gard rhodanien viticole.",
   pitchEn:
-    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA collabore avec toutes les structures locales du Gard rhodanien viticole.",
+    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu PME et ETI viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA collabore avec toutes les structures locales du Gard rhodanien viticole.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & oenotourisme",
   ecosystemFr:
     "Roquemaure (~5 500 hab) est une commune viticole historique des bords du Rhône, berceau du label Côtes du Rhône (XIVe siècle). Viticulture dominant (caves, négoce), tourisme viticole et patrimonial, commerces, artisanat BTP et agriculture. Proximité Orange (15 min) et Avignon (20 min).",
@@ -30,8 +30,8 @@ export const ROQUEMAURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquemaure : diagnostic adapté aux TPE/PME viticoles Côtes du Rhône, commerçants, artisans BTP et acteurs oenotouristiques. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Roquemaure : diagnostic adapté aux TPE/PME viticoles Côtes du Rhône, commerçants, artisans BTP et acteurs oenotouristiques. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Roquemaure : diagnostic adapté aux PME et ETI viticoles Côtes du Rhône, commerçants, artisans BTP et acteurs oenotouristiques. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Roquemaure : diagnostic adapté aux PME et ETI viticoles Côtes du Rhône, commerçants, artisans BTP et acteurs oenotouristiques. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquemaure : formats adaptés aux caves viticoles, négoce, commerces et artisans du Gard rhodanien.",
@@ -42,8 +42,8 @@ export const ROQUEMAURE_COPY: VilleCopy = {
       en: "Implémentation IA à Roquemaure : prédiction vendanges, gestion parcellaire viticole, automatisation négoce, agents conversationnels oenotourisme, gestion cave.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roquemaure : sessions dirigeants TPE/PME viticoles, négoce, commerçants et artisans souhaitant intégrer l'IA Gard rhodanien.",
-      en: "Coaching 1-to-1 à Roquemaure : sessions dirigeants TPE/PME viticoles, négoce, commerçants et artisans souhaitant intégrer l'IA Gard rhodanien.",
+      fr: "Coaching 1-to-1 à Roquemaure : sessions dirigeants de PME et d'ETI viticoles, négoce, commerçants et artisans souhaitant intégrer l'IA Gard rhodanien.",
+      en: "Coaching 1-to-1 à Roquemaure : sessions dirigeants de PME et d'ETI viticoles, négoce, commerçants et artisans souhaitant intégrer l'IA Gard rhodanien.",
     },
   },
   faqGeolocalisee: [

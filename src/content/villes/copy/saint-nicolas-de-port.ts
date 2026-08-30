@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu PME et ETI services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu PME et ETI services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : PME et ETI de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : PME et ETI de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
   ecosystemFr:
     "Saint-Nicolas-de-Port est une commune historique du sud-est de la Métropole du Grand Nancy, sur les bords de la Meurthe, célèbre pour sa basilique gothique flamboyant Saint-Nicolas et son pèlerinage. Son tissu économique repose sur les services, le commerce de proximité, l'artisanat BTP, la restauration et les professions libérales. Patrimoine touristique, gare TER, axe Nancy-Lunéville.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises & tertiaire",
     "Commerce de détail & proximité",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Restauration, hôtellerie & tourisme",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Nicolas-de-Port : formats adaptés au bureau tertiaire, au commerce, au restaurant ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Nicolas-de-Port : agents conversationnels relation client, chatbots prise de RDV & réservation restaurant, automatisation workflow, classification documentaire, gestion stocks commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Nicolas-de-Port : sessions dans vos locaux ou en visio. Gérants TPE/PME, commerçants, restaurateurs, professions libérales et dirigeants du sud-est de la Métropole du Grand Nancy.",
-      en: "Coaching 1-to-1 à Saint-Nicolas-de-Port : sessions dans vos locaux ou en visio. Gérants TPE/PME, commerçants, restaurateurs, professions libérales et dirigeants du sud-est de la Métropole du Grand Nancy.",
+      fr: "Coaching 1-to-1 à Saint-Nicolas-de-Port : sessions dans vos locaux ou en visio. Gérants PME et ETI, commerçants, restaurateurs, professions libérales et dirigeants du sud-est de la Métropole du Grand Nancy.",
+      en: "Coaching 1-to-1 à Saint-Nicolas-de-Port : sessions dans vos locaux ou en visio. Gérants PME et ETI, commerçants, restaurateurs, professions libérales et dirigeants du sud-est de la Métropole du Grand Nancy.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerçants et restaurateurs de Saint-Nicolas-de-Port ?",
-      a: "Oui, nous accompagnons les TPE/PME commerce et restauration : agents conversationnels relation client, chatbots prise de RDV & réservation restaurant, gestion stocks, facturation automatique, automatisation workflow.",
+      a: "Oui, nous accompagnons les PME et ETI commerce et restauration : agents conversationnels relation client, chatbots prise de RDV & réservation restaurant, gestion stocks, facturation automatique, automatisation workflow.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et professions libérales de Saint-Nicolas-de-Port ?",
@@ -61,7 +61,7 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Nicolas-de-Port  ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Saint-Nicolas-de-Port et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Saint-Nicolas-de-Port et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Nicolas-de-Port ?",

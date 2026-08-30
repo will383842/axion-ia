@@ -354,7 +354,7 @@ export const ORLEANS_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : le Loiret compte plusieurs entreprises labellisées (vinaigrerie
   // Martin-Pouret, artisans du Val de Loire, etc.) mais sans cross-référence

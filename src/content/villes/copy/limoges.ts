@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -22,13 +22,13 @@ import type { VilleCopy } from "./types";
 
 export const LIMOGES_COPY: VilleCopy = {
   pitchFr:
-    "Limoges réunit le siège mondial de Legrand (CAC 40), la capitale mondiale de la porcelaine (Bernardaud, Haviland, Royal Limoges — IGP protégée), ESTER Technopole et l'université ENSIL-ENSCI. Axion-IA y intervient sur site, des TPE limougeaudes aux grands groupes industriels et à la direction IA de Legrand.",
+    "Limoges réunit le siège mondial de Legrand (CAC 40), la capitale mondiale de la porcelaine (Bernardaud, Haviland, Royal Limoges — IGP protégée), ESTER Technopole et l'université ENSIL-ENSCI. Axion-IA y intervient sur site, des PME limougeaudes aux grands groupes industriels et à la direction IA de Legrand.",
   pitchEn:
     "Limoges hosts the global HQ of Legrand (CAC 40), the world capital of porcelain (Bernardaud, Haviland, Royal Limoges — protected GI), ESTER Technopole and ENSIL-ENSCI engineering school. Axion-IA delivers on site, from Limoges micro-businesses to large industrial groups and Legrand AI leadership.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Limoges : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. Du Sur place adapté aux TPE artisanales au Stratégique ETI pour les grandes directions de Legrand ou les manufactures de porcelaine.",
+      fr: "Audit IA opérationnel à Limoges : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. Du Sur place adapté aux PME artisanales au Stratégique ETI pour les grandes directions de Legrand ou les manufactures de porcelaine.",
       en: "Operational AI audit in Limoges: we map what can be automated at your company and quantify the ROI. From Sur place suited to artisan micro-firms to Mid-cap Strategic for large Legrand divisions or porcelain manufacturers.",
     },
     interventions: {
@@ -50,7 +50,7 @@ export const LIMOGES_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limoges (87) sur site — centre-ville, ESTER Technopole, zones industrielles et communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). Nous accompagnons les TPE, PME, ETI et grandes entreprises limougeaudes (industrie électrique, porcelaine, céramique, agroalimentaire, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limoges (87) sur site — centre-ville, ESTER Technopole, zones industrielles et communes du bassin (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). Nous accompagnons les PME, ETI et grands groupes limougeauds (industrie électrique, porcelaine, céramique, agroalimentaire, santé, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Limoges (87) on site — city centre, ESTER Technopole, industrial zones and basin communes (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). We support Limoges micro-businesses, SMEs, mid-caps and large enterprises (electrical industry, porcelain, ceramics, agri-food, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -78,7 +78,7 @@ export const LIMOGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Limoges ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Limoges et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise). Aucun supplément géographique : le tarif est identique à Limoges et partout en France.",
     },
     {
       q: "Avez-vous des cas clients à Limoges ou en Haute-Vienne ?",
@@ -107,7 +107,7 @@ export const LIMOGES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise limougeaude et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales de la porcelaine aux directions IA du siège Legrand en passant par les PME d'ESTER Technopole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise limougeaude et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME artisanales de la porcelaine aux directions IA du siège Legrand en passant par les PME d'ESTER Technopole.",
         whyHere: [
           "Limoges concentre un écosystème industriel rare en France : siège mondial Legrand (CAC 40), capitale mondiale de la porcelaine IGP, pôle céramique technique ESTER — des cas d'usage IA opérationnels spécifiques que nos consultants maîtrisent.",
           "Tissu B2B sectorisé sur-représenté chez nos clients : industrie électrique et domotique (Legrand et sous-traitants), manufactures porcelaine (Bernardaud, Haviland, Royal Limoges), céramique technique (ESTER), agroalimentaire (Madrange, filières Limousin).",
@@ -144,12 +144,6 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, artisans céramistes, manufactures familiales et petits cabinets limougeauds jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -202,7 +196,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi pour les sous-traitants de Legrand ou des manufactures de porcelaine ?",
-            a: "Oui. Nous accompagnons toutes les tailles, des sous-traitants TPE aux ETI de la filière électrique et céramique. L'audit est calibré selon votre taille et votre secteur, avec des cas d'usage ancrés dans la réalité limougeaude.",
+            a: "Oui. Nous accompagnons toutes les tailles, des sous-traitants PME aux ETI de la filière électrique et céramique. L'audit est calibré selon votre taille et votre secteur, avec des cas d'usage ancrés dans la réalité limougeaude.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -250,12 +244,6 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Limoges freelancers, artisan ceramicists, family manufacturers and small practices up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -360,12 +348,6 @@ export const LIMOGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, artisans céramistes, manufactures familiales et petites agences limougeaudes jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -465,12 +447,6 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Limoges freelancers, artisan ceramicists, family manufacturers and small agencies up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -575,12 +551,6 @@ export const LIMOGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple — automatisation devis, gestion catalogue porcelaine, qualification leads pour TPE et indépendants limougeauds.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -616,7 +586,7 @@ export const LIMOGES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Limoges ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -680,12 +650,6 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case — quote automation, porcelain catalogue management, lead qualification for Limoges micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -790,12 +754,6 @@ export const LIMOGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Tarif dirigeant TPE",
-            detail:
-              "Pour indépendants, artisans, gérants de petites manufactures limougeaudes souhaitant monter en compétence IA à leur rythme.",
-          },
-          {
             sizeLabel: "PME",
             price: "Tarif cadre PME",
             detail:
@@ -895,12 +853,6 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Micro-business executive rate",
-            detail:
-              "For Limoges freelancers, artisans and small manufacture managers wanting to build AI skills at their own pace.",
-          },
           {
             sizeLabel: "SME",
             price: "SME manager rate",
@@ -1002,12 +954,6 @@ export const LIMOGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
             detail:
@@ -1087,12 +1033,6 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / shop",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   pitchFr:
-    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
+    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu PME et ETI tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
+    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu PME et ETI tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : PME hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : PME hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
   seoHook: "pays de saint-paul-de-vence",
   ecosystemFr:
     "La Colle-sur-Loup est une commune résidentielle et touristique de l'arrière-pays azuréen, voisine de Saint-Paul-de-Vence (village d'art et de galeries). Traversée par le Loup, la commune offre un cadre provençal préservé. Économie portée par le tourisme, l'hôtellerie-restauration, l'artisanat, les commerces de proximité et les professions libérales. Accès rapide à Nice et Cagnes-sur-Mer.",
@@ -30,16 +30,16 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux PME hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux PME.",
+      en: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux PME hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Colle-sur-Loup : formats adaptés à l'hôtel, restaurant, atelier ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
       en: "Interventions IA sur site à La Colle-sur-Loup : formats adaptés à l'hôtel, restaurant, atelier ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
     },
     implementation: {
-      fr: "Implémentation IA à La Colle-sur-Loup : agents conversationnels multilingues (tourisme international), automatisation réservations, gestion avis clients, CRM hôtelier augmenté. Adapté aux TPE/PME tourisme et services.",
-      en: "Implémentation IA à La Colle-sur-Loup : agents conversationnels multilingues (tourisme international), automatisation réservations, gestion avis clients, CRM hôtelier augmenté. Adapté aux TPE/PME tourisme et services.",
+      fr: "Implémentation IA à La Colle-sur-Loup : agents conversationnels multilingues (tourisme international), automatisation réservations, gestion avis clients, CRM hôtelier augmenté. Adapté aux PME et ETI tourisme et services.",
+      en: "Implémentation IA à La Colle-sur-Loup : agents conversationnels multilingues (tourisme international), automatisation réservations, gestion avis clients, CRM hôtelier augmenté. Adapté aux PME et ETI tourisme et services.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à La Colle-sur-Loup : sessions dans votre hôtel, restaurant, atelier ou en visio. Gérants tourisme, artisans, commerçants et professions libérales souhaitant maîtriser l'IA au quotidien.",
@@ -53,7 +53,7 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants de l'arrière-pays ?",
-      a: "Oui, nous accompagnons les TPE hôtellerie-restauration de La Colle-sur-Loup et environs sur leurs cas IA : agents conversationnels multilingues, automatisation réservations et check-in, gestion avis clients, personnalisation séjour. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME hôtellerie-restauration de La Colle-sur-Loup et environs sur leurs cas IA : agents conversationnels multilingues, automatisation réservations et check-in, gestion avis clients, personnalisation séjour. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces du village ?",

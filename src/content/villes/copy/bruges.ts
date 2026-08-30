@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRUGES_COPY: VilleCopy = {
   pitchFr:
-    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin nord-bordelais : TPE, indépendants, PME industrielles et tertiaires.",
+    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin nord-bordelais : PME, indépendants, PME industrielles et tertiaires.",
   pitchEn:
-    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin nord-bordelais : TPE, indépendants, PME industrielles et tertiaires.",
+    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin nord-bordelais : PME, indépendants, PME industrielles et tertiaires.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bruges (33). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bruges (33). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bruges (33). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bruges (33). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
   seoHook: "tertiaires zone & industrie périphérique",
   ecosystemFr:
-    "Bruges s'intègre au tissu économique nord de Bordeaux Métropole (770 000 hab) : zone d'activités tertiaires Bordeaux Lac (sièges entreprises régionaux, hôtels, congrès), industries périphériques (mécanique, métallerie, transformation), proximité immédiate aéroport Bordeaux-Mérignac (15 min). Tissu TPE artisanat BTP dense, professions libérales et commerces de proximité.",
+    "Bruges s'intègre au tissu économique nord de Bordeaux Métropole (770 000 hab) : zone d'activités tertiaires Bordeaux Lac (sièges entreprises régionaux, hôtels, congrès), industries périphériques (mécanique, métallerie, transformation), proximité immédiate aéroport Bordeaux-Mérignac (15 min). Tissu PME du BTP dense, professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Bruges s'intègre au tissu économique nord de Bordeaux Métropole (770 000 hab) : zone d'activités tertiaires Bordeaux Lac (sièges entreprises régionaux, hôtels, congrès), industries périphériques (mécanique, métallerie, transformation), proximité immédiate aéroport Bordeaux-Mérignac (15 min). Tissu TPE artisanat BTP dense, professions libérales et commerces de proximité.",
+    "Bruges s'intègre au tissu économique nord de Bordeaux Métropole (770 000 hab) : zone d'activités tertiaires Bordeaux Lac (sièges entreprises régionaux, hôtels, congrès), industries périphériques (mécanique, métallerie, transformation), proximité immédiate aéroport Bordeaux-Mérignac (15 min). Tissu PME du BTP dense, professions libérales et commerces de proximité.",
   distancesFr:
     "Tramway C vers Bordeaux centre (15 min). Aéroport Bordeaux-Mérignac à 15 min. Gare Saint-Jean Bordeaux à 20 min (TGV Paris 2h). Axe A630 (rocade) et A10 vers Paris.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BRUGES_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires zone Bordeaux Lac",
     "Industrie périphérique (mécanique, métallerie)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce & services proximité",
     "Professions libérales (santé, juridique)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Bruges : diagnostic adapté à tous secteurs — PME du BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Bruges : diagnostic adapté à tous secteurs — PME du BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruges : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const BRUGES_COPY: VilleCopy = {
       en: "Implémentation IA à Bruges : agents conversationnels client, automatisation devis BTP/honoraires libéraux, classification documents, prédiction maintenance industrielle, CRM augmentés. Tous secteurs nord-bordelais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bruges : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants, médecins, avocats, gérants TPE/PME nord-bordelaises souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Bruges : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants, médecins, avocats, gérants TPE/PME nord-bordelaises souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Bruges : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants, médecins, avocats, gérants PME et ETI nord-bordelaises souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Bruges : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants, médecins, avocats, gérants PME et ETI nord-bordelaises souhaitant maîtriser l'IA.",
     },
   },
   services: {
@@ -53,7 +53,7 @@ export const BRUGES_COPY: VilleCopy = {
         whyHere: [
           "Le quartier d'affaires de Bordeaux Lac, aux portes de Bruges, concentre sièges régionaux, grand pôle e-commerce girondin, hôtellerie et le parc / palais des congrès : ces acteurs cherchent portails clients, outils internes augmentés et boutiques performantes — terrain idéal pour des plateformes SaaS métier et des sites e-commerce branchés sur le CRM, l'ERP et les outils de réservation.",
           "Les industries périphériques de la rocade A630 (mécanique, métallerie, transformation, sous-traitance bordelaise) et leurs ateliers cherchent à fluidifier leurs flux : on greffe agents, recherche sémantique dans la documentation technique et automatisation des devis sur l'existant, sans imposer une refonte lourde de l'outillage ni de la GMAO en place.",
-          "Le tissu serré de TPE artisanes du BTP de Bruges (plombiers, électriciens, menuisiers, peintres, paysagistes) et de commerces de proximité du centre a besoin d'outils simples : vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop), prise de RDV en ligne et chatbot de qualification calibrés pour des équipes terrain, pas pour des spécialistes du web.",
+          "Le tissu serré de PME artisanales du BTP de Bruges (plombiers, électriciens, menuisiers, peintres, paysagistes) et de commerces de proximité du centre a besoin d'outils simples : vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop), prise de RDV en ligne et chatbot de qualification calibrés pour des équipes terrain, pas pour des spécialistes du web.",
           "L'aéroport de Bordeaux-Mérignac à un quart d'heure et les professions libérales de santé et de droit nombreuses du nord bordelais imposent la confidentialité : chaîne IA hébergeable en UE, conforme RGPD et AI Act, pour des données patients, clients et juridiques qui ne quittent jamais l'Europe, avec recherche sémantique dans les dossiers et agents de prise de rendez-vous.",
         ],
         methodology: [
@@ -84,12 +84,6 @@ export const BRUGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de RDV en ligne, recherche sémantique, automatisation de devis) sur le site d'un artisan BTP, d'un paysagiste ou d'un commerce brugeais, en quelques semaines et sans refonte du site existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const BRUGES_COPY: VilleCopy = {
         whyHere: [
           "Le quartier d'affaires de Bordeaux Lac, aux portes de Bruges, concentre sièges régionaux, grand pôle e-commerce girondin, hôtellerie et le parc / palais des congrès : ces acteurs cherchent portails clients, outils internes augmentés et boutiques performantes — terrain idéal pour des plateformes SaaS métier et des sites e-commerce branchés sur le CRM, l'ERP et les outils de réservation.",
           "Les industries périphériques de la rocade A630 (mécanique, métallerie, transformation, sous-traitance bordelaise) et leurs ateliers cherchent à fluidifier leurs flux : on greffe agents, recherche sémantique dans la documentation technique et automatisation des devis sur l'existant, sans imposer une refonte lourde de l'outillage ni de la GMAO en place.",
-          "Le tissu serré de TPE artisanes du BTP de Bruges (plombiers, électriciens, menuisiers, peintres, paysagistes) et de commerces de proximité du centre a besoin d'outils simples : vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop), prise de RDV en ligne et chatbot de qualification calibrés pour des équipes terrain, pas pour des spécialistes du web.",
+          "Le tissu serré de PME artisanales du BTP de Bruges (plombiers, électriciens, menuisiers, peintres, paysagistes) et de commerces de proximité du centre a besoin d'outils simples : vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop), prise de RDV en ligne et chatbot de qualification calibrés pour des équipes terrain, pas pour des spécialistes du web.",
           "L'aéroport de Bordeaux-Mérignac à un quart d'heure et les professions libérales de santé et de droit nombreuses du nord bordelais imposent la confidentialité : chaîne IA hébergeable en UE, conforme RGPD et AI Act, pour des données patients, clients et juridiques qui ne quittent jamais l'Europe, avec recherche sémantique dans les dossiers et agents de prise de rendez-vous.",
         ],
         methodology: [
@@ -170,12 +164,6 @@ export const BRUGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de RDV en ligne, recherche sémantique, automatisation de devis) sur le site d'un artisan BTP, d'un paysagiste ou d'un commerce brugeais, en quelques semaines et sans refonte du site existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,8 +221,8 @@ export const BRUGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires de la zone Bordeaux Lac (sièges entreprises régionaux, hôtels, congrès) sur leurs cas IA : agents conversationnels client, automatisation workflow, CRM augmentés, classification documents. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP brugeais ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Bruges (plombiers, électriciens, peintres, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME du BTP brugeais ?",
+      a: "Oui, nous accompagnons les PME du BTP à Bruges (plombiers, électriciens, peintres, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales nord-bordelaises ?",

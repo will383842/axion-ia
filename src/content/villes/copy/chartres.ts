@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHARTRES_COPY: VilleCopy = {
   pitchFr:
-    "Chartres (28), préfecture d'Eure-et-Loir et ville de la cathédrale classée UNESCO, est la capitale de la Cosmetic Valley, premier pôle mondial de la parfumerie et de la cosmétique (Guerlain, Paco Rabanne, sous-traitants). Au cœur de la Beauce agricole, son tissu mêle PME industrielles, agroalimentaire et TPE de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME chartraines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Chartres (28), préfecture d'Eure-et-Loir et ville de la cathédrale classée UNESCO, est la capitale de la Cosmetic Valley, premier pôle mondial de la parfumerie et de la cosmétique (Guerlain, Paco Rabanne, sous-traitants). Au cœur de la Beauce agricole, son tissu mêle PME industrielles, agroalimentaire et PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI chartraines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Chartres (28), préfecture d'Eure-et-Loir et ville de la cathédrale classée UNESCO, est la capitale de la Cosmetic Valley, premier pôle mondial de la parfumerie et de la cosmétique (Guerlain, Paco Rabanne, sous-traitants). Au cœur de la Beauce agricole, son tissu mêle PME industrielles, agroalimentaire et TPE de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME chartraines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Chartres (28), préfecture d'Eure-et-Loir et ville de la cathédrale classée UNESCO, est la capitale de la Cosmetic Valley, premier pôle mondial de la parfumerie et de la cosmétique (Guerlain, Paco Rabanne, sous-traitants). Au cœur de la Beauce agricole, son tissu mêle PME industrielles, agroalimentaire et PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI chartraines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chartres (28, Eure-et-Loir). Nous accompagnons en priorité les TPE, puis les PME du territoire : sous-traitants et façonniers de la Cosmetic Valley (parfum, cosmétique, packaging), agroalimentaire de la Beauce, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chartres (28, Eure-et-Loir). Nous accompagnons en priorité les PME, puis les PME du territoire : sous-traitants et façonniers de la Cosmetic Valley (parfum, cosmétique, packaging), agroalimentaire de la Beauce, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chartres (28, Eure-et-Loir). Nous accompagnons en priorité les TPE, puis les PME du territoire : sous-traitants et façonniers de la Cosmetic Valley (parfum, cosmétique, packaging), agroalimentaire de la Beauce, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chartres (28, Eure-et-Loir). Nous accompagnons en priorité les PME, puis les PME du territoire : sous-traitants et façonniers de la Cosmetic Valley (parfum, cosmétique, packaging), agroalimentaire de la Beauce, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "Cosmetic Valley & agro Beauce",
   ecosystemFr:
-    "Chartres est le berceau de la Cosmetic Valley, premier cluster mondial de la parfumerie et de la cosmétique, qui fédère grands noms, façonniers, sous-traitants de packaging et laboratoires. Au cœur de la Beauce, la ville s'appuie aussi sur un puissant secteur agricole et agroalimentaire (céréales, transformation), un commerce de centre patrimonial dopé par le tourisme cathédrale, et un réseau dense de TPE et PME de services. La proximité parisienne renforce l'attractivité économique du bassin chartrain.",
+    "Chartres est le berceau de la Cosmetic Valley, premier cluster mondial de la parfumerie et de la cosmétique, qui fédère grands noms, façonniers, sous-traitants de packaging et laboratoires. Au cœur de la Beauce, la ville s'appuie aussi sur un puissant secteur agricole et agroalimentaire (céréales, transformation), un commerce de centre patrimonial dopé par le tourisme cathédrale, et un réseau dense de PME et ETI de services. La proximité parisienne renforce l'attractivité économique du bassin chartrain.",
   ecosystemEn:
-    "Chartres est le berceau de la Cosmetic Valley, premier cluster mondial de la parfumerie et de la cosmétique, qui fédère grands noms, façonniers, sous-traitants de packaging et laboratoires. Au cœur de la Beauce, la ville s'appuie aussi sur un puissant secteur agricole et agroalimentaire (céréales, transformation), un commerce de centre patrimonial dopé par le tourisme cathédrale, et un réseau dense de TPE et PME de services. La proximité parisienne renforce l'attractivité économique du bassin chartrain.",
+    "Chartres est le berceau de la Cosmetic Valley, premier cluster mondial de la parfumerie et de la cosmétique, qui fédère grands noms, façonniers, sous-traitants de packaging et laboratoires. Au cœur de la Beauce, la ville s'appuie aussi sur un puissant secteur agricole et agroalimentaire (céréales, transformation), un commerce de centre patrimonial dopé par le tourisme cathédrale, et un réseau dense de PME et ETI de services. La proximité parisienne renforce l'attractivité économique du bassin chartrain.",
   distancesFr:
     "Paris-Montparnasse à environ 1h en TER direct. Aéroport de Paris-Orly à 1h par l'A10/A11. Le Mans à 1h, Orléans à 1h, Dreux à 35 min. Gare de Chartres en centre-ville.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CHARTRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chartres : diagnostic adapté aux TPE et PME — façonniers de la Cosmetic Valley, agroalimentaire de la Beauce, commerces et services. Nous ciblons les automatisations à fort ROI.",
-      en: "Audit IA à Chartres : diagnostic adapté aux TPE et PME — façonniers de la Cosmetic Valley, agroalimentaire de la Beauce, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      fr: "Audit IA à Chartres : diagnostic adapté aux PME et ETI — façonniers de la Cosmetic Valley, agroalimentaire de la Beauce, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Chartres : diagnostic adapté aux PME et ETI — façonniers de la Cosmetic Valley, agroalimentaire de la Beauce, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chartres : formats courts pour automatiser devis, relances et tâches administratives. Vos collaborateurs prennent ensuite la main en autonomie.",
@@ -42,8 +42,8 @@ export const CHARTRES_COPY: VilleCopy = {
       en: "Implémentation IA à Chartres : agents conversationnels, automatisation des flux qualité et classification documentaire pour la cosmétique et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Chartres : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de la Cosmetic Valley, de la Beauce et du commerce chartrain.",
-      en: "Coaching un-à-un à Chartres : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de la Cosmetic Valley, de la Beauce et du commerce chartrain.",
+      fr: "Coaching un-à-un à Chartres : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de la Cosmetic Valley, de la Beauce et du commerce chartrain.",
+      en: "Coaching un-à-un à Chartres : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de la Cosmetic Valley, de la Beauce et du commerce chartrain.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Chartres : plateformes et outils sur mesure pour façonniers cosmétique, acteurs agroalimentaires et commerces, avec automatisations et SEO local intégrés.",
@@ -88,12 +88,6 @@ export const CHARTRES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour artisans, producteurs de la Beauce, boutiques du centre patrimonial et indépendants : site rapide, mobile, avec briques IA simples (chatbot, génération de fiches, SEO local Chartres).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const CHARTRES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or augmented e-commerce site",
-            detail:
-              "For artisans, Beauce producers, heritage town-centre shops and freelancers: a fast, mobile site with simple AI building blocks (chatbot, sheet generation, local Chartres SEO).",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke business platform",
             detail:
@@ -230,11 +218,11 @@ export const CHARTRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chartres et en Eure-et-Loir ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Chartres et des communes voisines : Lucé, Mainvilliers, Lèves, Le Coudray. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Chartres et des communes voisines : Lucé, Mainvilliers, Lèves, Le Coudray. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec les acteurs de la Cosmetic Valley ?",
-      a: "Oui. De nombreuses TPE et PME chartraines sont façonniers, sous-traitants packaging ou prestataires de la filière parfum-cosmétique. Nous automatisons leurs flux qualité, devis et classification documentaire dans le respect des exigences du secteur.",
+      a: "Oui. De nombreuses PME et ETI chartraines sont façonniers, sous-traitants packaging ou prestataires de la filière parfum-cosmétique. Nous automatisons leurs flux qualité, devis et classification documentaire dans le respect des exigences du secteur.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire et l'agriculture de la Beauce ?",

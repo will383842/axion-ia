@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const MURET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Muret, sous-préfecture de la Haute-Garonne de 26 079 habitants, située à 23 km au sud de Toulouse et siège du Muretain Agglo. Notre équipe accompagne les sous-traitants aéronautiques de la bande toulousaine, PME pharmaceutiques (proximité Pierre Fabre), commerces de détail et artisans du bâtiment. Nous automatisons en code custom (Python, Node.js) les devis, relances, reporting qualité et qualification de leads. Les ETI peuvent être servies, mais notre cœur de cible reste TPE et PME de moins de 50 salariés.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Muret, sous-préfecture de la Haute-Garonne de 26 079 habitants, située à 23 km au sud de Toulouse et siège du Muretain Agglo. Notre équipe accompagne les sous-traitants aéronautiques de la bande toulousaine, PME pharmaceutiques (proximité Pierre Fabre), commerces de détail et artisans du bâtiment. Nous automatisons en code custom (Python, Node.js) les devis, relances, reporting qualité et qualification de leads. Les grands groupes sont servis, mais notre cœur de cible reste les PME et les ETI de moins de 50 salariés.",
   pitchEn:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Muret, sous-préfecture de la Haute-Garonne de 26 079 habitants, située à 23 km au sud de Toulouse et siège du Muretain Agglo. Notre équipe accompagne les sous-traitants aéronautiques de la bande toulousaine, PME pharmaceutiques (proximité Pierre Fabre), commerces de détail et artisans du bâtiment. Nous automatisons en code custom (Python, Node.js) les devis, relances, reporting qualité et qualification de leads. Les ETI peuvent être servies, mais notre cœur de cible reste TPE et PME de moins de 50 salariés.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Muret, sous-préfecture de la Haute-Garonne de 26 079 habitants, située à 23 km au sud de Toulouse et siège du Muretain Agglo. Notre équipe accompagne les sous-traitants aéronautiques de la bande toulousaine, PME pharmaceutiques (proximité Pierre Fabre), commerces de détail et artisans du bâtiment. Nous automatisons en code custom (Python, Node.js) les devis, relances, reporting qualité et qualification de leads. Les grands groupes sont servis, mais notre cœur de cible reste les PME et les ETI de moins de 50 salariés.",
   directAnswerFr:
-    "Axion-IA accompagne les TPE et PME de Muret (Haute-Garonne, 26 079 habitants, 5e commune du département) dans l'automatisation IA de leurs processus. Le tissu local compte des employeurs comme Étienne Lacroix (pyrotechnie), Pierre Fabre (pharmacie) et Mecaprotec (aéronautique), entourés d'un dense réseau de sous-traitants. Nous intervenons sur site pour automatiser devis, relances, reporting qualité, gestion documentaire — en code custom Python/Node.js, jamais en no-code. Notre équipe se déplace dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais TPE et PME restent notre cœur de cible.",
+    "Axion-IA accompagne les PME et ETI de Muret (Haute-Garonne, 26 079 habitants, 5e commune du département) dans l'automatisation IA de leurs processus. Le tissu local compte des employeurs comme Étienne Lacroix (pyrotechnie), Pierre Fabre (pharmacie) et Mecaprotec (aéronautique), entourés d'un dense réseau de sous-traitants. Nous intervenons sur site pour automatiser devis, relances, reporting qualité, gestion documentaire — en code custom Python/Node.js, jamais en no-code. Notre équipe se déplace dans un délai de 5 jours ouvrés. Les grands groupes sont également servis, mais PME et ETI restent notre cœur de cible.",
   directAnswerEn:
-    "Axion-IA accompagne les TPE et PME de Muret (Haute-Garonne, 26 079 habitants, 5e commune du département) dans l'automatisation IA de leurs processus. Le tissu local compte des employeurs comme Étienne Lacroix (pyrotechnie), Pierre Fabre (pharmacie) et Mecaprotec (aéronautique), entourés d'un dense réseau de sous-traitants. Nous intervenons sur site pour automatiser devis, relances, reporting qualité, gestion documentaire — en code custom Python/Node.js, jamais en no-code. Notre équipe se déplace dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais TPE et PME restent notre cœur de cible.",
+    "Axion-IA accompagne les PME et ETI de Muret (Haute-Garonne, 26 079 habitants, 5e commune du département) dans l'automatisation IA de leurs processus. Le tissu local compte des employeurs comme Étienne Lacroix (pyrotechnie), Pierre Fabre (pharmacie) et Mecaprotec (aéronautique), entourés d'un dense réseau de sous-traitants. Nous intervenons sur site pour automatiser devis, relances, reporting qualité, gestion documentaire — en code custom Python/Node.js, jamais en no-code. Notre équipe se déplace dans un délai de 5 jours ouvrés. Les grands groupes sont également servis, mais PME et ETI restent notre cœur de cible.",
   seoHook: "sous-traitance aéronautique & commerce de gros",
   ecosystemFr:
-    "Muret, sous-préfecture de la Haute-Garonne, est intégrée à la Muretain Agglo et tire son dynamisme économique de sa position au sud de la métropole toulousaine. L'écosystème local mêle pyrotechnie (Étienne Lacroix), pharmacie (Pierre Fabre), aéronautique (Mecaprotec) et un tissu dense de TPE et PME en commerce de gros, transport, hôtellerie-restauration et artisanat. L'aérodrome de Muret-Lherm structure une filière maintenance et services aéronautiques.",
+    "Muret, sous-préfecture de la Haute-Garonne, est intégrée à la Muretain Agglo et tire son dynamisme économique de sa position au sud de la métropole toulousaine. L'écosystème local mêle pyrotechnie (Étienne Lacroix), pharmacie (Pierre Fabre), aéronautique (Mecaprotec) et un tissu dense de PME et ETI en commerce de gros, transport, hôtellerie-restauration et artisanat. L'aérodrome de Muret-Lherm structure une filière maintenance et services aéronautiques.",
   ecosystemEn:
-    "Muret, sous-préfecture de la Haute-Garonne, est intégrée à la Muretain Agglo et tire son dynamisme économique de sa position au sud de la métropole toulousaine. L'écosystème local mêle pyrotechnie (Étienne Lacroix), pharmacie (Pierre Fabre), aéronautique (Mecaprotec) et un tissu dense de TPE et PME en commerce de gros, transport, hôtellerie-restauration et artisanat. L'aérodrome de Muret-Lherm structure une filière maintenance et services aéronautiques.",
+    "Muret, sous-préfecture de la Haute-Garonne, est intégrée à la Muretain Agglo et tire son dynamisme économique de sa position au sud de la métropole toulousaine. L'écosystème local mêle pyrotechnie (Étienne Lacroix), pharmacie (Pierre Fabre), aéronautique (Mecaprotec) et un tissu dense de PME et ETI en commerce de gros, transport, hôtellerie-restauration et artisanat. L'aérodrome de Muret-Lherm structure une filière maintenance et services aéronautiques.",
   distancesFr:
     "Muret est à 23 km au sud de Toulouse, desservie par la gare de Muret en centre-ville (terminus de 14 lignes Tisséo vers le métro toulousain) et par l'autoroute A64 (trois sorties). L'aéroport Toulouse-Blagnac est à 25 km.",
   distancesEn:
@@ -36,26 +36,26 @@ export const MURET_COPY: VilleCopy = {
       en: "Audit sur place IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
     },
     interventions: {
-      fr: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
-      en: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
+      fr: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des PME et ETI locales — code custom Python/Node.js.",
+      en: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des PME et ETI locales — code custom Python/Node.js.",
     },
     implementation: {
       fr: "Implémentation IA à Muret dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP métier (aéronautique, pharma, commerce), conformité RGPD garantie.",
       en: "Implémentation IA à Muret dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP métier (aéronautique, pharma, commerce), conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Muret dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
-      en: "Accompagnement un-à-un à Muret dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
+      fr: "Accompagnement un-à-un à Muret dès {{price:intervention-dirigeants|flat}} pour dirigeants PME et ETI : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
+      en: "Accompagnement un-à-un à Muret dès {{price:intervention-dirigeants|flat}} pour dirigeants PME et ETI : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de TPE du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de PME du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
         whyHere: [
           "Filière aéronautique sous-traitante structurée autour de l'aérodrome de Muret-Lherm et de la proximité de Mecaprotec (traitements de surface) : ces ateliers vivent de devis techniques, de reporting qualité et de traçabilité documentaire. C'est le terrain idéal pour des portails clients, des configurateurs de devis en ligne et des agents qui qualifient automatiquement les demandes entrantes, branchés sur l'ERP qualité et la GED.",
           "Position de sous-préfecture adossée à Toulouse, desservie par l'autoroute A64 (trois sorties) et par la gare de Muret, terminus de 14 lignes Tisséo vers le métro toulousain : nos sites mobile-first, nos boutiques e-commerce et nos chatbots multilingues captent une clientèle qui circule entre Muret et la métropole, au service des commerces de centre-ville et de l'hôtellerie-restauration.",
-          "Tissu 100 % TPE/PME en commerce de gros, transport-logistique et bâtiment du Muretain Agglo : on greffe l'IA sur l'existant (widget, plugin WordPress, API, recherche sémantique) sans refonte coûteuse, ou on construit une vitrine e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) de produits et services locaux, avec prise de commande et catalogue en ligne.",
+          "Tissu 100 % PME et ETI en commerce de gros, transport-logistique et bâtiment du Muretain Agglo : on greffe l'IA sur l'existant (widget, plugin WordPress, API, recherche sémantique) sans refonte coûteuse, ou on construit une vitrine e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) de produits et services locaux, avec prise de commande et catalogue en ligne.",
           "Écosystème industriel sensible — pyrotechnie d'Étienne Lacroix, pharmacie de l'écosystème Pierre Fabre — soumis à des exigences réglementaires fortes et à une traçabilité stricte : toute la chaîne IA (chatbot RAG, agents, recherche sémantique) est hébergeable en UE, conforme RGPD et AI Act, et vos données techniques comme vos données clients restent maîtrisées, sans verrou propriétaire.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const MURET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, relance automatisée de devis — sur le site existant d'un commerce de centre-ville, d'un artisan du bâtiment ou d'un transporteur du Muretain, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,11 +131,11 @@ export const MURET_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un atelier ou un commerce du Muretain qui ne peut pas couper son activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in, transférable à tout prestataire local de la région toulousaine ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de TPE du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Muret des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture de la Haute-Garonne de 26 079 habitants, 5e commune du département, adossée à la métropole toulousaine à 23 km et siège du Muretain Agglo, où cohabitent sous-traitants aéronautiques de la bande toulousaine (proximité Mecaprotec), pyrotechnie (Étienne Lacroix), pharmacie (écosystème Pierre Fabre) et un tissu dense de PME du commerce de gros, du transport, de l'hôtellerie-restauration et de l'artisanat du bâtiment. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Muret, itérations à distance.",
         whyHere: [
           "Filière aéronautique sous-traitante structurée autour de l'aérodrome de Muret-Lherm et de la proximité de Mecaprotec (traitements de surface) : ces ateliers vivent de devis techniques, de reporting qualité et de traçabilité documentaire. C'est le terrain idéal pour des portails clients, des configurateurs de devis en ligne et des agents qui qualifient automatiquement les demandes entrantes, branchés sur l'ERP qualité et la GED.",
           "Position de sous-préfecture adossée à Toulouse, desservie par l'autoroute A64 (trois sorties) et par la gare de Muret, terminus de 14 lignes Tisséo vers le métro toulousain : nos sites mobile-first, nos boutiques e-commerce et nos chatbots multilingues captent une clientèle qui circule entre Muret et la métropole, au service des commerces de centre-ville et de l'hôtellerie-restauration.",
-          "Tissu 100 % TPE/PME en commerce de gros, transport-logistique et bâtiment du Muretain Agglo : on greffe l'IA sur l'existant (widget, plugin WordPress, API, recherche sémantique) sans refonte coûteuse, ou on construit une vitrine e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) de produits et services locaux, avec prise de commande et catalogue en ligne.",
+          "Tissu 100 % PME et ETI en commerce de gros, transport-logistique et bâtiment du Muretain Agglo : on greffe l'IA sur l'existant (widget, plugin WordPress, API, recherche sémantique) sans refonte coûteuse, ou on construit une vitrine e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) de produits et services locaux, avec prise de commande et catalogue en ligne.",
           "Écosystème industriel sensible — pyrotechnie d'Étienne Lacroix, pharmacie de l'écosystème Pierre Fabre — soumis à des exigences réglementaires fortes et à une traçabilité stricte : toute la chaîne IA (chatbot RAG, agents, recherche sémantique) est hébergeable en UE, conforme RGPD et AI Act, et vos données techniques comme vos données clients restent maîtrisées, sans verrou propriétaire.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const MURET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, relance automatisée de devis — sur le site existant d'un commerce de centre-ville, d'un artisan du bâtiment ou d'un transporteur du Muretain, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const MURET_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA cible-t-elle à Muret ?",
-      a: "Nous accompagnons en priorité les TPE et PME de Muret : sous-traitants aéronautiques (proximité Mecaprotec), PME pharma (écosystème Pierre Fabre), commerces de gros, transporteurs, artisans du bâtiment. Les ETI restent marginales.",
+      a: "Nous accompagnons en priorité les PME et ETI de Muret : sous-traitants aéronautiques (proximité Mecaprotec), PME pharma (écosystème Pierre Fabre), commerces de gros, transporteurs, artisans du bâtiment. Les grands groupes complètent ce socle.",
     },
     {
       q: "Proposez-vous des solutions no-code à Muret ?",

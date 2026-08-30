@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const PLABENNEC_COPY: VilleCopy = {
   pitchFr:
-    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
+    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. PME maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
   pitchEn:
-    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
+    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. PME maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : PME maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : PME maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
   ecosystemFr:
-    "Plabennec est une commune périurbaine du Pays de Léon, au nord de Brest, inscrite dans le premier bassin légumier de France. L'économie locale repose sur l'agroalimentaire, le maraîchage, les TPE artisanales BTP et les commerces de proximité. La commune bénéficie de la proximité de la métropole brestoise.",
+    "Plabennec est une commune périurbaine du Pays de Léon, au nord de Brest, inscrite dans le premier bassin légumier de France. L'économie locale repose sur l'agroalimentaire, le maraîchage, les PME du BTP et les commerces de proximité. La commune bénéficie de la proximité de la métropole brestoise.",
   ecosystemEn:
-    "Plabennec est une commune périurbaine du Pays de Léon, au nord de Brest, inscrite dans le premier bassin légumier de France. L'économie locale repose sur l'agroalimentaire, le maraîchage, les TPE artisanales BTP et les commerces de proximité. La commune bénéficie de la proximité de la métropole brestoise.",
+    "Plabennec est une commune périurbaine du Pays de Léon, au nord de Brest, inscrite dans le premier bassin légumier de France. L'économie locale repose sur l'agroalimentaire, le maraîchage, les PME du BTP et les commerces de proximité. La commune bénéficie de la proximité de la métropole brestoise.",
   distancesFr:
     "Brest centre à 20 min par D788. Gare de Brest à 25 min (TGV Paris 4h30). Aéroport Brest-Bretagne à 15 min. Morlaix à 45 min. Quimper à 1h15.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PLABENNEC_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire & transformation légumière",
     "Maraîchage & production végétale",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & grande distribution",
     "Services aux entreprises & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plabennec : diagnostic adapté aux PME agroalimentaires, TPE maraîchères du Léon, artisans BTP et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
-      en: "Audit IA à Plabennec : diagnostic adapté aux PME agroalimentaires, TPE maraîchères du Léon, artisans BTP et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
+      fr: "Audit IA à Plabennec : diagnostic adapté aux PME agroalimentaires, PME maraîchères du Léon, artisans BTP et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
+      en: "Audit IA à Plabennec : diagnostic adapté aux PME agroalimentaires, PME maraîchères du Léon, artisans BTP et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plabennec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire ou le bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const PLABENNEC_COPY: VilleCopy = {
       en: "Implémentation IA à Plabennec : automatisation traçabilité agroalimentaire, agents conversationnels gestion fournisseurs, prédiction rendements maraîchers, classification qualité produits. Adapté filière légumière du Léon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plabennec : sessions dans vos locaux ou en visio. Dirigeants PME agroalimentaires, gérants TPE maraîchères, artisans et commerçants du Pays de Léon souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Plabennec : sessions dans vos locaux ou en visio. Dirigeants PME agroalimentaires, gérants TPE maraîchères, artisans et commerçants du Pays de Léon souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Plabennec : sessions dans vos locaux ou en visio. Dirigeants PME agroalimentaires, gérants PME maraîchères, artisans et commerçants du Pays de Léon souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Plabennec : sessions dans vos locaux ou en visio. Dirigeants PME agroalimentaires, gérants PME maraîchères, artisans et commerçants du Pays de Léon souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const PLABENNEC_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaires et maraîchères du Léon ?",
-      a: "Oui, nous accompagnons les PME agroalimentaires et TPE maraîchères du Pays de Léon sur leurs cas IA : traçabilité automatisée, prédiction rendements, classification qualité produits, agents conversationnels gestion fournisseurs et optimisation logistique. Conformité normes alimentaires garantie.",
+      a: "Oui, nous accompagnons les PME agroalimentaires et PME maraîchères du Pays de Léon sur leurs cas IA : traçabilité automatisée, prédiction rendements, classification qualité produits, agents conversationnels gestion fournisseurs et optimisation logistique. Conformité normes alimentaires garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants de Plabennec ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Plabennec (maçons, plombiers, électriciens) et commerçants sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Plabennec ?",
+      a: "Oui, nous accompagnons les PME du BTP à Plabennec (maçons, plombiers, électriciens) et commerçants sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Plabennec  ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Plabennec et du Pays de Léon. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Plabennec et du Pays de Léon. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Plabennec ?",

@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const GONESSE_COPY: VilleCopy = {
   pitchFr:
-    "Gonesse (95, Val-d'Oise) compte 27 707 habitants (recensement 2023) à 16 km au nord-nord-est de Paris, dans la Communauté d'agglomération Roissy Pays de France. Son économie repose sur le Triangle de Gonesse (zone d'activités stratégique entre A1 et D170), la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, la logistique, le commerce de gros et de détail, ainsi qu'un tissu dense de TPE/PME de services. Patrimoine : église Saint-Pierre-Saint-Paul (XIIe-XIIIe). Axion-IA accompagne dirigeants TPE et PME locales avec du code custom.",
+    "Gonesse (95, Val-d'Oise) compte 27 707 habitants (recensement 2023) à 16 km au nord-nord-est de Paris, dans la Communauté d'agglomération Roissy Pays de France. Son économie repose sur le Triangle de Gonesse (zone d'activités stratégique entre A1 et D170), la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, la logistique, le commerce de gros et de détail, ainsi qu'un tissu dense de PME et ETI de services. Patrimoine : église Saint-Pierre-Saint-Paul (XIIe-XIIIe). Axion-IA accompagne dirigeants PME et ETI locales avec du code custom.",
   pitchEn:
-    "Gonesse (95, Val-d'Oise) compte 27 707 habitants (recensement 2023) à 16 km au nord-nord-est de Paris, dans la Communauté d'agglomération Roissy Pays de France. Son économie repose sur le Triangle de Gonesse (zone d'activités stratégique entre A1 et D170), la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, la logistique, le commerce de gros et de détail, ainsi qu'un tissu dense de TPE/PME de services. Patrimoine : église Saint-Pierre-Saint-Paul (XIIe-XIIIe). Axion-IA accompagne dirigeants TPE et PME locales avec du code custom.",
+    "Gonesse (95, Val-d'Oise) compte 27 707 habitants (recensement 2023) à 16 km au nord-nord-est de Paris, dans la Communauté d'agglomération Roissy Pays de France. Son économie repose sur le Triangle de Gonesse (zone d'activités stratégique entre A1 et D170), la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, la logistique, le commerce de gros et de détail, ainsi qu'un tissu dense de PME et ETI de services. Patrimoine : église Saint-Pierre-Saint-Paul (XIIe-XIIIe). Axion-IA accompagne dirigeants PME et ETI locales avec du code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les PME et ETI (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les PME et ETI (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
   seoHook: "logistique CDG, commerce & services val-d'oise",
   ecosystemFr:
-    "Gonesse bénéficie d'une position stratégique à 16 km de Paris et à proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, desservie par les autoroutes A1, A3 et A170 et le RER D (gare de Villiers-le-Bel - Gonesse - Arnouville). Le Triangle de Gonesse concentre logistique, commerce de gros et activités tertiaires. Les communes limitrophes Arnouville, Villiers-le-Bel, Bonneuil-en-France, Le Thillay, Goussainville et Roissy-en-France forment un bassin de plus de 100 000 habitants à fort potentiel TPE/PME.",
+    "Gonesse bénéficie d'une position stratégique à 16 km de Paris et à proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, desservie par les autoroutes A1, A3 et A170 et le RER D (gare de Villiers-le-Bel - Gonesse - Arnouville). Le Triangle de Gonesse concentre logistique, commerce de gros et activités tertiaires. Les communes limitrophes Arnouville, Villiers-le-Bel, Bonneuil-en-France, Le Thillay, Goussainville et Roissy-en-France forment un bassin de plus de 100 000 habitants à fort potentiel PME et ETI.",
   ecosystemEn:
-    "Gonesse bénéficie d'une position stratégique à 16 km de Paris et à proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, desservie par les autoroutes A1, A3 et A170 et le RER D (gare de Villiers-le-Bel - Gonesse - Arnouville). Le Triangle de Gonesse concentre logistique, commerce de gros et activités tertiaires. Les communes limitrophes Arnouville, Villiers-le-Bel, Bonneuil-en-France, Le Thillay, Goussainville et Roissy-en-France forment un bassin de plus de 100 000 habitants à fort potentiel TPE/PME.",
+    "Gonesse bénéficie d'une position stratégique à 16 km de Paris et à proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, desservie par les autoroutes A1, A3 et A170 et le RER D (gare de Villiers-le-Bel - Gonesse - Arnouville). Le Triangle de Gonesse concentre logistique, commerce de gros et activités tertiaires. Les communes limitrophes Arnouville, Villiers-le-Bel, Bonneuil-en-France, Le Thillay, Goussainville et Roissy-en-France forment un bassin de plus de 100 000 habitants à fort potentiel PME et ETI.",
   distancesFr:
     "Aéroport Paris-CDG 10 min, Paris Gare du Nord 25 min en RER D, Roissy-en-France 10 min, La Défense 40 min, Cergy 45 min.",
   distancesEn:
@@ -33,8 +33,8 @@ export const GONESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gonesse : diagnostic terrain pour TPE et PME logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Gonesse : diagnostic terrain pour TPE et PME logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Gonesse : diagnostic terrain pour PME et ETI logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Gonesse : diagnostic terrain pour PME et ETI logistique CDG, commerce, transports et services Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gonesse : formats adaptés à votre entrepôt Triangle de Gonesse, votre commerce, votre flotte de transport ou vos bureaux. Atelier 1 journée pour vos équipes opérationnelles.",
@@ -45,8 +45,8 @@ export const GONESSE_COPY: VilleCopy = {
       en: "Implémentation IA code custom à Gonesse : optimisation tournées livraison, OCR documents douanes & transit CDG, prédiction stocks entrepôt, automatisation devis B2B commerce de gros.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gonesse : sessions dans votre entrepôt, vos bureaux ou en visio. Format dédié aux gérants TPE logistique, commerce, transport et services Val-d'Oise.",
-      en: "Coaching 1-to-1 à Gonesse : sessions dans votre entrepôt, vos bureaux ou en visio. Format dédié aux gérants TPE logistique, commerce, transport et services Val-d'Oise.",
+      fr: "Coaching 1-to-1 à Gonesse : sessions dans votre entrepôt, vos bureaux ou en visio. Format dédié aux gérants PME logistique, commerce, transport et services Val-d'Oise.",
+      en: "Coaching 1-to-1 à Gonesse : sessions dans votre entrepôt, vos bureaux ou en visio. Format dédié aux gérants PME logistique, commerce, transport et services Val-d'Oise.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const GONESSE_COPY: VilleCopy = {
           "Capitale gonessienne du commerce B2B : le siège de Manutan International (ZAC du Parc des Tulipes) et les distributeurs du parc d'activités appellent des plateformes e-commerce B2B sur mesure — gros volumes de références, tarifs négociés par compte client, intégration ERP/WMS — bien au-delà d'un Shopify standard.",
           "Logistique et transport CDG dominants : le Parc des Tulipes (Sud 37 ha, Nord 42 ha) héberge prestataires logistiques, messagerie et transporteurs pour qui nous bâtissons des portails de suivi d'expédition, des espaces clients de tracking et des chatbots de support transit, ancrés dans la proximité immédiate de Paris-Charles-de-Gaulle.",
           "Acteurs publics et de santé structurants : le Centre Hospitalier Joséphine Baker (premier employeur, 2 000-4 999 agents), La Poste et la Ville de Gonesse génèrent des besoins en portails de service, prise de rendez-vous et interfaces internes que nous traitons avec une exigence d'accessibilité et de souveraineté des données.",
-          "Territoire en mutation autour du Triangle de Gonesse : la ZAC pilotée par Grand Paris Aménagement et la future gare de la Ligne 17 redessinent le bassin ; les TPE/PME gonessiennes qui veulent capter cette dynamique ont besoin d'une présence web moderne et de SaaS métier prêts à monter en charge.",
+          "Territoire en mutation autour du Triangle de Gonesse : la ZAC pilotée par Grand Paris Aménagement et la future gare de la Ligne 17 redessinent le bassin ; les PME et ETI gonessiennes qui veulent capter cette dynamique ont besoin d'une présence web moderne et de SaaS métier prêts à monter en charge.",
         ],
         methodology: [
           {
@@ -87,12 +87,6 @@ export const GONESSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-boutique de lancement",
-            detail:
-              "Pour commerçants, artisans BTP et indépendants gonessiens (commerce de détail, services, La Grande Vallée) : site vitrine performant ou petite boutique en ligne, mobile-first, avec brique IA légère (chatbot FAQ, prise de contact).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce B2B ou portail métier",
@@ -174,12 +168,6 @@ export const GONESSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or launch e-shop",
-            detail:
-              "For Gonesse retailers, BTP craftsmen and freelancers (retail, services, La Grande Vallée): a fast showcase site or small online shop, mobile-first, with a light AI brick (FAQ chatbot, contact capture).",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B e-commerce platform or business portal",
             detail:
@@ -245,11 +233,11 @@ export const GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les acteurs logistique et transports du Triangle de Gonesse ?",
-      a: "Oui. Pour les TPE/PME logistique CDG, transporteurs et grossistes, nous déployons OCR documents douaniers, optimisation tournées, prédiction stocks et automatisation EDI. Aucun no-code, code custom adapté à votre WMS/TMS.",
+      a: "Oui. Pour les PME et ETI logistique CDG, transporteurs et grossistes, nous déployons OCR documents douaniers, optimisation tournées, prédiction stocks et automatisation EDI. Aucun no-code, code custom adapté à votre WMS/TMS.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans gonessiens ?",
-      a: "Oui. Pour les TPE commerce de détail, restauration et artisans BTP de Gonesse, nous proposons agents conversationnels clientèle, automatisation devis et factures, gestion stocks et reporting de gestion.",
+      a: "Oui. Pour les PME du commerce, restauration et artisans BTP de Gonesse, nous proposons agents conversationnels clientèle, automatisation devis et factures, gestion stocks et reporting de gestion.",
     },
   ],
 };

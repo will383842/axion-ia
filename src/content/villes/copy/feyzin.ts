@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FEYZIN_COPY: VilleCopy = {
   pitchFr:
-    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, PME du BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, PME du BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), PME du BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), PME du BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
   seoHook: "vallée chimie",
   ecosystemFr:
-    "Feyzin est intégrée à la Métropole de Lyon, en banlieue sud immédiate. Position emblématique dans la « Vallée de la Chimie » : raffinerie pétrolière historique (site Seveso seuil haut, industrie pétrochimique). Tissu PME industrielles et sous-traitants techniques, TPE artisanat BTP, commerces de proximité.",
+    "Feyzin est intégrée à la Métropole de Lyon, en banlieue sud immédiate. Position emblématique dans la « Vallée de la Chimie » : raffinerie pétrolière historique (site Seveso seuil haut, industrie pétrochimique). Tissu PME industrielles et sous-traitants techniques, PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Feyzin est intégrée à la Métropole de Lyon, en banlieue sud immédiate. Position emblématique dans la « Vallée de la Chimie » : raffinerie pétrolière historique (site Seveso seuil haut, industrie pétrochimique). Tissu PME industrielles et sous-traitants techniques, TPE artisanat BTP, commerces de proximité.",
+    "Feyzin est intégrée à la Métropole de Lyon, en banlieue sud immédiate. Position emblématique dans la « Vallée de la Chimie » : raffinerie pétrolière historique (site Seveso seuil haut, industrie pétrochimique). Tissu PME industrielles et sous-traitants techniques, PME du BTP, commerces de proximité.",
   distancesFr:
     "Lyon centre à 15 min. Aéroport Lyon-Saint-Exupéry à 25 min. Vénissieux limitrophe à 5 min. Saint-Fons à 5 min. Corbas à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const FEYZIN_COPY: VilleCopy = {
     "Industrie pétrochimique (Vallée de la Chimie, Seveso)",
     "Sous-traitants techniques industriels",
     "PME industrielles diversifiées",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, PME artisanales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, PME artisanales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feyzin : formats adaptés aux sous-traitants industriels (exigences sécurité Seveso), atelier, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const FEYZIN_COPY: VilleCopy = {
       en: "Implémentation IA à Feyzin : prédiction maintenance équipements pétrochimiques, classification incidents HSE, contrôle qualité par vision, agents conversationnels B2B sous-traitance.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Feyzin : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants sous-traitants Vallée de la Chimie, industriels, artisans, gérants TPE/PME feyzinois.",
-      en: "Coaching 1-to-1 à Feyzin : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants sous-traitants Vallée de la Chimie, industriels, artisans, gérants TPE/PME feyzinois.",
+      fr: "Coaching 1-to-1 à Feyzin : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants sous-traitants Vallée de la Chimie, industriels, artisans, gérants PME et ETI feyzinois.",
+      en: "Coaching 1-to-1 à Feyzin : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants sous-traitants Vallée de la Chimie, industriels, artisans, gérants PME et ETI feyzinois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const FEYZIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles diversifiées Métropole Lyon sud sur leurs cas IA : prédiction maintenance, contrôle qualité, optimisation production, classification documents.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Feyzin, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Feyzin, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

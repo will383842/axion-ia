@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const PESSAC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Pessac, commune de 67 339 habitants (2023) au sud-ouest de Bordeaux, au sein de Bordeaux Métropole. La ville abrite une part majeure du domaine universitaire régional — Université Bordeaux Montaigne, Université de Bordeaux (droit, économie), Institut Polytechnique de Bordeaux et Sciences Po Bordeaux — ainsi qu'un tissu de PME tertiaires, viticoles (AOC Pessac-Léognan) et de santé (CHU). Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
+    "Axion-IA accompagne les PME et ETI de Pessac, commune de 67 339 habitants (2023) au sud-ouest de Bordeaux, au sein de Bordeaux Métropole. La ville abrite une part majeure du domaine universitaire régional — Université Bordeaux Montaigne, Université de Bordeaux (droit, économie), Institut Polytechnique de Bordeaux et Sciences Po Bordeaux — ainsi qu'un tissu de PME tertiaires, viticoles (AOC Pessac-Léognan) et de santé (CHU). Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Pessac, commune de 67 339 habitants (2023) au sud-ouest de Bordeaux, au sein de Bordeaux Métropole. La ville abrite une part majeure du domaine universitaire régional — Université Bordeaux Montaigne, Université de Bordeaux (droit, économie), Institut Polytechnique de Bordeaux et Sciences Po Bordeaux — ainsi qu'un tissu de PME tertiaires, viticoles (AOC Pessac-Léognan) et de santé (CHU). Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
+    "Axion-IA accompagne les PME et ETI de Pessac, commune de 67 339 habitants (2023) au sud-ouest de Bordeaux, au sein de Bordeaux Métropole. La ville abrite une part majeure du domaine universitaire régional — Université Bordeaux Montaigne, Université de Bordeaux (droit, économie), Institut Polytechnique de Bordeaux et Sciences Po Bordeaux — ainsi qu'un tissu de PME tertiaires, viticoles (AOC Pessac-Léognan) et de santé (CHU). Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   directAnswerFr:
-    "Axion-IA intervient à Pessac auprès des TPE et PME de Bordeaux Métropole, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV), puis le tramway B (terminus Pessac-Centre ou France Alouette), pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "Axion-IA intervient à Pessac auprès des PME et ETI de Bordeaux Métropole, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV), puis le tramway B (terminus Pessac-Centre ou France Alouette), pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "Axion-IA intervient à Pessac auprès des TPE et PME de Bordeaux Métropole, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV), puis le tramway B (terminus Pessac-Centre ou France Alouette), pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
-  seoHook: "TPE & PME · Bordeaux Métropole · IA opérationnelle code custom",
+    "Axion-IA intervient à Pessac auprès des PME et ETI de Bordeaux Métropole, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV), puis le tramway B (terminus Pessac-Centre ou France Alouette), pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+  seoHook: "PME & PME · Bordeaux Métropole · IA opérationnelle code custom",
   ecosystemFr:
     "Pessac concentre un écosystème universitaire et tertiaire dense, structuré autour du domaine universitaire de Bordeaux Montaigne, Bordeaux (droit, économie), Bordeaux INP et Sciences Po Bordeaux. La ville est entourée par Bordeaux, Mérignac, Talence, Gradignan, Canéjan, Cestas et Saint-Jean-d'Illac au sein de Bordeaux Métropole. Le bassin combine PME de services aux entreprises, recherche, viticulture AOC Pessac-Léognan, santé (CHU) et patrimoine UNESCO (Cité Frugès, Le Corbusier).",
   ecosystemEn:
@@ -32,8 +32,8 @@ export const PESSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À Pessac, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de TPE ou PME d'identifier les processus métier automatisables — gestion documentaire, reporting, support client, traitement de candidatures — et de chiffrer un plan d'action concret.",
-      en: "À Pessac, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de TPE ou PME d'identifier les processus métier automatisables — gestion documentaire, reporting, support client, traitement de candidatures — et de chiffrer un plan d'action concret.",
+      fr: "À Pessac, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de PME ou ETI d'identifier les processus métier automatisables — gestion documentaire, reporting, support client, traitement de candidatures — et de chiffrer un plan d'action concret.",
+      en: "À Pessac, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de PME ou ETI d'identifier les processus métier automatisables — gestion documentaire, reporting, support client, traitement de candidatures — et de chiffrer un plan d'action concret.",
     },
     interventions: {
       fr: "Nos interventions à Pessac (à partir de {{price:intervention-4h|flat}}) automatisent les flux récurrents : extraction de données depuis emails ou PDF, génération de devis, suivi qualité ou agents internes branchés sur les outils existants (CRM, ERP, ATS).",
@@ -44,8 +44,8 @@ export const PESSAC_COPY: VilleCopy = {
       en: "Sur les projets d'implémentation à Pessac, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux back-offices universitaires, viticoles, médicaux ou tertiaires des PME locales, sans verrouillage par une plateforme tierce.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Pessac (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME, responsables de laboratoires de recherche ou propriétaires de domaines viticoles qui veulent arbitrer leurs usages IA sans déléguer la décision.",
-      en: "L'accompagnement un-à-un à Pessac (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME, responsables de laboratoires de recherche ou propriétaires de domaines viticoles qui veulent arbitrer leurs usages IA sans déléguer la décision.",
+      fr: "L'accompagnement un-à-un à Pessac (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de PME et d'ETI, responsables de laboratoires de recherche ou propriétaires de domaines viticoles qui veulent arbitrer leurs usages IA sans déléguer la décision.",
+      en: "L'accompagnement un-à-un à Pessac (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de PME et d'ETI, responsables de laboratoires de recherche ou propriétaires de domaines viticoles qui veulent arbitrer leurs usages IA sans déléguer la décision.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const PESSAC_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA",
-            detail:
-              "Pour les indépendants, artisans et petites structures des parcs Magellan ou Canteranne, et les domaines viticoles AOC Pessac-Léognan : site vitrine ou e-commerce avec une brique IA (chatbot, génération de fiches produit).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -172,12 +166,6 @@ export const PESSAC_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI showcase site or e-commerce",
-            detail:
-              "For freelancers, craftspeople and small structures in the Magellan or Canteranne parks, and AOC Pessac-Léognan wine estates: showcase site or e-commerce with one AI building block (chatbot, product sheet generation).",
-          },
           {
             sizeLabel: "PME",
             price: "Custom business platform",

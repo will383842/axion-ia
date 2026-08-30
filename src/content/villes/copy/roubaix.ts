@@ -89,12 +89,6 @@ export const ROUBAIX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures — {{price:intervention-4h|flat}}",
-            detail:
-              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 15 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
-          },
-          {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps (1 jour)",
             detail:
@@ -184,12 +178,6 @@ export const ROUBAIX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures — {{price:intervention-4h|flat}}",
-            detail:
-              "Idéal pour indépendants, artisans et petits marchands roubaisiens : format court de 2 à 15 participants pour prendre en main les premiers outils IA sur des cas concrets de votre activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps (1 jour)",
@@ -281,12 +269,6 @@ export const ROUBAIX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA-ready",
-            detail:
-              "Pour indépendants, artisans et petits marchands roubaisiens : site vitrine ou boutique e-commerce mobile-first sur CMS, avec une première brique IA (chatbot FAQ, recherche assistée) et hébergement UE.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme e-commerce augmentée",
             detail:
@@ -367,12 +349,6 @@ export const ROUBAIX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase site or shop",
-            detail:
-              "For Roubaix freelancers, artisans and small merchants: mobile-first showcase site or e-commerce shop on a CMS, with a first AI building block (FAQ chatbot, assisted search) and EU hosting.",
-          },
-          {
             sizeLabel: "SME",
             price: "Augmented e-commerce platform",
             detail:
@@ -433,15 +409,15 @@ export const ROUBAIX_COPY: VilleCopy = {
       a: "Les interventions Axion-IA s'appuient sur des cas d'usage issus de votre secteur réel : gestion de commandes, suivi fournisseurs, contrôle qualité documentaire, relances clients. Aucun contenu générique — les exercices pratiques utilisent vos propres données ou des jeux de données représentatifs de votre activité.",
     },
     {
-      q: "Quel budget prévoir pour une première implémentation IA dans une TPE roubaisienne ?",
-      a: "Une implémentation démarre à {{price:impl-poc|entry}} — cela couvre le développement d'un outil ciblé (agent de relance, générateur de devis, assistant FAQ interne) et son intégration à vos outils existants. Pour une TPE, nous recommandons de commencer par un Audit sur place à {{price:audit-flash|flat}} pour valider le chantier avant d'engager le budget d'implémentation.",
+      q: "Quel budget prévoir pour une première implémentation IA dans une PME roubaisienne ?",
+      a: "Une implémentation démarre à {{price:impl-poc|entry}} — cela couvre le développement d'un outil ciblé (agent de relance, générateur de devis, assistant FAQ interne) et son intégration à vos outils existants. Pour une PME, nous recommandons de commencer par un Audit sur place à {{price:audit-flash|flat}} pour valider le chantier avant d'engager le budget d'implémentation.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD lors des interventions à Roubaix ?",
       a: "Nos interventions respectent le RGPD : aucune donnée client n'est transmise à des modèles tiers sans accord explicite, les outils déployés peuvent fonctionner en environnement privé (on-premise ou cloud souverain). Nous documentons les flux de données dans chaque implémentation et fournissons les éléments nécessaires à votre DPO.",
     },
     {
-      q: "Proposez-vous des formats courts pour les dirigeants de TPE qui manquent de temps ?",
+      q: "Proposez-vous des formats courts pour les dirigeants de PME et d'ETI qui manquent de temps ?",
       a: "Oui. L'Audit sur place (4h sur site) est conçu pour les dirigeants sans disponibilité étendue — restitution le jour même, plan d'action immédiatement actionnable. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
     },
   ],

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PLOERMEL_COPY: VilleCopy = {
   pitchFr:
-    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA collabore avec toutes les structures locales du centre Morbihan.",
+    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. PME de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA collabore avec toutes les structures locales du centre Morbihan.",
   pitchEn:
-    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA collabore avec toutes les structures locales du centre Morbihan.",
+    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. PME de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA collabore avec toutes les structures locales du centre Morbihan.",
   seoHook: "tourisme intérieur, artisanat & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : PME de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : PME de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Ploërmel est la ville-centre du Morbihan intérieur, structurée autour du lac au Duc et d'un bassin de vie de plus de 25 000 habitants. L'économie locale repose sur les services à la personne, l'artisanat BTP, le commerce de centre-ville, les professions de santé, l'agroalimentaire et un tourisme intérieur dynamique (lac, forêt de Brocéliande à proximité, randonnée).",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const PLOERMEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploërmel : diagnostic adapté aux TPE de services, PME artisanales, commerçants et acteurs du tourisme intérieur du centre Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ploërmel : diagnostic adapté aux TPE de services, PME artisanales, commerçants et acteurs du tourisme intérieur du centre Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ploërmel : diagnostic adapté aux PME de services, PME artisanales, commerçants et acteurs du tourisme intérieur du centre Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ploërmel : diagnostic adapté aux PME de services, PME artisanales, commerçants et acteurs du tourisme intérieur du centre Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploërmel : formations pratiques pour équipes commerciales, artisans, professionnels de santé et acteurs touristiques. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Ploërmel : formations pratiques pour équipes commerciales, artisans, professionnels de santé et acteurs touristiques. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Ploërmel : agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning et stocks, CRM augmenté professions libérales. Adapté au tissu TPE/PME centre Morbihan.",
-      en: "Implémentation IA à Ploërmel : agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning et stocks, CRM augmenté professions libérales. Adapté au tissu TPE/PME centre Morbihan.",
+      fr: "Implémentation IA à Ploërmel : agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning et stocks, CRM augmenté professions libérales. Adapté au tissu PME et ETI centre Morbihan.",
+      en: "Implémentation IA à Ploërmel : agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning et stocks, CRM augmenté professions libérales. Adapté au tissu PME et ETI centre Morbihan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ploërmel : sessions individuelles pour dirigeants TPE/PME, commerçants, artisans et professionnels du tourisme intérieur souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Ploërmel : sessions individuelles pour dirigeants TPE/PME, commerçants, artisans et professionnels du tourisme intérieur souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Ploërmel : sessions individuelles pour dirigeants de PME et d'ETI, commerçants, artisans et professionnels du tourisme intérieur souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Ploërmel : sessions individuelles pour dirigeants de PME et d'ETI, commerçants, artisans et professionnels du tourisme intérieur souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const PLOERMEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ploërmel  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME ploërmelaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI ploërmelaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Ploërmel ?",

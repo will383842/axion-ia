@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LOUVECIENNES_COPY: VilleCopy = {
   pitchFr:
-    "Louveciennes (78), commune résidentielle de prestige des Yvelines, entre Bougival et Marly-le-Roi, célèbre pour son aqueduc historique et son patrimoine impressionniste (Pissarro, Sisley). Tissu de TPE artisans, professions libérales haut de gamme, PME tertiaires, consultants et commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
+    "Louveciennes (78), commune résidentielle de prestige des Yvelines, entre Bougival et Marly-le-Roi, célèbre pour son aqueduc historique et son patrimoine impressionniste (Pissarro, Sisley). Tissu de PME artisanales, professions libérales haut de gamme, PME tertiaires, consultants et commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
   pitchEn:
-    "Louveciennes (78), commune résidentielle de prestige des Yvelines, entre Bougival et Marly-le-Roi, célèbre pour son aqueduc historique et son patrimoine impressionniste (Pissarro, Sisley). Tissu de TPE artisans, professions libérales haut de gamme, PME tertiaires, consultants et commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
+    "Louveciennes (78), commune résidentielle de prestige des Yvelines, entre Bougival et Marly-le-Roi, célèbre pour son aqueduc historique et son patrimoine impressionniste (Pissarro, Sisley). Tissu de PME artisanales, professions libérales haut de gamme, PME tertiaires, consultants et commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louveciennes (78). Nous accompagnons PME et ETI : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louveciennes (78). Nous accompagnons PME et ETI : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
-    "Louveciennes est une commune résidentielle haut de gamme de l'ouest des Yvelines, entre Bougival et Marly-le-Roi. Aqueduc historique de Louveciennes et patrimoine impressionniste (Pissarro, Sisley). Tissu économique : professions libérales (juridique, santé, patrimoine), PME tertiaires et cabinets conseil, TPE artisans, commerces de village, consultants indépendants. Communes voisines : Bougival, Marly-le-Roi, Le Pecq, La Celle-Saint-Cloud, Vaucresson.",
+    "Louveciennes est une commune résidentielle haut de gamme de l'ouest des Yvelines, entre Bougival et Marly-le-Roi. Aqueduc historique de Louveciennes et patrimoine impressionniste (Pissarro, Sisley). Tissu économique : professions libérales (juridique, santé, patrimoine), PME tertiaires et cabinets conseil, PME artisanales, commerces de village, consultants indépendants. Communes voisines : Bougival, Marly-le-Roi, Le Pecq, La Celle-Saint-Cloud, Vaucresson.",
   ecosystemEn:
-    "Louveciennes est une commune résidentielle haut de gamme de l'ouest des Yvelines, entre Bougival et Marly-le-Roi. Aqueduc historique de Louveciennes et patrimoine impressionniste (Pissarro, Sisley). Tissu économique : professions libérales (juridique, santé, patrimoine), PME tertiaires et cabinets conseil, TPE artisans, commerces de village, consultants indépendants. Communes voisines : Bougival, Marly-le-Roi, Le Pecq, La Celle-Saint-Cloud, Vaucresson.",
+    "Louveciennes est une commune résidentielle haut de gamme de l'ouest des Yvelines, entre Bougival et Marly-le-Roi. Aqueduc historique de Louveciennes et patrimoine impressionniste (Pissarro, Sisley). Tissu économique : professions libérales (juridique, santé, patrimoine), PME tertiaires et cabinets conseil, PME artisanales, commerces de village, consultants indépendants. Communes voisines : Bougival, Marly-le-Roi, Le Pecq, La Celle-Saint-Cloud, Vaucresson.",
   distancesFr:
     "Gare de Louveciennes (Transilien L, 25 min Paris Saint-Lazare). A13/A86 à proximité. La Défense à 15 min, Versailles à 15 min, Saint-Germain-en-Laye à 10 min. Aéroport Paris-Orly à 35 min, Roissy-CDG à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LOUVECIENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et PME artisanales de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et PME artisanales de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louveciennes : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",

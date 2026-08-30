@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LENTILLY_COPY: VilleCopy = {
   pitchFr:
-    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du NO lyonnais.",
+    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du NO lyonnais.",
   pitchEn:
-    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du NO lyonnais.",
+    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du NO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
   seoHook: "tertiaires lyonnais",
   ecosystemFr:
-    "Lentilly est positionnée en banlieue NO de Lyon, aux portes des monts du Lyonnais est. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",
+    "Lentilly est positionnée en banlieue NO de Lyon, aux portes des monts du Lyonnais est. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Lentilly est positionnée en banlieue NO de Lyon, aux portes des monts du Lyonnais est. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",
+    "Lentilly est positionnée en banlieue NO de Lyon, aux portes des monts du Lyonnais est. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces de proximité.",
   distancesFr:
     "Lyon centre à 25 min. Aéroport Lyon-Saint-Exupéry à 50 min. L'Arbresle à 5 min. Dardilly à 15 min. Écully à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LENTILLY_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires NO lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lentilly : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LENTILLY_COPY: VilleCopy = {
       en: "Implémentation IA à Lentilly : agents conversationnels B2B/patient, automatisation workflow, classification dossiers, CRM augmentés. NO lyonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lentilly : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME lentillois.",
-      en: "Coaching 1-to-1 à Lentilly : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME lentillois.",
+      fr: "Coaching 1-to-1 à Lentilly : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI lentillois.",
+      en: "Coaching 1-to-1 à Lentilly : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI lentillois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LENTILLY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires NO lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Lentilly, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Lentilly, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

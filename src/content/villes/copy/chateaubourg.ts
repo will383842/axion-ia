@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
+    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, PME artisanales, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
   pitchEn:
-    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
+    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, PME artisanales, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaubourg (35). Nous accompagnons PME artisanales, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaubourg (35). Nous accompagnons PME artisanales, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "vallée vilaine",
   ecosystemFr:
-    "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, TPE artisans BTP et services aux entreprises. Bords de Vilaine attractifs.",
+    "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, PME du BTP et services aux entreprises. Bords de Vilaine attractifs.",
   ecosystemEn:
-    "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, TPE artisans BTP et services aux entreprises. Bords de Vilaine attractifs.",
+    "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, PME du BTP et services aux entreprises. Bords de Vilaine attractifs.",
   distancesFr:
     "Rennes centre à 25 min (RN157). Gare TGV Rennes à 30 min (Paris en 1h27). Gare de Châteaubourg (TER Rennes-Laval). Aéroport Rennes-Saint-Jacques à 35 min. Vitré à 15 min, Noyal-sur-Vilaine à 10 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, PME artisanales, entreprises logistiques et services de l'est rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, PME artisanales, entreprises logistiques et services de l'est rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châteaubourg : formations adaptées aux PME industrielles et TPE artisans des zones d'activités est rennaises. Ateliers pratiques, équipes autonomes en fin de journée.",
-      en: "Interventions IA sur site à Châteaubourg : formations adaptées aux PME industrielles et TPE artisans des zones d'activités est rennaises. Ateliers pratiques, équipes autonomes en fin de journée.",
+      fr: "Interventions IA sur site à Châteaubourg : formations adaptées aux PME industrielles et PME artisanales des zones d'activités est rennaises. Ateliers pratiques, équipes autonomes en fin de journée.",
+      en: "Interventions IA sur site à Châteaubourg : formations adaptées aux PME industrielles et PME artisanales des zones d'activités est rennaises. Ateliers pratiques, équipes autonomes en fin de journée.",
     },
     implementation: {
       fr: "Implémentation IA à Châteaubourg : optimisation supply chain agroalimentaire, prédiction maintenance industrielle, automatisation logistique axe Rennes-Laval, agents conversationnels B2B.",
       en: "Implémentation IA à Châteaubourg : optimisation supply chain agroalimentaire, prédiction maintenance industrielle, automatisation logistique axe Rennes-Laval, agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châteaubourg : sessions dans vos locaux zones d'activités ou en visio. Dirigeants PME agroalimentaires, gérants TPE artisans, responsables logistique est rennais.",
-      en: "Coaching 1-to-1 à Châteaubourg : sessions dans vos locaux zones d'activités ou en visio. Dirigeants PME agroalimentaires, gérants TPE artisans, responsables logistique est rennais.",
+      fr: "Coaching 1-to-1 à Châteaubourg : sessions dans vos locaux zones d'activités ou en visio. Dirigeants PME agroalimentaires, gérants PME artisanales, responsables logistique est rennais.",
+      en: "Coaching 1-to-1 à Châteaubourg : sessions dans vos locaux zones d'activités ou en visio. Dirigeants PME agroalimentaires, gérants PME artisanales, responsables logistique est rennais.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaubourg  : quel budget prévoir ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les PME et ETI des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires de Châteaubourg ?",

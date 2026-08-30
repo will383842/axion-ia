@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   pitchFr:
-    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
+    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu PME artisanales, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   pitchEn:
-    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
+    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu PME artisanales, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons PME artisanales, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
-  seoHook: "TPE & PME Hte-Garonne",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons PME artisanales, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+  seoHook: "PME & PME Hte-Garonne",
   ecosystemFr:
-    "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
+    "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
   ecosystemEn:
-    "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
+    "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
   distancesFr:
     "Toulouse centre à 35 min (A61). Gare SNCF Villefranche-de-Lauragais sur ligne Toulouse-Narbonne. Castelnaudary à 25 min. Revel à 20 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux PME artisanales, PME agroalimentaires et commerçants du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux PME artisanales, PME agroalimentaires et commerçants du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefranche-de-Lauragais : formats adaptés à l'exploitation agroalimentaire, au commerce, à l'artisan. Vos équipes repartent autonomes.",
       en: "Interventions IA sur site à Villefranche-de-Lauragais : formats adaptés à l'exploitation agroalimentaire, au commerce, à l'artisan. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémentation IA à Villefranche-de-Lauragais : automatisation traçabilité agroalimentaire, gestion stocks, classification documents, agents conversationnels pour TPE-PME du Lauragais.",
-      en: "Implémentation IA à Villefranche-de-Lauragais : automatisation traçabilité agroalimentaire, gestion stocks, classification documents, agents conversationnels pour TPE-PME du Lauragais.",
+      fr: "Implémentation IA à Villefranche-de-Lauragais : automatisation traçabilité agroalimentaire, gestion stocks, classification documents, agents conversationnels pour PME et ETI du Lauragais.",
+      en: "Implémentation IA à Villefranche-de-Lauragais : automatisation traçabilité agroalimentaire, gestion stocks, classification documents, agents conversationnels pour PME et ETI du Lauragais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villefranche-de-Lauragais : sessions dirigeants TPE artisans, gérants PME agroalimentaires, commerçants du Lauragais.",
-      en: "Coaching 1-to-1 à Villefranche-de-Lauragais : sessions dirigeants TPE artisans, gérants PME agroalimentaires, commerçants du Lauragais.",
+      fr: "Coaching 1-to-1 à Villefranche-de-Lauragais : sessions dirigeants PME artisanales, gérants PME agroalimentaires, commerçants du Lauragais.",
+      en: "Coaching 1-to-1 à Villefranche-de-Lauragais : sessions dirigeants PME artisanales, gérants PME agroalimentaires, commerçants du Lauragais.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Villefranche-de-Lauragais ?",
-      a: "Nous accompagnons TPE artisans, commerçants du centre-bastide, PME agroalimentaires, exploitations céréalières (62 % du foncier local en céréales), professions libérales et acteurs du transport-logistique.",
+      a: "Nous accompagnons PME artisanales, commerçants du centre-bastide, PME agroalimentaires, exploitations céréalières (62 % du foncier local en céréales), professions libérales et acteurs du transport-logistique.",
     },
     {
       q: "Tarifs audit IA à Villefranche-de-Lauragais : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Comment Axion-IA gère-t-il la conformité RGPD à Villefranche-de-Lauragais ?",
@@ -65,7 +65,7 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
     },
     {
       q: "L'IA peut-elle aider une exploitation céréalière du Lauragais ?",
-      a: "Oui, l'IA optimise pilotage cultures (62 % du foncier en céréales), traçabilité, gestion stocks, classification documents administratifs et conformité PAC. Approche pragmatique TPE-PME.",
+      a: "Oui, l'IA optimise pilotage cultures (62 % du foncier en céréales), traçabilité, gestion stocks, classification documents administratifs et conformité PAC. Approche pragmatique PME et ETI.",
     },
     {
       q: "Comment se déroule une intervention IA à Villefranche-de-Lauragais ?",

@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const SALON_DE_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Salon-de-Provence, ville carrefour des Bouches-du-Rhône située à 52 km de Marseille, 35 km d'Aix-en-Provence et 40 km d'Arles. Notre cabinet conçoit du code IA custom (pas de no-code) pour les commerces du centre-ville, l'artisanat du bâtiment, les exploitations oléicoles et maraîchères de la Crau, les sociétés de services et les TPE/PME des quatre parcs d'activités salonais. Les ETI peuvent aussi solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés.",
+    "Axion-IA accompagne les PME et ETI de Salon-de-Provence, ville carrefour des Bouches-du-Rhône située à 52 km de Marseille, 35 km d'Aix-en-Provence et 40 km d'Arles. Notre cabinet conçoit du code IA custom (pas de no-code) pour les commerces du centre-ville, l'artisanat du bâtiment, les exploitations oléicoles et maraîchères de la Crau, les sociétés de services et les PME et ETI des quatre parcs d'activités salonais. Les ETI peuvent aussi solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Salon-de-Provence, ville carrefour des Bouches-du-Rhône située à 52 km de Marseille, 35 km d'Aix-en-Provence et 40 km d'Arles. Notre cabinet conçoit du code IA custom (pas de no-code) pour les commerces du centre-ville, l'artisanat du bâtiment, les exploitations oléicoles et maraîchères de la Crau, les sociétés de services et les TPE/PME des quatre parcs d'activités salonais. Les ETI peuvent aussi solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés.",
+    "Axion-IA accompagne les PME et ETI de Salon-de-Provence, ville carrefour des Bouches-du-Rhône située à 52 km de Marseille, 35 km d'Aix-en-Provence et 40 km d'Arles. Notre cabinet conçoit du code IA custom (pas de no-code) pour les commerces du centre-ville, l'artisanat du bâtiment, les exploitations oléicoles et maraîchères de la Crau, les sociétés de services et les PME et ETI des quatre parcs d'activités salonais. Les ETI peuvent aussi solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés.",
   directAnswerFr:
-    "Axion-IA se déplace à Salon-de-Provence (Bouches-du-Rhône, Provence-Alpes-Côte d'Azur) pour auditer, former et implémenter des solutions IA sur mesure auprès des TPE et PME locales. Nous arrivons par l'A7 ou par l'A54 qui se croisent à proximité, ou par la gare TER PACA de Salon (ligne Avignon-Centre / Miramas). L'économie salonaise est tertiaire à 88 % d'après les recensements communaux, ce qui correspond exactement à notre cible : commerce, services, artisanat. Tarifs publics à partir de {{price:audit-flash|flat}} pour un audit sur place. Les ETI restent minoritaires dans le tissu local.",
+    "Axion-IA se déplace à Salon-de-Provence (Bouches-du-Rhône, Provence-Alpes-Côte d'Azur) pour auditer, former et implémenter des solutions IA sur mesure auprès des PME et ETI locales. Nous arrivons par l'A7 ou par l'A54 qui se croisent à proximité, ou par la gare TER PACA de Salon (ligne Avignon-Centre / Miramas). L'économie salonaise est tertiaire à 88 % d'après les recensements communaux, ce qui correspond exactement à notre cible : commerce, services, artisanat. Tarifs publics à partir de {{price:audit-flash|flat}} pour un audit sur place. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA se déplace à Salon-de-Provence (Bouches-du-Rhône, Provence-Alpes-Côte d'Azur) pour auditer, former et implémenter des solutions IA sur mesure auprès des TPE et PME locales. Nous arrivons par l'A7 ou par l'A54 qui se croisent à proximité, ou par la gare TER PACA de Salon (ligne Avignon-Centre / Miramas). L'économie salonaise est tertiaire à 88 % d'après les recensements communaux, ce qui correspond exactement à notre cible : commerce, services, artisanat. Tarifs publics à partir de {{price:audit-flash|flat}} pour un audit sur place. Les ETI restent minoritaires dans le tissu local.",
-  seoHook: "ville carrefour A7/A54 & TPE/PME tertiaires",
+    "Axion-IA se déplace à Salon-de-Provence (Bouches-du-Rhône, Provence-Alpes-Côte d'Azur) pour auditer, former et implémenter des solutions IA sur mesure auprès des PME et ETI locales. Nous arrivons par l'A7 ou par l'A54 qui se croisent à proximité, ou par la gare TER PACA de Salon (ligne Avignon-Centre / Miramas). L'économie salonaise est tertiaire à 88 % d'après les recensements communaux, ce qui correspond exactement à notre cible : commerce, services, artisanat. Tarifs publics à partir de {{price:audit-flash|flat}} pour un audit sur place. Les grands groupes complètent ce socle.",
+  seoHook: "ville carrefour A7/A54 & PME et ETI tertiaires",
   ecosystemFr:
-    "L'économie de Salon-de-Provence est tertiaire à 88 %, avec 6 % d'industrie, 4 % de construction et 2 % d'agriculture. Quatre parcs d'activités structurent le territoire et accueillent essentiellement des TPE et PME : commerce de détail, services aux entreprises, artisanat du bâtiment, oléiculture (savon de Marseille historiquement, huiles d'olive AOP), maraîchage de la Crau et restauration. Une centrale hydroélectrique EDF exploite les eaux de la Durance depuis 1965. Les communes limitrophes — Pélissanne, Grans, Lançon-Provence, Lamanon, Aurons, Eyguières, Miramas et Saint-Martin-de-Crau — élargissent ce bassin d'intervention.",
+    "L'économie de Salon-de-Provence est tertiaire à 88 %, avec 6 % d'industrie, 4 % de construction et 2 % d'agriculture. Quatre parcs d'activités structurent le territoire et accueillent essentiellement des PME et ETI : commerce de détail, services aux entreprises, artisanat du bâtiment, oléiculture (savon de Marseille historiquement, huiles d'olive AOP), maraîchage de la Crau et restauration. Une centrale hydroélectrique EDF exploite les eaux de la Durance depuis 1965. Les communes limitrophes — Pélissanne, Grans, Lançon-Provence, Lamanon, Aurons, Eyguières, Miramas et Saint-Martin-de-Crau — élargissent ce bassin d'intervention.",
   ecosystemEn:
-    "L'économie de Salon-de-Provence est tertiaire à 88 %, avec 6 % d'industrie, 4 % de construction et 2 % d'agriculture. Quatre parcs d'activités structurent le territoire et accueillent essentiellement des TPE et PME : commerce de détail, services aux entreprises, artisanat du bâtiment, oléiculture (savon de Marseille historiquement, huiles d'olive AOP), maraîchage de la Crau et restauration. Une centrale hydroélectrique EDF exploite les eaux de la Durance depuis 1965. Les communes limitrophes — Pélissanne, Grans, Lançon-Provence, Lamanon, Aurons, Eyguières, Miramas et Saint-Martin-de-Crau — élargissent ce bassin d'intervention.",
+    "L'économie de Salon-de-Provence est tertiaire à 88 %, avec 6 % d'industrie, 4 % de construction et 2 % d'agriculture. Quatre parcs d'activités structurent le territoire et accueillent essentiellement des PME et ETI : commerce de détail, services aux entreprises, artisanat du bâtiment, oléiculture (savon de Marseille historiquement, huiles d'olive AOP), maraîchage de la Crau et restauration. Une centrale hydroélectrique EDF exploite les eaux de la Durance depuis 1965. Les communes limitrophes — Pélissanne, Grans, Lançon-Provence, Lamanon, Aurons, Eyguières, Miramas et Saint-Martin-de-Crau — élargissent ce bassin d'intervention.",
   distancesFr:
     "Salon-de-Provence est à l'intersection de l'A7 (axe Lyon-Marseille) et de l'A54 (depuis Nîmes). Sa gare TER PACA dessert Avignon-Centre et Miramas, certaines circulations rejoignant Marseille. Les gares TGV les plus proches sont Miramas, Avignon TGV et Aix-en-Provence TGV (environ 35 km). L'aéroport Marseille-Provence à Marignane est à 30 km, et l'aérodrome de Salon-Eyguières accueille les vols légers à proximité.",
   distancesEn:
@@ -32,30 +32,30 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Nos audits IA sur place à Salon-de-Provence ciblent les TPE et PME tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
-      en: "Nos audits IA sur place à Salon-de-Provence ciblent les TPE et PME tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
+      fr: "Nos audits IA sur place à Salon-de-Provence ciblent les PME et ETI tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
+      en: "Nos audits IA sur place à Salon-de-Provence ciblent les PME et ETI tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
     },
     interventions: {
       fr: "Nous intervenons sur site à Salon-de-Provence et dans les communes voisines (Pélissanne, Grans, Lançon-Provence, Eyguières) pour automatiser devis, facturation et reporting des PME locales.",
       en: "Nous intervenons sur site à Salon-de-Provence et dans les communes voisines (Pélissanne, Grans, Lançon-Provence, Eyguières) pour automatiser devis, facturation et reporting des PME locales.",
     },
     implementation: {
-      fr: "Nos implémentations IA sur mesure à Salon-de-Provence s'adressent aux TPE/PME des quatre parcs d'activités et de l'oléiculture-maraîchage de la Crau : code custom, pas de no-code.",
-      en: "Nos implémentations IA sur mesure à Salon-de-Provence s'adressent aux TPE/PME des quatre parcs d'activités et de l'oléiculture-maraîchage de la Crau : code custom, pas de no-code.",
+      fr: "Nos implémentations IA sur mesure à Salon-de-Provence s'adressent aux PME et ETI des quatre parcs d'activités et de l'oléiculture-maraîchage de la Crau : code custom, pas de no-code.",
+      en: "Nos implémentations IA sur mesure à Salon-de-Provence s'adressent aux PME et ETI des quatre parcs d'activités et de l'oléiculture-maraîchage de la Crau : code custom, pas de no-code.",
     },
     unAUn: {
-      fr: "Nos formations un-à-un à Salon-de-Provence accompagnent les dirigeants de TPE et PME provençales dans la maîtrise pratique de l'IA générative.",
-      en: "Nos formations un-à-un à Salon-de-Provence accompagnent les dirigeants de TPE et PME provençales dans la maîtrise pratique de l'IA générative.",
+      fr: "Nos formations un-à-un à Salon-de-Provence accompagnent les dirigeants de PME et d'ETI provençales dans la maîtrise pratique de l'IA générative.",
+      en: "Nos formations un-à-un à Salon-de-Provence accompagnent les dirigeants de PME et d'ETI provençales dans la maîtrise pratique de l'IA générative.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Salon-de-Provence, à l'intersection de l'A7 et de l'A54. Trois réalités locales structurent notre offre ici : les marques savonnières et oléicoles qui vendent en ligne le savon de Marseille — Salon est le 2e producteur français après Marseille, avec les savonneries Marius Fabre (depuis 1900) et Rampal Latour (lignée depuis 1828) ; les acteurs logistiques et e-commerce de la plateforme Clésud (Grans-Miramas, 720 000 m² d'entrepôts raccordés au triage de Miramas, 2e de France) où opèrent ID Logistics, Maisons du Monde, Gifi, Alinéa ou Rexel ; et les ~519 TPE/PME du parc d'activités de la Gandonne. Chatbot RAG, moteur de recherche sémantique catalogue, agents conversationnels, copilotes métier — code custom, hébergement UE/RGPD, zéro lock-in éditeur.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Salon-de-Provence, à l'intersection de l'A7 et de l'A54. Trois réalités locales structurent notre offre ici : les marques savonnières et oléicoles qui vendent en ligne le savon de Marseille — Salon est le 2e producteur français après Marseille, avec les savonneries Marius Fabre (depuis 1900) et Rampal Latour (lignée depuis 1828) ; les acteurs logistiques et e-commerce de la plateforme Clésud (Grans-Miramas, 720 000 m² d'entrepôts raccordés au triage de Miramas, 2e de France) où opèrent ID Logistics, Maisons du Monde, Gifi, Alinéa ou Rexel ; et les ~519 PME et ETI du parc d'activités de la Gandonne. Chatbot RAG, moteur de recherche sémantique catalogue, agents conversationnels, copilotes métier — code custom, hébergement UE/RGPD, zéro lock-in éditeur.",
         whyHere: [
           "Boutiques de savon de Marseille et d'huile d'olive : Salon est la 2e cité savonnière de France, et les marques patrimoniales (Marius Fabre, Rampal Latour et leurs consœurs oléicoles) vendent en direct via e-commerce. Nous construisons des sites marchands IA-native — recherche sémantique catalogue, fiches produit auto-générées multilingues, recommandation, support client RAG — sans dépendance à un éditeur SaaS propriétaire.",
           "Logistique et e-commerce Clésud : la plateforme rail-route Grans-Miramas (entrepôts, transport combiné, locataires ID Logistics, Maisons du Monde, Gifi, Alinéa, Nortene, Rexel) génère un besoin de portails et SaaS internes — suivi de commandes, tableaux de bord WMS, agents de classification documentaire, prévision de flux. Nous développons ces interfaces en code maintenable.",
-          "TPE/PME des parcs d'activités salonais : ~519 entreprises sont installées sur le seul P.A. de la Gandonne (44 ha), auxquelles s'ajoutent les Roquassiers, la ZI de la Crau et la zone des Gabins — artisanat du bâtiment, services aux entreprises, commerce. Nous y déployons sites vitrines performants, espaces clients et automatisations devis/facturation.",
+          "PME et ETI des parcs d'activités salonais : ~519 entreprises sont installées sur le seul P.A. de la Gandonne (44 ha), auxquelles s'ajoutent les Roquassiers, la ZI de la Crau et la zone des Gabins — artisanat du bâtiment, services aux entreprises, commerce. Nous y déployons sites vitrines performants, espaces clients et automatisations devis/facturation.",
           "Écosystème tertiaire et tourisme patrimonial : le tissu salonais est tertiaire à ~88 %, et la cité de Nostradamus (Château de l'Empéri, musées, oléotourisme de la Crau) attire des flux à canaliser — sites de réservation, billetterie, parcours visiteurs et chatbots multilingues sont des cas d'usage récurrents pour les acteurs locaux du tourisme et des services.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA essentielle",
-            detail:
-              "Pour artisans, indépendants et petites structures des parcs salonais (Gandonne, Roquassiers, centre historique) : vitrine performante mobile-first ou petite boutique avec recherche assistée et chatbot de premier niveau.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -173,12 +167,6 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Essential showcase or AI shop",
-            detail:
-              "For craftspeople, freelancers and small structures in the Salon parks (Gandonne, Roquassiers, historic center): fast mobile-first showcase or small shop with assisted search and a first-level chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or business SaaS",
             detail:
@@ -232,7 +220,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Salon-de-Provence ?",
-      a: "Notre délai standard à Salon-de-Provence est de 5 jours ouvrés après validation. Pour les TPE en urgence, un créneau prioritaire est possible sous 48 h.",
+      a: "Notre délai standard à Salon-de-Provence est de 5 jours ouvrés après validation. Pour les PME en urgence, un créneau prioritaire est possible sous 48 h.",
     },
     {
       q: "Quelles communes proches de Salon-de-Provence sont couvertes par Axion-IA ?",
@@ -240,15 +228,15 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Salon-de-Provence ?",
-      a: "Nous travaillons principalement avec les TPE et PME du commerce de détail, des services aux entreprises (88 % du tissu), de l'artisanat du bâtiment, de l'oléiculture-savonnerie et du maraîchage de la Crau.",
+      a: "Nous travaillons principalement avec les PME et ETI du commerce de détail, des services aux entreprises (88 % du tissu), de l'artisanat du bâtiment, de l'oléiculture-savonnerie et du maraîchage de la Crau.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD à Salon-de-Provence ?",
       a: "Oui, toutes nos prestations à Salon-de-Provence sont conformes au RGPD : hébergement UE, registre de traitement fourni et clauses de sous-traitance signées avant tout démarrage.",
     },
     {
-      q: "Axion-IA utilise-t-il des outils no-code pour les TPE salonaises ?",
-      a: "Non. Notre approche par défaut est le code custom maintenable, conçu pour durer plusieurs années. Nous évitons les plateformes no-code propriétaires qui créent une dépendance technique chez nos clients TPE/PME.",
+      q: "Axion-IA utilise-t-il des outils no-code pour les PME salonaises ?",
+      a: "Non. Notre approche par défaut est le code custom maintenable, conçu pour durer plusieurs années. Nous évitons les plateformes no-code propriétaires qui créent une dépendance technique chez nos clients PME et ETI.",
     },
   ],
 };

@@ -379,7 +379,7 @@ export const DIJON_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : Mulot et Petitjean (pain d'épices Dijon) figure dans
   // l'écosystème artisanal mais sans cross-référence individuelle confirmée

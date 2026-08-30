@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_LA_REINE_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et TPE-PME des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants TPE, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
+    "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et PME et ETI des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants de PME et d'ETI, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
   pitchEn:
-    "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et TPE-PME des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants TPE, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
+    "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et PME et ETI des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants de PME et d'ETI, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Bourg-la-Reine (92) pour accompagner les PME, ETI et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Bourg-la-Reine (92) pour accompagner les PME, ETI et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   seoHook: "professions libérales, commerce & PME services",
   ecosystemFr:
-    "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), TPE de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
+    "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), PME de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
   ecosystemEn:
-    "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), TPE de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
+    "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), PME de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
   distancesFr:
     "Paris Denfert-Rochereau à 15 min en RER B. Massy-Palaiseau TGV à 12 min. Aéroport Paris-Orly à 10 km. Antony à 5 min, Sceaux à 3 min, Cachan à 5 min, L'Haÿ-les-Roses et Bagneux limitrophes. Accès D920 (ex-RN20) direct.",
   distancesEn:
@@ -24,26 +24,26 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Professions libérales (santé, droit, conseil)",
     "Commerce de proximité",
-    "Services aux entreprises & TPE tertiaires",
+    "Services aux entreprises & PME tertiaires",
     "Enseignement & formation",
     "Activités immobilières & résidentielles",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
-      en: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
+      fr: "Audit IA à Bourg-la-Reine : diagnostic pour PME du commerce, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
+      en: "Audit IA à Bourg-la-Reine : diagnostic pour PME du commerce, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour PME du commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour PME du commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Formation 4 h à {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
       en: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -52,7 +52,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — médecins, avocats, experts-comptables, notaires installés autour de la gare RER B et de l'avenue du Général-Leclerc : nous bâtissons des sites de prise de rendez-vous, des portails patients-clients sécurisés et des chatbots de pré-qualification, conçus pour la confidentialité des données sensibles soumises au secret professionnel.",
-          "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des TPE qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
+          "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des PME qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
           "Présence de sièges et marques connus — Faber-Castell, le fabricant de chauffage Atlantic, le voyagiste Belambra — et de PME tertiaires branchées sur le coworking Stop&Work à trois minutes de la gare : terrain idéal pour des plateformes SaaS, portails métier et agents IA intégrés aux SI (CRM, ERP) de l'axe Sceaux-Antony-Massy.",
           "Accès direct RER B vers Paris-Denfert en 15 min, Massy-Palaiseau TGV en 12 min et le pôle scientifique de Saclay : les structures de conseil et d'ingénierie réservent l'hébergement UE strict — toute la chaîne IA est conforme RGPD et AI Act, vos données de clients, patients ou dossiers restent maîtrisées, sans transit hors UE.",
         ],
@@ -84,12 +84,6 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce de l'avenue du Général-Leclerc ou d'un cabinet libéral réginaburgien, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -138,7 +132,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Bourg-la-Reine (92) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle dense des Hauts-de-Seine sud, où coexistent professions libérales (santé, droit, conseil), commerces de l'avenue du Général-Leclerc, PME tertiaires desservies par le RER B et quelques sièges connus comme Faber-Castell et Atlantic. Le futur écoquartier de la Faïencerie, à environ 700 m de la gare, redessine d'ailleurs le centre. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bourg-la-Reine, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales — médecins, avocats, experts-comptables, notaires installés autour de la gare RER B et de l'avenue du Général-Leclerc : nous bâtissons des sites de prise de rendez-vous, des portails patients-clients sécurisés et des chatbots de pré-qualification, conçus pour la confidentialité des données sensibles soumises au secret professionnel.",
-          "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des TPE qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
+          "Commerce de proximité concentré le long de l'avenue du Général-Leclerc et de l'ex-RN20 (D920), à deux pas du nouvel écoquartier de la Faïencerie : vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), click-and-collect et recherche sémantique pour des PME qui veulent vendre au-delà de leur rue, vers Antony, Sceaux et Cachan.",
           "Présence de sièges et marques connus — Faber-Castell, le fabricant de chauffage Atlantic, le voyagiste Belambra — et de PME tertiaires branchées sur le coworking Stop&Work à trois minutes de la gare : terrain idéal pour des plateformes SaaS, portails métier et agents IA intégrés aux SI (CRM, ERP) de l'axe Sceaux-Antony-Massy.",
           "Accès direct RER B vers Paris-Denfert en 15 min, Massy-Palaiseau TGV en 12 min et le pôle scientifique de Saclay : les structures de conseil et d'ingénierie réservent l'hébergement UE strict — toute la chaîne IA est conforme RGPD et AI Act, vos données de clients, patients ou dossiers restent maîtrisées, sans transit hors UE.",
         ],
@@ -170,12 +164,6 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce de l'avenue du Général-Leclerc ou d'un cabinet libéral réginaburgien, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

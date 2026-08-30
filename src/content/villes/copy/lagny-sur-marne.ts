@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Lagny-sur-Marne (77), 21 461 habitants, commune de Seine-et-Marne située à 28 km à l'est de Paris dans la vallée de la Marne. Chef-lieu de la Communauté d'agglomération Marne et Gondoire, elle réunit environ 2 000 établissements actifs dominés par commerce, transports, services, construction et industrie. Voisine de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes et Montévrain, elle accueille un tissu TPE/PME qu'Axion-IA accompagne.",
+    "Lagny-sur-Marne (77), 21 461 habitants, commune de Seine-et-Marne située à 28 km à l'est de Paris dans la vallée de la Marne. Chef-lieu de la Communauté d'agglomération Marne et Gondoire, elle réunit environ 2 000 établissements actifs dominés par commerce, transports, services, construction et industrie. Voisine de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes et Montévrain, elle accueille un tissu PME et ETI qu'Axion-IA accompagne.",
   pitchEn:
-    "Lagny-sur-Marne (77), 21 461 habitants, commune de Seine-et-Marne située à 28 km à l'est de Paris dans la vallée de la Marne. Chef-lieu de la Communauté d'agglomération Marne et Gondoire, elle réunit environ 2 000 établissements actifs dominés par commerce, transports, services, construction et industrie. Voisine de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes et Montévrain, elle accueille un tissu TPE/PME qu'Axion-IA accompagne.",
+    "Lagny-sur-Marne (77), 21 461 habitants, commune de Seine-et-Marne située à 28 km à l'est de Paris dans la vallée de la Marne. Chef-lieu de la Communauté d'agglomération Marne et Gondoire, elle réunit environ 2 000 établissements actifs dominés par commerce, transports, services, construction et industrie. Voisine de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes et Montévrain, elle accueille un tissu PME et ETI qu'Axion-IA accompagne.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Lagny-sur-Marne (77) auprès des TPE/PME de la Communauté d'agglomération Marne et Gondoire. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs et PME tertiaires, transports et industrie installées à Lagny, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Pomponne et Montévrain. Audits, interventions et coaching 1-to-1 sur site via la ligne P et l'A104, sans implantation locale.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Lagny-sur-Marne (77) auprès des PME et ETI de la Communauté d'agglomération Marne et Gondoire. Nous accompagnons en priorité les PME du BTP, commerçants, restaurateurs et PME tertiaires, transports et industrie installées à Lagny, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Pomponne et Montévrain. Audits, interventions et coaching 1-to-1 sur site via la ligne P et l'A104, sans implantation locale.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Lagny-sur-Marne (77) auprès des TPE/PME de la Communauté d'agglomération Marne et Gondoire. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs et PME tertiaires, transports et industrie installées à Lagny, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Pomponne et Montévrain. Audits, interventions et coaching 1-to-1 sur site via la ligne P et l'A104, sans implantation locale.",
-  seoHook: "TPE/PME commerce, services & artisanat Marne et Gondoire",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Lagny-sur-Marne (77) auprès des PME et ETI de la Communauté d'agglomération Marne et Gondoire. Nous accompagnons en priorité les PME du BTP, commerçants, restaurateurs et PME tertiaires, transports et industrie installées à Lagny, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Pomponne et Montévrain. Audits, interventions et coaching 1-to-1 sur site via la ligne P et l'A104, sans implantation locale.",
+  seoHook: "PME et ETI commerce, services & artisanat Marne et Gondoire",
   ecosystemFr:
-    "Lagny-sur-Marne, chef-lieu de Marne et Gondoire, totalise environ 2 000 établissements actifs avec une nette dominante commerce-transports-services (≈ 1 400), suivis de l'administratif, de la construction et de l'industrie. Le tissu local est essentiellement composé de TPE et petites PME, en lien direct avec les communes voisines de la vallée de la Marne et du plateau de Brie.",
+    "Lagny-sur-Marne, chef-lieu de Marne et Gondoire, totalise environ 2 000 établissements actifs avec une nette dominante commerce-transports-services (≈ 1 400), suivis de l'administratif, de la construction et de l'industrie. Le tissu local est essentiellement composé de PME et petites PME, en lien direct avec les communes voisines de la vallée de la Marne et du plateau de Brie.",
   ecosystemEn:
-    "Lagny-sur-Marne, chef-lieu de Marne et Gondoire, totalise environ 2 000 établissements actifs avec une nette dominante commerce-transports-services (≈ 1 400), suivis de l'administratif, de la construction et de l'industrie. Le tissu local est essentiellement composé de TPE et petites PME, en lien direct avec les communes voisines de la vallée de la Marne et du plateau de Brie.",
+    "Lagny-sur-Marne, chef-lieu de Marne et Gondoire, totalise environ 2 000 établissements actifs avec une nette dominante commerce-transports-services (≈ 1 400), suivis de l'administratif, de la construction et de l'industrie. Le tissu local est essentiellement composé de PME et petites PME, en lien direct avec les communes voisines de la vallée de la Marne et du plateau de Brie.",
   distancesFr:
     "Paris-Est en ligne P (Transilien) : ~35 min depuis la gare de Lagny-Thorigny. A104 en bordure ouest, RD 934 en bordure est. Marne-la-Vallée — Chessy (TGV / RER A) à environ 15 min. Aéroport Paris-CDG à 30 min.",
   distancesEn:
@@ -31,20 +31,20 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit sur place dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
-      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit sur place dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
+      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus PME du commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit sur place dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
+      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus PME du commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit sur place dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
-      en: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour PME et ETI commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
+      en: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour PME et ETI commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès {{price:impl-poc|entry}}.",
       en: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants de PME et d'ETI de Marne et Gondoire. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants de PME et d'ETI de Marne et Gondoire. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           "Cœur commerçant dense le long de la Marne, autour de la rue Saint-Denis, du marché couvert et de l'ancienne abbaye Saint-Pierre devenue hôtel de ville : pour les boutiques, restaurants et artisans du centre historique de Lagny, on construit des vitrines et des e-commerce mobile-first qui transforment la clientèle de proximité en commandes, réservations et clics-and-collect en ligne.",
           "Plateforme logistique de la vallée de la Marne, à cheval sur l'A104 (Francilienne) et la RD 934, à proximité immédiate des zones d'activité de Saint-Thibault-des-Vignes et de Marne et Gondoire : les acteurs du transport terrestre et de l'entreposage profitent d'agents et d'automatisations qui digitalisent devis, suivi de tournées, bons de livraison et relations donneurs d'ordre.",
           "Bassin touristique adossé à Marne-la-Vallée et au pôle de Chessy-Disney à 15 minutes par le RER A : nos chatbots RAG sont multilingues par défaut (français, anglais, et au-delà), calibrés pour l'hôtellerie, la restauration et les loisirs qui captent une clientèle francilienne et internationale en quête de réservation immédiate et de réponses 24/7.",
-          "Réseau de TPE artisans BTP et de PME tertiaires de Marne et Gondoire, depuis Thorigny-sur-Marne et Pomponne jusqu'à Montévrain et Dampmart : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une boutique PrestaShop ou Shopify sur mesure — l'effort s'ajuste au budget d'une petite structure, sans abonnement imposé.",
+          "Réseau de PME du BTP et de PME tertiaires de Marne et Gondoire, depuis Thorigny-sur-Marne et Pomponne jusqu'à Montévrain et Dampmart : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une boutique PrestaShop ou Shopify sur mesure — l'effort s'ajuste au budget d'une PME, sans abonnement imposé.",
         ],
         methodology: [
           {
@@ -85,12 +85,6 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de commande ou réservation en ligne — sur le site existant d'un commerce de la rue Saint-Denis, d'un restaurant du centre ou d'un artisan BTP de Marne et Gondoire, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -141,7 +135,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           "Cœur commerçant dense le long de la Marne, autour de la rue Saint-Denis, du marché couvert et de l'ancienne abbaye Saint-Pierre devenue hôtel de ville : pour les boutiques, restaurants et artisans du centre historique de Lagny, on construit des vitrines et des e-commerce mobile-first qui transforment la clientèle de proximité en commandes, réservations et clics-and-collect en ligne.",
           "Plateforme logistique de la vallée de la Marne, à cheval sur l'A104 (Francilienne) et la RD 934, à proximité immédiate des zones d'activité de Saint-Thibault-des-Vignes et de Marne et Gondoire : les acteurs du transport terrestre et de l'entreposage profitent d'agents et d'automatisations qui digitalisent devis, suivi de tournées, bons de livraison et relations donneurs d'ordre.",
           "Bassin touristique adossé à Marne-la-Vallée et au pôle de Chessy-Disney à 15 minutes par le RER A : nos chatbots RAG sont multilingues par défaut (français, anglais, et au-delà), calibrés pour l'hôtellerie, la restauration et les loisirs qui captent une clientèle francilienne et internationale en quête de réservation immédiate et de réponses 24/7.",
-          "Réseau de TPE artisans BTP et de PME tertiaires de Marne et Gondoire, depuis Thorigny-sur-Marne et Pomponne jusqu'à Montévrain et Dampmart : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une boutique PrestaShop ou Shopify sur mesure — l'effort s'ajuste au budget d'une petite structure, sans abonnement imposé.",
+          "Réseau de PME du BTP et de PME tertiaires de Marne et Gondoire, depuis Thorigny-sur-Marne et Pomponne jusqu'à Montévrain et Dampmart : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une boutique PrestaShop ou Shopify sur mesure — l'effort s'ajuste au budget d'une PME, sans abonnement imposé.",
         ],
         methodology: [
           {
@@ -171,12 +165,6 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de commande ou réservation en ligne — sur le site existant d'un commerce de la rue Saint-Denis, d'un restaurant du centre ou d'un artisan BTP de Marne et Gondoire, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -235,7 +223,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Lagny-sur-Marne ?",
-      a: "TPE commerce, restauration et artisans BTP, PME services aux entreprises, transports terrestres et logistique, industrie de proximité — soit les ≈ 2 000 établissements actifs de Lagny et de Marne et Gondoire.",
+      a: "PME du commerce, restauration et artisans BTP, PME services aux entreprises, transports terrestres et logistique, industrie de proximité — soit les ≈ 2 000 établissements actifs de Lagny et de Marne et Gondoire.",
     },
     {
       q: "Quel délai pour une intervention sur site à Lagny-sur-Marne ?",
@@ -243,11 +231,11 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Lagny-sur-Marne ?",
-      a: "Hébergement UE, DPA contractuel, minimisation et anonymisation des données, revue conformité RGPD/AI Act à chaque livrable client TPE/PME de Marne et Gondoire.",
+      a: "Hébergement UE, DPA contractuel, minimisation et anonymisation des données, revue conformité RGPD/AI Act à chaque livrable client PME et ETI de Marne et Gondoire.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP et commerçants indépendants ?",
-      a: "Oui, formats adaptés TPE : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Code custom intégré à vos outils existants — jamais une solution no-code générique.",
+      a: "Oui, formats adaptés PME : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Code custom intégré à vos outils existants — jamais une solution no-code générique.",
     },
   ],
 };

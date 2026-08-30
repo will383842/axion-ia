@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AVRILLE_COPY: VilleCopy = {
   pitchFr:
-    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
+    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de PME, ETI tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
   pitchEn:
-    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
+    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de PME, ETI tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les PME, ETI et professions libérales avrillaises dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les PME, ETI et professions libérales avrillaises dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "services aux & professions santé",
   ecosystemFr:
     "Avrillé bénéficie de sa proximité avec Angers tout en conservant un cadre résidentiel attractif. Zones d'activités tertiaires, pôle santé, commerces de centre-ville et grandes enseignes. PME conseil, professions libérales et services à la personne constituent l'ossature économique.",

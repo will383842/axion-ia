@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const LIVRY_GARGAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
+    "Axion-IA accompagne les PME et ETI de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens dirigeants de PME et d'ETI, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
+    "Axion-IA accompagne les PME et ETI de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens dirigeants de PME et d'ETI, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
   directAnswerFr:
-    "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
+    "Axion-IA se déplace à Livry-Gargan pour accompagner les PME et ETI du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les PME et ETI locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
   directAnswerEn:
-    "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
-  seoHook: "TPE PME RN3 : commerce, BTP, santé, services",
+    "Axion-IA se déplace à Livry-Gargan pour accompagner les PME et ETI du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les PME et ETI locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
+  seoHook: "PME PME RN3 : commerce, BTP, santé, services",
   ecosystemFr:
-    "Livry-Gargan structure un tissu de TPE et PME le long de la route nationale 3 axe Paris–Meaux, avec une zone d'activité Poudrerie-Hochailles et un commerce de proximité dense. La commune compte 47 228 habitants en 2023 et appartient à la Seine-Saint-Denis (département 93) en Île-de-France. Le bassin économique local est marqué par les services, le commerce de détail, le BTP et un héritage industriel ancien (carrières de gypse historiques). Les Livryens patrons de TPE évoluent dans un environnement périurbain bien desservi.",
+    "Livry-Gargan structure un tissu de PME et ETI le long de la route nationale 3 axe Paris–Meaux, avec une zone d'activité Poudrerie-Hochailles et un commerce de proximité dense. La commune compte 47 228 habitants en 2023 et appartient à la Seine-Saint-Denis (département 93) en Île-de-France. Le bassin économique local est marqué par les services, le commerce de détail, le BTP et un héritage industriel ancien (carrières de gypse historiques). Les Livryens patrons de PME évoluent dans un environnement périurbain bien desservi.",
   ecosystemEn:
-    "Livry-Gargan structure un tissu de TPE et PME le long de la route nationale 3 axe Paris–Meaux, avec une zone d'activité Poudrerie-Hochailles et un commerce de proximité dense. La commune compte 47 228 habitants en 2023 et appartient à la Seine-Saint-Denis (département 93) en Île-de-France. Le bassin économique local est marqué par les services, le commerce de détail, le BTP et un héritage industriel ancien (carrières de gypse historiques). Les Livryens patrons de TPE évoluent dans un environnement périurbain bien desservi.",
+    "Livry-Gargan structure un tissu de PME et ETI le long de la route nationale 3 axe Paris–Meaux, avec une zone d'activité Poudrerie-Hochailles et un commerce de proximité dense. La commune compte 47 228 habitants en 2023 et appartient à la Seine-Saint-Denis (département 93) en Île-de-France. Le bassin économique local est marqué par les services, le commerce de détail, le BTP et un héritage industriel ancien (carrières de gypse historiques). Les Livryens patrons de PME évoluent dans un environnement périurbain bien desservi.",
   distancesFr:
     "Paris à environ 15 km au sud-ouest, aéroport Paris-Charles-de-Gaulle à environ 10 km au nord, Marne-la-Vallée à environ 11 km au sud. Desserte RER B et T4 par les communes voisines (Le Raincy, Sevran). Accès direct via la RN3 et l'A3.",
   distancesEn:
@@ -26,31 +26,31 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
     "Commerce de détail (axe RN3 et centre-ville)",
     "Construction et BTP (artisans Seine-Saint-Denis)",
     "Santé humaine (cabinets libéraux)",
-    "Services aux entreprises (TPE périurbaines)",
+    "Services aux entreprises (PME périurbaines)",
     "Transports et logistique (proximité Roissy)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place sur site à Livry-Gargan pour cartographier les tâches automatisables des TPE et PME livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
-      en: "Audit sur place sur site à Livry-Gargan pour cartographier les tâches automatisables des TPE et PME livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
+      fr: "Audit sur place sur site à Livry-Gargan pour cartographier les tâches automatisables des PME et ETI livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
+      en: "Audit sur place sur site à Livry-Gargan pour cartographier les tâches automatisables des PME et ETI livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
     },
     interventions: {
       fr: "Intervention ponctuelle à Livry-Gargan pour déployer un outil IA ciblé chez un commerçant de la RN3, un artisan ou un cabinet libéral, avec déplacement direct sur site sans recours au no-code.",
       en: "Intervention ponctuelle à Livry-Gargan pour déployer un outil IA ciblé chez un commerçant de la RN3, un artisan ou un cabinet libéral, avec déplacement direct sur site sans recours au no-code.",
     },
     implementation: {
-      fr: "Implémentation code custom à Livry-Gargan pour les TPE et PME du nord-est francilien : agents IA métier intégrés aux logiciels existants, sans lock-in plateforme no-code.",
-      en: "Implémentation code custom à Livry-Gargan pour les TPE et PME du nord-est francilien : agents IA métier intégrés aux logiciels existants, sans lock-in plateforme no-code.",
+      fr: "Implémentation code custom à Livry-Gargan pour les PME et ETI du nord-est francilien : agents IA métier intégrés aux logiciels existants, sans lock-in plateforme no-code.",
+      en: "Implémentation code custom à Livry-Gargan pour les PME et ETI du nord-est francilien : agents IA métier intégrés aux logiciels existants, sans lock-in plateforme no-code.",
     },
     unAUn: {
-      fr: "Session un-à-un dirigeant à Livry-Gargan pour TPE et PME — formation pratique aux usages IA adaptés au quotidien d'un patron livryen.",
-      en: "Session un-à-un dirigeant à Livry-Gargan pour TPE et PME — formation pratique aux usages IA adaptés au quotidien d'un patron livryen.",
+      fr: "Session un-à-un dirigeant à Livry-Gargan pour PME et ETI — formation pratique aux usages IA adaptés au quotidien d'un patron livryen.",
+      en: "Session un-à-un dirigeant à Livry-Gargan pour PME et ETI — formation pratique aux usages IA adaptés au quotidien d'un patron livryen.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Livry-Gargan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre terrain : les TPE/PME transport-logistique tirant parti du carrefour ex-RN3 × RN370 vers Roissy, les ~210 entreprises de la zone d'activités Poudrerie, les commerces de proximité de la place de la gare de Gargan et les professionnels de santé du bassin du GHI Le Raincy-Montfermeil. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Livry-Gargan, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Livry-Gargan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre terrain : les PME et ETI transport-logistique tirant parti du carrefour ex-RN3 × RN370 vers Roissy, les ~210 entreprises de la zone d'activités Poudrerie, les commerces de proximité de la place de la gare de Gargan et les professionnels de santé du bassin du GHI Le Raincy-Montfermeil. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Livry-Gargan, itérations à distance.",
         whyHere: [
           "Tissu transport-logistique dominant : sociétés comme Transport Lanseur, GS Transport ou SA Transport, qui exploitent la proximité de Roissy via la RN370 — nous outillons portails de suivi de tournées, prise de commande en ligne et agents de réponse aux transporteurs.",
           "Zone d'activités Poudrerie en requalification (~14,6 ha, ~210 entreprises, projet 19/57 ha avec Paris & Métropole Aménagement) : artisans BTP/étanchéité et PME de services à qui nous livrons sites vitrines, devis en ligne et automatisations métier sans refonte lourde.",
@@ -85,12 +85,6 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche produit, prise de RDV) sur un site existant en quelques semaines, sans refonte — idéal pour un commerçant de l'ex-RN3, un artisan de la zone Poudrerie ou un cabinet de santé du bassin GHI.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / e-commerce sur mesure",
@@ -172,12 +166,6 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, product search, booking) onto an existing site in a few weeks, no rebuild — ideal for a former-RN3 shopkeeper, a Poudrerie-zone artisan or a GHI-catchment health practice.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / e-commerce",
             detail:
@@ -243,11 +231,11 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous prioritairement à Livry-Gargan ?",
-      a: "Nos TPE et PME clientes à Livry-Gargan se concentrent dans le commerce de détail (RN3), le BTP, la santé libérale et les services aux entreprises périurbaines.",
+      a: "Nos PME et ETI clientes à Livry-Gargan se concentrent dans le commerce de détail (RN3), le BTP, la santé libérale et les services aux entreprises périurbaines.",
     },
     {
       q: "Pourquoi Axion-IA fait du code custom et pas du no-code à Livry-Gargan ?",
-      a: "Nous développons en code custom pour garantir aux TPE et PME livryennes l'indépendance vis-à-vis des plateformes no-code (coûts récurrents, lock-in, limites techniques). Notre approche pérennise l'investissement local.",
+      a: "Nous développons en code custom pour garantir aux PME et ETI livryennes l'indépendance vis-à-vis des plateformes no-code (coûts récurrents, lock-in, limites techniques). Notre approche pérennise l'investissement local.",
     },
   ],
 };

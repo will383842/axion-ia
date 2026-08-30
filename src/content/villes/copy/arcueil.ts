@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ARCUEIL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Arcueil, commune tertiaire du sud parisien dans la Métropole du Grand Paris. Sièges sociaux, éditeurs logiciels, services aux entreprises, commerce et BTP : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Arcueil, commune tertiaire du sud parisien dans la Métropole du Grand Paris. Sièges sociaux, éditeurs logiciels, services aux entreprises, commerce et BTP : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Arcueil, commune tertiaire du sud parisien dans la Métropole du Grand Paris. Sièges sociaux, éditeurs logiciels, services aux entreprises, commerce et BTP : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Arcueil, commune tertiaire du sud parisien dans la Métropole du Grand Paris. Sièges sociaux, éditeurs logiciels, services aux entreprises, commerce et BTP : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arcueil auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arcueil auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arcueil auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arcueil auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "tertiaire & sièges Grand Paris",
   ecosystemFr:
-    "Arcueil, aux portes sud de Paris dans le Val-de-Marne, est une commune tertiaire dense intégrée à la Métropole du Grand Paris. Quartiers d'affaires et zones d'activités (axe Laplace, La Vache Noire) accueillent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises, aux côtés d'un tissu de TPE, de commerces de proximité et d'artisans du BTP très bien desservis.",
+    "Arcueil, aux portes sud de Paris dans le Val-de-Marne, est une commune tertiaire dense intégrée à la Métropole du Grand Paris. Quartiers d'affaires et zones d'activités (axe Laplace, La Vache Noire) accueillent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises, aux côtés d'un tissu de PME, de commerces de proximité et d'artisans du BTP très bien desservis.",
   ecosystemEn:
-    "Arcueil, aux portes sud de Paris dans le Val-de-Marne, est une commune tertiaire dense intégrée à la Métropole du Grand Paris. Quartiers d'affaires et zones d'activités (axe Laplace, La Vache Noire) accueillent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises, aux côtés d'un tissu de TPE, de commerces de proximité et d'artisans du BTP très bien desservis.",
+    "Arcueil, aux portes sud de Paris dans le Val-de-Marne, est une commune tertiaire dense intégrée à la Métropole du Grand Paris. Quartiers d'affaires et zones d'activités (axe Laplace, La Vache Noire) accueillent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises, aux côtés d'un tissu de PME, de commerces de proximité et d'artisans du BTP très bien desservis.",
   distancesFr:
     "Arcueil est desservie par le RER B (Laplace, Arcueil-Cachan) à environ 10 min de Denfert-Rochereau. Paris-Orly est à environ 10 km et l'A6 / périphérique sont immédiats.",
   distancesEn:
@@ -38,12 +38,12 @@ export const ARCUEIL_COPY: VilleCopy = {
       en: "Interventions IA sur site à Arcueil : formats adaptés au bureau tertiaire, à l'agence ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Arcueil : copilotes métiers, automatisation administrative et commerciale, agents conversationnels de support, génération de contenu et intégration aux outils existants des TPE et PME tertiaires.",
-      en: "Implémentation IA à Arcueil : copilotes métiers, automatisation administrative et commerciale, agents conversationnels de support, génération de contenu et intégration aux outils existants des TPE et PME tertiaires.",
+      fr: "Implémentation IA à Arcueil : copilotes métiers, automatisation administrative et commerciale, agents conversationnels de support, génération de contenu et intégration aux outils existants des PME et ETI tertiaires.",
+      en: "Implémentation IA à Arcueil : copilotes métiers, automatisation administrative et commerciale, agents conversationnels de support, génération de contenu et intégration aux outils existants des PME et ETI tertiaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arcueil pour dirigeants de TPE et PME tertiaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à Arcueil pour dirigeants de TPE et PME tertiaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à Arcueil pour dirigeants de PME et d'ETI tertiaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Arcueil pour dirigeants de PME et d'ETI tertiaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Arcueil : plateformes SaaS, portails clients et outils IA sur mesure pour les éditeurs logiciels, agences et services aux entreprises du Grand Paris sud.",
@@ -57,7 +57,7 @@ export const ARCUEIL_COPY: VilleCopy = {
         whyHere: [
           "Pôle d'édition logicielle et de services informatiques aux portes sud de Paris, concentré dans le centre d'affaires de la ZAC Les Portes d'Arcueil et le long de l'axe Laplace : pour ces éditeurs et SSII, on construit des plateformes SaaS IA-native, des portails clients et des espaces produit sur mesure, branchés sur votre stack existante (CRM, ERP, facturation) avec recherche sémantique intégrée.",
           "Densité de sièges sociaux et de grands comptes — le centre d'affaires des Portes d'Arcueil héberge des enseignes comme Orange ou Monoprix Exploitation : sites corporate exigeants, intranets, design systems à votre marque et outils internes augmentés à l'IA, avec des Web Vitals tenus et une accessibilité contrôlée sur desktop comme mobile.",
-          "Tissu de TPE, commerces de proximité et artisans du BTP autour de La Vache Noire et de la zone d'activité ZAC Ricardo : on greffe une brique IA (chatbot multilingue, recherche, prise de contact) sur l'existant ou on livre une vitrine e-commerce clé en main (WordPress, Shopify, WooCommerce, PrestaShop) sans refonte lourde ni budget démesuré.",
+          "Tissu de PME, commerces de proximité et artisans du BTP autour de La Vache Noire et de la zone d'activité ZAC Ricardo : on greffe une brique IA (chatbot multilingue, recherche, prise de contact) sur l'existant ou on livre une vitrine e-commerce clé en main (WordPress, Shopify, WooCommerce, PrestaShop) sans refonte lourde ni budget démesuré.",
           "Économie de services traitant des données sensibles d'entreprises clientes — conseil, agences, éditeurs du Val-de-Marne sud : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, avec recherche sémantique et agents documentaires. Vos données et celles de vos clients restent maîtrisées, sans transit hors UE non encadré.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const ARCUEIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée ou vitrine e-commerce",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) ou d'une vitrine e-commerce multi-CMS pour un commerce de La Vache Noire ou un artisan du BTP de la zone Ricardo, en quelques semaines et sans refonte lourde.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / portail sur mesure UX/UI + IA",
@@ -143,7 +137,7 @@ export const ARCUEIL_COPY: VilleCopy = {
         whyHere: [
           "Pôle d'édition logicielle et de services informatiques aux portes sud de Paris, concentré dans le centre d'affaires de la ZAC Les Portes d'Arcueil et le long de l'axe Laplace : pour ces éditeurs et SSII, on construit des plateformes SaaS IA-native, des portails clients et des espaces produit sur mesure, branchés sur votre stack existante (CRM, ERP, facturation) avec recherche sémantique intégrée.",
           "Densité de sièges sociaux et de grands comptes — le centre d'affaires des Portes d'Arcueil héberge des enseignes comme Orange ou Monoprix Exploitation : sites corporate exigeants, intranets, design systems à votre marque et outils internes augmentés à l'IA, avec des Web Vitals tenus et une accessibilité contrôlée sur desktop comme mobile.",
-          "Tissu de TPE, commerces de proximité et artisans du BTP autour de La Vache Noire et de la zone d'activité ZAC Ricardo : on greffe une brique IA (chatbot multilingue, recherche, prise de contact) sur l'existant ou on livre une vitrine e-commerce clé en main (WordPress, Shopify, WooCommerce, PrestaShop) sans refonte lourde ni budget démesuré.",
+          "Tissu de PME, commerces de proximité et artisans du BTP autour de La Vache Noire et de la zone d'activité ZAC Ricardo : on greffe une brique IA (chatbot multilingue, recherche, prise de contact) sur l'existant ou on livre une vitrine e-commerce clé en main (WordPress, Shopify, WooCommerce, PrestaShop) sans refonte lourde ni budget démesuré.",
           "Économie de services traitant des données sensibles d'entreprises clientes — conseil, agences, éditeurs du Val-de-Marne sud : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, avec recherche sémantique et agents documentaires. Vos données et celles de vos clients restent maîtrisées, sans transit hors UE non encadré.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const ARCUEIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée ou vitrine e-commerce",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) ou d'une vitrine e-commerce multi-CMS pour un commerce de La Vache Noire ou un artisan du BTP de la zone Ricardo, en quelques semaines et sans refonte lourde.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / portail sur mesure UX/UI + IA",
@@ -230,7 +218,7 @@ export const ARCUEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arcueil et dans le Val-de-Marne sud ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Arcueil et du sud parisien. Très bien desservis par le RER B, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les PME et ETI d'Arcueil et du sud parisien. Très bien desservis par le RER B, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un éditeur logiciel ou une agence arcueillaise ?",

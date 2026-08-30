@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
   pitchFr:
-    "Sotteville-lès-Rouen (76), deuxième ville de l'agglomération rouennaise, est historiquement liée au chemin de fer : son technicentre SNCF, l'un des plus anciens et importants de France, y entretient et rénove le matériel ferroviaire depuis le XIXe siècle. Autour de ce pôle gravitent un tissu industriel, logistique, des sous-traitants et de nombreuses TPE/PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les très petites entreprises puis les PME dans l'adoption concrète de l'intelligence artificielle.",
+    "Sotteville-lès-Rouen (76), deuxième ville de l'agglomération rouennaise, est historiquement liée au chemin de fer : son technicentre SNCF, l'un des plus anciens et importants de France, y entretient et rénove le matériel ferroviaire depuis le XIXe siècle. Autour de ce pôle gravitent un tissu industriel, logistique, des sous-traitants et de nombreuses PME et ETI de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME, puis les ETI dans l'adoption concrète de l'intelligence artificielle.",
   pitchEn:
-    "Sotteville-lès-Rouen (76), deuxième ville de l'agglomération rouennaise, est historiquement liée au chemin de fer : son technicentre SNCF, l'un des plus anciens et importants de France, y entretient et rénove le matériel ferroviaire depuis le XIXe siècle. Autour de ce pôle gravitent un tissu industriel, logistique, des sous-traitants et de nombreuses TPE/PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les très petites entreprises puis les PME dans l'adoption concrète de l'intelligence artificielle.",
+    "Sotteville-lès-Rouen (76), deuxième ville de l'agglomération rouennaise, est historiquement liée au chemin de fer : son technicentre SNCF, l'un des plus anciens et importants de France, y entretient et rénove le matériel ferroviaire depuis le XIXe siècle. Autour de ce pôle gravitent un tissu industriel, logistique, des sous-traitants et de nombreuses PME et ETI de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME, puis les ETI dans l'adoption concrète de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sotteville-lès-Rouen, au cœur de la métropole rouennaise. Nous accompagnons en priorité les TPE puis les PME : sous-traitants ferroviaires gravitant autour du technicentre SNCF, acteurs de la maintenance industrielle, logistique fluviale et routière, artisans du bâtiment et services aux entreprises. Nos missions vont de l'audit du potentiel IA à l'automatisation des tâches administratives et à l'accompagnement individuel des dirigeants, avec des livrables actionnables et des tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sotteville-lès-Rouen, au cœur de la métropole rouennaise. Nous accompagnons en priorité les PME puis les ETI : sous-traitants ferroviaires gravitant autour du technicentre SNCF, acteurs de la maintenance industrielle, logistique fluviale et routière, artisans du bâtiment et services aux entreprises. Nos missions vont de l'audit du potentiel IA à l'automatisation des tâches administratives et à l'accompagnement individuel des dirigeants, avec des livrables actionnables et des tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sotteville-lès-Rouen, au cœur de la métropole rouennaise. Nous accompagnons en priorité les TPE puis les PME : sous-traitants ferroviaires gravitant autour du technicentre SNCF, acteurs de la maintenance industrielle, logistique fluviale et routière, artisans du bâtiment et services aux entreprises. Nos missions vont de l'audit du potentiel IA à l'automatisation des tâches administratives et à l'accompagnement individuel des dirigeants, avec des livrables actionnables et des tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sotteville-lès-Rouen, au cœur de la métropole rouennaise. Nous accompagnons en priorité les PME puis les ETI : sous-traitants ferroviaires gravitant autour du technicentre SNCF, acteurs de la maintenance industrielle, logistique fluviale et routière, artisans du bâtiment et services aux entreprises. Nos missions vont de l'audit du potentiel IA à l'automatisation des tâches administratives et à l'accompagnement individuel des dirigeants, avec des livrables actionnables et des tarifs publics.",
   seoHook: "ferroviaire SNCF & industrie",
   ecosystemFr:
-    "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les TPE artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
+    "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les PME artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
   ecosystemEn:
-    "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les TPE artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
+    "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les PME artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
   distancesFr:
     "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nos consultants se déplacent depuis Rouen et Paris.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
       en: "Implémentation IA à Sotteville-lès-Rouen : automatisation des flux logistiques, planification de maintenance assistée, classification documentaire et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sotteville-lès-Rouen : sessions sur site ou en visio pour dirigeants de TPE/PME, responsables d'atelier et gérants souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Sotteville-lès-Rouen : sessions sur site ou en visio pour dirigeants de TPE/PME, responsables d'atelier et gérants souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Sotteville-lès-Rouen : sessions sur site ou en visio pour dirigeants de PME et ETI, responsables d'atelier et gérants souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Sotteville-lès-Rouen : sessions sur site ou en visio pour dirigeants de PME et ETI, responsables d'atelier et gérants souhaitant maîtriser l'IA au quotidien.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Sotteville-lès-Rouen : plateformes pour PME industrielles et artisans, avec devis automatisés, prise de rendez-vous intelligente et recherche IA intégrée.",
@@ -58,7 +58,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
           "Le Technicentre SNCF Quatre-Mares (800+ salariés, maintenance des trains normands) génère un écosystème de sous-traitants ferroviaires et de maintenance industrielle qui ont besoin de portails de devis, de catalogues de pièces et de suivi d'intervention en ligne — bien au-delà d'un site vitrine.",
           "La Z.I. Est de Sotteville (~271 entreprises, ~5 000 emplois) concentre des acteurs nommés — Kimberly-Clark (rue Antoine Lavoisier), SADE, Segafredo Zanetti France, Metro France, TK Elevator, ArcelorMittal Distribution, Asten — pour qui nous bâtissons des plateformes B2B (commande, EDI, espace client) connectées à leur ERP.",
           "Le port du Jonquay (~51 ha, logistique fluviale sur la Seine) et les flux routiers A13/N138 appellent des outils de suivi de commandes, de traçabilité et d'agents conversationnels logistiques que nous intégrons directement au site.",
-          "Le tissu de ~400 commerces, artisans et TPE de proximité (héritage cheminot et services) a besoin de sites mobiles rapides, de prise de rendez-vous intelligente et d'e-commerce multi-CMS — sans renoncer à l'UX/UI ni à la performance Web Vitals.",
+          "Le tissu de ~400 commerces, artisans et PME de proximité (héritage cheminot et services) a besoin de sites mobiles rapides, de prise de rendez-vous intelligente et d'e-commerce multi-CMS — sans renoncer à l'UX/UI ni à la performance Web Vitals.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les artisans, commerces de proximité et indépendants de Sotteville-lès-Rouen : site mobile rapide, prise de RDV intelligente, mini-boutique et chatbot FAQ, avec une UX/UI soignée et des Web Vitals au vert.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme B2B ou portail métier",
@@ -175,12 +169,6 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented brochure or e-commerce site",
-            detail:
-              "For Sotteville-lès-Rouen artisans, local shops and freelancers: fast mobile site, smart booking, mini-store and FAQ chatbot, with polished UX/UI and green Web Vitals.",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B platform or trade portal",
             detail:
@@ -230,7 +218,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sotteville-lès-Rouen et dans la métropole rouennaise ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Sotteville-lès-Rouen, Rouen, Saint-Étienne-du-Rouvray et toute la métropole. Nos consultants se déplacent depuis Rouen et Paris.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Sotteville-lès-Rouen, Rouen, Saint-Étienne-du-Rouvray et toute la métropole. Nos consultants se déplacent depuis Rouen et Paris.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants ferroviaires et industriels ?",
@@ -241,7 +229,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
       a: "Oui, nous déployons des automatisations de flux, du suivi de commandes et des agents conversationnels pour les PME logistiques adossées au port et aux axes routiers rouennais.",
     },
     {
-      q: "Quels services proposez-vous aux TPE et artisans ?",
+      q: "Quels services proposez-vous aux PME et artisans ?",
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et sans devis opaque.",
     },
     {

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ORANGE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de petites entreprises que nous outillons d'une IA concrète.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de PME que nous outillons d'une IA concrète.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de petites entreprises que nous outillons d'une IA concrète.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de PME que nous outillons d'une IA concrète.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les PME puis les ETI : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les PME puis les ETI : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   seoHook: "tourisme romain & logistique",
   ecosystemFr:
-    "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
+    "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de PME et ETI est un terrain idéal pour des automatisations IA pragmatiques.",
   ecosystemEn:
-    "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
+    "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de PME et ETI est un terrain idéal pour des automatisations IA pragmatiques.",
   distancesFr:
     "Gare TGV d'Avignon à 30 km (Paris ~2h40), gare d'Orange sur la ligne TER. Carrefour autoroutier A7-A9 en bordure de ville. Avignon centre à 30 km, Marseille à 100 km. Aéroport de Marseille-Provence à 100 km, Avignon-Provence plus proche.",
   distancesEn:
@@ -42,8 +42,8 @@ export const ORANGE_COPY: VilleCopy = {
       en: "Implémentation IA à Orange : agents conversationnels multilingues pour le tourisme, gestion de tournées et suivi des stocks pour la logistique, automatisation des devis et CRM pour les commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Orange : sessions individuelles pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, sur site ou en visio, pour piloter l'IA en autonomie.",
-      en: "Coaching 1-to-1 à Orange : sessions individuelles pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, sur site ou en visio, pour piloter l'IA en autonomie.",
+      fr: "Coaching 1-to-1 à Orange : sessions individuelles pour dirigeants de PME et d'ETI du tourisme, du commerce et de la logistique, sur site ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Orange : sessions individuelles pour dirigeants de PME et d'ETI du tourisme, du commerce et de la logistique, sur site ou en visio, pour piloter l'IA en autonomie.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Orange : plateformes et SaaS IA sur mesure pour acteurs du tourisme et commerces — réservations, billetterie, agents IA d'accueil multilingues autour du théâtre antique et des Chorégies.",
@@ -53,7 +53,7 @@ export const ORANGE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Orange (84100, Vaucluse) appuie son économie sur un socle rare : la Base aérienne 115 Orange-Caritat « Capitaine de Seynes », qui aligne plus de 3 000 emplois directs et l'escadron de chasse 1/5 Vendée sur Rafale, pèse à elle seule près de 10 % de l'emploi local et fait vivre tout un réseau de PME de maintenance et de sous-traitance. À côté, l'héritage industriel Saint-Gobain Isover, les zones d'activité du Coudoulet (43 hectares, près de 90 entreprises) et des Crémades, le carrefour logistique A7-A9, le tourisme patrimonial du Théâtre antique UNESCO et des Chorégies, et le vignoble AOC Côtes du Rhône (Concours des Vins d'Orange depuis 1952) composent un tissu de TPE et PME que nous outillons en sites web et plateformes SaaS augmentés par l'IA, hébergés en Union européenne.",
+        hero: "Orange (84100, Vaucluse) appuie son économie sur un socle rare : la Base aérienne 115 Orange-Caritat « Capitaine de Seynes », qui aligne plus de 3 000 emplois directs et l'escadron de chasse 1/5 Vendée sur Rafale, pèse à elle seule près de 10 % de l'emploi local et fait vivre tout un réseau de PME de maintenance et de sous-traitance. À côté, l'héritage industriel Saint-Gobain Isover, les zones d'activité du Coudoulet (43 hectares, près de 90 entreprises) et des Crémades, le carrefour logistique A7-A9, le tourisme patrimonial du Théâtre antique UNESCO et des Chorégies, et le vignoble AOC Côtes du Rhône (Concours des Vins d'Orange depuis 1952) composent un tissu de PME et ETI que nous outillons en sites web et plateformes SaaS augmentés par l'IA, hébergés en Union européenne.",
         whyHere: [
           "L'écosystème de la Base aérienne 115 Orange-Caritat (Rafale, escadron 1/5 Vendée, plus de 3 000 emplois) irrigue un réseau de PME prestataires — MCO aéronautique, sous-traitance défense, sécurité, BTP, services — pour qui nous construisons portails fournisseurs, extranets et agents IA documentaires conformes aux contraintes de confidentialité.",
           "Les zones d'activité du Coudoulet (43,38 ha, ~89 entreprises dont Channel Fret International, Orange Pièces Autos, Lidl) et des Crémades, adossées au carrefour A7-A9, concentrent commerce, négoce et logistique : nous y déployons sites e-commerce multi-CMS, catalogues pièces et suivi de tournées augmentés par l'IA.",
@@ -88,12 +88,6 @@ export const ORANGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour artisans, restaurateurs, domaines viticoles et commerces d'Orange : site mobile-first, fiches produits et agent IA d'accueil, idéal autour du Théâtre antique et des Chorégies.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou réservation IA",
@@ -175,12 +169,6 @@ export const ORANGE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site",
-            detail:
-              "For Orange craftspeople, restaurateurs, wine estates and shops: mobile-first site, product sheets and AI welcome agent, ideal around the Roman Theatre and the Chorégies.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or AI booking platform",
             detail:
@@ -230,11 +218,11 @@ export const ORANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orange ?",
-      a: "Oui, Axion-IA intervient à Orange et dans tout le Haut-Vaucluse (Caderousse, Sérignan-du-Comtat, Piolenc, Courthézon). Nos consultants se déplacent depuis Avignon (gare TGV à 30 km) pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Orange et dans tout le Haut-Vaucluse (Caderousse, Sérignan-du-Comtat, Piolenc, Courthézon). Nos consultants se déplacent depuis Avignon (gare TGV à 30 km) pour rencontrer PME et ETI sur site.",
     },
     {
       q: "Combien coûte un audit IA à Orange ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME orangeoises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux PME et ETI orangeoises, sans devis opaque.",
     },
     {
       q: "Aidez-vous les acteurs du tourisme du théâtre antique et des Chorégies ?",

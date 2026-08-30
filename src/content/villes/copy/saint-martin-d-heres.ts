@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les TPE et PME du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
+    "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les PME et ETI du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
   pitchEn:
-    "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les TPE et PME du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
+    "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les PME et ETI du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès {{price:intervention-4h|flat}}.",
+    "Axion-IA intervient à Saint-Martin-d'Hères auprès des PME et ETI implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès {{price:intervention-4h|flat}}.",
+    "Axion-IA intervient à Saint-Martin-d'Hères auprès des PME et ETI implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès {{price:intervention-4h|flat}}.",
   seoHook: "campus universitaire & zones commerciales",
   ecosystemFr:
     "Saint-Martin-d'Hères, 37 695 habitants, accueille la majeure partie du domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), une concentration commerciale notable sur l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre) et une activité viticole IGP Isère. Le Bois de Chartreuse, première AOC de la filière bois en France, couvre partiellement la commune.",
@@ -33,20 +33,20 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
-      en: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
+      fr: "Auditer une PME ou ETI martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
+      en: "Auditer une PME ou ETI martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des TPE/PME.",
-      en: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des TPE/PME.",
+      fr: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des PME et ETI.",
+      en: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des PME et ETI.",
     },
     implementation: {
       fr: "Implémenter des outils IA en code source propriétaire à Saint-Martin-d'Hères, livrés au client final, intégrables aux logiciels métier existants.",
       en: "Implémenter des outils IA en code source propriétaire à Saint-Martin-d'Hères, livrés au client final, intégrables aux logiciels métier existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner les dirigeants de PME et ETI martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de PME et ETI martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           "Berceau d'ALMA et de son SaaS CFAO Almacam, Saint-Martin-d'Hères réunit une culture éditeur-logiciel rare : nous y concevons des plateformes IA-native (chatbot RAG, recherche sémantique, agents) pour les éditeurs et intégrateurs issus de cet écosystème.",
           "Le Domaine universitaire Grenoble Alpes (Institut Néel, LNCMI, Polytech Grenoble, Sciences Po Grenoble, IUT 1) génère un flux de spin-offs et de labos : portails de valorisation de recherche, applications métier et interfaces data sur mesure, hébergées en UE.",
           "L'industrie de précision locale — SGL Carbon Technic (échangeurs et pompes graphite anticorrosion, av. Marcel-Cachin) et les ~248 entreprises de la Z.I. SUD — appelle des sites catalogues techniques, configurateurs produit et e-commerce B2B multi-CMS.",
-          "Les TPE/PME des Z.A. Croix-Rouge et Bourgamon, des commerces de l'avenue Gabriel-Péri et la santé (Clinique Belledonne) ont besoin de sites mobile-first, prise de RDV et UX/UI accessible — sans dépendance éditeur ni lock-in.",
+          "Les PME et ETI des Z.A. Croix-Rouge et Bourgamon, des commerces de l'avenue Gabriel-Péri et la santé (Clinique Belledonne) ont besoin de sites mobile-first, prise de RDV et UX/UI accessible — sans dépendance éditeur ni lock-in.",
         ],
         methodology: [
           {
@@ -87,12 +87,6 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour commerces de l'avenue Gabriel-Péri, artisans des Z.A. Croix-Rouge/Bourgamon, indépendants et cabinets : site mobile-first, prise de RDV ou boutique en ligne, brique IA simple (chatbot FAQ, assistant de réservation).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -127,7 +121,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un projet de site ou de SaaS à Saint-Martin-d'Hères ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine TPE se chiffre vite ; une plateforme SaaS multi-modules pour éditeur ou industriel demande un cadrage plus détaillé avant chiffrage.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Un site vitrine PME se chiffre vite ; une plateforme SaaS multi-modules pour éditeur ou industriel demande un cadrage plus détaillé avant chiffrage.",
           },
           {
             q: "L'hébergement et les données sont-ils conformes au RGPD ?",
@@ -173,12 +167,6 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For avenue Gabriel-Péri shops, Croix-Rouge/Bourgamon craftspeople, freelancers and practices: mobile-first site, booking or online store, simple AI block (FAQ chatbot, booking assistant).",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke business platform",
@@ -245,11 +233,11 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il à Saint-Martin-d'Hères ?",
-      a: "Nous priorisons les TPE et PME du commerce et de la grande distribution (avenue Gabriel-Péri), des services liés au campus universitaire, des professions libérales, de la viticulture IGP Isère et de la construction. Quelques ETI martinéroises sollicitent également nos services.",
+      a: "Nous priorisons les PME et ETI du commerce et de la grande distribution (avenue Gabriel-Péri), des services liés au campus universitaire, des professions libérales, de la viticulture IGP Isère et de la construction. Quelques ETI martinéroises sollicitent également nos services.",
     },
     {
       q: "Proposez-vous des formations IA pour les équipes martinéroises ?",
-      a: "Oui, nous animons à Saint-Martin-d'Hères des formations en présentiel ou visio pour dirigeants et collaborateurs de TPE/PME, calibrées sur les besoins locaux (commerce, services, viticulture).",
+      a: "Oui, nous animons à Saint-Martin-d'Hères des formations en présentiel ou visio pour dirigeants et collaborateurs de PME et ETI, calibrées sur les besoins locaux (commerce, services, viticulture).",
     },
   ],
 };

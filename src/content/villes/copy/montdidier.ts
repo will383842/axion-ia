@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTDIDIER_COPY: VilleCopy = {
   pitchFr:
-    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de TPE artisans BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du Santerre.",
+    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de PME du BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du Santerre.",
   pitchEn:
-    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de TPE artisans BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du Santerre.",
+    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de PME du BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du Santerre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
-  seoHook: "TPE & PME Somme",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+  seoHook: "PME & PME Somme",
   ecosystemFr:
-    "Montdidier est sous-préfecture de la Somme, bourg picard historique sur le plateau du Santerre. Tissu agricole dominant (céréales, betteraves, pommes de terre), TPE artisans BTP, PME agroalimentaires (transformation locale), commerces de centre-bourg, services de proximité. Position entre Amiens et Compiègne.",
+    "Montdidier est sous-préfecture de la Somme, bourg picard historique sur le plateau du Santerre. Tissu agricole dominant (céréales, betteraves, pommes de terre), PME du BTP, PME agroalimentaires (transformation locale), commerces de centre-bourg, services de proximité. Position entre Amiens et Compiègne.",
   ecosystemEn:
-    "Montdidier est sous-préfecture de la Somme, bourg picard historique sur le plateau du Santerre. Tissu agricole dominant (céréales, betteraves, pommes de terre), TPE artisans BTP, PME agroalimentaires (transformation locale), commerces de centre-bourg, services de proximité. Position entre Amiens et Compiègne.",
+    "Montdidier est sous-préfecture de la Somme, bourg picard historique sur le plateau du Santerre. Tissu agricole dominant (céréales, betteraves, pommes de terre), PME du BTP, PME agroalimentaires (transformation locale), commerces de centre-bourg, services de proximité. Position entre Amiens et Compiègne.",
   distancesFr:
     "Gare de Montdidier (TER Picardie vers Amiens 35 min, Compiègne 30 min). Amiens centre à 40 min voiture. Paris à 1h30 voiture (A1/A16). Aéroport Beauvais-Tillé à 50 min. Axe RD 930 vers Roye et Péronne.",
   distancesEn:
@@ -24,14 +24,14 @@ export const MONTDIDIER_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture grandes cultures & céréales Santerre",
     "Agroalimentaire & transformation locale",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité centre-bourg",
     "Services aux entreprises & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, TPE artisans et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, TPE artisans et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, PME de l'artisanat et du commerce de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, PME de l'artisanat et du commerce de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montdidier : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const MONTDIDIER_COPY: VilleCopy = {
       en: "Implémentation IA à Montdidier : optimisation rendements agricoles, automatisation gestion stocks agroalimentaire, agents conversationnels commerce, prédiction météo cultures Santerre.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montdidier : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, commerçants, gérants TPE/PME du Santerre souhaitant intégrer l'IA dans leur activité quotidienne.",
-      en: "Coaching 1-to-1 à Montdidier : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, commerçants, gérants TPE/PME du Santerre souhaitant intégrer l'IA dans leur activité quotidienne.",
+      fr: "Coaching 1-to-1 à Montdidier : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, commerçants, gérants PME et ETI du Santerre souhaitant intégrer l'IA dans leur activité quotidienne.",
+      en: "Coaching 1-to-1 à Montdidier : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, commerçants, gérants PME et ETI du Santerre souhaitant intégrer l'IA dans leur activité quotidienne.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const MONTDIDIER_COPY: VilleCopy = {
       a: "Nous accompagnons les exploitations grandes cultures du Santerre sur leurs cas IA : prédiction rendements céréales/betteraves, optimisation intrants, classification photos parcellaire, automatisation comptabilité et traçabilité récoltes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME agroalimentaires à Montdidier ?",
-      a: "Oui, nous accompagnons les TPE et PME agroalimentaires autour de Montdidier : automatisation gestion stocks, traçabilité matières premières, classification photos qualité produits, agents IA prise de commandes et optimisation logistique.",
+      q: "Accompagnez-vous les PME et ETI agroalimentaires à Montdidier ?",
+      a: "Oui, nous accompagnons les PME et ETI agroalimentaires autour de Montdidier : automatisation gestion stocks, traçabilité matières premières, classification photos qualité produits, agents IA prise de commandes et optimisation logistique.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Montdidier ?",

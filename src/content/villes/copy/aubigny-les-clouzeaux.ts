@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Aubigny-Les Clouzeaux (85), commune nouvelle de l'agglomération de La Roche-sur-Yon en Vendée, compte plus de 7 100 habitants. Zones d'activités dynamiques, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles du bocage. Axion-IA y intervient pour tous types d'activités.",
+    "Aubigny-Les Clouzeaux (85), commune nouvelle de l'agglomération de La Roche-sur-Yon en Vendée, compte plus de 7 100 habitants. Zones d'activités dynamiques, tissu de PME artisanales, PME industrielles, commerces et exploitations agricoles du bocage. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Aubigny-Les Clouzeaux (85), commune nouvelle de l'agglomération de La Roche-sur-Yon en Vendée, compte plus de 7 100 habitants. Zones d'activités dynamiques, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles du bocage. Axion-IA y intervient pour tous types d'activités.",
+    "Aubigny-Les Clouzeaux (85), commune nouvelle de l'agglomération de La Roche-sur-Yon en Vendée, compte plus de 7 100 habitants. Zones d'activités dynamiques, tissu de PME artisanales, PME industrielles, commerces et exploitations agricoles du bocage. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
   seoHook: "industrielles zones & artisanat construction",
   ecosystemFr:
     "Aubigny-Les Clouzeaux est une commune nouvelle de l'agglomération yonnaise (Vendée), née de la fusion d'Aubigny et Les Clouzeaux. Zones d'activités industrielles et artisanales, agriculture bocagère, commerces de proximité. La Roche-sur-Yon centre à 10 min, Nantes à 50 min.",
@@ -30,20 +30,20 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux PME artisanales, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux PME artisanales, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubigny-Les Clouzeaux : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Aubigny-Les Clouzeaux : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Aubigny-Les Clouzeaux : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs. Adapté TPE/PME agglo yonnaise.",
-      en: "Implémentation IA à Aubigny-Les Clouzeaux : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs. Adapté TPE/PME agglo yonnaise.",
+      fr: "Implémentation IA à Aubigny-Les Clouzeaux : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs. Adapté PME et ETI agglo yonnaise.",
+      en: "Implémentation IA à Aubigny-Les Clouzeaux : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs. Adapté PME et ETI agglo yonnaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubigny-Les Clouzeaux : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
-      en: "Coaching 1-to-1 à Aubigny-Les Clouzeaux : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
+      fr: "Coaching 1-to-1 à Aubigny-Les Clouzeaux : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
+      en: "Coaching 1-to-1 à Aubigny-Les Clouzeaux : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Aubigny-Les Clouzeaux  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Aubigny-Les Clouzeaux ?",

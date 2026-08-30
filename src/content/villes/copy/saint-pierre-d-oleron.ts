@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-d'Oléron (17), commune principale de l'île d'Oléron en Charente-Maritime, pôle ostréicole et touristique majeur. Tissu de TPE artisans, PME tourisme et hôtellerie, ostréiculteurs, commerces saisonniers et services. Axion-IA y intervient pour tous types d'activités de l'île d'Oléron.",
+    "Saint-Pierre-d'Oléron (17), commune principale de l'île d'Oléron en Charente-Maritime, pôle ostréicole et touristique majeur. Tissu de PME artisanales, PME tourisme et hôtellerie, ostréiculteurs, commerces saisonniers et services. Axion-IA y intervient pour tous types d'activités de l'île d'Oléron.",
   pitchEn:
-    "Saint-Pierre-d'Oléron (17), commune principale de l'île d'Oléron en Charente-Maritime, pôle ostréicole et touristique majeur. Tissu de TPE artisans, PME tourisme et hôtellerie, ostréiculteurs, commerces saisonniers et services. Axion-IA y intervient pour tous types d'activités de l'île d'Oléron.",
+    "Saint-Pierre-d'Oléron (17), commune principale de l'île d'Oléron en Charente-Maritime, pôle ostréicole et touristique majeur. Tissu de PME artisanales, PME tourisme et hôtellerie, ostréiculteurs, commerces saisonniers et services. Axion-IA y intervient pour tous types d'activités de l'île d'Oléron.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Oléron (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie, ostréiculteurs, commerçants saisonniers et indépendants de cette commune principale de l'île d'Oléron.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Oléron (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie, ostréiculteurs, commerçants saisonniers et indépendants de cette commune principale de l'île d'Oléron.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Oléron (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie, ostréiculteurs, commerçants saisonniers et indépendants de cette commune principale de l'île d'Oléron.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Oléron (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie, ostréiculteurs, commerçants saisonniers et indépendants de cette commune principale de l'île d'Oléron.",
   seoHook: "ostréiculture produits & tourisme balnéaire",
   ecosystemFr:
-    "Saint-Pierre-d'Oléron est la commune principale de l'île d'Oléron, plus grande île de la façade atlantique française. Économie ostréicole (huîtres Marennes-Oléron), tourisme balnéaire et nature (plages, forêts, marais), hôtellerie-restauration, commerces saisonniers, TPE artisans, viticulture (pineau, cognac insulaire).",
+    "Saint-Pierre-d'Oléron est la commune principale de l'île d'Oléron, plus grande île de la façade atlantique française. Économie ostréicole (huîtres Marennes-Oléron), tourisme balnéaire et nature (plages, forêts, marais), hôtellerie-restauration, commerces saisonniers, PME artisanales, viticulture (pineau, cognac insulaire).",
   ecosystemEn:
-    "Saint-Pierre-d'Oléron est la commune principale de l'île d'Oléron, plus grande île de la façade atlantique française. Économie ostréicole (huîtres Marennes-Oléron), tourisme balnéaire et nature (plages, forêts, marais), hôtellerie-restauration, commerces saisonniers, TPE artisans, viticulture (pineau, cognac insulaire).",
+    "Saint-Pierre-d'Oléron est la commune principale de l'île d'Oléron, plus grande île de la façade atlantique française. Économie ostréicole (huîtres Marennes-Oléron), tourisme balnéaire et nature (plages, forêts, marais), hôtellerie-restauration, commerces saisonniers, PME artisanales, viticulture (pineau, cognac insulaire).",
   distancesFr:
     "Saint-Pierre-d'Oléron est accessible par le pont d'Oléron (gratuit, depuis Bourcefranc-le-Chapus). Rochefort à 35 min. La Rochelle à 50 min. Gare de Rochefort à 35 min (TER vers La Rochelle). Aéroport La Rochelle-Île de Ré à 1h.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et TPE/PME de l'île d'Oléron. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et TPE/PME de l'île d'Oléron. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et PME et ETI de l'île d'Oléron. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et PME et ETI de l'île d'Oléron. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-d'Oléron : formats adaptés au parc ostréicole, à l'hôtel, au restaurant, au camping ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

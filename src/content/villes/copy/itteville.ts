@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ITTEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu PME artisanales, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu PME artisanales, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Itteville (91). Nous accompagnons PME et ETI : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Itteville (91). Nous accompagnons PME et ETI : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce rural",
   ecosystemFr:
-    "Itteville est une commune résidentielle rurale du sud de l'Essonne, entre Mennecy et La Ferté-Alais. Cadre verdoyant à 38 km de Paris. Tissu économique local : TPE artisans BTP, commerces de proximité, professions libérales, PME services aux particuliers, exploitations agricoles céréalières.",
+    "Itteville est une commune résidentielle rurale du sud de l'Essonne, entre Mennecy et La Ferté-Alais. Cadre verdoyant à 38 km de Paris. Tissu économique local : PME du BTP, commerces de proximité, professions libérales, PME services aux particuliers, exploitations agricoles céréalières.",
   ecosystemEn:
-    "Itteville est une commune résidentielle rurale du sud de l'Essonne, entre Mennecy et La Ferté-Alais. Cadre verdoyant à 38 km de Paris. Tissu économique local : TPE artisans BTP, commerces de proximité, professions libérales, PME services aux particuliers, exploitations agricoles céréalières.",
+    "Itteville est une commune résidentielle rurale du sud de l'Essonne, entre Mennecy et La Ferté-Alais. Cadre verdoyant à 38 km de Paris. Tissu économique local : PME du BTP, commerces de proximité, professions libérales, PME services aux particuliers, exploitations agricoles céréalières.",
   distancesFr:
     "Mennecy à 5 min. La Ferté-Alais à 10 min. Corbeil-Essonnes à 15 min. Évry-Courcouronnes à 20 min. Paris centre à 45 min (N104/A6).",
   distancesEn:
     "Mennecy à 5 min. La Ferté-Alais à 10 min. Corbeil-Essonnes à 15 min. Évry-Courcouronnes à 20 min. Paris centre à 45 min (N104/A6).",
   topSectorsNaf: [
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Commerce rural & services de proximité",
     "Professions libérales (santé, conseil)",
     "Agriculture céréalière & exploitations",
@@ -60,7 +60,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons cabinets médicaux, juridiques et de conseil : automatisation gestion RDV, classification documents, CRM patients/clients, conformité RGPD, dictée IA.",
     },
     {
-      q: "Quels services pour les commerces et TPE ruraux ?",
+      q: "Quels services pour les commerces et PME ruraux ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {

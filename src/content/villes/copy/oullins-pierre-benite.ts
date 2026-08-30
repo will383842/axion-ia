@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
   pitchFr:
-    "Oullins-Pierre-Bénite (69, Rhône), commune nouvelle au sud immédiat de Lyon, conjugue tissu urbain dense, façade sur la vallée de la chimie (Rhône amont) et desserte par le terminus de la ligne B du métro. Son économie mêle TPE de services et de santé, commerces, artisans, et PME sous-traitantes de la chimie, de la logistique et de la santé. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
+    "Oullins-Pierre-Bénite (69, Rhône), commune nouvelle au sud immédiat de Lyon, conjugue tissu urbain dense, façade sur la vallée de la chimie (Rhône amont) et desserte par le terminus de la ligne B du métro. Son économie mêle PME de services et de santé, commerces, artisans, et PME sous-traitantes de la chimie, de la logistique et de la santé. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes en complément.",
   pitchEn:
-    "Oullins-Pierre-Bénite (69, Rhône), commune nouvelle au sud immédiat de Lyon, conjugue tissu urbain dense, façade sur la vallée de la chimie (Rhône amont) et desserte par le terminus de la ligne B du métro. Son économie mêle TPE de services et de santé, commerces, artisans, et PME sous-traitantes de la chimie, de la logistique et de la santé. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
+    "Oullins-Pierre-Bénite (69, Rhône), commune nouvelle au sud immédiat de Lyon, conjugue tissu urbain dense, façade sur la vallée de la chimie (Rhône amont) et desserte par le terminus de la ligne B du métro. Son économie mêle PME de services et de santé, commerces, artisans, et PME sous-traitantes de la chimie, de la logistique et de la santé. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les TPE — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, à 15 min de Lyon (métro B) ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les PME — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, les grands groupes venant en complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, à 15 min de Lyon (métro B) ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les TPE — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, à 15 min de Lyon (métro B) ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les PME — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, les grands groupes venant en complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, à 15 min de Lyon (métro B) ou en visio.",
   seoHook: "sud Lyon, chimie & santé",
   ecosystemFr:
-    "Oullins-Pierre-Bénite forme la porte sud de la métropole de Lyon, sur la rive droite du Rhône à l'entrée de la vallée de la chimie. Économie urbaine et industrielle : PME sous-traitantes de la chimie et de la pharma, logistique fluviale et routière, santé (proximité du pôle hospitalier sud), TPE de services et de proximité, commerces et artisans. Le terminus de la ligne B du métro arrime la commune à Lyon Part-Dieu.",
+    "Oullins-Pierre-Bénite forme la porte sud de la métropole de Lyon, sur la rive droite du Rhône à l'entrée de la vallée de la chimie. Économie urbaine et industrielle : PME sous-traitantes de la chimie et de la pharma, logistique fluviale et routière, santé (proximité du pôle hospitalier sud), PME de services et de proximité, commerces et artisans. Le terminus de la ligne B du métro arrime la commune à Lyon Part-Dieu.",
   ecosystemEn:
-    "Oullins-Pierre-Bénite forme la porte sud de la métropole de Lyon, sur la rive droite du Rhône à l'entrée de la vallée de la chimie. Économie urbaine et industrielle : PME sous-traitantes de la chimie et de la pharma, logistique fluviale et routière, santé (proximité du pôle hospitalier sud), TPE de services et de proximité, commerces et artisans. Le terminus de la ligne B du métro arrime la commune à Lyon Part-Dieu.",
+    "Oullins-Pierre-Bénite forme la porte sud de la métropole de Lyon, sur la rive droite du Rhône à l'entrée de la vallée de la chimie. Économie urbaine et industrielle : PME sous-traitantes de la chimie et de la pharma, logistique fluviale et routière, santé (proximité du pôle hospitalier sud), PME de services et de proximité, commerces et artisans. Le terminus de la ligne B du métro arrime la commune à Lyon Part-Dieu.",
   distancesFr:
     "Lyon Part-Dieu à 15 min par le métro B (terminus Oullins). Lyon Perrache à 10 min. Aéroport Lyon-Saint-Exupéry à 35 min par le Rhônexpress depuis Part-Dieu. A7 vers Vienne et le sud sur place.",
   distancesEn:
@@ -30,20 +30,20 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oullins-Pierre-Bénite : diagnostic ciblé pour TPE de services et de santé, PME sous-traitantes de la chimie et de la logistique du sud lyonnais, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
-      en: "Audit IA à Oullins-Pierre-Bénite : diagnostic ciblé pour TPE de services et de santé, PME sous-traitantes de la chimie et de la logistique du sud lyonnais, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      fr: "Audit IA à Oullins-Pierre-Bénite : diagnostic ciblé pour PME de services et de santé, PME sous-traitantes de la chimie et de la logistique du sud lyonnais, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA à Oullins-Pierre-Bénite : diagnostic ciblé pour PME de services et de santé, PME sous-traitantes de la chimie et de la logistique du sud lyonnais, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oullins-Pierre-Bénite : ateliers pratiques pour le cabinet de santé, l'atelier chimie, le logisticien ou le commerce. Vos collaborateurs sont autonomes ensuite.",
       en: "Interventions IA sur site à Oullins-Pierre-Bénite : ateliers pratiques pour le cabinet de santé, l'atelier chimie, le logisticien ou le commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA à Oullins-Pierre-Bénite : gestion documentaire et conformité, contrôle qualité, optimisation logistique, agents conversationnels et CRM augmentés pour TPE-PME du sud de Lyon.",
-      en: "Implémentation IA à Oullins-Pierre-Bénite : gestion documentaire et conformité, contrôle qualité, optimisation logistique, agents conversationnels et CRM augmentés pour TPE-PME du sud de Lyon.",
+      fr: "Implémentation IA à Oullins-Pierre-Bénite : gestion documentaire et conformité, contrôle qualité, optimisation logistique, agents conversationnels et CRM augmentés pour PME et ETI du sud de Lyon.",
+      en: "Implémentation IA à Oullins-Pierre-Bénite : gestion documentaire et conformité, contrôle qualité, optimisation logistique, agents conversationnels et CRM augmentés pour PME et ETI du sud de Lyon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Oullins-Pierre-Bénite : sessions pour dirigeants de TPE de services et de santé et de PME sous-traitantes du sud lyonnais, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Oullins-Pierre-Bénite : sessions pour dirigeants de TPE de services et de santé et de PME sous-traitantes du sud lyonnais, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Oullins-Pierre-Bénite : sessions pour dirigeants de PME de services et de santé et de PME sous-traitantes du sud lyonnais, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Oullins-Pierre-Bénite : sessions pour dirigeants de PME de services et de santé et de PME sous-traitantes du sud lyonnais, dans vos locaux ou en visio.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Oullins-Pierre-Bénite : portails de services, sites de santé et vitrines industrielles enrichis d'IA — prise de rendez-vous, support, devis et qualification de leads.",
@@ -53,7 +53,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Oullins-Pierre-Bénite (69), porte sud de la Métropole de Lyon et entrée de la Vallée de la chimie, Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA pour un tissu à deux visages : d'un côté les TPE et commerces de la Grande Rue et du centre-ville d'Oullins (boulangeries, pharmacies, artisans, restauration, prestataires de santé gravitant autour de l'Hôpital Lyon Sud) ; de l'autre les PME et sous-traitants industriels de la plateforme chimique de Pierre-Bénite, dans l'orbite d'Arkema, Daikin, Kem One et de la filière hydrogène Symbio. Vitrines, portails de services, e-commerce multi-CMS, espaces clients SaaS — UX/UI, mobile et IA réunis, avec chatbot RAG, prise de rendez-vous, qualification de leads et recherche documentaire. Code maîtrisé, hébergement en Union européenne conforme RGPD, zéro verrou éditeur.",
+        hero: "À Oullins-Pierre-Bénite (69), porte sud de la Métropole de Lyon et entrée de la Vallée de la chimie, Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA pour un tissu à deux visages : d'un côté les PME et commerces de la Grande Rue et du centre-ville d'Oullins (boulangeries, pharmacies, artisans, restauration, prestataires de santé gravitant autour de l'Hôpital Lyon Sud) ; de l'autre les PME et sous-traitants industriels de la plateforme chimique de Pierre-Bénite, dans l'orbite d'Arkema, Daikin, Kem One et de la filière hydrogène Symbio. Vitrines, portails de services, e-commerce multi-CMS, espaces clients SaaS — UX/UI, mobile et IA réunis, avec chatbot RAG, prise de rendez-vous, qualification de leads et recherche documentaire. Code maîtrisé, hébergement en Union européenne conforme RGPD, zéro verrou éditeur.",
         whyHere: [
           "Bassin industriel de la chimie du fluor : la plateforme Arkema de Pierre-Bénite (site de production + Centre de recherche Rhône-Alpes et CETIA, près de 1 000 salariés sur le bassin), Daikin et Kem One nourrissent un réseau dense de PME sous-traitantes — maintenance, métrologie, logistique, ingénierie — pour qui un portail technique ou un espace client SaaS bien construit raccourcit les cycles de devis et de support.",
           "Conformité et traçabilité au cœur du territoire : le dossier PFAS qui vise Arkema et Daikin à Pierre-Bénite (assignation de la Métropole de Lyon, signalement ONU 2026) rend la gestion documentaire réglementaire critique ; nos plateformes intègrent recherche sémantique sur fiches de données de sécurité, rapports et dossiers de conformité, avec hébergement UE et journal d'accès.",
@@ -88,12 +88,6 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les commerces de la Grande Rue, artisans, restaurants et prestataires de santé du centre d'Oullins : site mobile-first, prise de rendez-vous ou click-and-collect, FAQ et chatbot IA répondant sur vos horaires, services et catalogue. CMS e-commerce au choix, prise en main rapide.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail métier ou plateforme SaaS",
@@ -175,12 +169,6 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or augmented e-commerce",
-            detail:
-              "For Grande Rue shops, tradespeople, restaurants and healthcare providers in central Oullins: mobile-first site, online booking or click-and-collect, FAQ and AI chatbot answering on your hours, services and catalogue. E-commerce CMS of choice, quick onboarding.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business portal or SaaS platform",
             detail:
@@ -234,7 +222,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité ici ?",
-      a: "Nous accompagnons d'abord les TPE de services, de santé, de commerce et d'artisanat, puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique. Les grandes entreprises et ETI restent un complément.",
+      a: "Nous accompagnons d'abord les PME de services, de santé, de commerce et d'artisanat, puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique. Les grandes entreprises et ETI restent un complément.",
     },
     {
       q: "L'IA peut-elle aider une PME de la vallée de la chimie ?",
@@ -242,7 +230,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Oullins-Pierre-Bénite ?",
-      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la PME à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
     },
     {
       q: "Comment se déroule une intervention IA à Oullins-Pierre-Bénite ?",

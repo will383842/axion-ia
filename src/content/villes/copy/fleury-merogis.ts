@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FLEURY_MEROGIS_COPY: VilleCopy = {
   pitchFr:
-    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
+    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, PME du BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
+    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, PME du BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-Mérogis (91). Nous accompagnons PME et ETI : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-Mérogis (91). Nous accompagnons PME et ETI : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   seoHook: "industrielles zones & logistique entreposage",
   ecosystemFr:
-    "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
+    "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, PME du BTP, commerces de proximité, services aux entreprises.",
   ecosystemEn:
-    "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
+    "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, PME du BTP, commerces de proximité, services aux entreprises.",
   distancesFr:
     "Sainte-Geneviève-des-Bois à 5 min. Évry-Courcouronnes à 10 min. Aéroport Paris-Orly à 15 min. Paris centre à 30 min.",
   distancesEn:
@@ -24,7 +24,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles / zones d'activités",
     "Logistique et entreposage",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
@@ -60,7 +60,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
       a: "Oui, automatisation flux logistiques, gestion stocks IA, optimisation tournées livraison, traçabilité temps réel, prédiction demande.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

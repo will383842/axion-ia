@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
+    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu PME artisanales, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
   pitchEn:
-    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
+    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu PME artisanales, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons PME artisanales, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons PME artisanales, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place sur mesure.",
   seoHook: "tourisme hôtellerie & restauration commerce",
   ecosystemFr:
     "Bretignolles-sur-Mer (5 344 hab) est une station balnéaire de la côte de Lumière, capitale vendéenne du surf. Économie centrée sur tourisme (hôtellerie, campings, locations saisonnières), nautisme, commerces, restauration, artisanat et BTP. Proximité Saint-Gilles-Croix-de-Vie (10 min), Les Sables-d'Olonne (30 min), Nantes (1h10). Forte saisonnalité estivale.",
@@ -30,20 +30,20 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux PME artisanales, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux PME artisanales, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bretignolles-sur-Mer : formats adaptés à l'hôtel, le camping, le restaurant, l'école de surf ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Bretignolles-sur-Mer : formats adaptés à l'hôtel, le camping, le restaurant, l'école de surf ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Bretignolles-sur-Mer : gestion réservations, yield management saisonnier, CRM clients fidèles, automatisation accueil, agents conversationnels multilingues pour les TPE/PME du littoral.",
-      en: "Implémentation IA à Bretignolles-sur-Mer : gestion réservations, yield management saisonnier, CRM clients fidèles, automatisation accueil, agents conversationnels multilingues pour les TPE/PME du littoral.",
+      fr: "Implémentation IA à Bretignolles-sur-Mer : gestion réservations, yield management saisonnier, CRM clients fidèles, automatisation accueil, agents conversationnels multilingues pour les PME et ETI du littoral.",
+      en: "Implémentation IA à Bretignolles-sur-Mer : gestion réservations, yield management saisonnier, CRM clients fidèles, automatisation accueil, agents conversationnels multilingues pour les PME et ETI du littoral.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bretignolles-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants hôtels, campings, restaurants, écoles de surf et professions libérales de la côte vendéenne.",
-      en: "Coaching 1-to-1 à Bretignolles-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants hôtels, campings, restaurants, écoles de surf et professions libérales de la côte vendéenne.",
+      fr: "Coaching 1-to-1 à Bretignolles-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants hôtels, campings, restaurants, écoles de surf et professions libérales de la côte vendéenne.",
+      en: "Coaching 1-to-1 à Bretignolles-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants hôtels, campings, restaurants, écoles de surf et professions libérales de la côte vendéenne.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bretignolles-sur-Mer  : quel budget prévoir ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
     },
     {
       q: "Accompagnez-vous les PME du tourisme et de l'hôtellerie ?",
@@ -65,7 +65,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Bretignolles-sur-Mer ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Bretignolles-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Bretignolles-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

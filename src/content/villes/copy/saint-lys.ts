@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LYS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne ouest de Toulouse.",
+    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu PME du BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne ouest de Toulouse.",
   pitchEn:
-    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne ouest de Toulouse.",
+    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu PME du BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lys (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lys (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lys (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lys (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
-    "Saint-Lys est un bourg en croissance de l'ouest de Toulouse. Tissu TPE artisans BTP et second œuvre, PME de services, commerces de centre-bourg animé, professions libérales, exploitations agricoles céréalières. Axe Toulouse-Auch (RN124).",
+    "Saint-Lys est un bourg en croissance de l'ouest de Toulouse. Tissu PME du BTP et second œuvre, PME de services, commerces de centre-bourg animé, professions libérales, exploitations agricoles céréalières. Axe Toulouse-Auch (RN124).",
   ecosystemEn:
-    "Saint-Lys est un bourg en croissance de l'ouest de Toulouse. Tissu TPE artisans BTP et second œuvre, PME de services, commerces de centre-bourg animé, professions libérales, exploitations agricoles céréalières. Axe Toulouse-Auch (RN124).",
+    "Saint-Lys est un bourg en croissance de l'ouest de Toulouse. Tissu PME du BTP et second œuvre, PME de services, commerces de centre-bourg animé, professions libérales, exploitations agricoles céréalières. Axe Toulouse-Auch (RN124).",
   distancesFr:
     "Toulouse centre à 30 min (RN124). Gare Matabiau à 35 min. Aéroport Toulouse-Blagnac à 25 min. Fonsorbes à 8 min. Muret à 15 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SAINT_LYS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Lys : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Lys : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Lys : diagnostic adapté aux PME du BTP, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Lys : diagnostic adapté aux PME du BTP, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Lys : formats adaptés à l'artisan BTP, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
       en: "Interventions IA sur site à Saint-Lys : formats adaptés à l'artisan BTP, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Saint-Lys : automatisation devis chantier, gestion clients commerce, classification documents, agents conversationnels pour TPE-PME ouest Toulouse.",
-      en: "Implémentation IA à Saint-Lys : automatisation devis chantier, gestion clients commerce, classification documents, agents conversationnels pour TPE-PME ouest Toulouse.",
+      fr: "Implémentation IA à Saint-Lys : automatisation devis chantier, gestion clients commerce, classification documents, agents conversationnels pour PME et ETI ouest Toulouse.",
+      en: "Implémentation IA à Saint-Lys : automatisation devis chantier, gestion clients commerce, classification documents, agents conversationnels pour PME et ETI ouest Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Lys : sessions dirigeants TPE artisans et PME de services de l'ouest toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Saint-Lys : sessions dirigeants TPE artisans et PME de services de l'ouest toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Saint-Lys : sessions dirigeants PME artisanales et PME de services de l'ouest toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Saint-Lys : sessions dirigeants PME artisanales et PME de services de l'ouest toulousain, dans vos locaux ou en visio.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const SAINT_LYS_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Lys ?",
-      a: "Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME du BTP, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Lys  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Lys ?",

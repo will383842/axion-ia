@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const CREUTZWALD_COPY: VilleCopy = {
   pitchFr:
-    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu PME et ETI industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu PME et ETI industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : PME et ETI industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : PME et ETI industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
   ecosystemFr:
-    "Creutzwald est une ville frontalière du bassin houiller lorrain, dans le Warndt, à la lisière de l'Allemagne. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces de proximité, artisanat, services. Bassin de vie de la Moselle-est tourné vers la Sarre.",
+    "Creutzwald est une ville frontalière du bassin houiller lorrain, dans le Warndt, à la lisière de l'Allemagne. Tissu PME et ETI industrie reconvertie, logistique transfrontalière, commerces de proximité, artisanat, services. Bassin de vie de la Moselle-est tourné vers la Sarre.",
   ecosystemEn:
-    "Creutzwald est une ville frontalière du bassin houiller lorrain, dans le Warndt, à la lisière de l'Allemagne. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces de proximité, artisanat, services. Bassin de vie de la Moselle-est tourné vers la Sarre.",
+    "Creutzwald est une ville frontalière du bassin houiller lorrain, dans le Warndt, à la lisière de l'Allemagne. Tissu PME et ETI industrie reconvertie, logistique transfrontalière, commerces de proximité, artisanat, services. Bassin de vie de la Moselle-est tourné vers la Sarre.",
   distancesFr:
     "Sarrebruck (Allemagne) à 25 min. Forbach à 15 min. Metz à 50 min. Autoroute A4 accès à 20 min. Luxembourg à 1h. Aéroport Sarrebruck à 30 min. Aéroport Metz-Nancy-Lorraine à 1h.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CREUTZWALD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Creutzwald : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Creutzwald : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Creutzwald : diagnostic adapté aux PME et ETI industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Creutzwald : diagnostic adapté aux PME et ETI industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Creutzwald : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const CREUTZWALD_COPY: VilleCopy = {
       en: "Implémentation IA à Creutzwald : automatisation gestion logistique transfrontalière, traçabilité industrielle, agents conversationnels bilingues FR/DE, workflow douanier, gestion commerciale.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Creutzwald : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, logisticiens, commerçants, artisans, gérants TPE/PME du Warndt.",
-      en: "Coaching 1-to-1 à Creutzwald : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, logisticiens, commerçants, artisans, gérants TPE/PME du Warndt.",
+      fr: "Coaching 1-to-1 à Creutzwald : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, logisticiens, commerçants, artisans, gérants PME et ETI du Warndt.",
+      en: "Coaching 1-to-1 à Creutzwald : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, logisticiens, commerçants, artisans, gérants PME et ETI du Warndt.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const CREUTZWALD_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Creutzwald et dans le bassin de la Moselle-est (Forbach, Saint-Avold, Carling). Consultants via A4 ou gares SNCF de Forbach. Position frontalière avec l'Allemagne (Sarrebruck à 25 min).",
     },
     {
-      q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",
-      a: "Oui, nous accompagnons les TPE/PME industrie reconvertie et logistique transfrontalière creutzwaldoises : traçabilité production, automatisation workflow, gestion douanière, optimisation entrepôts.",
+      q: "Travaillez-vous avec les PME et ETI industrielles et logistiques ?",
+      a: "Oui, nous accompagnons les PME et ETI industrie reconvertie et logistique transfrontalière creutzwaldoises : traçabilité production, automatisation workflow, gestion douanière, optimisation entrepôts.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Creutzwald ?",
@@ -61,7 +61,7 @@ export const CREUTZWALD_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Creutzwald ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Creutzwald ?",

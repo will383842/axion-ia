@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VALLIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu PME du BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu PME du BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vallier (71). Nous accompagnons PME et ETI : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vallier (71). Nous accompagnons PME et ETI : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit sur place sur mesure.",
   ecosystemFr:
-    "Saint-Vallier est une commune du bassin minier Le Creusot-Montceau, marquée par un héritage industriel en reconversion. Proximité directe avec Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles diversifiées, commerce, logistique, services aux entreprises.",
+    "Saint-Vallier est une commune du bassin minier Le Creusot-Montceau, marquée par un héritage industriel en reconversion. Proximité directe avec Montceau-les-Mines. Tissu PME du BTP, PME industrielles diversifiées, commerce, logistique, services aux entreprises.",
   ecosystemEn:
-    "Saint-Vallier est une commune du bassin minier Le Creusot-Montceau, marquée par un héritage industriel en reconversion. Proximité directe avec Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles diversifiées, commerce, logistique, services aux entreprises.",
+    "Saint-Vallier est une commune du bassin minier Le Creusot-Montceau, marquée par un héritage industriel en reconversion. Proximité directe avec Montceau-les-Mines. Tissu PME du BTP, PME industrielles diversifiées, commerce, logistique, services aux entreprises.",
   distancesFr:
     "Montceau-les-Mines à 5 min. Le Creusot-TGV à 20 min. Chalon-sur-Saône à 40 min. Mâcon à 50 min. Lyon à 1h30.",
   distancesEn:
@@ -23,15 +23,15 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
   seoHook: "industrie & bassin Le Creusot-Montceau",
   topSectorsNaf: [
     "PME industrielles reconversion",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Logistique et transport",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, PME du BTP, prestataires logistique, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, PME du BTP, prestataires logistique, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vallier : formats adaptés atelier industriel, chantier BTP, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Vallier : prédiction maintenance industrielle, automatisation devis BTP, optimisation tournées logistiques, CRM commerçants bassin Montceau.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Vallier : sessions dans votre atelier, bureau, chantier ou en visio. Dirigeants TPE/PME, industriels, artisans BTP, gérants commerce bassin Montceau.",
-      en: "Coaching 1-to-1 à Saint-Vallier : sessions dans votre atelier, bureau, chantier ou en visio. Dirigeants TPE/PME, industriels, artisans BTP, gérants commerce bassin Montceau.",
+      fr: "Coaching 1-to-1 à Saint-Vallier : sessions dans votre atelier, bureau, chantier ou en visio. Dirigeants PME et ETI, industriels, artisans BTP, gérants commerce bassin Montceau.",
+      en: "Coaching 1-to-1 à Saint-Vallier : sessions dans votre atelier, bureau, chantier ou en visio. Dirigeants PME et ETI, industriels, artisans BTP, gérants commerce bassin Montceau.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
       a: "Oui, prédiction maintenance machines, automatisation contrôle qualité, optimisation supply chain, digitalisation processus production. Accompagnement reconversion industrielle vers IA.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP ?",
+      q: "Accompagnez-vous les PME du BTP ?",
       a: "Oui, automatisation devis et factures, planification chantiers assistée IA, gestion sous-traitants, CRM prospects. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {

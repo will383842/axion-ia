@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-d'Uriage (38), commune du massif de Belledonne en Isère, abrite la station thermale historique d'Uriage-les-Bains (sources thermales reconnues). Tissu PME tourisme thermal, TPE artisans BTP, agriculture montagne, commerces. Axion-IA y intervient pour tous types d'activités du Grésivaudan oriental.",
+    "Saint-Martin-d'Uriage (38), commune du massif de Belledonne en Isère, abrite la station thermale historique d'Uriage-les-Bains (sources thermales reconnues). Tissu PME tourisme thermal, PME du BTP, agriculture montagne, commerces. Axion-IA y intervient pour tous types d'activités du Grésivaudan oriental.",
   pitchEn:
-    "Saint-Martin-d'Uriage (38), commune du massif de Belledonne en Isère, abrite la station thermale historique d'Uriage-les-Bains (sources thermales reconnues). Tissu PME tourisme thermal, TPE artisans BTP, agriculture montagne, commerces. Axion-IA y intervient pour tous types d'activités du Grésivaudan oriental.",
+    "Saint-Martin-d'Uriage (38), commune du massif de Belledonne en Isère, abrite la station thermale historique d'Uriage-les-Bains (sources thermales reconnues). Tissu PME tourisme thermal, PME du BTP, agriculture montagne, commerces. Axion-IA y intervient pour tous types d'activités du Grésivaudan oriental.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, TPE artisans BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, PME du BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, TPE artisans BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, PME du BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
   seoHook: "thermalisme santé & hôtellerie restauration",
   ecosystemFr:
-    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
+    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, PME du BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
   ecosystemEn:
-    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
+    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, PME du BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
   distancesFr:
     "Grenoble centre à 20 min voiture (D524). Aéroport Grenoble-Alpes-Isère à 1h. Station Chamrousse à 30 min. Eybens à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Thermalisme & santé (Uriage-les-Bains)",
     "Hôtellerie & restauration tourisme thermal",
-    "TPE artisanat BTP montagne",
+    "PME du BTP montagne",
     "Agriculture & élevage Belledonne",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, PME artisanales, agriculteurs Belledonne et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, PME artisanales, agriculteurs Belledonne et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-d'Uriage : formats adaptés à l'établissement thermal, hôtel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Martin-d'Uriage : agents conversationnels multilingues curistes, automatisation réservations cure thermale, gestion saisonnalité hôtelière, classification documents santé.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Martin-d'Uriage : sessions dans votre établissement thermal, hôtel, exploitation ou en visio. Acteurs thermalisme, hôteliers, agriculteurs, artisans, gérants TPE/PME uriageois.",
-      en: "Coaching 1-to-1 à Saint-Martin-d'Uriage : sessions dans votre établissement thermal, hôtel, exploitation ou en visio. Acteurs thermalisme, hôteliers, agriculteurs, artisans, gérants TPE/PME uriageois.",
+      fr: "Coaching 1-to-1 à Saint-Martin-d'Uriage : sessions dans votre établissement thermal, hôtel, exploitation ou en visio. Acteurs thermalisme, hôteliers, agriculteurs, artisans, gérants PME et ETI uriageois.",
+      en: "Coaching 1-to-1 à Saint-Martin-d'Uriage : sessions dans votre établissement thermal, hôtel, exploitation ou en visio. Acteurs thermalisme, hôteliers, agriculteurs, artisans, gérants PME et ETI uriageois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du thermalisme à Uriage (établissement thermal, hôtels de cure, professionnels santé associés) sur leurs cas IA : agents conversationnels multilingues curistes, automatisation réservations cures, gestion saisonnalité, classification documents santé. RGPD-santé strict.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et agriculteurs montagne ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP montagne et agriculteurs/éleveurs des contreforts Belledonne sur des cas IA pratiques : automatisation devis chantier, prédiction météo, classification photos animaux/cultures, gestion saisonnalité.",
+      q: "Accompagnez-vous les PME artisanales et agriculteurs montagne ?",
+      a: "Oui, nous accompagnons les PME du BTP montagne et agriculteurs/éleveurs des contreforts Belledonne sur des cas IA pratiques : automatisation devis chantier, prédiction météo, classification photos animaux/cultures, gestion saisonnalité.",
     },
     {
       q: "Quels services pour les hôteliers et commerces locaux ?",

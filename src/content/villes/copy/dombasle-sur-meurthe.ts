@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
   pitchFr:
-    "Dombasle-sur-Meurthe (54), commune industrielle de Meurthe-et-Moselle sur les bords de la Meurthe, est historiquement liée à l'industrie chimique et saline (site Solvay). Tissu TPE/PME chimie, maintenance industrielle, services aux entreprises, artisans BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Dombasle-sur-Meurthe (54), commune industrielle de Meurthe-et-Moselle sur les bords de la Meurthe, est historiquement liée à l'industrie chimique et saline (site Solvay). Tissu PME et ETI chimie, maintenance industrielle, services aux entreprises, artisans BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Dombasle-sur-Meurthe (54), commune industrielle de Meurthe-et-Moselle sur les bords de la Meurthe, est historiquement liée à l'industrie chimique et saline (site Solvay). Tissu TPE/PME chimie, maintenance industrielle, services aux entreprises, artisans BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Dombasle-sur-Meurthe (54), commune industrielle de Meurthe-et-Moselle sur les bords de la Meurthe, est historiquement liée à l'industrie chimique et saline (site Solvay). Tissu PME et ETI chimie, maintenance industrielle, services aux entreprises, artisans BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : TPE/PME industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : PME et ETI industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : TPE/PME industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dombasle-sur-Meurthe (54). Nous accompagnons tous types d'activités : PME et ETI industrielles et chimiques, sous-traitants maintenance, artisans BTP, commerçants et services aux entreprises du bassin salifère lorrain.",
   ecosystemFr:
     "Dombasle-sur-Meurthe est une commune industrielle du bassin salifère lorrain, historiquement marquée par l'industrie chimique et la soude (site Solvay). Son tissu économique repose sur la chimie, la maintenance industrielle, les services aux entreprises, l'artisanat BTP et le commerce de proximité. Proximité immédiate de Nancy et du Lunévillois.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie chimique & saline",
     "Maintenance industrielle & sous-traitance",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Commerce de proximité & services",
     "Services aux entreprises & logistique",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux PME et ETI industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux PME et ETI industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dombasle-sur-Meurthe : formats adaptés à l'atelier industriel, au bureau PME ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
       en: "Implémentation IA à Dombasle-sur-Meurthe : optimisation process industriels, contrôle qualité, automatisation maintenance prédictive, agents conversationnels B2B, workflow documentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Dombasle-sur-Meurthe : sessions dans vos locaux industriels, bureau ou en visio. Gérants TPE/PME, responsables maintenance, dirigeants du bassin salifère lorrain.",
-      en: "Coaching 1-to-1 à Dombasle-sur-Meurthe : sessions dans vos locaux industriels, bureau ou en visio. Gérants TPE/PME, responsables maintenance, dirigeants du bassin salifère lorrain.",
+      fr: "Coaching 1-to-1 à Dombasle-sur-Meurthe : sessions dans vos locaux industriels, bureau ou en visio. Gérants PME et ETI, responsables maintenance, dirigeants du bassin salifère lorrain.",
+      en: "Coaching 1-to-1 à Dombasle-sur-Meurthe : sessions dans vos locaux industriels, bureau ou en visio. Gérants PME et ETI, responsables maintenance, dirigeants du bassin salifère lorrain.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et chimiques de Dombasle ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et chimiques : optimisation process, contrôle qualité visuel, maintenance prédictive, automatisation workflow documentaire, agents conversationnels B2B.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et chimiques : optimisation process, contrôle qualité visuel, maintenance prédictive, automatisation workflow documentaire, agents conversationnels B2B.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Dombasle-sur-Meurthe ?",
@@ -61,7 +61,7 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Dombasle-sur-Meurthe  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Dombasle-sur-Meurthe et du bassin salifère. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Dombasle-sur-Meurthe et du bassin salifère. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Dombasle-sur-Meurthe ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const OSTWALD_COPY: VilleCopy = {
   pitchFr:
-    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
+    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu PME et ETI services, conseil, numérique, commerce, BTP et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
+    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu PME et ETI services, conseil, numérique, commerce, BTP et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : PME et ETI services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : PME et ETI services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
   ecosystemFr:
-    "Ostwald est une commune résidentielle du Bas-Rhin dans l'agglomération sud de Strasbourg. Tissu TPE/PME services, conseil, numérique, commerce, BTP, artisanat, professions libérales. Accès direct au bassin d'emploi strasbourgeois et aux institutions européennes.",
+    "Ostwald est une commune résidentielle du Bas-Rhin dans l'agglomération sud de Strasbourg. Tissu PME et ETI services, conseil, numérique, commerce, BTP, artisanat, professions libérales. Accès direct au bassin d'emploi strasbourgeois et aux institutions européennes.",
   ecosystemEn:
-    "Ostwald est une commune résidentielle du Bas-Rhin dans l'agglomération sud de Strasbourg. Tissu TPE/PME services, conseil, numérique, commerce, BTP, artisanat, professions libérales. Accès direct au bassin d'emploi strasbourgeois et aux institutions européennes.",
+    "Ostwald est une commune résidentielle du Bas-Rhin dans l'agglomération sud de Strasbourg. Tissu PME et ETI services, conseil, numérique, commerce, BTP, artisanat, professions libérales. Accès direct au bassin d'emploi strasbourgeois et aux institutions européennes.",
   distancesFr:
     "Strasbourg centre à 10 min. Illkirch-Graffenstaden à 5 min. Lingolsheim à 5 min. Gare de Strasbourg (TGV Paris 1h46) à 12 min. Tram CTS ligne A accessible. Aéroport Strasbourg-Entzheim à 10 min. Autoroute A35 accès direct.",
   distancesEn:
@@ -30,8 +30,8 @@ export const OSTWALD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Ostwald : diagnostic adapté aux PME et ETI services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Ostwald : diagnostic adapté aux PME et ETI services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ostwald : formats adaptés au bureau, cabinet, commerce, chantier. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const OSTWALD_COPY: VilleCopy = {
       en: "Implémentation IA à Ostwald : automatisation processus métier, agents conversationnels, CRM intelligent, automatisation comptabilité, outils collaboratifs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ostwald : sessions dans votre bureau, cabinet ou en visio. Consultants, professions libérales, gérants TPE/PME, entrepreneurs numériques de l'agglo strasbourgeoise.",
-      en: "Coaching 1-to-1 à Ostwald : sessions dans votre bureau, cabinet ou en visio. Consultants, professions libérales, gérants TPE/PME, entrepreneurs numériques de l'agglo strasbourgeoise.",
+      fr: "Coaching 1-to-1 à Ostwald : sessions dans votre bureau, cabinet ou en visio. Consultants, professions libérales, gérants PME et ETI, entrepreneurs numériques de l'agglo strasbourgeoise.",
+      en: "Coaching 1-to-1 à Ostwald : sessions dans votre bureau, cabinet ou en visio. Consultants, professions libérales, gérants PME et ETI, entrepreneurs numériques de l'agglo strasbourgeoise.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const OSTWALD_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises de services et le numérique ?",
-      a: "Oui, nous accompagnons les TPE/PME services, conseil et numérique d'Ostwald et de l'agglo strasbourgeoise : automatisation processus, IA métier, CRM intelligent, agents conversationnels. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et ETI services, conseil et numérique d'Ostwald et de l'agglo strasbourgeoise : automatisation processus, IA métier, CRM intelligent, agents conversationnels. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Ostwald ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

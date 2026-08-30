@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const LOUVRES_COPY: VilleCopy = {
   pitchFr:
-    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de PME artisanales, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de PME artisanales, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louvres (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louvres (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louvres (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Louvres (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
   seoHook: "logistique transport & artisanat services",
   ecosystemFr:
-    "Louvres est située aux portes de l'aéroport Paris-Charles-de-Gaulle, dans le Pays de France (nord Val-d'Oise). L'économie locale bénéficie de la proximité Roissy-CDG : PME logistiques, transporteurs, prestataires aéroportuaires, TPE artisans BTP, commerces et professions libérales. Tissu en forte croissance démographique.",
+    "Louvres est située aux portes de l'aéroport Paris-Charles-de-Gaulle, dans le Pays de France (nord Val-d'Oise). L'économie locale bénéficie de la proximité Roissy-CDG : PME logistiques, transporteurs, prestataires aéroportuaires, PME du BTP, commerces et professions libérales. Tissu en forte croissance démographique.",
   ecosystemEn:
-    "Louvres est située aux portes de l'aéroport Paris-Charles-de-Gaulle, dans le Pays de France (nord Val-d'Oise). L'économie locale bénéficie de la proximité Roissy-CDG : PME logistiques, transporteurs, prestataires aéroportuaires, TPE artisans BTP, commerces et professions libérales. Tissu en forte croissance démographique.",
+    "Louvres est située aux portes de l'aéroport Paris-Charles-de-Gaulle, dans le Pays de France (nord Val-d'Oise). L'économie locale bénéficie de la proximité Roissy-CDG : PME logistiques, transporteurs, prestataires aéroportuaires, PME du BTP, commerces et professions libérales. Tissu en forte croissance démographique.",
   distancesFr:
     "Gare de Louvres (RER D). Paris Gare du Nord à 30 min. Aéroport Roissy-CDG à 10 min. Gonesse à 10 min. Fosses à 5 min. Survilliers à 5 min.",
   distancesEn:
     "Gare de Louvres (RER D). Paris Gare du Nord à 30 min. Aéroport Roissy-CDG à 10 min. Gonesse à 10 min. Fosses à 5 min. Survilliers à 5 min.",
   topSectorsNaf: [
     "Logistique & transport aéroportuaire (Roissy-CDG)",
-    "TPE artisanat BTP & services",
+    "PME du BTP & services",
     "PME tertiaires Pays de France",
     "Commerce de proximité & restauration",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louvres : diagnostic adapté aux TPE artisans, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Louvres : diagnostic adapté aux TPE artisans, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Louvres : diagnostic adapté aux PME artisanales, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Louvres : diagnostic adapté aux PME artisanales, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louvres : formats adaptés à l'entrepôt logistique, bureau, cabinet ou commerce. Vos équipes (logisticiens, commerciaux, artisans) repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LOUVRES_COPY: VilleCopy = {
       en: "Implémentation IA à Louvres : optimisation tournées logistiques Roissy, automatisation supply chain, agents conversationnels B2B, prédiction maintenance. Tous secteurs Pays de France.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Louvres : sessions dans votre entrepôt, bureau, cabinet ou en visio. Dirigeants logistiques, artisans, gérants TPE/PME, professions libérales du Pays de France.",
-      en: "Coaching 1-to-1 à Louvres : sessions dans votre entrepôt, bureau, cabinet ou en visio. Dirigeants logistiques, artisans, gérants TPE/PME, professions libérales du Pays de France.",
+      fr: "Coaching 1-to-1 à Louvres : sessions dans votre entrepôt, bureau, cabinet ou en visio. Dirigeants logistiques, artisans, gérants PME et ETI, professions libérales du Pays de France.",
+      en: "Coaching 1-to-1 à Louvres : sessions dans votre entrepôt, bureau, cabinet ou en visio. Dirigeants logistiques, artisans, gérants PME et ETI, professions libérales du Pays de France.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LOUVRES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistiques et transporteurs de la zone Roissy-CDG sur leurs cas IA opérationnels : optimisation tournées, automatisation préparation commandes, prédiction volumes, agents IA service client B2B. ROI chiffré contractuel.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants de Louvres ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Louvres sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Louvres ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce à Louvres sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les professions libérales à Louvres ?",

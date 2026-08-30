@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   pitchFr:
-    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. PME et ETI logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. PME et ETI logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Varennes-Vauzelles (58). Nous accompagnons PME et ETI : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Varennes-Vauzelles (58). Nous accompagnons PME et ETI : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce zone",
   ecosystemFr:
     "Varennes-Vauzelles est la principale zone d'activités de l'agglomération de Nevers, en bordure nord de la préfecture nivernaise. Elle accueille des entrepôts logistiques, des commerces de zone, des entreprises de transport, des artisans BTP, des professions libérales et des prestataires de services aux entreprises. Position stratégique au carrefour A77 (Paris-Nevers) et RN7.",
@@ -30,8 +30,8 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux PME logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux PME logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Varennes-Vauzelles : formats adaptés à l'entrepôt, au commerce de zone, au bureau PME ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
       en: "Implémentation IA à Varennes-Vauzelles : optimisation tournées logistique, gestion stocks entrepôt, CRM augmenté commerce, automatisation devis BTP, outils IA professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Varennes-Vauzelles : sessions dans vos locaux (entrepôt, bureau, commerce) ou en visio. Dirigeants TPE/PME de l'agglomération neversoise souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Varennes-Vauzelles : sessions dans vos locaux (entrepôt, bureau, commerce) ou en visio. Dirigeants TPE/PME de l'agglomération neversoise souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Varennes-Vauzelles : sessions dans vos locaux (entrepôt, bureau, commerce) ou en visio. Dirigeants PME et ETI de l'agglomération neversoise souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Varennes-Vauzelles : sessions dans vos locaux (entrepôt, bureau, commerce) ou en visio. Dirigeants PME et ETI de l'agglomération neversoise souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises logistiques et de transport ?",
-      a: "Oui, nous accompagnons les TPE et PME logistiques de Varennes-Vauzelles : optimisation tournées IA, gestion stocks entrepôt, planification chargements, automatisation administrative transport, traçabilité colis. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et ETI logistiques de Varennes-Vauzelles : optimisation tournées IA, gestion stocks entrepôt, planification chargements, automatisation administrative transport, traçabilité colis. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Varennes-Vauzelles  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités de l'agglomération neversoise, il identifie les cas d'usage IA à fort ROI. Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI des zones d'activités de l'agglomération neversoise, il identifie les cas d'usage IA à fort ROI. Tarifs publics.",
     },
     {
       q: "Proposez-vous des formations IA pour les commerces de zone ?",

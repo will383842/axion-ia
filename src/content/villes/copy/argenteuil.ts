@@ -6,7 +6,7 @@
 //   - Aucune mention de frais annexes (déplacement, logement, repas, trajet).
 //   - Durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -23,7 +23,7 @@ import type { VilleCopy } from "./types";
 
 export const ARGENTEUIL_COPY: VilleCopy = {
   pitchFr:
-    "Argenteuil regroupe 9 045 établissements actifs, une gare Transilien (Paris Saint-Lazare en ~12 min) et un tissu PME diversifié : commerce, BTP, services. Berceau de l'Impressionnisme et ancienne capitale aéronautique (site Dassault Aviation 1952-2025), la ville se réinvente avec un tissu de TPE/PME dynamiques que les outils IA transforment en avantage compétitif. Axion-IA y intervient sur site.",
+    "Argenteuil regroupe 9 045 établissements actifs, une gare Transilien (Paris Saint-Lazare en ~12 min) et un tissu PME diversifié : commerce, BTP, services. Berceau de l'Impressionnisme et ancienne capitale aéronautique (site Dassault Aviation 1952-2025), la ville se réinvente avec un tissu de PME et ETI dynamiques que les outils IA transforment en avantage compétitif. Axion-IA y intervient sur site.",
   pitchEn:
     "Argenteuil hosts 9,045 active businesses, a Transilien rail link to Paris Saint-Lazare (~12 min) and a diverse SME base spanning commerce, construction and services. Birthplace of Impressionism and former aerospace hub (Dassault Aviation 1952-2025), the city is reinventing itself around a dynamic micro-business and SME fabric where AI tools deliver competitive edge. Axion-IA delivers on site.",
 
@@ -45,13 +45,13 @@ export const ARGENTEUIL_COPY: VilleCopy = {
       en: "Individual AI coaching in Argenteuil: a dedicated consultant for the executive, freelancer or manager who wants to build AI skills at their own pace, on their real business cases. Flexible format, in-person or remote.",
     },
     sitesWeb: {
-      fr: "Plateformes web et SaaS IA sur mesure pour TPE/PME argenteuillaises et du Val-d'Oise — site vitrine pour commerçants, artisans et acteurs BTP, espace client pour cabinets de services, dashboard métier connecté à votre CRM/ERP ou outil de gestion BTP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI argenteuillaises et du Val-d'Oise — site vitrine pour commerçants, artisans et acteurs BTP, espace client pour cabinets de services, dashboard métier connecté à votre CRM/ERP ou outil de gestion BTP. Architectes seniors, design system Axion-IA, hébergement européen.",
       en: "Custom web platforms and SaaS AI for Argenteuil and Val-d'Oise micro-businesses/SMEs — showcase site for traders, craftspeople and construction firms, customer space for service practices, business dashboard connected to your CRM/ERP or construction management tool. Senior experts, Axion-IA design system, European hosting.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argenteuil (95) sur site — quartiers résidentiels, zones d'activités, Parc du Val d'Argent et communes du bassin (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). Nous accompagnons les TPE, PME, ETI et grandes entreprises argenteuillaises (commerce, BTP, services, industrie en reconversion) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argenteuil (95) sur site — quartiers résidentiels, zones d'activités, Parc du Val d'Argent et communes du bassin (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). Nous accompagnons les PME, ETI et grands groupes argenteuillais (commerce, BTP, services, industrie en reconversion) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Argenteuil (95) on site — residential districts, business parks, Parc du Val d'Argent and basin communes (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). We support Argenteuil micro-businesses, SMEs, mid-caps and large enterprises (commerce, construction, services, industrial reconversion) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -77,7 +77,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Argenteuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Argenteuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise). Aucun supplément géographique : le tarif est identique à Argenteuil et partout en France.",
     },
     {
       q: "Avez-vous des clients dans le secteur BTP à Argenteuil ?",
@@ -89,7 +89,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs sont prioritaires à Argenteuil pour une mission IA ?",
-      a: "Nos déploiements dans le bassin argentin couvrent en priorité le commerce et les services (dominant local), le BTP et la construction, les TPE/PME de services aux entreprises, et les acteurs de la logistique et distribution. Tout secteur B2B est éligible à un audit.",
+      a: "Nos déploiements dans le bassin argentin couvrent en priorité le commerce et les services (dominant local), le BTP et la construction, les PME et ETI de services aux entreprises, et les acteurs de la logistique et distribution. Tout secteur B2B est éligible à un audit.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Argenteuil ?",
@@ -110,7 +110,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise argenteuillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des commerçants et artisans du Val-d'Oise aux PME du BTP, des services et de la logistique implantées dans le bassin Seine–Saint-Lazare.",
         whyHere: [
           "Argenteuil est la 3e ville d'Île-de-France hors Paris (9 045 établissements actifs, 2 690 créations par an) : tissu PME dense et diversifié qui représente exactement le profil où l'IA opérationnelle délivre le ROI le plus rapide.",
-          "Tissu B2B local sur-représenté chez nos clients : commerce de gros et distribution, BTP et construction (23,6 % des établissements), services aux entreprises et TPE de services qui ont besoin d'automatiser pour rester compétitifs.",
+          "Tissu B2B local sur-représenté chez nos clients : commerce de gros et distribution, BTP et construction (23,6 % des établissements), services aux entreprises et PME de services qui ont besoin d'automatiser pour rester compétitifs.",
           "Nos consultants se déplacent sur l'ensemble du bassin : Argenteuil, Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis, Houilles, Sannois et jusqu'à La Défense pour les structures multi-sites.",
           "Restitutions toujours en présentiel : ateliers d'idéation dans vos locaux argenteuillais, lecture du livrable avec votre direction, plan d'action remis en main propre.",
           "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
@@ -144,12 +144,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux commerçants, artisans, indépendants et cabinets argenteuillais jusqu'à une dizaine de collaborateurs — commerce de proximité, TPE de services, micro-entrepreneurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -251,12 +245,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Argenteuil traders, craftspeople, freelancers and practices up to about ten staff — local commerce, services micro-firms, sole traders.",
-          },
-          {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
             detail:
@@ -323,7 +311,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Argenteuil se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en chantier, en boutique, au bureau ou en déplacement clientèle.",
         whyHere: [
-          "Le tissu TPE/PME argenteuillais est l'environnement idéal pour les interventions IA : entreprises de taille humaine où chaque collaborateur formé multiplie immédiatement l'impact sur la productivité collective.",
+          "Le tissu PME et ETI argenteuillais est l'environnement idéal pour les interventions IA : entreprises de taille humaine où chaque collaborateur formé multiplie immédiatement l'impact sur la productivité collective.",
           "Tous les quartiers et zones d'activités couverts en présentiel : centre-ville, Parc du Val d'Argent, zone industrielle, quartiers résidentiels et communes du bassin (Bezons, Sartrouville, Colombes).",
           "Le format collectif (1 journée) est calibré pour les structures argenteuillaises de quelques personnes à une centaine de collaborateurs — PME du BTP, commerces de gros, agences de services.",
           "Le format Conférence convient aux plénières d'entreprise du Val-d'Oise (salles de séminaire d'Argenteuil, espaces CCI).",
@@ -358,12 +346,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour commerçants, artisans, indépendants et petites agences argenteuillaises jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -464,12 +446,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group training",
-            detail:
-              "Ideal for Argenteuil traders, craftspeople, freelancers and small agencies up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -573,12 +549,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants argenteuillais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -614,7 +584,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Argenteuil ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -678,12 +648,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Argenteuil micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -751,7 +715,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
       fr: {
         hero: "L'accompagnement individuel IA Axion-IA à Argenteuil s'adresse au dirigeant, au manager ou à l'indépendant qui veut monter en compétences IA à son rythme — sur ses vrais cas métier du commerce, du BTP ou des services. Format flexible : une à plusieurs journées, sur site dans le bassin argentin ou à distance selon votre emploi du temps.",
         whyHere: [
-          "Le tissu argentin est majoritairement composé de TPE et d'indépendants : un accompagnement individuel est souvent plus efficace qu'une session collective pour des profils isolés ou des dirigeants sans équipe dédiée.",
+          "Le tissu argentin est majoritairement composé de PME et d'indépendants : un accompagnement individuel est souvent plus efficace qu'une session collective pour des profils isolés ou des dirigeants sans équipe dédiée.",
           "Chaque session est construite autour de VOS cas métier réels : devis, emails clients, qualification de chantiers, reporting, gestion administrative — pas de générique.",
           "Flexibilité maximale : le format s'adapte à votre emploi du temps de dirigeant — matinée, journée complète, séances étalées dans le temps.",
           "Accompagnement de la gare d'Argenteuil à La Défense : si vous avez des rendez-vous clients dans le Grand Paris, nous adaptons les sessions à votre géographie professionnelle.",
@@ -787,12 +751,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Accompagnement individuel — tarif entrée",
-            detail:
-              "Pour indépendants, micro-entrepreneurs et dirigeants de TPE argenteuillaises. Une à plusieurs journées selon le programme choisi.",
-          },
-          {
             sizeLabel: "PME",
             price: "Accompagnement dirigeant/manager",
             detail:
@@ -816,7 +774,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
             quote:
               "J'avais besoin d'un accompagnement sur mesure, pas d'une formation collective. En deux sessions, j'ai configuré l'IA sur mes vrais devis BTP et mes emails de suivi chantier. Gain de temps immédiat.",
             role: "Artisan entrepreneur",
-            companyProfile: "TPE bâtiment, Val-d'Oise",
+            companyProfile: "PME bâtiment, Val-d'Oise",
           },
           {
             quote:
@@ -893,12 +851,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Individual coaching — entry tier",
-            detail:
-              "For Argenteuil freelancers, micro-entrepreneurs and micro-business owners. One to several days depending on the chosen programme.",
-          },
-          {
             sizeLabel: "SME",
             price: "Executive/manager coaching",
             detail:
@@ -965,7 +917,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit et augmente à Argenteuil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Argenteuil, itérations à distance.",
         whyHere: [
-          "Projets web & SaaS argenteuillais : PME diversifiées (commerce, BTP, services), héritage industriel & aéronautique, proximité directe Paris (Saint-Lazare ~12 min), tissu TPE/PME dynamique du Val-d'Oise.",
+          "Projets web & SaaS argenteuillais : PME diversifiées (commerce, BTP, services), héritage industriel & aéronautique, proximité directe Paris (Saint-Lazare ~12 min), tissu PME et ETI dynamique du Val-d'Oise.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
           "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
           "Croissance locale & proximité Paris : sites, e-commerce et automatisations pour PME — on greffe l'IA là où elle paie, sans refonte inutile. Hébergement UE, RGPD strict.",
@@ -998,12 +950,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -1084,12 +1030,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

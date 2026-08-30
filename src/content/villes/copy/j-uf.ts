@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const J_UF_COPY: VilleCopy = {
   pitchFr:
-    "Jœuf (54), commune du Pays Haut en Meurthe-et-Moselle dans la vallée de l'Orne, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Jœuf (54), commune du Pays Haut en Meurthe-et-Moselle dans la vallée de l'Orne, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de PME et ETI industrie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Jœuf (54), commune du Pays Haut en Meurthe-et-Moselle dans la vallée de l'Orne, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Jœuf (54), commune du Pays Haut en Meurthe-et-Moselle dans la vallée de l'Orne, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de PME et ETI industrie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jœuf (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jœuf (54). Nous accompagnons PME et ETI : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jœuf (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jœuf (54). Nous accompagnons PME et ETI : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & artisanat second",
   ecosystemFr:
     "Jœuf est située dans la vallée de l'Orne, au cœur du Pays Haut lorrain, ancien bassin sidérurgique reconverti. Située à 25 km de la frontière luxembourgeoise, la ville bénéficie de l'attractivité transfrontalière (travailleurs frontaliers, sous-traitance industrielle). L'économie locale repose sur l'industrie reconvertie, l'artisanat BTP, le commerce de proximité, les services et l'activité frontalière. Intégration à la Communauté de communes du Bassin de Pompey-Pays Haut.",
@@ -34,16 +34,16 @@ export const J_UF_COPY: VilleCopy = {
       en: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la PME artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la PME artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Jœuf : automatisation devis sous-traitance industrielle, OCR documents transfrontaliers, agents conversationnels relation client B2B, gestion RH frontalière, prévision production.",
       en: "Implémentation IA à Jœuf : automatisation devis sous-traitance industrielle, OCR documents transfrontaliers, agents conversationnels relation client B2B, gestion RH frontalière, prévision production.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Jœuf : sessions dans votre atelier, commerce ou en visio. Dirigeants TPE/PME du Pays Haut et travailleurs frontaliers souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Jœuf : sessions dans votre atelier, commerce ou en visio. Dirigeants TPE/PME du Pays Haut et travailleurs frontaliers souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Jœuf : sessions dans votre atelier, commerce ou en visio. Dirigeants PME et ETI du Pays Haut et travailleurs frontaliers souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Jœuf : sessions dans votre atelier, commerce ou en visio. Dirigeants PME et ETI du Pays Haut et travailleurs frontaliers souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const J_UF_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Jœuf  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Jœuf et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Jœuf et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants du Pays Haut ?",
       a: "Oui, nous accompagnons les industriels reconvertis, ateliers de mécanique et sous-traitants luxembourgeois du Pays Haut. Cas IA typiques : automatisation devis, traçabilité matière, OCR documents transfrontaliers, prévision production et maintenance prédictive.",
     },
     {
-      q: "L'IA peut-elle aider les TPE frontalières de Jœuf ?",
-      a: "Oui, nous accompagnons les TPE/PME, artisans et travailleurs frontaliers sur des cas concrets : gestion administrative bilingue, automatisation paie frontalière, chatbots SAV multilingues, devis multidevises et veille fiscale Luxembourg-France.",
+      q: "L'IA peut-elle aider les PME frontalières de Jœuf ?",
+      a: "Oui, nous accompagnons les PME et ETI, artisans et travailleurs frontaliers sur des cas concrets : gestion administrative bilingue, automatisation paie frontalière, chatbots SAV multilingues, devis multidevises et veille fiscale Luxembourg-France.",
     },
     {
       q: "Proposez-vous des formations IA à Jœuf ?",

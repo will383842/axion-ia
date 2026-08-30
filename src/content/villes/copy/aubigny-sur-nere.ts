@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
   pitchFr:
-    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu PME de l'artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu PME de l'artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : PME artisanales, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : PME artisanales, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
   seoHook: "tourisme patrimonial & artisanat commerces",
   ecosystemFr:
-    "Aubigny-sur-Nère est la Cité des Stuart, aux portes de la Sologne (Cher). Patrimoine Renaissance franco-écossais (château, maisons à colombages). Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, filière bois/forêt, services tertiaires.",
+    "Aubigny-sur-Nère est la Cité des Stuart, aux portes de la Sologne (Cher). Patrimoine Renaissance franco-écossais (château, maisons à colombages). Tissu PME de l'artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, filière bois/forêt, services tertiaires.",
   ecosystemEn:
-    "Aubigny-sur-Nère est la Cité des Stuart, aux portes de la Sologne (Cher). Patrimoine Renaissance franco-écossais (château, maisons à colombages). Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, filière bois/forêt, services tertiaires.",
+    "Aubigny-sur-Nère est la Cité des Stuart, aux portes de la Sologne (Cher). Patrimoine Renaissance franco-écossais (château, maisons à colombages). Tissu PME de l'artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, filière bois/forêt, services tertiaires.",
   distancesFr:
     "Bourges à 45 min. Gien à 30 min. Orléans à 1h15. Vierzon à 40 min. Paris à 2h15 via A77/A71.",
   distancesEn:
     "Bourges à 45 min. Gien à 30 min. Orléans à 1h15. Vierzon à 40 min. Paris à 2h15 via A77/A71.",
   topSectorsNaf: [
     "Tourisme patrimonial (Cité Stuart Renaissance)",
-    "TPE artisanat & commerces",
+    "PME de l'artisanat & commerces",
     "Agroalimentaire Sologne",
     "Filière bois & forêt",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux PME artisanales, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux PME artisanales, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubigny-sur-Nère : formats adaptés au commerce, exploitation agroalimentaire, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
       en: "Implémentation IA à Aubigny-sur-Nère : agents conversationnels visiteurs patrimoine Renaissance multilingue, traçabilité produits Sologne, automatisation gestion stocks, CRM augmenté PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubigny-sur-Nère : sessions dans votre commerce, exploitation, bureau ou en visio. Commerçants tourisme, gérants TPE/PME, exploitants Sologne, artisans albiniens.",
-      en: "Coaching 1-to-1 à Aubigny-sur-Nère : sessions dans votre commerce, exploitation, bureau ou en visio. Commerçants tourisme, gérants TPE/PME, exploitants Sologne, artisans albiniens.",
+      fr: "Coaching 1-to-1 à Aubigny-sur-Nère : sessions dans votre commerce, exploitation, bureau ou en visio. Commerçants tourisme, gérants PME et ETI, exploitants Sologne, artisans albiniens.",
+      en: "Coaching 1-to-1 à Aubigny-sur-Nère : sessions dans votre commerce, exploitation, bureau ou en visio. Commerçants tourisme, gérants PME et ETI, exploitants Sologne, artisans albiniens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
       a: "Oui, traçabilité produits Sologne, automatisation gestion stocks, classification documents qualité, optimisation logistique.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux PME.",
     },
     {
       q: "Comment se passe une mission depuis Bourges ou Orléans ?",

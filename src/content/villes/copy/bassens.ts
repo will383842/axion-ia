@@ -9,9 +9,9 @@ export const BASSENS_COPY: VilleCopy = {
   pitchEn:
     "Bassens (33), commune de la rive droite de Bordeaux Métropole, abrite le Grand Port Maritime de Bordeaux (terminaux industriels, logistique) et un tissu de PME industrielles, artisans BTP et commerces. Axion-IA opère pour toutes les structures économiques de la commune du port et de la rive droite bordelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bassens (33). Nous accompagnons PME et ETI de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bassens (33). Nous accompagnons PME et ETI de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "agglomération port maritime",
   ecosystemFr:
     "Bassens accueille les terminaux du Grand Port Maritime de Bordeaux (vrac, céréales, hydrocarbures). Tissu industriel portuaire dense, PME logistiques et de transformation, artisanat BTP et commerces résidentiels. Accès rocade A630 et rive droite Bordeaux.",
@@ -24,14 +24,14 @@ export const BASSENS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique portuaire & maritime",
     "Industrie de transformation",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bassens : diagnostic pour entreprises portuaires, PME logistiques et industrielles, TPE artisans et commerces de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bassens : diagnostic pour entreprises portuaires, PME logistiques et industrielles, TPE artisans et commerces de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bassens : diagnostic pour entreprises portuaires, PME logistiques et industrielles, PME de l'artisanat et du commerce de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bassens : diagnostic pour entreprises portuaires, PME logistiques et industrielles, PME de l'artisanat et du commerce de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bassens : ateliers adaptés aux terminaux portuaires, usines, ateliers et commerces. Équipes autonomes sur outils IA.",
@@ -60,8 +60,8 @@ export const BASSENS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises du Grand Port Maritime : optimisation logistique, automatisation documents douaniers, prédiction maintenance, agents IA gestion flux.",
     },
     {
-      q: "Quels services pour les TPE artisans à Bassens ?",
-      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      q: "Quels services pour les PME artisanales à Bassens ?",
+      a: "Pour les PME du BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Bassens ?",

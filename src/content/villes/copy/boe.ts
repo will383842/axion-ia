@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BOE_COPY: VilleCopy = {
   pitchFr:
-    "Boé (47), commune de 5 846 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg sud-ouest. Ville résidentielle accueillant l'aéroport Agen-La Garenne, son économie repose sur un tissu de TPE artisans et commerçants, PME logistique et transport, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
+    "Boé (47), commune de 5 846 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg sud-ouest. Ville résidentielle accueillant l'aéroport Agen-La Garenne, son économie repose sur un tissu de PME de l'artisanat et du commerce, PME logistique et transport, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Boé (47), commune de 5 846 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg sud-ouest. Ville résidentielle accueillant l'aéroport Agen-La Garenne, son économie repose sur un tissu de TPE artisans et commerçants, PME logistique et transport, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
+    "Boé (47), commune de 5 846 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg sud-ouest. Ville résidentielle accueillant l'aéroport Agen-La Garenne, son économie repose sur un tissu de PME de l'artisanat et du commerce, PME logistique et transport, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boé (47). Nous accompagnons TPE et PME de l'agglomération agenaise sud-ouest : artisans, commerçants, entreprises logistique et transport, professions libérales et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boé (47). Nous accompagnons PME et ETI de l'agglomération agenaise sud-ouest : artisans, commerçants, entreprises logistique et transport, professions libérales et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boé (47). Nous accompagnons TPE et PME de l'agglomération agenaise sud-ouest : artisans, commerçants, entreprises logistique et transport, professions libérales et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boé (47). Nous accompagnons PME et ETI de l'agglomération agenaise sud-ouest : artisans, commerçants, entreprises logistique et transport, professions libérales et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Boé est un faubourg sud-ouest de l'agglomération d'Agen, accueillant l'aéroport Agen-La Garenne (vols réguliers Paris-Orly). Commune résidentielle, son économie s'appuie sur les services liés à l'aéroport, la logistique, le commerce de proximité, l'artisanat, les professions libérales et les services aux entreprises. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 5 min), Le Passage et Bon-Encontre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BOE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boé : diagnostic adapté aux TPE/PME logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Boé : diagnostic adapté aux TPE/PME logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Boé : diagnostic adapté aux PME et ETI logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Boé : diagnostic adapté aux PME et ETI logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boé : formats adaptés à l'entrepôt logistique, l'atelier, le commerce ou le bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const BOE_COPY: VilleCopy = {
       en: "Implémentation IA à Boé : optimisation logistique et traçabilité colis, automatisation planning transport, gestion stocks, OCR facturation, prédiction flux passagers aéroport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Boé : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants TPE/PME de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Boé : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants TPE/PME de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Boé : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants PME et ETI de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Boé : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants PME et ETI de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const BOE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Boé  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Boé : logisticiens, transporteurs, artisans, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Boé : logisticiens, transporteurs, artisans, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les entreprises de logistique à Boé ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique et transport de l'agglomération agenaise. Cas IA typiques : optimisation tournées, traçabilité colis, gestion entrepôt, prédiction demande, automatisation administrative.",
+      a: "Oui, nous accompagnons les PME et ETI logistique et transport de l'agglomération agenaise. Cas IA typiques : optimisation tournées, traçabilité colis, gestion entrepôt, prédiction demande, automatisation administrative.",
     },
     {
       q: "Proposez-vous des formations IA à Boé ?",

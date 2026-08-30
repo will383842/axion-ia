@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   pitchFr:
-    "Ballancourt-sur-Essonne (91), commune résidentielle semi-rurale de la vallée de l'Essonne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Ballancourt-sur-Essonne (91), commune résidentielle semi-rurale de la vallée de l'Essonne. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, agriculture locale. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Ballancourt-sur-Essonne (91), commune résidentielle semi-rurale de la vallée de l'Essonne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Ballancourt-sur-Essonne (91), commune résidentielle semi-rurale de la vallée de l'Essonne. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, agriculture locale. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons PME et ETI : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons PME et ETI : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
   seoHook: "services & agriculture locale",
   ecosystemFr:
-    "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",
+    "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",
   ecosystemEn:
-    "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",
+    "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",
   distancesFr:
     "Évry-Courcouronnes à 20 min. Paris centre à 45 min. Gare RER D Mennecy à 10 min. Corbeil-Essonnes à 15 min.",
   distancesEn:
     "Évry-Courcouronnes à 20 min. Paris centre à 45 min. Gare RER D Mennecy à 10 min. Corbeil-Essonnes à 15 min.",
   topSectorsNaf: [
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "PME services",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ballancourt-sur-Essonne : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, exploitation agricole. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Ballancourt-sur-Essonne : automatisation devis et facturation artisans, CRM augmenté PME, gestion stocks commerce, planning professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ballancourt-sur-Essonne : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE/PME, artisans, professions libérales vallée de l'Essonne.",
-      en: "Coaching 1-to-1 à Ballancourt-sur-Essonne : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE/PME, artisans, professions libérales vallée de l'Essonne.",
+      fr: "Coaching 1-to-1 à Ballancourt-sur-Essonne : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI, artisans, professions libérales vallée de l'Essonne.",
+      en: "Coaching 1-to-1 à Ballancourt-sur-Essonne : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI, artisans, professions libérales vallée de l'Essonne.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",
-      a: "Oui, devis et facturation automatisés par IA, gestion stocks, relances clients, planning équipes. Solutions adaptées aux TPE artisanales et commerces de proximité.",
+      a: "Oui, devis et facturation automatisés par IA, gestion stocks, relances clients, planning équipes. Solutions adaptées aux PME de l'artisanat et du commerce.",
     },
     {
       q: "Quels services pour les professions libérales ?",

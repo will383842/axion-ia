@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ASTIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu PME et ETI commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu PME et ETI commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Astier (24). Nous accompagnons PME et ETI du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Astier (24). Nous accompagnons PME et ETI du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Astier est un bourg historique de la vallée de l'Isle, entre Périgueux et Mussidan. Connu pour sa cimenterie (chaux hydraulique naturelle, référence BTP/restauration patrimoine) et son abbatiale romane. Économie : commerce de proximité, artisanat, industrie ciment et matériaux, agroalimentaire (élevage, cultures), BTP et services.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Astier : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Astier : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Astier : diagnostic adapté aux PME et ETI du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Astier : diagnostic adapté aux PME et ETI du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Astier : formations pratiques pour commerçants, artisans, équipes industrie et exploitants agricoles de la vallée de l'Isle.",
@@ -42,8 +42,8 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Astier : optimisation production ciment, gestion stock commerce, traçabilité agroalimentaire, automatisation devis BTP, outils métier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Astier : sessions adaptées dirigeants TPE/PME, artisans, commerçants et gérants industriels de la vallée de l'Isle.",
-      en: "Coaching 1-to-1 à Saint-Astier : sessions adaptées dirigeants TPE/PME, artisans, commerçants et gérants industriels de la vallée de l'Isle.",
+      fr: "Coaching 1-to-1 à Saint-Astier : sessions adaptées dirigeants de PME et d'ETI, artisans, commerçants et gérants industriels de la vallée de l'Isle.",
+      en: "Coaching 1-to-1 à Saint-Astier : sessions adaptées dirigeants de PME et d'ETI, artisans, commerçants et gérants industriels de la vallée de l'Isle.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Astier  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de l'Isle. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI de la vallée de l'Isle. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider l'industrie ciment à Saint-Astier ?",
@@ -65,7 +65,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel en vallée de l'Isle ?",
-      a: "Oui, coaching 1-to-1 adapté aux dirigeants TPE/PME de Saint-Astier et de la vallée de l'Isle. Sur site ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, coaching 1-to-1 adapté aux dirigeants de PME et d'ETI de Saint-Astier et de la vallée de l'Isle. Sur site ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

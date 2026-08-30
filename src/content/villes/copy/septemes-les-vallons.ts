@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   pitchFr:
-    "Septèmes-les-Vallons (13), commune résidentielle au nord de Marseille dans les Bouches-du-Rhône, bénéficie de la proximité de la métropole et des zones d'activités de Plan de Campagne et des Pennes-Mirabeau. TPE artisans, PME services, commerces de quartier et professions libérales. Axion-IA y intervient pour tous types d'activités du nord marseillais.",
+    "Septèmes-les-Vallons (13), commune résidentielle au nord de Marseille dans les Bouches-du-Rhône, bénéficie de la proximité de la métropole et des zones d'activités de Plan de Campagne et des Pennes-Mirabeau. PME artisanales, PME services, commerces de quartier et professions libérales. Axion-IA y intervient pour tous types d'activités du nord marseillais.",
   pitchEn:
-    "Septèmes-les-Vallons (13), commune résidentielle au nord de Marseille dans les Bouches-du-Rhône, bénéficie de la proximité de la métropole et des zones d'activités de Plan de Campagne et des Pennes-Mirabeau. TPE artisans, PME services, commerces de quartier et professions libérales. Axion-IA y intervient pour tous types d'activités du nord marseillais.",
+    "Septèmes-les-Vallons (13), commune résidentielle au nord de Marseille dans les Bouches-du-Rhône, bénéficie de la proximité de la métropole et des zones d'activités de Plan de Campagne et des Pennes-Mirabeau. PME artisanales, PME services, commerces de quartier et professions libérales. Axion-IA y intervient pour tous types d'activités du nord marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Septèmes-les-Vallons (13). Nous accompagnons PME de l'artisanat et du commerce, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Septèmes-les-Vallons (13). Nous accompagnons PME de l'artisanat et du commerce, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services nord Marseille",
   ecosystemFr:
-    "Septèmes-les-Vallons est une commune résidentielle du nord de Marseille, proche des zones commerciales de Plan de Campagne et des zones d'activités des Pennes-Mirabeau. TPE artisans, commerçants, PME services et professions libérales. Accès rapide A7 et L2 nord vers le centre de Marseille.",
+    "Septèmes-les-Vallons est une commune résidentielle du nord de Marseille, proche des zones commerciales de Plan de Campagne et des zones d'activités des Pennes-Mirabeau. PME artisanales, commerçants, PME services et professions libérales. Accès rapide A7 et L2 nord vers le centre de Marseille.",
   ecosystemEn:
-    "Septèmes-les-Vallons est une commune résidentielle du nord de Marseille, proche des zones commerciales de Plan de Campagne et des zones d'activités des Pennes-Mirabeau. TPE artisans, commerçants, PME services et professions libérales. Accès rapide A7 et L2 nord vers le centre de Marseille.",
+    "Septèmes-les-Vallons est une commune résidentielle du nord de Marseille, proche des zones commerciales de Plan de Campagne et des zones d'activités des Pennes-Mirabeau. PME artisanales, commerçants, PME services et professions libérales. Accès rapide A7 et L2 nord vers le centre de Marseille.",
   distancesFr:
     "Marseille centre à 20 min. Plan de Campagne à 10 min. Les Pennes-Mirabeau à 5 min. Aix-en-Provence à 25 min. Aéroport Marseille Provence à 25 min. Gare Marseille-Saint-Charles à 25 min.",
   distancesEn:
     "Marseille centre à 20 min. Plan de Campagne à 10 min. Les Pennes-Mirabeau à 5 min. Aix-en-Provence à 25 min. Aéroport Marseille Provence à 25 min. Gare Marseille-Saint-Charles à 25 min.",
   topSectorsNaf: [
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "Services aux entreprises",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux PME artisanales, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux PME artisanales, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Septèmes-les-Vallons : formats adaptés au bureau, commerce et atelier. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
       en: "Implémentation IA à Septèmes-les-Vallons : agents conversationnels B2B, automatisation workflow, CRM intelligent, extraction données. Nord métropole marseillaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Septèmes-les-Vallons : sessions pour dirigeants TPE/PME, artisans et professions libérales du nord de Marseille souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Septèmes-les-Vallons : sessions pour dirigeants TPE/PME, artisans et professions libérales du nord de Marseille souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Septèmes-les-Vallons : sessions pour dirigeants de PME et d'ETI, artisans et professions libérales du nord de Marseille souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Septèmes-les-Vallons : sessions pour dirigeants de PME et d'ETI, artisans et professions libérales du nord de Marseille souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans de Septèmes-les-Vallons ?",
-      a: "Oui, nous accompagnons les TPE artisans de Septèmes-les-Vallons sur leurs cas IA : automatisation devis, gestion planning chantiers, facturation, suivi clients et relances automatiques.",
+      a: "Oui, nous accompagnons les PME artisanales de Septèmes-les-Vallons sur leurs cas IA : automatisation devis, gestion planning chantiers, facturation, suivi clients et relances automatiques.",
     },
     {
       q: "L'IA est-elle adaptée aux professions libérales ?",

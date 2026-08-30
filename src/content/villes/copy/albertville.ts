@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ALBERTVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, PME du commerce. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, PME du commerce. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Albertville (73). Nous accompagnons PME et ETI : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Albertville (73). Nous accompagnons PME et ETI : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit sur place sur mesure.",
   seoHook: "tourisme montagne & héritage olympique",
   ecosystemFr:
-    "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, TPE commerces, héritage olympique. Gare TGV directe.",
+    "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, PME du commerce, héritage olympique. Gare TGV directe.",
   ecosystemEn:
-    "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, TPE commerces, héritage olympique. Gare TGV directe.",
+    "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, PME du commerce, héritage olympique. Gare TGV directe.",
   distancesFr:
     "Chambéry à 50 min. Annecy à 45 min. Bourg-Saint-Maurice à 45 min. Aéroport Lyon-Saint-Exupéry à 1h30. Gare TGV Albertville.",
   distancesEn:
@@ -26,12 +26,12 @@ export const ALBERTVILLE_COPY: VilleCopy = {
     "Héritage olympique",
     "Industrie sous-traitance",
     "Administration (sous-préfecture)",
-    "TPE commerces",
+    "PME du commerce",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, PME du commerce. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, PME du commerce. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const ALBERTVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Albertville : revenue management stations ski, maintenance prédictive remontées mécaniques, CRM tourisme montagne, automatisation logistique industrielle.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Albertville : sessions dans votre station, usine, hôtel, bureau ou en visio. Dirigeants TPE/PME albertvillois, gérants tourisme montagne, industriels.",
-      en: "Coaching 1-to-1 à Albertville : sessions dans votre station, usine, hôtel, bureau ou en visio. Dirigeants TPE/PME albertvillois, gérants tourisme montagne, industriels.",
+      fr: "Coaching 1-to-1 à Albertville : sessions dans votre station, usine, hôtel, bureau ou en visio. Dirigeants PME et ETI albertvillois, gérants tourisme montagne, industriels.",
+      en: "Coaching 1-to-1 à Albertville : sessions dans votre station, usine, hôtel, bureau ou en visio. Dirigeants PME et ETI albertvillois, gérants tourisme montagne, industriels.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
       a: "Oui, automatisation logistique et supply chain, maintenance prédictive machines, contrôle qualité par vision IA, optimisation planning production.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

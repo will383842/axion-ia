@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const GRENAY_COPY: VilleCopy = {
   pitchFr:
-    "Grenay (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 640 habitants. Situee entre Lens et Bethune le long de l'A21, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et la logistique de proximite. Axion-IA y intervient pour tous types d'activites.",
+    "Grenay (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 640 habitants. Situee entre Lens et Bethune le long de l'A21, son economie repose sur les PME de services, les PME commerciales, l'artisanat et la logistique de proximite. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Grenay (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 640 habitants. Situee entre Lens et Bethune le long de l'A21, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et la logistique de proximite. Axion-IA y intervient pour tous types d'activites.",
+    "Grenay (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 640 habitants. Situee entre Lens et Bethune le long de l'A21, son economie repose sur les PME de services, les PME commerciales, l'artisanat et la logistique de proximite. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, logistique & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grenay (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grenay (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Grenay est situee sur l'axe Lens-Bethune (A21), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, activites logistiques et de transport. Zone d'activites beneficiant de la desserte autoroutiere A21/A26.",
+    "Grenay est situee sur l'axe Lens-Bethune (A21), au coeur du bassin minier. Tissu economique compose de PME de services, PME commerciales, artisans BTP, activites logistiques et de transport. Zone d'activites beneficiant de la desserte autoroutiere A21/A26.",
   ecosystemEn:
-    "Grenay est situee sur l'axe Lens-Bethune (A21), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, activites logistiques et de transport. Zone d'activites beneficiant de la desserte autoroutiere A21/A26.",
+    "Grenay est situee sur l'axe Lens-Bethune (A21), au coeur du bassin minier. Tissu economique compose de PME de services, PME commerciales, artisans BTP, activites logistiques et de transport. Zone d'activites beneficiant de la desserte autoroutiere A21/A26.",
   distancesFr:
     "Gare de Bully-Grenay (TER Lens-Bethune). Lens a 8 min. Bethune a 12 min. Lille Europe (TGV) a 50 min en TER. Aeroport Lille-Lesquin a 55 min. Paris-Nord a 1h15 via TGV Lens.",
   distancesEn:
     "Gare de Bully-Grenay (TER Lens-Bethune). Lens a 8 min. Bethune a 12 min. Lille Europe (TGV) a 50 min en TER. Aeroport Lille-Lesquin a 55 min. Paris-Nord a 1h15 via TGV Lens.",
   topSectorsNaf: [
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP",
     "Transport & logistique",
@@ -30,8 +30,8 @@ export const GRENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Grenay : diagnostic adapte aux TPE de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Grenay : diagnostic adapte aux TPE de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Grenay : diagnostic adapte aux PME de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Grenay : diagnostic adapte aux PME de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Grenay : formations adaptees aux entrepots logistiques, commerces, ateliers artisanaux et bureaux PME. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const GRENAY_COPY: VilleCopy = {
       en: "Implementation IA a Grenay : automatisation flux logistiques, agents conversationnels commerce, gestion planning transport, CRM augmentes pour PME du bassin minier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Grenay : accompagnement personnalise pour dirigeants TPE, gerants PME logistiques et commercants de l'axe Lens-Bethune.",
-      en: "Coaching 1-to-1 a Grenay : accompagnement personnalise pour dirigeants TPE, gerants PME logistiques et commercants de l'axe Lens-Bethune.",
+      fr: "Coaching 1-to-1 a Grenay : accompagnement personnalise pour dirigeants de PME et d'ETI, gerants PME logistiques et commercants de l'axe Lens-Bethune.",
+      en: "Coaching 1-to-1 a Grenay : accompagnement personnalise pour dirigeants de PME et d'ETI, gerants PME logistiques et commercants de l'axe Lens-Bethune.",
     },
   },
   faqGeolocalisee: [

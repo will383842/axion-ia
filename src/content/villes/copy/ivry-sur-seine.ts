@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Ivry-sur-Seine (65 064 habitants en 2023, Val-de-Marne) est une commune historiquement industrielle de la rive gauche de la Seine, située à environ 5 km du centre de Paris. Axion-IA y accompagne en priorité les TPE et PME du tissu local — commerces, ateliers, agences, prestataires de services — souvent installées dans la ZAC Ivry Confluences (145 hectares, projet lancé en 2008). Notre approche code custom, sans no-code, vise des automatisations concrètes et durables.",
+    "Ivry-sur-Seine (65 064 habitants en 2023, Val-de-Marne) est une commune historiquement industrielle de la rive gauche de la Seine, située à environ 5 km du centre de Paris. Axion-IA y accompagne en priorité les PME et ETI du tissu local — commerces, ateliers, agences, prestataires de services — souvent installées dans la ZAC Ivry Confluences (145 hectares, projet lancé en 2008). Notre approche code custom, sans no-code, vise des automatisations concrètes et durables.",
   pitchEn:
-    "Ivry-sur-Seine (65 064 habitants en 2023, Val-de-Marne) est une commune historiquement industrielle de la rive gauche de la Seine, située à environ 5 km du centre de Paris. Axion-IA y accompagne en priorité les TPE et PME du tissu local — commerces, ateliers, agences, prestataires de services — souvent installées dans la ZAC Ivry Confluences (145 hectares, projet lancé en 2008). Notre approche code custom, sans no-code, vise des automatisations concrètes et durables.",
+    "Ivry-sur-Seine (65 064 habitants en 2023, Val-de-Marne) est une commune historiquement industrielle de la rive gauche de la Seine, située à environ 5 km du centre de Paris. Axion-IA y accompagne en priorité les PME et ETI du tissu local — commerces, ateliers, agences, prestataires de services — souvent installées dans la ZAC Ivry Confluences (145 hectares, projet lancé en 2008). Notre approche code custom, sans no-code, vise des automatisations concrètes et durables.",
   directAnswerFr:
-    "Axion-IA se déplace à Ivry-sur-Seine (Val-de-Marne, 65 064 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption de l'IA opérationnelle. La ville, marquée par sa désindustrialisation progressive depuis les années 1960, se reconvertit autour du projet d'aménagement Ivry Confluences. Notre cœur de cible : petits commerces, agences, artisans, cabinets et PME présentes dans le bassin d'Ivry. Les ETI sont accompagnées de manière plus ponctuelle. Nos interventions sont planifiées sous 5 jours ouvrés après validation.",
+    "Axion-IA se déplace à Ivry-sur-Seine (Val-de-Marne, 65 064 habitants) pour accompagner principalement les PME et ETI locales dans l'adoption de l'IA opérationnelle. La ville, marquée par sa désindustrialisation progressive depuis les années 1960, se reconvertit autour du projet d'aménagement Ivry Confluences. Notre cœur de cible : petits commerces, agences, artisans, cabinets et PME présentes dans le bassin d'Ivry. Les grands groupes sont accompagnés plus ponctuellement. Nos interventions sont planifiées sous 5 jours ouvrés après validation.",
   directAnswerEn:
-    "Axion-IA se déplace à Ivry-sur-Seine (Val-de-Marne, 65 064 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption de l'IA opérationnelle. La ville, marquée par sa désindustrialisation progressive depuis les années 1960, se reconvertit autour du projet d'aménagement Ivry Confluences. Notre cœur de cible : petits commerces, agences, artisans, cabinets et PME présentes dans le bassin d'Ivry. Les ETI sont accompagnées de manière plus ponctuelle. Nos interventions sont planifiées sous 5 jours ouvrés après validation.",
-  seoHook: "TPE PME tertiaire & reconversion industrielle",
+    "Axion-IA se déplace à Ivry-sur-Seine (Val-de-Marne, 65 064 habitants) pour accompagner principalement les PME et ETI locales dans l'adoption de l'IA opérationnelle. La ville, marquée par sa désindustrialisation progressive depuis les années 1960, se reconvertit autour du projet d'aménagement Ivry Confluences. Notre cœur de cible : petits commerces, agences, artisans, cabinets et PME présentes dans le bassin d'Ivry. Les grands groupes sont accompagnés plus ponctuellement. Nos interventions sont planifiées sous 5 jours ouvrés après validation.",
+  seoHook: "PME PME tertiaire & reconversion industrielle",
   ecosystemFr:
-    "Le tissu économique d'Ivry-sur-Seine est en pleine reconversion : après une longue tradition industrielle, la ville mise sur le projet Ivry Confluences (145 ha, mixte logement-bureaux-commerces) pour attirer un nouveau tissu de TPE-PME tertiaires, services, ESS et économie créative. Le bassin local reste dense en commerces de proximité, ateliers, agences et prestataires B2B. Les sociétés présentes ou voisines (Fnac Darty, E.Leclerc) côtoient un tissu majoritaire de petites structures, qui constituent notre cible principale.",
+    "Le tissu économique d'Ivry-sur-Seine est en pleine reconversion : après une longue tradition industrielle, la ville mise sur le projet Ivry Confluences (145 ha, mixte logement-bureaux-commerces) pour attirer un nouveau tissu de PME et ETI tertiaires, services, ESS et économie créative. Le bassin local reste dense en commerces de proximité, ateliers, agences et prestataires B2B. Les sociétés présentes ou voisines (Fnac Darty, E.Leclerc) côtoient un tissu majoritaire de PME, qui constituent notre cible principale.",
   ecosystemEn:
-    "Le tissu économique d'Ivry-sur-Seine est en pleine reconversion : après une longue tradition industrielle, la ville mise sur le projet Ivry Confluences (145 ha, mixte logement-bureaux-commerces) pour attirer un nouveau tissu de TPE-PME tertiaires, services, ESS et économie créative. Le bassin local reste dense en commerces de proximité, ateliers, agences et prestataires B2B. Les sociétés présentes ou voisines (Fnac Darty, E.Leclerc) côtoient un tissu majoritaire de petites structures, qui constituent notre cible principale.",
+    "Le tissu économique d'Ivry-sur-Seine est en pleine reconversion : après une longue tradition industrielle, la ville mise sur le projet Ivry Confluences (145 ha, mixte logement-bureaux-commerces) pour attirer un nouveau tissu de PME et ETI tertiaires, services, ESS et économie créative. Le bassin local reste dense en commerces de proximité, ateliers, agences et prestataires B2B. Les sociétés présentes ou voisines (Fnac Darty, E.Leclerc) côtoient un tissu majoritaire de PME, qui constituent notre cible principale.",
   distancesFr:
     "Ivry-sur-Seine est desservie par la ligne 7 du métro (4 stations dont Mairie d'Ivry), le RER C (gare d'Ivry-sur-Seine) et la ligne 9 du tramway (inaugurée en avril 2021). Le centre de Paris est à environ 5 km, l'aéroport de Paris-Orly à environ 12 km.",
   distancesEn:
@@ -32,20 +32,20 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit sur place 4h dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ivry-sur-Seine pour PME et ETI : identifier les automatisations utiles dans vos process commerce, services ou production — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ivry-sur-Seine pour PME et ETI : identifier les automatisations utiles dans vos process commerce, services ou production — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Ivry-sur-Seine pour les PME et ETI : devis, facturation, e-mails, reporting, suivi client — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Ivry-sur-Seine pour les PME et ETI : devis, facturation, e-mails, reporting, suivi client — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour PME et ETI du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour PME et ETI du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de PME et d'ETI — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de PME et d'ETI — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -53,7 +53,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit à Ivry-sur-Seine (Val-de-Marne, plus de 4 000 entreprises, ~33 000 emplois) des sites web et plateformes SaaS augmentés par l'IA pour un tissu en pleine mutation : siège omnicanal de Fnac Darty au Port d'Ivry, village audiovisuel Ivrywood / Studio Kremlin né dans les anciennes usines Stockvis, ZAC Ivry Confluences (145 ha, 340 000 m² tertiaires et productifs aménagés par Sadev 94), pôle silver-économie de l'hôpital Charles-Foix (AP-HP) et acteurs numériques de la Z.A.E. Cap de Seine (DocaPoste, Essilor, Softeam). Nous construisons en code custom — UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, recherche sémantique — hébergés en UE, conformes RGPD, sans verrou éditeur.",
         whyHere: [
-          "Le Port d'Ivry abrite le siège du groupe Fnac Darty (distribution omnicanale, 13 pays) : nous concevons des plateformes e-commerce et des moteurs de recherche produit IA pour les TPE/PME du retail et de la distribution culturelle qui gravitent dans son sillage.",
+          "Le Port d'Ivry abrite le siège du groupe Fnac Darty (distribution omnicanale, 13 pays) : nous concevons des plateformes e-commerce et des moteurs de recherche produit IA pour les PME et ETI du retail et de la distribution culturelle qui gravitent dans son sillage.",
           "Ivrywood / Studio Kremlin (4 plateaux de tournage, post-production, incubateur audiovisuel d'Alios Développement) fait d'Ivry un pôle production de contenus : nous outillons les studios, agences et indépendants de l'audiovisuel avec des sites portfolio, des SaaS de gestion de tournage et des assistants IA de dérushage/sous-titrage.",
           "La ZAC Ivry Confluences (340 000 m² tertiaires, numériques et productifs, ~18 000 emplois attendus, arrivée de la Caisse des Dépôts) draine des PME de services et d'industrie légère : nous y déployons des intranets IA, des portails clients et de l'automatisation devis/facturation en code sur mesure.",
           "L'hôpital Charles-Foix (CHU gériatrique AP-HP, Institut de la longévité, grappe Soliage) et la Z.A.E. Cap de Seine (DocaPoste, Essilor, Nobel Biocare) ancrent une filière silver-économie, optique et confiance numérique : nous bâtissons des plateformes santé/services accessibles, conformes RGPD et hébergées en UE.",
@@ -86,12 +86,6 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA",
-            detail:
-              "Pour indépendants, commerçants et artisans d'Ivry-sur-Seine — boutique du centre-ville, studio ou prestataire de l'écosystème audiovisuel Ivrywood : site mobile-first, e-commerce multi-CMS et chatbot IA de premier niveau.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme sur mesure + IA métier",
@@ -173,12 +167,6 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or AI e-commerce site",
-            detail:
-              "For Ivry-sur-Seine freelancers, shopkeepers and artisans — town-centre store, studio or provider in the Ivrywood audiovisual ecosystem: mobile-first site, multi-CMS e-commerce and a first-level AI chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom platform + business AI",
             detail:
@@ -240,7 +228,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Ivry-sur-Seine ?",
-      a: "Priorité aux TPE et PME du commerce de détail, des services aux entreprises, de la construction, du numérique et de la logistique, qui dominent le bassin d'Ivry et de la ZAC Ivry Confluences. Les ETI sont accompagnées de manière plus ponctuelle.",
+      a: "Priorité aux PME et ETI du commerce de détail, des services aux entreprises, de la construction, du numérique et de la logistique, qui dominent le bassin d'Ivry et de la ZAC Ivry Confluences. Les grands groupes sont accompagnés plus ponctuellement.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Ivry-sur-Seine ?",

@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const PETIT_COURONNE_COPY: VilleCopy = {
   pitchFr:
-    "Petit-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 8 680 habitants. Ville industrielle (raffinage) et patrie de Pierre Corneille, elle accueille des TPE sous-traitantes, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
+    "Petit-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 8 680 habitants. Ville industrielle (raffinage) et patrie de Pierre Corneille, elle accueille des PME sous-traitantes, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Petit-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 8 680 habitants. Ville industrielle (raffinage) et patrie de Pierre Corneille, elle accueille des TPE sous-traitantes, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
+    "Petit-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 8 680 habitants. Ville industrielle (raffinage) et patrie de Pierre Corneille, elle accueille des PME sous-traitantes, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, raffinage & boucle Seine",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Couronne (76). Nous accompagnons les PME, ETI et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Couronne (76). Nous accompagnons les PME, ETI et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Petit-Couronne est situee en rive gauche de la Seine, au sud de Rouen. Zone industrielle historique (raffinage, chimie) et tissu de TPE sous-traitantes, PME de services, commerces et artisanat. Maison natale de Pierre Corneille. Partie de la Metropole Rouen Normandie.",
+    "Petit-Couronne est situee en rive gauche de la Seine, au sud de Rouen. Zone industrielle historique (raffinage, chimie) et tissu de PME sous-traitantes, PME de services, commerces et artisanat. Maison natale de Pierre Corneille. Partie de la Metropole Rouen Normandie.",
   ecosystemEn:
-    "Petit-Couronne est situee en rive gauche de la Seine, au sud de Rouen. Zone industrielle historique (raffinage, chimie) et tissu de TPE sous-traitantes, PME de services, commerces et artisanat. Maison natale de Pierre Corneille. Partie de la Metropole Rouen Normandie.",
+    "Petit-Couronne est situee en rive gauche de la Seine, au sud de Rouen. Zone industrielle historique (raffinage, chimie) et tissu de PME sous-traitantes, PME de services, commerces et artisanat. Maison natale de Pierre Corneille. Partie de la Metropole Rouen Normandie.",
   distancesFr:
     "Rouen centre a 10 min. A13 Paris-Caen a 5 min. Gare Rouen Rive-Gauche a 10 min. Grand-Couronne a 5 min. Paris a 1h30 par A13. Aeroport Rouen-Boos a 25 min.",
   distancesEn:
     "Rouen centre a 10 min. A13 Paris-Caen a 5 min. Gare Rouen Rive-Gauche a 10 min. Grand-Couronne a 5 min. Paris a 1h30 par A13. Aeroport Rouen-Boos a 25 min.",
   topSectorsNaf: [
     "Industrie chimique & raffinage",
-    "TPE sous-traitance industrielle",
+    "PME sous-traitance industrielle",
     "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP & maintenance",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Petit-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Petit-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Petit-Couronne : diagnostic adapte aux PME sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Petit-Couronne : diagnostic adapte aux PME sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Petit-Couronne : formations adaptees aux sous-traitants industriels, PME de services, commerces et artisans. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
       en: "Implementation IA a Petit-Couronne : maintenance predictive, automatisation rapports industriels, agents IA planification, optimisation supply chain boucle de Seine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Petit-Couronne : accompagnement personnalise dirigeants TPE sous-traitantes, gerants PME et responsables industriels de la boucle de Seine.",
-      en: "Coaching 1-to-1 a Petit-Couronne : accompagnement personnalise dirigeants TPE sous-traitantes, gerants PME et responsables industriels de la boucle de Seine.",
+      fr: "Coaching 1-to-1 a Petit-Couronne : accompagnement personnalise dirigeants de PME et d'ETI sous-traitantes, gerants PME et responsables industriels de la boucle de Seine.",
+      en: "Coaching 1-to-1 a Petit-Couronne : accompagnement personnalise dirigeants de PME et d'ETI sous-traitantes, gerants PME et responsables industriels de la boucle de Seine.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commercants de Petit-Couronne ?",
-      a: "Oui, nous accompagnons les commercants de Petit-Couronne : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees TPE.",
+      a: "Oui, nous accompagnons les commercants de Petit-Couronne : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees PME.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Petit-Couronne ?",

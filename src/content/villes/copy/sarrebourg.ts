@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SARREBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Sarrebourg (57), sous-préfecture de 12 170 habitants en Moselle, carrefour historique sur la Sarre entre Metz, Nancy et Strasbourg, est connue pour ses vitraux Chagall et son héritage cristallier (cristallerie Saint-Louis à proximité). Tissu TPE/PME industrie, cristallerie, commerces, services, tourisme culturel. Axion-IA y intervient pour tous types d'activités.",
+    "Sarrebourg (57), sous-préfecture de 12 170 habitants en Moselle, carrefour historique sur la Sarre entre Metz, Nancy et Strasbourg, est connue pour ses vitraux Chagall et son héritage cristallier (cristallerie Saint-Louis à proximité). Tissu PME et ETI industrie, cristallerie, commerces, services, tourisme culturel. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Sarrebourg (57), sous-préfecture de 12 170 habitants en Moselle, carrefour historique sur la Sarre entre Metz, Nancy et Strasbourg, est connue pour ses vitraux Chagall et son héritage cristallier (cristallerie Saint-Louis à proximité). Tissu TPE/PME industrie, cristallerie, commerces, services, tourisme culturel. Axion-IA y intervient pour tous types d'activités.",
+    "Sarrebourg (57), sous-préfecture de 12 170 habitants en Moselle, carrefour historique sur la Sarre entre Metz, Nancy et Strasbourg, est connue pour ses vitraux Chagall et son héritage cristallier (cristallerie Saint-Louis à proximité). Tissu PME et ETI industrie, cristallerie, commerces, services, tourisme culturel. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : TPE/PME industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : PME et ETI industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : TPE/PME industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarrebourg (57). Nous accompagnons tous types d'activités : PME et ETI industrie et cristallerie, artisans verriers, commerces du centre, professions de services, administrations sous-préfectorales et acteurs du tourisme culturel sarrebourgeois.",
   ecosystemFr:
-    "Sarrebourg est une sous-préfecture carrefour sur la Sarre, entre Metz, Nancy et Strasbourg. Tissu TPE/PME industrie, cristallerie (Saint-Louis à proximité), artisanat verrier, commerces de centre-ville, services, tourisme culturel (vitraux Chagall, patrimoine médiéval).",
+    "Sarrebourg est une sous-préfecture carrefour sur la Sarre, entre Metz, Nancy et Strasbourg. Tissu PME et ETI industrie, cristallerie (Saint-Louis à proximité), artisanat verrier, commerces de centre-ville, services, tourisme culturel (vitraux Chagall, patrimoine médiéval).",
   ecosystemEn:
-    "Sarrebourg est une sous-préfecture carrefour sur la Sarre, entre Metz, Nancy et Strasbourg. Tissu TPE/PME industrie, cristallerie (Saint-Louis à proximité), artisanat verrier, commerces de centre-ville, services, tourisme culturel (vitraux Chagall, patrimoine médiéval).",
+    "Sarrebourg est une sous-préfecture carrefour sur la Sarre, entre Metz, Nancy et Strasbourg. Tissu PME et ETI industrie, cristallerie (Saint-Louis à proximité), artisanat verrier, commerces de centre-ville, services, tourisme culturel (vitraux Chagall, patrimoine médiéval).",
   distancesFr:
     "Strasbourg à 50 min. Nancy à 1h. Metz à 1h. Gare SNCF Sarrebourg (TGV Paris à 2h, ligne Paris–Strasbourg). Autoroute A4 accès direct. Aéroport Strasbourg-Entzheim à 1h. Luxembourg à 1h45.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SARREBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sarrebourg : diagnostic adapté aux TPE/PME industrie, cristallerie, artisans verriers, commerces, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sarrebourg : diagnostic adapté aux TPE/PME industrie, cristallerie, artisans verriers, commerces, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sarrebourg : diagnostic adapté aux PME et ETI industrie, cristallerie, artisans verriers, commerces, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sarrebourg : diagnostic adapté aux PME et ETI industrie, cristallerie, artisans verriers, commerces, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sarrebourg : formats adaptés à l'atelier industriel, la cristallerie, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const SARREBOURG_COPY: VilleCopy = {
       en: "Implémentation IA à Sarrebourg : contrôle qualité production verrière, traçabilité industrielle, agents conversationnels touristiques bilingues, workflow administratif, gestion commerciale.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sarrebourg : sessions dans votre atelier, cristallerie, commerce, bureau ou en visio. Industriels, verriers, commerçants, artisans, gérants TPE/PME sarrebourgeois.",
-      en: "Coaching 1-to-1 à Sarrebourg : sessions dans votre atelier, cristallerie, commerce, bureau ou en visio. Industriels, verriers, commerçants, artisans, gérants TPE/PME sarrebourgeois.",
+      fr: "Coaching 1-to-1 à Sarrebourg : sessions dans votre atelier, cristallerie, commerce, bureau ou en visio. Industriels, verriers, commerçants, artisans, gérants PME et ETI sarrebourgeois.",
+      en: "Coaching 1-to-1 à Sarrebourg : sessions dans votre atelier, cristallerie, commerce, bureau ou en visio. Industriels, verriers, commerçants, artisans, gérants PME et ETI sarrebourgeois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SARREBOURG_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et cristalliers ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles, cristalliers et verriers sarrebourgeois : contrôle qualité production, traçabilité, automatisation workflow, optimisation gestion clients et fournisseurs.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles, cristalliers et verriers sarrebourgeois : contrôle qualité production, traçabilité, automatisation workflow, optimisation gestion clients et fournisseurs.",
     },
     {
       q: "Accompagnez-vous les commerces et acteurs du tourisme ?",
@@ -61,7 +61,7 @@ export const SARREBOURG_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Sarrebourg ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Sarrebourg ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BURES_SUR_YVETTE_COPY: VilleCopy = {
   pitchFr:
-    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de TPE, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y travaille avec les organisations du territoire du sud-ouest essonnien.",
+    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de PME, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y travaille avec les organisations du territoire du sud-ouest essonnien.",
   pitchEn:
-    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de TPE, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y travaille avec les organisations du territoire du sud-ouest essonnien.",
+    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de PME, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y travaille avec les organisations du territoire du sud-ouest essonnien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : TPE, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : PME, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : TPE, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : PME, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat services",
   ecosystemFr:
-    "Bures-sur-Yvette est une commune résidentielle de la vallée de Chevreuse, à la lisière du plateau de Saclay. Proximité immédiate du campus Paris-Saclay (universités, laboratoires, startups deeptech). Tissu local : TPE artisans, professions libérales, commerces de centre-ville, PME tertiaires et bureaux d'études liés à l'écosystème scientifique.",
+    "Bures-sur-Yvette est une commune résidentielle de la vallée de Chevreuse, à la lisière du plateau de Saclay. Proximité immédiate du campus Paris-Saclay (universités, laboratoires, startups deeptech). Tissu local : PME artisanales, professions libérales, commerces de centre-ville, PME tertiaires et bureaux d'études liés à l'écosystème scientifique.",
   ecosystemEn:
-    "Bures-sur-Yvette est une commune résidentielle de la vallée de Chevreuse, à la lisière du plateau de Saclay. Proximité immédiate du campus Paris-Saclay (universités, laboratoires, startups deeptech). Tissu local : TPE artisans, professions libérales, commerces de centre-ville, PME tertiaires et bureaux d'études liés à l'écosystème scientifique.",
+    "Bures-sur-Yvette est une commune résidentielle de la vallée de Chevreuse, à la lisière du plateau de Saclay. Proximité immédiate du campus Paris-Saclay (universités, laboratoires, startups deeptech). Tissu local : PME artisanales, professions libérales, commerces de centre-ville, PME tertiaires et bureaux d'études liés à l'écosystème scientifique.",
   distancesFr:
     "Gare de Bures-sur-Yvette (RER B) à 5 min à pied. Paris Châtelet à 45 min RER B. Aéroport Paris-Orly à 25 min voiture. Orsay et campus Paris-Saclay à 10 min. Axe vers Gif-sur-Yvette et plateau de Saclay.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Professions libérales (santé, juridique, conseil)",
     "Commerce de proximité",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "PME bureaux d'études & tertiaire",
     "Services liés à l'écosystème universitaire Paris-Saclay",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux PME, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux PME, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bures-sur-Yvette : formats adaptés au cabinet professionnel, commerce, bureau d'études ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
       en: "Implémentation IA à Bures-sur-Yvette : agents conversationnels client, automatisation documents scientifiques, gestion RDV professions libérales, CRM augmentés pour PME du bassin Paris-Saclay.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bures-sur-Yvette : sessions dans votre cabinet, commerce, bureau ou en visio. Professions libérales, commerçants, dirigeants TPE/PME buressois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Bures-sur-Yvette : sessions dans votre cabinet, commerce, bureau ou en visio. Professions libérales, commerçants, dirigeants TPE/PME buressois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Bures-sur-Yvette : sessions dans votre cabinet, commerce, bureau ou en visio. Professions libérales, commerçants, dirigeants de PME et d'ETI buressois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Bures-sur-Yvette : sessions dans votre cabinet, commerce, bureau ou en visio. Professions libérales, commerçants, dirigeants de PME et d'ETI buressois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME et bureaux d'études du bassin Paris-Saclay sur leurs cas IA : automatisation documentaire, classification données scientifiques, agents conversationnels internes, veille sectorielle augmentée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Proposez-vous des audits rapides pour les TPE de Bures ?",
-      a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les TPE de Bures-sur-Yvette souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
+      q: "Proposez-vous des audits rapides pour les PME de Bures ?",
+      a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Bures-sur-Yvette souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
       q: "Comment se passe une mission à Bures-sur-Yvette depuis Paris ?",

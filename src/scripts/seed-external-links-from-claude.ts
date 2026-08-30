@@ -185,7 +185,7 @@ function buildNationalFrBatches(): QueryBatch[] {
     },
     {
       query:
-        "10 publications Bpifrance 2023-2026 sur transformation digitale TPE/PME, IA et innovation. Format : 1. [Titre] - URL. URLs VÉRIFIÉES uniquement.",
+        "10 publications Bpifrance 2023-2026 sur transformation digitale PME/ETI, IA et innovation. Format : 1. [Titre] - URL. URLs VÉRIFIÉES uniquement.",
       topics: ["transformation-digitale", "tpe-pme"],
       verticales: ["implementations", "un_a_un"],
     },
@@ -203,7 +203,7 @@ function buildNationalFrBatches(): QueryBatch[] {
     },
     {
       query:
-        "10 publications France Num 2023-2026 sur numérique TPE/PME, IA. Format : 1. [Titre] - URL. URLs VÉRIFIÉES uniquement.",
+        "10 publications France Num 2023-2026 sur numérique PME/ETI, IA. Format : 1. [Titre] - URL. URLs VÉRIFIÉES uniquement.",
       topics: ["transformation-digitale", "tpe-pme"],
       verticales: ["implementations", "sites_web_augmentes"],
     },

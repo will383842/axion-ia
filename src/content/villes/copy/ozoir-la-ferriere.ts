@@ -5,10 +5,10 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME d'Ozoir-la-Ferrière, commune de 21 238 habitants en Seine-et-Marne, à 31 km à l'est de Paris. Williams se déplace sur site auprès des artisans, commerçants, professions libérales et PME de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — pérenne, documenté, sans dépendance no-code.";
+  "Axion-IA accompagne les PME et ETI d'Ozoir-la-Ferrière, commune de 21 238 habitants en Seine-et-Marne, à 31 km à l'est de Paris. Williams se déplace sur site auprès des artisans, commerçants, professions libérales et PME de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — pérenne, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Ozoir-la-Ferrière pour les TPE et PME de Seine-et-Marne : artisans du BTP de la Brie, commerçants du marché du mercredi et samedi (Place Horizon), entreprises de la zone d'activités locale, professions libérales et cabinets indépendants. Williams se déplace en RER E direct depuis Paris (35 min, branche E4 vers Tournan) pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
+  "Axion-IA intervient à Ozoir-la-Ferrière pour les PME et ETI de Seine-et-Marne : artisans du BTP de la Brie, commerçants du marché du mercredi et samedi (Place Horizon), entreprises de la zone d'activités locale, professions libérales et cabinets indépendants. Williams se déplace en RER E direct depuis Paris (35 min, branche E4 vers Tournan) pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
 
 const ECOSYSTEM_FR =
   "Ozoir-la-Ferrière compte 21 238 habitants (Insee 2023, +4,46 % depuis 2017) et est classée centre urbain intermédiaire de l'unité urbaine de Paris. Le tissu économique repose sur une zone d'activités industrielle et commerciale, le commerce indépendant (marché bi-hebdomadaire Place Horizon), l'artisanat BTP très présent dans la Brie, les transports terrestres (proximité RN4 et A4) et un appareil de services aux entreprises et particuliers typique d'une couronne francilienne résidentielle.";
@@ -35,8 +35,8 @@ const VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place à Ozoir-la-Ferrière pour TPE de la Brie : 4 heures sur site, cartographie des tâches répétitives (saisie compta artisanale, devis BTP, relances clients commerce), plan d'action chiffré. {{price:audit-flash|flat}}.",
-      en: "Audit sur place à Ozoir-la-Ferrière pour TPE de la Brie : 4 heures sur site, cartographie des tâches répétitives (saisie compta artisanale, devis BTP, relances clients commerce), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Ozoir-la-Ferrière pour PME de la Brie : 4 heures sur site, cartographie des tâches répétitives (saisie compta artisanale, devis BTP, relances clients commerce), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Ozoir-la-Ferrière pour PME de la Brie : 4 heures sur site, cartographie des tâches répétitives (saisie compta artisanale, devis BTP, relances clients commerce), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Formation collective à Ozoir-la-Ferrière pour PME locales : automatisation devis-relances pour artisans BTP, synchronisation caisse-compta pour commerces de la Place Horizon, suivi tournées pour transporteurs. Code custom livré. Dès {{price:intervention-4h|flat}}.",
@@ -47,14 +47,14 @@ const VILLE_COPY: VilleCopy = {
       en: "Implémentation d'agents IA à Ozoir-la-Ferrière pour PME-ETI seine-et-marnaises : tri automatique des emails clients, OCR factures fournisseurs, génération de bons de commande. Tarifs publics, devis sur cadrage.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Ozoir-la-Ferrière pour dirigeants de TPE et PME : 4 sessions de coaching IA appliquées à votre métier (BTP, commerce, transport, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-à-1 à Ozoir-la-Ferrière pour dirigeants de TPE et PME : 4 sessions de coaching IA appliquées à votre métier (BTP, commerce, transport, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-à-1 à Ozoir-la-Ferrière pour dirigeants de PME et d'ETI : 4 sessions de coaching IA appliquées à votre métier (BTP, commerce, transport, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-à-1 à Ozoir-la-Ferrière pour dirigeants de PME et d'ETI : 4 sessions de coaching IA appliquées à votre métier (BTP, commerce, transport, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les TPE du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les PME du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
         whyHere: [
           "Artisanat BTP très dense dans la Brie : pour les couvreurs, maçons et électriciens ozoiriens, beaucoup installés autour de la Z.I. Nord, on bâtit des sites vitrines générateurs de devis, mobile-first, et des automatisations devis-relances qui transforment une demande locale en chantier signé sans saisie manuelle. Le prospect remplit un formulaire, le devis part vite, les relances se déclenchent seules.",
           "Commerce indépendant rythmé par le marché bi-hebdomadaire de la Place Horizon (mercredi et samedi matin) et les commerces de proximité du centre-ville : nos boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et nos chatbots prolongent la relation client au-delà des heures d'étal, avec click-and-collect, fidélisation et recherche de produits en langage naturel.",
@@ -89,12 +89,6 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation devis-relances) sur le site existant d'un artisan BTP de la Brie ou d'un commerçant ozoirien, en quelques semaines et sans refonte. Idéal pour un couvreur, un fleuriste ou un primeur du marché de la Place Horizon.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -140,7 +134,7 @@ const VILLE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, même en pic de chantiers ou de week-end de marché. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, OVHcloud ou Scaleway), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution transférable à tout prestataire web de Seine-et-Marne ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les TPE du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Ozoir-la-Ferrière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle de 21 238 habitants du nord de la Brie, où coexistent les PME du BTP, les commerçants du marché de la Place Horizon et les transporteurs et logisticiens des deux zones industrielles — la Z.I. Nord (21 ha, plus de 240 entreprises) et la Z.I. Sud, pôle logistique de près de 27 ha — profitant de la RN4 et de l'A4. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ozoir-la-Ferrière, itérations à distance.",
         whyHere: [
           "Artisanat BTP très dense dans la Brie : pour les couvreurs, maçons et électriciens ozoiriens, beaucoup installés autour de la Z.I. Nord, on bâtit des sites vitrines générateurs de devis, mobile-first, et des automatisations devis-relances qui transforment une demande locale en chantier signé sans saisie manuelle. Le prospect remplit un formulaire, le devis part vite, les relances se déclenchent seules.",
           "Commerce indépendant rythmé par le marché bi-hebdomadaire de la Place Horizon (mercredi et samedi matin) et les commerces de proximité du centre-ville : nos boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et nos chatbots prolongent la relation client au-delà des heures d'étal, avec click-and-collect, fidélisation et recherche de produits en langage naturel.",
@@ -175,12 +169,6 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation devis-relances) sur le site existant d'un artisan BTP de la Brie ou d'un commerçant ozoirien, en quelques semaines et sans refonte. Idéal pour un couvreur, un fleuriste ou un primeur du marché de la Place Horizon.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -235,11 +223,11 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Ozoir-la-Ferrière ?",
-      a: "Oui. Williams prend le RER E depuis Paris (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière, environ 35 min depuis Magenta) pour intervenir sur site auprès des TPE et PME ozoiriennes.",
+      a: "Oui. Williams prend le RER E depuis Paris (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière, environ 35 min depuis Magenta) pour intervenir sur site auprès des PME et ETI ozoiriennes.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Ozoir-la-Ferrière ?",
-      a: "Principalement les TPE-PME du BTP de la Brie, les commerçants du marché Place Horizon (mercredi et samedi matin), les transporteurs routiers, les professions libérales et les entreprises de la zone d'activités locale. Pas de spécialisation grands comptes.",
+      a: "Principalement les PME et ETI du BTP de la Brie, les commerçants du marché Place Horizon (mercredi et samedi matin), les transporteurs routiers, les professions libérales et les entreprises de la zone d'activités locale. Pas de spécialisation grands comptes.",
     },
     {
       q: "Quel délai pour démarrer une mission à Ozoir-la-Ferrière ?",

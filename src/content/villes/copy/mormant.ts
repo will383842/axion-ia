@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MORMANT_COPY: VilleCopy = {
   pitchFr:
-    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. PME de l'artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. PME de l'artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mormant (77). Nous accompagnons PME et ETI : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mormant (77). Nous accompagnons PME et ETI : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
   seoHook: "commerce bourg & agroalimentaire",
   ecosystemFr:
-    "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",
+    "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu PME de l'artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",
   ecosystemEn:
-    "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",
+    "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu PME de l'artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",
   distancesFr:
     "Melun à 20 min. Provins à 30 min. Gare RER D Combs-la-Ville à 15 min. Paris centre à 50 min.",
   distancesEn:
     "Melun à 20 min. Provins à 30 min. Gare RER D Combs-la-Ville à 15 min. Paris centre à 50 min.",
   topSectorsNaf: [
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de bourg",
     "PME agroalimentaire",
     "Agriculture céréalière / betteravière",
@@ -30,8 +30,8 @@ export const MORMANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mormant : diagnostic adapté aux PME de l'artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mormant : diagnostic adapté aux PME de l'artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mormant : formats adaptés atelier artisan, commerce de bourg, usine agroalimentaire, exploitation agricole, cabinet libéral. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const MORMANT_COPY: VilleCopy = {
       en: "Implémentation IA à Mormant : automatisation traçabilité agroalimentaire, gestion stocks commerce, devis artisans, agriculture de précision, planning professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mormant : sessions dans votre atelier, commerce, exploitation ou en visio. Dirigeants TPE/PME, artisans, exploitants agricoles de la Brie seine-et-marnaise.",
-      en: "Coaching 1-to-1 à Mormant : sessions dans votre atelier, commerce, exploitation ou en visio. Dirigeants TPE/PME, artisans, exploitants agricoles de la Brie seine-et-marnaise.",
+      fr: "Coaching 1-to-1 à Mormant : sessions dans votre atelier, commerce, exploitation ou en visio. Dirigeants PME et ETI, artisans, exploitants agricoles de la Brie seine-et-marnaise.",
+      en: "Coaching 1-to-1 à Mormant : sessions dans votre atelier, commerce, exploitation ou en visio. Dirigeants PME et ETI, artisans, exploitants agricoles de la Brie seine-et-marnaise.",
     },
   },
   faqGeolocalisee: [

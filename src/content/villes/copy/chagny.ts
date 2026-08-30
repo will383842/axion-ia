@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAGNY_COPY: VilleCopy = {
   pitchFr:
-    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de PME et ETI viticulture, restauration, commerce, artisanat et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de PME et ETI viticulture, restauration, commerce, artisanat et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chagny (71). Nous accompagnons PME et ETI : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chagny (71). Nous accompagnons PME et ETI : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit sur place sur mesure.",
   seoHook: "viticulture négoce & restauration gastronomie",
   ecosystemFr:
     "Chagny est situé au pied de la Côte chalonnaise, au croisement des vignobles de Bourgogne et du canal du Centre. La ville est connue pour sa gastronomie (Maison Lameloise, 3 étoiles Michelin) et son tissu viticole. L'économie locale repose sur la viticulture, la restauration, le commerce de proximité, l'artisanat BTP et les services. Proximité de Beaune (15 min) et Chalon-sur-Saône (15 min).",
@@ -34,16 +34,16 @@ export const CHAGNY_COPY: VilleCopy = {
       en: "Audit IA à Chagny : diagnostic adapté aux domaines viticoles, restaurateurs, commerçants, artisans et prestataires de services de la Côte chalonnaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
-      en: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      fr: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la PME artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la PME artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Chagny : gestion parcellaire viticole, prévision réservations restauration, automatisation stocks commerce, agents conversationnels accueil touristique Côte chalonnaise.",
       en: "Implémentation IA à Chagny : gestion parcellaire viticole, prévision réservations restauration, automatisation stocks commerce, agents conversationnels accueil touristique Côte chalonnaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chagny : sessions dans votre domaine viticole, restaurant, commerce ou en visio. Dirigeants TPE/PME de la Côte chalonnaise souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Chagny : sessions dans votre domaine viticole, restaurant, commerce ou en visio. Dirigeants TPE/PME de la Côte chalonnaise souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Chagny : sessions dans votre domaine viticole, restaurant, commerce ou en visio. Dirigeants PME et ETI de la Côte chalonnaise souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Chagny : sessions dans votre domaine viticole, restaurant, commerce ou en visio. Dirigeants PME et ETI de la Côte chalonnaise souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHAGNY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Chagny  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Chagny et de la Côte chalonnaise, il identifie les cas d'usage IA à fort ROI pour votre domaine, restaurant ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Chagny et de la Côte chalonnaise, il identifie les cas d'usage IA à fort ROI pour votre domaine, restaurant ou commerce.",
     },
     {
       q: "Accompagnez-vous les viticulteurs de la Côte chalonnaise ?",

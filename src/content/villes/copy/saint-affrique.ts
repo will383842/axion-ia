@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
+    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu PME artisanales, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
+    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu PME artisanales, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Affrique (12). Nous accompagnons PME artisanales, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Affrique (12). Nous accompagnons PME artisanales, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit sur place sur mesure.",
   seoHook: "agroalimentaire filière & élevage ovin",
   ecosystemFr:
     "Saint-Affrique est le pôle urbain du sud Aveyron, dans la vallée de la Sorgue, à proximité immédiate de Roquefort-sur-Soulzon (caves Roquefort). Économie structurée autour de l'agroalimentaire (filière laitière Roquefort AOP, charcuterie, produits du terroir), de l'élevage ovin, du commerce de centre-ville, des professions libérales et du tourisme vert (Parc naturel régional des Grands Causses).",
@@ -30,8 +30,8 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Affrique : diagnostic adapté aux TPE artisans, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Affrique : diagnostic adapté aux TPE artisans, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Affrique : diagnostic adapté aux PME artisanales, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Affrique : diagnostic adapté aux PME artisanales, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Affrique : formats adaptés à l'atelier laitier, à l'exploitation agricole, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Affrique : traçabilité filière laitière Roquefort, automatisation qualité agroalimentaire, agents conversationnels tourisme vert Grands Causses, classification documents cabinets.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Affrique : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, professions libérales du sud Aveyron.",
-      en: "Coaching 1-to-1 à Saint-Affrique : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, professions libérales du sud Aveyron.",
+      fr: "Coaching 1-to-1 à Saint-Affrique : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires, professions libérales du sud Aveyron.",
+      en: "Coaching 1-to-1 à Saint-Affrique : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires, professions libérales du sud Aveyron.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Affrique  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert Grands Causses ?",
@@ -65,7 +65,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Affrique ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Affrique. Format flexible : dans vos locaux, en visio ou à Millau. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Saint-Affrique. Format flexible : dans vos locaux, en visio ou à Millau. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

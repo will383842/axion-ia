@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SANARY_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
+    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de PME artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
+    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de PME artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
   seoHook: "station balnéaire",
   ecosystemFr:
-    "Sanary-sur-Mer est une station balnéaire dynamique du Var ouest, mêlant port de pêche actif, marché provençal réputé et économie touristique. Tissu de TPE artisanales, PME hôtellerie-restauration, commerces de bord de mer. Toulon à 25 min, Bandol à 5 min, A50 directe.",
+    "Sanary-sur-Mer est une station balnéaire dynamique du Var ouest, mêlant port de pêche actif, marché provençal réputé et économie touristique. Tissu de PME artisanales, PME hôtellerie-restauration, commerces de bord de mer. Toulon à 25 min, Bandol à 5 min, A50 directe.",
   ecosystemEn:
-    "Sanary-sur-Mer est une station balnéaire dynamique du Var ouest, mêlant port de pêche actif, marché provençal réputé et économie touristique. Tissu de TPE artisanales, PME hôtellerie-restauration, commerces de bord de mer. Toulon à 25 min, Bandol à 5 min, A50 directe.",
+    "Sanary-sur-Mer est une station balnéaire dynamique du Var ouest, mêlant port de pêche actif, marché provençal réputé et économie touristique. Tissu de PME artisanales, PME hôtellerie-restauration, commerces de bord de mer. Toulon à 25 min, Bandol à 5 min, A50 directe.",
   distancesFr:
     "Toulon à 25 min. Bandol à 5 min. Marseille à 50 min. Aéroport Toulon-Hyères à 40 min. A50 directe.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux PME hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux PME hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Sanary-sur-Mer : gestion réservations hôtelières, optimisation occupation, automatisation devis artisans, outils prédictifs commerce. Adapté TPE/PME côte varoise.",
-      en: "Implémentation IA à Sanary-sur-Mer : gestion réservations hôtelières, optimisation occupation, automatisation devis artisans, outils prédictifs commerce. Adapté TPE/PME côte varoise.",
+      fr: "Implémentation IA à Sanary-sur-Mer : gestion réservations hôtelières, optimisation occupation, automatisation devis artisans, outils prédictifs commerce. Adapté PME et ETI côte varoise.",
+      en: "Implémentation IA à Sanary-sur-Mer : gestion réservations hôtelières, optimisation occupation, automatisation devis artisans, outils prédictifs commerce. Adapté PME et ETI côte varoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sanary-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants TPE/PME hôtellerie-restauration, commerce, artisanat et tourisme côte varoise.",
-      en: "Coaching 1-to-1 à Sanary-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants TPE/PME hôtellerie-restauration, commerce, artisanat et tourisme côte varoise.",
+      fr: "Coaching 1-to-1 à Sanary-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants PME et ETI hôtellerie-restauration, commerce, artisanat et tourisme côte varoise.",
+      en: "Coaching 1-to-1 à Sanary-sur-Mer : sessions dans vos locaux ou en visio. Dirigeants PME et ETI hôtellerie-restauration, commerce, artisanat et tourisme côte varoise.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sanary-sur-Mer  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sanary-sur-Mer ?",

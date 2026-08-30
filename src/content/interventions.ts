@@ -409,7 +409,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         priceTiers: ESSENTIELLE_PRICE_TIERS_FR,
         groupSize: "2 à 15 personnes",
         format: "Sur site · France & international",
-        audience: "TPE / PME / Grandes entreprises · sans pré-requis IA",
+        audience: "PME/ETI / Grandes entreprises · sans pré-requis IA",
         outcomes: [
           "Vos équipes connaissent les principaux outils IA (ChatGPT, Claude, Copilot…) et savent quand s'en servir",
           "Elles identifient 5 à 10 usages concrets sur leurs tâches : rédaction, recherche, synthèse, analyse",
@@ -854,7 +854,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         price: DIRIGEANTS_PRICE_FR,
         groupSize: "1 dirigeant (1-to-1)",
         format: "Sur site dirigeant · France & international",
-        audience: "Dirigeant TPE, PME, ETI ou grande entreprise",
+        audience: "Dirigeant PME, ETI et grands groupes ou grande entreprise",
         outcomes: [
           "3 actions immédiates activables dès le lendemain — gain de temps tout de suite, sans attendre",
           "Leviers chiffrés pour vos marges : frais de personnel, accélération commerciale, coûts cachés",
@@ -944,7 +944,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "fit",
           question: "Pour qui est-ce vraiment fait ?",
           answer:
-            "Fondateurs, DG, dirigeants de TPE / PME / ETI / grandes entreprises. Le format strictement 1-to-1 (vous seul·e avec moi, pas de comité) garantit que la journée colle exactement à votre contexte et à vos enjeux personnels — confidentialité totale.",
+            "Fondateurs, DG, dirigeants de PME / ETI / grands groupes. Le format strictement 1-to-1 (vous seul·e avec moi, pas de comité) garantit que la journée colle exactement à votre contexte et à vos enjeux personnels — confidentialité totale.",
         },
         {
           id: "follow-up",
@@ -1044,7 +1044,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         price: TEMPS_PRICE_FR,
         groupSize: "2 à 15 personnes",
         format: "Sur site · France & international",
-        audience: "Équipes opérationnelles · TPE, PME, ETI",
+        audience: "Équipes opérationnelles · PME, ETI et grands groupes",
         outcomes: [
           "Vos équipes identifient leurs tâches répétitives chronophages et y appliquent l'IA",
           "Chaque participant repart avec 5 à 10 méthodes maîtrisées sur ses propres outils",

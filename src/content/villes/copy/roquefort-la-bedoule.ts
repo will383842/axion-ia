@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
   pitchFr:
-    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
+    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de PME artisanales bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
   pitchEn:
-    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
+    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de PME artisanales bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons PME artisanales, PME services, commerçants et professions libérales du sud-est marseillais. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit sur place sur mesure, sans engagement.",
-  seoHook: "TPE bâtiment & PME est marseillais",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons PME artisanales, PME services, commerçants et professions libérales du sud-est marseillais. Audit sur place sur mesure, sans engagement.",
+  seoHook: "PME bâtiment & PME est marseillais",
   ecosystemFr:
-    "Roquefort-la-Bédoule s'étend au sud-est de Marseille entre Aubagne et Cassis, historiquement marquée par ses carrières de pierre. Économie locale de TPE artisans bâtiment (héritage carrières et taille de pierre), PME services, commerces de proximité, professions libérales et oléiculture. Cadre résidentiel privilégié pour les actifs travaillant à Marseille, Aubagne et La Ciotat.",
+    "Roquefort-la-Bédoule s'étend au sud-est de Marseille entre Aubagne et Cassis, historiquement marquée par ses carrières de pierre. Économie locale de PME artisanales bâtiment (héritage carrières et taille de pierre), PME services, commerces de proximité, professions libérales et oléiculture. Cadre résidentiel privilégié pour les actifs travaillant à Marseille, Aubagne et La Ciotat.",
   ecosystemEn:
-    "Roquefort-la-Bédoule s'étend au sud-est de Marseille entre Aubagne et Cassis, historiquement marquée par ses carrières de pierre. Économie locale de TPE artisans bâtiment (héritage carrières et taille de pierre), PME services, commerces de proximité, professions libérales et oléiculture. Cadre résidentiel privilégié pour les actifs travaillant à Marseille, Aubagne et La Ciotat.",
+    "Roquefort-la-Bédoule s'étend au sud-est de Marseille entre Aubagne et Cassis, historiquement marquée par ses carrières de pierre. Économie locale de PME artisanales bâtiment (héritage carrières et taille de pierre), PME services, commerces de proximité, professions libérales et oléiculture. Cadre résidentiel privilégié pour les actifs travaillant à Marseille, Aubagne et La Ciotat.",
   distancesFr:
     "Aubagne à 10 min. Cassis à 10 min. La Ciotat à 15 min. Marseille centre à 25 min. Aéroport Marseille Provence à 35 min. Gare TGV Aix-en-Provence à 45 min. Accès A50 vers Toulon.",
   distancesEn:
     "Aubagne à 10 min. Cassis à 10 min. La Ciotat à 15 min. Marseille centre à 25 min. Aéroport Marseille Provence à 35 min. Gare TGV Aix-en-Provence à 45 min. Accès A50 vers Toulon.",
   topSectorsNaf: [
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "Taille de pierre & carrières",
     "PME services & numérique",
     "Commerce de proximité",
@@ -30,8 +30,8 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux TPE artisans bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux TPE artisans bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux PME artisanales bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux PME artisanales bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquefort-la-Bédoule : formats adaptés à l'atelier artisan bâtiment, au cabinet libéral et à la PME services. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
       en: "Implémentation IA à Roquefort-la-Bédoule : automatisation devis bâtiment, gestion planning chantiers, CRM intelligent, agents conversationnels, marketing local. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roquefort-la-Bédoule : sessions pour dirigeants TPE/PME, artisans et professions libérales du sud-est marseillais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Roquefort-la-Bédoule : sessions pour dirigeants TPE/PME, artisans et professions libérales du sud-est marseillais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Roquefort-la-Bédoule : sessions pour dirigeants de PME et d'ETI, artisans et professions libérales du sud-est marseillais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Roquefort-la-Bédoule : sessions pour dirigeants de PME et d'ETI, artisans et professions libérales du sud-est marseillais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Roquefort-la-Bédoule  ?",
-      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME services et professions libérales de Roquefort-la-Bédoule. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME services et professions libérales de Roquefort-la-Bédoule. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Roquefort-la-Bédoule ?",
-      a: "Oui, nous accompagnons les TPE artisans du bâtiment et taille de pierre : automatisation devis, gestion planning chantiers, facturation, suivi clients, marketing local et relances automatiques.",
+      a: "Oui, nous accompagnons les PME artisanales du bâtiment et taille de pierre : automatisation devis, gestion planning chantiers, facturation, suivi clients, marketing local et relances automatiques.",
     },
     {
       q: "Les commerçants de Roquefort-la-Bédoule peuvent-ils tirer parti de l'IA ?",

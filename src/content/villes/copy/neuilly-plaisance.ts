@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
+    "Axion-IA accompagne les PME et ETI de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
+    "Axion-IA accompagne les PME et ETI de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
   directAnswerFr:
-    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit sur place 4h à {{price:audit-flash|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des PME et ETI locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit sur place 4h à {{price:audit-flash|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
   directAnswerEn:
-    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit sur place 4h à {{price:audit-flash|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des PME et ETI locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit sur place 4h à {{price:audit-flash|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
   seoHook: "commerces de proximité & professions libérales",
   ecosystemFr:
     "Neuilly-Plaisance est une commune à dominante résidentielle, 4e du département de la Seine-Saint-Denis par revenu net moyen par foyer (derrière Gournay-sur-Marne, Le Raincy et Coubron). Son tissu économique repose sur les commerces de proximité, l'artisanat, les professions libérales (santé, droit, conseil) et les PME de services. Le parc urbain de 31,4 hectares (1999), aménagé sur d'anciennes carrières de gypse du plateau d'Avron, structure le cadre de vie.",
@@ -32,20 +32,20 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — {{price:audit-flash|flat}}.",
-      en: "Audit sur place 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Neuilly-Plaisance pour les PME de commerce de proximité ou les professions libérales — {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Neuilly-Plaisance pour les PME de commerce de proximité ou les professions libérales — {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des TPE/PME locales.",
-      en: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des TPE/PME locales.",
+      fr: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des PME et ETI locales.",
+      en: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des PME et ETI locales.",
     },
     implementation: {
       fr: "Implémentation de code IA sur mesure à Neuilly-Plaisance pour PME de services et artisans — pas de no-code.",
       en: "Implémentation de code IA sur mesure à Neuilly-Plaisance pour PME de services et artisans — pas de no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants TPE/PME à Neuilly-Plaisance pour cadrer leur feuille de route IA.",
-      en: "Accompagnement un-à-un des dirigeants TPE/PME à Neuilly-Plaisance pour cadrer leur feuille de route IA.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI à Neuilly-Plaisance pour cadrer leur feuille de route IA.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI à Neuilly-Plaisance pour cadrer leur feuille de route IA.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous en ligne, recherche sémantique) sur le site d'un commerce de proximité, d'un artisan du bâtiment, d'un acteur de l'hébergement-restauration ou d'un libéral de Neuilly-Plaisance, sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -172,12 +166,6 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous en ligne, recherche sémantique) sur le site d'un commerce de proximité, d'un artisan du bâtiment, d'un acteur de l'hébergement-restauration ou d'un libéral de Neuilly-Plaisance, sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

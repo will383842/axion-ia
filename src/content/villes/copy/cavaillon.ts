@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const CAVAILLON_COPY: VilleCopy = {
   pitchFr:
-    "Cavaillon, 25 636 habitants (2023), 4ème commune du Vaucluse en Provence-Alpes-Côte d'Azur, est siège de l'agglomération Luberon Monts de Vaucluse au pied de la colline Saint-Jacques. Capitale française du melon, la ville abrite un Marché d'Intérêt National (MIN) structurant la filière fruits et légumes (melons, pommes, poires, cerises). Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du maraîchage, du commerce de détail et de la logistique agroalimentaire avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
+    "Cavaillon, 25 636 habitants (2023), 4ème commune du Vaucluse en Provence-Alpes-Côte d'Azur, est siège de l'agglomération Luberon Monts de Vaucluse au pied de la colline Saint-Jacques. Capitale française du melon, la ville abrite un Marché d'Intérêt National (MIN) structurant la filière fruits et légumes (melons, pommes, poires, cerises). Axion-IA, cabinet IA en code custom, accompagne ici les PME et ETI du maraîchage, du commerce de détail et de la logistique agroalimentaire avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   pitchEn:
-    "Cavaillon, 25 636 habitants (2023), 4ème commune du Vaucluse en Provence-Alpes-Côte d'Azur, est siège de l'agglomération Luberon Monts de Vaucluse au pied de la colline Saint-Jacques. Capitale française du melon, la ville abrite un Marché d'Intérêt National (MIN) structurant la filière fruits et légumes (melons, pommes, poires, cerises). Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du maraîchage, du commerce de détail et de la logistique agroalimentaire avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
+    "Cavaillon, 25 636 habitants (2023), 4ème commune du Vaucluse en Provence-Alpes-Côte d'Azur, est siège de l'agglomération Luberon Monts de Vaucluse au pied de la colline Saint-Jacques. Capitale française du melon, la ville abrite un Marché d'Intérêt National (MIN) structurant la filière fruits et légumes (melons, pommes, poires, cerises). Axion-IA, cabinet IA en code custom, accompagne ici les PME et ETI du maraîchage, du commerce de détail et de la logistique agroalimentaire avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   directAnswerFr:
-    "Axion-IA intervient à Cavaillon (Vaucluse, 84300) auprès des TPE, PME puis ETI du Luberon — maraîchers, négociants du MIN, commerces de détail, transporteurs de la zone A7 (sortie 25). Notre cabinet basé en France développe en code custom (TypeScript, Python) des automatisations IA mesurables : gestion d'achats fruits et légumes, traçabilité agricole, reporting RGPD. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, parc régional du Luberon couvert depuis Avignon (24 km).",
+    "Axion-IA intervient à Cavaillon (Vaucluse, 84300) auprès des PME, ETI puis grands groupes du Luberon — maraîchers, négociants du MIN, commerces de détail, transporteurs de la zone A7 (sortie 25). Notre cabinet basé en France développe en code custom (TypeScript, Python) des automatisations IA mesurables : gestion d'achats fruits et légumes, traçabilité agricole, reporting RGPD. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, parc régional du Luberon couvert depuis Avignon (24 km).",
   directAnswerEn:
-    "Axion-IA intervient à Cavaillon (Vaucluse, 84300) auprès des TPE, PME puis ETI du Luberon — maraîchers, négociants du MIN, commerces de détail, transporteurs de la zone A7 (sortie 25). Notre cabinet basé en France développe en code custom (TypeScript, Python) des automatisations IA mesurables : gestion d'achats fruits et légumes, traçabilité agricole, reporting RGPD. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, parc régional du Luberon couvert depuis Avignon (24 km).",
+    "Axion-IA intervient à Cavaillon (Vaucluse, 84300) auprès des PME, ETI puis grands groupes du Luberon — maraîchers, négociants du MIN, commerces de détail, transporteurs de la zone A7 (sortie 25). Notre cabinet basé en France développe en code custom (TypeScript, Python) des automatisations IA mesurables : gestion d'achats fruits et légumes, traçabilité agricole, reporting RGPD. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, parc régional du Luberon couvert depuis Avignon (24 km).",
   seoHook: "MIN fruits et légumes & filière melon",
   ecosystemFr:
     "Cavaillon structure son économie autour du Marché d'Intérêt National (MIN) avec halle dédiée, de la filière fruits et légumes (melon AOC, pommes, poires, cerises) et du Parc Naturel Régional du Luberon. La Chambre de Commerce et d'Industrie y est implantée. Le tissu local mêle exploitations agricoles familiales, négociants, transporteurs frigorifiques, commerces spécialisés et supermarchés. La ville est siège de l'agglomération Luberon Monts de Vaucluse.",
@@ -32,20 +32,20 @@ export const CAVAILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Cavaillon (4 h, {{price:audit-flash|flat}}) pour TPE/PME du MIN, du maraîchage et du commerce de détail : cartographie des processus, scoring ROI, conformité RGPD.",
-      en: "Audit sur place IA à Cavaillon (4 h, {{price:audit-flash|flat}}) pour TPE/PME du MIN, du maraîchage et du commerce de détail : cartographie des processus, scoring ROI, conformité RGPD.",
+      fr: "Audit sur place IA à Cavaillon (4 h, {{price:audit-flash|flat}}) pour PME et ETI du MIN, du maraîchage et du commerce de détail : cartographie des processus, scoring ROI, conformité RGPD.",
+      en: "Audit sur place IA à Cavaillon (4 h, {{price:audit-flash|flat}}) pour PME et ETI du MIN, du maraîchage et du commerce de détail : cartographie des processus, scoring ROI, conformité RGPD.",
     },
     interventions: {
-      fr: "Intervention sur site à Cavaillon dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation des bons de commande, suivi qualité fruits/légumes, reporting fournisseurs du MIN.",
-      en: "Intervention sur site à Cavaillon dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation des bons de commande, suivi qualité fruits/légumes, reporting fournisseurs du MIN.",
+      fr: "Intervention sur site à Cavaillon dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation des bons de commande, suivi qualité fruits/légumes, reporting fournisseurs du MIN.",
+      en: "Intervention sur site à Cavaillon dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation des bons de commande, suivi qualité fruits/légumes, reporting fournisseurs du MIN.",
     },
     implementation: {
       fr: "Implémentation IA à Cavaillon dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour transporteurs, négociants et industries alimentaires de la vallée de la Durance.",
       en: "Implémentation IA à Cavaillon dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour transporteurs, négociants et industries alimentaires de la vallée de la Durance.",
     },
     unAUn: {
-      fr: "Coaching un-à-un dirigeants TPE/PME de Cavaillon dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour exploitations agricoles, commerces et acteurs du MIN.",
-      en: "Coaching un-à-un dirigeants TPE/PME de Cavaillon dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour exploitations agricoles, commerces et acteurs du MIN.",
+      fr: "Coaching un-à-un dirigeants de PME et d'ETI de Cavaillon dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour exploitations agricoles, commerces et acteurs du MIN.",
+      en: "Coaching un-à-un dirigeants de PME et d'ETI de Cavaillon dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour exploitations agricoles, commerces et acteurs du MIN.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const CAVAILLON_COPY: VilleCopy = {
           "Capitale du melon et MIN structurant : sur ses 27 hectares, la halle réunit une douzaine de grossistes et près de 76 entreprises qui gèrent achats, lots et traçabilité au rythme d'un million de tonnes par an. Terrain idéal pour des portails fournisseurs, des catalogues e-commerce de produits du Luberon et des agents qui automatisent bons de commande et reporting branchés sur votre SI.",
           "Filière melon IGP et exploitations familiales de la vallée de la Durance : le syndicat des producteurs de melon de Cavaillon rassemble une cinquantaine de maraîchers et une dizaine d'expéditeurs autour de l'IGP « Melon de Cavaillon ». On greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — suivi qualité saisonnier, recherche sémantique sur fiches produits, boutique e-commerce de vente directe pour les producteurs.",
           "Logistique frigorifique et accès A7 sortie 25 : transporteurs et entrepôts froid de la zone d'activité expédient vers Marseille (75 km) et le MIN d'Avignon (24 km), le MIN de Cavaillon étant l'un des trois grands marchés fruits et légumes du Sud avec Perpignan et Avignon. Parfait pour des plateformes de suivi, des tableaux de bord temps réel et des automatisations connectées à votre ERP.",
-          "Tissu dense de TPE du commerce de détail et de l'artisanat au pied de la colline Saint-Jacques, à proximité de la CCI de Vaucluse implantée localement : sites vitrines mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues, le tout hébergeable en UE et conforme RGPD — vos données clients restent maîtrisées et transférables.",
+          "Tissu dense de PME du commerce de détail et de l'artisanat au pied de la colline Saint-Jacques, à proximité de la CCI de Vaucluse implantée localement : sites vitrines mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues, le tout hébergeable en UE et conforme RGPD — vos données clients restent maîtrisées et transférables.",
         ],
         methodology: [
           {
@@ -86,12 +86,6 @@ export const CAVAILLON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un maraîcher de la vallée de la Durance, d'un commerce de détail du centre-ville ou d'un artisan de Cavaillon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -142,7 +136,7 @@ export const CAVAILLON_COPY: VilleCopy = {
           "Capitale du melon et MIN structurant : sur ses 27 hectares, la halle réunit une douzaine de grossistes et près de 76 entreprises qui gèrent achats, lots et traçabilité au rythme d'un million de tonnes par an. Terrain idéal pour des portails fournisseurs, des catalogues e-commerce de produits du Luberon et des agents qui automatisent bons de commande et reporting branchés sur votre SI.",
           "Filière melon IGP et exploitations familiales de la vallée de la Durance : le syndicat des producteurs de melon de Cavaillon rassemble une cinquantaine de maraîchers et une dizaine d'expéditeurs autour de l'IGP « Melon de Cavaillon ». On greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — suivi qualité saisonnier, recherche sémantique sur fiches produits, boutique e-commerce de vente directe pour les producteurs.",
           "Logistique frigorifique et accès A7 sortie 25 : transporteurs et entrepôts froid de la zone d'activité expédient vers Marseille (75 km) et le MIN d'Avignon (24 km), le MIN de Cavaillon étant l'un des trois grands marchés fruits et légumes du Sud avec Perpignan et Avignon. Parfait pour des plateformes de suivi, des tableaux de bord temps réel et des automatisations connectées à votre ERP.",
-          "Tissu dense de TPE du commerce de détail et de l'artisanat au pied de la colline Saint-Jacques, à proximité de la CCI de Vaucluse implantée localement : sites vitrines mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues, le tout hébergeable en UE et conforme RGPD — vos données clients restent maîtrisées et transférables.",
+          "Tissu dense de PME du commerce de détail et de l'artisanat au pied de la colline Saint-Jacques, à proximité de la CCI de Vaucluse implantée localement : sites vitrines mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues, le tout hébergeable en UE et conforme RGPD — vos données clients restent maîtrisées et transférables.",
         ],
         methodology: [
           {
@@ -172,12 +166,6 @@ export const CAVAILLON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un maraîcher de la vallée de la Durance, d'un commerce de détail du centre-ville ou d'un artisan de Cavaillon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,11 +232,11 @@ export const CAVAILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD et AI Act à Cavaillon ?",
-      a: "Nos automatisations sont développées en code custom (pas no-code), hébergées en Union européenne, avec registre des traitements, DPIA et journal d'audit IA conformes RGPD et AI Act. Adapté aux TPE/PME maraîchères et commerciales.",
+      a: "Nos automatisations sont développées en code custom (pas no-code), hébergées en Union européenne, avec registre des traitements, DPIA et journal d'audit IA conformes RGPD et AI Act. Adapté aux PME et ETI maraîchères et commerciales.",
     },
     {
       q: "Axion-IA propose-t-il du no-code à Cavaillon ?",
-      a: "Non. Axion-IA développe exclusivement en code custom (TypeScript, Python, Next.js) pour garantir la propriété intellectuelle, la portabilité et la conformité réglementaire des automatisations livrées aux TPE/PME de Cavaillon.",
+      a: "Non. Axion-IA développe exclusivement en code custom (TypeScript, Python, Next.js) pour garantir la propriété intellectuelle, la portabilité et la conformité réglementaire des automatisations livrées aux PME et ETI de Cavaillon.",
     },
   ],
 };

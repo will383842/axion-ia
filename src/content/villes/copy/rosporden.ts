@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const ROSPORDEN_COPY: VilleCopy = {
   pitchFr:
-    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y travaille avec les organisations du territoire.",
+    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu PME artisanales, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y travaille avec les organisations du territoire.",
+    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu PME artisanales, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosporden (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit sur place à",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosporden (29). Nous accompagnons tous types d'activités: PME artisanales, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosporden (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit sur place à",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosporden (29). Nous accompagnons tous types d'activités: PME artisanales, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit sur place à",
   seoHook: "agroalimentaire biscuiterie & tourisme vert",
   ecosystemFr:
-    "Rosporden est une commune du sud Finistère, à mi-chemin entre Quimper et Lorient. Son étang en centre-ville et sa tradition biscuitière (biscuiterie artisanale réputée) font sa singularité. Nœud ferroviaire TER (gare Rosporden sur la ligne Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme vert et services.",
+    "Rosporden est une commune du sud Finistère, à mi-chemin entre Quimper et Lorient. Son étang en centre-ville et sa tradition biscuitière (biscuiterie artisanale réputée) font sa singularité. Nœud ferroviaire TER (gare Rosporden sur la ligne Quimper-Lorient). Tissu PME artisanales, PME agroalimentaires, commerces de proximité, tourisme vert et services.",
   ecosystemEn:
-    "Rosporden est une commune du sud Finistère, à mi-chemin entre Quimper et Lorient. Son étang en centre-ville et sa tradition biscuitière (biscuiterie artisanale réputée) font sa singularité. Nœud ferroviaire TER (gare Rosporden sur la ligne Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme vert et services.",
+    "Rosporden est une commune du sud Finistère, à mi-chemin entre Quimper et Lorient. Son étang en centre-ville et sa tradition biscuitière (biscuiterie artisanale réputée) font sa singularité. Nœud ferroviaire TER (gare Rosporden sur la ligne Quimper-Lorient). Tissu PME artisanales, PME agroalimentaires, commerces de proximité, tourisme vert et services.",
   distancesFr:
     "Gare Rosporden (TER Quimper-Lorient, 15 min Quimper, 45 min Lorient). Quimper centre à 20 min voiture. Concarneau à 15 min. Aéroport Quimper Bretagne à 25 min. Lorient à 50 min.",
   distancesEn:
     "Gare Rosporden (TER Quimper-Lorient, 15 min Quimper, 45 min Lorient). Quimper centre à 20 min voiture. Concarneau à 15 min. Aéroport Quimper Bretagne à 25 min. Lorient à 50 min.",
   topSectorsNaf: [
     "Agroalimentaire & biscuiterie artisanale",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Tourisme vert & hébergement",
     "Services aux entreprises & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Rosporden : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Rosporden : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rosporden : formats adaptés à la biscuiterie, l'atelier artisan, le commerce ou l'hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const ROSPORDEN_COPY: VilleCopy = {
       en: "Implémentation IA à Rosporden : automatisation traçabilité agroalimentaire, contrôle qualité biscuiterie, agents conversationnels tourisme, prédiction saisonnalité. Adapté PME sud Finistère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rosporden : sessions dans votre biscuiterie, commerce, hébergement ou en visio. Dirigeants TPE/PME, artisans, commerçants et acteurs tourisme du sud Finistère.",
-      en: "Coaching 1-to-1 à Rosporden : sessions dans votre biscuiterie, commerce, hébergement ou en visio. Dirigeants TPE/PME, artisans, commerçants et acteurs tourisme du sud Finistère.",
+      fr: "Coaching 1-to-1 à Rosporden : sessions dans votre biscuiterie, commerce, hébergement ou en visio. Dirigeants PME et ETI, artisans, commerçants et acteurs tourisme du sud Finistère.",
+      en: "Coaching 1-to-1 à Rosporden : sessions dans votre biscuiterie, commerce, hébergement ou en visio. Dirigeants PME et ETI, artisans, commerçants et acteurs tourisme du sud Finistère.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const ROSPORDEN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et biscuiteries du sud Finistère sur leurs cas IA : automatisation traçabilité, contrôle qualité par vision, optimisation production, gestion stocks et logistique.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants rospordinois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Rosporden, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce rospordinois ?",
+      a: "Pour les PME du BTP et du commerce à Rosporden, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ?",

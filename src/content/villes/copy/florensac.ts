@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FLORENSAC_COPY: VilleCopy = {
   pitchFr:
-    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre les activités professionnelles du bassin.",
+    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu PME viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre les activités professionnelles du bassin.",
+    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu PME viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, PME artisanales, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, PME artisanales, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
   seoHook: "viticulture caves & négoce vin",
   ecosystemFr:
-    "Florensac est une commune viticole de l'Hérault entre Pézenas et Agde, à proximité du bassin de Thau et du littoral méditerranéen. Cave coopérative historique. Tissu TPE domaines viticoles, PME négoce vin, artisans BTP, commerces de proximité, tourisme balnéaire (Agde, Cap d'Agde) et œnotourisme.",
+    "Florensac est une commune viticole de l'Hérault entre Pézenas et Agde, à proximité du bassin de Thau et du littoral méditerranéen. Cave coopérative historique. Tissu PME domaines viticoles, PME négoce vin, artisans BTP, commerces de proximité, tourisme balnéaire (Agde, Cap d'Agde) et œnotourisme.",
   ecosystemEn:
-    "Florensac est une commune viticole de l'Hérault entre Pézenas et Agde, à proximité du bassin de Thau et du littoral méditerranéen. Cave coopérative historique. Tissu TPE domaines viticoles, PME négoce vin, artisans BTP, commerces de proximité, tourisme balnéaire (Agde, Cap d'Agde) et œnotourisme.",
+    "Florensac est une commune viticole de l'Hérault entre Pézenas et Agde, à proximité du bassin de Thau et du littoral méditerranéen. Cave coopérative historique. Tissu PME domaines viticoles, PME négoce vin, artisans BTP, commerces de proximité, tourisme balnéaire (Agde, Cap d'Agde) et œnotourisme.",
   distancesFr:
     "Agde à 10 min. Pézenas à 12 min. Béziers à 25 min. Montpellier à 55 min A75. Aéroport Béziers Cap d'Agde à 25 min. Gare TGV Agde à 12 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const FLORENSAC_COPY: VilleCopy = {
     "Viticulture & caves coopératives (AOC Languedoc, Picpoul de Pinet)",
     "Négoce vin & embouteillage",
     "Tourisme balnéaire & œnotourisme",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants de la plaine héraultaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants de la plaine héraultaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, PME de l'artisanat et du commerce de la plaine héraultaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, PME de l'artisanat et du commerce de la plaine héraultaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Florensac : formats adaptés aux domaines viticoles, caves coopératives, négoce ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const FLORENSAC_COPY: VilleCopy = {
       en: "Implémentation IA à Florensac : traçabilité cave automatisée, prédiction rendements parcellaires, chatbot œnotourisme multilingue, gestion réservations touristiques. Adapté viticulture + tourisme littoral.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Florensac : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants TPE/PME du secteur Agde-Pézenas.",
-      en: "Coaching 1-to-1 à Florensac : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants TPE/PME du secteur Agde-Pézenas.",
+      fr: "Coaching 1-to-1 à Florensac : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants PME et ETI du secteur Agde-Pézenas.",
+      en: "Coaching 1-to-1 à Florensac : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants PME et ETI du secteur Agde-Pézenas.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const FLORENSAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les caves coopératives et domaines viticoles sur leurs cas IA : traçabilité cave automatisée, prédiction rendements, classification parcellaire, optimisation vinification, marketing IA direct-to-consumer.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants florensacois ?",
-      a: "Pour les TPE artisans et commerçants à Florensac, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
+      q: "Quels services pour les PME de l'artisanat et du commerce florensacois ?",
+      a: "Pour les PME de l'artisanat et du commerce à Florensac, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous le secteur tourisme littoral et œnotourisme ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BONDY_COPY: VilleCopy = {
   pitchFr:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Bondy, ville de l'est parisien en Seine-Saint-Denis, le long du canal de l'Ourcq. Sur ce territoire bien desservi par le RER E et le tram T4, riche en commerces, artisans du BTP et services de proximité, nous aidons les petites entreprises à transformer une envie d'IA en automatisations concrètes : devis, plannings, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Bondy, ville de l'est parisien en Seine-Saint-Denis, le long du canal de l'Ourcq. Sur ce territoire bien desservi par le RER E et le tram T4, riche en commerces, artisans du BTP et services de proximité, nous aidons les PME à transformer une envie d'IA en automatisations concrètes : devis, plannings, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   pitchEn:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Bondy, ville de l'est parisien en Seine-Saint-Denis, le long du canal de l'Ourcq. Sur ce territoire bien desservi par le RER E et le tram T4, riche en commerces, artisans du BTP et services de proximité, nous aidons les petites entreprises à transformer une envie d'IA en automatisations concrètes : devis, plannings, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Bondy, ville de l'est parisien en Seine-Saint-Denis, le long du canal de l'Ourcq. Sur ce territoire bien desservi par le RER E et le tram T4, riche en commerces, artisans du BTP et services de proximité, nous aidons les PME à transformer une envie d'IA en automatisations concrètes : devis, plannings, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Bondy, en Seine-Saint-Denis, dans l'est parisien. Sur ce territoire dense de commerces, d'artisans du bâtiment et de services de proximité, bien relié à Paris par le RER E, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings de chantier, relances, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Bondy, en Seine-Saint-Denis, dans l'est parisien. Sur ce territoire dense de commerces, d'artisans du bâtiment et de services de proximité, bien relié à Paris par le RER E, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings de chantier, relances, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Bondy, en Seine-Saint-Denis, dans l'est parisien. Sur ce territoire dense de commerces, d'artisans du bâtiment et de services de proximité, bien relié à Paris par le RER E, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings de chantier, relances, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Bondy, en Seine-Saint-Denis, dans l'est parisien. Sur ce territoire dense de commerces, d'artisans du bâtiment et de services de proximité, bien relié à Paris par le RER E, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, plannings de chantier, relances, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "commerce & artisanat du BTP",
   ecosystemFr:
-    "Bondy s'étire le long du canal de l'Ourcq, dans l'est de la Seine-Saint-Denis, à mi-chemin entre Paris et l'aéroport Roissy-Charles-de-Gaulle. Son économie repose sur un dense tissu de commerces de proximité, d'artisans et entreprises du BTP, de transporteurs et de petites sociétés de services qui irriguent l'agglomération. Ces TPE et PME affrontent au quotidien des tâches répétitives — chiffrage de devis, plannings de chantier, relances, suivi client — qui se prêtent particulièrement bien à des automatisations ciblées et rentables, qu'Axion-IA priorise, l'ETI restant marginale.",
+    "Bondy s'étire le long du canal de l'Ourcq, dans l'est de la Seine-Saint-Denis, à mi-chemin entre Paris et l'aéroport Roissy-Charles-de-Gaulle. Son économie repose sur un dense tissu de commerces de proximité, d'artisans et entreprises du BTP, de transporteurs et de petites sociétés de services qui irriguent l'agglomération. Ces PME et ETI affrontent au quotidien des tâches répétitives — chiffrage de devis, plannings de chantier, relances, suivi client — qui se prêtent particulièrement bien à des automatisations ciblées et rentables, qu'Axion-IA priorise, les grands groupes venant en complément.",
   ecosystemEn:
-    "Bondy s'étire le long du canal de l'Ourcq, dans l'est de la Seine-Saint-Denis, à mi-chemin entre Paris et l'aéroport Roissy-Charles-de-Gaulle. Son économie repose sur un dense tissu de commerces de proximité, d'artisans et entreprises du BTP, de transporteurs et de petites sociétés de services qui irriguent l'agglomération. Ces TPE et PME affrontent au quotidien des tâches répétitives — chiffrage de devis, plannings de chantier, relances, suivi client — qui se prêtent particulièrement bien à des automatisations ciblées et rentables, qu'Axion-IA priorise, l'ETI restant marginale.",
+    "Bondy s'étire le long du canal de l'Ourcq, dans l'est de la Seine-Saint-Denis, à mi-chemin entre Paris et l'aéroport Roissy-Charles-de-Gaulle. Son économie repose sur un dense tissu de commerces de proximité, d'artisans et entreprises du BTP, de transporteurs et de petites sociétés de services qui irriguent l'agglomération. Ces PME et ETI affrontent au quotidien des tâches répétitives — chiffrage de devis, plannings de chantier, relances, suivi client — qui se prêtent particulièrement bien à des automatisations ciblées et rentables, qu'Axion-IA priorise, les grands groupes venant en complément.",
   distancesFr:
     "Bondy est reliée à Paris en une quinzaine de minutes par le RER E (gare de Bondy) et desservie par le tram-train T4 vers Aulnay et Montfermeil, ainsi que par l'A3 et l'A86. La gare de Paris-Est est à une dizaine de kilomètres et l'aéroport de Paris-Charles-de-Gaulle à environ 15 km. Cette desserte permet à Axion-IA d'intervenir sur site sans logistique lourde.",
   distancesEn:
@@ -34,16 +34,16 @@ export const BONDY_COPY: VilleCopy = {
       en: "Audit IA à Bondy : une journée pour cartographier les tâches répétitives d'un commerce, d'un artisan ou d'une PME du BTP — devis, plannings, relances — et prioriser ce qui mérite réellement d'être automatisé.",
     },
     interventions: {
-      fr: "Interventions à Bondy : nous traitons un irritant précis d'une TPE ou PME locale — chiffrage de devis, plannings de chantier, relances clients — avec une automatisation sobre, livrée vite et tenable.",
-      en: "Interventions à Bondy : nous traitons un irritant précis d'une TPE ou PME locale — chiffrage de devis, plannings de chantier, relances clients — avec une automatisation sobre, livrée vite et tenable.",
+      fr: "Interventions à Bondy : nous traitons un irritant précis d'une PME ou ETI locale — chiffrage de devis, plannings de chantier, relances clients — avec une automatisation sobre, livrée vite et tenable.",
+      en: "Interventions à Bondy : nous traitons un irritant précis d'une PME ou ETI locale — chiffrage de devis, plannings de chantier, relances clients — avec une automatisation sobre, livrée vite et tenable.",
     },
     implementation: {
       fr: "Implémentation à Bondy : nous intégrons l'IA aux outils déjà utilisés par les artisans et commerces locaux — logiciels de devis, CRM, gestion de planning — pour un déploiement documenté, sans dépendance imposée.",
       en: "Implémentation à Bondy : nous intégrons l'IA aux outils déjà utilisés par les artisans et commerces locaux — logiciels de devis, CRM, gestion de planning — pour un déploiement documenté, sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Bondy : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et le BTP et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Bondy : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et le BTP et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Bondy : un dirigeant de PME ou ETI, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et le BTP et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Bondy : un dirigeant de PME ou ETI, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et le BTP et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bondy : pour les artisans, commerces et services de proximité, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, prise de rendez-vous, contenus assistés — pensés pour générer des contacts locaux.",
@@ -53,9 +53,9 @@ export const BONDY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Bondy (93), le long du canal de l'Ourcq et de l'intercommunalité Est Ensemble. Le tissu local — environ 7 000 entreprises, en grande majorité de très petites structures (commerce de détail, artisans et entreprises du BTP, logistique des ZAC du Canal de l'Ourcq et de Bondy Nord, services de proximité) — a besoin de sites qui génèrent des contacts réels, pas de vitrines décoratives. Nous bâtissons des sites de devis qualifié, de prise de rendez-vous et de e-commerce dopés à l'IA, avec UX/UI sur mesure, version mobile soignée, intégration multi-CMS et hébergement en Union européenne conforme RGPD. À la veille de l'arrivée du Grand Paris Express (gares Bondy et Pont de Bondy, ligne 15 Est), un site qui convertit la recherche locale en demandes devient un actif stratégique pour une TPE ou une PME bondynoise.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Bondy (93), le long du canal de l'Ourcq et de l'intercommunalité Est Ensemble. Le tissu local — environ 7 000 entreprises, en grande majorité de très PME (commerce de détail, artisans et entreprises du BTP, logistique des ZAC du Canal de l'Ourcq et de Bondy Nord, services de proximité) — a besoin de sites qui génèrent des contacts réels, pas de vitrines décoratives. Nous bâtissons des sites de devis qualifié, de prise de rendez-vous et de e-commerce dopés à l'IA, avec UX/UI sur mesure, version mobile soignée, intégration multi-CMS et hébergement en Union européenne conforme RGPD. À la veille de l'arrivée du Grand Paris Express (gares Bondy et Pont de Bondy, ligne 15 Est), un site qui convertit la recherche locale en demandes devient un actif stratégique pour une PME ou une PME bondynoise.",
         whyHere: [
-          "Le tissu économique de Bondy est dominé par de très petites structures (effectif moyen autour de deux salariés) — commerces de détail, artisans du bâtiment, transporteurs des ZAC du Canal de l'Ourcq et de Bondy Nord (où sont implantées près de 300 entreprises, dont Lidl) : pour ces dirigeants, un site doit d'abord qualifier des devis et générer des appels, pas faire joli.",
+          "Le tissu économique de Bondy est dominé par de très PME (effectif moyen autour de deux salariés) — commerces de détail, artisans du bâtiment, transporteurs des ZAC du Canal de l'Ourcq et de Bondy Nord (où sont implantées près de 300 entreprises, dont Lidl) : pour ces dirigeants, un site doit d'abord qualifier des devis et générer des appels, pas faire joli.",
           "L'arrivée des deux gares du Grand Paris Express — Bondy (correspondance RER E et tram T4) et Pont de Bondy (T1 et futur TZen 3) — va redessiner les flux commerciaux locaux : nous calibrons les sites des commerces et services de Bondy pour capter ces nouvelles recherches de proximité (SEO local, fiche établissement, prise de rendez-vous en ligne).",
           "Les projets d'aménagement d'Est Ensemble (écoquartier Les Rives de l'Ourcq, requalification des berges, relocalisation de locaux d'activité le long du canal) font émerger de nouveaux commerces et artisans qui repartent souvent d'une page vide : nous livrons des sites e-commerce et de réservation prêts à l'emploi, sans dépendance à un éditeur imposé.",
           "La présence à Bondy de structures de recherche et d'innovation — le site de l'IRD avenue Henri Varagnat (laboratoire LOCEAN), désormais repris par le Département pour un pôle d'innovation sociale et environnementale — alimente un terreau de porteurs de projets et d'associations qui ont besoin de plateformes web sobres, accessibles et conformes RGPD, que nous savons bâtir.",
@@ -88,12 +88,6 @@ export const BONDY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté",
-            detail:
-              "Pour les artisans du BTP, commerces de détail et services de proximité de Bondy : site mobile-first avec demande de devis qualifiée, prise de rendez-vous et SEO local sur les quartiers (Canal-Centre, Bondy Nord).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou prise de rendez-vous multi-CMS",
@@ -175,12 +169,6 @@ export const BONDY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase or essential e-commerce site",
-            detail:
-              "For Bondy's BTP tradespeople, retailers and neighbourhood services: a mobile-first site with qualified quote request, online booking and local SEO across the districts (Canal-Centre, Bondy Nord).",
-          },
-          {
             sizeLabel: "SME",
             price: "Multi-CMS e-commerce or booking platform",
             detail:
@@ -229,8 +217,8 @@ export const BONDY_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA accompagne-t-il les petites entreprises de Bondy ?",
-      a: "Oui. Notre priorité va aux TPE puis aux PME de Bondy : commerces, artisans du bâtiment, transporteurs et services de proximité. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
+      q: "Axion-IA accompagne-t-il les PME de Bondy ?",
+      a: "Oui. Notre priorité va aux PME puis aux PME de Bondy : commerces, artisans du bâtiment, transporteurs et services de proximité. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
       q: "L'IA est-elle utile aux artisans et commerces de Bondy ?",

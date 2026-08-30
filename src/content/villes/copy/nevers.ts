@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const NEVERS_COPY: VilleCopy = {
   pitchFr:
-    "Nevers (58), préfecture de la Nièvre en Bourgogne-Franche-Comté, est une ville d'art et d'histoire au bord de la Loire, célèbre pour sa faïence d'art de Nevers, son sanctuaire Sainte-Bernadette et la proximité du circuit de Magny-Cours qui rythme la mécanique régionale. Son économie mêle artisanat d'art, PME industrielles et mécaniques, commerce, santé et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
+    "Nevers (58), préfecture de la Nièvre en Bourgogne-Franche-Comté, est une ville d'art et d'histoire au bord de la Loire, célèbre pour sa faïence d'art de Nevers, son sanctuaire Sainte-Bernadette et la proximité du circuit de Magny-Cours qui rythme la mécanique régionale. Son économie mêle artisanat d'art, PME industrielles et mécaniques, commerce, santé et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   pitchEn:
-    "Nevers (58), préfecture de la Nièvre en Bourgogne-Franche-Comté, est une ville d'art et d'histoire au bord de la Loire, célèbre pour sa faïence d'art de Nevers, son sanctuaire Sainte-Bernadette et la proximité du circuit de Magny-Cours qui rythme la mécanique régionale. Son économie mêle artisanat d'art, PME industrielles et mécaniques, commerce, santé et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
+    "Nevers (58), préfecture de la Nièvre en Bourgogne-Franche-Comté, est une ville d'art et d'histoire au bord de la Loire, célèbre pour sa faïence d'art de Nevers, son sanctuaire Sainte-Bernadette et la proximité du circuit de Magny-Cours qui rythme la mécanique régionale. Son économie mêle artisanat d'art, PME industrielles et mécaniques, commerce, santé et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nevers (58, Nièvre) et dans toute l'agglomération nivernaise. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME mécaniques et industrielles liées à l'écosystème de Magny-Cours, ainsi que les acteurs de santé et de services. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nevers (58, Nièvre) et dans toute l'agglomération nivernaise. Nous accompagnons en priorité les PME artisanales, commerçantes et touristiques, puis les PME mécaniques et industrielles liées à l'écosystème de Magny-Cours, ainsi que les acteurs de santé et de services. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nevers (58, Nièvre) et dans toute l'agglomération nivernaise. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME mécaniques et industrielles liées à l'écosystème de Magny-Cours, ainsi que les acteurs de santé et de services. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nevers (58, Nièvre) et dans toute l'agglomération nivernaise. Nous accompagnons en priorité les PME artisanales, commerçantes et touristiques, puis les PME mécaniques et industrielles liées à l'écosystème de Magny-Cours, ainsi que les acteurs de santé et de services. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "mécanique & artisanat d'art",
   ecosystemFr:
-    "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de TPE et PME, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
+    "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de PME et ETI, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
   ecosystemEn:
-    "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de TPE et PME, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
+    "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de PME et ETI, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
   distancesFr:
     "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, frais indiqués séparément, ou interviennent en visio.",
   distancesEn:
@@ -42,8 +42,8 @@ export const NEVERS_COPY: VilleCopy = {
       en: "Implémentation IA à Nevers : maintenance prédictive et contrôle qualité par vision pour la mécanique, classification de documents techniques, automatisation de réservations pour le tourisme, agents conversationnels intégrés à vos outils existants.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Nevers : sessions individuelles avec le dirigeant, l'artisan ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
-      en: "Coaching un-à-un à Nevers : sessions individuelles avec le dirigeant, l'artisan ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
+      fr: "Coaching un-à-un à Nevers : sessions individuelles avec le dirigeant, l'artisan ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les PME qui veulent gagner du temps sans bouleverser leur organisation.",
+      en: "Coaching un-à-un à Nevers : sessions individuelles avec le dirigeant, l'artisan ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les PME qui veulent gagner du temps sans bouleverser leur organisation.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Nevers : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans d'art, commerces et acteurs touristiques de la cité ligérienne — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
@@ -88,12 +88,6 @@ export const NEVERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique augmentée",
-            detail:
-              "Pour les artisans faïenciers du Nœud Vert, commerces du centre historique, hôtels-restaurants près du Palais Ducal et indépendants : site vitrine ou e-commerce simple avec réservation et devis intelligents.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const NEVERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or augmented store",
-            detail:
-              "For Nœud Vert faience artisans, historic-centre shops, hotels and restaurants near the Ducal Palace, and freelancers: showcase site or simple e-commerce with booking and smart quotes.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke business platform",
             detail:
@@ -233,7 +221,7 @@ export const NEVERS_COPY: VilleCopy = {
       a: "Oui. Nous couvrons Nevers et l'agglomération nivernaise (Varennes-Vauzelles, Fourchambault, Magny-Cours). Nos consultants se déplacent sur site depuis Clermont-Ferrand (1h30) ou Lyon (2h30), ou interviennent en visio.",
     },
     {
-      q: "Accompagnez-vous les TPE artisanales, commerces et acteurs du tourisme ?",
+      q: "Accompagnez-vous les PME artisanales, commerces et acteurs du tourisme ?",
       a: "C'est notre priorité. Pour les artisans d'art, commerçants, hôtels et restaurants de Nevers, nous automatisons réservations, devis et relances, et nous formons le dirigeant à piloter ces outils sans dépendance à un prestataire.",
     },
     {
@@ -242,7 +230,7 @@ export const NEVERS_COPY: VilleCopy = {
     },
     {
       q: "Faut-il un gros budget informatique pour démarrer à Nevers ?",
-      a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un grand chantier coûteux.",
+      a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une PME comme à une PME, pas un grand chantier coûteux.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ou Lyon ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   pitchFr:
-    "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu TPE, PME, artisans. Axion-IA accompagne en code custom.",
+    "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu PME, ETI, artisans. Axion-IA accompagne en code custom.",
   pitchEn:
-    "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu TPE, PME, artisans. Axion-IA accompagne en code custom.",
+    "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu PME, ETI, artisans. Axion-IA accompagne en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les PME du commerce et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les PME du commerce et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit sur place {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
   seoHook: "agglo Orléans, ferroviaire & industrie",
   ecosystemFr:
-    "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement TPE et PME, artisanat, services.",
+    "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement PME et ETI, artisanat, services.",
   ecosystemEn:
-    "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement TPE et PME, artisanat, services.",
+    "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement PME et ETI, artisanat, services.",
   distancesFr:
     "Orléans (limitrophe, centre à 5 km). Gare des Aubrais sur place (Intercités Paris Austerlitz ~1 h). Paris à 129 km (A10, ~1 h 30). Aéroport Paris-Orly à ~110 km. Communes limitrophes : Orléans, Saran, Semoy, Chanteau, Cercottes.",
   distancesEn:
@@ -30,20 +30,20 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Fleury-les-Aubrais : diagnostic pour PME du commerce, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fleury-les-Aubrais : diagnostic pour PME du commerce, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fleury-les-Aubrais : ateliers adaptés à l'industrie, la logistique ferroviaire, l'artisanat BTP et le commerce de proximité. Équipes autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Fleury-les-Aubrais : ateliers adaptés à l'industrie, la logistique ferroviaire, l'artisanat BTP et le commerce de proximité. Équipes autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Fleury-les-Aubrais : automatisation devis, classification documents, prédiction maintenance industrielle, chatbot client B2B pour TPE et PME d'Orléans Métropole, en code custom.",
-      en: "Implémentation IA à Fleury-les-Aubrais : automatisation devis, classification documents, prédiction maintenance industrielle, chatbot client B2B pour TPE et PME d'Orléans Métropole, en code custom.",
+      fr: "Implémentation IA à Fleury-les-Aubrais : automatisation devis, classification documents, prédiction maintenance industrielle, chatbot client B2B pour PME et ETI d'Orléans Métropole, en code custom.",
+      en: "Implémentation IA à Fleury-les-Aubrais : automatisation devis, classification documents, prédiction maintenance industrielle, chatbot client B2B pour PME et ETI d'Orléans Métropole, en code custom.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fleury-les-Aubrais : sessions sur site ou en visio pour dirigeants TPE, gérants PME industrielles et chefs d'entreprises artisanales d'Orléans Métropole.",
-      en: "Coaching 1-to-1 à Fleury-les-Aubrais : sessions sur site ou en visio pour dirigeants TPE, gérants PME industrielles et chefs d'entreprises artisanales d'Orléans Métropole.",
+      fr: "Coaching 1-to-1 à Fleury-les-Aubrais : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants PME industrielles et chefs d'entreprises artisanales d'Orléans Métropole.",
+      en: "Coaching 1-to-1 à Fleury-les-Aubrais : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants PME industrielles et chefs d'entreprises artisanales d'Orléans Métropole.",
     },
   },
   services: {
@@ -53,7 +53,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
         whyHere: [
           "Pôle d'emploi industriel structurant : avec Thales implantée localement et les sous-traitants des zones Dessaux et Lignerolles, le bassin concentre une part forte des ~10 000 emplois de la commune. On greffe maintenance prédictive, classification documentaire et portails B2B sur vos sites existants, ou on construit la plateforme métier branchée sur votre SI (ERP, GMAO).",
           "Hub ferroviaire de la gare des Aubrais (ouverte en 1853, ~7 000 voyageurs/jour, Intercités Paris-Austerlitz ~1 h) : la logistique, les transports terrestres et les services attenants au nœud ferroviaire gagnent à des portails clients, du suivi temps réel et des automatisations de devis pilotées par agents IA, intégrés à vos outils existants.",
-          "Tissu majoritairement TPE commerçantes et artisanales du BTP réparti sur l'Herveline et les Bicharderies : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des chatbots de prise de contact mobile-first, sans refonte coûteuse de l'existant ni verrou propriétaire.",
+          "Tissu majoritairement PME du commerce et artisanales du BTP réparti sur l'Herveline et les Bicharderies : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des chatbots de prise de contact mobile-first, sans refonte coûteuse de l'existant ni verrou propriétaire.",
           "Intégration à Orléans Métropole et clientèle B2B exigeante (Orléans limitrophe à 5 km, Saran, Semoy) : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Vos données industrielles et clients restent maîtrisées, le code livré, transférable à un prestataire local.",
         ],
         methodology: [
@@ -84,12 +84,6 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, devis en ligne) sur le site existant d'un commerce de proximité ou d'un artisan BTP des Aubrais et de l'Herveline, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -124,7 +118,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           },
           {
             q: "Outillez-vous le commerce de proximité et l'artisanat BTP locaux ?",
-            a: "Oui. Pour les TPE commerçantes de l'Herveline et des Bicharderies et les artisans BTP de Fleury-les-Aubrais, on déploie des vitrines e-commerce multi-CMS, des prises de rendez-vous en ligne, des devis automatisés et des chatbots de qualification, pensés mobile-first puisque l'essentiel du trafic local est sur smartphone. Sans refonte lourde et sans abonnement imposé.",
+            a: "Oui. Pour les PME du commerce de l'Herveline et des Bicharderies et les artisans BTP de Fleury-les-Aubrais, on déploie des vitrines e-commerce multi-CMS, des prises de rendez-vous en ligne, des devis automatisés et des chatbots de qualification, pensés mobile-first puisque l'essentiel du trafic local est sur smartphone. Sans refonte lourde et sans abonnement imposé.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -139,7 +133,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
         whyHere: [
           "Pôle d'emploi industriel structurant : avec Thales implantée localement et les sous-traitants des zones Dessaux et Lignerolles, le bassin concentre une part forte des ~10 000 emplois de la commune. On greffe maintenance prédictive, classification documentaire et portails B2B sur vos sites existants, ou on construit la plateforme métier branchée sur votre SI (ERP, GMAO).",
           "Hub ferroviaire de la gare des Aubrais (ouverte en 1853, ~7 000 voyageurs/jour, Intercités Paris-Austerlitz ~1 h) : la logistique, les transports terrestres et les services attenants au nœud ferroviaire gagnent à des portails clients, du suivi temps réel et des automatisations de devis pilotées par agents IA, intégrés à vos outils existants.",
-          "Tissu majoritairement TPE commerçantes et artisanales du BTP réparti sur l'Herveline et les Bicharderies : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des chatbots de prise de contact mobile-first, sans refonte coûteuse de l'existant ni verrou propriétaire.",
+          "Tissu majoritairement PME du commerce et artisanales du BTP réparti sur l'Herveline et les Bicharderies : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des chatbots de prise de contact mobile-first, sans refonte coûteuse de l'existant ni verrou propriétaire.",
           "Intégration à Orléans Métropole et clientèle B2B exigeante (Orléans limitrophe à 5 km, Saran, Semoy) : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Vos données industrielles et clients restent maîtrisées, le code livré, transférable à un prestataire local.",
         ],
         methodology: [
@@ -170,12 +164,6 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, devis en ligne) sur le site existant d'un commerce de proximité ou d'un artisan BTP des Aubrais et de l'Herveline, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -210,7 +198,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
           },
           {
             q: "Outillez-vous le commerce de proximité et l'artisanat BTP locaux ?",
-            a: "Oui. Pour les TPE commerçantes de l'Herveline et des Bicharderies et les artisans BTP de Fleury-les-Aubrais, on déploie des vitrines e-commerce multi-CMS, des prises de rendez-vous en ligne, des devis automatisés et des chatbots de qualification, pensés mobile-first puisque l'essentiel du trafic local est sur smartphone. Sans refonte lourde et sans abonnement imposé.",
+            a: "Oui. Pour les PME du commerce de l'Herveline et des Bicharderies et les artisans BTP de Fleury-les-Aubrais, on déploie des vitrines e-commerce multi-CMS, des prises de rendez-vous en ligne, des devis automatisés et des chatbots de qualification, pensés mobile-first puisque l'essentiel du trafic local est sur smartphone. Sans refonte lourde et sans abonnement imposé.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -234,7 +222,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Fleury-les-Aubrais ?",
-      a: "Prioritairement les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux/Fleury-Saran/Lignerolles, et les ETI implantées localement (dont l'industrie de pointe).",
+      a: "Prioritairement les PME du commerce et artisanales, les PME industrielles et logistiques des zones Dessaux/Fleury-Saran/Lignerolles, et les ETI implantées localement (dont l'industrie de pointe).",
     },
     {
       q: "Quels délais d'intervention IA à Fleury-les-Aubrais ?",

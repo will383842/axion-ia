@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
   pitchFr:
-    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
+    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
   pitchEn:
-    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
+    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",
+    "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",
   ecosystemEn:
-    "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",
+    "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",
   distancesFr:
     "Toulouse centre à 22 min (D632). Gare Matabiau à 28 min. Aéroport Toulouse-Blagnac à 20 min. Plaisance-du-Touch à 5 min. Fonsorbes à 8 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Salvetat-Saint-Gilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Salvetat-Saint-Gilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Salvetat-Saint-Gilles : diagnostic adapté aux PME artisanales, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Salvetat-Saint-Gilles : diagnostic adapté aux PME artisanales, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Salvetat-Saint-Gilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes maîtrisent les outils déployés.",
       en: "Interventions IA sur site à La Salvetat-Saint-Gilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à La Salvetat-Saint-Gilles : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour TPE-PME ouest Toulouse.",
-      en: "Implémentation IA à La Salvetat-Saint-Gilles : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour TPE-PME ouest Toulouse.",
+      fr: "Implémentation IA à La Salvetat-Saint-Gilles : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour PME et ETI ouest Toulouse.",
+      en: "Implémentation IA à La Salvetat-Saint-Gilles : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour PME et ETI ouest Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Salvetat-Saint-Gilles : sessions dirigeants TPE et PME de l'ouest toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à La Salvetat-Saint-Gilles : sessions dirigeants TPE et PME de l'ouest toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à La Salvetat-Saint-Gilles : sessions dirigeants PME et ETI de l'ouest toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à La Salvetat-Saint-Gilles : sessions dirigeants PME et ETI de l'ouest toulousain, dans vos locaux ou en visio.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à La Salvetat-Saint-Gilles ?",
-      a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME artisanales, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Salvetat-Saint-Gilles  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à La Salvetat-Saint-Gilles ?",
@@ -65,7 +65,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à La Salvetat-Saint-Gilles ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

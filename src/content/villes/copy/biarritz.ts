@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BIARRITZ_COPY: VilleCopy = {
   pitchFr:
-    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME biarrotes, les ETI en complément.",
+    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI biarrotes, les grands groupes en complément.",
   pitchEn:
-    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME biarrotes, les ETI en complément.",
+    "Biarritz (64), station balnéaire emblématique de la Côte basque, vit du tourisme haut de gamme, de la thalassothérapie, de l'hôtellerie de luxe, de l'événementiel et de la culture surf. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI biarrotes, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les PME et ETI locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Biarritz et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les PME et ETI locales — hôtels et palaces, centres de thalasso, restaurants, agences événementielles, boutiques et écoles de surf — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "tourisme premium, thalasso & surf",
   ecosystemFr:
-    "Biarritz concentre une économie de services tournée vers le tourisme premium : hôtellerie de luxe, thalassothérapie, restauration, événementiel et commerces, complétée par l'écosystème surf. Le tissu est dominé par les TPE et PME saisonnières, avec quelques ETI hôtelières.",
+    "Biarritz concentre une économie de services tournée vers le tourisme premium : hôtellerie de luxe, thalassothérapie, restauration, événementiel et commerces, complétée par l'écosystème surf. Le tissu est dominé par les PME et ETI saisonnières, avec quelques ETI hôtelières.",
   ecosystemEn:
-    "Biarritz concentre une économie de services tournée vers le tourisme premium : hôtellerie de luxe, thalassothérapie, restauration, événementiel et commerces, complétée par l'écosystème surf. Le tissu est dominé par les TPE et PME saisonnières, avec quelques ETI hôtelières.",
+    "Biarritz concentre une économie de services tournée vers le tourisme premium : hôtellerie de luxe, thalassothérapie, restauration, événementiel et commerces, complétée par l'écosystème surf. Le tissu est dominé par les PME et ETI saisonnières, avec quelques ETI hôtelières.",
   distancesFr:
     "Aéroport de Biarritz-Pays basque à 3 km. Gare de Biarritz sur la ligne Paris-Hendaye. Bayonne et Anglet à 10 min, Saint-Jean-de-Luz à 20 min, frontière espagnole à 30 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BIARRITZ_COPY: VilleCopy = {
       en: "Implémentation IA à Biarritz : agents de réservation multilingues FR/EN/ES, conciergerie augmentée, optimisation du remplissage et du yield, gestion automatisée des avis pour l'hôtellerie premium.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Biarritz : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME biarrotes — hôteliers, gérants de thalasso, restaurateurs, organisateurs d'événements de la Côte basque.",
-      en: "Coaching un-à-un à Biarritz : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME biarrotes — hôteliers, gérants de thalasso, restaurateurs, organisateurs d'événements de la Côte basque.",
+      fr: "Coaching un-à-un à Biarritz : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI biarrotes — hôteliers, gérants de thalasso, restaurateurs, organisateurs d'événements de la Côte basque.",
+      en: "Coaching un-à-un à Biarritz : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI biarrotes — hôteliers, gérants de thalasso, restaurateurs, organisateurs d'événements de la Côte basque.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Biarritz : sites de réservation et boutiques en ligne avec IA intégrée pour hôtels, thalasso et restaurants — moteur de réservation, recommandation, multilingue FR/EN/ES.",
@@ -88,12 +88,6 @@ export const BIARRITZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue FR/EN/ES, recherche sémantique, prise de RDV ou moteur de réservation) sur le site existant d'un restaurant du quartier Saint-Charles, d'une boutique du centre-ville, d'une école de surf de la Côte des Basques ou d'un commerce des Halles, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const BIARRITZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue FR/EN/ES, recherche sémantique, prise de RDV ou moteur de réservation) sur le site existant d'un restaurant du quartier Saint-Charles, d'une boutique du centre-ville, d'une école de surf de la Côte des Basques ou d'un commerce des Halles, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -230,7 +218,7 @@ export const BIARRITZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Biarritz et dans le BAB ?",
-      a: "Oui, Axion-IA se déplace sur site à Biarritz, Anglet, Bayonne et sur toute la Côte basque. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Biarritz, Anglet, Bayonne et sur toute la Côte basque. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les hôtels et palaces de Biarritz ?",
@@ -246,7 +234,7 @@ export const BIARRITZ_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande structure pour travailler avec Axion-IA à Biarritz ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME du tourisme local. Un Audit sur place à tarif public permet de démarrer petit, avec un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les PME et ETI du tourisme local. Un Audit sur place à tarif public permet de démarrer petit, avec un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Biarritz ?",

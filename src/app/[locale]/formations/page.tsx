@@ -101,7 +101,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/formations",
     // Titre court (≤ 60 car) pour éviter la troncature SERP + servir de label
-    // sitelink net (audit sitelinks 2026-07-06). TPE/PME/ETI restent dans la
+    // sitelink net (audit sitelinks 2026-07-06). PME/ETI/grands groupes restent dans la
     // description. Finit par « · Axion-IA » (bypass template).
     title:
       loc === "fr"
@@ -282,7 +282,7 @@ export default async function FormationsHub({ params }: Props) {
       courseMode: ["Onsite"],
       duration: formationDureeIso(f.duree),
       audienceType: isFr
-        ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes TPE (B2B)"
+        ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes (B2B)"
         : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
@@ -725,7 +725,7 @@ export default async function FormationsHub({ params }: Props) {
           répétitives (mensuelles ou bi-mensuelles) pour installer
           durablement la culture IA. Sémantique SEO renforcée pour
           requêtes : « formation IA entreprise », « formateur IA »,
-          « formation IA TPE/PME/ETI/grandes entreprises », « montée
+          « formation IA PME / ETI / grands groupes », « montée
           en compétence IA », « formation IA récurrente », « formation
           continue IA », « formation IA mensuelle ».
           ============================================================ */}
@@ -876,7 +876,7 @@ export default async function FormationsHub({ params }: Props) {
                 </h3>
                 <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
                   {isFr
-                    ? "1 journée de formation IA tous les 2 mois, sur 6 ou 12 mois — le rythme idéal pour les TPE et équipes chargées qui veulent progresser sans saturer leur agenda."
+                    ? "1 journée de formation IA tous les 2 mois, sur 6 ou 12 mois — le rythme idéal pour les PME et équipes chargées qui veulent progresser sans saturer leur agenda."
                     : "1 day of AI training every 2 months, over 6 or 12 months — the ideal pace for small businesses and busy teams that want to progress without saturating their schedule."}
                 </p>
 
@@ -961,7 +961,7 @@ export default async function FormationsHub({ params }: Props) {
                     },
                     {
                       t: "Adapté à toutes les tailles",
-                      d: "Programme calibré pour TPE (2-8 pers.), PME (9-50 pers.), ETI (50-250 pers.) ou grandes entreprises (déploiement multi-sites).",
+                      d: "Programme calibré pour PME (9-50 pers.), ETI (50-250 pers.) ou grands groupes (déploiement multi-sites).",
                     },
                     {
                       t: "Assistants IA",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_CIOTAT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de La Ciotat, ville des chantiers navals reconvertis dans le refit de grands yachts et berceau du cinéma des frères Lumière, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, planning et relation client au service de la filière nautique, du tourisme et des commerces locaux.",
+    "Axion-IA accompagne les PME et ETI de La Ciotat, ville des chantiers navals reconvertis dans le refit de grands yachts et berceau du cinéma des frères Lumière, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, planning et relation client au service de la filière nautique, du tourisme et des commerces locaux.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de La Ciotat, ville des chantiers navals reconvertis dans le refit de grands yachts et berceau du cinéma des frères Lumière, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, planning et relation client au service de la filière nautique, du tourisme et des commerces locaux.",
+    "Axion-IA accompagne les PME et ETI de La Ciotat, ville des chantiers navals reconvertis dans le refit de grands yachts et berceau du cinéma des frères Lumière, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, planning et relation client au service de la filière nautique, du tourisme et des commerces locaux.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de La Ciotat à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire des Bouches-du-Rhône marqué par ses chantiers navals dédiés au refit de grands yachts, son tourisme de calanques et son héritage cinématographique Lumière, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales malgré la présence d'un grand pôle naval.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de La Ciotat à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire des Bouches-du-Rhône marqué par ses chantiers navals dédiés au refit de grands yachts, son tourisme de calanques et son héritage cinématographique Lumière, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de La Ciotat à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire des Bouches-du-Rhône marqué par ses chantiers navals dédiés au refit de grands yachts, son tourisme de calanques et son héritage cinématographique Lumière, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales malgré la présence d'un grand pôle naval.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de La Ciotat à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire des Bouches-du-Rhône marqué par ses chantiers navals dédiés au refit de grands yachts, son tourisme de calanques et son héritage cinématographique Lumière, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   seoHook: "refit naval & tourisme calanques",
   ecosystemFr:
-    "La Ciotat a transformé ses chantiers navals historiques en un pôle de réparation et de refit de grands yachts qui irrigue une filière de TPE et PME sous-traitantes : mécanique, peinture, sellerie, électronique de bord, services techniques. À cela s'ajoutent un tourisme de calanques, un hébergement saisonnier, une restauration et un commerce dynamiques, sur les traces du cinéma des frères Lumière. Ces petites structures gagnent à automatiser devis, planning d'atelier, gestion de chantier et relation client multilingue. Axion-IA cible en priorité ces TPE nautiques et touristiques, puis les PME de la sous-traitance navale.",
+    "La Ciotat a transformé ses chantiers navals historiques en un pôle de réparation et de refit de grands yachts qui irrigue une filière de PME et ETI sous-traitantes : mécanique, peinture, sellerie, électronique de bord, services techniques. À cela s'ajoutent un tourisme de calanques, un hébergement saisonnier, une restauration et un commerce dynamiques, sur les traces du cinéma des frères Lumière. Ces PME gagnent à automatiser devis, planning d'atelier, gestion de chantier et relation client multilingue. Axion-IA cible en priorité ces PME nautiques et touristiques, puis les PME de la sous-traitance navale.",
   ecosystemEn:
-    "La Ciotat a transformé ses chantiers navals historiques en un pôle de réparation et de refit de grands yachts qui irrigue une filière de TPE et PME sous-traitantes : mécanique, peinture, sellerie, électronique de bord, services techniques. À cela s'ajoutent un tourisme de calanques, un hébergement saisonnier, une restauration et un commerce dynamiques, sur les traces du cinéma des frères Lumière. Ces petites structures gagnent à automatiser devis, planning d'atelier, gestion de chantier et relation client multilingue. Axion-IA cible en priorité ces TPE nautiques et touristiques, puis les PME de la sous-traitance navale.",
+    "La Ciotat a transformé ses chantiers navals historiques en un pôle de réparation et de refit de grands yachts qui irrigue une filière de PME et ETI sous-traitantes : mécanique, peinture, sellerie, électronique de bord, services techniques. À cela s'ajoutent un tourisme de calanques, un hébergement saisonnier, une restauration et un commerce dynamiques, sur les traces du cinéma des frères Lumière. Ces PME gagnent à automatiser devis, planning d'atelier, gestion de chantier et relation client multilingue. Axion-IA cible en priorité ces PME nautiques et touristiques, puis les PME de la sous-traitance navale.",
   distancesFr:
     "La Ciotat est à environ 35 km de Marseille et 40 km de Toulon. Sa gare TER relie Marseille en une trentaine de minutes, la gare TGV d'Aix-en-Provence est à 60 km et l'aéroport de Marseille-Provence à 58 km. Les communes voisines comme Cassis, Aubagne et Saint-Cyr-sur-Mer sont toutes proches, ce qui facilite nos déplacements sur site.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LA_CIOTAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE de sous-traitance navale ou un hébergeur de La Ciotat pour repérer les automatisations à fort impact : devis, planning d'atelier, suivi de chantier.",
-      en: "Auditer une TPE de sous-traitance navale ou un hébergeur de La Ciotat pour repérer les automatisations à fort impact : devis, planning d'atelier, suivi de chantier.",
+      fr: "Auditer une PME de sous-traitance navale ou un hébergeur de La Ciotat pour repérer les automatisations à fort impact : devis, planning d'atelier, suivi de chantier.",
+      en: "Auditer une PME de sous-traitance navale ou un hébergeur de La Ciotat pour repérer les automatisations à fort impact : devis, planning d'atelier, suivi de chantier.",
     },
     interventions: {
       fr: "Intervenir sur site à La Ciotat pour automatiser devis, relances et gestion de chantier de la filière yachting et des commerces, sans bouleverser vos outils.",
@@ -42,8 +42,8 @@ export const LA_CIOTAT_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME nautiques et touristiques de La Ciotat : suivi de chantier, gestion des stocks, relation client multilingue.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de La Ciotat pour piloter sereinement leur transition vers l'IA, au rythme des saisons et des chantiers.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de La Ciotat pour piloter sereinement leur transition vers l'IA, au rythme des saisons et des chantiers.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de La Ciotat pour piloter sereinement leur transition vers l'IA, au rythme des saisons et des chantiers.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de La Ciotat pour piloter sereinement leur transition vers l'IA, au rythme des saisons et des chantiers.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les acteurs nautiques et touristiques de La Ciotat : devis en ligne, présentation de services, assistant client multilingue.",
@@ -56,7 +56,7 @@ export const LA_CIOTAT_COPY: VilleCopy = {
         hero: "La Ciotat a transformé ses chantiers de construction navale en premier pôle européen de refit et de maintenance de superyachts, structuré autour de La Ciotat Shipyards (SPL), de l'ascenseur à bateaux Atlas (4 300 t, yachts jusqu'à 115 m) et d'une cinquantaine d'entreprises spécialisées — MB92 La Ciotat, Monaco Marine, Nautec, et leurs sous-traitants peinture, mécanique, agencement, domotique et menuiserie marine. Axion-IA conçoit pour ces acteurs, comme pour les entreprises numériques des parcs Athélia et les commerces touristiques du port et des calanques, des sites web et plateformes SaaS augmentés par l'IA : portails de suivi de chantier de refit, configurateurs de devis multi-métiers, espaces armateurs multilingues. Code sur mesure, hébergement en Union européenne conforme RGPD, aucun verrou éditeur.",
         whyHere: [
           "La filière refit superyacht de La Ciotat Shipyards travaille pour une clientèle d'armateurs et de capitaines internationaux : un site ou un portail SaaS armateur doit être multilingue, sécurisé et capable d'agréger l'avancement d'un chantier réparti entre une cinquantaine de sous-traitants (MB92, Monaco Marine, Nautec et leurs corps de métier).",
-          "Les TPE et PME sous-traitantes du chantier — peinture marine, mécanique, sellerie, électronique de bord, agencement intérieur — perdent un temps considérable en devis et reporting manuels ; un configurateur de devis et un portail de suivi de chantier augmentés par l'IA fiabilisent leurs délais sur des refits à fort enjeu.",
+          "Les PME et ETI sous-traitantes du chantier — peinture marine, mécanique, sellerie, électronique de bord, agencement intérieur — perdent un temps considérable en devis et reporting manuels ; un configurateur de devis et un portail de suivi de chantier augmentés par l'IA fiabilisent leurs délais sur des refits à fort enjeu.",
           "Les parcs d'activités Athélia (I à V, ~400 entreprises) concentrent un tissu numérique et industriel réel, du Design Center Thales DIS (ex-Gemalto, identité numérique et cybersécurité) aux PME innovantes de l'éco-parc Athélia V, qui ont besoin de plateformes web et SaaS exigeantes en sécurité et en intégration.",
           "Le tourisme de La Ciotat — calanques du Mugel et de Figuerolles, port, plages, héritage Lumière de l'Eden Théâtre — fait vivre hôtels, restaurants et loueurs nautiques saisonniers, qui gagnent à un site de réservation et un assistant client multilingue augmentés par l'IA pour absorber les pics estivaux.",
         ],
@@ -88,12 +88,6 @@ export const LA_CIOTAT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour les sous-traitants du chantier (peinture marine, sellerie, électronique de bord), les loueurs nautiques et les commerces du port : site vitrine ou boutique, prise de contact et devis assistés par l'IA, assistant multilingue de base.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const LA_CIOTAT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For the yard's subcontractors (marine painting, upholstery, onboard electronics), boat-rental firms and harbour shops: showcase site or shop, AI-assisted contact and quoting, basic multilingual assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom business platform",
             detail:
@@ -233,12 +221,12 @@ export const LA_CIOTAT_COPY: VilleCopy = {
       a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos ateliers, hôtels ou commerces de La Ciotat pour observer vos processus réels, généralement sous cinq jours ouvrés.",
     },
     {
-      q: "Quels gains l'IA apporte-t-elle à une TPE de la filière yachting de La Ciotat ?",
-      a: "L'IA automatise les devis, le planning d'atelier, le suivi de chantier et la relation client multilingue. Une TPE sous-traitante y gagne en réactivité et fiabilise ses délais.",
+      q: "Quels gains l'IA apporte-t-elle à une PME de la filière yachting de La Ciotat ?",
+      a: "L'IA automatise les devis, le planning d'atelier, le suivi de chantier et la relation client multilingue. Une PME sous-traitante y gagne en réactivité et fiabilise ses délais.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à La Ciotat ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME des Bouches-du-Rhône. Les ateliers et commerces de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI des Bouches-du-Rhône. Les ateliers et commerces de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de La Ciotat ?",

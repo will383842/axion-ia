@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
   pitchFr:
-    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, TPE conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, PME conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, TPE conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, PME conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons TPE et PME : PME tech et ingénierie du technopôle SQY, TPE conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons PME et ETI : PME tech et ingénierie du technopôle SQY, PME conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons TPE et PME : PME tech et ingénierie du technopôle SQY, TPE conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons PME et ETI : PME tech et ingénierie du technopôle SQY, PME conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "tech ingénierie & conseil services",
   ecosystemFr:
-    "Voisins-le-Bretonneux fait partie de la communauté d'agglomération Saint-Quentin-en-Yvelines (SQY), technopôle majeur d'Île-de-France avec le siège de nombreuses entreprises tech et ingénierie. Tissu PME tech, TPE conseil B2B, commerces de centre-ville, professions libérales.",
+    "Voisins-le-Bretonneux fait partie de la communauté d'agglomération Saint-Quentin-en-Yvelines (SQY), technopôle majeur d'Île-de-France avec le siège de nombreuses entreprises tech et ingénierie. Tissu PME tech, PME conseil B2B, commerces de centre-ville, professions libérales.",
   ecosystemEn:
-    "Voisins-le-Bretonneux fait partie de la communauté d'agglomération Saint-Quentin-en-Yvelines (SQY), technopôle majeur d'Île-de-France avec le siège de nombreuses entreprises tech et ingénierie. Tissu PME tech, TPE conseil B2B, commerces de centre-ville, professions libérales.",
+    "Voisins-le-Bretonneux fait partie de la communauté d'agglomération Saint-Quentin-en-Yvelines (SQY), technopôle majeur d'Île-de-France avec le siège de nombreuses entreprises tech et ingénierie. Tissu PME tech, PME conseil B2B, commerces de centre-ville, professions libérales.",
   distancesFr:
     "Gare de Saint-Quentin-en-Yvelines (RER C + Transilien N/U) à 10 min. Versailles à 15 min. Vélizy-Villacoublay à 10 min. Paris-Montparnasse à 30 min via Transilien N. Aéroport Orly à 25 min.",
   distancesEn:
     "Gare de Saint-Quentin-en-Yvelines (RER C + Transilien N/U) à 10 min. Versailles à 15 min. Vélizy-Villacoublay à 10 min. Paris-Montparnasse à 30 min via Transilien N. Aéroport Orly à 25 min.",
   topSectorsNaf: [
     "PME tech et ingénierie",
-    "TPE conseil et services B2B",
+    "PME conseil et services B2B",
     "Commerce de centre-ville",
     "Professions libérales",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, TPE conseil B2B, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, TPE conseil B2B, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, PME conseil B2B, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, PME conseil B2B, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Voisins-le-Bretonneux : formats adaptés open-space tech, bureau, commerce, cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
       en: "Implémentation IA à Voisins-le-Bretonneux : automatisation pipelines dev PME tech, CRM augmenté conseil B2B, gestion projets ingénierie, outils métier professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Voisins-le-Bretonneux : sessions dans votre bureau, open-space, commerce, cabinet ou en visio. Dirigeants TPE/PME du technopôle SQY, consultants, ingénieurs, commerçants.",
-      en: "Coaching 1-to-1 à Voisins-le-Bretonneux : sessions dans votre bureau, open-space, commerce, cabinet ou en visio. Dirigeants TPE/PME du technopôle SQY, consultants, ingénieurs, commerçants.",
+      fr: "Coaching 1-to-1 à Voisins-le-Bretonneux : sessions dans votre bureau, open-space, commerce, cabinet ou en visio. Dirigeants PME et ETI du technopôle SQY, consultants, ingénieurs, commerçants.",
+      en: "Coaching 1-to-1 à Voisins-le-Bretonneux : sessions dans votre bureau, open-space, commerce, cabinet ou en visio. Dirigeants PME et ETI du technopôle SQY, consultants, ingénieurs, commerçants.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
       a: "Oui, automatisation pipelines dev, testing IA, gestion documentaire technique, CRM augmenté, reporting automatisé, optimisation processus R&D.",
     },
     {
-      q: "Accompagnez-vous les TPE conseil et services B2B ?",
+      q: "Accompagnez-vous les PME conseil et services B2B ?",
       a: "Oui, CRM augmenté, gestion documentaire intelligente, rédaction assistée propositions commerciales, automatisation facturation et relance, reporting clients.",
     },
     {

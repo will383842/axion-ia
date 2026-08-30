@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AUBIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Aubignan (84), commune du Comtat Venaissin au pied du Mont Ventoux, compte près de 5 981 habitants. Vignoble AOC Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Aubignan (84), commune du Comtat Venaissin au pied du Mont Ventoux, compte près de 5 981 habitants. Vignoble AOC Ventoux, agriculture, maraîchage, tissu de PME artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Aubignan (84), commune du Comtat Venaissin au pied du Mont Ventoux, compte près de 5 981 habitants. Vignoble AOC Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Aubignan (84), commune du Comtat Venaissin au pied du Mont Ventoux, compte près de 5 981 habitants. Vignoble AOC Ventoux, agriculture, maraîchage, tissu de PME artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : PME artisanales et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : PME artisanales et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
-    "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",
+    "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de PME artisanales, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",
   ecosystemEn:
-    "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",
+    "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de PME artisanales, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",
   distancesFr:
     "Carpentras à 8 min. Avignon à 30 min via D942. Gare TGV Avignon à 35 min. Aéroport Marseille-Provence à 1 h 10. Orange à 25 min. A7 à 30 min.",
   distancesEn:
@@ -24,26 +24,26 @@ export const AUBIGNAN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Ventoux",
     "Agriculture & maraîchage Comtat",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME agroalimentaires & coopératives",
     "Commerce & services de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aubignan : diagnostic adapté aux PME artisanales, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aubignan : diagnostic adapté aux PME artisanales, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubignan : formats adaptés aux domaines viticoles, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Aubignan : formats adaptés aux domaines viticoles, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Aubignan : traçabilité parcellaire AOC Ventoux, gestion vendanges, automatisation devis maraîchers, outils prédictifs coopératives, gestion commerciale et fiches Google Business. Adapté TPE/PME Comtat.",
-      en: "Implémentation IA à Aubignan : traçabilité parcellaire AOC Ventoux, gestion vendanges, automatisation devis maraîchers, outils prédictifs coopératives, gestion commerciale et fiches Google Business. Adapté TPE/PME Comtat.",
+      fr: "Implémentation IA à Aubignan : traçabilité parcellaire AOC Ventoux, gestion vendanges, automatisation devis maraîchers, outils prédictifs coopératives, gestion commerciale et fiches Google Business. Adapté PME et ETI Comtat.",
+      en: "Implémentation IA à Aubignan : traçabilité parcellaire AOC Ventoux, gestion vendanges, automatisation devis maraîchers, outils prédictifs coopératives, gestion commerciale et fiches Google Business. Adapté PME et ETI Comtat.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubignan : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agriculture, agroalimentaire, artisanat et commerce du Comtat Venaissin.",
-      en: "Coaching 1-to-1 à Aubignan : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agriculture, agroalimentaire, artisanat et commerce du Comtat Venaissin.",
+      fr: "Coaching 1-to-1 à Aubignan : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agriculture, agroalimentaire, artisanat et commerce du Comtat Venaissin.",
+      en: "Coaching 1-to-1 à Aubignan : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agriculture, agroalimentaire, artisanat et commerce du Comtat Venaissin.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aubignan  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Aubignan ?",

@@ -51,7 +51,7 @@ export default async function ChatbotPage({ params }: Props) {
   const isFr = loc === "fr";
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
-  // requêtes « chatbot IA entreprise », « assistant conversationnel IA TPE PME ».
+  // requêtes « chatbot IA entreprise », « assistant conversationnel IA PME ».
   const imagesJsonLd = buildPageImageGraphJsonLd({
     locale: loc,
     path: "/implementation/chatbot",

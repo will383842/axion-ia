@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LARMOR_PLAGE_COPY: VilleCopy = {
   pitchFr:
-    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
+    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. PME hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
   pitchEn:
-    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
+    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. PME hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : PME hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : PME hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
   seoHook: "hébergement touristique & commerce proximité",
   ecosystemFr:
-    "Larmor-Plage est membre de Lorient Agglomération (25 communes). Station balnéaire prisée (Fort Bloqué, plages), la commune accueille un tissu de TPE tourisme et restauration, commerces de proximité, artisans BTP rénovation littorale, PME nautiques et services. Lorient centre à 5 km, accès direct RN165 vers Vannes et Quimper.",
+    "Larmor-Plage est membre de Lorient Agglomération (25 communes). Station balnéaire prisée (Fort Bloqué, plages), la commune accueille un tissu de PME tourisme et restauration, commerces de proximité, artisans BTP rénovation littorale, PME nautiques et services. Lorient centre à 5 km, accès direct RN165 vers Vannes et Quimper.",
   ecosystemEn:
-    "Larmor-Plage est membre de Lorient Agglomération (25 communes). Station balnéaire prisée (Fort Bloqué, plages), la commune accueille un tissu de TPE tourisme et restauration, commerces de proximité, artisans BTP rénovation littorale, PME nautiques et services. Lorient centre à 5 km, accès direct RN165 vers Vannes et Quimper.",
+    "Larmor-Plage est membre de Lorient Agglomération (25 communes). Station balnéaire prisée (Fort Bloqué, plages), la commune accueille un tissu de PME tourisme et restauration, commerces de proximité, artisans BTP rénovation littorale, PME nautiques et services. Lorient centre à 5 km, accès direct RN165 vers Vannes et Quimper.",
   distancesFr:
     "Gare de Lorient (TGV Paris 3h30) à 5 km. Aéroport Lorient Bretagne Sud à 15 km. Vannes à 55 min. Quimper à 1h10. Rennes à 2h via RN165/N24.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Larmor-Plage : diagnostic pour TPE hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Larmor-Plage : diagnostic pour TPE hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Larmor-Plage : diagnostic pour PME hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Larmor-Plage : diagnostic pour PME hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Larmor-Plage : ateliers adaptés aux équipes hôtelières, commerces saisonniers et PME nautiques. Vos collaborateurs repartent autonomes sur les outils IA du quotidien.",
@@ -42,8 +42,8 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
       en: "Implémentation IA à Larmor-Plage : automatisation réservations et channel management hôtelier, agents conversationnels touristes multilingues, optimisation logistique ostréicole, prédiction affluence saisonnière.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Larmor-Plage : sessions dans votre établissement, commerce ou en visio. Dirigeants TPE/PME tourisme, restauration, nautisme et artisans souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Larmor-Plage : sessions dans votre établissement, commerce ou en visio. Dirigeants TPE/PME tourisme, restauration, nautisme et artisans souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Larmor-Plage : sessions dans votre établissement, commerce ou en visio. Dirigeants PME et ETI tourisme, restauration, nautisme et artisans souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Larmor-Plage : sessions dans votre établissement, commerce ou en visio. Dirigeants PME et ETI tourisme, restauration, nautisme et artisans souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Larmor-Plage  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour les TPE et PME de Larmor-Plage. Il comprend un diagnostic de 4 heures, une cartographie des processus automatisables et un rapport ROI chiffré sous 10 jours ouvrés.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour les PME et ETI de Larmor-Plage. Il comprend un diagnostic de 4 heures, une cartographie des processus automatisables et un rapport ROI chiffré sous 10 jours ouvrés.",
     },
     {
-      q: "Accompagnez-vous les TPE du tourisme à Larmor-Plage ?",
-      a: "Oui, nous accompagnons les TPE hôtelières, restaurants, campings et commerces saisonniers de Larmor-Plage sur des cas IA concrets : automatisation réservations, agents conversationnels multilingues, gestion avis clients, optimisation planning saisonnier.",
+      q: "Accompagnez-vous les PME du tourisme à Larmor-Plage ?",
+      a: "Oui, nous accompagnons les PME hôtelières, restaurants, campings et commerces saisonniers de Larmor-Plage sur des cas IA concrets : automatisation réservations, agents conversationnels multilingues, gestion avis clients, optimisation planning saisonnier.",
     },
     {
       q: "L'IA est-elle adaptée aux petits commerces balnéaires ?",

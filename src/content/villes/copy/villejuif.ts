@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLEJUIF_COPY: VilleCopy = {
   pitchFr:
-    "À Villejuif (94), pôle santé et biotech de premier plan porté par l'Institut Gustave Roussy, premier centre anticancer d'Europe, Axion-IA accompagne les TPE et PME de l'écosystème médical et tertiaire. Petites structures de biotech et de santé, prestataires des laboratoires et cliniques, professions libérales médicales, commerces et services autour du Campus Grand Parc et des futures gares du Grand Paris Express : nous concevons des usages IA concrets, conformes et rentables.",
+    "À Villejuif (94), pôle santé et biotech de premier plan porté par l'Institut Gustave Roussy, premier centre anticancer d'Europe, Axion-IA accompagne les PME et ETI de l'écosystème médical et tertiaire. Petites structures de biotech et de santé, prestataires des laboratoires et cliniques, professions libérales médicales, commerces et services autour du Campus Grand Parc et des futures gares du Grand Paris Express : nous concevons des usages IA concrets, conformes et rentables.",
   pitchEn:
-    "À Villejuif (94), pôle santé et biotech de premier plan porté par l'Institut Gustave Roussy, premier centre anticancer d'Europe, Axion-IA accompagne les TPE et PME de l'écosystème médical et tertiaire. Petites structures de biotech et de santé, prestataires des laboratoires et cliniques, professions libérales médicales, commerces et services autour du Campus Grand Parc et des futures gares du Grand Paris Express : nous concevons des usages IA concrets, conformes et rentables.",
+    "À Villejuif (94), pôle santé et biotech de premier plan porté par l'Institut Gustave Roussy, premier centre anticancer d'Europe, Axion-IA accompagne les PME et ETI de l'écosystème médical et tertiaire. Petites structures de biotech et de santé, prestataires des laboratoires et cliniques, professions libérales médicales, commerces et services autour du Campus Grand Parc et des futures gares du Grand Paris Express : nous concevons des usages IA concrets, conformes et rentables.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villejuif (Val-de-Marne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les petites structures de biotech et de santé, les prestataires gravitant autour de l'Institut Gustave Roussy, les professions libérales médicales et les commerces du Campus Grand Parc. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villejuif (Val-de-Marne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les PME de biotech et de santé, les prestataires gravitant autour de l'Institut Gustave Roussy, les professions libérales médicales et les commerces du Campus Grand Parc. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villejuif (Val-de-Marne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les petites structures de biotech et de santé, les prestataires gravitant autour de l'Institut Gustave Roussy, les professions libérales médicales et les commerces du Campus Grand Parc. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villejuif (Val-de-Marne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les PME de biotech et de santé, les prestataires gravitant autour de l'Institut Gustave Roussy, les professions libérales médicales et les commerces du Campus Grand Parc. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "santé & biotech",
   ecosystemFr:
-    "Villejuif est l'un des grands pôles santé d'Île-de-France, structuré autour de l'Institut Gustave Roussy, premier centre de lutte contre le cancer en Europe, et du Campus Grand Parc dédié aux biotechnologies et à la recherche médicale. Autour de ce cœur scientifique gravite un tissu dense de TPE et PME : prestataires de laboratoires, professions libérales médicales, services et commerces. L'arrivée des lignes 14 et 15 du Grand Paris Express renforce l'attractivité d'un écosystème où l'IA aide à fiabiliser et accélérer les tâches administratives, dans le strict respect du RGPD.",
+    "Villejuif est l'un des grands pôles santé d'Île-de-France, structuré autour de l'Institut Gustave Roussy, premier centre de lutte contre le cancer en Europe, et du Campus Grand Parc dédié aux biotechnologies et à la recherche médicale. Autour de ce cœur scientifique gravite un tissu dense de PME et ETI : prestataires de laboratoires, professions libérales médicales, services et commerces. L'arrivée des lignes 14 et 15 du Grand Paris Express renforce l'attractivité d'un écosystème où l'IA aide à fiabiliser et accélérer les tâches administratives, dans le strict respect du RGPD.",
   ecosystemEn:
-    "Villejuif est l'un des grands pôles santé d'Île-de-France, structuré autour de l'Institut Gustave Roussy, premier centre de lutte contre le cancer en Europe, et du Campus Grand Parc dédié aux biotechnologies et à la recherche médicale. Autour de ce cœur scientifique gravite un tissu dense de TPE et PME : prestataires de laboratoires, professions libérales médicales, services et commerces. L'arrivée des lignes 14 et 15 du Grand Paris Express renforce l'attractivité d'un écosystème où l'IA aide à fiabiliser et accélérer les tâches administratives, dans le strict respect du RGPD.",
+    "Villejuif est l'un des grands pôles santé d'Île-de-France, structuré autour de l'Institut Gustave Roussy, premier centre de lutte contre le cancer en Europe, et du Campus Grand Parc dédié aux biotechnologies et à la recherche médicale. Autour de ce cœur scientifique gravite un tissu dense de PME et ETI : prestataires de laboratoires, professions libérales médicales, services et commerces. L'arrivée des lignes 14 et 15 du Grand Paris Express renforce l'attractivité d'un écosystème où l'IA aide à fiabiliser et accélérer les tâches administratives, dans le strict respect du RGPD.",
   distancesFr:
     "Villejuif est desservie par la ligne 7 du métro et bientôt par les lignes 14 et 15 du Grand Paris Express (gare Villejuif Institut Gustave Roussy). Paris-centre est à 20 minutes, l'aéroport de Paris-Orly à 15 minutes et la gare de Lyon à 8 km.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VILLEJUIF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villejuif : diagnostic adapté aux petites structures de biotech, aux prestataires de santé, aux professions libérales médicales et aux commerces. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
-      en: "Audit IA à Villejuif : diagnostic adapté aux petites structures de biotech, aux prestataires de santé, aux professions libérales médicales et aux commerces. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
+      fr: "Audit IA à Villejuif : diagnostic adapté aux PME de biotech, aux prestataires de santé, aux professions libérales médicales et aux commerces. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
+      en: "Audit IA à Villejuif : diagnostic adapté aux PME de biotech, aux prestataires de santé, aux professions libérales médicales et aux commerces. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villejuif : sessions adaptées aux cabinets médicaux, laboratoires et PME de services. Vos équipes deviennent autonomes sur la gestion des rendez-vous, la rédaction et le reporting, dans le respect du RGPD.",
@@ -42,8 +42,8 @@ export const VILLEJUIF_COPY: VilleCopy = {
       en: "Implémentation IA à Villejuif : automatisation de la prise de rendez-vous médicaux, traitement des demandes patients et prestataires, gestion documentaire des laboratoires et reporting réglementaire, dans le respect strict du RGPD.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Villejuif : sessions individuelles pour dirigeants de TPE et PME de la santé et des services, dans vos locaux près de Gustave Roussy ou en visio, pour adopter l'IA en confiance.",
-      en: "Accompagnement un-à-un à Villejuif : sessions individuelles pour dirigeants de TPE et PME de la santé et des services, dans vos locaux près de Gustave Roussy ou en visio, pour adopter l'IA en confiance.",
+      fr: "Accompagnement un-à-un à Villejuif : sessions individuelles pour dirigeants de PME et d'ETI de la santé et des services, dans vos locaux près de Gustave Roussy ou en visio, pour adopter l'IA en confiance.",
+      en: "Accompagnement un-à-un à Villejuif : sessions individuelles pour dirigeants de PME et d'ETI de la santé et des services, dans vos locaux près de Gustave Roussy ou en visio, pour adopter l'IA en confiance.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Villejuif : plateformes pour cabinets médicaux, laboratoires et PME de santé, avec prise de rendez-vous intelligente, formulaires conformes RGPD et espace patient sécurisé.",
@@ -53,7 +53,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Villejuif (94), Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée pour l'écosystème santé-biotech du Campus Grand Parc et le tissu de PME et TPE des zones d'activité (Épi d'Or, Petites-Bruyères, Pasteur). UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Villejuif, près de l'Institut Gustave Roussy, itérations à distance.",
+        hero: "À Villejuif (94), Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée pour l'écosystème santé-biotech du Campus Grand Parc et le tissu de PME et ETI des zones d'activité (Épi d'Or, Petites-Bruyères, Pasteur). UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Villejuif, près de l'Institut Gustave Roussy, itérations à distance.",
         whyHere: [
           "Projets web & SaaS villejuifois : start-ups et biotechs du Paris-Saclay Cancer Cluster et de The HIVE (Kadans, rue Édouard Vaillant), prestataires gravitant autour de l'Institut Gustave Roussy, PME des zones Épi d'Or et Pasteur, professions libérales médicales et commerces du Campus Grand Parc.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : portails patients, sites de levée de fonds biotech, plateformes de recherche clinique.",
@@ -88,12 +88,6 @@ export const VILLEJUIF_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur un site existant en quelques semaines, sans refonte — adapté aux professions libérales médicales et commerces du Campus Grand Parc.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -175,12 +169,6 @@ export const VILLEJUIF_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Add an AI brick (RAG chatbot, semantic search, appointment booking) onto an existing site in a few weeks, no rebuild — suited to medical professionals and shops of Campus Grand Parc.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -230,11 +218,11 @@ export const VILLEJUIF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villejuif et dans le Val-de-Marne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Villejuif et de son pôle santé. Nos consultants se déplacent sur site, à 20 minutes de Paris par la ligne 7 et bientôt le Grand Paris Express, ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Villejuif et de son pôle santé. Nos consultants se déplacent sur site, à 20 minutes de Paris par la ligne 7 et bientôt le Grand Paris Express, ou interviennent en visio.",
     },
     {
       q: "Travaillez-vous avec les structures de santé et de biotech villejuifoises ?",
-      a: "Oui, dans l'écosystème de l'Institut Gustave Roussy et du Campus Grand Parc, nous accompagnons les petites structures de biotech, les prestataires de laboratoires et les cabinets médicaux, toujours dans le strict respect du RGPD.",
+      a: "Oui, dans l'écosystème de l'Institut Gustave Roussy et du Campus Grand Parc, nous accompagnons les PME de biotech, les prestataires de laboratoires et les cabinets médicaux, toujours dans le strict respect du RGPD.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD pour les données de santé ?",
@@ -242,7 +230,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales médicales et commerces ?",
-      a: "Oui, les TPE et professions libérales sont notre priorité à Villejuif. Nous déployons prise de rendez-vous IA, gestion des demandes patients, relances et reporting, après un audit qui chiffre le retour sur investissement.",
+      a: "Oui, les PME et professions libérales sont notre priorité à Villejuif. Nous déployons prise de rendez-vous IA, gestion des demandes patients, relances et reporting, après un audit qui chiffre le retour sur investissement.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RIXHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'agglomération est mulhousienne.",
+    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu PME artisanales, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'agglomération est mulhousienne.",
   pitchEn:
-    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'agglomération est mulhousienne.",
+    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu PME artisanales, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'agglomération est mulhousienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rixheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rixheim (68). Nous accompagnons PME artisanales, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rixheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rixheim (68). Nous accompagnons PME artisanales, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie édition & sous-traitance mécanique",
   ecosystemFr:
-    "Rixheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), à l'est de Mulhouse, héritière d'une riche tradition manufacturière (papier peint, musée du papier peint dans la commanderie). Tissu TPE artisans BTP, PME industrielles (édition impression, sous-traitance mécanique, agroalimentaire), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants.",
+    "Rixheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), à l'est de Mulhouse, héritière d'une riche tradition manufacturière (papier peint, musée du papier peint dans la commanderie). Tissu PME du BTP, PME industrielles (édition impression, sous-traitance mécanique, agroalimentaire), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants.",
   ecosystemEn:
-    "Rixheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), à l'est de Mulhouse, héritière d'une riche tradition manufacturière (papier peint, musée du papier peint dans la commanderie). Tissu TPE artisans BTP, PME industrielles (édition impression, sous-traitance mécanique, agroalimentaire), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants.",
+    "Rixheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), à l'est de Mulhouse, héritière d'une riche tradition manufacturière (papier peint, musée du papier peint dans la commanderie). Tissu PME du BTP, PME industrielles (édition impression, sous-traitance mécanique, agroalimentaire), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants.",
   distancesFr:
     "Mulhouse centre à 10 min. Strasbourg à 1h (autoroute A35/A36). Gare TGV Mulhouse à 15 min. EuroAirport Bâle-Mulhouse à 20 min. Illzach à 8 min, Sausheim à 5 min, Habsheim à 5 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const RIXHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rixheim : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération est de Mulhouse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Rixheim : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération est de Mulhouse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Rixheim : diagnostic adapté aux PME artisanales, PME industrielles et de services, commerçants et professions libérales de l'agglomération est de Mulhouse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Rixheim : diagnostic adapté aux PME artisanales, PME industrielles et de services, commerçants et professions libérales de l'agglomération est de Mulhouse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rixheim : formations adaptées TPE/PME industrielles, édition impression et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
-      en: "Interventions IA sur site à Rixheim : formations adaptées TPE/PME industrielles, édition impression et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      fr: "Interventions IA sur site à Rixheim : formations adaptées PME et ETI industrielles, édition impression et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      en: "Interventions IA sur site à Rixheim : formations adaptées PME et ETI industrielles, édition impression et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
     },
     implementation: {
       fr: "Implémentation IA à Rixheim : automatisation devis artisans BTP, contrôle qualité PME industrielles, optimisation chaînes d'impression, classification documents professions libérales, agents conversationnels commerce est Mulhouse.",
       en: "Implémentation IA à Rixheim : automatisation devis artisans BTP, contrôle qualité PME industrielles, optimisation chaînes d'impression, classification documents professions libérales, agents conversationnels commerce est Mulhouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rixheim : sessions en visio ou dans vos locaux est Mulhouse. Dirigeants TPE artisans, gérants PME industrielles et édition impression, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Rixheim : sessions en visio ou dans vos locaux est Mulhouse. Dirigeants TPE artisans, gérants PME industrielles et édition impression, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Rixheim : sessions en visio ou dans vos locaux est Mulhouse. Dirigeants PME artisanales, gérants PME industrielles et édition impression, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Rixheim : sessions en visio ou dans vos locaux est Mulhouse. Dirigeants PME artisanales, gérants PME industrielles et édition impression, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const RIXHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rixheim  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Rixheim souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les PME et ETI de Rixheim souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME de l'édition et impression à Rixheim ?",
       a: "Oui, nous accompagnons les PME industrielles de l'édition et de l'impression à Rixheim, héritières de la tradition papier peint. Cas typiques IA : contrôle qualité visuel, optimisation chaînes de production, prédiction demande, automatisation devis et BAT clients.",
     },
     {
-      q: "Quels formats d'intervention pour les TPE à Rixheim ?",
-      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans, commerçants et professions libérales de l'est mulhousien.",
+      q: "Quels formats d'intervention pour les PME à Rixheim ?",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME artisanales, commerçants et professions libérales de l'est mulhousien.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Rixheim ?",

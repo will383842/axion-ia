@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -22,7 +22,7 @@ import type { VilleCopy } from "./types";
 
 export const MONTREUIL_COPY: VilleCopy = {
   pitchFr:
-    "Montreuil (93) concentre le siège mondial d'Ubisoft, le siège de l'AFD et de BNP Paribas Personal Finance, un site Capgemini majeur et un tissu numérique dense dans le Bas-Montreuil. Axion-IA intervient sur site dans cette 4e ville d'Île-de-France, des TPE créatives aux grandes directions numériques et financières.",
+    "Montreuil (93) concentre le siège mondial d'Ubisoft, le siège de l'AFD et de BNP Paribas Personal Finance, un site Capgemini majeur et un tissu numérique dense dans le Bas-Montreuil. Axion-IA intervient sur site dans cette 4e ville d'Île-de-France, des PME créatives aux grandes directions numériques et financières.",
   pitchEn:
     "Montreuil (93) is home to Ubisoft's global HQ, AFD and BNP Paribas Personal Finance headquarters, a major Capgemini site and a dense digital fabric in the Bas-Montreuil district. Axion-IA delivers on site in this 4th largest Île-de-France city, from creative micro-businesses to large digital and financial leadership teams.",
 
@@ -50,7 +50,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montreuil (93) sur site — Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil et communes limitrophes (Paris 20e, Bagnolet, Vincennes). Nous accompagnons TPE, PME, ETI et grandes entreprises montreuillaises (numérique, jeu vidéo, banque, conseil, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montreuil (93) sur site — Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil et communes limitrophes (Paris 20e, Bagnolet, Vincennes). Nous accompagnons PME, ETI et grands groupes montreuillais (numérique, jeu vidéo, banque, conseil, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Montreuil (93) on site — Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil and neighbouring communes (Paris 20th, Bagnolet, Vincennes). We support Montreuil micro-businesses, SMEs, mid-caps and large enterprises (digital, gaming, banking, consulting, social economy) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -77,7 +77,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montreuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Montreuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Montreuil et partout en France.",
     },
     {
       q: "Avez-vous des références dans le secteur numérique ou jeu vidéo à Montreuil ?",
@@ -97,7 +97,7 @@ export const MONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec des structures de l'ESS ou des incubateurs à Montreuil ?",
-      a: "Oui. Les structures de l'économie sociale et solidaire (ESS) et les porteurs de projets incubés à La Pousse peuvent bénéficier d'un Audit sur place ou d'une formation collective calibrée pour les petites structures. Nous adaptons la profondeur et le format à votre réalité opérationnelle.",
+      a: "Oui. Les structures de l'économie sociale et solidaire (ESS) et les porteurs de projets incubés à La Pousse peuvent bénéficier d'un Audit sur place ou d'une formation collective calibrée pour les PME. Nous adaptons la profondeur et le format à votre réalité opérationnelle.",
     },
   ],
 
@@ -144,12 +144,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, studios créatifs, agences et petites structures du Bas-Montreuil jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -250,12 +244,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Bas-Montreuil freelancers, creative studios, agencies and small structures up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -359,12 +347,6 @@ export const MONTREUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, studios créatifs et petites agences montreuillaises jusqu'à une dizaine de collaborateurs — Bas-Montreuil, Croix de Chavaux.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -464,12 +446,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group training",
-            detail:
-              "Ideal for Montreuil freelancers, creative studios and small agencies up to about ten staff — Bas-Montreuil, Croix de Chavaux.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -573,12 +549,6 @@ export const MONTREUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus, qualification leads pour TPE et indépendants montreuillois.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -614,7 +584,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Montreuil ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -678,12 +648,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Montreuil micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -756,7 +720,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
           "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
-          "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
+          "Tarif d'entrée accessible aux profils indépendants et PME — pas réservé aux grandes structures.",
         ],
         methodology: [
           {
@@ -786,12 +750,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Tarif d'entrée 1-to-1",
-            detail:
-              "Accessible aux indépendants, créateurs et dirigeants de très petite structure montreuilloise — studio solo, freelance, micro-agence.",
-          },
           {
             sizeLabel: "PME",
             price: "Tarif 1-to-1 PME",
@@ -893,12 +851,6 @@ export const MONTREUIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "1-to-1 entry price",
-            detail:
-              "Accessible to Montreuil freelancers, creators and micro-business executives — solo studio, freelancer, micro-agency.",
-          },
-          {
             sizeLabel: "SME",
             price: "SME 1-to-1 price",
             detail:
@@ -965,7 +917,7 @@ export const MONTREUIL_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit et augmente à Montreuil des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Montreuil, itérations à distance.",
         whyHere: [
-          "Projets web & SaaS montreuillois : jeux vidéo (siège Ubisoft), finance & développement (AFD, BNP Paribas Personal Finance), numérique (Capgemini, Bas-Montreuil), TPE créatives — 4e ville d'Île-de-France.",
+          "Projets web & SaaS montreuillois : jeux vidéo (siège Ubisoft), finance & développement (AFD, BNP Paribas Personal Finance), numérique (Capgemini, Bas-Montreuil), PME créatives — 4e ville d'Île-de-France.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
           "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
           "Gaming, créatif & finance : plateformes interactives, portails, data et agents — on adapte la brique IA à votre secteur, du studio à la grande direction numérique. Hébergement UE, RGPD strict.",
@@ -998,12 +950,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -1084,12 +1030,6 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

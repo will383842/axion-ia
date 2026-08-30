@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COUTANCES_COPY: VilleCopy = {
   pitchFr:
-    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
+    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu PME de l'artisanat et du commerce, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
+    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu PME de l'artisanat et du commerce, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coutances (50). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coutances (50). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
   seoHook: "agroalimentaire & commerce centre-ville",
   ecosystemFr:
     "Coutances est une sous-préfecture de la Manche, perchée sur une colline et dominée par sa cathédrale gothique. L'économie s'appuie sur l'agroalimentaire (produits laitiers, viande bovine, cidre AOP), le commerce de centre-ville, l'artisanat, les services publics (tribunal, hôpital), le tourisme patrimonial et le festival Jazz sous les Pommiers (rayonnement national). Accès vers Saint-Lô (30 min) et Granville (25 min).",
@@ -30,8 +30,8 @@ export const COUTANCES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Coutances : diagnostic adapté aux PME de l'artisanat et du commerce, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Coutances : diagnostic adapté aux PME de l'artisanat et du commerce, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coutances : formats adaptés à la laiterie, au commerce, au cabinet, à l'organisation culturelle. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const COUTANCES_COPY: VilleCopy = {
       en: "Implémentation IA à Coutances : automatisation traçabilité laitière AOP, agents IA accueil tourisme patrimonial, gestion billetterie festival, prédiction stocks commerce, CRM professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Coutances : sessions dans votre entreprise, commerce, cabinet ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, commerçants, prestataires culturels et indépendants du bocage coutançais.",
-      en: "Coaching 1-to-1 à Coutances : sessions dans votre entreprise, commerce, cabinet ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, commerçants, prestataires culturels et indépendants du bocage coutançais.",
+      fr: "Coaching 1-to-1 à Coutances : sessions dans votre entreprise, commerce, cabinet ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, commerçants, prestataires culturels et indépendants du bocage coutançais.",
+      en: "Coaching 1-to-1 à Coutances : sessions dans votre entreprise, commerce, cabinet ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, commerçants, prestataires culturels et indépendants du bocage coutançais.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const COUTANCES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans de Coutances ?",
-      a: "Pour les TPE commerçants et artisans à Coutances, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de RDV, fidélisation client, automatisation comptabilité.",
+      a: "Pour les PME du commerce et artisans à Coutances, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de RDV, fidélisation client, automatisation comptabilité.",
     },
     {
       q: "Travaillez-vous avec les acteurs culturels et touristiques ?",

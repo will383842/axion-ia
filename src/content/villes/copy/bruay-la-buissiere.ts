@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
   pitchFr:
-    "Bruay-la-Buissière (62), 21 424 habitants, ancien bassin minier UNESCO du Pas-de-Calais, à 8 km au sud-ouest de Béthune. Issue de la fusion Bruay-en-Artois–Labuissière (1987), la ville conserve son patrimoine corons, fosses et cités minières classées Patrimoine mondial. Tissu économique aujourd'hui dominé par le commerce de détail, la construction, la plasturgie héritée de la reconversion post-mine, les transports et la restauration. Axion-IA accompagne les TPE et PME locales sur leurs cas IA concrets, depuis l'audit jusqu'à l'implémentation.",
+    "Bruay-la-Buissière (62), 21 424 habitants, ancien bassin minier UNESCO du Pas-de-Calais, à 8 km au sud-ouest de Béthune. Issue de la fusion Bruay-en-Artois–Labuissière (1987), la ville conserve son patrimoine corons, fosses et cités minières classées Patrimoine mondial. Tissu économique aujourd'hui dominé par le commerce de détail, la construction, la plasturgie héritée de la reconversion post-mine, les transports et la restauration. Axion-IA accompagne les PME et ETI locales sur leurs cas IA concrets, depuis l'audit jusqu'à l'implémentation.",
   pitchEn:
-    "Bruay-la-Buissière (62), 21 424 habitants, ancien bassin minier UNESCO du Pas-de-Calais, à 8 km au sud-ouest de Béthune. Issue de la fusion Bruay-en-Artois–Labuissière (1987), la ville conserve son patrimoine corons, fosses et cités minières classées Patrimoine mondial. Tissu économique aujourd'hui dominé par le commerce de détail, la construction, la plasturgie héritée de la reconversion post-mine, les transports et la restauration. Axion-IA accompagne les TPE et PME locales sur leurs cas IA concrets, depuis l'audit jusqu'à l'implémentation.",
+    "Bruay-la-Buissière (62), 21 424 habitants, ancien bassin minier UNESCO du Pas-de-Calais, à 8 km au sud-ouest de Béthune. Issue de la fusion Bruay-en-Artois–Labuissière (1987), la ville conserve son patrimoine corons, fosses et cités minières classées Patrimoine mondial. Tissu économique aujourd'hui dominé par le commerce de détail, la construction, la plasturgie héritée de la reconversion post-mine, les transports et la restauration. Axion-IA accompagne les PME et ETI locales sur leurs cas IA concrets, depuis l'audit jusqu'à l'implémentation.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des TPE, PME et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des PME, ETI et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des TPE, PME et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des PME, ETI et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   seoHook: "commerce, BTP & plasturgie post-mine",
   ecosystemFr:
-    "Bruay-la-Buissière fait partie de la communauté d'agglomération Béthune-Bruay Artois Lys Romane. Le territoire, marqué par un siècle d'exploitation charbonnière (Compagnie des mines de Bruay, 1850-1978), a opéré une reconversion vers la plasturgie, le commerce de détail et le BTP. Le patrimoine minier inscrit UNESCO (six fosses et corons) structure une économie touristique et culturelle. Tissu TPE dense : artisans BTP, commerces de proximité, garages, restauration. PME industrielles en plasturgie et logistique.",
+    "Bruay-la-Buissière fait partie de la communauté d'agglomération Béthune-Bruay Artois Lys Romane. Le territoire, marqué par un siècle d'exploitation charbonnière (Compagnie des mines de Bruay, 1850-1978), a opéré une reconversion vers la plasturgie, le commerce de détail et le BTP. Le patrimoine minier inscrit UNESCO (six fosses et corons) structure une économie touristique et culturelle. Tissu PME dense : artisans BTP, commerces de proximité, garages, restauration. PME industrielles en plasturgie et logistique.",
   ecosystemEn:
-    "Bruay-la-Buissière fait partie de la communauté d'agglomération Béthune-Bruay Artois Lys Romane. Le territoire, marqué par un siècle d'exploitation charbonnière (Compagnie des mines de Bruay, 1850-1978), a opéré une reconversion vers la plasturgie, le commerce de détail et le BTP. Le patrimoine minier inscrit UNESCO (six fosses et corons) structure une économie touristique et culturelle. Tissu TPE dense : artisans BTP, commerces de proximité, garages, restauration. PME industrielles en plasturgie et logistique.",
+    "Bruay-la-Buissière fait partie de la communauté d'agglomération Béthune-Bruay Artois Lys Romane. Le territoire, marqué par un siècle d'exploitation charbonnière (Compagnie des mines de Bruay, 1850-1978), a opéré une reconversion vers la plasturgie, le commerce de détail et le BTP. Le patrimoine minier inscrit UNESCO (six fosses et corons) structure une économie touristique et culturelle. Tissu PME dense : artisans BTP, commerces de proximité, garages, restauration. PME industrielles en plasturgie et logistique.",
   distancesFr:
     "Béthune à 8 km, Lens à 20 km, Arras à 35 km, Lille à 45 km. Gare de Calonne-Ricouart à 5 km, gare TGV de Lille-Europe à 50 km. Aéroport Lille-Lesquin à 55 km. Accès A26 (sortie 6) à 10 min, réseau Tadao bus sur place.",
   distancesEn:
@@ -35,22 +35,22 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
       en: "Audit IA à Bruay-la-Buissière : diagnostic concret pour commerces, artisans BTP, plasturgistes et transporteurs du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bruay-la-Buissière : ateliers TPE/PME locales, formation équipes sur cas métier (devis BTP, facturation, gestion stock commerce, planification logistique).",
-      en: "Interventions IA sur site à Bruay-la-Buissière : ateliers TPE/PME locales, formation équipes sur cas métier (devis BTP, facturation, gestion stock commerce, planification logistique).",
+      fr: "Interventions IA sur site à Bruay-la-Buissière : ateliers PME et ETI locales, formation équipes sur cas métier (devis BTP, facturation, gestion stock commerce, planification logistique).",
+      en: "Interventions IA sur site à Bruay-la-Buissière : ateliers PME et ETI locales, formation équipes sur cas métier (devis BTP, facturation, gestion stock commerce, planification logistique).",
     },
     implementation: {
       fr: "Implémentation IA à Bruay-la-Buissière : automatisation devis BTP, classification photos chantier, agents IA service client commerce, optimisation tournées transporteurs. Code custom.",
       en: "Implémentation IA à Bruay-la-Buissière : automatisation devis BTP, classification photos chantier, agents IA service client commerce, optimisation tournées transporteurs. Code custom.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants TPE, gérants commerce, artisans et patrons PME industrielles. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants TPE, gérants commerce, artisans et patrons PME industrielles. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants de PME et d'ETI, gérants commerce, artisans et patrons PME industrielles. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants de PME et d'ETI, gérants commerce, artisans et patrons PME industrielles. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de TPE et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de PME et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Tissu dense d'artisans BTP et de commerces de proximité hérités de la reconversion post-mine, concentrés au cœur de ville et dans les anciennes cités minières classées : on greffe l'IA sur l'existant — devis automatisés, classification des photos de chantier, agent de réponse client — ou on construit une vitrine e-commerce sur WordPress, WooCommerce ou Shopify sans refonte coûteuse, pensée mobile-first pour un comptoir ou un chantier.",
           "PME industrielles en plasturgie, héritage direct de la reconversion charbonnière de la Compagnie des mines de Bruay : portails clients sur mesure, configurateurs produits, recherche sémantique de catalogue plastiques et automatisations branchées sur vos outils métier (ERP, gestion de stock, GPAO), avec un design system mobile-first utilisable depuis l'atelier comme depuis le bureau commercial.",
@@ -85,12 +85,6 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis — sur le site existant d'un artisan BTP, d'un commerce de détail, d'un garage ou d'un restaurant du bassin minier, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -136,7 +130,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit avant développement. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique sur les sites patrimoniaux UNESCO. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé. L'ensemble reste transférable à un prestataire local des Hauts-de-France (Lille, Lens, Arras) ou repris en interne sans rupture.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de TPE et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Bruay-la-Buissière des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie d'ancien bassin minier UNESCO — héritage de la Compagnie des mines de Bruay (1850-1978) — reconvertie vers la plasturgie, le commerce de détail, le BTP et le tourisme patrimonial, faite d'un tissu dense de PME et de PME industrielles sur les 21 424 habitants de la commune née de la fusion Bruay-en-Artois–Labuissière. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bruay-la-Buissière, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Tissu dense d'artisans BTP et de commerces de proximité hérités de la reconversion post-mine, concentrés au cœur de ville et dans les anciennes cités minières classées : on greffe l'IA sur l'existant — devis automatisés, classification des photos de chantier, agent de réponse client — ou on construit une vitrine e-commerce sur WordPress, WooCommerce ou Shopify sans refonte coûteuse, pensée mobile-first pour un comptoir ou un chantier.",
           "PME industrielles en plasturgie, héritage direct de la reconversion charbonnière de la Compagnie des mines de Bruay : portails clients sur mesure, configurateurs produits, recherche sémantique de catalogue plastiques et automatisations branchées sur vos outils métier (ERP, gestion de stock, GPAO), avec un design system mobile-first utilisable depuis l'atelier comme depuis le bureau commercial.",
@@ -171,12 +165,6 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis — sur le site existant d'un artisan BTP, d'un commerce de détail, d'un garage ou d'un restaurant du bassin minier, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

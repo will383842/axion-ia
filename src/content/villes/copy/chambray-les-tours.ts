@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
   pitchFr:
-    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu TPE commerces, PME tertiaires et logistique, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
+    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu PME du commerce, PME tertiaires et logistique, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu TPE commerces, PME tertiaires et logistique, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
+    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu PME du commerce, PME tertiaires et logistique, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : TPE commerces des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : PME du commerce des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : TPE commerces des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : PME du commerce des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
   seoHook: "commerce détail & logistique distribution",
   ecosystemFr:
-    "Chambray-lès-Tours est le pôle commercial sud de Tours Métropole avec plusieurs zones d'activités et centres commerciaux majeurs (La Vrillonnerie, Auchan Sud). TPE commerces de détail, PME tertiaires, logistique et distribution, services aux entreprises.",
+    "Chambray-lès-Tours est le pôle commercial sud de Tours Métropole avec plusieurs zones d'activités et centres commerciaux majeurs (La Vrillonnerie, Auchan Sud). PME du commerce, PME tertiaires, logistique et distribution, services aux entreprises.",
   ecosystemEn:
-    "Chambray-lès-Tours est le pôle commercial sud de Tours Métropole avec plusieurs zones d'activités et centres commerciaux majeurs (La Vrillonnerie, Auchan Sud). TPE commerces de détail, PME tertiaires, logistique et distribution, services aux entreprises.",
+    "Chambray-lès-Tours est le pôle commercial sud de Tours Métropole avec plusieurs zones d'activités et centres commerciaux majeurs (La Vrillonnerie, Auchan Sud). PME du commerce, PME tertiaires, logistique et distribution, services aux entreprises.",
   distancesFr:
     "Tours centre à 10 min. Gare TGV Saint-Pierre-des-Corps à 15 min. Aéroport Tours Val de Loire à 25 min. Joué-lès-Tours à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     "Commerce de détail & grande distribution",
     "Logistique & distribution",
     "PME tertiaires & services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Restauration & hôtellerie",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chambray-lès-Tours : formats adaptés au commerce, bureau tertiaire, entrepôt logistique. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
       en: "Implémentation IA à Chambray-lès-Tours : automatisation gestion stocks et approvisionnement, agents conversationnels service client, classification flux logistiques, optimisation planning.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chambray-lès-Tours : sessions dans votre commerce, bureau ou en visio. Gérants TPE/PME, directeurs de magasin, responsables logistique, dirigeants tertiaires.",
-      en: "Coaching 1-to-1 à Chambray-lès-Tours : sessions dans votre commerce, bureau ou en visio. Gérants TPE/PME, directeurs de magasin, responsables logistique, dirigeants tertiaires.",
+      fr: "Coaching 1-to-1 à Chambray-lès-Tours : sessions dans votre commerce, bureau ou en visio. Gérants PME et ETI, directeurs de magasin, responsables logistique, dirigeants tertiaires.",
+      en: "Coaching 1-to-1 à Chambray-lès-Tours : sessions dans votre commerce, bureau ou en visio. Gérants PME et ETI, directeurs de magasin, responsables logistique, dirigeants tertiaires.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
       a: "Oui, classification flux logistiques, automatisation approvisionnement, agents conversationnels B2B, optimisation workflows tertiaires.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

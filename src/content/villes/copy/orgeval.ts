@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ORGEVAL_COPY: VilleCopy = {
   pitchFr:
-    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest francilien.",
+    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille PME artisanales, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest francilien.",
   pitchEn:
-    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest francilien.",
+    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille PME artisanales, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orgeval (78). Nous accompagnons PME et ETI : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orgeval (78). Nous accompagnons PME et ETI : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
   seoHook: "artisanat services & conseil prestataires",
   ecosystemFr:
-    "Orgeval est une commune résidentielle prisée de la plaine de Versailles, entre Poissy et Villennes-sur-Seine. Cadre verdoyant à proximité de l'A13 et du bassin d'emploi de Saint-Germain-en-Laye / Poissy. Tissu économique : TPE artisanat et services à domicile, PME conseil et prestataires tertiaires, commerces de village, professions libérales (santé, juridique), auto-entrepreneurs et freelances installés en résidentiel.",
+    "Orgeval est une commune résidentielle prisée de la plaine de Versailles, entre Poissy et Villennes-sur-Seine. Cadre verdoyant à proximité de l'A13 et du bassin d'emploi de Saint-Germain-en-Laye / Poissy. Tissu économique : PME de l'artisanat et services à domicile, PME conseil et prestataires tertiaires, commerces de village, professions libérales (santé, juridique), auto-entrepreneurs et freelances installés en résidentiel.",
   ecosystemEn:
-    "Orgeval est une commune résidentielle prisée de la plaine de Versailles, entre Poissy et Villennes-sur-Seine. Cadre verdoyant à proximité de l'A13 et du bassin d'emploi de Saint-Germain-en-Laye / Poissy. Tissu économique : TPE artisanat et services à domicile, PME conseil et prestataires tertiaires, commerces de village, professions libérales (santé, juridique), auto-entrepreneurs et freelances installés en résidentiel.",
+    "Orgeval est une commune résidentielle prisée de la plaine de Versailles, entre Poissy et Villennes-sur-Seine. Cadre verdoyant à proximité de l'A13 et du bassin d'emploi de Saint-Germain-en-Laye / Poissy. Tissu économique : PME de l'artisanat et services à domicile, PME conseil et prestataires tertiaires, commerces de village, professions libérales (santé, juridique), auto-entrepreneurs et freelances installés en résidentiel.",
   distancesFr:
     "Poissy à 10 min, Saint-Germain-en-Laye à 15 min, Versailles à 25 min. A13 accès direct (échangeur Orgeval). Paris La Défense à 30 min par A13. Gare de Villennes-sur-Seine (Transilien J Saint-Lazare) à 8 min.",
   distancesEn:
     "Poissy à 10 min, Saint-Germain-en-Laye à 15 min, Versailles à 25 min. A13 accès direct (échangeur Orgeval). Paris La Défense à 30 min par A13. Gare de Villennes-sur-Seine (Transilien J Saint-Lazare) à 8 min.",
   topSectorsNaf: [
-    "TPE artisanat & services à domicile",
+    "PME de l'artisanat & services à domicile",
     "PME conseil & prestataires tertiaires",
     "Commerce de village & proximité",
     "Professions libérales santé & juridique",
@@ -30,8 +30,8 @@ export const ORGEVAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Orgeval : diagnostic adapté aux PME artisanales, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Orgeval : diagnostic adapté aux PME artisanales, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orgeval : formats adaptés au bureau conseil, à l'atelier artisan, au commerce ou au cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const ORGEVAL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Orgeval  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la plaine de Versailles, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, artisanat, commerce, freelance). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de la plaine de Versailles, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, artisanat, commerce, freelance). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les PME conseil de l'ouest francilien ?",

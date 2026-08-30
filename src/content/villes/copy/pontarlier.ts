@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PONTARLIER_COPY: VilleCopy = {
   pitchFr:
-    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, TPE artisans bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, PME artisanales bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, TPE artisans bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, PME artisanales bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontarlier (25). Nous accompagnons TPE et PME du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontarlier (25). Nous accompagnons PME et ETI du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontarlier (25). Nous accompagnons TPE et PME du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontarlier (25). Nous accompagnons PME et ETI du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
   seoHook: "industrie agroalimentaire & artisanat bois",
   ecosystemFr:
     "Pontarlier est la sous-préfecture du Haut-Doubs (18 067 habitants), à 5 km de la frontière suisse. Ville historiquement liée à l'absinthe et au fort de Joux. Économie dynamique grâce au flux transfrontalier vers Lausanne et Neuchâtel. Tissu industrie agroalimentaire, artisanat bois jurassien, commerces frontaliers, services aux 10 000+ travailleurs transfrontaliers et tourisme montagne/patrimoine.",
@@ -23,7 +23,7 @@ export const PONTARLIER_COPY: VilleCopy = {
     "Besançon à 55 min par N57. Lausanne (Suisse) à 45 min. Neuchâtel (Suisse) à 40 min. Gare SNCF Pontarlier (TER Besançon). Métabief à 15 min. Aéroport Genève à 1h30.",
   topSectorsNaf: [
     "Industrie agroalimentaire & distilleries",
-    "TPE artisanat bois du Jura",
+    "PME de l'artisanat bois du Jura",
     "Commerces frontaliers Suisse",
     "Services aux travailleurs transfrontaliers",
     "Tourisme montagne & patrimoine (fort de Joux)",
@@ -60,8 +60,8 @@ export const PONTARLIER_COPY: VilleCopy = {
       a: "Oui, agents conversationnels bilingues FR/DE, automatisation gestion douanière simplifiée, CRM clients suisses et français, gestion multi-devises, analyse flux transfrontaliers.",
     },
     {
-      q: "Quels tarifs pour les TPE artisans bois et commerces de Pontarlier ?",
-      a: "Pour les TPE artisans bois du Jura et commerces de Pontarlier, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : optimisation découpe, gestion stocks, automatisation devis.",
+      q: "Quels tarifs pour les PME artisanales bois et commerces de Pontarlier ?",
+      a: "Pour les PME artisanales bois du Jura et commerces de Pontarlier, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : optimisation découpe, gestion stocks, automatisation devis.",
     },
     {
       q: "Comment se déroule une mission à Pontarlier ?",

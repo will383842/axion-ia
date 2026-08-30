@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const CHARENTON_LE_PONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Charenton-le-Pont, commune de 28 830 habitants du Val-de-Marne située à la porte sud-est de Paris. Membre de l'établissement public territorial Paris-Est-Marne et Bois, Charenton-le-Pont accueille le siège historique des vins Nicolas, un technicentre SNCF dédié à la maintenance des TGV et le centre commercial Bercy 2. Nous intervenons sur site auprès des commerces, sociétés de services et PME du tissu local pour automatiser leurs processus métier avec du code custom adapté à leurs outils existants.",
+    "Axion-IA accompagne les PME et ETI de Charenton-le-Pont, commune de 28 830 habitants du Val-de-Marne située à la porte sud-est de Paris. Membre de l'établissement public territorial Paris-Est-Marne et Bois, Charenton-le-Pont accueille le siège historique des vins Nicolas, un technicentre SNCF dédié à la maintenance des TGV et le centre commercial Bercy 2. Nous intervenons sur site auprès des commerces, sociétés de services et PME du tissu local pour automatiser leurs processus métier avec du code custom adapté à leurs outils existants.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Charenton-le-Pont, commune de 28 830 habitants du Val-de-Marne située à la porte sud-est de Paris. Membre de l'établissement public territorial Paris-Est-Marne et Bois, Charenton-le-Pont accueille le siège historique des vins Nicolas, un technicentre SNCF dédié à la maintenance des TGV et le centre commercial Bercy 2. Nous intervenons sur site auprès des commerces, sociétés de services et PME du tissu local pour automatiser leurs processus métier avec du code custom adapté à leurs outils existants.",
+    "Axion-IA accompagne les PME et ETI de Charenton-le-Pont, commune de 28 830 habitants du Val-de-Marne située à la porte sud-est de Paris. Membre de l'établissement public territorial Paris-Est-Marne et Bois, Charenton-le-Pont accueille le siège historique des vins Nicolas, un technicentre SNCF dédié à la maintenance des TGV et le centre commercial Bercy 2. Nous intervenons sur site auprès des commerces, sociétés de services et PME du tissu local pour automatiser leurs processus métier avec du code custom adapté à leurs outils existants.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les TPE et PME locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les TPE et PME du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit sur place dès {{price:audit-flash|flat}} et des interventions code custom dès {{price:intervention-4h|flat}}.",
+    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les PME et ETI locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les PME et ETI du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit sur place dès {{price:audit-flash|flat}} et des interventions code custom dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les TPE et PME locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les TPE et PME du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit sur place dès {{price:audit-flash|flat}} et des interventions code custom dès {{price:intervention-4h|flat}}.",
-  seoHook: "TPE & PME · code custom · commerce, services, négoce",
+    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les PME et ETI locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les PME et ETI du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit sur place dès {{price:audit-flash|flat}} et des interventions code custom dès {{price:intervention-4h|flat}}.",
+  seoHook: "PME & PME · code custom · commerce, services, négoce",
   ecosystemFr:
-    "Charenton-le-Pont fait partie de la Métropole du Grand Paris via l'établissement public territorial Paris-Est-Marne et Bois. Le tissu local mêle le siège des vins Nicolas (négoce installé depuis 1920), un technicentre SNCF de maintenance TGV, le centre commercial Bercy 2 et de nombreuses TPE/PME de commerce, services et logistique. La commune profite de la ligne 8 du métro, du tramway T3a tout proche et de l'autoroute A4 pour rayonner sur l'est parisien.",
+    "Charenton-le-Pont fait partie de la Métropole du Grand Paris via l'établissement public territorial Paris-Est-Marne et Bois. Le tissu local mêle le siège des vins Nicolas (négoce installé depuis 1920), un technicentre SNCF de maintenance TGV, le centre commercial Bercy 2 et de nombreuses PME et ETI de commerce, services et logistique. La commune profite de la ligne 8 du métro, du tramway T3a tout proche et de l'autoroute A4 pour rayonner sur l'est parisien.",
   ecosystemEn:
-    "Charenton-le-Pont fait partie de la Métropole du Grand Paris via l'établissement public territorial Paris-Est-Marne et Bois. Le tissu local mêle le siège des vins Nicolas (négoce installé depuis 1920), un technicentre SNCF de maintenance TGV, le centre commercial Bercy 2 et de nombreuses TPE/PME de commerce, services et logistique. La commune profite de la ligne 8 du métro, du tramway T3a tout proche et de l'autoroute A4 pour rayonner sur l'est parisien.",
+    "Charenton-le-Pont fait partie de la Métropole du Grand Paris via l'établissement public territorial Paris-Est-Marne et Bois. Le tissu local mêle le siège des vins Nicolas (négoce installé depuis 1920), un technicentre SNCF de maintenance TGV, le centre commercial Bercy 2 et de nombreuses PME et ETI de commerce, services et logistique. La commune profite de la ligne 8 du métro, du tramway T3a tout proche et de l'autoroute A4 pour rayonner sur l'est parisien.",
   distancesFr:
     "Charenton-le-Pont est limitrophe de Paris (porte de Bercy), à environ 5 km de la gare de Lyon, 8 km de la gare Montparnasse et 14 km de l'aéroport de Paris-Orly. L'accès se fait via la ligne 8 du métro ou la sortie 2/3 de l'A4.",
   distancesEn:
@@ -32,20 +32,20 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place chez les TPE et PME de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès {{price:audit-flash|flat}} pour cartographier vos process et identifier les automatisations rentables.",
-      en: "Audit sur place chez les TPE et PME de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès {{price:audit-flash|flat}} pour cartographier vos process et identifier les automatisations rentables.",
+      fr: "Audit sur place chez les PME et ETI de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès {{price:audit-flash|flat}} pour cartographier vos process et identifier les automatisations rentables.",
+      en: "Audit sur place chez les PME et ETI de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès {{price:audit-flash|flat}} pour cartographier vos process et identifier les automatisations rentables.",
     },
     interventions: {
-      fr: "Intervention sur site à Charenton-le-Pont dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, relances, factures et reportings des TPE/PME locales.",
-      en: "Intervention sur site à Charenton-le-Pont dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, relances, factures et reportings des TPE/PME locales.",
+      fr: "Intervention sur site à Charenton-le-Pont dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, relances, factures et reportings des PME et ETI locales.",
+      en: "Intervention sur site à Charenton-le-Pont dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, relances, factures et reportings des PME et ETI locales.",
     },
     implementation: {
       fr: "Implémentation IA chez les PME de Charenton-le-Pont : connecteurs sur mesure entre vos ERP, CRM et outils métiers, sans recours au no-code.",
       en: "Implémentation IA chez les PME de Charenton-le-Pont : connecteurs sur mesure entre vos ERP, CRM et outils métiers, sans recours au no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME de Charenton-le-Pont : sessions de cadrage IA en face-à-face dans vos bureaux.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME de Charenton-le-Pont : sessions de cadrage IA en face-à-face dans vos bureaux.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI de Charenton-le-Pont : sessions de cadrage IA en face-à-face dans vos bureaux.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI de Charenton-le-Pont : sessions de cadrage IA en face-à-face dans vos bureaux.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte — idéal pour les commerces de Bercy 2 et les TPE de services du quartier Liberté.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -173,12 +167,6 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) to an existing site in a few weeks, no rebuild — ideal for Bercy 2 retailers and small service businesses in the Liberté district.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -244,7 +232,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous le plus à Charenton-le-Pont ?",
-      a: "Principalement les TPE et PME du commerce de détail, du négoce de vins et spiritueux (héritage Nicolas), des services aux entreprises et de la logistique urbaine présentes autour de Bercy 2 et de la porte de Charenton.",
+      a: "Principalement les PME et ETI du commerce de détail, du négoce de vins et spiritueux (héritage Nicolas), des services aux entreprises et de la logistique urbaine présentes autour de Bercy 2 et de la porte de Charenton.",
     },
     {
       q: "Faites-vous du no-code pour les entreprises de Charenton-le-Pont ?",

@@ -9,9 +9,9 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
   pitchEn:
     "Martignas-sur-Jalle (33), commune de l'ouest de Bordeaux Métropole, est un pôle aéronautique et défense majeur (proximité site industriel de Saint-Médard-en-Jalles) avec un tissu de PME sous-traitantes, artisans et commerces. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Martignas-sur-Jalle (33). Nous accompagnons PME et ETI de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Martignas-sur-Jalle (33). Nous accompagnons PME et ETI de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "aéronautique défense & industrie précision",
   ecosystemFr:
     "Martignas-sur-Jalle bénéficie de la proximité du pôle aéronautique et défense de Saint-Médard-en-Jalles. Tissu PME sous-traitantes aéronautique, industries de précision, artisanat BTP et commerces résidentiels. En lisière de forêt, accès rocade A630 et aéroport Mérignac.",
@@ -24,14 +24,14 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Aéronautique & défense (sous-traitance)",
     "Industrie de précision",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Martignas-sur-Jalle : diagnostic pour PME aéronautique/défense, industries de précision, TPE artisans et commerces de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Martignas-sur-Jalle : diagnostic pour PME aéronautique/défense, industries de précision, TPE artisans et commerces de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Martignas-sur-Jalle : diagnostic pour PME aéronautique/défense, industries de précision, PME de l'artisanat et du commerce de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Martignas-sur-Jalle : diagnostic pour PME aéronautique/défense, industries de précision, PME de l'artisanat et du commerce de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Martignas-sur-Jalle : ateliers adaptés aux usines aéronautiques, ateliers de précision et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Martignas-sur-Jalle  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME aéronautique et TPE artisans de l'ouest bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME aéronautique et PME artisanales de l'ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les PME aéronautique à Martignas ?",
@@ -61,7 +61,7 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les PME du BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Martignas-sur-Jalle ?",

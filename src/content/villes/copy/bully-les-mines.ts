@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BULLY_LES_MINES_COPY: VilleCopy = {
   pitchFr:
-    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu PME du BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu PME du BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : PME du BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : PME du BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   seoHook: "artisanat & industrie reconvertie",
   ecosystemFr:
-    "Bully-les-Mines est intégrée à l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique post-mine : TPE artisanat BTP, PME industrie reconvertie (sous-traitance, métallurgie légère), commerces de proximité, professions libérales. Proximité Lens (5 min) et Liévin (5 min). Accès A21 vers Lille (30 min).",
+    "Bully-les-Mines est intégrée à l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique post-mine : PME du BTP, PME industrie reconvertie (sous-traitance, métallurgie légère), commerces de proximité, professions libérales. Proximité Lens (5 min) et Liévin (5 min). Accès A21 vers Lille (30 min).",
   ecosystemEn:
-    "Bully-les-Mines est intégrée à l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique post-mine : TPE artisanat BTP, PME industrie reconvertie (sous-traitance, métallurgie légère), commerces de proximité, professions libérales. Proximité Lens (5 min) et Liévin (5 min). Accès A21 vers Lille (30 min).",
+    "Bully-les-Mines est intégrée à l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique post-mine : PME du BTP, PME industrie reconvertie (sous-traitance, métallurgie légère), commerces de proximité, professions libérales. Proximité Lens (5 min) et Liévin (5 min). Accès A21 vers Lille (30 min).",
   distancesFr:
     "Lens à 5 min. Liévin à 5 min. Harnes à 5 min. Douai à 20 min. Arras à 20 min. Lille à 30 min A21/A1. Aéroport Lille-Lesquin à 30 min.",
   distancesEn:
     "Lens à 5 min. Liévin à 5 min. Harnes à 5 min. Douai à 20 min. Arras à 20 min. Lille à 30 min A21/A1. Aéroport Lille-Lesquin à 30 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP (bassin minier reconverti)",
+    "PME du BTP (bassin minier reconverti)",
     "PME industrie reconvertie et sous-traitance",
     "Commerce de proximité",
     "Professions libérales et services",
@@ -30,8 +30,8 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bully-les-Mines : diagnostic adapté aux PME du BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bully-les-Mines : diagnostic adapté aux PME du BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bully-les-Mines : formats adaptés à l'atelier BTP, l'usine reconvertie, le commerce, le cabinet. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
       en: "Implémentation IA à Bully-les-Mines : automatisation devis BTP, contrôle qualité industriel, agents IA service client, gestion documentaire, optimisation production sous-traitance.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bully-les-Mines : sessions dans votre atelier, usine, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrie, professions libérales, commerçants du bassin minier.",
-      en: "Coaching 1-to-1 à Bully-les-Mines : sessions dans votre atelier, usine, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrie, professions libérales, commerçants du bassin minier.",
+      fr: "Coaching 1-to-1 à Bully-les-Mines : sessions dans votre atelier, usine, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrie, professions libérales, commerçants du bassin minier.",
+      en: "Coaching 1-to-1 à Bully-les-Mines : sessions dans votre atelier, usine, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrie, professions libérales, commerçants du bassin minier.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bully-les-Mines et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Harnes, Sallaumines, Grenay). Nos consultants viennent de Lille (30 min A21) ou Arras (20 min).",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Bully-les-Mines sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, suivi chantiers, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME du BTP du bassin minier ?",
+      a: "Oui, nous accompagnons les PME du BTP de Bully-les-Mines sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, suivi chantiers, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les PME industrie reconvertie et sous-traitance ?",

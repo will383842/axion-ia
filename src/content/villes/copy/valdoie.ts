@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const VALDOIE_COPY: VilleCopy = {
   pitchFr:
-    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de PME artisanales, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de PME artisanales, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valdoie (90). Nous accompagnons PME et ETI : PME artisanales, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
-  seoHook: "TPE & PME Territ. Belfort",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valdoie (90). Nous accompagnons PME et ETI : PME artisanales, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit sur place sur mesure.",
+  seoHook: "PME & PME Territ. Belfort",
   ecosystemFr:
-    "Valdoie est positionnée dans l'agglomération belfortaine, en première couronne nord. Commune principalement résidentielle. Économie : TPE artisanat, commerces de proximité, services, PME sous-traitantes des industries Belfort-Montbéliard (énergie GE/Alstom, ferroviaire, automobile PSA).",
+    "Valdoie est positionnée dans l'agglomération belfortaine, en première couronne nord. Commune principalement résidentielle. Économie : PME de l'artisanat, commerces de proximité, services, PME sous-traitantes des industries Belfort-Montbéliard (énergie GE/Alstom, ferroviaire, automobile PSA).",
   ecosystemEn:
-    "Valdoie est positionnée dans l'agglomération belfortaine, en première couronne nord. Commune principalement résidentielle. Économie : TPE artisanat, commerces de proximité, services, PME sous-traitantes des industries Belfort-Montbéliard (énergie GE/Alstom, ferroviaire, automobile PSA).",
+    "Valdoie est positionnée dans l'agglomération belfortaine, en première couronne nord. Commune principalement résidentielle. Économie : PME de l'artisanat, commerces de proximité, services, PME sous-traitantes des industries Belfort-Montbéliard (énergie GE/Alstom, ferroviaire, automobile PSA).",
   distancesFr:
     "Belfort centre à 5 min. Montbéliard à 20 min. Mulhouse à 40 min. Aéroport Bâle-Mulhouse à 1h. Gare TGV Belfort-Montbéliard à 15 min (Paris 2h15).",
   distancesEn:
     "Belfort centre à 5 min. Montbéliard à 20 min. Mulhouse à 40 min. Aéroport Bâle-Mulhouse à 1h. Gare TGV Belfort-Montbéliard à 15 min (Paris 2h15).",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "PME sous-traitance industrielle Belfort",
     "Services aux entreprises",
@@ -30,8 +30,8 @@ export const VALDOIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valdoie : diagnostic adapté aux TPE artisans, commerces, services valdoyens, PME sous-traitantes industries Belfort. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Valdoie : diagnostic adapté aux TPE artisans, commerces, services valdoyens, PME sous-traitantes industries Belfort. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Valdoie : diagnostic adapté aux PME artisanales, commerces, services valdoyens, PME sous-traitantes industries Belfort. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Valdoie : diagnostic adapté aux PME artisanales, commerces, services valdoyens, PME sous-traitantes industries Belfort. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valdoie : formats adaptés à l'atelier artisan, commerce, PME sous-traitante. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const VALDOIE_COPY: VilleCopy = {
       en: "Implémentation IA à Valdoie : optimisation production sous-traitance, contrôle qualité vision, maintenance prédictive, automatisation gestion commerce, CRM clients.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valdoie : sessions dans votre atelier, commerce, PME ou en visio. Artisans, gérants TPE, dirigeants PME sous-traitantes valdoyens.",
-      en: "Coaching 1-to-1 à Valdoie : sessions dans votre atelier, commerce, PME ou en visio. Artisans, gérants TPE, dirigeants PME sous-traitantes valdoyens.",
+      fr: "Coaching 1-to-1 à Valdoie : sessions dans votre atelier, commerce, PME ou en visio. Artisans, gérants PME, dirigeants PME sous-traitantes valdoyens.",
+      en: "Coaching 1-to-1 à Valdoie : sessions dans votre atelier, commerce, PME ou en visio. Artisans, gérants PME, dirigeants PME sous-traitantes valdoyens.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const VALDOIE_COPY: VilleCopy = {
       a: "Oui, optimisation production IA, contrôle qualité vision, maintenance prédictive, traçabilité pour sous-traitants énergie, ferroviaire, automobile.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces valdoyens ?",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce valdoyens ?",
       a: "Oui, automatisation devis, CRM clients, gestion stocks, marketing digital local pour BTP, services, commerces de proximité.",
     },
     {

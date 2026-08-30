@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FRONTIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Frontignan (34), commune de l'Hérault sur le bassin de Thau entre Sète et Montpellier, conjugue une identité viticole forte (Muscat de Frontignan AOP), un héritage industriel (raffinerie et dépôt pétrolier) et une économie tournée vers la conchyliculture de l'étang de Thau, le tourisme balnéaire et le commerce. Son tissu repose d'abord sur les TPE — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — puis sur des PME industrielles, agroalimentaires et touristiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME frontignanaises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du domaine viticole au restaurant de bord d'étang.",
+    "Frontignan (34), commune de l'Hérault sur le bassin de Thau entre Sète et Montpellier, conjugue une identité viticole forte (Muscat de Frontignan AOP), un héritage industriel (raffinerie et dépôt pétrolier) et une économie tournée vers la conchyliculture de l'étang de Thau, le tourisme balnéaire et le commerce. Son tissu repose d'abord sur les PME — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — puis sur des PME industrielles, agroalimentaires et touristiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI frontignanaises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du domaine viticole au restaurant de bord d'étang.",
   pitchEn:
-    "Frontignan (34), commune de l'Hérault sur le bassin de Thau entre Sète et Montpellier, conjugue une identité viticole forte (Muscat de Frontignan AOP), un héritage industriel (raffinerie et dépôt pétrolier) et une économie tournée vers la conchyliculture de l'étang de Thau, le tourisme balnéaire et le commerce. Son tissu repose d'abord sur les TPE — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — puis sur des PME industrielles, agroalimentaires et touristiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME frontignanaises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du domaine viticole au restaurant de bord d'étang.",
+    "Frontignan (34), commune de l'Hérault sur le bassin de Thau entre Sète et Montpellier, conjugue une identité viticole forte (Muscat de Frontignan AOP), un héritage industriel (raffinerie et dépôt pétrolier) et une économie tournée vers la conchyliculture de l'étang de Thau, le tourisme balnéaire et le commerce. Son tissu repose d'abord sur les PME — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — puis sur des PME industrielles, agroalimentaires et touristiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI frontignanaises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du domaine viticole au restaurant de bord d'étang.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Frontignan (34). Nous accompagnons en priorité les TPE puis les PME : viticulteurs du Muscat de Frontignan, conchyliculteurs de l'étang de Thau, restaurateurs, commerçants, artisans BTP, PME industrielles, agroalimentaires et touristiques. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Frontignan (34). Nous accompagnons en priorité les PME puis les ETI : viticulteurs du Muscat de Frontignan, conchyliculteurs de l'étang de Thau, restaurateurs, commerçants, artisans BTP, PME industrielles, agroalimentaires et touristiques. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Frontignan (34). Nous accompagnons en priorité les TPE puis les PME : viticulteurs du Muscat de Frontignan, conchyliculteurs de l'étang de Thau, restaurateurs, commerçants, artisans BTP, PME industrielles, agroalimentaires et touristiques. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Frontignan (34). Nous accompagnons en priorité les PME puis les ETI : viticulteurs du Muscat de Frontignan, conchyliculteurs de l'étang de Thau, restaurateurs, commerçants, artisans BTP, PME industrielles, agroalimentaires et touristiques. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les grands groupes complètent ce socle.",
   seoHook: "viticulture Muscat & tourisme Thau",
   ecosystemFr:
-    "Frontignan, sur le bassin de Thau, structure son économie autour du Muscat de Frontignan AOP, de la conchyliculture de l'étang de Thau, d'un héritage industriel (raffinerie, dépôt pétrolier) et du tourisme balnéaire. Le tissu local est avant tout composé de TPE — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — complétées par des PME industrielles, agroalimentaires et touristiques. Proximité de Sète et de Montpellier. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Frontignan, sur le bassin de Thau, structure son économie autour du Muscat de Frontignan AOP, de la conchyliculture de l'étang de Thau, d'un héritage industriel (raffinerie, dépôt pétrolier) et du tourisme balnéaire. Le tissu local est avant tout composé de PME — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — complétées par des PME industrielles, agroalimentaires et touristiques. Proximité de Sète et de Montpellier. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   ecosystemEn:
-    "Frontignan, sur le bassin de Thau, structure son économie autour du Muscat de Frontignan AOP, de la conchyliculture de l'étang de Thau, d'un héritage industriel (raffinerie, dépôt pétrolier) et du tourisme balnéaire. Le tissu local est avant tout composé de TPE — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — complétées par des PME industrielles, agroalimentaires et touristiques. Proximité de Sète et de Montpellier. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Frontignan, sur le bassin de Thau, structure son économie autour du Muscat de Frontignan AOP, de la conchyliculture de l'étang de Thau, d'un héritage industriel (raffinerie, dépôt pétrolier) et du tourisme balnéaire. Le tissu local est avant tout composé de PME — viticulteurs, conchyliculteurs, restaurateurs, commerçants, artisans BTP — complétées par des PME industrielles, agroalimentaires et touristiques. Proximité de Sète et de Montpellier. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   distancesFr:
     "Sète à 10 min. Montpellier à 25 min (gare Montpellier-Saint-Roch à 25 km). Aéroport Montpellier-Méditerranée à 20 km. Béziers à 40 min. Mèze et Balaruc-les-Bains à proximité (étang de Thau).",
   distancesEn:
@@ -26,7 +26,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
     "Conchyliculture (étang de Thau)",
     "Tourisme, hôtellerie & restauration",
     "Industrie & logistique pétrolière",
-    "TPE artisanat BTP & commerce",
+    "PME du BTP & commerce",
   ],
   servicesContext: {
     audit: {
@@ -42,8 +42,8 @@ export const FRONTIGNAN_COPY: VilleCopy = {
       en: "Implémentation IA à Frontignan : prédiction des récoltes et vendanges, traçabilité conchylicole, agents conversationnels touristiques multilingues, automatisation des réservations restaurant, vente directe en ligne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Frontignan : sessions dans votre domaine, mas conchylicole, restaurant, commerce ou en visio. Dirigeants TPE et PME frontignanais : viticulteurs, conchyliculteurs, restaurateurs, commerçants.",
-      en: "Coaching 1-to-1 à Frontignan : sessions dans votre domaine, mas conchylicole, restaurant, commerce ou en visio. Dirigeants TPE et PME frontignanais : viticulteurs, conchyliculteurs, restaurateurs, commerçants.",
+      fr: "Coaching 1-to-1 à Frontignan : sessions dans votre domaine, mas conchylicole, restaurant, commerce ou en visio. Dirigeants PME et ETI frontignanais : viticulteurs, conchyliculteurs, restaurateurs, commerçants.",
+      en: "Coaching 1-to-1 à Frontignan : sessions dans votre domaine, mas conchylicole, restaurant, commerce ou en visio. Dirigeants PME et ETI frontignanais : viticulteurs, conchyliculteurs, restaurateurs, commerçants.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA à Frontignan : plateformes de vente directe pour viticulteurs et conchyliculteurs, sites touristiques multilingues, réservation en ligne pour restaurants et hébergements du bassin de Thau.",
@@ -53,7 +53,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de TPE et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de PME et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
         whyHere: [
           "Filière viticole AOP captive : un domaine du Muscat de Frontignan vend en cave, sur les marchés et à l'export — on bâtit une boutique de vente directe en ligne (WooCommerce, Shopify ou code sur mesure) avec étiquetage de millésimes, gestion des stocks par cuvée, traçabilité AOP et chatbot RAG multilingue pour la clientèle touristique du bassin de Thau et les acheteurs export.",
           "Conchyliculture de l'étang de Thau et zone fluviomaritime du port (ZIFMAR) : pour les mas ostréicoles et mytilicoles et les mareyeurs, on construit prise de commande en ligne, suivi des conditions sanitaires de l'étang, recherche sémantique sur les lots et agents conversationnels calibrés pour la clientèle locale comme touristique entre Sète et Mèze.",
@@ -88,12 +88,6 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande, réservation) sur le site existant d'un viticulteur du Muscat, d'un conchyliculteur de l'étang de Thau ou d'un restaurateur de bord d'eau, en quelques semaines et sans refonte complète.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           "Devis ferme en forfait fixe, remis à partir de 24-48 h selon la complexité : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison des vendanges du Muscat ou au pic touristique estival autour du port de plaisance de Frontignan-la-Peyrade. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire, transférable à tout prestataire local de l'Hérault ou de l'Occitanie ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de TPE et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Frontignan des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutique de vente directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bassin de Thau faite de domaines du Muscat de Frontignan AOP, de mas conchylicoles de l'étang, de restaurateurs de bord d'eau, des entreprises de la Z.A. La Peyrade et d'un héritage industriel et pétrolier — un tissu d'abord composé de PME et de PME. Du port de plaisance de Frontignan-la-Peyrade aux caves du centre-ville, on greffe l'IA sur l'existant ou on repart d'une page blanche. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Frontignan, itérations à distance.",
         whyHere: [
           "Filière viticole AOP captive : un domaine du Muscat de Frontignan vend en cave, sur les marchés et à l'export — on bâtit une boutique de vente directe en ligne (WooCommerce, Shopify ou code sur mesure) avec étiquetage de millésimes, gestion des stocks par cuvée, traçabilité AOP et chatbot RAG multilingue pour la clientèle touristique du bassin de Thau et les acheteurs export.",
           "Conchyliculture de l'étang de Thau et zone fluviomaritime du port (ZIFMAR) : pour les mas ostréicoles et mytilicoles et les mareyeurs, on construit prise de commande en ligne, suivi des conditions sanitaires de l'étang, recherche sémantique sur les lots et agents conversationnels calibrés pour la clientèle locale comme touristique entre Sète et Mèze.",
@@ -174,12 +168,6 @@ export const FRONTIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande, réservation) sur le site existant d'un viticulteur du Muscat, d'un conchyliculteur de l'étang de Thau ou d'un restaurateur de bord d'eau, en quelques semaines et sans refonte complète.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -241,8 +229,8 @@ export const FRONTIGNAN_COPY: VilleCopy = {
       a: "Oui, pour les conchyliculteurs : traçabilité sanitaire, suivi des conditions de l'étang, automatisation des commandes et de la vente directe, agents conversationnels pour la clientèle locale et touristique.",
     },
     {
-      q: "Accompagnez-vous les TPE touristiques, restaurateurs et commerçants ?",
-      a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
+      q: "Accompagnez-vous les PME touristiques, restaurateurs et commerçants ?",
+      a: "Oui, les PME sont notre priorité : restaurateurs, hôteliers, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
     },
     {
       q: "Comment se déroule une mission depuis Montpellier ?",

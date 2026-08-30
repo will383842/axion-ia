@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LAGORD_COPY: VilleCopy = {
   pitchFr:
-    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
+    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de PME artisanales, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   pitchEn:
-    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
+    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de PME artisanales, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagord (17). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagord (17). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
-    "Lagord est une commune résidentielle prisée du nord de l'agglomération de La Rochelle. PME tertiaires, TPE artisans BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre de vie attractif, croissance démographique soutenue, proximité du centre de La Rochelle.",
+    "Lagord est une commune résidentielle prisée du nord de l'agglomération de La Rochelle. PME tertiaires, PME du BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre de vie attractif, croissance démographique soutenue, proximité du centre de La Rochelle.",
   ecosystemEn:
-    "Lagord est une commune résidentielle prisée du nord de l'agglomération de La Rochelle. PME tertiaires, TPE artisans BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre de vie attractif, croissance démographique soutenue, proximité du centre de La Rochelle.",
+    "Lagord est une commune résidentielle prisée du nord de l'agglomération de La Rochelle. PME tertiaires, PME du BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre de vie attractif, croissance démographique soutenue, proximité du centre de La Rochelle.",
   distancesFr:
     "Lagord est à 5 min de La Rochelle centre (nord). Gare TGV de La Rochelle à 10 min (Paris Montparnasse 2h50, Bordeaux 2h). Aéroport La Rochelle-Île de Ré à 10 min. Pont de l'Île de Ré à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LAGORD_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises & tertiaire",
     "Professions libérales & santé",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, PME de l'artisanat et du commerce de l'agglomération de La Rochelle nord. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, PME de l'artisanat et du commerce de l'agglomération de La Rochelle nord. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lagord : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LAGORD_COPY: VilleCopy = {
       en: "Implémentation IA à Lagord : automatisation secrétariat médical/juridique, agents conversationnels prise de rendez-vous, classification documents, optimisation planification services à la personne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lagord : sessions dans vos locaux ou en visio. Dirigeants TPE/PME tertiaires, professions libérales, artisans et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Lagord : sessions dans vos locaux ou en visio. Dirigeants TPE/PME tertiaires, professions libérales, artisans et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Lagord : sessions dans vos locaux ou en visio. Dirigeants PME et ETI tertiaires, professions libérales, artisans et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Lagord : sessions dans vos locaux ou en visio. Dirigeants PME et ETI tertiaires, professions libérales, artisans et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LAGORD_COPY: VilleCopy = {
       a: "Nous accompagnons les professions libérales et de santé de Lagord : automatisation secrétariat, classification documents médicaux/juridiques, agents IA prise de rendez-vous, optimisation gestion cabinet et facturation.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME à Lagord ?",
-      a: "Oui, nous accompagnons les TPE artisans, PME tertiaires et commerçants de Lagord : automatisation gestion administrative, agents IA relation client, optimisation processus et outils IA productivité.",
+      q: "Accompagnez-vous les PME et ETI à Lagord ?",
+      a: "Oui, nous accompagnons les PME artisanales, PME tertiaires et commerçants de Lagord : automatisation gestion administrative, agents IA relation client, optimisation processus et outils IA productivité.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Lagord ?",

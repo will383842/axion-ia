@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes stéphanoises ouest.",
+    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes stéphanoises ouest.",
   pitchEn:
-    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes stéphanoises ouest.",
+    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes stéphanoises ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
-  seoHook: "TPE & PME Loire",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
+  seoHook: "PME & PME Loire",
   ecosystemFr:
-    "Saint-Genest-Lerpt est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture périphérique.",
+    "Saint-Genest-Lerpt est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture périphérique.",
   ecosystemEn:
-    "Saint-Genest-Lerpt est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture périphérique.",
+    "Saint-Genest-Lerpt est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture périphérique.",
   distancesFr:
     "Saint-Étienne centre à 10 min. Aéroport Saint-Étienne-Bouthéon à 15 min. Lyon centre à 1h. Roche-la-Molière à 5 min. Firminy à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires Saint-Étienne Métropole",
     "Professions libérales (santé, juridique)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Agriculture périphérique",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Genest-Lerpt : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Genest-Lerpt : agents conversationnels patient/client, automatisation gestion RDV, classification dossiers, CRM augmentés. Saint-Étienne Métropole ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Genest-Lerpt : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants TPE/PME genestois.",
-      en: "Coaching 1-to-1 à Saint-Genest-Lerpt : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants TPE/PME genestois.",
+      fr: "Coaching 1-to-1 à Saint-Genest-Lerpt : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants PME et ETI genestois.",
+      en: "Coaching 1-to-1 à Saint-Genest-Lerpt : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants PME et ETI genestois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires Saint-Étienne Métropole sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Genest-Lerpt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Saint-Genest-Lerpt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

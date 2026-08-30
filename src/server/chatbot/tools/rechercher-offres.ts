@@ -2,7 +2,7 @@
 //
 // Function-calling DÉTERMINISTE sur le catalogue typé (offers-catalog.ts), PAS du
 // RAG : une requête « formations entre X et Y € », « 1 jour pour 8 pers sur Claude »,
-// « le moins cher pour une TPE » est STRUCTURÉE → réponse exacte, zéro hallucination
+// « le moins cher pour une PME » est STRUCTURÉE → réponse exacte, zéro hallucination
 // de prix/offre. Multi-facettes : prix, durée, effectif, sujet/outil, format,
 // audience, tri. tenant_id injecté serveur (catalogue partagé au MVP single-tenant).
 //

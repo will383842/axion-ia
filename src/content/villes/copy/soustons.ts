@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SOUSTONS_COPY: VilleCopy = {
   pitchFr:
-    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, PME hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, PME hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soustons (40). Nous accompagnons PME et ETI du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soustons (40). Nous accompagnons PME et ETI du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
   seoHook: "tourisme nature, lacs & forêt landaise",
   ecosystemFr:
-    "Soustons est surnommée « l'isle verte » grâce à ses 5 lacs et étangs (lac de Soustons, étang de Hardy, étang Blanc, étang Noir, étang de Pinsolle) et sa plage océane de 6 km. La commune est connue pour le domaine de Latche, résidence de François Mitterrand. Économie portée par le tourisme nature et lacustre, campings, hébergements, agriculture (maïs, élevage), TPE artisans, commerces de proximité.",
+    "Soustons est surnommée « l'isle verte » grâce à ses 5 lacs et étangs (lac de Soustons, étang de Hardy, étang Blanc, étang Noir, étang de Pinsolle) et sa plage océane de 6 km. La commune est connue pour le domaine de Latche, résidence de François Mitterrand. Économie portée par le tourisme nature et lacustre, campings, hébergements, agriculture (maïs, élevage), PME artisanales, commerces de proximité.",
   ecosystemEn:
-    "Soustons est surnommée « l'isle verte » grâce à ses 5 lacs et étangs (lac de Soustons, étang de Hardy, étang Blanc, étang Noir, étang de Pinsolle) et sa plage océane de 6 km. La commune est connue pour le domaine de Latche, résidence de François Mitterrand. Économie portée par le tourisme nature et lacustre, campings, hébergements, agriculture (maïs, élevage), TPE artisans, commerces de proximité.",
+    "Soustons est surnommée « l'isle verte » grâce à ses 5 lacs et étangs (lac de Soustons, étang de Hardy, étang Blanc, étang Noir, étang de Pinsolle) et sa plage océane de 6 km. La commune est connue pour le domaine de Latche, résidence de François Mitterrand. Économie portée par le tourisme nature et lacustre, campings, hébergements, agriculture (maïs, élevage), PME artisanales, commerces de proximité.",
   distancesFr:
     "Hossegor à 15 min. Dax à 30 min par D17. Bayonne à 35 min par D810. Bordeaux à 1h40 par A63. Aéroport Biarritz-Pays Basque à 35 min. Capbreton à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SOUSTONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Soustons : diagnostic adapté aux PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Soustons : diagnostic adapté aux PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soustons : formations adaptées aux campings, hébergements nature, exploitations agricoles, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SOUSTONS_COPY: VilleCopy = {
       en: "Implémentation IA à Soustons : chatbot réservation multilingue campings, gestion saisonnalité, automatisation facturation hébergeurs, prédiction météo/affluence lacs, optimisation exploitation agricole (irrigation, stocks).",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Soustons : sessions dans votre camping, hébergement, exploitation ou en visio. Dirigeants tourisme nature, agriculteurs, gérants TPE/PME, commerçants et artisans soustonnais.",
-      en: "Coaching 1-to-1 à Soustons : sessions dans votre camping, hébergement, exploitation ou en visio. Dirigeants tourisme nature, agriculteurs, gérants TPE/PME, commerçants et artisans soustonnais.",
+      fr: "Coaching 1-to-1 à Soustons : sessions dans votre camping, hébergement, exploitation ou en visio. Dirigeants tourisme nature, agriculteurs, gérants PME et ETI, commerçants et artisans soustonnais.",
+      en: "Coaching 1-to-1 à Soustons : sessions dans votre camping, hébergement, exploitation ou en visio. Dirigeants tourisme nature, agriculteurs, gérants PME et ETI, commerçants et artisans soustonnais.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SOUSTONS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans soustonnais ?",
-      a: "Pour les TPE commerçants et artisans à Soustons, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, agents IA communication clients, gestion stocks saisonniers, facturation.",
+      a: "Pour les PME du commerce et artisans à Soustons, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, agents IA communication clients, gestion stocks saisonniers, facturation.",
     },
     {
       q: "Comment se déroule une mission à Soustons ?",

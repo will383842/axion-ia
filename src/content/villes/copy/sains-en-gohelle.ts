@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
   pitchFr:
-    "Sains-en-Gohelle (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 950 habitants. Situee entre Lens et Bethune, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
+    "Sains-en-Gohelle (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 950 habitants. Situee entre Lens et Bethune, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Sains-en-Gohelle (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 950 habitants. Situee entre Lens et Bethune, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
+    "Sains-en-Gohelle (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 950 habitants. Situee entre Lens et Bethune, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & sante",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Sains-en-Gohelle (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Sains-en-Gohelle (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Sains-en-Gohelle est situee dans le bassin minier entre Lens (8 km) et Bethune (10 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Commune residentielle avec activites de proximite.",
+    "Sains-en-Gohelle est situee dans le bassin minier entre Lens (8 km) et Bethune (10 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Commune residentielle avec activites de proximite.",
   ecosystemEn:
-    "Sains-en-Gohelle est situee dans le bassin minier entre Lens (8 km) et Bethune (10 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Commune residentielle avec activites de proximite.",
+    "Sains-en-Gohelle est situee dans le bassin minier entre Lens (8 km) et Bethune (10 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Commune residentielle avec activites de proximite.",
   distancesFr:
     "Gare de Bully-Grenay a 5 min. Lens a 10 min. Bethune a 12 min. Lille Europe (TGV) a 55 min en TER. Aeroport Lille-Lesquin a 1h. Paris-Nord a 1h15 via TGV Lens.",
   distancesEn:
     "Gare de Bully-Grenay a 5 min. Lens a 10 min. Bethune a 12 min. Lille Europe (TGV) a 55 min en TER. Aeroport Lille-Lesquin a 1h. Paris-Nord a 1h15 via TGV Lens.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Professions de sante",
     "Services aux entreprises",
@@ -30,8 +30,8 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux PME artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux PME artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Sains-en-Gohelle : formations adaptees aux ateliers artisanaux, commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
       en: "Implementation IA a Sains-en-Gohelle : automatisation gestion artisanale, agenda medical intelligent, agents conversationnels commerce, CRM augmentes pour PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Sains-en-Gohelle : accompagnement personnalise dirigeants artisans, gerants TPE/PME et professionnels de sante du bassin minier.",
-      en: "Coaching 1-to-1 a Sains-en-Gohelle : accompagnement personnalise dirigeants artisans, gerants TPE/PME et professionnels de sante du bassin minier.",
+      fr: "Coaching 1-to-1 a Sains-en-Gohelle : accompagnement personnalise dirigeants artisans, gerants PME et ETI et professionnels de sante du bassin minier.",
+      en: "Coaching 1-to-1 a Sains-en-Gohelle : accompagnement personnalise dirigeants artisans, gerants PME et ETI et professionnels de sante du bassin minier.",
     },
   },
   faqGeolocalisee: [

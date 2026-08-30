@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const FLORANGE_COPY: VilleCopy = {
   pitchFr:
-    "Florange (57), commune de 12 035 habitants en Moselle dans la vallée de la Fensch, est marquée par son usine sidérurgique ArcelorMittal et l'héritage de la sidérurgie lorraine en reconversion. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, logistique, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Florange (57), commune de 12 035 habitants en Moselle dans la vallée de la Fensch, est marquée par son usine sidérurgique ArcelorMittal et l'héritage de la sidérurgie lorraine en reconversion. Tissu PME et ETI industrie reconvertie, sous-traitance métallurgique, logistique, commerces, services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Florange (57), commune de 12 035 habitants en Moselle dans la vallée de la Fensch, est marquée par son usine sidérurgique ArcelorMittal et l'héritage de la sidérurgie lorraine en reconversion. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, logistique, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Florange (57), commune de 12 035 habitants en Moselle dans la vallée de la Fensch, est marquée par son usine sidérurgique ArcelorMittal et l'héritage de la sidérurgie lorraine en reconversion. Tissu PME et ETI industrie reconvertie, sous-traitance métallurgique, logistique, commerces, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florange (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florange (57). Nous accompagnons tous types d'activités : PME et ETI industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florange (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Florange (57). Nous accompagnons tous types d'activités : PME et ETI industrie reconvertie et sous-traitance métallurgique, logisticiens, artisans, commerces, professions de services et acteurs du tissu économique florangeois.",
   ecosystemFr:
-    "Florange est une commune sidérurgique de la vallée de la Fensch en Moselle, marquée par l'usine ArcelorMittal et la reconversion industrielle. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, logistique, commerces de proximité, artisanat, services aux entreprises.",
+    "Florange est une commune sidérurgique de la vallée de la Fensch en Moselle, marquée par l'usine ArcelorMittal et la reconversion industrielle. Tissu PME et ETI industrie reconvertie, sous-traitance métallurgique, logistique, commerces de proximité, artisanat, services aux entreprises.",
   ecosystemEn:
-    "Florange est une commune sidérurgique de la vallée de la Fensch en Moselle, marquée par l'usine ArcelorMittal et la reconversion industrielle. Tissu TPE/PME industrie reconvertie, sous-traitance métallurgique, logistique, commerces de proximité, artisanat, services aux entreprises.",
+    "Florange est une commune sidérurgique de la vallée de la Fensch en Moselle, marquée par l'usine ArcelorMittal et la reconversion industrielle. Tissu PME et ETI industrie reconvertie, sous-traitance métallurgique, logistique, commerces de proximité, artisanat, services aux entreprises.",
   distancesFr:
     "Thionville à 10 min. Metz à 30 min. Luxembourg à 30 min. Gare SNCF Hayange/Thionville à proximité. Autoroute A30/A31 accès direct. Aéroport Luxembourg à 45 min. Aéroport Metz-Nancy-Lorraine à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const FLORANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Florange : diagnostic adapté aux PME et ETI industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Florange : diagnostic adapté aux PME et ETI industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Florange : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const FLORANGE_COPY: VilleCopy = {
       en: "Implémentation IA à Florange : contrôle qualité production, traçabilité industrielle, automatisation workflow sous-traitance, agents conversationnels B2B, gestion logistique transfrontalière.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Florange : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants TPE/PME florangeois.",
-      en: "Coaching 1-to-1 à Florange : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants TPE/PME florangeois.",
+      fr: "Coaching 1-to-1 à Florange : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants PME et ETI florangeois.",
+      en: "Coaching 1-to-1 à Florange : sessions dans votre atelier, entrepôt, commerce, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants PME et ETI florangeois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FLORANGE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et sous-traitants métallurgie florangeois : contrôle qualité production, traçabilité, automatisation workflow, optimisation gestion fournisseurs et chaîne logistique.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et sous-traitants métallurgie florangeois : contrôle qualité production, traçabilité, automatisation workflow, optimisation gestion fournisseurs et chaîne logistique.",
     },
     {
       q: "Accompagnez-vous les commerces et logisticiens locaux ?",
@@ -61,7 +61,7 @@ export const FLORANGE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Florange ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Florange ?",

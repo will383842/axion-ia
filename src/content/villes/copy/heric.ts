@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const HERIC_COPY: VilleCopy = {
   pitchFr:
-    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord nantais.",
+    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu PME de l'artisanat et du commerce, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord nantais.",
   pitchEn:
-    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord nantais.",
+    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu PME de l'artisanat et du commerce, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Héric (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Héric (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Héric (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Héric (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
   seoHook: "artisanat commerce & bâtiment construction",
   ecosystemFr:
-    "Héric est une commune résidentielle en croissance au nord de Nantes, sur l'axe Nantes-Rennes (N137). Agriculture, artisanat, commerces de proximité. Tissu TPE artisans, commerçants, PME bâtiment et services, professions libérales. Dynamisme démographique soutenu.",
+    "Héric est une commune résidentielle en croissance au nord de Nantes, sur l'axe Nantes-Rennes (N137). Agriculture, artisanat, commerces de proximité. Tissu PME artisanales, commerçants, PME bâtiment et services, professions libérales. Dynamisme démographique soutenu.",
   ecosystemEn:
-    "Héric est une commune résidentielle en croissance au nord de Nantes, sur l'axe Nantes-Rennes (N137). Agriculture, artisanat, commerces de proximité. Tissu TPE artisans, commerçants, PME bâtiment et services, professions libérales. Dynamisme démographique soutenu.",
+    "Héric est une commune résidentielle en croissance au nord de Nantes, sur l'axe Nantes-Rennes (N137). Agriculture, artisanat, commerces de proximité. Tissu PME artisanales, commerçants, PME bâtiment et services, professions libérales. Dynamisme démographique soutenu.",
   distancesFr:
     "Nantes centre à 25 min. Gare Nantes TGV à 30 min. Aéroport Nantes-Atlantique à 35 min. Nort-sur-Erdre à 10 min. Blain à 15 min.",
   distancesEn:
     "Nantes centre à 25 min. Gare Nantes TGV à 30 min. Aéroport Nantes-Atlantique à 35 min. Nort-sur-Erdre à 10 min. Blain à 15 min.",
   topSectorsNaf: [
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "Bâtiment & construction",
     "Agriculture & exploitations",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const HERIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Héric : diagnostic adapté aux TPE artisans, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Héric : diagnostic adapté aux TPE artisans, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Héric : diagnostic adapté aux PME artisanales, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Héric : diagnostic adapté aux PME artisanales, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Héric : formats adaptés au chantier, à l'exploitation, au cabinet ou au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const HERIC_COPY: VilleCopy = {
       en: "Implémentation IA à Héric : automatisation devis bâtiment, gestion planning chantiers, agents IA relation client, extraction données commerciales. Nord nantais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Héric : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants TPE/PME du nord nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Héric : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants TPE/PME du nord nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Héric : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants PME et ETI du nord nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Héric : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants PME et ETI du nord nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const HERIC_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Héric  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du nord nantais.",
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",

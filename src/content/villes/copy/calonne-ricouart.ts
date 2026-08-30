@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const CALONNE_RICOUART_COPY: VilleCopy = {
   pitchFr:
-    "Calonne-Ricouart (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 370 habitants. Situee entre Marles-les-Mines et Divion, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
+    "Calonne-Ricouart (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 370 habitants. Situee entre Marles-les-Mines et Divion, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Calonne-Ricouart (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 370 habitants. Situee entre Marles-les-Mines et Divion, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
+    "Calonne-Ricouart (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 370 habitants. Situee entre Marles-les-Mines et Divion, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Calonne-Ricouart (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Calonne-Ricouart (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Calonne-Ricouart est situee dans le bassin minier entre Marles-les-Mines (3 km) et Divion (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et services a la personne. Commune residentielle du bassin bethunois.",
+    "Calonne-Ricouart est situee dans le bassin minier entre Marles-les-Mines (3 km) et Divion (4 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-bourg, professions de sante et services a la personne. Commune residentielle du bassin bethunois.",
   ecosystemEn:
-    "Calonne-Ricouart est situee dans le bassin minier entre Marles-les-Mines (3 km) et Divion (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et services a la personne. Commune residentielle du bassin bethunois.",
+    "Calonne-Ricouart est situee dans le bassin minier entre Marles-les-Mines (3 km) et Divion (4 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-bourg, professions de sante et services a la personne. Commune residentielle du bassin bethunois.",
   distancesFr:
     "Gare de Lillers a 8 min. Bethune a 15 min. Lille Europe (TGV) a 1h10 en TER. Aeroport Lille-Lesquin a 1h20. Paris-Nord a 1h50 via TGV Lens.",
   distancesEn:
     "Gare de Lillers a 8 min. Bethune a 15 min. Lille Europe (TGV) a 1h10 en TER. Aeroport Lille-Lesquin a 1h20. Paris-Nord a 1h50 via TGV Lens.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services aux entreprises",
     "Professions de sante",
@@ -30,20 +30,20 @@ export const CALONNE_RICOUART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Calonne-Ricouart : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Calonne-Ricouart : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Calonne-Ricouart : diagnostic adapte aux PME artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Calonne-Ricouart : diagnostic adapte aux PME artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Calonne-Ricouart : formations adaptees aux ateliers artisanaux, commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
       en: "Interventions IA sur site a Calonne-Ricouart : formations adaptees aux ateliers artisanaux, commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
     },
     implementation: {
-      fr: "Implementation IA a Calonne-Ricouart : automatisation gestion artisanale, agenda medical intelligent, agents conversationnels commerce, CRM augmentes pour TPE/PME.",
-      en: "Implementation IA a Calonne-Ricouart : automatisation gestion artisanale, agenda medical intelligent, agents conversationnels commerce, CRM augmentes pour TPE/PME.",
+      fr: "Implementation IA a Calonne-Ricouart : automatisation gestion artisanale, agenda medical intelligent, agents conversationnels commerce, CRM augmentes pour PME et ETI.",
+      en: "Implementation IA a Calonne-Ricouart : automatisation gestion artisanale, agenda medical intelligent, agents conversationnels commerce, CRM augmentes pour PME et ETI.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Calonne-Ricouart : accompagnement personnalise dirigeants artisans, gerants TPE/PME et professionnels de sante du bassin minier.",
-      en: "Coaching 1-to-1 a Calonne-Ricouart : accompagnement personnalise dirigeants artisans, gerants TPE/PME et professionnels de sante du bassin minier.",
+      fr: "Coaching 1-to-1 a Calonne-Ricouart : accompagnement personnalise dirigeants artisans, gerants PME et ETI et professionnels de sante du bassin minier.",
+      en: "Coaching 1-to-1 a Calonne-Ricouart : accompagnement personnalise dirigeants artisans, gerants PME et ETI et professionnels de sante du bassin minier.",
     },
   },
   faqGeolocalisee: [

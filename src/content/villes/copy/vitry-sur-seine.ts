@@ -14,7 +14,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     "Vitry-sur-Seine abrite le Centre de recherche Sanofi Vitry et des établissements liés aux pôles Medicen Paris Region et Systematic Paris-Region. Les 5 500 établissements actifs de la ville couvrent l'industrie chimique, la R&D scientifique et la construction. Axion-IA se déplace à Vitry-sur-Seine pour auditer les processus, former les équipes et implémenter des outils IA opérationnels — sans intermédiaire, sans jargon.",
   directAnswerEn:
     "Vitry-sur-Seine abrite le Centre de recherche Sanofi Vitry et des établissements liés aux pôles Medicen Paris Region et Systematic Paris-Region. Les 5 500 établissements actifs de la ville couvrent l'industrie chimique, la R&D scientifique et la construction. Axion-IA se déplace à Vitry-sur-Seine pour auditer les processus, former les équipes et implémenter des outils IA opérationnels — sans intermédiaire, sans jargon.",
-  seoHook: "TPE & PME · IA opérationnelle",
+  seoHook: "PME & PME · IA opérationnelle",
   ecosystemFr:
     "L'économie vitriote s'articule autour de l'industrie pharmaceutique — avec le Centre de recherche Sanofi Vitry — et du numérique via le pôle Systematic Paris-Region. Les ZAC du Port à l'Anglais et Rouget de Lisle accueillent également des activités de construction et de commerce structurant le tissu local.",
   ecosystemEn:
@@ -51,7 +51,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la PME vitriote au comité de direction.",
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
           "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
@@ -89,12 +89,6 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2-12)",
-            detail:
-              "Pour artisans, commerçants et indépendants vitriots — galeries du quartier MAC VAL, boutiques du centre-ville, petites structures de services : une demi-journée pour installer un premier outil IA rentable sur les postes.",
-          },
           {
             sizeLabel: "PME",
             price:
@@ -145,7 +139,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
       },
       en: {
-        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
+        hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la PME vitriote au comité de direction.",
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
           "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
@@ -183,12 +177,6 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2-12)",
-            detail:
-              "Pour artisans, commerçants et indépendants vitriots — galeries du quartier MAC VAL, boutiques du centre-ville, petites structures de services : une demi-journée pour installer un premier outil IA rentable sur les postes.",
-          },
           {
             sizeLabel: "PME",
             price:
@@ -277,12 +265,6 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA essentiel",
-            detail:
-              "Pour artisans, commerçants et indépendants vitriots — galeries, ateliers d'artistes du quartier MAC VAL, boutiques du centre-ville : site mobile-first, e-commerce simple, chatbot de premier contact, devis à partir de 24-48 h selon la complexité.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce B2B sur mesure",
             detail:
@@ -363,12 +345,6 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Entry-level AI showcase or e-commerce site",
-            detail:
-              "For Vitry artisans, retailers and freelancers — galleries and artist studios in the MAC VAL district, town-centre shops: mobile-first site, simple e-commerce, first-contact chatbot, quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke business platform or B2B e-commerce",
             detail:
@@ -437,8 +413,8 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Nos recommandations intègrent systématiquement les contraintes RGPD : hébergement des données en France ou UE, choix d'outils sans transfert hors UE si requis, documentation des traitements. Pour les ETI et grandes entreprises, nous incluons un volet conformité AI Act dans l'audit. Aucun outil n'est déployé sans validation de ces points.",
     },
     {
-      q: "Quel format d'intervention est adapté à un artisan ou une TPE de Vitry-sur-Seine ?",
-      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
+      q: "Quel format d'intervention est adapté à un artisan ou une PME de Vitry-sur-Seine ?",
+      a: "Pour une PME ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. Le format collectif (1 journée) (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
     },
   ],
 };

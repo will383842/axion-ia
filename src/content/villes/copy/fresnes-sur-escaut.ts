@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
   pitchFr:
-    "Fresnes-sur-Escaut (59), commune de la vallee de l'Escaut dans le bassin minier du Nord, reunit pres de 7 350 habitants. Ancienne cite miniere reconvertie, son tissu economique associe TPE artisans, PME industrielles, commerces de proximite et services. Axion-IA y intervient pour tous types d'activites.",
+    "Fresnes-sur-Escaut (59), commune de la vallee de l'Escaut dans le bassin minier du Nord, reunit pres de 7 350 habitants. Ancienne cite miniere reconvertie, son tissu economique associe PME artisanales, PME industrielles, commerces de proximite et services. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Fresnes-sur-Escaut (59), commune de la vallee de l'Escaut dans le bassin minier du Nord, reunit pres de 7 350 habitants. Ancienne cite miniere reconvertie, son tissu economique associe TPE artisans, PME industrielles, commerces de proximite et services. Axion-IA y intervient pour tous types d'activites.",
+    "Fresnes-sur-Escaut (59), commune de la vallee de l'Escaut dans le bassin minier du Nord, reunit pres de 7 350 habitants. Ancienne cite miniere reconvertie, son tissu economique associe PME artisanales, PME industrielles, commerces de proximite et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & vallee Escaut",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les PME, ETI et grands groupes de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les PME, ETI et grands groupes de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Fresnes-sur-Escaut est situee dans la vallee de l'Escaut, en plein bassin minier du Nord (inscrit UNESCO). Reconversion industrielle post-charbon vers PME industrielles diversifiees, TPE artisanat BTP, commerces et services. Proximite de Valenciennes (10 km) et du parc naturel Scarpe-Escaut.",
+    "Fresnes-sur-Escaut est situee dans la vallee de l'Escaut, en plein bassin minier du Nord (inscrit UNESCO). Reconversion industrielle post-charbon vers PME industrielles diversifiees, PME du BTP, commerces et services. Proximite de Valenciennes (10 km) et du parc naturel Scarpe-Escaut.",
   ecosystemEn:
-    "Fresnes-sur-Escaut est situee dans la vallee de l'Escaut, en plein bassin minier du Nord (inscrit UNESCO). Reconversion industrielle post-charbon vers PME industrielles diversifiees, TPE artisanat BTP, commerces et services. Proximite de Valenciennes (10 km) et du parc naturel Scarpe-Escaut.",
+    "Fresnes-sur-Escaut est situee dans la vallee de l'Escaut, en plein bassin minier du Nord (inscrit UNESCO). Reconversion industrielle post-charbon vers PME industrielles diversifiees, PME du BTP, commerces et services. Proximite de Valenciennes (10 km) et du parc naturel Scarpe-Escaut.",
   distancesFr:
     "Gare de Valenciennes a 10 min. Lille-Flandres a 45 min en TER. Gare Lille Europe (TGV) a 50 min. Aeroport Lille-Lesquin a 1h. Bruxelles a 1h30 par autoroute.",
   distancesEn:
     "Gare de Valenciennes a 10 min. Lille-Flandres a 45 min en TER. Gare Lille Europe (TGV) a 50 min. Aeroport Lille-Lesquin a 1h. Bruxelles a 1h30 par autoroute.",
   topSectorsNaf: [
     "PME industrielles (reconversion miniere)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services aux entreprises",
     "Tourisme patrimoine minier",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, TPE artisans et commercants de la vallee de l'Escaut. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, TPE artisans et commercants de la vallee de l'Escaut. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, PME de l'artisanat et du commerce de la vallee de l'Escaut. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, PME de l'artisanat et du commerce de la vallee de l'Escaut. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Fresnes-sur-Escaut : formations adaptees a l'atelier industriel, au commerce ou au bureau tertiaire. Equipes autonomes sur outils IA des la premiere journee.",
@@ -42,8 +42,8 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
       en: "Implementation IA a Fresnes-sur-Escaut : automatisation processus industriels, agents conversationnels client, predictif maintenance, CRM augmentes pour PME du Valenciennois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Fresnes-sur-Escaut : sessions dans votre atelier, bureau ou commerce. Dirigeants industriels, artisans, gerants TPE/PME du bassin minier.",
-      en: "Coaching 1-to-1 a Fresnes-sur-Escaut : sessions dans votre atelier, bureau ou commerce. Dirigeants industriels, artisans, gerants TPE/PME du bassin minier.",
+      fr: "Coaching 1-to-1 a Fresnes-sur-Escaut : sessions dans votre atelier, bureau ou commerce. Dirigeants industriels, artisans, gerants PME et ETI du bassin minier.",
+      en: "Coaching 1-to-1 a Fresnes-sur-Escaut : sessions dans votre atelier, bureau ou commerce. Dirigeants industriels, artisans, gerants PME et ETI du bassin minier.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
       a: "Pour les PME industrielles en reconversion du bassin minier, nous proposons : automatisation processus, predictif maintenance, classification documents, agents conversationnels B2B. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans a Fresnes-sur-Escaut ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commercants et independants de la vallee de l'Escaut : automatisation devis, agents IA prise de RDV, outils IA accessibles. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans a Fresnes-sur-Escaut ?",
+      a: "Oui, nous accompagnons les PME du BTP, commercants et independants de la vallee de l'Escaut : automatisation devis, agents IA prise de RDV, outils IA accessibles. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Fresnes-sur-Escaut ?",

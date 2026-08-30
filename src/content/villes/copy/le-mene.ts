@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_MENE_COPY: VilleCopy = {
   pitchFr:
-    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. TPE artisans, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du centre Bretagne.",
+    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. PME artisanales, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du centre Bretagne.",
   pitchEn:
-    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. TPE artisans, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du centre Bretagne.",
+    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. PME artisanales, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du centre Bretagne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mené (22). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mené (22). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mené (22). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mené (22). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
   seoHook: "pays de loudéac",
   ecosystemFr:
     "Le Mené est une commune nouvelle née en 2016 de la fusion de sept communes du centre Bretagne, dans le pays de Loudéac. L'économie locale repose sur l'agroalimentaire (porc, volaille, lait), l'agriculture intensive, les coopératives, l'artisanat BTP, le transport routier et le commerce de bourg. La commune est pionnière en énergies renouvelables (méthanisation, éolien).",
@@ -30,8 +30,8 @@ export const LE_MENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, TPE artisans et commerces du centre Bretagne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
-      en: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, TPE artisans et commerces du centre Bretagne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
+      fr: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, PME de l'artisanat et du commerce du centre Bretagne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
+      en: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, PME de l'artisanat et du commerce du centre Bretagne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mené : formats adaptés à l'atelier agroalimentaire, la coopérative agricole ou le commerce de bourg. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const LE_MENE_COPY: VilleCopy = {
       en: "Implémentation IA au Mené : automatisation traçabilité agroalimentaire, agents IA gestion de troupeau, optimisation logistique coopérative, classification documents qualité. Adapté au tissu agricole et industriel centre Bretagne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Mené : sessions sur site ou en visio. Dirigeants PME agroalimentaires, responsables coopératives, gérants TPE, artisans et exploitants agricoles du centre Bretagne souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 au Mené : sessions sur site ou en visio. Dirigeants PME agroalimentaires, responsables coopératives, gérants TPE, artisans et exploitants agricoles du centre Bretagne souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 au Mené : sessions sur site ou en visio. Dirigeants PME agroalimentaires, responsables coopératives, gérants PME, artisans et exploitants agricoles du centre Bretagne souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 au Mené : sessions sur site ou en visio. Dirigeants PME agroalimentaires, responsables coopératives, gérants PME, artisans et exploitants agricoles du centre Bretagne souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const LE_MENE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et coopératives agricoles du centre Bretagne sur leurs cas IA : automatisation traçabilité, contrôle qualité assisté, optimisation logistique, agents IA documentation réglementaire, gestion planning production. Confidentialité industrielle garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et exploitants agricoles du Mené ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, exploitants agricoles et commerçants du Mené sur des cas IA pratiques : automatisation devis, gestion de troupeau assistée, agents IA prise de rendez-vous, optimisation planning saisonnier. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME artisanales et exploitants agricoles du Mené ?",
+      a: "Oui, nous accompagnons les PME du BTP, exploitants agricoles et commerçants du Mené sur des cas IA pratiques : automatisation devis, gestion de troupeau assistée, agents IA prise de rendez-vous, optimisation planning saisonnier. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
-      q: "Quels tarifs pour une TPE ou PME du centre Bretagne ?",
-      a: "L'audit sur place débute selon la taille de votre activité, accessible aux TPE. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      q: "Quels tarifs pour une PME ou ETI du centre Bretagne ?",
+      a: "L'audit sur place débute selon la taille de votre activité, accessible aux PME. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA au Mené ?",

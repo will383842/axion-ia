@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
   pitchFr:
-    "Trith-Saint-Léger (59), commune du Nord dans l'agglomération de Valenciennes, est une ville sidérurgique historique de la vallée de l'Escaut. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique, sous-traitance automobile), commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Trith-Saint-Léger (59), commune du Nord dans l'agglomération de Valenciennes, est une ville sidérurgique historique de la vallée de l'Escaut. Tissu mixte : PME du BTP, PME industrielles (métallurgie, mécanique, sous-traitance automobile), commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Trith-Saint-Léger (59), commune du Nord dans l'agglomération de Valenciennes, est une ville sidérurgique historique de la vallée de l'Escaut. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique, sous-traitance automobile), commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Trith-Saint-Léger (59), commune du Nord dans l'agglomération de Valenciennes, est une ville sidérurgique historique de la vallée de l'Escaut. Tissu mixte : PME du BTP, PME industrielles (métallurgie, mécanique, sous-traitance automobile), commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trith-Saint-Léger (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerçants de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trith-Saint-Léger (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerçants de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trith-Saint-Léger (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerçants de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Trith-Saint-Léger (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerçants de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise.",
   seoHook: "vallée escaut",
   ecosystemFr:
-    "Trith-Saint-Léger est intégrée à l'agglomération de Valenciennes Métropole, dans la vallée industrielle de l'Escaut. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, sous-traitance automobile pour Toyota Onnaing), commerces de proximité, professions libérales, services B2B de l'agglomération.",
+    "Trith-Saint-Léger est intégrée à l'agglomération de Valenciennes Métropole, dans la vallée industrielle de l'Escaut. Tissu péri-urbain industriel : PME du BTP, PME industrielles historiques (métallurgie, mécanique, sous-traitance automobile pour Toyota Onnaing), commerces de proximité, professions libérales, services B2B de l'agglomération.",
   ecosystemEn:
-    "Trith-Saint-Léger est intégrée à l'agglomération de Valenciennes Métropole, dans la vallée industrielle de l'Escaut. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, sous-traitance automobile pour Toyota Onnaing), commerces de proximité, professions libérales, services B2B de l'agglomération.",
+    "Trith-Saint-Léger est intégrée à l'agglomération de Valenciennes Métropole, dans la vallée industrielle de l'Escaut. Tissu péri-urbain industriel : PME du BTP, PME industrielles historiques (métallurgie, mécanique, sous-traitance automobile pour Toyota Onnaing), commerces de proximité, professions libérales, services B2B de l'agglomération.",
   distancesFr:
     "Valenciennes à 10 min. Anzin limitrophe. Denain à 15 min. Saint-Amand-les-Eaux à 25 min. Lille à 45 min. Frontière belge à 20 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles métallurgie-mécanique",
     "Sous-traitance automobile",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux PME du BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux PME du BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trith-Saint-Léger : formats adaptés à l'atelier industriel, au chantier, à la ligne de production, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
       en: "Implémentation IA à Trith-Saint-Léger : agents conversationnels B2B, automatisation devis BTP, classification dossiers qualité industriels, CRM augmentés, maintenance prédictive. Agglomération valenciennoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Trith-Saint-Léger : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles métallurgie, sous-traitants automobile, professions libérales, commerçants trithois.",
-      en: "Coaching 1-to-1 à Trith-Saint-Léger : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles métallurgie, sous-traitants automobile, professions libérales, commerçants trithois.",
+      fr: "Coaching 1-to-1 à Trith-Saint-Léger : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles métallurgie, sous-traitants automobile, professions libérales, commerçants trithois.",
+      en: "Coaching 1-to-1 à Trith-Saint-Léger : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles métallurgie, sous-traitants automobile, professions libérales, commerçants trithois.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile et BTP trithois ?",
-      a: "Oui, nous accompagnons les sous-traitants automobile et TPE artisans BTP à Trith-Saint-Léger sur leurs cas IA : automatisation devis, suivi production, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les sous-traitants automobile et PME du BTP à Trith-Saint-Léger sur leurs cas IA : automatisation devis, suivi production, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",

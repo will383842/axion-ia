@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-de-Seignanx (40), chef-lieu de canton et siège de la communauté de communes du Seignanx, fait partie de l'aire d'attraction de Bayonne dans le sud des Landes. Zone d'activités, commerces, TPE services, artisans BTP, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Martin-de-Seignanx (40), chef-lieu de canton et siège de la communauté de communes du Seignanx, fait partie de l'aire d'attraction de Bayonne dans le sud des Landes. Zone d'activités, commerces, PME services, artisans BTP, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Saint-Martin-de-Seignanx (40), chef-lieu de canton et siège de la communauté de communes du Seignanx, fait partie de l'aire d'attraction de Bayonne dans le sud des Landes. Zone d'activités, commerces, TPE services, artisans BTP, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Martin-de-Seignanx (40), chef-lieu de canton et siège de la communauté de communes du Seignanx, fait partie de l'aire d'attraction de Bayonne dans le sud des Landes. Zone d'activités, commerces, PME services, artisans BTP, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons TPE et PME des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons PME et ETI des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons TPE et PME des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Seignanx (40). Nous accompagnons PME et ETI des zones d'activités du Seignanx, commerçants, artisans BTP, agriculteurs, professions libérales et prestataires de services de l'aire urbaine bayonnaise côté Landes.",
   seoHook: "Seignanx, services & agglo Bayonne",
   ecosystemFr:
-    "Saint-Martin-de-Seignanx est le chef-lieu du canton du Seignanx et le siège de la communauté de communes éponyme (ancienne baronnie du sud-ouest des Landes). Intégrée à l'aire d'attraction de Bayonne, la commune accueille des zones d'activités économiques. Tissu TPE services, commerces, artisans BTP, professions libérales, agriculture (maïs, kiwi, élevage). Accès A63 et proximité Bayonne.",
+    "Saint-Martin-de-Seignanx est le chef-lieu du canton du Seignanx et le siège de la communauté de communes éponyme (ancienne baronnie du sud-ouest des Landes). Intégrée à l'aire d'attraction de Bayonne, la commune accueille des zones d'activités économiques. Tissu PME services, commerces, artisans BTP, professions libérales, agriculture (maïs, kiwi, élevage). Accès A63 et proximité Bayonne.",
   ecosystemEn:
-    "Saint-Martin-de-Seignanx est le chef-lieu du canton du Seignanx et le siège de la communauté de communes éponyme (ancienne baronnie du sud-ouest des Landes). Intégrée à l'aire d'attraction de Bayonne, la commune accueille des zones d'activités économiques. Tissu TPE services, commerces, artisans BTP, professions libérales, agriculture (maïs, kiwi, élevage). Accès A63 et proximité Bayonne.",
+    "Saint-Martin-de-Seignanx est le chef-lieu du canton du Seignanx et le siège de la communauté de communes éponyme (ancienne baronnie du sud-ouest des Landes). Intégrée à l'aire d'attraction de Bayonne, la commune accueille des zones d'activités économiques. Tissu PME services, commerces, artisans BTP, professions libérales, agriculture (maïs, kiwi, élevage). Accès A63 et proximité Bayonne.",
   distancesFr:
     "Bayonne à 15 min. Tarnos à 10 min. Biarritz à 25 min. Dax à 40 min par A63. Bordeaux à 1h45 par A63. Aéroport Biarritz-Pays Basque à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux PME services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux PME services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-de-Seignanx : formations adaptées aux entreprises des zones d'activités, exploitations agricoles, commerces et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Martin-de-Seignanx : automatisation gestion commerciale, chatbot clients, optimisation stocks et approvisionnement, classification documents comptables, gestion exploitation agricole (kiwi, maïs).",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Martin-de-Seignanx : sessions dans votre entreprise, exploitation, commerce ou en visio. Dirigeants PME, gérants TPE, artisans BTP, agriculteurs et professions libérales du Seignanx.",
-      en: "Coaching 1-to-1 à Saint-Martin-de-Seignanx : sessions dans votre entreprise, exploitation, commerce ou en visio. Dirigeants PME, gérants TPE, artisans BTP, agriculteurs et professions libérales du Seignanx.",
+      fr: "Coaching 1-to-1 à Saint-Martin-de-Seignanx : sessions dans votre entreprise, exploitation, commerce ou en visio. Dirigeants PME, gérants PME, artisans BTP, agriculteurs et professions libérales du Seignanx.",
+      en: "Coaching 1-to-1 à Saint-Martin-de-Seignanx : sessions dans votre entreprise, exploitation, commerce ou en visio. Dirigeants PME, gérants PME, artisans BTP, agriculteurs et professions libérales du Seignanx.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les entreprises des zones d'activités ?",
-      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux TPE et PME des zones d'activités du Seignanx. Diagnostic automatisation processus, gestion commerciale, chatbot clients, optimisation stocks, analyse données ventes.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux PME et ETI des zones d'activités du Seignanx. Diagnostic automatisation processus, gestion commerciale, chatbot clients, optimisation stocks, analyse données ventes.",
     },
     {
       q: "Accompagnez-vous les agriculteurs du Seignanx ?",

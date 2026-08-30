@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GAILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
+    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu PME viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
   pitchEn:
-    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
+    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu PME viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gaillac (81). Nous accompagnons PME viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gaillac (81). Nous accompagnons PME viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   seoHook: "viticulture oenologie & commerce détail",
   ecosystemFr:
-    "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu TPE vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",
+    "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu PME vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",
   ecosystemEn:
-    "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu TPE vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",
+    "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu PME vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",
   distancesFr:
     "Albi à 25 min. Toulouse centre à 50 min (A68). Gare SNCF Gaillac (TER Toulouse-Albi). Aéroport Toulouse-Blagnac à 55 min. Castres à 50 min. Montauban à 45 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GAILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gaillac : diagnostic adapté aux TPE viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gaillac : diagnostic adapté aux TPE viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gaillac : diagnostic adapté aux PME viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gaillac : diagnostic adapté aux PME viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gaillac : formats adaptés au domaine viticole, cave coopérative, commerce de centre-ville ou PME agroalimentaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const GAILLAC_COPY: VilleCopy = {
       en: "Implémentation IA à Gaillac : traçabilité parcellaire augmentée, gestion stocks cave, CRM oenotourisme, automatisation facturation négoce, agents conversationnels clients pour le vignoble gaillacois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gaillac : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants TPE vignerons, gérants PME agroalimentaires, commerçants du Gaillacois souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Gaillac : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants TPE vignerons, gérants PME agroalimentaires, commerçants du Gaillacois souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Gaillac : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants PME vignerons, gérants PME agroalimentaires, commerçants du Gaillacois souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Gaillac : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants PME vignerons, gérants PME agroalimentaires, commerçants du Gaillacois souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const GAILLAC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Gaillac et dans tout le Gaillacois (Lisle-sur-Tarn, Rabastens, Cordes-sur-Ciel, Cahuzac-sur-Vère). Nos consultants se déplacent depuis Toulouse (50 min A68) ou Albi (25 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE viticole à Gaillac ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE viticoles de Gaillac. Diagnostic complet des processus, cartographie IA (traçabilité, gestion cave, vente directe) et plan d'action ROI chiffré.",
+      q: "Quel est le tarif d'un audit IA pour une PME viticole à Gaillac ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME viticoles de Gaillac. Diagnostic complet des processus, cartographie IA (traçabilité, gestion cave, vente directe) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les caves coopératives du Gaillacois ?",

@@ -126,7 +126,7 @@ Cards visuelles présentant des exemples concrets d'intervention Axion-IA (verti
 - TOUJOURS "Une entreprise de [secteur] à ${safeVille}" ou "Un cabinet de [profession] en ${safeRegion}"
 - JAMAIS de nom propre fictif d'entreprise
 - Secteurs adaptés à la réalité de ${safeVille} (industrie, commerce, services, santé, agriculture selon la ville)
-- Bénéfices : fourchettes raisonnables (2-5h/semaine TPE, 10-20h/semaine PME, pas "500h/semaine")
+- Bénéfices : fourchettes raisonnables (2-5h/semaine PME, 10-20h/semaine ETI, pas "500h/semaine")
 - Lien avec la verticale ${safeVerticale} obligatoire dans chaque description
 ${factsContext}
 

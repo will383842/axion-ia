@@ -135,7 +135,7 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
     titleFr: "Vous démarchez",
     titleEn: "You prospect",
     textFr:
-      "Vous contactez tous types d'entreprises de votre secteur — TPE, artisans, commerçants, PME, ETI, grandes entreprises — pour leur faire connaître nos formations, audits, accompagnements et intégrations IA.",
+      "Vous contactez tous types d'entreprises de votre secteur — PME, ETI, grandes entreprises — pour leur faire connaître nos formations, audits, accompagnements et intégrations IA.",
     textEn:
       "You reach out to all kinds of companies in your area — micro-businesses, artisans, retailers, SMEs, mid-caps, large enterprises — to introduce our AI trainings, audits, support and integrations.",
   },
@@ -330,7 +330,7 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "audit IA",
   "intégration IA",
   "automatisation IA",
-  "TPE",
+  "PME",
   "PME",
   "ETI",
   "artisans",

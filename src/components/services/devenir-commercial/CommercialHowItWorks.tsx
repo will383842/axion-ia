@@ -32,7 +32,7 @@ export function CommercialHowItWorks({ isFr }: CommercialHowItWorksProps): React
           src="/illustrations/devenir-commercial-comment-ca-marche.webp"
           alt={
             isFr
-              ? "Comment ça marche chez Axion-IA en 4 étapes : 01 vous démarchez toutes les entreprises (TPE, artisans, commerçants, PME, ETI, grandes entreprises) ; 02 vous présentez une offre simple d'une dizaine de produits (formations, audits, intégrations) ; 03 vous tracez vos entreprises sur votre dashboard à votre nom ; 04 vous touchez vos commissions (fixe sur les formations, pourcentage de la facture sur les audits et intégrations), sans plafond. Zéro risque, accompagnement, commissions rapides et mensuelles, modèle évolutif."
+              ? "Comment ça marche chez Axion-IA en 4 étapes : 01 vous démarchez toutes les entreprises (PME, ETI, grandes entreprises) ; 02 vous présentez une offre simple d'une dizaine de produits (formations, audits, intégrations) ; 03 vous tracez vos entreprises sur votre dashboard à votre nom ; 04 vous touchez vos commissions (fixe sur les formations, pourcentage de la facture sur les audits et intégrations), sans plafond. Zéro risque, accompagnement, commissions rapides et mensuelles, modèle évolutif."
               : "How it works at Axion-IA in 4 steps: 01 you prospect all companies (micro-businesses, artisans, retailers, SMEs, mid-caps, large enterprises); 02 you present a simple offer of about ten products (trainings, audits, integrations); 03 you log your companies on your dashboard under your name; 04 you earn your commissions (flat on trainings, percentage of the invoice on audits and integrations), uncapped. Zero risk, support, fast monthly commissions, scalable model."
           }
           width={1774}

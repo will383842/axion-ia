@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GIRONS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Girons (09), sous-préfecture de l'Ariège et capitale du Couserans, est un bourg-centre pyrénéen au confluent du Salat et du Lez. Tissu TPE artisans, PME agroalimentaire et fromages, commerces, tourisme montagne et thermalisme, agriculture élevage. Axion-IA opère sur l'ensemble des activités professionnelles locales du Couserans.",
+    "Saint-Girons (09), sous-préfecture de l'Ariège et capitale du Couserans, est un bourg-centre pyrénéen au confluent du Salat et du Lez. Tissu PME artisanales, PME agroalimentaire et fromages, commerces, tourisme montagne et thermalisme, agriculture élevage. Axion-IA opère sur l'ensemble des activités professionnelles locales du Couserans.",
   pitchEn:
-    "Saint-Girons (09), sous-préfecture de l'Ariège et capitale du Couserans, est un bourg-centre pyrénéen au confluent du Salat et du Lez. Tissu TPE artisans, PME agroalimentaire et fromages, commerces, tourisme montagne et thermalisme, agriculture élevage. Axion-IA opère sur l'ensemble des activités professionnelles locales du Couserans.",
+    "Saint-Girons (09), sous-préfecture de l'Ariège et capitale du Couserans, est un bourg-centre pyrénéen au confluent du Salat et du Lez. Tissu PME artisanales, PME agroalimentaire et fromages, commerces, tourisme montagne et thermalisme, agriculture élevage. Axion-IA opère sur l'ensemble des activités professionnelles locales du Couserans.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Girons (09), capitale du Couserans en Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme montagne et professions libérales du piémont pyrénéen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Girons (09), capitale du Couserans en Ariège. Nous accompagnons PME artisanales, PME agroalimentaire et fromageries, commerçants, acteurs tourisme montagne et professions libérales du piémont pyrénéen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Girons (09), capitale du Couserans en Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme montagne et professions libérales du piémont pyrénéen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Girons (09), capitale du Couserans en Ariège. Nous accompagnons PME artisanales, PME agroalimentaire et fromageries, commerçants, acteurs tourisme montagne et professions libérales du piémont pyrénéen. Audit sur place sur mesure.",
   seoHook: "agroalimentaire fromages & tourisme montagne",
   ecosystemFr:
     "Saint-Girons est la capitale du Couserans, sous-préfecture de l'Ariège, au confluent du Salat et du Lez. Économie locale portée par l'agroalimentaire (fromages de montagne AOP Bethmale, produits fermiers), le tourisme montagne et thermalisme (Aulus-les-Bains), l'artisanat BTP, le commerce bourg-centre et l'élevage bovin/ovin de montagne. Marché au gras réputé.",
@@ -25,13 +25,13 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
     "Agroalimentaire & fromages de montagne (AOP Bethmale)",
     "Tourisme montagne & thermalisme (Aulus-les-Bains)",
     "Agriculture & élevage bovin/ovin Pyrénées",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce bourg-centre & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Girons : diagnostic adapté aux TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Girons : diagnostic adapté aux TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Girons : diagnostic adapté aux PME artisanales, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Girons : diagnostic adapté aux PME artisanales, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Girons : formats adaptés à la fromagerie, l'exploitation agricole, le commerce, l'hébergement touristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Girons : traçabilité fromages AOP, agents conversationnels tourisme multilingues, gestion saisonnalité thermalisme Aulus, automatisation exploitation agricole montagne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Girons : sessions dans vos locaux (fromagerie, exploitation, commerce, gîte) ou en visio. Dirigeants TPE/PME du Couserans et piémont pyrénéen ariégeois.",
-      en: "Coaching 1-to-1 à Saint-Girons : sessions dans vos locaux (fromagerie, exploitation, commerce, gîte) ou en visio. Dirigeants TPE/PME du Couserans et piémont pyrénéen ariégeois.",
+      fr: "Coaching 1-to-1 à Saint-Girons : sessions dans vos locaux (fromagerie, exploitation, commerce, gîte) ou en visio. Dirigeants PME et ETI du Couserans et piémont pyrénéen ariégeois.",
+      en: "Coaching 1-to-1 à Saint-Girons : sessions dans vos locaux (fromagerie, exploitation, commerce, gîte) ou en visio. Dirigeants PME et ETI du Couserans et piémont pyrénéen ariégeois.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Girons  ?",
-      a: "L'audit sur place s'adapte à votre périmètre pour une TPE. Pour les PME agroalimentaire ou tourisme, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
+      a: "L'audit sur place s'adapte à votre périmètre pour une PME. Pour les PME agroalimentaire ou tourisme, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et thermalisme ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MANTES_LA_JOLIE_COPY: VilleCopy = {
   pitchFr:
-    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME mantaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI mantaises, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME mantaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Mantes-la-Jolie (78), ville d'art au bord de la Seine dominée par sa collégiale Notre-Dame, est un pôle industriel des Yvelines marqué par la proximité de l'usine Renault de Flins. Son tissu mêle sous-traitance automobile, mécanique, logistique fluviale et routière, BTP et commerce, porté par de nombreuses PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI mantaises, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Jolie (78) auprès des TPE et PME : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Jolie (78) auprès des PME et ETI : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Jolie (78) auprès des TPE et PME : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Jolie (78) auprès des PME et ETI : sous-traitance automobile et mécanique liée à Renault Flins, logistique de la Seine, BTP, commerce et services. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   seoHook: "sous-traitance auto & logistique Seine",
   ecosystemFr:
-    "Mantes-la-Jolie, au bord de la Seine dans l'ouest des Yvelines, conjugue patrimoine (collégiale Notre-Dame) et fort tissu industriel structuré par la proximité de l'usine Renault de Flins. L'économie locale repose sur la sous-traitance automobile et mécanique, la logistique fluviale et routière, le BTP, le commerce et les services. Cette concentration de TPE et PME industrielles et de services, à la charnière entre l'Île-de-France et la Normandie, constitue un terrain propice à une IA appliquée à la production, à la qualité et à la gestion des flux.",
+    "Mantes-la-Jolie, au bord de la Seine dans l'ouest des Yvelines, conjugue patrimoine (collégiale Notre-Dame) et fort tissu industriel structuré par la proximité de l'usine Renault de Flins. L'économie locale repose sur la sous-traitance automobile et mécanique, la logistique fluviale et routière, le BTP, le commerce et les services. Cette concentration de PME et ETI industrielles et de services, à la charnière entre l'Île-de-France et la Normandie, constitue un terrain propice à une IA appliquée à la production, à la qualité et à la gestion des flux.",
   ecosystemEn:
-    "Mantes-la-Jolie, au bord de la Seine dans l'ouest des Yvelines, conjugue patrimoine (collégiale Notre-Dame) et fort tissu industriel structuré par la proximité de l'usine Renault de Flins. L'économie locale repose sur la sous-traitance automobile et mécanique, la logistique fluviale et routière, le BTP, le commerce et les services. Cette concentration de TPE et PME industrielles et de services, à la charnière entre l'Île-de-France et la Normandie, constitue un terrain propice à une IA appliquée à la production, à la qualité et à la gestion des flux.",
+    "Mantes-la-Jolie, au bord de la Seine dans l'ouest des Yvelines, conjugue patrimoine (collégiale Notre-Dame) et fort tissu industriel structuré par la proximité de l'usine Renault de Flins. L'économie locale repose sur la sous-traitance automobile et mécanique, la logistique fluviale et routière, le BTP, le commerce et les services. Cette concentration de PME et ETI industrielles et de services, à la charnière entre l'Île-de-France et la Normandie, constitue un terrain propice à une IA appliquée à la production, à la qualité et à la gestion des flux.",
   distancesFr:
     "Mantes-la-Jolie relie Paris-Saint-Lazare en 35 min par le train et est desservie par l'A13 vers Paris et la Normandie. La Défense est à 40 min et l'aéroport de Paris-Orly à environ 1 h.",
   distancesEn:
@@ -38,12 +38,12 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Mantes-la-Jolie : ateliers pratiques pour production, qualité, planning et administration, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Mantes-la-Jolie : contrôle qualité assisté, planification de production, automatisation des devis et de la logistique, CRM augmenté pour TPE et PME industrielles.",
-      en: "Implémentation IA à Mantes-la-Jolie : contrôle qualité assisté, planification de production, automatisation des devis et de la logistique, CRM augmenté pour TPE et PME industrielles.",
+      fr: "Implémentation IA à Mantes-la-Jolie : contrôle qualité assisté, planification de production, automatisation des devis et de la logistique, CRM augmenté pour PME et ETI industrielles.",
+      en: "Implémentation IA à Mantes-la-Jolie : contrôle qualité assisté, planification de production, automatisation des devis et de la logistique, CRM augmenté pour PME et ETI industrielles.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Mantes-la-Jolie : sessions sur site ou en visio pour dirigeants de TPE et PME industrielles et de services, ciblées sur vos priorités de production et de gestion.",
-      en: "Accompagnement un-à-un à Mantes-la-Jolie : sessions sur site ou en visio pour dirigeants de TPE et PME industrielles et de services, ciblées sur vos priorités de production et de gestion.",
+      fr: "Accompagnement un-à-un à Mantes-la-Jolie : sessions sur site ou en visio pour dirigeants de PME et d'ETI industrielles et de services, ciblées sur vos priorités de production et de gestion.",
+      en: "Accompagnement un-à-un à Mantes-la-Jolie : sessions sur site ou en visio pour dirigeants de PME et d'ETI industrielles et de services, ciblées sur vos priorités de production et de gestion.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Mantes-la-Jolie : vitrine ou portail B2B avec IA intégrée (devis, catalogue, suivi commandes) pour sous-traitants automobile, logisticiens et artisans du BTP.",
@@ -58,7 +58,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
           "Le Mantois est un bassin de mécanique et d'aéronautique de précision : Safran Electronics & Defense (~320 salariés à Mantes-la-Ville) et les implantations Airbus Defence and Space ou Sulzer Pompes France exigent des portails fournisseurs et des catalogues techniques B2B robustes — pas de simple vitrine, des plateformes qui gèrent références, plans et appels d'offres.",
           "La ZAC Mantes Innovaparc (Buchelay) et l'Écopôle Seine Aval, aménagés par l'EPAMSA, attirent PME et artisans (centre Actinéos, Quatuor Park) qui ont besoin d'un site rapide, mobile et bien référencé pour exister face à des donneurs d'ordre situés à La Défense et à Paris.",
           "La logistique fluviale du port de Limay-Porcheville (plus d'un million de tonnes/an) et la sous-traitance automobile liée à Renault Flins génèrent des besoins concrets : suivi de commandes en ligne, espaces clients, automatisation des devis et de la documentation transport.",
-          "La dynamique du commerce local — ZAC Buchelay 3000 (Leroy Merlin, Boulanger, Conforama) et centre-ville mantais — et l'arrivée du RER E (Eole) qui rapprochera Mantes de La Défense renforcent la demande de sites e-commerce et de prise de rendez-vous en ligne pour TPE et PME.",
+          "La dynamique du commerce local — ZAC Buchelay 3000 (Leroy Merlin, Boulanger, Conforama) et centre-ville mantais — et l'arrivée du RER E (Eole) qui rapprochera Mantes de La Défense renforcent la demande de sites e-commerce et de prise de rendez-vous en ligne pour PME et ETI.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour artisans, commerces (ZAC Buchelay 3000, centre-ville) et indépendants du Mantois : site mobile-first, prise de rendez-vous ou boutique en ligne, recherche assistée par IA. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail B2B ou plateforme métier",
@@ -175,12 +169,6 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented brochure or e-commerce site",
-            detail:
-              "For Mantois craftspeople, retailers (Buchelay 3000 ZAC, town centre) and freelancers: mobile-first site, online booking or store, AI-assisted search. Quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B portal or business platform",
             detail:
@@ -234,7 +222,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mantes-la-Jolie ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME mantaises : sous-traitance automobile, mécanique, logistique, BTP et commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux PME et ETI mantaises : sous-traitance automobile, mécanique, logistique, BTP et commerce.",
     },
     {
       q: "Comment l'IA aide-t-elle la sous-traitance automobile ?",
@@ -246,7 +234,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous priorisons les TPE puis les PME de Mantes-la-Jolie ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+      a: "Non. Nous priorisons les PME puis les ETI de Mantes-la-Jolie ; les grands groupes sont accompagnés en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
     },
     {
       q: "Comment se déroule une mission à Mantes-la-Jolie ?",

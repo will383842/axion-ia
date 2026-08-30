@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const ROANNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Roanne (Loire, 35 409 habitants en 2023), troisième ville du département après Saint-Étienne et Saint-Chamond et sous-préfecture aux côtés de Montbrison. Ville centre de Roannais Agglomération (81 364 habitants sur 15 communes), Roanne s'appuie sur un tissu industriel mécanique et textile, une activité commerciale de centre-ville et un écosystème PME dense. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une ville à l'heure de Lyon, Saint-Étienne et Clermont-Ferrand.",
+    "Axion-IA accompagne les PME et ETI de Roanne (Loire, 35 409 habitants en 2023), troisième ville du département après Saint-Étienne et Saint-Chamond et sous-préfecture aux côtés de Montbrison. Ville centre de Roannais Agglomération (81 364 habitants sur 15 communes), Roanne s'appuie sur un tissu industriel mécanique et textile, une activité commerciale de centre-ville et un écosystème PME dense. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une ville à l'heure de Lyon, Saint-Étienne et Clermont-Ferrand.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Roanne (Loire, 35 409 habitants en 2023), troisième ville du département après Saint-Étienne et Saint-Chamond et sous-préfecture aux côtés de Montbrison. Ville centre de Roannais Agglomération (81 364 habitants sur 15 communes), Roanne s'appuie sur un tissu industriel mécanique et textile, une activité commerciale de centre-ville et un écosystème PME dense. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une ville à l'heure de Lyon, Saint-Étienne et Clermont-Ferrand.",
+    "Axion-IA accompagne les PME et ETI de Roanne (Loire, 35 409 habitants en 2023), troisième ville du département après Saint-Étienne et Saint-Chamond et sous-préfecture aux côtés de Montbrison. Ville centre de Roannais Agglomération (81 364 habitants sur 15 communes), Roanne s'appuie sur un tissu industriel mécanique et textile, une activité commerciale de centre-ville et un écosystème PME dense. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une ville à l'heure de Lyon, Saint-Étienne et Clermont-Ferrand.",
   directAnswerFr:
-    "Axion-IA se déplace à Roanne pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure. Roanne, sous-préfecture de la Loire et ville centre de Roannais Agglomération, héberge un tissu industriel (mécanique, textile), commercial (centre-ville et zones périphériques) et tertiaire structuré autour des PME. Nos prestations (Audit sur place {{price:audit-flash|flat}}, interventions, implémentation, sessions un-à-un) sont calibrées pour les acteurs locaux installés à Roanne ou dans les communes voisines de Mably, Riorges, Le Coteau, Villerest ou Commelle-Vernay.",
+    "Axion-IA se déplace à Roanne pour accompagner en priorité les PME et ETI, puis les grands groupes, dans la conception de solutions IA codées sur mesure. Roanne, sous-préfecture de la Loire et ville centre de Roannais Agglomération, héberge un tissu industriel (mécanique, textile), commercial (centre-ville et zones périphériques) et tertiaire structuré autour des PME. Nos prestations (Audit sur place {{price:audit-flash|flat}}, interventions, implémentation, sessions un-à-un) sont calibrées pour les acteurs locaux installés à Roanne ou dans les communes voisines de Mably, Riorges, Le Coteau, Villerest ou Commelle-Vernay.",
   directAnswerEn:
-    "Axion-IA se déplace à Roanne pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure. Roanne, sous-préfecture de la Loire et ville centre de Roannais Agglomération, héberge un tissu industriel (mécanique, textile), commercial (centre-ville et zones périphériques) et tertiaire structuré autour des PME. Nos prestations (Audit sur place {{price:audit-flash|flat}}, interventions, implémentation, sessions un-à-un) sont calibrées pour les acteurs locaux installés à Roanne ou dans les communes voisines de Mably, Riorges, Le Coteau, Villerest ou Commelle-Vernay.",
+    "Axion-IA se déplace à Roanne pour accompagner en priorité les PME et ETI, puis les grands groupes, dans la conception de solutions IA codées sur mesure. Roanne, sous-préfecture de la Loire et ville centre de Roannais Agglomération, héberge un tissu industriel (mécanique, textile), commercial (centre-ville et zones périphériques) et tertiaire structuré autour des PME. Nos prestations (Audit sur place {{price:audit-flash|flat}}, interventions, implémentation, sessions un-à-un) sont calibrées pour les acteurs locaux installés à Roanne ou dans les communes voisines de Mably, Riorges, Le Coteau, Villerest ou Commelle-Vernay.",
   seoHook: "mécanique, textile & commerce ligérien",
   ecosystemFr:
     "Roanne, troisième ville de la Loire, structure son économie autour de l'industrie mécanique, du textile (héritage historique), du commerce de centre-ville et des services aux entreprises. Sous-préfecture et ville centre de Roannais Agglomération, la commune a hérité d'un passé portuaire fluvial (port sur la Loire, transit charbon et textiles jusqu'en 1992) qui a laissé place à un tissu PME industriel et tertiaire. L'aire urbaine couvre 81 364 habitants sur 15 communes, dont Mably, Riorges, Le Coteau, Villerest et Commelle-Vernay.",
@@ -32,20 +32,20 @@ export const ROANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Roanne ({{price:audit-flash|flat}}) pour TPE/PME — diagnostic ciblé pour un industriel de la mécanique, un acteur textile, un commerce du centre-ville ou un prestataire de services aux entreprises de Roannais Agglomération.",
-      en: "Audit sur place IA à Roanne ({{price:audit-flash|flat}}) pour TPE/PME — diagnostic ciblé pour un industriel de la mécanique, un acteur textile, un commerce du centre-ville ou un prestataire de services aux entreprises de Roannais Agglomération.",
+      fr: "Audit sur place IA à Roanne ({{price:audit-flash|flat}}) pour PME et ETI — diagnostic ciblé pour un industriel de la mécanique, un acteur textile, un commerce du centre-ville ou un prestataire de services aux entreprises de Roannais Agglomération.",
+      en: "Audit sur place IA à Roanne ({{price:audit-flash|flat}}) pour PME et ETI — diagnostic ciblé pour un industriel de la mécanique, un acteur textile, un commerce du centre-ville ou un prestataire de services aux entreprises de Roannais Agglomération.",
     },
     interventions: {
-      fr: "Interventions ciblées à Roanne pour TPE/PME — automatisation des devis, suivi de production, relances commerciales pour les industriels mécaniques, textiles ou les commerces ligériens.",
-      en: "Interventions ciblées à Roanne pour TPE/PME — automatisation des devis, suivi de production, relances commerciales pour les industriels mécaniques, textiles ou les commerces ligériens.",
+      fr: "Interventions ciblées à Roanne pour PME et ETI — automatisation des devis, suivi de production, relances commerciales pour les industriels mécaniques, textiles ou les commerces ligériens.",
+      en: "Interventions ciblées à Roanne pour PME et ETI — automatisation des devis, suivi de production, relances commerciales pour les industriels mécaniques, textiles ou les commerces ligériens.",
     },
     implementation: {
       fr: "Implémentation IA sur mesure à Roanne — déploiement d'agents codés en propre pour les PME industrielles et tertiaires de Roannais Agglomération, sans dépendance à une plateforme no-code.",
       en: "Implémentation IA sur mesure à Roanne — déploiement d'agents codés en propre pour les PME industrielles et tertiaires de Roannais Agglomération, sans dépendance à une plateforme no-code.",
     },
     unAUn: {
-      fr: "Sessions un-à-un à Roanne pour dirigeants TPE/PME — déplacement sur site (Roanne, Mably, Riorges, Le Coteau, Villerest) pour structurer une trajectoire IA progressive.",
-      en: "Sessions un-à-un à Roanne pour dirigeants TPE/PME — déplacement sur site (Roanne, Mably, Riorges, Le Coteau, Villerest) pour structurer une trajectoire IA progressive.",
+      fr: "Sessions un-à-un à Roanne pour dirigeants de PME et d'ETI — déplacement sur site (Roanne, Mably, Riorges, Le Coteau, Villerest) pour structurer une trajectoire IA progressive.",
+      en: "Sessions un-à-un à Roanne pour dirigeants de PME et d'ETI — déplacement sur site (Roanne, Mably, Riorges, Le Coteau, Villerest) pour structurer une trajectoire IA progressive.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const ROANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour un indépendant, un atelier de maille, un commerce du centre-ville ou un producteur du bassin : site vitrine ou boutique en ligne mobile-first, multilingue, avec briques IA simples (recherche, recommandation, génération de fiches).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -173,12 +167,6 @@ export const ROANNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site",
-            detail:
-              "For a freelancer, a knitwear workshop, a town-centre shop or a basin producer: mobile-first, multilingual showcase or online store with simple AI bricks (search, recommendation, sheet generation).",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or business SaaS",
             detail:
@@ -244,11 +232,11 @@ export const ROANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-elle en priorité à Roanne ?",
-      a: "Nous accompagnons en priorité les TPE et PME de l'industrie mécanique, du textile, du commerce de détail et de gros, des services aux entreprises et du transport terrestre. Les ETI sont accompagnées en complément.",
+      a: "Nous accompagnons en priorité les PME et ETI de l'industrie mécanique, du textile, du commerce de détail et de gros, des services aux entreprises et du transport terrestre. Les grands groupes sont accompagnés en complément.",
     },
     {
       q: "Axion-IA propose-t-elle du no-code aux entreprises de Roanne ?",
-      a: "Non. Nous concevons du code IA sur mesure pour les TPE/PME roannaises. Cette approche garantit la propriété des solutions, leur maintenabilité dans le temps et l'absence d'enfermement dans une plateforme tierce.",
+      a: "Non. Nous concevons du code IA sur mesure pour les PME et ETI roannaises. Cette approche garantit la propriété des solutions, leur maintenabilité dans le temps et l'absence d'enfermement dans une plateforme tierce.",
     },
   ],
 };

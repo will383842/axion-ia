@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRESSUIRE_COPY: VilleCopy = {
   pitchFr:
-    "Bressuire (79), sous-préfecture des Deux-Sèvres, 19 970 habitants. Capitale du bocage bressuirais, pôle agroalimentaire majeur (viande bovine, volaille, lait), tissu de TPE artisans, PME industrielles et commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bocage deux-sévrien.",
+    "Bressuire (79), sous-préfecture des Deux-Sèvres, 19 970 habitants. Capitale du bocage bressuirais, pôle agroalimentaire majeur (viande bovine, volaille, lait), tissu de PME artisanales, PME industrielles et commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bocage deux-sévrien.",
   pitchEn:
-    "Bressuire (79), sous-préfecture des Deux-Sèvres, 19 970 habitants. Capitale du bocage bressuirais, pôle agroalimentaire majeur (viande bovine, volaille, lait), tissu de TPE artisans, PME industrielles et commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bocage deux-sévrien.",
+    "Bressuire (79), sous-préfecture des Deux-Sèvres, 19 970 habitants. Capitale du bocage bressuirais, pôle agroalimentaire majeur (viande bovine, volaille, lait), tissu de PME artisanales, PME industrielles et commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bocage deux-sévrien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bressuire (79). Nous accompagnons PME, ETI et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bressuire (79). Nous accompagnons PME, ETI et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & élevage agriculture",
   ecosystemFr:
-    "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), TPE artisans, commerces de centre-ville et services de santé.",
+    "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), PME artisanales, commerces de centre-ville et services de santé.",
   ecosystemEn:
-    "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), TPE artisans, commerces de centre-ville et services de santé.",
+    "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), PME artisanales, commerces de centre-ville et services de santé.",
   distancesFr:
     "Gare de Bressuire (TER Nantes-La Roche, correspondance TGV Poitiers). Poitiers à 1h voiture. Niort à 45 min. Cholet à 30 min. Nantes à 1h30. Accès A83 et N249. Thouars à 25 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const BRESSUIRE_COPY: VilleCopy = {
     "Agroalimentaire (viande, volaille, lait)",
     "Élevage & agriculture du bocage",
     "PME industrielles (métallurgie, plasturgie)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de centre-ville",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, PME de l'artisanat et du commerce du bocage bressuirais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, PME de l'artisanat et du commerce du bocage bressuirais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bressuire : déploiement outils IA dans vos usines agroalimentaires, ateliers ou commerces. Traçabilité viande, optimisation production et gestion qualité.",

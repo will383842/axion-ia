@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MEYREUIL_COPY: VilleCopy = {
   pitchFr:
-    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, PME artisanales, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, PME artisanales, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meyreuil (13). Nous accompagnons PME artisanales, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meyreuil (13). Nous accompagnons PME artisanales, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit sur place sur mesure.",
   seoHook: "bassin aixois",
   ecosystemFr:
     "Meyreuil s'étend au pied de la montagne Sainte-Victoire, immortalisée par Cézanne. Commune résidentielle de l'est aixois avec une zone d'activités (services, artisanat). Viticulture AOC Côtes de Provence Sainte-Victoire, ancienne centrale thermique reconvertie. Cadres et professions libérales travaillant à Aix ou Marseille.",
@@ -24,14 +24,14 @@ export const MEYREUIL_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Sainte-Victoire",
     "Professions libérales & conseil",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "PME tertiaires & numérique",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, PME artisanales et PME tertiaires de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, PME artisanales et PME tertiaires de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Meyreuil : ateliers pratiques pour domaines viticoles, cabinets libéraux et équipes PME. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const MEYREUIL_COPY: VilleCopy = {
       en: "Implémentation IA à Meyreuil : gestion parcellaire viticole, automatisation gestion cabinet, CRM augmentés, classification documents, agents conversationnels clients. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Meyreuil : sessions pour dirigeants domaines viticoles, professions libérales et gérants TPE/PME de l'est aixois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Meyreuil : sessions pour dirigeants domaines viticoles, professions libérales et gérants TPE/PME de l'est aixois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Meyreuil : sessions pour dirigeants domaines viticoles, professions libérales et gérants PME et ETI de l'est aixois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Meyreuil : sessions pour dirigeants domaines viticoles, professions libérales et gérants PME et ETI de l'est aixois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MEYREUIL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Meyreuil  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs et PME meyreuilloises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, viticulteurs et PME meyreuilloises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de Sainte-Victoire ?",

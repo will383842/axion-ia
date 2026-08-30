@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CUGES_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de PME artisanales, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de PME artisanales, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuges-les-Pins (13). Nous accompagnons PME artisanales, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuges-les-Pins (13). Nous accompagnons PME artisanales, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit sur place sur mesure.",
   seoHook: "agriculture viticulture & tourisme loisirs",
   ecosystemFr:
     "Cuges-les-Pins est un village de garrigue et de collines au piémont de la Sainte-Baume, entre Aubagne et Signes. Économie locale : agriculture (vignes, oliviers, maraîchage), tourisme (parc OK Corral, randonnées Sainte-Baume), artisanat et commerces de proximité. Résidentiel familial en croissance.",
@@ -24,14 +24,14 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & viticulture",
     "Tourisme & loisirs (OK Corral)",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de proximité",
     "PME services & hébergement",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cuges-les-Pins : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cuges-les-Pins : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cuges-les-Pins : diagnostic adapté aux PME artisanales, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cuges-les-Pins : diagnostic adapté aux PME artisanales, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cuges-les-Pins : ateliers pratiques pour artisans, commerçants et exploitants agricoles. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
       en: "Implémentation IA à Cuges-les-Pins : gestion parcellaire viticole, agents conversationnels tourisme, automatisation réservations, gestion stocks commerce. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cuges-les-Pins : sessions pour exploitants agricoles, artisans, gérants TPE/PME tourisme et commerçants souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Cuges-les-Pins : sessions pour exploitants agricoles, artisans, gérants TPE/PME tourisme et commerçants souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Cuges-les-Pins : sessions pour exploitants agricoles, artisans, gérants PME et ETI tourisme et commerçants souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Cuges-les-Pins : sessions pour exploitants agricoles, artisans, gérants PME et ETI tourisme et commerçants souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cuges-les-Pins  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, exploitants agricoles et commerçants cugeois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, exploitants agricoles et commerçants cugeois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les viticulteurs de Cuges-les-Pins ?",

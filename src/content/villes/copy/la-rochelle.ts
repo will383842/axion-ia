@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROCHELLE_COPY: VilleCopy = {
   pitchFr:
-    "La Rochelle (17), capitale de la Charente-Maritime, conjugue premier port de plaisance de la façade atlantique, économie touristique forte (Vieux-Port, aquarium, plages), filière nautique structurée et un écosystème French Tech porté par l'université. Le tissu local est dominé par les TPE — chantiers nautiques, hôtellerie, restauration, commerces, agences — et les PME tourisme, services et tech. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME rochelaises, l'ETI restant minoritaire.",
+    "La Rochelle (17), capitale de la Charente-Maritime, conjugue premier port de plaisance de la façade atlantique, économie touristique forte (Vieux-Port, aquarium, plages), filière nautique structurée et un écosystème French Tech porté par l'université. Le tissu local est dominé par les PME — chantiers nautiques, hôtellerie, restauration, commerces, agences — et les PME tourisme, services et tech. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI rochelaises, les grands groupes venant en complément.",
   pitchEn:
-    "La Rochelle (17), capitale de la Charente-Maritime, conjugue premier port de plaisance de la façade atlantique, économie touristique forte (Vieux-Port, aquarium, plages), filière nautique structurée et un écosystème French Tech porté par l'université. Le tissu local est dominé par les TPE — chantiers nautiques, hôtellerie, restauration, commerces, agences — et les PME tourisme, services et tech. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME rochelaises, l'ETI restant minoritaire.",
+    "La Rochelle (17), capitale de la Charente-Maritime, conjugue premier port de plaisance de la façade atlantique, économie touristique forte (Vieux-Port, aquarium, plages), filière nautique structurée et un écosystème French Tech porté par l'université. Le tissu local est dominé par les PME — chantiers nautiques, hôtellerie, restauration, commerces, agences — et les PME tourisme, services et tech. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI rochelaises, les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Rochelle (17). Nous accompagnons en priorité les TPE — chantiers et services nautiques, hôtels, restaurants, commerces, agences touristiques, startups French Tech — puis les PME du tourisme et des services, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Rochelle (17). Nous accompagnons en priorité les PME — chantiers et services nautiques, hôtels, restaurants, commerces, agences touristiques, startups French Tech — puis les PME du tourisme et des services, et plus marginalement les grands groupes. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Rochelle (17). Nous accompagnons en priorité les TPE — chantiers et services nautiques, hôtels, restaurants, commerces, agences touristiques, startups French Tech — puis les PME du tourisme et des services, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Rochelle (17). Nous accompagnons en priorité les PME — chantiers et services nautiques, hôtels, restaurants, commerces, agences touristiques, startups French Tech — puis les PME du tourisme et des services, et plus marginalement les grands groupes. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
   seoHook: "nautisme, tourisme & French Tech",
   ecosystemFr:
-    "La Rochelle s'appuie sur quatre piliers : le nautisme (premier port de plaisance atlantique, salon Grand Pavois, chantiers et services), le tourisme (Vieux-Port, Aquarium, Île de Ré, forte saisonnalité), l'enseignement et la recherche (université, La Rochelle Technopole, French Tech) et un commerce de centre-ville vivant. Cette économie très saisonnière et orientée services génère des pics d'activité que l'IA aide à absorber. Axion-IA y privilégie les TPE et PME — hôtellerie, restauration, chantiers nautiques, agences, startups — pour qui l'automatisation libère un temps précieux en haute saison.",
+    "La Rochelle s'appuie sur quatre piliers : le nautisme (premier port de plaisance atlantique, salon Grand Pavois, chantiers et services), le tourisme (Vieux-Port, Aquarium, Île de Ré, forte saisonnalité), l'enseignement et la recherche (université, La Rochelle Technopole, French Tech) et un commerce de centre-ville vivant. Cette économie très saisonnière et orientée services génère des pics d'activité que l'IA aide à absorber. Axion-IA y privilégie les PME et ETI — hôtellerie, restauration, chantiers nautiques, agences, startups — pour qui l'automatisation libère un temps précieux en haute saison.",
   ecosystemEn:
-    "La Rochelle s'appuie sur quatre piliers : le nautisme (premier port de plaisance atlantique, salon Grand Pavois, chantiers et services), le tourisme (Vieux-Port, Aquarium, Île de Ré, forte saisonnalité), l'enseignement et la recherche (université, La Rochelle Technopole, French Tech) et un commerce de centre-ville vivant. Cette économie très saisonnière et orientée services génère des pics d'activité que l'IA aide à absorber. Axion-IA y privilégie les TPE et PME — hôtellerie, restauration, chantiers nautiques, agences, startups — pour qui l'automatisation libère un temps précieux en haute saison.",
+    "La Rochelle s'appuie sur quatre piliers : le nautisme (premier port de plaisance atlantique, salon Grand Pavois, chantiers et services), le tourisme (Vieux-Port, Aquarium, Île de Ré, forte saisonnalité), l'enseignement et la recherche (université, La Rochelle Technopole, French Tech) et un commerce de centre-ville vivant. Cette économie très saisonnière et orientée services génère des pics d'activité que l'IA aide à absorber. Axion-IA y privilégie les PME et ETI — hôtellerie, restauration, chantiers nautiques, agences, startups — pour qui l'automatisation libère un temps précieux en haute saison.",
   distancesFr:
     "Gare de La Rochelle-Ville desservie en TGV (Paris-Montparnasse en ~3h). Aéroport de La Rochelle-Île de Ré à 5 km du centre. Niort à 65 km, Nantes à 145 km, Bordeaux à 185 km. Nos consultants se déplacent sur site dans toute l'agglomération rochelaise.",
   distancesEn:
@@ -34,16 +34,16 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
       en: "Audit IA à La Rochelle : diagnostic adapté à la saisonnalité touristique et nautique. Nous repérons les tâches qui saturent les équipes en haute saison (réservations, devis, relance) et chiffrons les gains.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Rochelle : formats courts pour TPE du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client, la rédaction et la veille, et repartent autonomes.",
-      en: "Interventions IA sur site à La Rochelle : formats courts pour TPE du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client, la rédaction et la veille, et repartent autonomes.",
+      fr: "Interventions IA sur site à La Rochelle : formats courts pour PME du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client, la rédaction et la veille, et repartent autonomes.",
+      en: "Interventions IA sur site à La Rochelle : formats courts pour PME du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client, la rédaction et la veille, et repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à La Rochelle : agents de réservation et de relation client, automatisation des devis de chantiers nautiques, réponses multilingues pour le tourisme, reporting saisonnier. Solutions RGPD-conformes.",
       en: "Implémentation IA à La Rochelle : agents de réservation et de relation client, automatisation des devis de chantiers nautiques, réponses multilingues pour le tourisme, reporting saisonnier. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Rochelle : sessions dans votre établissement, chantier, agence ou en visio. Pour dirigeants de TPE/PME nautiques, touristiques, tech et commerçants rochelais souhaitant piloter l'IA eux-mêmes.",
-      en: "Coaching 1-to-1 à La Rochelle : sessions dans votre établissement, chantier, agence ou en visio. Pour dirigeants de TPE/PME nautiques, touristiques, tech et commerçants rochelais souhaitant piloter l'IA eux-mêmes.",
+      fr: "Coaching 1-to-1 à La Rochelle : sessions dans votre établissement, chantier, agence ou en visio. Pour dirigeants de PME et ETI nautiques, touristiques, tech et commerçants rochelais souhaitant piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à La Rochelle : sessions dans votre établissement, chantier, agence ou en visio. Pour dirigeants de PME et ETI nautiques, touristiques, tech et commerçants rochelais souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA à La Rochelle : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques dotés d'assistants intelligents, devis automatisés et contenus optimisés pour le référencement local.",
@@ -88,12 +88,6 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour artisans nautiques, loueurs, hôtels, restaurants et commerces du Vieux-Port et de l'agglomération : site vitrine ou boutique sur CMS, assistant IA de réponse aux demandes et réservation mobile multilingue.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -174,12 +168,6 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For nautical craftspeople, rental operators, hotels, restaurants and shops around the Vieux-Port and the agglomeration: showcase site or store on a CMS, AI assistant for inbound queries and multilingual mobile booking.",
-          },
           {
             sizeLabel: "PME",
             price: "Business platform or advanced e-commerce",

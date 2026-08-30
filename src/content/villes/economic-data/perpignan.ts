@@ -361,7 +361,7 @@ export const PERPIGNAN_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Annuaire EPV non extrait à la commune en V1 — champ vide pour
   // respecter zéro invention. À compléter Phase 2 du sprint via le

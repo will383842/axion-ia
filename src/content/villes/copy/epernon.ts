@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const EPERNON_COPY: VilleCopy = {
   pitchFr:
-    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu PME et ETI services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu PME et ETI services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épernon (28). Nous accompagnons tous types d'activités : PME et ETI services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épernon (28). Nous accompagnons tous types d'activités : PME et ETI services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
   seoHook: "conseil indépendants",
   ecosystemFr:
-    "Épernon est un bourg résidentiel attractif de la vallée de la Drouette, à la lisière de l'Eure-et-Loir et des Yvelines, prisé pour sa proximité Paris-Montparnasse (gare TER 1h). L'économie locale repose sur les TPE/PME de services, artisans BTP, commerces de proximité, professions libérales et indépendants.",
+    "Épernon est un bourg résidentiel attractif de la vallée de la Drouette, à la lisière de l'Eure-et-Loir et des Yvelines, prisé pour sa proximité Paris-Montparnasse (gare TER 1h). L'économie locale repose sur les PME et ETI de services, artisans BTP, commerces de proximité, professions libérales et indépendants.",
   ecosystemEn:
-    "Épernon est un bourg résidentiel attractif de la vallée de la Drouette, à la lisière de l'Eure-et-Loir et des Yvelines, prisé pour sa proximité Paris-Montparnasse (gare TER 1h). L'économie locale repose sur les TPE/PME de services, artisans BTP, commerces de proximité, professions libérales et indépendants.",
+    "Épernon est un bourg résidentiel attractif de la vallée de la Drouette, à la lisière de l'Eure-et-Loir et des Yvelines, prisé pour sa proximité Paris-Montparnasse (gare TER 1h). L'économie locale repose sur les PME et ETI de services, artisans BTP, commerces de proximité, professions libérales et indépendants.",
   distancesFr:
     "Gare d'Épernon (TER Paris-Montparnasse 1h, via Rambouillet). Chartres à 25 min. Rambouillet à 15 min. Paris à 1h10 via N10. Dreux à 40 min.",
   distancesEn:
     "Gare d'Épernon (TER Paris-Montparnasse 1h, via Rambouillet). Chartres à 25 min. Rambouillet à 15 min. Paris à 1h10 via N10. Dreux à 40 min.",
   topSectorsNaf: [
     "Services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
     "Conseil & indépendants",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Épernon : diagnostic adapté aux PME et ETI services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Épernon : diagnostic adapté aux PME et ETI services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épernon : formats adaptés au cabinet libéral, commerce, atelier artisan ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const EPERNON_COPY: VilleCopy = {
       en: "Implémentation IA à Épernon : automatisation secrétariat cabinet libéral, agents conversationnels commerce de proximité, gestion planning artisans, chatbots prise de RDV en ligne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Épernon : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants TPE/PME de la vallée drouaise.",
-      en: "Coaching 1-to-1 à Épernon : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants TPE/PME de la vallée drouaise.",
+      fr: "Coaching 1-to-1 à Épernon : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants PME et ETI de la vallée drouaise.",
+      en: "Coaching 1-to-1 à Épernon : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants PME et ETI de la vallée drouaise.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const EPERNON_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Épernon ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et professions libérales. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI et professions libérales. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants d'Épernon ?",
-      a: "Oui, nos formats sont adaptés aux TPE artisans BTP et commerçants de proximité : automatisation devis, chatbots prise de RDV, gestion stocks, agents IA plannings, présence en ligne.",
+      a: "Oui, nos formats sont adaptés aux PME du BTP et du commerce de proximité : automatisation devis, chatbots prise de RDV, gestion stocks, agents IA plannings, présence en ligne.",
     },
     {
       q: "Comment se passe une mission à Épernon depuis Paris ?",

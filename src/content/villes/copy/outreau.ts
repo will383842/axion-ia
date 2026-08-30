@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const OUTREAU_COPY: VilleCopy = {
   pitchFr:
-    "Outreau (62), commune de l'agglomération de Boulogne-sur-Mer dans le Pas-de-Calais, conjugue tissu TPE artisanales, PME de services, commerces, activités portuaires et filière halieutique de proximité. Axion-IA y intervient pour tous types d'activités de l'agglo boulonnaise et du littoral de la Côte d'Opale.",
+    "Outreau (62), commune de l'agglomération de Boulogne-sur-Mer dans le Pas-de-Calais, conjugue tissu PME artisanales, PME de services, commerces, activités portuaires et filière halieutique de proximité. Axion-IA y intervient pour tous types d'activités de l'agglo boulonnaise et du littoral de la Côte d'Opale.",
   pitchEn:
-    "Outreau (62), commune de l'agglomération de Boulogne-sur-Mer dans le Pas-de-Calais, conjugue tissu TPE artisanales, PME de services, commerces, activités portuaires et filière halieutique de proximité. Axion-IA y intervient pour tous types d'activités de l'agglo boulonnaise et du littoral de la Côte d'Opale.",
+    "Outreau (62), commune de l'agglomération de Boulogne-sur-Mer dans le Pas-de-Calais, conjugue tissu PME artisanales, PME de services, commerces, activités portuaires et filière halieutique de proximité. Axion-IA y intervient pour tous types d'activités de l'agglo boulonnaise et du littoral de la Côte d'Opale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Outreau (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Outreau (62). Nous accompagnons tous types d'activités : PME artisanales, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Outreau (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Outreau (62). Nous accompagnons tous types d'activités : PME artisanales, PME de services et tertiaires, commerçants, professionnels de la filière halieutique, indépendants, professions libérales et entreprises de l'agglomération boulonnaise.",
   seoHook: "artisanat rénovation & services tertiaire",
   ecosystemFr:
-    "Outreau fait partie de la communauté d'agglomération du Boulonnais (~120 000 hab) sur la Côte d'Opale. La proximité de Boulogne-sur-Mer (premier port de pêche français, pôle agroalimentaire halieutique) structure l'économie locale. Tissu TPE artisanat BTP, PME de services, commerces, santé, tourisme littoral. Accès direct A16 (Calais-Paris) et port transmanche.",
+    "Outreau fait partie de la communauté d'agglomération du Boulonnais (~120 000 hab) sur la Côte d'Opale. La proximité de Boulogne-sur-Mer (premier port de pêche français, pôle agroalimentaire halieutique) structure l'économie locale. Tissu PME du BTP, PME de services, commerces, santé, tourisme littoral. Accès direct A16 (Calais-Paris) et port transmanche.",
   ecosystemEn:
-    "Outreau fait partie de la communauté d'agglomération du Boulonnais (~120 000 hab) sur la Côte d'Opale. La proximité de Boulogne-sur-Mer (premier port de pêche français, pôle agroalimentaire halieutique) structure l'économie locale. Tissu TPE artisanat BTP, PME de services, commerces, santé, tourisme littoral. Accès direct A16 (Calais-Paris) et port transmanche.",
+    "Outreau fait partie de la communauté d'agglomération du Boulonnais (~120 000 hab) sur la Côte d'Opale. La proximité de Boulogne-sur-Mer (premier port de pêche français, pôle agroalimentaire halieutique) structure l'économie locale. Tissu PME du BTP, PME de services, commerces, santé, tourisme littoral. Accès direct A16 (Calais-Paris) et port transmanche.",
   distancesFr:
     "Boulogne-sur-Mer centre à 5 min. Gare Boulogne-Ville (TER Calais-Amiens, direct Lille 1h40). Gare TGV Calais-Fréthun à 30 min. Aéroport Lille-Lesquin à 1h30. Autoroute A16 (Calais-Paris) accès direct. Calais à 30 min.",
   distancesEn:
     "Boulogne-sur-Mer centre à 5 min. Gare Boulogne-Ville (TER Calais-Amiens, direct Lille 1h40). Gare TGV Calais-Fréthun à 30 min. Aéroport Lille-Lesquin à 1h30. Autoroute A16 (Calais-Paris) accès direct. Calais à 30 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "PME services & tertiaire",
     "Commerce de proximité",
     "Filière halieutique & agroalimentaire",
@@ -30,8 +30,8 @@ export const OUTREAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Outreau : diagnostic adapté aux PME artisanales, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Outreau : diagnostic adapté aux PME artisanales, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Outreau : formats adaptés à l'atelier artisanal, cabinet, commerce ou entreprise agroalimentaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const OUTREAU_COPY: VilleCopy = {
       en: "Implémentation IA à Outreau : automatisation devis BTP, traçabilité filière halieutique, agents conversationnels tourisme, classification documents, optimisation planning. Agglo boulonnaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Outreau : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants TPE/PME, artisans, gérants et professionnels de l'agglo boulonnaise souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Outreau : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants TPE/PME, artisans, gérants et professionnels de l'agglo boulonnaise souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Outreau : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants PME et ETI, artisans, gérants et professionnels de l'agglo boulonnaise souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Outreau : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants PME et ETI, artisans, gérants et professionnels de l'agglo boulonnaise souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const OUTREAU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Outreau et dans toute l'agglomération boulonnaise (Boulogne-sur-Mer, Le Portel, Saint-Martin-Boulogne, Wimereux). Nos consultants viennent de Lille (1h40 TER) ou via la gare TGV Calais-Fréthun (30 min).",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants d'Outreau ?",
-      a: "Pour les TPE artisans BTP et commerçants à Outreau, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      q: "Quels services pour les PME de l'artisanat et du commerce d'Outreau ?",
+      a: "Pour les PME du BTP et du commerce à Outreau, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Travaillez-vous avec la filière halieutique et agroalimentaire ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TORCY_COPY: VilleCopy = {
   pitchFr:
-    "Torcy (77), sous-préfecture de Seine-et-Marne, est l'une des communes centrales de la ville nouvelle de Marne-la-Vallée, à l'est de Paris. Bien desservie par le RER A et la proximité du pôle touristique de Marne-la-Vallée - Chessy, elle concentre un tissu tertiaire dynamique : services aux entreprises, informatique, commerce, ainsi que des artisans du bâtiment et des PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de l'est francilien dans une adoption pragmatique de l'intelligence artificielle.",
+    "Torcy (77), sous-préfecture de Seine-et-Marne, est l'une des communes centrales de la ville nouvelle de Marne-la-Vallée, à l'est de Paris. Bien desservie par le RER A et la proximité du pôle touristique de Marne-la-Vallée - Chessy, elle concentre un tissu tertiaire dynamique : services aux entreprises, informatique, commerce, ainsi que des artisans du bâtiment et des PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de l'est francilien dans une adoption pragmatique de l'intelligence artificielle.",
   pitchEn:
-    "Torcy (77), sous-préfecture de Seine-et-Marne, est l'une des communes centrales de la ville nouvelle de Marne-la-Vallée, à l'est de Paris. Bien desservie par le RER A et la proximité du pôle touristique de Marne-la-Vallée - Chessy, elle concentre un tissu tertiaire dynamique : services aux entreprises, informatique, commerce, ainsi que des artisans du bâtiment et des PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de l'est francilien dans une adoption pragmatique de l'intelligence artificielle.",
+    "Torcy (77), sous-préfecture de Seine-et-Marne, est l'une des communes centrales de la ville nouvelle de Marne-la-Vallée, à l'est de Paris. Bien desservie par le RER A et la proximité du pôle touristique de Marne-la-Vallée - Chessy, elle concentre un tissu tertiaire dynamique : services aux entreprises, informatique, commerce, ainsi que des artisans du bâtiment et des PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de l'est francilien dans une adoption pragmatique de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Torcy, au cœur de Marne-la-Vallée. Nous accompagnons en priorité les TPE puis les PME : services aux entreprises et professions du tertiaire, éditeurs et prestataires informatiques, commerces de zone d'activités, artisans du bâtiment et acteurs liés au tourisme de l'est parisien. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Torcy, au cœur de Marne-la-Vallée. Nous accompagnons en priorité les PME puis les ETI : services aux entreprises et professions du tertiaire, éditeurs et prestataires informatiques, commerces de zone d'activités, artisans du bâtiment et acteurs liés au tourisme de l'est parisien. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Torcy, au cœur de Marne-la-Vallée. Nous accompagnons en priorité les TPE puis les PME : services aux entreprises et professions du tertiaire, éditeurs et prestataires informatiques, commerces de zone d'activités, artisans du bâtiment et acteurs liés au tourisme de l'est parisien. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Torcy, au cœur de Marne-la-Vallée. Nous accompagnons en priorité les PME puis les ETI : services aux entreprises et professions du tertiaire, éditeurs et prestataires informatiques, commerces de zone d'activités, artisans du bâtiment et acteurs liés au tourisme de l'est parisien. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
   seoHook: "tertiaire & numérique Marne-Vallée",
   ecosystemFr:
     "Torcy s'inscrit dans la dynamique de Marne-la-Vallée, ville nouvelle qui a fait de l'est francilien un pôle tertiaire et résidentiel majeur. L'économie locale repose sur les services aux entreprises, l'informatique et la programmation, le commerce de zone d'activités et un secteur du bâtiment soutenu par la croissance urbaine. La proximité du pôle touristique de Marne-la-Vallée - Chessy et l'excellente desserte par le RER A nourrissent un bassin d'emploi dense, où l'IA peut automatiser la gestion administrative, accélérer le développement logiciel et améliorer la relation client.",
@@ -42,8 +42,8 @@ export const TORCY_COPY: VilleCopy = {
       en: "Implémentation IA à Torcy : automatisation des workflows administratifs, assistants de développement, classification documentaire et agents conversationnels pour la relation client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Torcy : sessions sur site ou en visio pour dirigeants de TPE/PME tertiaires, prestataires informatiques, artisans et gérants souhaitant piloter l'IA.",
-      en: "Coaching 1-to-1 à Torcy : sessions sur site ou en visio pour dirigeants de TPE/PME tertiaires, prestataires informatiques, artisans et gérants souhaitant piloter l'IA.",
+      fr: "Coaching 1-to-1 à Torcy : sessions sur site ou en visio pour dirigeants de PME et ETI tertiaires, prestataires informatiques, artisans et gérants souhaitant piloter l'IA.",
+      en: "Coaching 1-to-1 à Torcy : sessions sur site ou en visio pour dirigeants de PME et ETI tertiaires, prestataires informatiques, artisans et gérants souhaitant piloter l'IA.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Torcy : plateformes pour PME tertiaires, prestataires numériques et commerces, avec recherche IA, devis automatisés et formulaires intelligents.",
@@ -53,7 +53,7 @@ export const TORCY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une PME du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
         whyHere: [
           "Pôle tertiaire et informatique de l'est francilien : services aux entreprises, éditeurs et prestataires numériques dominent le tissu local autour des quartiers d'affaires de Marne-la-Vallée — terrain idéal pour des portails clients, des plateformes SaaS métier et des assistants de développement greffés sur votre SI, du CRM jusqu'à l'ERP, sans réécrire l'existant.",
           "Commerce de zone d'activités et chalandise du centre commercial Bay 2, nourries par le RER A et la proximité de Marne-la-Vallée - Chessy : on construit des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recherche sémantique et chatbot pour capter une clientèle franchement mobile-first venue de Noisiel, Lognes et Bussy-Saint-Georges.",
@@ -88,12 +88,6 @@ export const TORCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé) sur le site existant d'un commerce, d'un restaurant ou d'un artisan du bâtiment de Torcy et de l'Arche Guédon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const TORCY_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, pour ne jamais couper le chiffre d'affaires d'un commerce du secteur Bay 2 ou d'un prestataire en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique, intégralement transférable à tout prestataire de l'est francilien ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une TPE du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Torcy des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de Marne-la-Vallée, où le tertiaire de services, les prestataires informatiques, le commerce du centre commercial Bay 2 et l'artisanat du bâtiment structurent un bassin d'emploi dense, à 35 min de Paris-Gare de Lyon par le RER A et 10 min de Marne-la-Vallée - Chessy. Que vous soyez une PME du commerce de l'Arche Guédon, un éditeur logiciel ou une PME de services, on greffe l'IA sur l'existant ou on construit du sur-mesure, du commerce de proximité jusqu'au portail métier branché sur votre SI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Torcy, itérations à distance.",
         whyHere: [
           "Pôle tertiaire et informatique de l'est francilien : services aux entreprises, éditeurs et prestataires numériques dominent le tissu local autour des quartiers d'affaires de Marne-la-Vallée — terrain idéal pour des portails clients, des plateformes SaaS métier et des assistants de développement greffés sur votre SI, du CRM jusqu'à l'ERP, sans réécrire l'existant.",
           "Commerce de zone d'activités et chalandise du centre commercial Bay 2, nourries par le RER A et la proximité de Marne-la-Vallée - Chessy : on construit des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recherche sémantique et chatbot pour capter une clientèle franchement mobile-first venue de Noisiel, Lognes et Bussy-Saint-Georges.",
@@ -174,12 +168,6 @@ export const TORCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé) sur le site existant d'un commerce, d'un restaurant ou d'un artisan du bâtiment de Torcy et de l'Arche Guédon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,7 +218,7 @@ export const TORCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Torcy et dans Marne-la-Vallée ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Torcy, Noisiel, Lognes, Bussy-Saint-Georges et tout l'est francilien. Nos consultants se déplacent depuis Paris pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Torcy, Noisiel, Lognes, Bussy-Saint-Georges et tout l'est francilien. Nos consultants se déplacent depuis Paris pour les missions sur site.",
     },
     {
       q: "Travaillez-vous avec les prestataires informatiques et le tertiaire ?",
@@ -241,7 +229,7 @@ export const TORCY_COPY: VilleCopy = {
       a: "Oui, nous déployons des agents conversationnels, de l'automatisation de devis et des outils de gestion adaptés aux commerces et aux artisans du bâtiment locaux.",
     },
     {
-      q: "Quels services proposez-vous aux TPE et PME de Torcy ?",
+      q: "Quels services proposez-vous aux PME et ETI de Torcy ?",
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de PME artisanales d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de PME artisanales d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons PME artisanales d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons PME artisanales d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit sur place sur mesure.",
   seoHook: "vallée des",
   ecosystemFr:
-    "Saint-Rémy-de-Provence est la cité de référence des Alpilles, célèbre pour Van Gogh (asile Saint-Paul-de-Mausole), Nostradamus et le site antique de Glanum. Tourisme international haut de gamme, hôtellerie de charme, restaurants gastronomiques, galeries d'art, oléiculture AOP Vallée des Baux et viticulture. Tissu dense de TPE artisanat d'art et professions libérales.",
+    "Saint-Rémy-de-Provence est la cité de référence des Alpilles, célèbre pour Van Gogh (asile Saint-Paul-de-Mausole), Nostradamus et le site antique de Glanum. Tourisme international haut de gamme, hôtellerie de charme, restaurants gastronomiques, galeries d'art, oléiculture AOP Vallée des Baux et viticulture. Tissu dense de PME de l'artisanat d'art et professions libérales.",
   ecosystemEn:
-    "Saint-Rémy-de-Provence est la cité de référence des Alpilles, célèbre pour Van Gogh (asile Saint-Paul-de-Mausole), Nostradamus et le site antique de Glanum. Tourisme international haut de gamme, hôtellerie de charme, restaurants gastronomiques, galeries d'art, oléiculture AOP Vallée des Baux et viticulture. Tissu dense de TPE artisanat d'art et professions libérales.",
+    "Saint-Rémy-de-Provence est la cité de référence des Alpilles, célèbre pour Van Gogh (asile Saint-Paul-de-Mausole), Nostradamus et le site antique de Glanum. Tourisme international haut de gamme, hôtellerie de charme, restaurants gastronomiques, galeries d'art, oléiculture AOP Vallée des Baux et viticulture. Tissu dense de PME de l'artisanat d'art et professions libérales.",
   distancesFr:
     "Avignon à 25 min. Arles à 25 min. Aix-en-Provence à 45 min. Gare TGV Avignon à 30 min. Aéroport Marseille-Provence à 50 min. Accès A7 Cavaillon vers Lyon et Marseille. Les Baux-de-Provence à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, PME artisanales d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, PME artisanales d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rémy-de-Provence : ateliers pour hôtels, restaurants, galeries, domaines oléicoles et viticoles, cabinets libéraux. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Rémy-de-Provence : conciergerie augmentée, yield management hôtelier, agents IA réservation multilingue, recommandations gastronomiques, marketing visuel galeries, traçabilité huile et vin. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Rémy-de-Provence : sessions pour hôteliers, restaurateurs, galeristes, vignerons, oléiculteurs et gérants TPE/PME des Alpilles souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Rémy-de-Provence : sessions pour hôteliers, restaurateurs, galeristes, vignerons, oléiculteurs et gérants TPE/PME des Alpilles souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Rémy-de-Provence : sessions pour hôteliers, restaurateurs, galeristes, vignerons, oléiculteurs et gérants PME et ETI des Alpilles souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Rémy-de-Provence : sessions pour hôteliers, restaurateurs, galeristes, vignerons, oléiculteurs et gérants PME et ETI des Alpilles souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Rémy-de-Provence  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans d'art, hôteliers, restaurateurs et PME saint-rémoises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales d'art, hôteliers, restaurateurs et PME saint-rémoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie de charme et la restauration gastronomique ?",

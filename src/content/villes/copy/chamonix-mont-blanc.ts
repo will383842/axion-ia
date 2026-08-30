@@ -9,9 +9,9 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
   pitchEn:
     "Chamonix-Mont-Blanc (74), station mythique au pied du Mont-Blanc (4 810 m) en Haute-Savoie, rayonne à l'international par son tourisme premium, ses hôtels de luxe, ses guides de haute montagne et ses remontées mécaniques. Axion-IA y intervient pour tous types d'activités du tourisme de montagne et du commerce prestige chamoniard.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chamonix-Mont-Blanc (74). Nous accompagnons TPE et PME : hôteliers et restaurateurs premium, compagnies de guides, exploitants remontées mécaniques, commerces prestige et prestataires touristiques de la vallée de Chamonix.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chamonix-Mont-Blanc (74). Nous accompagnons PME et ETI : hôteliers et restaurateurs premium, compagnies de guides, exploitants remontées mécaniques, commerces prestige et prestataires touristiques de la vallée de Chamonix.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chamonix-Mont-Blanc (74). Nous accompagnons TPE et PME : hôteliers et restaurateurs premium, compagnies de guides, exploitants remontées mécaniques, commerces prestige et prestataires touristiques de la vallée de Chamonix.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chamonix-Mont-Blanc (74). Nous accompagnons PME et ETI : hôteliers et restaurateurs premium, compagnies de guides, exploitants remontées mécaniques, commerces prestige et prestataires touristiques de la vallée de Chamonix.",
   seoHook: "tourisme premium & sports montagne",
   ecosystemFr:
     "Chamonix-Mont-Blanc est une station de renommée mondiale au pied du plus haut sommet d'Europe occidentale. Tourisme international premium toute l'année (ski, alpinisme, trail), hôtellerie-restauration haut de gamme, compagnies de guides de haute montagne, remontées mécaniques (Aiguille du Midi, Montenvers), commerces prestige et activités outdoor. Le tunnel du Mont-Blanc relie directement Courmayeur (Italie).",
@@ -56,8 +56,8 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hôteliers et restaurateurs haut de gamme de Chamonix sur leurs cas IA : chatbots multilingues réservation, yield management dynamique, analyse avis clients, automatisation conciergerie et gestion des canaux de distribution.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE touristique à Chamonix ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME touristiques de Chamonix. Diagnostic complet des opportunités IA dans votre activité (hôtellerie, restauration, guides, commerce), ROI chiffré sous 5 jours ouvrés.",
+      q: "Quel est le tarif d'un audit IA pour une PME touristique à Chamonix ?",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux PME et ETI touristiques de Chamonix. Diagnostic complet des opportunités IA dans votre activité (hôtellerie, restauration, guides, commerce), ROI chiffré sous 5 jours ouvrés.",
     },
     {
       q: "L'IA peut-elle aider les remontées mécaniques à Chamonix ?",

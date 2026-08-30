@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TRELAZE_COPY: VilleCopy = {
   pitchFr:
-    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre les activités professionnelles du bassin : artisanat, commerce, industrie, services et professions libérales.",
+    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de PME, ETI et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre les activités professionnelles du bassin : artisanat, commerce, industrie, services et professions libérales.",
   pitchEn:
-    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre les activités professionnelles du bassin : artisanat, commerce, industrie, services et professions libérales.",
+    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de PME, ETI et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre les activités professionnelles du bassin : artisanat, commerce, industrie, services et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les PME, ETI et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les PME, ETI et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "artisanat second & commerce détail",
   ecosystemFr:
-    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
+    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : PME du BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
   ecosystemEn:
-    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
+    "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : PME du BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
   distancesFr:
     "Gare d'Angers Saint-Laud (TGV Paris 1h30) à 10 min tramway/bus. Aéroport Nantes Atlantique à 1h15. Accès A11/A87 via Angers en 10 min. Tramway ligne A arrêt Trélazé centre.",
   distancesEn:
@@ -30,20 +30,20 @@ export const TRELAZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Trélazé : diagnostic adapté aux PME artisanales, commerçants et PME du bassin est-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Trélazé : diagnostic adapté aux PME artisanales, commerçants et PME du bassin est-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Trélazé : formations pratiques pour équipes TPE/PME, ateliers métier commerce, artisanat ou services. Vos collaborateurs repartent autonomes sur les outils IA.",
-      en: "Interventions IA sur site à Trélazé : formations pratiques pour équipes TPE/PME, ateliers métier commerce, artisanat ou services. Vos collaborateurs repartent autonomes sur les outils IA.",
+      fr: "Interventions IA sur site à Trélazé : formations pratiques pour équipes PME et ETI, ateliers métier commerce, artisanat ou services. Vos collaborateurs repartent autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Trélazé : formations pratiques pour équipes PME et ETI, ateliers métier commerce, artisanat ou services. Vos collaborateurs repartent autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Trélazé : agents conversationnels clients, automatisation devis et facturation, CRM augmenté, classification documentaire. Solutions adaptées au tissu TPE/PME est-angevin.",
-      en: "Implémentation IA à Trélazé : agents conversationnels clients, automatisation devis et facturation, CRM augmenté, classification documentaire. Solutions adaptées au tissu TPE/PME est-angevin.",
+      fr: "Implémentation IA à Trélazé : agents conversationnels clients, automatisation devis et facturation, CRM augmenté, classification documentaire. Solutions adaptées au tissu PME et ETI est-angevin.",
+      en: "Implémentation IA à Trélazé : agents conversationnels clients, automatisation devis et facturation, CRM augmenté, classification documentaire. Solutions adaptées au tissu PME et ETI est-angevin.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Trélazé : sessions individuelles pour dirigeants TPE/PME, commerçants, artisans et professions libérales souhaitant intégrer l'IA dans leur quotidien.",
-      en: "Coaching IA 1-to-1 à Trélazé : sessions individuelles pour dirigeants TPE/PME, commerçants, artisans et professions libérales souhaitant intégrer l'IA dans leur quotidien.",
+      fr: "Coaching IA 1-to-1 à Trélazé : sessions individuelles pour dirigeants de PME et d'ETI, commerçants, artisans et professions libérales souhaitant intégrer l'IA dans leur quotidien.",
+      en: "Coaching IA 1-to-1 à Trélazé : sessions individuelles pour dirigeants de PME et d'ETI, commerçants, artisans et professions libérales souhaitant intégrer l'IA dans leur quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const TRELAZE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces de proximité trélazéens ?",
-      a: "Oui, nous accompagnons les commerces de proximité à Trélazé : agents conversationnels WhatsApp/Messenger, automatisation gestion stocks, marketing IA personnalisé, fidélisation clients. Formats adaptés aux petites structures.",
+      a: "Oui, nous accompagnons les commerces de proximité à Trélazé : agents conversationnels WhatsApp/Messenger, automatisation gestion stocks, marketing IA personnalisé, fidélisation clients. Formats adaptés aux PME.",
     },
     {
       q: "Quels secteurs ciblez-vous à Trélazé ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const APT_COPY: VilleCopy = {
   pitchFr:
-    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. TPE artisans et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. PME artisanales et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. TPE artisans et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. PME artisanales et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Apt (84). Nous accompagnons TPE artisans, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Apt (84). Nous accompagnons PME artisanales, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Apt (84). Nous accompagnons TPE artisans, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Apt (84). Nous accompagnons PME artisanales, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & tourisme rural",
   ecosystemFr:
-    "Apt est sous-préfecture du Vaucluse, positionnée au cœur du Parc Naturel Régional du Luberon. Son économie repose sur l'agroalimentaire historique (confiseries de fruits confits, capitale mondiale du fruit confit), les TPE artisans (BTP, métiers d'art, poteries d'ocre), les PME tourisme rural et hôtellerie, la viticulture AOC Luberon, les commerces et services administratifs de sous-préfecture.",
+    "Apt est sous-préfecture du Vaucluse, positionnée au cœur du Parc Naturel Régional du Luberon. Son économie repose sur l'agroalimentaire historique (confiseries de fruits confits, capitale mondiale du fruit confit), les PME artisanales (BTP, métiers d'art, poteries d'ocre), les PME tourisme rural et hôtellerie, la viticulture AOC Luberon, les commerces et services administratifs de sous-préfecture.",
   ecosystemEn:
-    "Apt est sous-préfecture du Vaucluse, positionnée au cœur du Parc Naturel Régional du Luberon. Son économie repose sur l'agroalimentaire historique (confiseries de fruits confits, capitale mondiale du fruit confit), les TPE artisans (BTP, métiers d'art, poteries d'ocre), les PME tourisme rural et hôtellerie, la viticulture AOC Luberon, les commerces et services administratifs de sous-préfecture.",
+    "Apt est sous-préfecture du Vaucluse, positionnée au cœur du Parc Naturel Régional du Luberon. Son économie repose sur l'agroalimentaire historique (confiseries de fruits confits, capitale mondiale du fruit confit), les PME artisanales (BTP, métiers d'art, poteries d'ocre), les PME tourisme rural et hôtellerie, la viticulture AOC Luberon, les commerces et services administratifs de sous-préfecture.",
   distancesFr:
     "Cavaillon à 35 min. Avignon à 55 min. Aix-en-Provence à 50 min. Roussillon à 15 min. Gordes à 25 min. Gare TGV Avignon à 1h. Aéroport Marseille-Provence à 1h15. Accès N100.",
   distancesEn:
@@ -24,18 +24,18 @@ export const APT_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME agroalimentaire (fruits confits, confiseries)",
     "Tourisme rural & hôtellerie Luberon",
-    "TPE artisanat & métiers d'art (ocres)",
+    "PME de l'artisanat & métiers d'art (ocres)",
     "Viticulture AOC Luberon",
     "Commerces & services publics",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Apt : diagnostic adapté aux TPE artisans, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Apt : diagnostic adapté aux TPE artisans, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Apt : diagnostic adapté aux PME artisanales, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Apt : diagnostic adapté aux PME artisanales, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Apt : ateliers pour équipes TPE/PME agroalimentaires, viticulteurs, artisans métiers d'art et hôteliers. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
-      en: "Interventions IA sur site à Apt : ateliers pour équipes TPE/PME agroalimentaires, viticulteurs, artisans métiers d'art et hôteliers. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      fr: "Interventions IA sur site à Apt : ateliers pour équipes PME et ETI agroalimentaires, viticulteurs, artisans métiers d'art et hôteliers. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      en: "Interventions IA sur site à Apt : ateliers pour équipes PME et ETI agroalimentaires, viticulteurs, artisans métiers d'art et hôteliers. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
     },
     implementation: {
       fr: "Implémentation IA à Apt : automatisation traçabilité agroalimentaire, e-commerce direct producteur, gestion réservations hôtels et gîtes Luberon, content marketing touristique multilingue, prévision de récolte viticole. RGPD strict.",
@@ -53,7 +53,7 @@ export const APT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Apt  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME agroalimentaires, viticulteurs et hôteliers aptésiens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME agroalimentaires, viticulteurs et hôteliers aptésiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les confiseries et acteurs de l'agroalimentaire aptésien ?",

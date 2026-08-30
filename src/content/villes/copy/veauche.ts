@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VEAUCHE_COPY: VilleCopy = {
   pitchFr:
-    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
+    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, PME du BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
+    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, PME du BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), PME du BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), PME du BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "proche saint-étienne",
   ecosystemFr:
-    "Veauche est intégrée à Saint-Étienne Métropole, dans la plaine du Forez à l'ouest de Saint-Étienne. Héritage industriel verrier important (production de verre, bouteilles, conditionnement — savoir-faire local ancré). Tissu PME industrielles diversifiées contemporaines, agriculture plaine Forez, TPE artisanat BTP, commerces.",
+    "Veauche est intégrée à Saint-Étienne Métropole, dans la plaine du Forez à l'ouest de Saint-Étienne. Héritage industriel verrier important (production de verre, bouteilles, conditionnement — savoir-faire local ancré). Tissu PME industrielles diversifiées contemporaines, agriculture plaine Forez, PME du BTP, commerces.",
   ecosystemEn:
-    "Veauche est intégrée à Saint-Étienne Métropole, dans la plaine du Forez à l'ouest de Saint-Étienne. Héritage industriel verrier important (production de verre, bouteilles, conditionnement — savoir-faire local ancré). Tissu PME industrielles diversifiées contemporaines, agriculture plaine Forez, TPE artisanat BTP, commerces.",
+    "Veauche est intégrée à Saint-Étienne Métropole, dans la plaine du Forez à l'ouest de Saint-Étienne. Héritage industriel verrier important (production de verre, bouteilles, conditionnement — savoir-faire local ancré). Tissu PME industrielles diversifiées contemporaines, agriculture plaine Forez, PME du BTP, commerces.",
   distancesFr:
     "Saint-Étienne centre à 20 min. Aéroport Saint-Étienne-Bouthéon à 5 min. Lyon centre à 50 min. Andrézieux-Bouthéon à 5 min. Montbrison à 20 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const VEAUCHE_COPY: VilleCopy = {
     "Industrie verrière (héritage local)",
     "PME industrielles diversifiées",
     "Agriculture plaine Forez",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Veauche : formats adaptés à l'atelier industriel (filière verre), exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const VEAUCHE_COPY: VilleCopy = {
       en: "Implémentation IA à Veauche : contrôle qualité par vision (filière verre), prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B. Saint-Étienne Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Veauche : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants verriers/industriels, agriculteurs, artisans, gérants TPE/PME veauchoises.",
-      en: "Coaching 1-to-1 à Veauche : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants verriers/industriels, agriculteurs, artisans, gérants TPE/PME veauchoises.",
+      fr: "Coaching 1-to-1 à Veauche : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants verriers/industriels, agriculteurs, artisans, gérants PME et ETI veauchoises.",
+      en: "Coaching 1-to-1 à Veauche : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants verriers/industriels, agriculteurs, artisans, gérants PME et ETI veauchoises.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VEAUCHE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs plaine du Forez sur leurs cas IA : prédiction récoltes par météo, classification photos cultures, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans veauchoises ?",
-      a: "Pour les TPE artisans BTP et commerçants à Veauche, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME artisanales veauchoises ?",
+      a: "Pour les PME du BTP et du commerce à Veauche, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

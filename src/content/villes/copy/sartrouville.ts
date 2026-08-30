@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const SARTROUVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Sartrouville (78), 52 763 habitants en 2023, deuxième commune des Yvelines après Versailles, située à 10 km au nord-ouest de Paris dans la boucle de la Seine. Limitrophe d'Argenteuil, Bezons, Houilles, Carrières-sur-Seine, Montesson, Cormeilles-en-Parisis et Maisons-Laffitte. Tissu TPE commerçants, PME services et BTP, professions libérales, activités tertiaires. Zones industrielles au nord (Le Prunay, Les Perriers, Les Trembleaux). Axion-IA accompagne ces structures sur leurs cas IA concrets.",
+    "Sartrouville (78), 52 763 habitants en 2023, deuxième commune des Yvelines après Versailles, située à 10 km au nord-ouest de Paris dans la boucle de la Seine. Limitrophe d'Argenteuil, Bezons, Houilles, Carrières-sur-Seine, Montesson, Cormeilles-en-Parisis et Maisons-Laffitte. Tissu PME du commerce, PME services et BTP, professions libérales, activités tertiaires. Zones industrielles au nord (Le Prunay, Les Perriers, Les Trembleaux). Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   pitchEn:
-    "Sartrouville (78), 52 763 habitants en 2023, deuxième commune des Yvelines après Versailles, située à 10 km au nord-ouest de Paris dans la boucle de la Seine. Limitrophe d'Argenteuil, Bezons, Houilles, Carrières-sur-Seine, Montesson, Cormeilles-en-Parisis et Maisons-Laffitte. Tissu TPE commerçants, PME services et BTP, professions libérales, activités tertiaires. Zones industrielles au nord (Le Prunay, Les Perriers, Les Trembleaux). Axion-IA accompagne ces structures sur leurs cas IA concrets.",
+    "Sartrouville (78), 52 763 habitants en 2023, deuxième commune des Yvelines après Versailles, située à 10 km au nord-ouest de Paris dans la boucle de la Seine. Limitrophe d'Argenteuil, Bezons, Houilles, Carrières-sur-Seine, Montesson, Cormeilles-en-Parisis et Maisons-Laffitte. Tissu PME du commerce, PME services et BTP, professions libérales, activités tertiaires. Zones industrielles au nord (Le Prunay, Les Perriers, Les Trembleaux). Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sartrouville (78). Nous accompagnons en priorité les TPE commerçants et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sartrouville (78). Nous accompagnons en priorité les PME du commerce et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sartrouville (78). Nous accompagnons en priorité les TPE commerçants et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
-  seoHook: "TPE/PME services & zones industrielles Boucle de Seine",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sartrouville (78). Nous accompagnons en priorité les PME du commerce et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+  seoHook: "PME et ETI services & zones industrielles Boucle de Seine",
   ecosystemFr:
     "Sartrouville, deuxième commune des Yvelines, structure une partie de l'économie de la Boucle de Seine. Ses zones industrielles du nord (Le Prunay, Les Perriers, Les Trembleaux) accueillent PME services, logistique et activités tertiaires. Héritière d'une histoire industrielle (construction navale Chantier Jouët de 1873 à 1965, hydravions CAMS dans les années 1920), la ville polarise aujourd'hui commerce de détail, services aux particuliers, BTP et professions libérales.",
   ecosystemEn:
@@ -31,8 +31,8 @@ export const SARTROUVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sartrouville : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Sartrouville : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Sartrouville : diagnostic pour PME du commerce, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Sartrouville : diagnostic pour PME du commerce, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sartrouville : ateliers adaptés aux commerces centre-ville, artisans BTP, PME services et cabinets libéraux. Vos équipes repartent autonomes sur outils IA métier.",
@@ -43,8 +43,8 @@ export const SARTROUVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Sartrouville : code custom pour automatiser devis et facturation BTP, classification documents PME services, agents IA prise de RDV cabinets libéraux, gestion stocks commerce. Pas de no-code, livrables sur mesure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sartrouville : sessions sur site (centre-ville, zones Le Prunay/Les Perriers) ou en visio pour dirigeants TPE, gérants PME et professions libérales de la Boucle de Seine.",
-      en: "Coaching 1-to-1 à Sartrouville : sessions sur site (centre-ville, zones Le Prunay/Les Perriers) ou en visio pour dirigeants TPE, gérants PME et professions libérales de la Boucle de Seine.",
+      fr: "Coaching 1-to-1 à Sartrouville : sessions sur site (centre-ville, zones Le Prunay/Les Perriers) ou en visio pour dirigeants de PME et d'ETI, gérants PME et professions libérales de la Boucle de Seine.",
+      en: "Coaching 1-to-1 à Sartrouville : sessions sur site (centre-ville, zones Le Prunay/Les Perriers) ou en visio pour dirigeants de PME et d'ETI, gérants PME et professions libérales de la Boucle de Seine.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const SARTROUVILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-ready",
-            detail:
-              "Pour les indépendants, artisans et jeunes pousses de la Pépinière d'entreprises et de la ZFU de Sartrouville : site rapide, mobile-first, avec un premier module IA (chatbot, génération de devis simple).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier + e-commerce B2B",
@@ -172,12 +166,6 @@ export const SARTROUVILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase or e-commerce site",
-            detail:
-              "For freelancers, craftspeople and young ventures from the Sartrouville incubator and ZFU: a fast, mobile-first site with a first AI module (chatbot, simple quote generation).",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform + B2B e-commerce",
             detail:
@@ -239,7 +227,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerçants de Sartrouville ?",
-      a: "Oui, les TPE BTP et commerçants sont notre cible prioritaire. Cas typiques : automatisation devis et facturation, classification photos chantier, planification interventions, agents IA réponse client, gestion stocks.",
+      a: "Oui, les PME BTP et commerçants sont notre cible prioritaire. Cas typiques : automatisation devis et facturation, classification photos chantier, planification interventions, agents IA réponse client, gestion stocks.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Sartrouville ?",

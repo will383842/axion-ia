@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORNIC_COPY: VilleCopy = {
   pitchFr:
-    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
+    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu PME du commerce, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
   pitchEn:
-    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
+    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu PME du commerce, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons PME du commerce, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons PME du commerce, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
   seoHook: "bassin pornicais",
   ecosystemFr:
     "Pornic (18 745 hab) est une station balnéaire réputée de la Côte de Jade, en Loire-Atlantique. Port de plaisance et de pêche, thalassothérapie, commerces touristiques, artisanat, ostréiculture et agriculture périurbaine. Proximité Nantes (50 min), Saint-Nazaire (35 min). Destination touristique majeure du littoral atlantique sud-Loire.",
@@ -30,8 +30,8 @@ export const PORNIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pornic : diagnostic adapté aux PME du commerce, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pornic : diagnostic adapté aux PME du commerce, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pornic : formats adaptés à l'hôtellerie-restauration, commerce touristique, thalasso et artisanat littoral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const PORNIC_COPY: VilleCopy = {
       en: "Implémentation IA à Pornic : revenue management hôtelier, réservation en ligne augmentée, CRM clients tourisme, automatisation facturation et agents conversationnels pour les PME de la Côte de Jade.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pornic : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants hôtels-restaurants, artisans et professions libérales du littoral sud-Loire.",
-      en: "Coaching 1-to-1 à Pornic : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants hôtels-restaurants, artisans et professions libérales du littoral sud-Loire.",
+      fr: "Coaching 1-to-1 à Pornic : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants hôtels-restaurants, artisans et professions libérales du littoral sud-Loire.",
+      en: "Coaching 1-to-1 à Pornic : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants hôtels-restaurants, artisans et professions libérales du littoral sud-Loire.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PORNIC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pornic  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants de Pornic ?",
@@ -65,7 +65,7 @@ export const PORNIC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Pornic ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Pornic. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Pornic. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

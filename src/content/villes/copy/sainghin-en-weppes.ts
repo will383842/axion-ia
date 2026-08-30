@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
   pitchFr:
-    "Sainghin-en-Weppes (59), commune des Weppes à l'ouest de Lille, entre La Bassée et Haubourdin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME agricoles de la plaine des Weppes, artisanat, commerce de bourg, services aux entreprises du bassin lillois ouest, professions libérales. Axion-IA couvre les activités professionnelles du bassin des Weppes et de l'ouest lillois.",
+    "Sainghin-en-Weppes (59), commune des Weppes à l'ouest de Lille, entre La Bassée et Haubourdin, intégrée à la Métropole Européenne de Lille. Tissu économique : PME et ETI agricoles de la plaine des Weppes, artisanat, commerce de bourg, services aux entreprises du bassin lillois ouest, professions libérales. Axion-IA couvre les activités professionnelles du bassin des Weppes et de l'ouest lillois.",
   pitchEn:
-    "Sainghin-en-Weppes (59), commune des Weppes à l'ouest de Lille, entre La Bassée et Haubourdin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME agricoles de la plaine des Weppes, artisanat, commerce de bourg, services aux entreprises du bassin lillois ouest, professions libérales. Axion-IA couvre les activités professionnelles du bassin des Weppes et de l'ouest lillois.",
+    "Sainghin-en-Weppes (59), commune des Weppes à l'ouest de Lille, entre La Bassée et Haubourdin, intégrée à la Métropole Européenne de Lille. Tissu économique : PME et ETI agricoles de la plaine des Weppes, artisanat, commerce de bourg, services aux entreprises du bassin lillois ouest, professions libérales. Axion-IA couvre les activités professionnelles du bassin des Weppes et de l'ouest lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainghin-en-Weppes (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires des Weppes, artisans, commerçants, prestataires de services B2B de l'ouest lillois et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainghin-en-Weppes (59). Nous accompagnons PME et ETI : exploitations agricoles et PME agroalimentaires des Weppes, artisans, commerçants, prestataires de services B2B de l'ouest lillois et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainghin-en-Weppes (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires des Weppes, artisans, commerçants, prestataires de services B2B de l'ouest lillois et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainghin-en-Weppes (59). Nous accompagnons PME et ETI : exploitations agricoles et PME agroalimentaires des Weppes, artisans, commerçants, prestataires de services B2B de l'ouest lillois et professions libérales.",
   seoHook: "bassin lillois ouest",
   ecosystemFr:
     "Sainghin-en-Weppes est une commune périurbaine des Weppes, plaine agricole à l'ouest de Lille (20 min), entre La Bassée et Haubourdin. L'économie locale combine exploitations agricoles (grandes cultures céréalières, betteraves), artisanat du bâtiment, commerces de bourg, services aux entreprises irriguant l'ouest de la métropole lilloise et professions libérales. La proximité de l'A25 (Lille-Dunkerque) et des zones d'activités de La Bassée et Seclin structure les échanges économiques.",
@@ -30,8 +30,8 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux TPE et PME agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux TPE et PME agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux PME et ETI agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux PME et ETI agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainghin-en-Weppes : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
       en: "Implémentation IA à Sainghin-en-Weppes : prévision rendements et planification assolements, traçabilité agroalimentaire automatisée, CRM augmenté artisans-commerçants, copilotes IA gestion documentaire cabinets libéraux, automatisation devis-facturation prestataires ouest lillois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sainghin-en-Weppes : sessions dans votre exploitation, atelier, bureau ou en visio. Dirigeants TPE/PME des Weppes et de l'ouest lillois souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Sainghin-en-Weppes : sessions dans votre exploitation, atelier, bureau ou en visio. Dirigeants TPE/PME des Weppes et de l'ouest lillois souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Sainghin-en-Weppes : sessions dans votre exploitation, atelier, bureau ou en visio. Dirigeants PME et ETI des Weppes et de l'ouest lillois souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Sainghin-en-Weppes : sessions dans votre exploitation, atelier, bureau ou en visio. Dirigeants PME et ETI des Weppes et de l'ouest lillois souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et PME agroalimentaires ?",
-      a: "Oui, nous accompagnons les TPE et PME agricoles et agroalimentaires des Weppes sur leurs cas IA : prévision rendements et planification rotations culturales, détection maladies et ravageurs par imagerie drone, traçabilité sanitaire automatisée, optimisation logistique récoltes et stockage, copilotes administratifs PAC et réglementation.",
+      a: "Oui, nous accompagnons les PME et ETI agricoles et agroalimentaires des Weppes sur leurs cas IA : prévision rendements et planification rotations culturales, détection maladies et ravageurs par imagerie drone, traçabilité sanitaire automatisée, optimisation logistique récoltes et stockage, copilotes administratifs PAC et réglementation.",
     },
     {
       q: "Tarifs audit IA à Sainghin-en-Weppes  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des Weppes et de l'ouest lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI des Weppes et de l'ouest lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants des Weppes ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LANGRES_COPY: VilleCopy = {
   pitchFr:
-    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
+    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, PME artisanales, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
   pitchEn:
-    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
+    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, PME artisanales, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langres (52). Nous accompagnons tous types d'activités : PME artisanales couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Langres (52). Nous accompagnons tous types d'activités : PME artisanales couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   seoHook: "artisanat coutellerie & agroalimentaires",
   ecosystemFr:
-    "Langres est une cité fortifiée historique, sous-préfecture de la Haute-Marne sur le plateau de Langres. Berceau de Diderot. Coutellerie centenaire, PME agroalimentaires, TPE artisanat, tourisme patrimonial, commerces et services publics.",
+    "Langres est une cité fortifiée historique, sous-préfecture de la Haute-Marne sur le plateau de Langres. Berceau de Diderot. Coutellerie centenaire, PME agroalimentaires, PME de l'artisanat, tourisme patrimonial, commerces et services publics.",
   ecosystemEn:
-    "Langres est une cité fortifiée historique, sous-préfecture de la Haute-Marne sur le plateau de Langres. Berceau de Diderot. Coutellerie centenaire, PME agroalimentaires, TPE artisanat, tourisme patrimonial, commerces et services publics.",
+    "Langres est une cité fortifiée historique, sous-préfecture de la Haute-Marne sur le plateau de Langres. Berceau de Diderot. Coutellerie centenaire, PME agroalimentaires, PME de l'artisanat, tourisme patrimonial, commerces et services publics.",
   distancesFr:
     "Chaumont à 35 min. Dijon à 1h10. Troyes à 1h30. Paris à 3h TGV (via Chaumont). Aéroport Dijon-Bourgogne à 1h15. Gare SNCF Langres (TER Champagne-Ardenne).",
   distancesEn:
     "Chaumont à 35 min. Dijon à 1h10. Troyes à 1h30. Paris à 3h TGV (via Chaumont). Aéroport Dijon-Bourgogne à 1h15. Gare SNCF Langres (TER Champagne-Ardenne).",
   topSectorsNaf: [
-    "TPE artisanat & coutellerie",
+    "PME de l'artisanat & coutellerie",
     "PME agroalimentaires",
     "Tourisme patrimonial & culturel",
     "Commerce de proximité centre fortifié",
@@ -30,8 +30,8 @@ export const LANGRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Langres : diagnostic adapté aux PME artisanales couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Langres : diagnostic adapté aux PME artisanales couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langres : formats adaptés à l'atelier coutelier, exploitation agroalimentaire, office de tourisme, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -53,14 +53,14 @@ export const LANGRES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans couteliers de Langres ?",
-      a: "Oui, nous accompagnons les TPE artisans couteliers sur des cas IA concrets : classification photos produits, automatisation devis, gestion stocks, catalogue e-commerce intelligent et agents conversationnels B2C.",
+      a: "Oui, nous accompagnons les PME artisanales couteliers sur des cas IA concrets : classification photos produits, automatisation devis, gestion stocks, catalogue e-commerce intelligent et agents conversationnels B2C.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du plateau ?",
       a: "Oui, automatisation traçabilité, prédiction récoltes, contrôle qualité par vision, optimisation logistique et classification documents réglementaires.",
     },
     {
-      q: "Quels services pour les TPE et commerces centre fortifié ?",
+      q: "Quels services pour les PME et commerces centre fortifié ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {

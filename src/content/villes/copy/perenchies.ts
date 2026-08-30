@@ -9,9 +9,9 @@ export const PERENCHIES_COPY: VilleCopy = {
   pitchEn:
     "Pérenchies (59), commune résidentielle de la Métropole Européenne de Lille à l'ouest de l'agglomération, bénéficie de la proximité immédiate de Lille (15 min) et de la frontière belge. Tissu économique : commerces de proximité, artisanat, services aux entreprises de l'agglo lilloise, PME diffuses. Axion-IA y intervient pour tous types d'activités du bassin lillois ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pérenchies (59). Nous accompagnons TPE et PME : commerçants de proximité, artisans, prestataires de services aux entreprises lilloises, PME résidentes de l'agglomération ouest et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pérenchies (59). Nous accompagnons PME et ETI : commerçants de proximité, artisans, prestataires de services aux entreprises lilloises, PME résidentes de l'agglomération ouest et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pérenchies (59). Nous accompagnons TPE et PME : commerçants de proximité, artisans, prestataires de services aux entreprises lilloises, PME résidentes de l'agglomération ouest et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pérenchies (59). Nous accompagnons PME et ETI : commerçants de proximité, artisans, prestataires de services aux entreprises lilloises, PME résidentes de l'agglomération ouest et professions libérales.",
   seoHook: "artisanat local & services aux",
   ecosystemFr:
     "Pérenchies est une commune résidentielle de la première couronne lilloise ouest, intégrée à la Métropole Européenne de Lille (MEL). L'économie locale est portée par les commerces et services de proximité, l'artisanat, et les PME diffuses bénéficiant de l'attractivité métropolitaine. Sa position entre Lille, Armentières et la frontière belge en fait un point d'ancrage pour PME en lien avec le tissu transfrontalier franco-belge.",
@@ -25,7 +25,7 @@ export const PERENCHIES_COPY: VilleCopy = {
     "Commerce de proximité",
     "Artisanat local",
     "Services aux entreprises (B2B)",
-    "TPE et PME résidentielles",
+    "PME et ETI résidentielles",
     "Professions libérales",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const PERENCHIES_COPY: VilleCopy = {
       en: "Implémentation IA à Pérenchies : CRM augmenté pour commerces de proximité, automatisation devis-facturation artisans, agents conversationnels prestataires B2B, outils transfrontaliers franco-belges.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pérenchies : sessions dans votre commerce, atelier ou bureau, ou en visio. Dirigeants TPE/PME de l'agglo lilloise ouest souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Pérenchies : sessions dans votre commerce, atelier ou bureau, ou en visio. Dirigeants TPE/PME de l'agglo lilloise ouest souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Pérenchies : sessions dans votre commerce, atelier ou bureau, ou en visio. Dirigeants PME et ETI de l'agglo lilloise ouest souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Pérenchies : sessions dans votre commerce, atelier ou bureau, ou en visio. Dirigeants PME et ETI de l'agglo lilloise ouest souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const PERENCHIES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pérenchies  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la MEL ouest, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, artisanat, services B2B, profession libérale). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de la MEL ouest, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, artisanat, services B2B, profession libérale). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME B2B prestataires de l'agglo lilloise ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   pitchFr:
-    "Soisy-sous-Montmorency (95), commune résidentielle de la vallée de Montmorency au nord de Paris, offre un cadre verdoyant adossé à la forêt de Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires santé. Axion-IA y intervient pour tous types d'activités.",
+    "Soisy-sous-Montmorency (95), commune résidentielle de la vallée de Montmorency au nord de Paris, offre un cadre verdoyant adossé à la forêt de Montmorency. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires santé. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Soisy-sous-Montmorency (95), commune résidentielle de la vallée de Montmorency au nord de Paris, offre un cadre verdoyant adossé à la forêt de Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires santé. Axion-IA y intervient pour tous types d'activités.",
+    "Soisy-sous-Montmorency (95), commune résidentielle de la vallée de Montmorency au nord de Paris, offre un cadre verdoyant adossé à la forêt de Montmorency. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires santé. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",
+    "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu PME du commerce et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",
   ecosystemEn:
-    "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",
+    "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu PME du commerce et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",
   distancesFr:
     "Enghien-les-Bains à 5 min. Montmorency à 5 min. Gare transilien Soisy-sous-Montmorency. Paris Gare du Nord à 30 min. Aéroport Paris-CDG à 30 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
       en: "Implémentation IA à Soisy-sous-Montmorency : CRM augmenté commerçants, automatisation gestion cabinet médical, outils réservation restauration, planning intelligent prestataires bien-être, facturation PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Soisy-sous-Montmorency : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME soiséens, professions libérales de santé, artisans.",
-      en: "Coaching 1-to-1 à Soisy-sous-Montmorency : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME soiséens, professions libérales de santé, artisans.",
+      fr: "Coaching 1-to-1 à Soisy-sous-Montmorency : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI soiséens, professions libérales de santé, artisans.",
+      en: "Coaching 1-to-1 à Soisy-sous-Montmorency : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI soiséens, professions libérales de santé, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet médical, secrétariat IA, CRM patients, prise de rendez-vous intelligente, facturation automatisée, outils de pilotage activité.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

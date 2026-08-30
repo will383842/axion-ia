@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Denis-lès-Bourg (01, Ain), commune en banlieue ouest immédiate de Bourg-en-Bresse, partage l'économie bressoise : volaille de Bresse AOP, agriculture, plasturgie et services. Son tissu mêle TPE artisans et agricoles, PME tertiaires et sous-traitantes, commerces de proximité. Axion-IA accompagne en priorité ces TPE puis les PME de l'agglomération burgienne, l'ETI restant marginale.",
+    "Saint-Denis-lès-Bourg (01, Ain), commune en banlieue ouest immédiate de Bourg-en-Bresse, partage l'économie bressoise : volaille de Bresse AOP, agriculture, plasturgie et services. Son tissu mêle PME artisanales et agricoles, PME tertiaires et sous-traitantes, commerces de proximité. Axion-IA accompagne en priorité ces les PME puis les ETI de l'agglomération burgienne, les grands groupes venant en complément.",
   pitchEn:
-    "Saint-Denis-lès-Bourg (01, Ain), commune en banlieue ouest immédiate de Bourg-en-Bresse, partage l'économie bressoise : volaille de Bresse AOP, agriculture, plasturgie et services. Son tissu mêle TPE artisans et agricoles, PME tertiaires et sous-traitantes, commerces de proximité. Axion-IA accompagne en priorité ces TPE puis les PME de l'agglomération burgienne, l'ETI restant marginale.",
+    "Saint-Denis-lès-Bourg (01, Ain), commune en banlieue ouest immédiate de Bourg-en-Bresse, partage l'économie bressoise : volaille de Bresse AOP, agriculture, plasturgie et services. Son tissu mêle PME artisanales et agricoles, PME tertiaires et sous-traitantes, commerces de proximité. Axion-IA accompagne en priorité ces les PME puis les ETI de l'agglomération burgienne, les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-lès-Bourg (01) et dans l'agglomération de Bourg-en-Bresse. Nous accompagnons en priorité les TPE — éleveurs et exploitants bressois, artisans, commerces — puis les PME tertiaires et sous-traitantes (agroalimentaire, plasturgie), l'ETI restant marginale. Nous définissons un cas d'usage IA concret — traçabilité AOP, planning, gestion documentaire, relation client — avant tout déploiement, sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-lès-Bourg (01) et dans l'agglomération de Bourg-en-Bresse. Nous accompagnons en priorité les PME — éleveurs et exploitants bressois, artisans, commerces — puis les PME tertiaires et sous-traitantes (agroalimentaire, plasturgie), les grands groupes venant en complément. Nous définissons un cas d'usage IA concret — traçabilité AOP, planning, gestion documentaire, relation client — avant tout déploiement, sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-lès-Bourg (01) et dans l'agglomération de Bourg-en-Bresse. Nous accompagnons en priorité les TPE — éleveurs et exploitants bressois, artisans, commerces — puis les PME tertiaires et sous-traitantes (agroalimentaire, plasturgie), l'ETI restant marginale. Nous définissons un cas d'usage IA concret — traçabilité AOP, planning, gestion documentaire, relation client — avant tout déploiement, sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-lès-Bourg (01) et dans l'agglomération de Bourg-en-Bresse. Nous accompagnons en priorité les PME — éleveurs et exploitants bressois, artisans, commerces — puis les PME tertiaires et sous-traitantes (agroalimentaire, plasturgie), les grands groupes venant en complément. Nous définissons un cas d'usage IA concret — traçabilité AOP, planning, gestion documentaire, relation client — avant tout déploiement, sur site ou en visio.",
   seoHook: "agglo burgienne & agriculture",
   ecosystemFr:
-    "Saint-Denis-lès-Bourg est une commune périurbaine accolée à Bourg-en-Bresse, intégrée à l'agglomération et à l'économie de la Bresse. On y trouve des exploitations agricoles et d'élevage (filière volaille AOP), des TPE artisans et BTP, des PME tertiaires et sous-traitantes de l'agroalimentaire et de la plasturgie, ainsi que des commerces de proximité desservant le bassin burgien.",
+    "Saint-Denis-lès-Bourg est une commune périurbaine accolée à Bourg-en-Bresse, intégrée à l'agglomération et à l'économie de la Bresse. On y trouve des exploitations agricoles et d'élevage (filière volaille AOP), des PME artisanales et BTP, des PME tertiaires et sous-traitantes de l'agroalimentaire et de la plasturgie, ainsi que des commerces de proximité desservant le bassin burgien.",
   ecosystemEn:
-    "Saint-Denis-lès-Bourg est une commune périurbaine accolée à Bourg-en-Bresse, intégrée à l'agglomération et à l'économie de la Bresse. On y trouve des exploitations agricoles et d'élevage (filière volaille AOP), des TPE artisans et BTP, des PME tertiaires et sous-traitantes de l'agroalimentaire et de la plasturgie, ainsi que des commerces de proximité desservant le bassin burgien.",
+    "Saint-Denis-lès-Bourg est une commune périurbaine accolée à Bourg-en-Bresse, intégrée à l'agglomération et à l'économie de la Bresse. On y trouve des exploitations agricoles et d'élevage (filière volaille AOP), des PME artisanales et BTP, des PME tertiaires et sous-traitantes de l'agroalimentaire et de la plasturgie, ainsi que des commerces de proximité desservant le bassin burgien.",
   distancesFr:
     "Bourg-en-Bresse centre à 5 min. Gare de Bourg-en-Bresse à 10 min (Paris en 2h env. via TGV Mâcon). Lyon centre à 1h par l'A40/A42. Aéroport Lyon-Saint-Exupéry à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-lès-Bourg : diagnostic ciblé pour TPE agricoles et artisanales, PME tertiaires et sous-traitantes de l'agglo burgienne, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
-      en: "Audit IA à Saint-Denis-lès-Bourg : diagnostic ciblé pour TPE agricoles et artisanales, PME tertiaires et sous-traitantes de l'agglo burgienne, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      fr: "Audit IA à Saint-Denis-lès-Bourg : diagnostic ciblé pour PME agricoles et artisanales, PME tertiaires et sous-traitantes de l'agglo burgienne, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA à Saint-Denis-lès-Bourg : diagnostic ciblé pour PME agricoles et artisanales, PME tertiaires et sous-traitantes de l'agglo burgienne, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-lès-Bourg : ateliers pratiques pour l'exploitation, le bureau, l'atelier ou le commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Denis-lès-Bourg : traçabilité AOP, classification de photos d'élevage et de cultures, automatisation de workflow, agents conversationnels B2B et CRM augmentés en Bresse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Denis-lès-Bourg : sessions pour dirigeants de TPE agricoles et artisanales et de PME tertiaires de l'agglo burgienne, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Saint-Denis-lès-Bourg : sessions pour dirigeants de TPE agricoles et artisanales et de PME tertiaires de l'agglo burgienne, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Saint-Denis-lès-Bourg : sessions pour dirigeants de PME agricoles et artisanales et de PME tertiaires de l'agglo burgienne, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Saint-Denis-lès-Bourg : sessions pour dirigeants de PME agricoles et artisanales et de PME tertiaires de l'agglo burgienne, dans vos locaux ou en visio.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Saint-Denis-lès-Bourg : vitrines de producteurs AOP, portails de PME tertiaires et sites artisans enrichis d'IA — fiches produits, devis en ligne, qualification de leads.",
@@ -57,7 +57,7 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs et exploitants bressois ?",
-      a: "Oui, c'est notre priorité locale. Pour les TPE agricoles et la filière volaille de Bresse AOP, l'IA aide à la traçabilité, la classification de photos d'élevage et de cultures, et la gestion d'exploitation.",
+      a: "Oui, c'est notre priorité locale. Pour les PME agricoles et la filière volaille de Bresse AOP, l'IA aide à la traçabilité, la classification de photos d'élevage et de cultures, et la gestion d'exploitation.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de l'agglomération ?",
@@ -65,7 +65,7 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Saint-Denis-lès-Bourg ?",
-      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la PME à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Denis-lès-Bourg ?",

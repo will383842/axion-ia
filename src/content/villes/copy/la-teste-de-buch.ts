@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
   pitchFr:
-    "La Teste-de-Buch, capitale historique du Pays de Buch (33) sur le bassin d'Arcachon, mêle ostréiculture (1er bassin ostréicole français), tourisme balnéaire premium (Pyla, dune), viticulture Pays de Buch et tissu TPE/PME locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et acteurs du tourisme bassin d'Arcachon.",
+    "La Teste-de-Buch, capitale historique du Pays de Buch (33) sur le bassin d'Arcachon, mêle ostréiculture (1er bassin ostréicole français), tourisme balnéaire premium (Pyla, dune), viticulture Pays de Buch et tissu PME et ETI locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et acteurs du tourisme bassin d'Arcachon.",
   pitchEn:
-    "La Teste-de-Buch, capitale historique du Pays de Buch (33) sur le bassin d'Arcachon, mêle ostréiculture (1er bassin ostréicole français), tourisme balnéaire premium (Pyla, dune), viticulture Pays de Buch et tissu TPE/PME locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et acteurs du tourisme bassin d'Arcachon.",
+    "La Teste-de-Buch, capitale historique du Pays de Buch (33) sur le bassin d'Arcachon, mêle ostréiculture (1er bassin ostréicole français), tourisme balnéaire premium (Pyla, dune), viticulture Pays de Buch et tissu PME et ETI locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et acteurs du tourisme bassin d'Arcachon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Teste-de-Buch (33) sur le bassin d'Arcachon. Nous accompagnons les ostréiculteurs et coopératives maritimes, les acteurs du tourisme balnéaire (hôtels Pyla, restauration premium, locations saisonnières), les artisans, indépendants et PME tertiaires testérines sur leurs cas IA opérationnels.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Teste-de-Buch (33) sur le bassin d'Arcachon. Nous accompagnons les ostréiculteurs et coopératives maritimes, les acteurs du tourisme balnéaire (hôtels Pyla, restauration premium, locations saisonnières), les artisans, indépendants et PME tertiaires testérines sur leurs cas IA opérationnels.",
   seoHook: "ostréiculture filière & tourisme balnéaire",
   ecosystemFr:
-    "La Teste concentre l'activité économique du sud bassin d'Arcachon : 1er port ostréicole français (production huîtres Marennes-Oléron concurrent), tourisme balnéaire haut de gamme (Pyla, Dune du Pilat, capacité hôtelière premium), viticulture Pays de Buch (vins de sable). Tissu TPE artisanat (BTP, services), PME tertiaires liées au tourisme.",
+    "La Teste concentre l'activité économique du sud bassin d'Arcachon : 1er port ostréicole français (production huîtres Marennes-Oléron concurrent), tourisme balnéaire haut de gamme (Pyla, Dune du Pilat, capacité hôtelière premium), viticulture Pays de Buch (vins de sable). Tissu PME de l'artisanat (BTP, services), PME tertiaires liées au tourisme.",
   ecosystemEn:
-    "La Teste concentre l'activité économique du sud bassin d'Arcachon : 1er port ostréicole français (production huîtres Marennes-Oléron concurrent), tourisme balnéaire haut de gamme (Pyla, Dune du Pilat, capacité hôtelière premium), viticulture Pays de Buch (vins de sable). Tissu TPE artisanat (BTP, services), PME tertiaires liées au tourisme.",
+    "La Teste concentre l'activité économique du sud bassin d'Arcachon : 1er port ostréicole français (production huîtres Marennes-Oléron concurrent), tourisme balnéaire haut de gamme (Pyla, Dune du Pilat, capacité hôtelière premium), viticulture Pays de Buch (vins de sable). Tissu PME de l'artisanat (BTP, services), PME tertiaires liées au tourisme.",
   distancesFr:
     "Gare La Teste (TER ligne Bordeaux-Arcachon, 35 min Bordeaux-Saint-Jean). Aéroport Bordeaux-Mérignac à 50 min. Arcachon centre à 5 min. Pyla et Dune du Pilat à 10 min. Cap Ferret par bateau ou contournement (1h).",
   distancesEn:
@@ -25,13 +25,13 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
     "Ostréiculture & filière maritime",
     "Tourisme balnéaire premium (Pyla)",
     "Hôtellerie & restauration haut de gamme",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Viticulture Pays de Buch",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et TPE/PME du bassin d'Arcachon. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux artisans et petites structures.",
-      en: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et TPE/PME du bassin d'Arcachon. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux artisans et petites structures.",
+      fr: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et PME et ETI du bassin d'Arcachon. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux artisans et PME.",
+      en: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et PME et ETI du bassin d'Arcachon. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux artisans et PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Teste : sessions adaptées à la saisonnalité touristique. Demi-journée à 2 jours, vos équipes (réception hôtel, conchyliculteurs, restaurateurs) repartent avec outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
       en: "Implémentation IA à La Teste : agents conversationnels multilingues (tourisme), automatisation réservations hôtel/locations, classification photos restauration, traçabilité ostréiculture. Adapté au bassin d'Arcachon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Teste : sessions confidentielles dans votre cabane ostréicole, hôtel ou en visio. Conchyliculteurs, hôteliers Pyla, restaurateurs et gérants TPE/PME souhaitant intégrer l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à La Teste : sessions confidentielles dans votre cabane ostréicole, hôtel ou en visio. Conchyliculteurs, hôteliers Pyla, restaurateurs et gérants TPE/PME souhaitant intégrer l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à La Teste : sessions confidentielles dans votre cabane ostréicole, hôtel ou en visio. Conchyliculteurs, hôteliers Pyla, restaurateurs et gérants PME et ETI souhaitant intégrer l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à La Teste : sessions confidentielles dans votre cabane ostréicole, hôtel ou en visio. Conchyliculteurs, hôteliers Pyla, restaurateurs et gérants PME et ETI souhaitant intégrer l'IA dans leur métier.",
     },
   },
   services: {
@@ -84,12 +84,6 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de RDV) sur un site existant en quelques semaines, sans refonte — idéal pour ostréiculteurs du Petit Port, artisans BTP et indépendants testérins.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -170,12 +164,6 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, appointment booking) onto an existing site in a few weeks, no rebuild — ideal for Petit Port oyster farmers, construction craftsmen and La Teste freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

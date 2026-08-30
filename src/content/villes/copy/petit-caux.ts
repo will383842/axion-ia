@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PETIT_CAUX_COPY: VilleCopy = {
   pitchFr:
-    "Petit-Caux (76), commune nouvelle de la cote d'Albatre en Seine-Maritime, reunit pres de 9 510 habitants. Issue de la fusion de plusieurs villages littoraux, elle accueille des TPE de services, des PME touristiques, des commerces, des artisans et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
+    "Petit-Caux (76), commune nouvelle de la cote d'Albatre en Seine-Maritime, reunit pres de 9 510 habitants. Issue de la fusion de plusieurs villages littoraux, elle accueille des PME de services, des PME touristiques, des commerces, des artisans et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Petit-Caux (76), commune nouvelle de la cote d'Albatre en Seine-Maritime, reunit pres de 9 510 habitants. Issue de la fusion de plusieurs villages littoraux, elle accueille des TPE de services, des PME touristiques, des commerces, des artisans et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
+    "Petit-Caux (76), commune nouvelle de la cote d'Albatre en Seine-Maritime, reunit pres de 9 510 habitants. Issue de la fusion de plusieurs villages littoraux, elle accueille des PME de services, des PME touristiques, des commerces, des artisans et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "tourisme littoral, agriculture & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Caux (76). Nous accompagnons les PME, ETI et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Petit-Caux (76). Nous accompagnons les PME, ETI et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Petit-Caux est une commune nouvelle littorale issue de la fusion de Belleville-sur-Mer, Berneval-le-Grand et d'autres villages entre Dieppe et Le Treport. Economie mixte : tourisme balneaire, agriculture, artisanat, commerces et services. Plages de galets et falaises de craie.",
   ecosystemEn:
@@ -26,12 +26,12 @@ export const PETIT_CAUX_COPY: VilleCopy = {
     "Agriculture & agroalimentaire",
     "Commerce de proximite",
     "Artisanat BTP & renovation",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Petit-Caux : diagnostic adapte aux TPE touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Petit-Caux : diagnostic adapte aux TPE touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Petit-Caux : diagnostic adapte aux PME touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Petit-Caux : diagnostic adapte aux PME touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Petit-Caux : formations adaptees aux hebergeurs, commercants, artisans et exploitants agricoles du littoral. Equipes autonomes sur outils IA.",

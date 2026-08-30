@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sainte-Foy-lès-Lyon (21 692 habitants, Métropole de Lyon), commune résidentielle et tertiaire de l'ouest lyonnais, siège des Laboratoires Boiron (550 salariés depuis 1974, leader mondial de l'homéopathie). Notre cabinet accompagne les quelque 350 TPE et PME locales — services, professions libérales, santé, commerces — avec une IA codée sur mesure, sans plateformes no-code, à 15 minutes en voiture du centre de Lyon.",
+    "Axion-IA intervient à Sainte-Foy-lès-Lyon (21 692 habitants, Métropole de Lyon), commune résidentielle et tertiaire de l'ouest lyonnais, siège des Laboratoires Boiron (550 salariés depuis 1974, leader mondial de l'homéopathie). Notre cabinet accompagne les quelque 350 PME et ETI locales — services, professions libérales, santé, commerces — avec une IA codée sur mesure, sans plateformes no-code, à 15 minutes en voiture du centre de Lyon.",
   pitchEn:
-    "Axion-IA intervient à Sainte-Foy-lès-Lyon (21 692 habitants, Métropole de Lyon), commune résidentielle et tertiaire de l'ouest lyonnais, siège des Laboratoires Boiron (550 salariés depuis 1974, leader mondial de l'homéopathie). Notre cabinet accompagne les quelque 350 TPE et PME locales — services, professions libérales, santé, commerces — avec une IA codée sur mesure, sans plateformes no-code, à 15 minutes en voiture du centre de Lyon.",
+    "Axion-IA intervient à Sainte-Foy-lès-Lyon (21 692 habitants, Métropole de Lyon), commune résidentielle et tertiaire de l'ouest lyonnais, siège des Laboratoires Boiron (550 salariés depuis 1974, leader mondial de l'homéopathie). Notre cabinet accompagne les quelque 350 PME et ETI locales — services, professions libérales, santé, commerces — avec une IA codée sur mesure, sans plateformes no-code, à 15 minutes en voiture du centre de Lyon.",
   directAnswerFr:
-    "Axion-IA se déplace à Sainte-Foy-lès-Lyon pour auditer et automatiser les processus des TPE, PME et professions libérales fidésiennes. Notre équipe accompagne les acteurs santé (Hôpital de Sainte-Foy-lès-Lyon 170 lits, Clinique Charcot 106 lits, cabinets médicaux), les services aux entreprises gravitant autour des Laboratoires Boiron, ainsi que les commerçants et artisans des communes limitrophes Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost. Nous codons chaque automatisation en interne (Python, Node.js) — agenda, facturation, dossiers patients, devis — sans dépendance no-code.",
+    "Axion-IA se déplace à Sainte-Foy-lès-Lyon pour auditer et automatiser les processus des PME, ETI et professions libérales fidésiennes. Notre équipe accompagne les acteurs santé (Hôpital de Sainte-Foy-lès-Lyon 170 lits, Clinique Charcot 106 lits, cabinets médicaux), les services aux entreprises gravitant autour des Laboratoires Boiron, ainsi que les commerçants et artisans des communes limitrophes Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost. Nous codons chaque automatisation en interne (Python, Node.js) — agenda, facturation, dossiers patients, devis — sans dépendance no-code.",
   directAnswerEn:
-    "Axion-IA se déplace à Sainte-Foy-lès-Lyon pour auditer et automatiser les processus des TPE, PME et professions libérales fidésiennes. Notre équipe accompagne les acteurs santé (Hôpital de Sainte-Foy-lès-Lyon 170 lits, Clinique Charcot 106 lits, cabinets médicaux), les services aux entreprises gravitant autour des Laboratoires Boiron, ainsi que les commerçants et artisans des communes limitrophes Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost. Nous codons chaque automatisation en interne (Python, Node.js) — agenda, facturation, dossiers patients, devis — sans dépendance no-code.",
+    "Axion-IA se déplace à Sainte-Foy-lès-Lyon pour auditer et automatiser les processus des PME, ETI et professions libérales fidésiennes. Notre équipe accompagne les acteurs santé (Hôpital de Sainte-Foy-lès-Lyon 170 lits, Clinique Charcot 106 lits, cabinets médicaux), les services aux entreprises gravitant autour des Laboratoires Boiron, ainsi que les commerçants et artisans des communes limitrophes Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost. Nous codons chaque automatisation en interne (Python, Node.js) — agenda, facturation, dossiers patients, devis — sans dépendance no-code.",
   seoHook: "santé, services & Laboratoires Boiron",
   ecosystemFr:
     "Sainte-Foy-lès-Lyon compte environ 350 entreprises sur un territoire artificialisé à 95 %, dominé par le tertiaire. Les Laboratoires Boiron (550 salariés, leader mondial de l'homéopathie depuis 1974) en sont l'employeur principal. L'offre de santé est dense : Hôpital de Sainte-Foy 170 lits (maternité, gériatrie, EHPAD) et Clinique Charcot 106 lits (imagerie, radiothérapie, dialyse). La commune est intégrée à la Métropole de Lyon et bordée par Lyon 5e, Francheville, Oullins-Pierre-Bénite, La Mulatière et Chaponost. Une dizaine de lignes TCL (C19, C20, 6, 11, 12, 14, 45, 49, 65, 90) la relient au métro lyonnais.",
@@ -36,8 +36,8 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
       en: "À Sainte-Foy-lès-Lyon, l'audit Axion-IA cible les cabinets médicaux, professions libérales, sous-traitants des Laboratoires Boiron et commerçants fidésiens. Cartographie des tâches manuelles (agenda, facturation, dossiers, devis). Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les TPE-PME tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe déplacée sur site (15 min du centre Lyon, lignes TCL multiples).",
-      en: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les TPE-PME tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe déplacée sur site (15 min du centre Lyon, lignes TCL multiples).",
+      fr: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les PME et ETI tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe déplacée sur site (15 min du centre Lyon, lignes TCL multiples).",
+      en: "Nos interventions à Sainte-Foy-lès-Lyon couvrent les PME et ETI tertiaires et santé : automatisation des prises de rendez-vous, génération de devis, suivi clientèle, reporting. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe déplacée sur site (15 min du centre Lyon, lignes TCL multiples).",
     },
     implementation: {
       fr: "L'implémentation à Sainte-Foy-lès-Lyon s'adresse aux PME du tertiaire et de la santé qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, conforme RGPD santé. Dès {{price:impl-poc|entry}}, code livré et documenté, sans abonnement no-code.",
@@ -86,12 +86,6 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, génération de devis) sur le site d'un cabinet médical, d'un commerce de détail du Plateau ou d'une profession libérale juridique ou comptable fidésienne, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -172,12 +166,6 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, génération de devis) sur le site d'un cabinet médical, d'un commerce de détail du Plateau ou d'une profession libérale juridique ou comptable fidésienne, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

@@ -16,7 +16,7 @@
 //   - Durée minimale = 1 journée (pas de demi-journée).
 //   - Aucune mention de frais de déplacement, logement, repas ou trajet.
 //   - Aucun prix en dur (vient de pricing.ts via le rendu page).
-//   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024.
 //   - PAS de heroSchema. PAS de unAUn.
 
@@ -24,7 +24,7 @@ import type { VilleCopy } from "./types";
 
 export const BORDEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Bordeaux concentre le 2e pôle aéronautique-défense de France (Dassault, Thales, Safran, ArianeGroup), la capitale mondiale du vin (8 AOC, Cité du Vin, INSEEC Wine MBA), un hub numérique actif (French Tech Bordeaux, Inria, Cdiscount) et le campus universitaire PTPG, le plus étendu hors Île-de-France. Axion-IA y intervient sur site, des TPE viticoles aux ETI de défense.",
+    "Bordeaux concentre le 2e pôle aéronautique-défense de France (Dassault, Thales, Safran, ArianeGroup), la capitale mondiale du vin (8 AOC, Cité du Vin, INSEEC Wine MBA), un hub numérique actif (French Tech Bordeaux, Inria, Cdiscount) et le campus universitaire PTPG, le plus étendu hors Île-de-France. Axion-IA y intervient sur site, des PME viticoles aux ETI de défense.",
   pitchEn:
     "Bordeaux hosts France's second aeronautics-defence hub (Dassault, Thales, Safran, ArianeGroup), the world wine capital (8 AOCs, Cité du Vin, INSEEC Wine MBA), an active digital cluster (French Tech Bordeaux, Inria, Cdiscount HQ) and the PTPG university campus, the largest outside Île-de-France. Axion-IA delivers on site, from wine-sector micro-businesses to mid-cap defence firms.",
 
@@ -52,7 +52,7 @@ export const BORDEAUX_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bordeaux (33063) et dans l'ensemble de la Métropole bordelaise (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). Nous accompagnons les TPE, PME, ETI et grandes entreprises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : aéronautique-défense (Aerospace Valley), viticulture premium, numérique (French Tech Bordeaux), santé-recherche (campus Carreire), conseil et services B2B. Aucun lock-in technologique, tarifs publics affichés.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bordeaux (33063) et dans l'ensemble de la Métropole bordelaise (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). Nous accompagnons les PME, ETI et grands groupes sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : aéronautique-défense (Aerospace Valley), viticulture premium, numérique (French Tech Bordeaux), santé-recherche (campus Carreire), conseil et services B2B. Aucun lock-in technologique, tarifs publics affichés.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Bordeaux (33063) and across the Bordeaux Métropole (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). We support micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: aerospace-defence (Aerospace Valley), premium viticulture, digital (French Tech Bordeaux), health-research (Carreire campus), consulting and B2B services. No tech lock-in, public pricing displayed.",
 
@@ -80,7 +80,7 @@ export const BORDEAUX_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Bordeaux cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. De la TPE viticole au groupe aéronautique de la Métropole, quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles. Restitution toujours en présentiel dans vos locaux bordelais, livrable PDF chiffré remis en main propre.",
+        hero: "L'audit IA Axion-IA à Bordeaux cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. De la PME viticole au groupe aéronautique de la Métropole, quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles. Restitution toujours en présentiel dans vos locaux bordelais, livrable PDF chiffré remis en main propre.",
         whyHere: [
           "Bordeaux est un pôle d'intervention Axion-IA en croissance rapide : aéronautique-défense, négoce viticole et numérique représentent trois verticalités majeures de nos missions dans la Métropole.",
           "Le tissu B2B bordelais est dense et diversifié : sous-traitants Aerospace Valley (Dassault, Thales, Safran), négociants en vins, cabinets d'expertise et de conseil, éditeurs logiciels (Cité Numérique Bègles, H7), groupes de santé (campus Carreire).",
@@ -117,12 +117,6 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux vignobles familiaux, petits négociants, cabinets bordelais ou PME du numérique jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -224,12 +218,6 @@ export const BORDEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to family wine estates, small merchants, Bordeaux practices or digital micro-firms up to about ten staff.",
-          },
-          {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
             detail:
@@ -298,7 +286,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         whyHere: [
           "Bordeaux et sa Métropole sont un terrain d'intervention Axion-IA en croissance : filière aéronautique, négoce de vin, services B2B, numérique et santé représentent des profils de collaborateurs très différents que nous savons adresser.",
           "Tous les territoires de la Métropole couverts en présentiel : Bordeaux intra-muros, Mérignac (Aéroparc, Bordeaux Technowest), Pessac, Talence (campus), Le Bouscat, Bègles (Cité Numérique), Lormont, Cenon.",
-          "Le format collectif (1 journée) est calibré pour les structures bordelaises de quelques personnes à une centaine de collaborateurs — indépendants, TPE, PME B2B.",
+          "Le format collectif (1 journée) est calibré pour les structures bordelaises de quelques personnes à une centaine de collaborateurs — indépendants, PME, ETI B2B.",
           "Le format Conférence convient aux grandes plénières d'entreprise (Palais des Congrès de Bordeaux, auditoriums Euratlantique, salles de séminaire Aéroparc).",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction.",
           "Vocabulaire ajusté à votre secteur dominant : aéronautique (documentation technique, gestion de non-conformités), viticole (gestion de millésimes, export, négociant), numérique (développement, support, marketing). Pas de session générique recyclée.",
@@ -331,12 +319,6 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour vignerons indépendants, petits négociants, cabinets bordelais ou studios numériques jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -437,12 +419,6 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for independent winemakers, small merchants, Bordeaux practices or digital studios up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -546,12 +522,6 @@ export const BORDEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (traitement de commandes, lecture de factures, génération de fiches produits) pour un vignoble, un petit négociant ou une TPE de services bordelaise.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -587,7 +557,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Bordeaux ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -651,12 +621,6 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (order processing, invoice reading, product sheet generation) for a wine estate, small merchant or Bordeaux services micro-firm.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -722,7 +686,7 @@ export const BORDEAUX_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Bordeaux accompagne individuellement les dirigeants et cadres de l'aéronautique/spatial (Aerospace Valley), du négoce viticole, de la French Tech Bordeaux et des ETI de Gironde. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — qualification d'appels d'offres aéronautiques, documentation viti-vinicole, développement produit numérique, pilotage commercial ETI. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Bordeaux accompagne individuellement les dirigeants et cadres de l'aéronautique/spatial (Aerospace Valley), du négoce viticole, de la French Tech Bordeaux et des ETI de Gironde. À partir de {{price:intervention-dirigeants|flat}} pour les PME, chaque programme est bâti autour de vos cas d'usage réels — qualification d'appels d'offres aéronautiques, documentation viti-vinicole, développement produit numérique, pilotage commercial ETI. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Bordeaux concentre des ingénieurs et cadres de l'aéronautique (Dassault, Thales, Safran, ArianeGroup) avec des agendas très contraints et des besoins IA précis (documentation technique, qualification AO, reporting). Le coaching 1-to-1 s'adapte à leur réalité sans passer par des formations collectives.",
           "Le tissu viti-vinicole bordelais (négociants, châteaux, coopératives, courtiers) a des besoins IA spécifiques — génération de fiches techniques, gestion des clients export, marketing digital. Le coaching individuel cible ces enjeux précisément.",
@@ -759,12 +723,6 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Programme d'entrée pour les gérants de TPE, artisans viticoles, indépendants et startups de la French Tech Bordeaux souhaitant intégrer l'IA dans leur activité quotidienne.",
-          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -866,12 +824,6 @@ export const BORDEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry programme for micro-business owners, wine-sector craftspeople, freelancers and French Tech Bordeaux startups wishing to integrate AI into their daily activity.",
-          },
-          {
             sizeLabel: "SME",
             price: "On quote",
             detail:
@@ -972,12 +924,6 @@ export const BORDEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1058,12 +1004,6 @@ export const BORDEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / shop",
             detail:
@@ -1113,7 +1053,7 @@ export const BORDEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Bordeaux ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre bordelais. Aucun supplément géographique : le tarif est le même à Bordeaux que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre bordelais. Aucun supplément géographique : le tarif est le même à Bordeaux que partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans toute la Métropole bordelaise ?",

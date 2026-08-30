@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const LUNEL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les TPE et PME du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
+    "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les PME et ETI du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
   pitchEn:
-    "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les TPE et PME du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
+    "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les PME et ETI du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA intervient à Lunel auprès des PME et ETI du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA intervient à Lunel auprès des PME et ETI du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "commerce, construction & agriculture",
   ecosystemFr:
     "Lunel concentre son économie autour du commerce-transport-hébergement (30,3 % des établissements), de la construction (18,2 %) et des services spécialisés (15 %). Sept zones d'activité commerciales et artisanales s'étendent sur 53 hectares et accueillent environ 450 entreprises. Les hypermarchés Arpel et Preal dominent la distribution locale, tandis que LRM exploite les ressources en granulats et argile. L'agriculture, en repli (582 ha en 2020), reste un employeur de niche.",
@@ -37,25 +37,25 @@ export const LUNEL_COPY: VilleCopy = {
       en: "Auditer un commerce, un artisan du bâtiment ou un transporteur lunellois pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir sur site à Lunel auprès des TPE/PME du commerce, de la construction et des transports — dès {{price:intervention-4h|flat}}.",
-      en: "Intervenir sur site à Lunel auprès des TPE/PME du commerce, de la construction et des transports — dès {{price:intervention-4h|flat}}.",
+      fr: "Intervenir sur site à Lunel auprès des PME et ETI du commerce, de la construction et des transports — dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir sur site à Lunel auprès des PME et ETI du commerce, de la construction et des transports — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémenter des outils IA en code source propriétaire à Lunel, livrés au client, sans dépendance plateforme tierce — dès {{price:impl-poc|entry}}.",
       en: "Implémenter des outils IA en code source propriétaire à Lunel, livrés au client, sans dépendance plateforme tierce — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de TPE/PME lunelloises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner les dirigeants de TPE/PME lunelloises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner les dirigeants de PME et ETI lunelloises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de PME et ETI lunelloises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de TPE et PME du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de PME et ETI du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
         whyHere: [
           "Économie très commerçante : 30,3 % des établissements relèvent du commerce-transport-hébergement, avec les hypermarchés Arpel et Preal en tête de la distribution lunelloise. On bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et des vitrines locales, avec click-and-collect et recherche sémantique pour le commerce de centre-ville autour des arènes comme pour les enseignes de zone.",
-          "Sept zones d'activité étalées sur environ 53 hectares regroupent près de 450 entreprises, dominées par les TPE et PME : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, ou on livre un site mobile-first sur mesure aux artisans du bâtiment, aux transporteurs terrestres et aux PME de services le long de la RN113 vers Montpellier.",
+          "Sept zones d'activité étalées sur environ 53 hectares regroupent près de 450 entreprises, dominées par les PME et ETI : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, ou on livre un site mobile-first sur mesure aux artisans du bâtiment, aux transporteurs terrestres et aux PME de services le long de la RN113 vers Montpellier.",
           "Filière construction et matériaux structurante : 18,2 % des établissements, avec l'extraction de granulats et d'argile portée par LRM. On déploie des portails de devis en ligne, du suivi de chantier, des configurateurs et des agents d'automatisation des demandes entrantes pour les acteurs du BTP et des matériaux du bassin lunellois, branchés sur leurs outils métier.",
           "Position de carrefour entre Montpellier (21 km) et Nîmes (28 km), gare TER sur la ligne Tarascon-Sète et proximité des aéroports de Montpellier-Méditerranée et Nîmes-Garons : on livre des sites rapides, conformes RGPD et hébergeables en UE, pensés pour capter une clientèle régionale qui dépasse largement Lunel-Viel, Saint-Just et le reste de la communauté de communes.",
         ],
@@ -87,12 +87,6 @@ export const LUNEL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce du centre-ville, d'un artisan du bâtiment ou d'un transporteur lunellois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -138,10 +132,10 @@ export const LUNEL_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. Solution documentée et transférable à tout prestataire d'Occitanie ou reprise en interne par vos équipes lunelloises, sans coût caché ni dépendance plateforme tierce.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de TPE et PME du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Lunel des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le Pays de Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, où le tissu est fait de PME et ETI du commerce, de la construction, du transport et de l'agriculture, réparties sur sept zones d'activité commerciales et artisanales d'environ 53 hectares. Hypermarchés Arpel et Preal en tête de la distribution locale, LRM sur les granulats : on s'adresse à cette économie concrète. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Lunel, itérations à distance.",
         whyHere: [
           "Économie très commerçante : 30,3 % des établissements relèvent du commerce-transport-hébergement, avec les hypermarchés Arpel et Preal en tête de la distribution lunelloise. On bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et des vitrines locales, avec click-and-collect et recherche sémantique pour le commerce de centre-ville autour des arènes comme pour les enseignes de zone.",
-          "Sept zones d'activité étalées sur environ 53 hectares regroupent près de 450 entreprises, dominées par les TPE et PME : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, ou on livre un site mobile-first sur mesure aux artisans du bâtiment, aux transporteurs terrestres et aux PME de services le long de la RN113 vers Montpellier.",
+          "Sept zones d'activité étalées sur environ 53 hectares regroupent près de 450 entreprises, dominées par les PME et ETI : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, ou on livre un site mobile-first sur mesure aux artisans du bâtiment, aux transporteurs terrestres et aux PME de services le long de la RN113 vers Montpellier.",
           "Filière construction et matériaux structurante : 18,2 % des établissements, avec l'extraction de granulats et d'argile portée par LRM. On déploie des portails de devis en ligne, du suivi de chantier, des configurateurs et des agents d'automatisation des demandes entrantes pour les acteurs du BTP et des matériaux du bassin lunellois, branchés sur leurs outils métier.",
           "Position de carrefour entre Montpellier (21 km) et Nîmes (28 km), gare TER sur la ligne Tarascon-Sète et proximité des aéroports de Montpellier-Méditerranée et Nîmes-Garons : on livre des sites rapides, conformes RGPD et hébergeables en UE, pensés pour capter une clientèle régionale qui dépasse largement Lunel-Viel, Saint-Just et le reste de la communauté de communes.",
         ],
@@ -173,12 +167,6 @@ export const LUNEL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce du centre-ville, d'un artisan du bâtiment ou d'un transporteur lunellois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -245,11 +233,11 @@ export const LUNEL_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Lunel ?",
-      a: "Nous priorisons les TPE et PME du commerce, de la construction, des transports terrestres, des services aux entreprises et de l'agriculture résiduelle. Quelques ETI lunelloises sollicitent également nos services.",
+      a: "Nous priorisons les PME et ETI du commerce, de la construction, des transports terrestres, des services aux entreprises et de l'agriculture résiduelle. Quelques ETI lunelloises sollicitent également nos services.",
     },
     {
       q: "Proposez-vous des formations IA pour les équipes lunelloises ?",
-      a: "Oui, nous animons à Lunel des formations en présentiel ou visio pour dirigeants et collaborateurs de TPE/PME, calibrées sur les enjeux locaux (commerce de proximité, BTP, logistique).",
+      a: "Oui, nous animons à Lunel des formations en présentiel ou visio pour dirigeants et collaborateurs de PME et ETI, calibrées sur les enjeux locaux (commerce de proximité, BTP, logistique).",
     },
   ],
 };

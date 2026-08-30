@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VAL_DE_MODER_COPY: VilleCopy = {
   pitchFr:
-    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Moder.",
+    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu PME artisanales, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Moder.",
   pitchEn:
-    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Moder.",
+    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu PME artisanales, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Moder.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Moder (67). Nous accompagnons PME artisanales, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Moder (67). Nous accompagnons PME artisanales, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
-    "Val-de-Moder est une commune nouvelle d'Alsace du Nord créée par fusion autour de Pfaffenhoffen, située dans la vallée de la Moder. Tissu TPE artisans BTP, PME industrielles (mécanique, agroalimentaire, transformation bois), PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Pôle économique de la vallée intermédiaire entre Haguenau et Saverne.",
+    "Val-de-Moder est une commune nouvelle d'Alsace du Nord créée par fusion autour de Pfaffenhoffen, située dans la vallée de la Moder. Tissu PME du BTP, PME industrielles (mécanique, agroalimentaire, transformation bois), PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Pôle économique de la vallée intermédiaire entre Haguenau et Saverne.",
   ecosystemEn:
-    "Val-de-Moder est une commune nouvelle d'Alsace du Nord créée par fusion autour de Pfaffenhoffen, située dans la vallée de la Moder. Tissu TPE artisans BTP, PME industrielles (mécanique, agroalimentaire, transformation bois), PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Pôle économique de la vallée intermédiaire entre Haguenau et Saverne.",
+    "Val-de-Moder est une commune nouvelle d'Alsace du Nord créée par fusion autour de Pfaffenhoffen, située dans la vallée de la Moder. Tissu PME du BTP, PME industrielles (mécanique, agroalimentaire, transformation bois), PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Pôle économique de la vallée intermédiaire entre Haguenau et Saverne.",
   distancesFr:
     "Haguenau à 20 min. Strasbourg à 45 min (autoroute A4). Saverne à 25 min. Aéroport Strasbourg-Entzheim à 55 min. Bouxwiller à 10 min, Ingwiller à 10 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const VAL_DE_MODER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val-de-Moder : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de la vallée de la Moder, Alsace du Nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Val-de-Moder : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de la vallée de la Moder, Alsace du Nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Val-de-Moder : diagnostic adapté aux PME artisanales, PME industrielles et de services, commerçants et professions libérales de la vallée de la Moder, Alsace du Nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Val-de-Moder : diagnostic adapté aux PME artisanales, PME industrielles et de services, commerçants et professions libérales de la vallée de la Moder, Alsace du Nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Val-de-Moder : formations adaptées TPE/PME industrielles, agroalimentaires et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
-      en: "Interventions IA sur site à Val-de-Moder : formations adaptées TPE/PME industrielles, agroalimentaires et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      fr: "Interventions IA sur site à Val-de-Moder : formations adaptées PME et ETI industrielles, agroalimentaires et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      en: "Interventions IA sur site à Val-de-Moder : formations adaptées PME et ETI industrielles, agroalimentaires et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
     },
     implementation: {
       fr: "Implémentation IA à Val-de-Moder : automatisation devis artisans BTP, contrôle qualité PME industrielles, traçabilité agroalimentaire, classification documents professions libérales, agents conversationnels commerce vallée Moder.",
       en: "Implémentation IA à Val-de-Moder : automatisation devis artisans BTP, contrôle qualité PME industrielles, traçabilité agroalimentaire, classification documents professions libérales, agents conversationnels commerce vallée Moder.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Val-de-Moder : sessions en visio ou dans vos locaux vallée Moder. Dirigeants TPE artisans, gérants PME industrielles et agroalimentaires, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Val-de-Moder : sessions en visio ou dans vos locaux vallée Moder. Dirigeants TPE artisans, gérants PME industrielles et agroalimentaires, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Val-de-Moder : sessions en visio ou dans vos locaux vallée Moder. Dirigeants PME artisanales, gérants PME industrielles et agroalimentaires, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Val-de-Moder : sessions en visio ou dans vos locaux vallée Moder. Dirigeants PME artisanales, gérants PME industrielles et agroalimentaires, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const VAL_DE_MODER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Val-de-Moder  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Val-de-Moder souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les PME et ETI de Val-de-Moder souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires à Val-de-Moder ?",
       a: "Oui, nous accompagnons les PME agroalimentaires et industrielles de Val-de-Moder. Cas typiques IA : traçabilité produits, contrôle qualité visuel, optimisation planning production, prédiction demande, automatisation reporting réglementaire.",
     },
     {
-      q: "Quels formats d'intervention pour les TPE à Val-de-Moder ?",
-      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans, commerçants et professions libérales de la vallée de la Moder.",
+      q: "Quels formats d'intervention pour les PME à Val-de-Moder ?",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME artisanales, commerçants et professions libérales de la vallée de la Moder.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Val-de-Moder ?",

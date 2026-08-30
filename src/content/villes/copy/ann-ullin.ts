@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ANN_ULLIN_COPY: VilleCopy = {
   pitchFr:
-    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : PME du BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : PME du BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
   seoHook: "agglomération lille",
   ecosystemFr:
-    "Annœullin est intégrée à l'agglomération lilloise sud, dans l'ancien bassin minier reconverti. Tissu péri-urbain : TPE artisanat BTP, PME industrielles reconverties (sous-traitance auto, plasturgie, métallurgie légère), commerces de proximité, professions libérales, logistique.",
+    "Annœullin est intégrée à l'agglomération lilloise sud, dans l'ancien bassin minier reconverti. Tissu péri-urbain : PME du BTP, PME industrielles reconverties (sous-traitance auto, plasturgie, métallurgie légère), commerces de proximité, professions libérales, logistique.",
   ecosystemEn:
-    "Annœullin est intégrée à l'agglomération lilloise sud, dans l'ancien bassin minier reconverti. Tissu péri-urbain : TPE artisanat BTP, PME industrielles reconverties (sous-traitance auto, plasturgie, métallurgie légère), commerces de proximité, professions libérales, logistique.",
+    "Annœullin est intégrée à l'agglomération lilloise sud, dans l'ancien bassin minier reconverti. Tissu péri-urbain : PME du BTP, PME industrielles reconverties (sous-traitance auto, plasturgie, métallurgie légère), commerces de proximité, professions libérales, logistique.",
   distancesFr:
     "Lille centre à 25 min. Aéroport Lille-Lesquin à 20 min. Seclin à 10 min. Carvin à 10 min. Lens à 25 min. Douai à 25 min.",
   distancesEn:
     "Lille centre à 25 min. Aéroport Lille-Lesquin à 20 min. Seclin à 10 min. Carvin à 10 min. Lens à 25 min. Douai à 25 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME industrielles reconverties",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const ANN_ULLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Annœullin : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Annœullin : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Annœullin : diagnostic adapté aux PME du BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Annœullin : diagnostic adapté aux PME du BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Annœullin : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const ANN_ULLIN_COPY: VilleCopy = {
       en: "Implémentation IA à Annœullin : agents conversationnels B2B, automatisation devis BTP, classification dossiers industriels, CRM augmentés. Agglo Lille sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Annœullin : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles, professions libérales, commerçants annœullinois.",
-      en: "Coaching 1-to-1 à Annœullin : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles, professions libérales, commerçants annœullinois.",
+      fr: "Coaching 1-to-1 à Annœullin : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles, professions libérales, commerçants annœullinois.",
+      en: "Coaching 1-to-1 à Annœullin : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles, professions libérales, commerçants annœullinois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const ANN_ULLIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Annœullin et tout le sud lillois (Seclin, Carvin, Wattignies, Faches-Thumesnil). Consultants depuis Lille (25 min).",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP annœullinois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Annœullin sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      q: "Accompagnez-vous les PME du BTP annœullinois ?",
+      a: "Oui, nous accompagnons les PME du BTP à Annœullin sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles reconverties ?",

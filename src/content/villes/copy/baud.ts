@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BAUD_COPY: VilleCopy = {
   pitchFr:
-    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
+    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de PME artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
   pitchEn:
-    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
+    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de PME artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baud (56). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baud (56). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
   ecosystemFr:
     "Baud est un bourg dynamique du centre Morbihan, à mi-chemin entre Lorient et Pontivy. La commune vit de l'agroalimentaire, de l'artisanat, du commerce de proximité et de l'agriculture. Le tourisme patrimonial (Vénus de Quinipily, chapelles) complète un tissu économique ancré dans les filières locales bretonnes.",
   ecosystemEn:
@@ -23,15 +23,15 @@ export const BAUD_COPY: VilleCopy = {
   seoHook: "agroalimentaire & artisanat centre Morbihan",
   topSectorsNaf: [
     "Agroalimentaire & industries de transformation",
-    "TPE artisanat & services à la personne",
+    "PME de l'artisanat & services à la personne",
     "Commerce de détail & proximité",
     "Agriculture & élevage",
     "Tourisme patrimonial & hébergement",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
-      en: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
+      fr: "Audit IA à Baud : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
+      en: "Audit IA à Baud : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baud : formats adaptés au commerce de proximité, à l'atelier artisanal ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -42,8 +42,8 @@ export const BAUD_COPY: VilleCopy = {
       en: "Implémentation IA à Baud : automatisation gestion stocks et commandes, agents conversationnels relation client, classification produits agroalimentaires, chatbots réservation et prise de RDV. Adapté tissu économique centre Morbihan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Baud : sessions dans vos locaux ou en visio. Artisans, gérants TPE, dirigeants PME et professions libérales du centre Morbihan souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Baud : sessions dans vos locaux ou en visio. Artisans, gérants TPE, dirigeants PME et professions libérales du centre Morbihan souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Baud : sessions dans vos locaux ou en visio. Artisans, gérants PME, dirigeants PME et professions libérales du centre Morbihan souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Baud : sessions dans vos locaux ou en visio. Artisans, gérants PME, dirigeants PME et professions libérales du centre Morbihan souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const BAUD_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de Baud et du centre Morbihan sur leurs cas IA : automatisation traçabilité, gestion stocks et commandes, classification produits, optimisation chaîne logistique et agents IA relation fournisseurs.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces de Baud ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerces de Baud sur des cas IA concrets : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, chatbots relation client. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Baud ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Baud sur des cas IA concrets : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, chatbots relation client. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Tarifs audit IA à Baud  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Baud et du centre Morbihan. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Baud et du centre Morbihan. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Baud ?",

@@ -235,7 +235,7 @@ export const AMIENS_ECONOMIC_DATA: VilleEconomicData = {
   // (Champagne à ~150 km au sud-est). Champ structurellement vide.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV non documenté commune par commune pour Amiens dans nos
   // sources actuelles. À compléter Phase 2 via annuaire officiel

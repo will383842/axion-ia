@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PLOUIGNEAU_COPY: VilleCopy = {
   pitchFr:
-    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
+    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. PME agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
   pitchEn:
-    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
+    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. PME agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
   seoHook: "agriculture, agroalimentaire & Trégor",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : PME agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : PME agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Plouigneau est une vaste commune rurale du Trégor finistérien, à mi-chemin entre Morlaix et Guingamp. L'économie locale est dominée par l'agriculture (élevage laitier, porcin, cultures légumières), l'agroalimentaire de transformation, l'artisanat BTP, le transport routier et le commerce de proximité. La commune bénéficie de la voie express Brest-Rennes (RN12) et irrigue un bassin rural actif.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouigneau : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plouigneau : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plouigneau : diagnostic adapté aux PME agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouigneau : diagnostic adapté aux PME agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouigneau : formations pratiques pour exploitants agricoles, équipes agroalimentaires, artisans et transporteurs. Vos collaborateurs repartent autonomes sur les outils IA métier.",
       en: "Interventions IA sur site à Plouigneau : formations pratiques pour exploitants agricoles, équipes agroalimentaires, artisans et transporteurs. Vos collaborateurs repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Plouigneau : suivi troupeaux et parcelles, traçabilité agroalimentaire, automatisation devis artisans, gestion planning transport. Adapté au tissu TPE/PME du Trégor.",
-      en: "Implémentation IA à Plouigneau : suivi troupeaux et parcelles, traçabilité agroalimentaire, automatisation devis artisans, gestion planning transport. Adapté au tissu TPE/PME du Trégor.",
+      fr: "Implémentation IA à Plouigneau : suivi troupeaux et parcelles, traçabilité agroalimentaire, automatisation devis artisans, gestion planning transport. Adapté au tissu PME et ETI du Trégor.",
+      en: "Implémentation IA à Plouigneau : suivi troupeaux et parcelles, traçabilité agroalimentaire, automatisation devis artisans, gestion planning transport. Adapté au tissu PME et ETI du Trégor.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plouigneau : sessions individuelles pour dirigeants TPE/PME, exploitants agricoles, artisans et commerçants du Trégor souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Plouigneau : sessions individuelles pour dirigeants TPE/PME, exploitants agricoles, artisans et commerçants du Trégor souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Plouigneau : sessions individuelles pour dirigeants de PME et d'ETI, exploitants agricoles, artisans et commerçants du Trégor souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Plouigneau : sessions individuelles pour dirigeants de PME et d'ETI, exploitants agricoles, artisans et commerçants du Trégor souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Plouigneau  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires autour de Plouigneau ?",

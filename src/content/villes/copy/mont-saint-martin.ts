@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu TPE/PME commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants.",
+    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu PME et ETI commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu TPE/PME commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants.",
+    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu PME et ETI commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Martin (54). Nous accompagnons tous types d'activités : TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP, professions libérales et services aux entreprises du Pays Haut frontalier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Martin (54). Nous accompagnons tous types d'activités : PME et ETI du commerce transfrontalier, prestataires logistiques, artisans BTP, professions libérales et services aux entreprises du Pays Haut frontalier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Martin (54). Nous accompagnons tous types d'activités : TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP, professions libérales et services aux entreprises du Pays Haut frontalier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Martin (54). Nous accompagnons tous types d'activités : PME et ETI du commerce transfrontalier, prestataires logistiques, artisans BTP, professions libérales et services aux entreprises du Pays Haut frontalier.",
   ecosystemFr:
     "Mont-Saint-Martin est une commune du Pays Haut lorrain, frontalière du Luxembourg et de la Belgique. Son tissu économique bénéficie de la dynamique transfrontalière : commerce, logistique, services aux travailleurs frontaliers, artisanat BTP et professions libérales. Zone commerciale Pôle Europe à proximité immédiate.",
   ecosystemEn:
@@ -25,13 +25,13 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
     "Commerce transfrontalier & grande distribution",
     "Logistique & transport international",
     "Services aux travailleurs frontaliers",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Professions libérales & services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux PME et ETI du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux PME et ETI du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mont-Saint-Martin : formats adaptés au commerce, à l'entrepôt logistique ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
       en: "Implémentation IA à Mont-Saint-Martin : automatisation gestion stocks transfrontaliers, agents conversationnels multilingues FR/DE/EN, workflow logistique, classification documentaire import/export.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mont-Saint-Martin : sessions dans vos locaux commerciaux, bureau ou en visio. Gérants TPE/PME, commerçants transfrontaliers, dirigeants du Pays Haut lorrain.",
-      en: "Coaching 1-to-1 à Mont-Saint-Martin : sessions dans vos locaux commerciaux, bureau ou en visio. Gérants TPE/PME, commerçants transfrontaliers, dirigeants du Pays Haut lorrain.",
+      fr: "Coaching 1-to-1 à Mont-Saint-Martin : sessions dans vos locaux commerciaux, bureau ou en visio. Gérants PME et ETI, commerçants transfrontaliers, dirigeants du Pays Haut lorrain.",
+      en: "Coaching 1-to-1 à Mont-Saint-Martin : sessions dans vos locaux commerciaux, bureau ou en visio. Gérants PME et ETI, commerçants transfrontaliers, dirigeants du Pays Haut lorrain.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces transfrontaliers du Pays Haut ?",
-      a: "Oui, nous accompagnons les TPE/PME du commerce transfrontalier : gestion stocks multisite, agents conversationnels multilingues, automatisation facturation, workflow logistique import/export.",
+      a: "Oui, nous accompagnons les PME et ETI du commerce transfrontalier : gestion stocks multisite, agents conversationnels multilingues, automatisation facturation, workflow logistique import/export.",
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales de Mont-Saint-Martin ?",
@@ -61,7 +61,7 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mont-Saint-Martin  ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Mont-Saint-Martin et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Mont-Saint-Martin et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Mont-Saint-Martin ?",

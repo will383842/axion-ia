@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Herblay-sur-Seine, ville du Val-d'Oise (95) en bord de Seine, mêle résidentiel haut de gamme, tissu de TPE/PME locales (commerces, artisanat, services) et activité tertiaire. Axion-IA y intervient pour les artisans, indépendants, PME herblaysiennes et entreprises du bassin nord-ouest parisien.",
+    "Herblay-sur-Seine, ville du Val-d'Oise (95) en bord de Seine, mêle résidentiel haut de gamme, tissu de PME et ETI locales (commerces, artisanat, services) et activité tertiaire. Axion-IA y intervient pour les artisans, indépendants, PME herblaysiennes et entreprises du bassin nord-ouest parisien.",
   pitchEn:
-    "Herblay-sur-Seine, ville du Val-d'Oise (95) en bord de Seine, mêle résidentiel haut de gamme, tissu de TPE/PME locales (commerces, artisanat, services) et activité tertiaire. Axion-IA y intervient pour les artisans, indépendants, PME herblaysiennes et entreprises du bassin nord-ouest parisien.",
+    "Herblay-sur-Seine, ville du Val-d'Oise (95) en bord de Seine, mêle résidentiel haut de gamme, tissu de PME et ETI locales (commerces, artisanat, services) et activité tertiaire. Axion-IA y intervient pour les artisans, indépendants, PME herblaysiennes et entreprises du bassin nord-ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herblay-sur-Seine (95). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herblay-sur-Seine (95). Nous accompagnons les PME artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herblay-sur-Seine (95). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herblay-sur-Seine (95). Nous accompagnons les PME artisanales, indépendants, PME tertiaires herblaysiennes (cabinets professionnels, commerces, services) et entreprises du bassin nord-ouest parisien sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action concret.",
   seoHook: "artisanat services & tertiaires",
   ecosystemFr:
     "Herblay-sur-Seine s'intègre au tissu résidentiel et économique de la communauté d'agglomération Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Eaubonne) : commerces, artisanat haut de gamme, cabinets professionnels, PME tertiaires. Proximité Pontoise (10 min) et Roissy-CDG (35 min). Tissu B2B local dense.",
@@ -22,7 +22,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   distancesEn:
     "Gare Herblay (Transilien J, 30 min Saint-Lazare). Axe A15 vers Paris (30 min) et N184 vers Cergy. Roissy-CDG à 35 min. La Défense à 25 min en voiture (heures creuses).",
   topSectorsNaf: [
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "PME tertiaires (cabinets, conseil)",
     "Commerce de détail haut de gamme",
     "Immobilier résidentiel",
@@ -30,20 +30,20 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Herblay : diagnostic adapté aux TPE artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures.",
-      en: "Audit IA à Herblay : diagnostic adapté aux TPE artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures.",
+      fr: "Audit IA à Herblay : diagnostic adapté aux PME artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux PME.",
+      en: "Audit IA à Herblay : diagnostic adapté aux PME artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux PME.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Herblay : formats courts adaptés aux TPE et indépendants. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés.",
-      en: "Interventions IA sur site à Herblay : formats courts adaptés aux TPE et indépendants. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés.",
+      fr: "Interventions IA sur site à Herblay : formats courts adaptés aux PME et indépendants. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés.",
+      en: "Interventions IA sur site à Herblay : formats courts adaptés aux PME et indépendants. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés.",
     },
     implementation: {
       fr: "Implémentation IA à Herblay : agents conversationnels client, automatisation devis/facturation, classification documents. Adapté aux PME tertiaires et cabinets professionnels Val Parisis.",
       en: "Implémentation IA à Herblay : agents conversationnels client, automatisation devis/facturation, classification documents. Adapté aux PME tertiaires et cabinets professionnels Val Parisis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Herblay : sessions confidentielles à votre bureau ou en visio. Artisans, indépendants, gérants TPE/PME herblaysiens souhaitant intégrer l'IA dans leur activité au quotidien.",
-      en: "Coaching 1-to-1 à Herblay : sessions confidentielles à votre bureau ou en visio. Artisans, indépendants, gérants TPE/PME herblaysiens souhaitant intégrer l'IA dans leur activité au quotidien.",
+      fr: "Coaching 1-to-1 à Herblay : sessions confidentielles à votre bureau ou en visio. Artisans, indépendants, gérants PME et ETI herblaysiens souhaitant intégrer l'IA dans leur activité au quotidien.",
+      en: "Coaching 1-to-1 à Herblay : sessions confidentielles à votre bureau ou en visio. Artisans, indépendants, gérants PME et ETI herblaysiens souhaitant intégrer l'IA dans leur activité au quotidien.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
           "Herblay concentre une densité d'enseignes de grande distribution rare en France sur la ZI de la Patte d'Oie - Branly Langevin (65 ha, ~379 entreprises) : IKEA 21 500 m², Leroy Merlin 16 500 m², Conforama, Decathlon 11 500 m², deux Carrefour, E.Leclerc — un terrain idéal pour des plateformes e-commerce et drive-to-store pilotées par l'IA.",
           "La ZAE Les Copistes (13,91 ha, 44 entreprises : Celio France, Fournier Retail, Ludendo Commerce France, Decathlon France) et son centre commercial Les Copistes représentent un vivier de sites marchands, catalogues produit et tunnels click-and-collect à moderniser avec search sémantique et recommandation IA.",
           "Le projet « Air » (6 800 m² de shopping, loisirs, restauration et services sur trois niveaux, près de la gare d'Herblay, travaux engagés en 2025) annonce une nouvelle vague de commerces et services qui auront besoin de sites vitrines, de réservation en ligne et d'agents conversationnels dès leur ouverture.",
-          "Au-delà du retail, Herblay accueille de l'industrie (AKEBONO EUROPE, systèmes de freinage automobile ; XL Industries) et un tissu de TPE/PME artisanales et de services Val Parisis, pour qui nous concevons portails B2B, configurateurs et SaaS métier sur mesure.",
+          "Au-delà du retail, Herblay accueille de l'industrie (AKEBONO EUROPE, systèmes de freinage automobile ; XL Industries) et un tissu de PME et ETI artisanales et de services Val Parisis, pour qui nous concevons portails B2B, configurateurs et SaaS métier sur mesure.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou marchand essentiel",
-            detail:
-              "Pour les commerçants du centre Les Copistes, artisans et indépendants herblaysiens : site vitrine ou petite boutique en ligne, mobile-first, avec prise de RDV ou click-and-collect et un assistant IA de réponse aux clients.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce augmentée",
@@ -171,12 +165,6 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential store site",
-            detail:
-              "For Les Copistes centre shopkeepers, Herblay craftspeople and freelancers: showcase site or small online shop, mobile-first, with booking or click-and-collect and an AI customer-response assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "AI-augmented e-commerce platform",
             detail:
@@ -229,8 +217,8 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Herblay-sur-Seine et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Pierrelaye, Bessancourt). Couverture nord-ouest Val-d'Oise et accès depuis Paris (30 min Saint-Lazare).",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans d'Herblay ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Herblay sur des cas IA accessibles : automatisation devis, agents IA pour prise de RDV, classification photos chantier, gestion administrative simplifiée. Audit sur place à {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME et artisans d'Herblay ?",
+      a: "Oui, nous accompagnons les PME artisanales et indépendants à Herblay sur des cas IA accessibles : automatisation devis, agents IA pour prise de RDV, classification photos chantier, gestion administrative simplifiée. Audit sur place à {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME herblaysiennes ?",

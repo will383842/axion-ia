@@ -6,7 +6,7 @@
 //     trajet facturés en sus pour toutes les interventions sur site.
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix en dur : libellés calibrés à la taille INSEE sans montants.
-//   - Tailles d'entreprise : TPE / PME / ETI / GE (pas de métier-type).
+//   - Tailles d'entreprise : PME/ETI/GE (pas de métier-type).
 //   - ~95 % Axion-IA-centric, ~5 % data locale anti-doorway HCU 2024.
 //   - Pas de heroSchema, pas de unAUn.
 //
@@ -26,7 +26,7 @@ import type { VilleCopy } from "./types";
 
 export const CLERMONT_FERRAND_COPY: VilleCopy = {
   pitchFr:
-    "Clermont-Ferrand héberge le siège mondial de Michelin (CAC 40) et celui de Limagrain (4e semencier mondial), un tissu industriel héritage pneumatique-agroalimentaire-aéronautique unique en France. Axion-IA y intervient sur site auprès des TPE, PME, ETI et grands groupes auvergnats — du sous-traitant automobile clermontois au cabinet libéral du plateau de Gergovie.",
+    "Clermont-Ferrand héberge le siège mondial de Michelin (CAC 40) et celui de Limagrain (4e semencier mondial), un tissu industriel héritage pneumatique-agroalimentaire-aéronautique unique en France. Axion-IA y intervient sur site auprès des PME, ETI et grands groupes auvergnats — du sous-traitant automobile clermontois au cabinet libéral du plateau de Gergovie.",
   pitchEn:
     "Clermont-Ferrand hosts Michelin's world headquarters (CAC 40) and Limagrain's (4th-largest seed company globally), an industrial fabric shaped by tyres, agri-food and aerospace unique in France. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large groups in the Auvergne — from Clermont automotive sub-contractors to professional practices across the plateau.",
 
@@ -54,7 +54,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clermont-Ferrand (63) sur site — Technopôle La Pardieu, campus des Cézeaux, sites industriels du bassin clermontois. Nous accompagnons les TPE, PME, ETI et grandes entreprises de l'agglomération (industrie pneumatique-héritage, sous-traitance Michelin, agroalimentaire AOP, aéronautique, biotechnologies) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clermont-Ferrand (63) sur site — Technopôle La Pardieu, campus des Cézeaux, sites industriels du bassin clermontois. Nous accompagnons les PME, ETI et grands groupes de l'agglomération (industrie pneumatique-héritage, sous-traitance Michelin, agroalimentaire AOP, aéronautique, biotechnologies) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy delivering on site in Clermont-Ferrand (63) — Technopôle La Pardieu, campus des Cézeaux, industrial sites across the Clermont basin. We support micro-businesses, SMEs, mid-caps and large groups (tyre-heritage manufacturing, Michelin supply chain, AOP agri-food, aerospace, biotech) on their operational AI cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -85,7 +85,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation clermontoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles — du sous-traitant TPE du bassin Michelin aux ETI agroalimentaires du Puy-de-Dôme, en passant par les structures de services, de santé et de recherche présentes sur le Technopôle La Pardieu et le campus des Cézeaux.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation clermontoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles — du sous-traitant PME du bassin Michelin aux ETI agroalimentaires du Puy-de-Dôme, en passant par les structures de services, de santé et de recherche présentes sur le Technopôle La Pardieu et le campus des Cézeaux.",
         whyHere: [
           "Clermont-Ferrand concentre une industrie manufacturière structurante sans équivalent hors Île-de-France : siège Michelin (CAC 40), Limagrain, Auvergne Aéronautique, filière agro AOP — autant de donneurs d'ordres et sous-traitants pour lesquels l'IA représente un levier de compétitivité concret.",
           "L'écosystème universitaire (UCA, ISIMA, Sigma Clermont) produit chaque année des jeunes ingénieurs IA — les PME et ETI locales ont besoin d'un audit structuré pour canaliser ces ressources vers des cas d'usage à ROI démontré.",
@@ -122,12 +122,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux sous-traitants TPE, cabinets libéraux, artisans et indépendants du bassin clermontois jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -191,7 +185,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your Clermont-Ferrand organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size — from TPE sub-contractors in the Michelin basin to Puy-de-Dôme agri-food mid-caps and research-intensive structures on Technopôle La Pardieu.",
+        hero: "Axion-IA's AI audit maps what can be automated in your Clermont-Ferrand organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size — from PME sub-contractors in the Michelin basin to Puy-de-Dôme agri-food mid-caps and research-intensive structures on Technopôle La Pardieu.",
         whyHere: [
           "Clermont-Ferrand hosts a manufacturing fabric unmatched outside Île-de-France: Michelin HQ (CAC 40), Limagrain, Auvergne Aéronautique, AOP agri-food chains — prime clients and sub-contractors for whom AI is a concrete competitiveness lever.",
           "The university ecosystem (UCA, ISIMA, Sigma Clermont) trains AI engineers every year; local SMEs and mid-caps need a structured audit to channel those skills toward ROI-proven use cases.",
@@ -228,12 +222,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to TPE sub-contractors, professional practices, craftspeople and freelancers in the Clermont basin up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -338,12 +326,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour les sous-traitants TPE, cabinets libéraux, startups French Tech et indépendants du bassin clermontois jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Format collectif (1 journée) ou Équipes",
             detail:
@@ -443,12 +425,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for TPE sub-contractors, professional practices, French Tech startups and freelancers in the Clermont basin up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -553,12 +529,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture automatisée de documents, comptes-rendus, qualification leads) pour les TPE et sous-traitants TPE du bassin.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -594,7 +564,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Clermont-Ferrand ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -658,12 +628,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (automated document reading, meeting minutes, lead qualification) for basin micro-businesses and TPE sub-contractors.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -768,12 +732,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Coaching individuel entrée pour dirigeants TPE, artisans et indépendants du bassin clermontois — une journée, un consultant dédié.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -797,7 +755,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
             quote:
               "J'avais besoin de comprendre l'IA en lien avec mes propres contraintes de sous-traitant Michelin — cahiers des charges, PPAP, traçabilité. En une journée, le consultant a utilisé mes vrais documents. J'ai appris dix fois plus qu'en deux jours de formation collective.",
             role: "Directeur général",
-            companyProfile: "TPE sous-traitante automobile, bassin clermontois",
+            companyProfile: "PME sous-traitante automobile, bassin clermontois",
           },
           {
             quote:
@@ -869,12 +827,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry individual coaching for Clermont basin micro-business executives, craftspeople and freelancers — one day, one dedicated consultant.",
-          },
           {
             sizeLabel: "SME",
             price: "On request",
@@ -976,12 +928,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1062,12 +1008,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1117,7 +1057,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Clermont-Ferrand ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Clermont-Ferrand qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Clermont-Ferrand qu'à Paris.",
     },
     {
       q: "Axion-IA intervient-il sur les sites industriels du bassin clermontois ?",
@@ -1136,7 +1076,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       a: "L'aéroport de Clermont-Ferrand Auvergne (Aulnat, 6 km) dessert Paris-Orly, Lyon et Amsterdam. Nos consultants peuvent arriver directement sur Clermont en avion pour les missions longues, ou en Intercités Paris-Bercy (~3 h) pour les kick-offs et restitutions.",
     },
     {
-      q: "Vos interventions sont-elles compatibles avec les formations financées pour les TPE/PME ?",
+      q: "Vos interventions sont-elles compatibles avec les formations financées pour les PME et ETI ?",
       a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences. Votre service RH ou comptable peut les traiter comme une prestation de conseil. La CCI Puy-de-Dôme peut vous orienter sur les dispositifs régionaux complémentaires.",
     },
   ],

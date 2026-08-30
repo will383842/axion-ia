@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ABBEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "À Abbeville (80), capitale historique du Ponthieu et porte d'entrée de la baie de Somme, Axion-IA accompagne les TPE et PME de l'agroalimentaire, de l'industrie et du tourisme. PME agroalimentaires, ateliers de serrurerie et de métallurgie héritiers d'un savoir-faire local, hôtellerie et restauration tournées vers la baie de Somme, artisans et commerces : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
+    "À Abbeville (80), capitale historique du Ponthieu et porte d'entrée de la baie de Somme, Axion-IA accompagne les PME et ETI de l'agroalimentaire, de l'industrie et du tourisme. PME agroalimentaires, ateliers de serrurerie et de métallurgie héritiers d'un savoir-faire local, hôtellerie et restauration tournées vers la baie de Somme, artisans et commerces : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
   pitchEn:
-    "À Abbeville (80), capitale historique du Ponthieu et porte d'entrée de la baie de Somme, Axion-IA accompagne les TPE et PME de l'agroalimentaire, de l'industrie et du tourisme. PME agroalimentaires, ateliers de serrurerie et de métallurgie héritiers d'un savoir-faire local, hôtellerie et restauration tournées vers la baie de Somme, artisans et commerces : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
+    "À Abbeville (80), capitale historique du Ponthieu et porte d'entrée de la baie de Somme, Axion-IA accompagne les PME et ETI de l'agroalimentaire, de l'industrie et du tourisme. PME agroalimentaires, ateliers de serrurerie et de métallurgie héritiers d'un savoir-faire local, hôtellerie et restauration tournées vers la baie de Somme, artisans et commerces : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Abbeville (Somme) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les PME agroalimentaires, les ateliers de serrurerie et de métallurgie, l'hôtellerie et la restauration liées au tourisme de la baie de Somme, les artisans et les commerces. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Abbeville (Somme) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les PME agroalimentaires, les ateliers de serrurerie et de métallurgie, l'hôtellerie et la restauration liées au tourisme de la baie de Somme, les artisans et les commerces. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Abbeville (Somme) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les PME agroalimentaires, les ateliers de serrurerie et de métallurgie, l'hôtellerie et la restauration liées au tourisme de la baie de Somme, les artisans et les commerces. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Abbeville (Somme) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les PME agroalimentaires, les ateliers de serrurerie et de métallurgie, l'hôtellerie et la restauration liées au tourisme de la baie de Somme, les artisans et les commerces. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "agroalimentaire & industrie",
   ecosystemFr:
-    "Abbeville, capitale du Ponthieu sur la Somme, conjugue une tradition industrielle et un tourisme en plein essor. Son économie repose sur l'agroalimentaire, sur des ateliers de serrurerie et de métallurgie héritiers d'un long savoir-faire, et sur un tissu d'artisans et de commerces. La proximité de la baie de Somme, classée parmi les plus belles baies du monde, irrigue une hôtellerie et une restauration saisonnières. Ce maillage de TPE et PME trouve dans l'IA un levier concret pour optimiser devis, production, réservations et relation client.",
+    "Abbeville, capitale du Ponthieu sur la Somme, conjugue une tradition industrielle et un tourisme en plein essor. Son économie repose sur l'agroalimentaire, sur des ateliers de serrurerie et de métallurgie héritiers d'un long savoir-faire, et sur un tissu d'artisans et de commerces. La proximité de la baie de Somme, classée parmi les plus belles baies du monde, irrigue une hôtellerie et une restauration saisonnières. Ce maillage de PME et ETI trouve dans l'IA un levier concret pour optimiser devis, production, réservations et relation client.",
   ecosystemEn:
-    "Abbeville, capitale du Ponthieu sur la Somme, conjugue une tradition industrielle et un tourisme en plein essor. Son économie repose sur l'agroalimentaire, sur des ateliers de serrurerie et de métallurgie héritiers d'un long savoir-faire, et sur un tissu d'artisans et de commerces. La proximité de la baie de Somme, classée parmi les plus belles baies du monde, irrigue une hôtellerie et une restauration saisonnières. Ce maillage de TPE et PME trouve dans l'IA un levier concret pour optimiser devis, production, réservations et relation client.",
+    "Abbeville, capitale du Ponthieu sur la Somme, conjugue une tradition industrielle et un tourisme en plein essor. Son économie repose sur l'agroalimentaire, sur des ateliers de serrurerie et de métallurgie héritiers d'un long savoir-faire, et sur un tissu d'artisans et de commerces. La proximité de la baie de Somme, classée parmi les plus belles baies du monde, irrigue une hôtellerie et une restauration saisonnières. Ce maillage de PME et ETI trouve dans l'IA un levier concret pour optimiser devis, production, réservations et relation client.",
   distancesFr:
     "Abbeville est reliée à Paris en 1 h 30 par train (gare d'Abbeville, ligne Paris-Boulogne) et à Amiens en 50 minutes. La baie de Somme est à 20 minutes, l'autoroute A16 traverse le secteur et l'aéroport de Beauvais-Tillé est à 70 km.",
   distancesEn:
@@ -42,8 +42,8 @@ export const ABBEVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Abbeville : automatisation des devis et de la planification industrielle, gestion des réservations touristiques, traçabilité agroalimentaire et reporting pour PME et artisans.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Abbeville : sessions individuelles pour dirigeants de TPE et PME, en atelier, en établissement ou en visio, pour adopter l'IA à votre rythme.",
-      en: "Accompagnement un-à-un à Abbeville : sessions individuelles pour dirigeants de TPE et PME, en atelier, en établissement ou en visio, pour adopter l'IA à votre rythme.",
+      fr: "Accompagnement un-à-un à Abbeville : sessions individuelles pour dirigeants de PME et d'ETI, en atelier, en établissement ou en visio, pour adopter l'IA à votre rythme.",
+      en: "Accompagnement un-à-un à Abbeville : sessions individuelles pour dirigeants de PME et d'ETI, en atelier, en établissement ou en visio, pour adopter l'IA à votre rythme.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Abbeville : plateformes pour PME industrielles, hôtels et restaurants de la baie de Somme et artisans, avec devis intelligent, réservation en ligne et suivi client automatisé.",
@@ -58,7 +58,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           "Tissu agroalimentaire laitier du Ponthieu : autour de la laiterie Lactinov (groupe Lact'Union, route de Vauchelles), qui collecte le lait de centaines de fermes du secteur, on bâtit pour les PME agroalimentaires des portails B2B de commande, des fiches produits avec traçabilité du lot et de la DLC, et de la recherche sémantique sur catalogue, ou on greffe l'IA sur l'ERP existant sans refonte.",
           "Métallurgie et serrurerie, dans la lignée des Établissements Decayeux et des ateliers de la Z.I. Est (près de 50 hectares d'activité industrielle) : on construit des configurateurs de devis en ligne, du catalogue technique illustré et des agents de relance, ou on automatise la chaîne devis-production sans toucher à l'outil métier.",
           "Tourisme saisonnier de la baie de Somme, classée parmi les plus belles baies du monde : hôtels, restaurants et hébergeurs de la baie et du centre historique gagnent un site de réservation directe et un chatbot multilingue pour absorber le pic estival et la clientèle de passage venue par l'A16.",
-          "Économie de TPE — artisans du bâtiment et commerces de centre-ville autour de la collégiale Saint-Vulfran : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec devis automatisés, paiement en ligne et relances, à un budget de très petite structure, toute la chaîne hébergeable en UE et conforme RGPD et AI Act.",
+          "Économie de PME — artisans du bâtiment et commerces de centre-ville autour de la collégiale Saint-Vulfran : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec devis automatisés, paiement en ligne et relances, à un budget maîtrisé, toute la chaîne hébergeable en UE et conforme RGPD et AI Act.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const ABBEVILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé, paiement en ligne) sur le site existant d'un artisan du bâtiment, d'un commerce du centre abbevillois ou d'un restaurant de la baie, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -144,7 +138,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
           "Tissu agroalimentaire laitier du Ponthieu : autour de la laiterie Lactinov (groupe Lact'Union, route de Vauchelles), qui collecte le lait de centaines de fermes du secteur, on bâtit pour les PME agroalimentaires des portails B2B de commande, des fiches produits avec traçabilité du lot et de la DLC, et de la recherche sémantique sur catalogue, ou on greffe l'IA sur l'ERP existant sans refonte.",
           "Métallurgie et serrurerie, dans la lignée des Établissements Decayeux et des ateliers de la Z.I. Est (près de 50 hectares d'activité industrielle) : on construit des configurateurs de devis en ligne, du catalogue technique illustré et des agents de relance, ou on automatise la chaîne devis-production sans toucher à l'outil métier.",
           "Tourisme saisonnier de la baie de Somme, classée parmi les plus belles baies du monde : hôtels, restaurants et hébergeurs de la baie et du centre historique gagnent un site de réservation directe et un chatbot multilingue pour absorber le pic estival et la clientèle de passage venue par l'A16.",
-          "Économie de TPE — artisans du bâtiment et commerces de centre-ville autour de la collégiale Saint-Vulfran : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec devis automatisés, paiement en ligne et relances, à un budget de très petite structure, toute la chaîne hébergeable en UE et conforme RGPD et AI Act.",
+          "Économie de PME — artisans du bâtiment et commerces de centre-ville autour de la collégiale Saint-Vulfran : on déploie des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec devis automatisés, paiement en ligne et relances, à un budget maîtrisé, toute la chaîne hébergeable en UE et conforme RGPD et AI Act.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const ABBEVILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisé, paiement en ligne) sur le site existant d'un artisan du bâtiment, d'un commerce du centre abbevillois ou d'un restaurant de la baie, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,7 +218,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Abbeville et dans la Somme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Abbeville, de la baie de Somme et du Ponthieu. Nos consultants se déplacent sur site, à 1 h 30 de Paris par le train ou 50 minutes d'Amiens, ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI d'Abbeville, de la baie de Somme et du Ponthieu. Nos consultants se déplacent sur site, à 1 h 30 de Paris par le train ou 50 minutes d'Amiens, ou interviennent en visio.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et industrielles abbevilloises ?",
@@ -242,7 +230,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et commerces d'Abbeville ?",
-      a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous déployons devis automatisés, gestion de planning, relances et facturation intelligente, après un audit qui chiffre le retour attendu.",
+      a: "Oui, les PME sont notre priorité. Pour artisans et commerçants, nous déployons devis automatisés, gestion de planning, relances et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Amiens ?",

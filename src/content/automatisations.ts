@@ -78,7 +78,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
           title: "Standard téléphonique IA",
           benefit:
             "Plus aucun appel raté. L'IA prend le message, qualifie l'appel et vous envoie un résumé clair.",
-          audience: "TPE / PME / professions libérales",
+          audience: "PME/ETI / professions libérales",
         },
         {
           title: "Suivi satisfaction post-prestation",
@@ -468,7 +468,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
           title: "Rapprochement bancaire automatique",
           benefit:
             "Vos écritures comptables sont pré-mâchées. Votre comptable boucle les mois en 2h au lieu de 2 jours.",
-          audience: "TPE / PME",
+          audience: "PME/ETI",
         },
         {
           title: "Compte-rendu automatique de réunion",

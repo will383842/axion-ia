@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COULOMMIERS_COPY: VilleCopy = {
   pitchFr:
-    "Coulommiers (77), sous-préfecture de Seine-et-Marne, est un bassin économique structurant de l'est francilien. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-ville, services aux entreprises et professions libérales. Ville connue pour le Brie de Coulommiers et son marché. Axion-IA accompagne tout le tissu professionnel local.",
+    "Coulommiers (77), sous-préfecture de Seine-et-Marne, est un bassin économique structurant de l'est francilien. Tissu de PME artisanales, PME agroalimentaires, commerces de centre-ville, services aux entreprises et professions libérales. Ville connue pour le Brie de Coulommiers et son marché. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Coulommiers (77), sous-préfecture de Seine-et-Marne, est un bassin économique structurant de l'est francilien. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-ville, services aux entreprises et professions libérales. Ville connue pour le Brie de Coulommiers et son marché. Axion-IA accompagne tout le tissu professionnel local.",
+    "Coulommiers (77), sous-préfecture de Seine-et-Marne, est un bassin économique structurant de l'est francilien. Tissu de PME artisanales, PME agroalimentaires, commerces de centre-ville, services aux entreprises et professions libérales. Ville connue pour le Brie de Coulommiers et son marché. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coulommiers (77). Nous accompagnons PME et ETI : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coulommiers (77). Nous accompagnons PME et ETI : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
   seoHook: "agroalimentaire filière & commerce détail",
   ecosystemFr:
     "Coulommiers, sous-préfecture de Seine-et-Marne, est un pôle structurant de l'est francilien. Tissu économique diversifié : filière agroalimentaire (Brie de Coulommiers), artisanat BTP, commerces de centre-ville, services aux entreprises, professions libérales de santé. Zone d'activités des Musiciens et parc Coutevroult à proximité.",
@@ -30,20 +30,20 @@ export const COULOMMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Coulommiers : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Coulommiers : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coulommiers : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Coulommiers : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Coulommiers : automatisation gestion commerciale, traçabilité agroalimentaire, CRM commerçants, classification documentaire. Adapté TPE/PME est Seine-et-Marne.",
-      en: "Implémentation IA à Coulommiers : automatisation gestion commerciale, traçabilité agroalimentaire, CRM commerçants, classification documentaire. Adapté TPE/PME est Seine-et-Marne.",
+      fr: "Implémentation IA à Coulommiers : automatisation gestion commerciale, traçabilité agroalimentaire, CRM commerçants, classification documentaire. Adapté PME et ETI est Seine-et-Marne.",
+      en: "Implémentation IA à Coulommiers : automatisation gestion commerciale, traçabilité agroalimentaire, CRM commerçants, classification documentaire. Adapté PME et ETI est Seine-et-Marne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Coulommiers : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, commerçants et artisans du bassin est Seine-et-Marne.",
-      en: "Coaching 1-to-1 à Coulommiers : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, commerçants et artisans du bassin est Seine-et-Marne.",
+      fr: "Coaching 1-to-1 à Coulommiers : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, commerçants et artisans du bassin est Seine-et-Marne.",
+      en: "Coaching 1-to-1 à Coulommiers : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, commerçants et artisans du bassin est Seine-et-Marne.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de Coulommiers et du bassin Brie sur leurs cas IA : traçabilité production, automatisation commandes, gestion qualité, prédiction stocks, relation fournisseurs.",
     },
     {
-      q: "Quels services pour les TPE et commerçants de Coulommiers ?",
+      q: "Quels services pour les PME et commerçants de Coulommiers ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {

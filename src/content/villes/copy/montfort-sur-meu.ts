@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   pitchFr:
-    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
+    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de PME artisanales, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
+    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de PME artisanales, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
   seoHook: "pays de montfort",
   ecosystemFr:
-    "Montfort-sur-Meu est une petite ville de caractère à l'ouest de Rennes, au confluent du Meu et du Garun, porte d'entrée du pays de Brocéliande. L'économie locale s'appuie sur les TPE artisans BTP, les commerces de centre-bourg, les PME de services et tertiaire, les professions libérales, le tourisme patrimonial (écomusée du pays de Montfort, tour du Papegaut) et l'agriculture (polyculture-élevage).",
+    "Montfort-sur-Meu est une petite ville de caractère à l'ouest de Rennes, au confluent du Meu et du Garun, porte d'entrée du pays de Brocéliande. L'économie locale s'appuie sur les PME du BTP, les commerces de centre-bourg, les PME de services et tertiaire, les professions libérales, le tourisme patrimonial (écomusée du pays de Montfort, tour du Papegaut) et l'agriculture (polyculture-élevage).",
   ecosystemEn:
-    "Montfort-sur-Meu est une petite ville de caractère à l'ouest de Rennes, au confluent du Meu et du Garun, porte d'entrée du pays de Brocéliande. L'économie locale s'appuie sur les TPE artisans BTP, les commerces de centre-bourg, les PME de services et tertiaire, les professions libérales, le tourisme patrimonial (écomusée du pays de Montfort, tour du Papegaut) et l'agriculture (polyculture-élevage).",
+    "Montfort-sur-Meu est une petite ville de caractère à l'ouest de Rennes, au confluent du Meu et du Garun, porte d'entrée du pays de Brocéliande. L'économie locale s'appuie sur les PME du BTP, les commerces de centre-bourg, les PME de services et tertiaire, les professions libérales, le tourisme patrimonial (écomusée du pays de Montfort, tour du Papegaut) et l'agriculture (polyculture-élevage).",
   distancesFr:
     "Rennes centre à 25 min. Gare de Montfort-sur-Meu (TER Rennes-Montauban). Aéroport Rennes-Saint-Jacques à 25 min. Plélan-le-Grand à 15 min. Accès direct D125/N24 vers Lorient/Rennes.",
   distancesEn:
     "Rennes centre à 25 min. Gare de Montfort-sur-Meu (TER Rennes-Montauban). Aéroport Rennes-Saint-Jacques à 25 min. Plélan-le-Grand à 15 min. Accès direct D125/N24 vers Lorient/Rennes.",
   topSectorsNaf: [
-    "TPE artisanat BTP & construction",
+    "PME du BTP & construction",
     "Commerce de centre-bourg & restauration",
     "PME tertiaire & services aux entreprises",
     "Tourisme patrimonial (écomusée, Brocéliande)",
@@ -30,20 +30,20 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux PME artisanales, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux PME artisanales, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montfort-sur-Meu : formats adaptés aux TPE artisans, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",
-      en: "Interventions IA sur site à Montfort-sur-Meu : formats adaptés aux TPE artisans, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",
+      fr: "Interventions IA sur site à Montfort-sur-Meu : formats adaptés aux PME artisanales, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Montfort-sur-Meu : formats adaptés aux PME artisanales, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Montfort-sur-Meu : automatisation devis artisans, agents conversationnels tourisme patrimonial multilingue, gestion planning professions libérales, CRM augmenté PME tertiaire ouest Rennes.",
       en: "Implémentation IA à Montfort-sur-Meu : automatisation devis artisans, agents conversationnels tourisme patrimonial multilingue, gestion planning professions libérales, CRM augmenté PME tertiaire ouest Rennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montfort-sur-Meu : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, artisans, commerçants et indépendants du pays de Montfort et ouest Rennes souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Montfort-sur-Meu : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, artisans, commerçants et indépendants du pays de Montfort et ouest Rennes souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Montfort-sur-Meu : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, artisans, commerçants et indépendants du pays de Montfort et ouest Rennes souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Montfort-sur-Meu : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, artisans, commerçants et indépendants du pays de Montfort et ouest Rennes souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Montfort-sur-Meu  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Montfort, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du pays de Montfort, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans et commerçants de Montfort ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de centre-bourg de Montfort-sur-Meu sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, relation client. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Travaillez-vous avec les PME de l'artisanat et du commerce de Montfort ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce de centre-bourg de Montfort-sur-Meu sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, relation client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Montfort-sur-Meu ?",

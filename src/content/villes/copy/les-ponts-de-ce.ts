@@ -9,14 +9,14 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   pitchEn:
     "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA opère pour toutes les structures économiques de la commune : commerces, artisanat, PME industrielles, services et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les PME, ETI et commerçants pontdecéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les PME, ETI et commerçants pontdecéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "commerce détail & artisanat second",
   ecosystemFr:
-    "Les Ponts-de-Cé bénéficient de leur position stratégique au confluent Loire-Maine, porte sud d'Angers. Zone commerciale Atoll à proximité, tissu de PME et TPE diversifié, artisanat, commerces de centre-bourg historique et activités liées au fleuve. Horticulture et pépinières angevines.",
+    "Les Ponts-de-Cé bénéficient de leur position stratégique au confluent Loire-Maine, porte sud d'Angers. Zone commerciale Atoll à proximité, tissu de PME et ETI diversifié, artisanat, commerces de centre-bourg historique et activités liées au fleuve. Horticulture et pépinières angevines.",
   ecosystemEn:
-    "Les Ponts-de-Cé bénéficient de leur position stratégique au confluent Loire-Maine, porte sud d'Angers. Zone commerciale Atoll à proximité, tissu de PME et TPE diversifié, artisanat, commerces de centre-bourg historique et activités liées au fleuve. Horticulture et pépinières angevines.",
+    "Les Ponts-de-Cé bénéficient de leur position stratégique au confluent Loire-Maine, porte sud d'Angers. Zone commerciale Atoll à proximité, tissu de PME et ETI diversifié, artisanat, commerces de centre-bourg historique et activités liées au fleuve. Horticulture et pépinières angevines.",
   distancesFr:
     "Angers centre à 10 min. Gare TGV Angers Saint-Laud à 15 min. Gare locale Les Ponts-de-Cé (TER). Aéroport Nantes Atlantique à 1h15. Accès A87 direction Cholet/La Roche-sur-Yon.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, PME artisanales et PME du confluent sud-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, PME artisanales et PME du confluent sud-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Ponts-de-Cé : formations pour équipes commerce, artisanat et PME services. Ateliers pratiques adaptés au tissu économique sud-angevin.",
@@ -57,7 +57,7 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces de la zone Atoll ?",
-      a: "Oui, nous accompagnons les commerces proches de la zone Atoll et du centre-bourg des Ponts-de-Cé : agents IA relation client, automatisation stocks et commandes, marketing personnalisé, fidélisation. Formats adaptés TPE/PME.",
+      a: "Oui, nous accompagnons les commerces proches de la zone Atoll et du centre-bourg des Ponts-de-Cé : agents IA relation client, automatisation stocks et commandes, marketing personnalisé, fidélisation. Formats adaptés PME et ETI.",
     },
     {
       q: "Quels secteurs ciblez-vous aux Ponts-de-Cé ?",

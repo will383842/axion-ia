@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COURDIMANCHE_COPY: VilleCopy = {
   pitchFr:
-    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y travaille avec les organisations du territoire du pôle cergypontain.",
+    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu PME artisanales et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y travaille avec les organisations du territoire du pôle cergypontain.",
   pitchEn:
-    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y travaille avec les organisations du territoire du pôle cergypontain.",
+    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu PME artisanales et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y travaille avec les organisations du territoire du pôle cergypontain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : PME artisanales et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : PME artisanales et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit sur place sur mesure.",
   seoHook: "services aux & logistique transport",
   ecosystemFr:
-    "Courdimanche fait partie de l'agglomération de Cergy-Pontoise, deuxième pôle économique d'Île-de-France après La Défense. Son tissu associe TPE artisans, PME tertiaire, logistique, commerces et professions libérales. Communes voisines : Cergy, Pontoise, Vauréal, Menucourt, Boisemont.",
+    "Courdimanche fait partie de l'agglomération de Cergy-Pontoise, deuxième pôle économique d'Île-de-France après La Défense. Son tissu associe PME artisanales, PME tertiaire, logistique, commerces et professions libérales. Communes voisines : Cergy, Pontoise, Vauréal, Menucourt, Boisemont.",
   ecosystemEn:
-    "Courdimanche fait partie de l'agglomération de Cergy-Pontoise, deuxième pôle économique d'Île-de-France après La Défense. Son tissu associe TPE artisans, PME tertiaire, logistique, commerces et professions libérales. Communes voisines : Cergy, Pontoise, Vauréal, Menucourt, Boisemont.",
+    "Courdimanche fait partie de l'agglomération de Cergy-Pontoise, deuxième pôle économique d'Île-de-France après La Défense. Son tissu associe PME artisanales, PME tertiaire, logistique, commerces et professions libérales. Communes voisines : Cergy, Pontoise, Vauréal, Menucourt, Boisemont.",
   distancesFr:
     "RER A Cergy-le-Haut à 5 min. A15 à proximité directe. Paris La Défense à 40 min. Gare de Pontoise (Transilien H) à 10 min. Aéroport Roissy-CDG à 45 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const COURDIMANCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courdimanche : diagnostic adapté aux TPE artisans, PME tertiaire et logistique, commerces et professions libérales de l'agglomération Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Courdimanche : diagnostic adapté aux TPE artisans, PME tertiaire et logistique, commerces et professions libérales de l'agglomération Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Courdimanche : diagnostic adapté aux PME artisanales, PME tertiaire et logistique, commerces et professions libérales de l'agglomération Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Courdimanche : diagnostic adapté aux PME artisanales, PME tertiaire et logistique, commerces et professions libérales de l'agglomération Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courdimanche : formats adaptés au bureau tertiaire, au commerce ou à l'entrepôt. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const COURDIMANCHE_COPY: VilleCopy = {
       en: "Implémentation IA à Courdimanche : automatisation flux administratifs, optimisation logistique, agents conversationnels, CRM intelligent. Solutions adaptées au tissu PME du pôle Cergy-Pontoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Courdimanche : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME tertiaire, professions libérales et indépendants du bassin Cergy-Pontoise.",
-      en: "Coaching 1-to-1 à Courdimanche : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME tertiaire, professions libérales et indépendants du bassin Cergy-Pontoise.",
+      fr: "Coaching 1-to-1 à Courdimanche : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME tertiaire, professions libérales et indépendants du bassin Cergy-Pontoise.",
+      en: "Coaching 1-to-1 à Courdimanche : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME tertiaire, professions libérales et indépendants du bassin Cergy-Pontoise.",
     },
   },
   faqGeolocalisee: [
@@ -60,12 +60,12 @@ export const COURDIMANCHE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaire et logistique de Courdimanche et du bassin Cergy-Pontoise sur leurs cas IA : automatisation administrative, optimisation supply chain, relation client, reporting décisionnel.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE à Courdimanche ?",
-      a: "Oui, nos interventions IA sur site à Courdimanche sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
+      q: "Proposez-vous des formations IA pour les PME à Courdimanche ?",
+      a: "Oui, nos interventions IA sur site à Courdimanche sont adaptées aux PME de l'artisanat et du commerce. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
       q: "Comment se déroule un coaching individuel IA à Courdimanche ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Courdimanche ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Courdimanche ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
     },
   ],
 };

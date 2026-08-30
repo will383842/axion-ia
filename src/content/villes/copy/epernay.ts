@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const EPERNAY_COPY: VilleCopy = {
   pitchFr:
-    "À Épernay, capitale du Champagne, Axion-IA accompagne les TPE et PME de la viticulture, de l'œnotourisme, du négoce et des services. Notre cabinet d'architectes seniors en intelligence artificielle aide les maisons familiales et les vignerons à automatiser leur administratif et à structurer leur relation client, sans jargon technique.",
+    "À Épernay, capitale du Champagne, Axion-IA accompagne les PME et ETI de la viticulture, de l'œnotourisme, du négoce et des services. Notre cabinet d'architectes seniors en intelligence artificielle aide les maisons familiales et les vignerons à automatiser leur administratif et à structurer leur relation client, sans jargon technique.",
   pitchEn:
-    "À Épernay, capitale du Champagne, Axion-IA accompagne les TPE et PME de la viticulture, de l'œnotourisme, du négoce et des services. Notre cabinet d'architectes seniors en intelligence artificielle aide les maisons familiales et les vignerons à automatiser leur administratif et à structurer leur relation client, sans jargon technique.",
+    "À Épernay, capitale du Champagne, Axion-IA accompagne les PME et ETI de la viticulture, de l'œnotourisme, du négoce et des services. Notre cabinet d'architectes seniors en intelligence artificielle aide les maisons familiales et les vignerons à automatiser leur administratif et à structurer leur relation client, sans jargon technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Épernay pour accompagner les TPE et PME locales. Le long de l'avenue de Champagne, où se concentrent les grandes maisons comme Moët & Chandon, Mercier et De Castellane, mais surtout auprès des nombreux vignerons et négociants indépendants, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Épernay pour accompagner les PME et ETI locales. Le long de l'avenue de Champagne, où se concentrent les grandes maisons comme Moët & Chandon, Mercier et De Castellane, mais surtout auprès des nombreux vignerons et négociants indépendants, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Épernay pour accompagner les TPE et PME locales. Le long de l'avenue de Champagne, où se concentrent les grandes maisons comme Moët & Chandon, Mercier et De Castellane, mais surtout auprès des nombreux vignerons et négociants indépendants, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Épernay pour accompagner les PME et ETI locales. Le long de l'avenue de Champagne, où se concentrent les grandes maisons comme Moët & Chandon, Mercier et De Castellane, mais surtout auprès des nombreux vignerons et négociants indépendants, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   seoHook: "champagne, viticulture & œnotourisme",
   ecosystemFr:
-    "Épernay est le cœur économique du vignoble champenois, organisée autour de l'avenue de Champagne et de ses caves prestigieuses. Au-delà des grandes maisons emblématiques comme Moët & Chandon, Mercier ou De Castellane, le territoire vit surtout d'une multitude de vignerons indépendants, coopératives, négociants et acteurs de l'œnotourisme. À cela s'ajoutent les services, le commerce et l'artisanat qui gravitent autour de la filière. Ce tissu dense de TPE et PME familiales, attaché à la qualité et à la tradition, trouve dans Axion-IA un partenaire pour moderniser sa gestion sans dénaturer son savoir-faire.",
+    "Épernay est le cœur économique du vignoble champenois, organisée autour de l'avenue de Champagne et de ses caves prestigieuses. Au-delà des grandes maisons emblématiques comme Moët & Chandon, Mercier ou De Castellane, le territoire vit surtout d'une multitude de vignerons indépendants, coopératives, négociants et acteurs de l'œnotourisme. À cela s'ajoutent les services, le commerce et l'artisanat qui gravitent autour de la filière. Ce tissu dense de PME et ETI familiales, attaché à la qualité et à la tradition, trouve dans Axion-IA un partenaire pour moderniser sa gestion sans dénaturer son savoir-faire.",
   ecosystemEn:
-    "Épernay est le cœur économique du vignoble champenois, organisée autour de l'avenue de Champagne et de ses caves prestigieuses. Au-delà des grandes maisons emblématiques comme Moët & Chandon, Mercier ou De Castellane, le territoire vit surtout d'une multitude de vignerons indépendants, coopératives, négociants et acteurs de l'œnotourisme. À cela s'ajoutent les services, le commerce et l'artisanat qui gravitent autour de la filière. Ce tissu dense de TPE et PME familiales, attaché à la qualité et à la tradition, trouve dans Axion-IA un partenaire pour moderniser sa gestion sans dénaturer son savoir-faire.",
+    "Épernay est le cœur économique du vignoble champenois, organisée autour de l'avenue de Champagne et de ses caves prestigieuses. Au-delà des grandes maisons emblématiques comme Moët & Chandon, Mercier ou De Castellane, le territoire vit surtout d'une multitude de vignerons indépendants, coopératives, négociants et acteurs de l'œnotourisme. À cela s'ajoutent les services, le commerce et l'artisanat qui gravitent autour de la filière. Ce tissu dense de PME et ETI familiales, attaché à la qualité et à la tradition, trouve dans Axion-IA un partenaire pour moderniser sa gestion sans dénaturer son savoir-faire.",
   distancesFr:
     "Épernay se trouve à environ 30 km de Reims, accessible en une trentaine de minutes par la route ou le train. Paris est à environ 1h15 en train direct depuis la gare d'Épernay, ce qui place la ville à portée immédiate de la capitale pour les marchés et les visiteurs. L'aéroport Paris-Charles-de-Gaulle est à environ 1h30 de route. Cette accessibilité facilite à la fois l'œnotourisme international et les déplacements de nos consultants dans la vallée de la Marne.",
   distancesEn:
@@ -34,8 +34,8 @@ export const EPERNAY_COPY: VilleCopy = {
       en: "Un audit IA à Épernay analyse sur site les processus d'une maison de champagne, d'un vigneron ou d'un négociant, pour repérer les automatisations à plus fort ROI : suivi des commandes, expéditions, relation client et gestion des visites de cave.",
     },
     interventions: {
-      fr: "Nos interventions à Épernay automatisent les tâches répétitives des TPE et PME viticoles : prise de commande, relances, gestion des réservations œnotouristiques et traitement administratif, sans bouleverser vos outils existants.",
-      en: "Nos interventions à Épernay automatisent les tâches répétitives des TPE et PME viticoles : prise de commande, relances, gestion des réservations œnotouristiques et traitement administratif, sans bouleverser vos outils existants.",
+      fr: "Nos interventions à Épernay automatisent les tâches répétitives des PME et ETI viticoles : prise de commande, relances, gestion des réservations œnotouristiques et traitement administratif, sans bouleverser vos outils existants.",
+      en: "Nos interventions à Épernay automatisent les tâches répétitives des PME et ETI viticoles : prise de commande, relances, gestion des réservations œnotouristiques et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
       fr: "L'implémentation à Épernay déploie des solutions IA durables pour la filière champagne et ses services, avec une attention forte à la traçabilité, à la confidentialité des données commerciales et à la conformité RGPD.",
@@ -57,7 +57,7 @@ export const EPERNAY_COPY: VilleCopy = {
         whyHere: [
           "Filière champagne tournée vers l'export et une clientèle internationale, des États-Unis au Japon : nos boutiques e-commerce (Shopify, WooCommerce, PrestaShop) et chatbots RAG sont multilingues par défaut, calibrés pour la vente directe de cuvées, l'allotement par marché, la gestion des commandes professionnelles et les contraintes de transport d'alcool par pays de destination.",
           "Avenue de Champagne classée à l'UNESCO et œnotourisme dense — maisons comme Moët & Chandon, Mercier et De Castellane, plus des dizaines de domaines visitables et leurs galeries souterraines : on construit des moteurs de réservation de visites de cave, d'ateliers de dégustation et de billetterie, branchés sur vos disponibilités réelles, avec parcours mobile-first pour les visiteurs en mobilité place de la République comme dans la vallée de la Marne.",
-          "Tissu de TPE et PME familiales attachées au savoir-faire artisanal, vignerons indépendants et coopératives autour d'Épernay : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure qui valorise terroir, parcellaire, millésimes et récits de maison, avec recherche sémantique sur vos fiches cuvées.",
+          "Tissu de PME et ETI familiales attachées au savoir-faire artisanal, vignerons indépendants et coopératives autour d'Épernay : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure qui valorise terroir, parcellaire, millésimes et récits de maison, avec recherche sémantique sur vos fiches cuvées.",
           "Données commerciales sensibles encadrées par l'appellation et le négoce — carnets clients, allocations, prix, traçabilité des lots : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Vos fichiers clients et historiques de vente restent maîtrisés et ne transitent jamais hors UE sans DPA, condition clé pour les maisons exportatrices de la Marne soucieuses de confidentialité.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const EPERNAY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, formulaire de réservation de visite — sur le site existant d'un vigneron indépendant, d'un négociant ou d'un acteur de l'œnotourisme épernéen, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const EPERNAY_COPY: VilleCopy = {
         whyHere: [
           "Filière champagne tournée vers l'export et une clientèle internationale, des États-Unis au Japon : nos boutiques e-commerce (Shopify, WooCommerce, PrestaShop) et chatbots RAG sont multilingues par défaut, calibrés pour la vente directe de cuvées, l'allotement par marché, la gestion des commandes professionnelles et les contraintes de transport d'alcool par pays de destination.",
           "Avenue de Champagne classée à l'UNESCO et œnotourisme dense — maisons comme Moët & Chandon, Mercier et De Castellane, plus des dizaines de domaines visitables et leurs galeries souterraines : on construit des moteurs de réservation de visites de cave, d'ateliers de dégustation et de billetterie, branchés sur vos disponibilités réelles, avec parcours mobile-first pour les visiteurs en mobilité place de la République comme dans la vallée de la Marne.",
-          "Tissu de TPE et PME familiales attachées au savoir-faire artisanal, vignerons indépendants et coopératives autour d'Épernay : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure qui valorise terroir, parcellaire, millésimes et récits de maison, avec recherche sémantique sur vos fiches cuvées.",
+          "Tissu de PME et ETI familiales attachées au savoir-faire artisanal, vignerons indépendants et coopératives autour d'Épernay : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure qui valorise terroir, parcellaire, millésimes et récits de maison, avec recherche sémantique sur vos fiches cuvées.",
           "Données commerciales sensibles encadrées par l'appellation et le négoce — carnets clients, allocations, prix, traçabilité des lots : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Vos fichiers clients et historiques de vente restent maîtrisés et ne transitent jamais hors UE sans DPA, condition clé pour les maisons exportatrices de la Marne soucieuses de confidentialité.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const EPERNAY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, formulaire de réservation de visite — sur le site existant d'un vigneron indépendant, d'un négociant ou d'un acteur de l'œnotourisme épernéen, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -234,7 +222,7 @@ export const EPERNAY_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Épernay ?",
-      a: "Nous accompagnons en priorité les TPE et PME : vignerons indépendants, maisons familiales, négociants, acteurs de l'œnotourisme, commerce et services. Les ETI restent un cas marginal. Notre approche respecte le rythme et la tradition de la filière.",
+      a: "Nous accompagnons en priorité les PME et ETI : vignerons indépendants, maisons familiales, négociants, acteurs de l'œnotourisme, commerce et services. Les grands groupes complètent ce socle. Notre approche respecte le rythme et la tradition de la filière.",
     },
     {
       q: "L'IA est-elle compatible avec le savoir-faire artisanal du champagne ?",

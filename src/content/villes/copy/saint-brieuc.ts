@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BRIEUC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Saint-Brieuc, préfecture des Côtes-d'Armor (44 364 habitants, agglomération 154 167 habitants), pour accompagner en priorité les TPE et PME bretonnes. La ville s'appuie sur deux technopôles structurants — le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile) — ainsi que sur le port du Légué. Connectée à Paris par TGV (environ 2h37) et à 12 km de l'aéroport Saint-Brieuc Armor (Trémuson), la ville bénéficie de la RN 12 (E50) et d'une rocade de contournement. Nous codons en propre, sans solution no-code propriétaire.",
+    "Axion-IA intervient à Saint-Brieuc, préfecture des Côtes-d'Armor (44 364 habitants, agglomération 154 167 habitants), pour accompagner en priorité les PME et ETI bretonnes. La ville s'appuie sur deux technopôles structurants — le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile) — ainsi que sur le port du Légué. Connectée à Paris par TGV (environ 2h37) et à 12 km de l'aéroport Saint-Brieuc Armor (Trémuson), la ville bénéficie de la RN 12 (E50) et d'une rocade de contournement. Nous codons en propre, sans solution no-code propriétaire.",
   pitchEn:
-    "Axion-IA intervient à Saint-Brieuc, préfecture des Côtes-d'Armor (44 364 habitants, agglomération 154 167 habitants), pour accompagner en priorité les TPE et PME bretonnes. La ville s'appuie sur deux technopôles structurants — le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile) — ainsi que sur le port du Légué. Connectée à Paris par TGV (environ 2h37) et à 12 km de l'aéroport Saint-Brieuc Armor (Trémuson), la ville bénéficie de la RN 12 (E50) et d'une rocade de contournement. Nous codons en propre, sans solution no-code propriétaire.",
+    "Axion-IA intervient à Saint-Brieuc, préfecture des Côtes-d'Armor (44 364 habitants, agglomération 154 167 habitants), pour accompagner en priorité les PME et ETI bretonnes. La ville s'appuie sur deux technopôles structurants — le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile) — ainsi que sur le port du Légué. Connectée à Paris par TGV (environ 2h37) et à 12 km de l'aéroport Saint-Brieuc Armor (Trémuson), la ville bénéficie de la RN 12 (E50) et d'une rocade de contournement. Nous codons en propre, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les TPE puis les PME locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste TPE puis PME, plus représentatives du tissu briochin.",
+    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les PME puis les ETI locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste les PME puis les ETI, plus représentatives du tissu briochin.",
   directAnswerEn:
-    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les TPE puis les PME locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste TPE puis PME, plus représentatives du tissu briochin.",
+    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les PME puis les ETI locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste les PME puis les ETI, plus représentatives du tissu briochin.",
   seoHook: "Zoopôle biotech & Véhipôle automobile",
   ecosystemFr:
     "Saint-Brieuc structure son économie autour de deux technopôles emblématiques : le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile). Le port du Légué, dont l'expansion remonte à 1819, reste une infrastructure commerciale et de plaisance importante. Historiquement, l'arrivée du chemin de fer en 1865 a transformé la ville (Paris en 17 heures contre 6 jours auparavant en diligence). L'agglomération briochine compte 154 167 habitants, ce qui en fait le principal pôle d'emploi du département. Les Côtes-d'Armor mêlent agro-alimentaire, services et industrie légère.",
@@ -31,20 +31,20 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Brieuc pour les TPE/PME briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Brieuc pour les TPE/PME briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Brieuc pour les PME et ETI briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Brieuc pour les PME et ETI briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Saint-Brieuc pour automatiser devis, facturation, traçabilité et suivi clients — code custom auditable. Dès {{price:intervention-4h|flat}}.",
       en: "Interventions sur site à Saint-Brieuc pour automatiser devis, facturation, traçabilité et suivi clients — code custom auditable. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA mesurées à Saint-Brieuc pour TPE/PME — outils internes sur-mesure adaptés aux contraintes des filières locales (santé animale, automobile, agro).",
-      en: "Implémentation de solutions IA mesurées à Saint-Brieuc pour TPE/PME — outils internes sur-mesure adaptés aux contraintes des filières locales (santé animale, automobile, agro).",
+      fr: "Implémentation de solutions IA mesurées à Saint-Brieuc pour PME et ETI — outils internes sur-mesure adaptés aux contraintes des filières locales (santé animale, automobile, agro).",
+      en: "Implémentation de solutions IA mesurées à Saint-Brieuc pour PME et ETI — outils internes sur-mesure adaptés aux contraintes des filières locales (santé animale, automobile, agro).",
     },
     unAUn: {
-      fr: "Sessions un-à-un pour les dirigeants de TPE/PME de Saint-Brieuc — montée en compétences IA pragmatique, orientée cas concrets locaux.",
-      en: "Sessions un-à-un pour les dirigeants de TPE/PME de Saint-Brieuc — montée en compétences IA pragmatique, orientée cas concrets locaux.",
+      fr: "Sessions un-à-un pour les dirigeants de PME et ETI de Saint-Brieuc — montée en compétences IA pragmatique, orientée cas concrets locaux.",
+      en: "Sessions un-à-un pour les dirigeants de PME et ETI de Saint-Brieuc — montée en compétences IA pragmatique, orientée cas concrets locaux.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           "Projets web & SaaS calibrés pour le tissu briochin : sous-traitants et entreprises du Zoopôle (santé animale, biotech, sécurité alimentaire — autour de l'ANSES Ploufragan, LABOCEA, ISPAIA), équipementiers du Véhipôle, industrie type Le Joint Français, agroalimentaire et acteurs du port du Légué.",
           "Données sensibles d'épidémiosurveillance, de traçabilité sanitaire et de biosécurité (filières avicole et porcine) : hébergement strictement UE, chaîne IA souveraine RGPD, registre des traitements documenté — un vrai atout pour les acteurs gravitant autour des laboratoires de référence de Ploufragan.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA : portails clients, plateformes de saisie terrain pour élevages, outils de reporting qualité, sites e-commerce agroalimentaires.",
-          "Cible assumée TPE puis PME : le tissu briochin compte environ 1 360 TPE et 176 PME pour seulement 15 grandes entreprises — nous codons en propre, sans solution no-code propriétaire, pour des structures qui veulent rester maîtres de leur outil.",
+          "Cible assumée les PME puis les ETI : le tissu briochin compte environ 1 360 PME et 176 PME pour seulement 15 grandes entreprises — nous codons en propre, sans solution no-code propriétaire, pour des structures qui veulent rester maîtres de leur outil.",
         ],
         methodology: [
           {
@@ -86,12 +86,6 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte — idéal pour les artisans, commerces et indépendants briochins, du centre-ville aux communes limitrophes (Plérin, Ploufragan, Langueux, Trégueux).",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -121,7 +115,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises de la Technopole Saint-Brieuc Armor (Zoopôle, Véhipôle) ?",
-            a: "Oui. Notre offre vise en priorité les TPE et PME du territoire briochin : sous-traitants et laboratoires du Zoopôle (santé animale, sécurité alimentaire), équipementiers du Véhipôle, industriels type Le Joint Français, agroalimentaire et acteurs du port du Légué. On adapte vocabulaire, contenus et cas d'usage à votre filière.",
+            a: "Oui. Notre offre vise en priorité les PME et ETI du territoire briochin : sous-traitants et laboratoires du Zoopôle (santé animale, sécurité alimentaire), équipementiers du Véhipôle, industriels type Le Joint Français, agroalimentaire et acteurs du port du Légué. On adapte vocabulaire, contenus et cas d'usage à votre filière.",
           },
           {
             q: "Peut-on augmenter un site existant sans le refondre ?",
@@ -141,7 +135,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           "Web & SaaS projects calibrated for the Saint-Brieuc fabric: suppliers and companies of the Zoopôle (animal health, biotech, food safety — around ANSES Ploufragan, LABOCEA, ISPAIA), Véhipôle automotive suppliers, industry such as Le Joint Français, agri-food and the players of the Légué port.",
           "Sensitive epidemiological surveillance, sanitary traceability and biosecurity data (poultry and pig sectors): strictly EU hosting, GDPR-sovereign AI chain, documented processing register — a real asset for the players orbiting the Ploufragan reference laboratories.",
           "Full UX/UI design if needed — research, wireframes, design system, Figma prototype — not just the AI brick: client portals, field-entry platforms for farms, quality-reporting tools, agri-food e-commerce sites.",
-          "Deliberate TPE-then-SME focus: the Saint-Brieuc fabric counts roughly 1,360 micro-businesses and 176 SMEs for only 15 large companies — we write our own code, no proprietary no-code, for organisations that want to stay in control of their tool.",
+          "Deliberate PME-then-SME focus: the Saint-Brieuc fabric counts roughly 1,360 micro-businesses and 176 SMEs for only 15 large companies — we write our own code, no proprietary no-code, for organisations that want to stay in control of their tool.",
         ],
         methodology: [
           {
@@ -172,12 +166,6 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild — ideal for Saint-Brieuc craftspeople, shops and freelancers, from the city centre to neighbouring communes (Plérin, Ploufragan, Langueux, Trégueux).",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / app",
             detail:
@@ -207,7 +195,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
           },
           {
             q: "Do you work with companies of the Technopole Saint-Brieuc Armor (Zoopôle, Véhipôle)?",
-            a: "Yes. Our offer primarily targets the TPE and SMEs of the Saint-Brieuc area: Zoopôle suppliers and laboratories (animal health, food safety), Véhipôle equipment makers, industry such as Le Joint Français, agri-food and the players of the Légué port. We adapt vocabulary, content and use cases to your sector.",
+            a: "Yes. Our offer primarily targets the PME and SMEs of the Saint-Brieuc area: Zoopôle suppliers and laboratories (animal health, food safety), Véhipôle equipment makers, industry such as Le Joint Français, agri-food and the players of the Légué port. We adapt vocabulary, content and use cases to your sector.",
           },
           {
             q: "Can you augment an existing site without rebuilding it?",
@@ -246,8 +234,8 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
       a: "Code propre développé sur-mesure (pas de plateforme no-code propriétaire), hébergement France ou UE, registre des traitements documenté. Particulièrement utile pour les acteurs du Zoopôle manipulant des données sensibles.",
     },
     {
-      q: "Pourquoi un cabinet IA pour les TPE/PME briochines ?",
-      a: "Le tissu de Saint-Brieuc (Zoopôle, Véhipôle, agro-alimentaire, port du Légué) regorge de processus administratifs et de traçabilité automatisables. Nous priorisons TPE puis PME ; les ETI restent marginales localement.",
+      q: "Pourquoi un cabinet IA pour les PME et ETI briochines ?",
+      a: "Le tissu de Saint-Brieuc (Zoopôle, Véhipôle, agro-alimentaire, port du Légué) regorge de processus administratifs et de traçabilité automatisables. Nous priorisons les PME puis les ETI ; les grands groupes complètent ce socle.",
     },
   ],
 };

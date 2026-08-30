@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
+    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, PME du BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
   pitchEn:
-    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
+    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, PME du BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, PME du BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, PME du BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   seoHook: "industrielles agglomération & commerce zones",
   ecosystemFr:
-    "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), TPE artisanat BTP, professions libérales. Position axe A7 Lyon-Marseille.",
+    "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), PME du BTP, professions libérales. Position axe A7 Lyon-Marseille.",
   ecosystemEn:
-    "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), TPE artisanat BTP, professions libérales. Position axe A7 Lyon-Marseille.",
+    "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), PME du BTP, professions libérales. Position axe A7 Lyon-Marseille.",
   distancesFr:
     "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Grenoble centre à 1h15. Axe A7 Lyon-Marseille / A49 vers Grenoble.",
   distancesEn:
@@ -25,13 +25,13 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
     "PME industrielles agglomération Valence",
     "Commerce & zones d'activités",
     "Agriculture vallée Rhône (vergers, viticulture)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, PME artisanales, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, PME artisanales, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-lès-Valence : formats adaptés à l'atelier industriel, commerce, exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
       en: "Implémentation IA à Bourg-lès-Valence : prédiction maintenance industrielle, classification photos cultures/produits, automatisation devis BTP, agents conversationnels. Valence Romans Agglo.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bourg-lès-Valence : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants TPE/PME bourcains.",
-      en: "Coaching 1-to-1 à Bourg-lès-Valence : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants TPE/PME bourcains.",
+      fr: "Coaching 1-to-1 à Bourg-lès-Valence : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants PME et ETI bourcains.",
+      en: "Coaching 1-to-1 à Bourg-lès-Valence : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants PME et ETI bourcains.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et viticulteurs vallée du Rhône drômoise autour de Bourg-lès-Valence (vergers, viticulture) sur leurs cas IA : prédiction récoltes, classification photos cultures, traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Bourg-lès-Valence, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Bourg-lès-Valence, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",

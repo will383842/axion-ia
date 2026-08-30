@@ -62,7 +62,7 @@ const MIN_WORD_COUNT = 850;
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe).
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les PME, ETI et grands groupes français.
 Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps sera rédigé séparément). Règles :
 - 100 % centré Axion-IA, ancré sur les « Sources internes Axion-IA » fournies (faits KB). Rien d'inventé : ni cas client fictif, ni chiffre non sourcé.
 - INTERDIT : angle purement définitionnel. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement (cas d'usage réels, bénéfices mesurables, retour terrain).
@@ -105,12 +105,13 @@ function synthesizeTopic(input: GeneratorBaseInput): string {
         ? "implémentation IA"
         : "formation intelligence artificielle";
 
+  // Repositionnement 2026-08-29 : la cible est PME / ETI / grands groupes.
+  // La valeur "TPE" reste dans l'enum CompanySize pour les campagnes deja en
+  // base ; elle retombe volontairement sur « pour PME », comme le defaut.
   const audience =
-    input.targetAudienceSize === "TPE"
-      ? " pour TPE"
-      : input.targetAudienceSize === "ETI" || input.targetAudienceSize === "GRANDE_ENTREPRISE"
-        ? " pour ETI/GE"
-        : " pour PME";
+    input.targetAudienceSize === "ETI" || input.targetAudienceSize === "GRANDE_ENTREPRISE"
+      ? " pour ETI/GE"
+      : " pour PME";
 
   const geo = input.anchorVilleSlug
     ? ` à ${input.anchorVilleSlug.replace(/-/g, " ")}`

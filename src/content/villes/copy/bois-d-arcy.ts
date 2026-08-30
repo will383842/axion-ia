@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_D_ARCY_COPY: VilleCopy = {
   pitchFr:
-    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de TPE/PME tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de PME et ETI tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de TPE/PME tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de PME et ETI tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
   seoHook: "artisanat second & services tertiaires",
   ecosystemFr:
-    "Bois-d'Arcy est une commune résidentielle située entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique mixte : TPE artisans (BTP, second œuvre), PME tertiaires, commerces de centre-ville, professions libérales, services aux particuliers. Proximité des zones d'activités de Saint-Quentin-en-Yvelines (technopôle, bureaux) et de Versailles (tourisme, administration).",
+    "Bois-d'Arcy est une commune résidentielle située entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique mixte : PME artisanales (BTP, second œuvre), PME tertiaires, commerces de centre-ville, professions libérales, services aux particuliers. Proximité des zones d'activités de Saint-Quentin-en-Yvelines (technopôle, bureaux) et de Versailles (tourisme, administration).",
   ecosystemEn:
-    "Bois-d'Arcy est une commune résidentielle située entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique mixte : TPE artisans (BTP, second œuvre), PME tertiaires, commerces de centre-ville, professions libérales, services aux particuliers. Proximité des zones d'activités de Saint-Quentin-en-Yvelines (technopôle, bureaux) et de Versailles (tourisme, administration).",
+    "Bois-d'Arcy est une commune résidentielle située entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique mixte : PME artisanales (BTP, second œuvre), PME tertiaires, commerces de centre-ville, professions libérales, services aux particuliers. Proximité des zones d'activités de Saint-Quentin-en-Yvelines (technopôle, bureaux) et de Versailles (tourisme, administration).",
   distancesFr:
     "Gare de Bois-d'Arcy (pas de gare propre, gare de Saint-Cyr à 5 min ou Fontenay-le-Fleury à 7 min, Transilien ligne N/U). Versailles à 8 min voiture. Saint-Quentin-en-Yvelines à 10 min. Paris-Montparnasse à 35 min train. A12/A13 accès rapide.",
   distancesEn:
     "Gare de Bois-d'Arcy (pas de gare propre, gare de Saint-Cyr à 5 min ou Fontenay-le-Fleury à 7 min, Transilien ligne N/U). Versailles à 8 min voiture. Saint-Quentin-en-Yvelines à 10 min. Paris-Montparnasse à 35 min train. A12/A13 accès rapide.",
   topSectorsNaf: [
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "PME services tertiaires",
     "Commerce de proximité",
     "Professions libérales (santé, juridique)",
@@ -30,8 +30,8 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bois-d'Arcy : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bois-d'Arcy : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bois-d'Arcy : diagnostic adapté aux PME artisanales, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bois-d'Arcy : diagnostic adapté aux PME artisanales, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bois-d'Arcy : formats adaptés à l'atelier artisan, commerce, cabinet libéral ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
       en: "Implémentation IA à Bois-d'Arcy : agents conversationnels clients, automatisation devis BTP, gestion RDV santé/juridique, CRM augmentés, classification documents. Adapté tissu résidentiel Versailles ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bois-d'Arcy : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans, commerçants, professions libérales, gérants TPE/PME arcysiens souhaitant maîtriser l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à Bois-d'Arcy : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans, commerçants, professions libérales, gérants TPE/PME arcysiens souhaitant maîtriser l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à Bois-d'Arcy : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans, commerçants, professions libérales, gérants PME et ETI arcysiens souhaitant maîtriser l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à Bois-d'Arcy : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans, commerçants, professions libérales, gérants PME et ETI arcysiens souhaitant maîtriser l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bois-d'Arcy et tout le secteur Versailles / Saint-Quentin-en-Yvelines (Fontenay-le-Fleury, Saint-Cyr-l'École, Montigny-le-Bretonneux, Villepreux). Nos consultants se déplacent depuis Paris (35 min train).",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP à Bois-d'Arcy ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Bois-d'Arcy (plombiers, électriciens, maçons, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning saisonnier. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME du BTP à Bois-d'Arcy ?",
+      a: "Oui, nous accompagnons les PME du BTP à Bois-d'Arcy (plombiers, électriciens, maçons, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning saisonnier. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les professions libérales locales ?",
@@ -61,7 +61,7 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Bois-d'Arcy ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Bois-d'Arcy. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI à Bois-d'Arcy. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
       q: "Intervenez-vous aussi à Saint-Quentin-en-Yvelines ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud lyonnais.",
+    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, PME du BTP, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud lyonnais.",
   pitchEn:
-    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud lyonnais.",
+    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, PME du BTP, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires sud & industrielles vallée",
   ecosystemFr:
-    "Grigny est intégrée à la Métropole de Lyon, en banlieue sud (vallée du Rhône, entre Lyon et Vienne). Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisanat BTP, commerces de proximité, professions libérales, agriculture résiduelle vallée du Rhône.",
+    "Grigny est intégrée à la Métropole de Lyon, en banlieue sud (vallée du Rhône, entre Lyon et Vienne). Tissu péri-urbain mixte : PME tertiaires et industrielles, PME du BTP, commerces de proximité, professions libérales, agriculture résiduelle vallée du Rhône.",
   ecosystemEn:
-    "Grigny est intégrée à la Métropole de Lyon, en banlieue sud (vallée du Rhône, entre Lyon et Vienne). Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisanat BTP, commerces de proximité, professions libérales, agriculture résiduelle vallée du Rhône.",
+    "Grigny est intégrée à la Métropole de Lyon, en banlieue sud (vallée du Rhône, entre Lyon et Vienne). Tissu péri-urbain mixte : PME tertiaires et industrielles, PME du BTP, commerces de proximité, professions libérales, agriculture résiduelle vallée du Rhône.",
   distancesFr:
     "Lyon centre à 25 min. Aéroport Lyon-Saint-Exupéry à 35 min. Givors limitrophe à 5 min. Vienne à 15 min. Saint-Fons à 15 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
     "PME tertiaires sud lyonnais",
     "PME industrielles vallée Rhône",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grigny : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
       en: "Implémentation IA à Grigny : agents conversationnels B2B/patient, automatisation workflow, prédiction maintenance industrielle, classification documents. Métropole Lyon sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Grigny : sessions dans votre bureau, atelier, cabinet, commerce ou en visio. Dirigeants tertiaires, industriels, professions libérales, artisans, gérants TPE/PME grignois.",
-      en: "Coaching 1-to-1 à Grigny : sessions dans votre bureau, atelier, cabinet, commerce ou en visio. Dirigeants tertiaires, industriels, professions libérales, artisans, gérants TPE/PME grignois.",
+      fr: "Coaching 1-to-1 à Grigny : sessions dans votre bureau, atelier, cabinet, commerce ou en visio. Dirigeants tertiaires, industriels, professions libérales, artisans, gérants PME et ETI grignois.",
+      en: "Coaching 1-to-1 à Grigny : sessions dans votre bureau, atelier, cabinet, commerce ou en visio. Dirigeants tertiaires, industriels, professions libérales, artisans, gérants PME et ETI grignois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Grigny sur leurs cas IA respectueux du secret professionnel : agents conversationnels, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Grigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Grigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

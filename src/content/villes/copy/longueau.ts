@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LONGUEAU_COPY: VilleCopy = {
   pitchFr:
-    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération amiénoise.",
+    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de PME artisanales, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération amiénoise.",
   pitchEn:
-    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération amiénoise.",
+    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de PME artisanales, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération amiénoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longueau (80). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longueau (80). Nous accompagnons tous types d'activités : PME artisanales, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longueau (80). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longueau (80). Nous accompagnons tous types d'activités : PME artisanales, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
   seoHook: "transport ferroviaire & logistique transport",
   ecosystemFr:
-    "Longueau est une commune de l'agglomération amiénoise, connue pour son nœud ferroviaire SNCF historique (gare de triage parmi les plus grandes de France). Tissu de sous-traitants ferroviaires, PME logistique et transport, TPE artisans BTP, commerces de proximité, services aux entreprises. Proximité immédiate d'Amiens centre.",
+    "Longueau est une commune de l'agglomération amiénoise, connue pour son nœud ferroviaire SNCF historique (gare de triage parmi les plus grandes de France). Tissu de sous-traitants ferroviaires, PME logistique et transport, PME du BTP, commerces de proximité, services aux entreprises. Proximité immédiate d'Amiens centre.",
   ecosystemEn:
-    "Longueau est une commune de l'agglomération amiénoise, connue pour son nœud ferroviaire SNCF historique (gare de triage parmi les plus grandes de France). Tissu de sous-traitants ferroviaires, PME logistique et transport, TPE artisans BTP, commerces de proximité, services aux entreprises. Proximité immédiate d'Amiens centre.",
+    "Longueau est une commune de l'agglomération amiénoise, connue pour son nœud ferroviaire SNCF historique (gare de triage parmi les plus grandes de France). Tissu de sous-traitants ferroviaires, PME logistique et transport, PME du BTP, commerces de proximité, services aux entreprises. Proximité immédiate d'Amiens centre.",
   distancesFr:
     "Gare de Longueau (TER Picardie, correspondance Amiens 5 min). Amiens centre à 10 min voiture. Gare TGV Haute-Picardie à 25 min. Paris Gare du Nord à 1h15 TGV depuis Amiens. Aéroport Beauvais-Tillé à 1h. A16/A29 accessibles.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LONGUEAU_COPY: VilleCopy = {
   topSectorsNaf: [
     "Transport ferroviaire & sous-traitance SNCF",
     "Logistique & transport routier",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises agglomération Amiens",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, PME de l'artisanat et du commerce de l'agglomération amiénoise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, PME de l'artisanat et du commerce de l'agglomération amiénoise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longueau : formats adaptés à l'atelier ferroviaire, l'entrepôt logistique, le commerce ou le bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const LONGUEAU_COPY: VilleCopy = {
       en: "Implémentation IA à Longueau : maintenance prédictive matériel ferroviaire, optimisation flux logistiques, automatisation planification transport, agents conversationnels gestion clientèle.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Longueau : sessions dans vos locaux ou en visio. Dirigeants TPE/PME ferroviaires, transporteurs, artisans et commerçants de l'agglomération amiénoise souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Longueau : sessions dans vos locaux ou en visio. Dirigeants TPE/PME ferroviaires, transporteurs, artisans et commerçants de l'agglomération amiénoise souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Longueau : sessions dans vos locaux ou en visio. Dirigeants PME et ETI ferroviaires, transporteurs, artisans et commerçants de l'agglomération amiénoise souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Longueau : sessions dans vos locaux ou en visio. Dirigeants PME et ETI ferroviaires, transporteurs, artisans et commerçants de l'agglomération amiénoise souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LONGUEAU_COPY: VilleCopy = {
       a: "Nous accompagnons les sous-traitants ferroviaires et PME transport de Longueau : maintenance prédictive matériel roulant, classification photos défauts, automatisation planification tournées, optimisation gestion pièces détachées et traçabilité interventions.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME logistique à Longueau ?",
-      a: "Oui, nous accompagnons les TPE et PME logistique de Longueau et l'agglomération amiénoise : optimisation tournées transport, prédiction flux entrepôts, automatisation gestion commandes, agents IA planification livraisons et suivi temps réel.",
+      q: "Accompagnez-vous les PME et ETI logistique à Longueau ?",
+      a: "Oui, nous accompagnons les PME et ETI logistique de Longueau et l'agglomération amiénoise : optimisation tournées transport, prédiction flux entrepôts, automatisation gestion commandes, agents IA planification livraisons et suivi temps réel.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Longueau ?",

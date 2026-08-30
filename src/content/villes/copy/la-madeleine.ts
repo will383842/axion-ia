@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const LA_MADELEINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de La Madeleine, commune de 21 790 habitants (2023) située à environ 3 km au nord de Lille, au sein de la Métropole européenne de Lille (MEL). Le tissu économique local, longtemps industriel (textile, chimie), s'est reconverti vers les services, la banque-assurance, le commerce de détail et les sièges sociaux — dont celui de Supermarchés Match implanté sur la commune. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
+    "Axion-IA accompagne les PME et ETI de La Madeleine, commune de 21 790 habitants (2023) située à environ 3 km au nord de Lille, au sein de la Métropole européenne de Lille (MEL). Le tissu économique local, longtemps industriel (textile, chimie), s'est reconverti vers les services, la banque-assurance, le commerce de détail et les sièges sociaux — dont celui de Supermarchés Match implanté sur la commune. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de La Madeleine, commune de 21 790 habitants (2023) située à environ 3 km au nord de Lille, au sein de la Métropole européenne de Lille (MEL). Le tissu économique local, longtemps industriel (textile, chimie), s'est reconverti vers les services, la banque-assurance, le commerce de détail et les sièges sociaux — dont celui de Supermarchés Match implanté sur la commune. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
+    "Axion-IA accompagne les PME et ETI de La Madeleine, commune de 21 790 habitants (2023) située à environ 3 km au nord de Lille, au sein de la Métropole européenne de Lille (MEL). Le tissu économique local, longtemps industriel (textile, chimie), s'est reconverti vers les services, la banque-assurance, le commerce de détail et les sièges sociaux — dont celui de Supermarchés Match implanté sur la commune. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   directAnswerFr:
-    "Axion-IA intervient à La Madeleine pour les TPE et PME de la métropole lilloise, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Lille-Europe (~1 h en TGV puis 10 minutes en tramway le long de l'avenue de la République) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "Axion-IA intervient à La Madeleine pour les PME et ETI de la métropole lilloise, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Lille-Europe (~1 h en TGV puis 10 minutes en tramway le long de l'avenue de la République) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "Axion-IA intervient à La Madeleine pour les TPE et PME de la métropole lilloise, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Lille-Europe (~1 h en TGV puis 10 minutes en tramway le long de l'avenue de la République) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
-  seoHook: "TPE & PME · Métropole de Lille · IA opérationnelle code custom",
+    "Axion-IA intervient à La Madeleine pour les PME et ETI de la métropole lilloise, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Lille-Europe (~1 h en TGV puis 10 minutes en tramway le long de l'avenue de la République) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+  seoHook: "PME & PME · Métropole de Lille · IA opérationnelle code custom",
   ecosystemFr:
     "La Madeleine appartient au bassin économique de la Métropole européenne de Lille (MEL), à la jonction de Lille, Marcq-en-Barœul, Marquette-lez-Lille et Saint-André-lez-Lille. Le tissu local mélange sièges sociaux (Supermarchés Match), commerces de détail, services financiers, agences d'assurance et PME spécialisées issues de la reconversion des anciennes friches textiles et chimiques. Le secteur du conseil et des services aux entreprises y est particulièrement développé.",
   ecosystemEn:
@@ -32,8 +32,8 @@ export const LA_MADELEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À La Madeleine, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) cartographie les processus chronophages d'une TPE ou PME du commerce, de la banque-assurance ou des services — et chiffre les automatisations à fort retour avant tout engagement.",
-      en: "À La Madeleine, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) cartographie les processus chronophages d'une TPE ou PME du commerce, de la banque-assurance ou des services — et chiffre les automatisations à fort retour avant tout engagement.",
+      fr: "À La Madeleine, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) cartographie les processus chronophages d'une PME ou ETI du commerce, de la banque-assurance ou des services — et chiffre les automatisations à fort retour avant tout engagement.",
+      en: "À La Madeleine, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) cartographie les processus chronophages d'une PME ou ETI du commerce, de la banque-assurance ou des services — et chiffre les automatisations à fort retour avant tout engagement.",
     },
     interventions: {
       fr: "Nos interventions à La Madeleine (à partir de {{price:intervention-4h|flat}}) automatisent les flux administratifs récurrents : traitement des emails entrants, génération de devis, reporting client, ou agents internes branchés sur les outils existants.",
@@ -44,8 +44,8 @@ export const LA_MADELEINE_COPY: VilleCopy = {
       en: "Sur les projets d'implémentation à La Madeleine, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux ERP, CRM et back-offices des PME locales, sans verrouillage par une plateforme no-code tierce.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à La Madeleine (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
-      en: "L'accompagnement un-à-un à La Madeleine (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
+      fr: "L'accompagnement un-à-un à La Madeleine (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de PME et d'ETI de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
+      en: "L'accompagnement un-à-un à La Madeleine (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de PME et d'ETI de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site d'un commerce de la rue du Général de Gaulle, d'un artisan du Parc LINEO ou d'un cabinet comptable de La Madeleine, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -172,12 +166,6 @@ export const LA_MADELEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site d'un commerce de la rue du Général de Gaulle, d'un artisan du Parc LINEO ou d'un cabinet comptable de La Madeleine, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LES_ACHARDS_COPY: VilleCopy = {
   pitchFr:
-    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent TPE artisans, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent PME artisanales, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent TPE artisans, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent PME artisanales, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Achards (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Achards (85). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Achards (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Achards (85). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
   seoHook: "bassin économique rural-périurbain",
   ecosystemFr:
     "Les Achards est une commune nouvelle créée en 2017 (fusion de La Mothe-Achard et La Chapelle-Achard) dans le bocage vendéen, à mi-chemin entre La Roche-sur-Yon et le littoral des Sables-d'Olonne. Bassin économique structuré autour de l'industrie mécanique, de l'agroalimentaire, de l'artisanat BTP, du commerce de proximité et du tissu PME familial vendéen.",
@@ -30,8 +30,8 @@ export const LES_ACHARDS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Achards : diagnostic adapté aux PME artisanales, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Achards : diagnostic adapté aux PME artisanales, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Achards : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bocage vendéen. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const LES_ACHARDS_COPY: VilleCopy = {
       en: "Implémentation IA aux Achards : maintenance prédictive mécanique, vision industrielle agroalimentaire, optimisation logistique, agents conversationnels commerces et outils IA artisanat BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Achards : sessions dans vos locaux dans le bocage ou en visio. Dirigeants TPE/PME industrielles, agroalimentaires, artisans, commerçants et prestataires.",
-      en: "Coaching 1-to-1 aux Achards : sessions dans vos locaux dans le bocage ou en visio. Dirigeants TPE/PME industrielles, agroalimentaires, artisans, commerçants et prestataires.",
+      fr: "Coaching 1-to-1 aux Achards : sessions dans vos locaux dans le bocage ou en visio. Dirigeants PME et ETI industrielles, agroalimentaires, artisans, commerçants et prestataires.",
+      en: "Coaching 1-to-1 aux Achards : sessions dans vos locaux dans le bocage ou en visio. Dirigeants PME et ETI industrielles, agroalimentaires, artisans, commerçants et prestataires.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LES_ACHARDS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles (mécanique, métallurgie) et agroalimentaires du bocage vendéen sur leurs cas IA : maintenance prédictive, vision contrôle qualité, traçabilité, optimisation chaînes de production, prévision demande.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE aux Achards ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du bocage vendéen. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME aux Achards ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME industrielles et commerçants du bocage vendéen. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les artisans et commerces locaux ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les TPE, PME de services et artisans de la rive ouest de l'Orge.",
+    "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les PME, ETI de services et artisans de la rive ouest de l'Orge.",
   pitchEn:
-    "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les TPE, PME de services et artisans de la rive ouest de l'Orge.",
+    "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les PME, ETI de services et artisans de la rive ouest de l'Orge.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Morsang-sur-Orge (Essonne) auprès des PME, ETI de services tertiaires, professions libérales et artisans. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Morsang-sur-Orge (Essonne) auprès des PME, ETI de services tertiaires, professions libérales et artisans. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
   seoHook: "services tertiaires & professions libérales",
   ecosystemFr:
-    "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent TPE de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
+    "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent PME de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
   ecosystemEn:
-    "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent TPE de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
+    "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent PME de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
   distancesFr:
     "Paris à 23 km, Évry à 7 km, Orly à 7 km, Massy-Palaiseau à 12 km. RER C (gares Savigny-sur-Orge, Sainte-Geneviève-des-Bois) à 5 min, tramway T12 depuis décembre 2023 vers Massy et Évry. Aéroport Paris-Orly à 15 min, gare TGV Massy-Palaiseau à 20 min.",
   distancesEn:
@@ -31,20 +31,20 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Morsang-sur-Orge : diagnostic pour PME tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Morsang-sur-Orge : diagnostic pour PME tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Morsang-sur-Orge : ateliers TPE/PME locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
-      en: "Interventions IA sur site à Morsang-sur-Orge : ateliers TPE/PME locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
+      fr: "Interventions IA sur site à Morsang-sur-Orge : ateliers PME et ETI locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
+      en: "Interventions IA sur site à Morsang-sur-Orge : ateliers PME et ETI locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
     },
     implementation: {
       fr: "Implémentation IA à Morsang-sur-Orge : code custom pour cabinets libéraux, PME services, artisans BTP. Automatisation prise de RDV, facturation, classification dossiers, chatbot client.",
       en: "Implémentation IA à Morsang-sur-Orge : code custom pour cabinets libéraux, PME services, artisans BTP. Automatisation prise de RDV, facturation, classification dossiers, chatbot client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de {{price:intervention-dirigeants|flat}}, format 2 h.",
-      en: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de {{price:intervention-dirigeants|flat}}, format 2 h.",
+      fr: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants de PME et d'ETI, gérants commerces, professions libérales. À partir de {{price:intervention-dirigeants|flat}}, format 2 h.",
+      en: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants de PME et d'ETI, gérants commerces, professions libérales. À partir de {{price:intervention-dirigeants|flat}}, format 2 h.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
         whyHere: [
           "Tissu très majoritairement tertiaire (64 % des établissements : conseil, finance, assurance), auquel s'ajoutent 15 % d'administration publique et de services collectifs : un terrain idéal pour des portails clients, des espaces de prise de rendez-vous en ligne et des parcours de service augmentés à l'IA autour du centre-ville et du complexe culturel Le Parc, plutôt que des refontes lourdes et coûteuses.",
           "Forte densité de professions libérales (santé, juridique) sur la rive ouest de l'Orge, à proximité du pôle hospitalo-universitaire d'Évry et de Paris-Saclay : nos chatbots RAG et nos agents automatisent la prise de RDV, la réponse aux patients ou clients et la génération de comptes-rendus, ancrés sur vos propres documents, avec une UX mobile-first soignée.",
-          "Deux zones d'activités de proximité — Buisson foireux et route de Corbeil — peuplées de commerces de détail, d'artisans BTP et de TPE de services : on y greffe une vitrine ou une boutique e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou un widget IA sur l'existant, sans tout reconstruire ni casser le référencement déjà acquis.",
+          "Deux zones d'activités de proximité — Buisson foireux et route de Corbeil — peuplées de commerces de détail, d'artisans BTP et de PME de services : on y greffe une vitrine ou une boutique e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou un widget IA sur l'existant, sans tout reconstruire ni casser le référencement déjà acquis.",
           "Connexion structurante depuis décembre 2023 via le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes, RER C aux gares de Savigny-sur-Orge et Sainte-Geneviève-des-Bois, à 7 km d'Orly : un bassin d'emploi mixte et mobile pour qui une expérience web mobile-first, une recherche sémantique rapide et un hébergement UE conforme RGPD sont décisifs.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de RDV en ligne) sur le site existant d'un commerce de détail, d'un artisan BTP des zones du Buisson foireux ou de la route de Corbeil, ou d'un cabinet libéral, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -140,7 +134,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
         whyHere: [
           "Tissu très majoritairement tertiaire (64 % des établissements : conseil, finance, assurance), auquel s'ajoutent 15 % d'administration publique et de services collectifs : un terrain idéal pour des portails clients, des espaces de prise de rendez-vous en ligne et des parcours de service augmentés à l'IA autour du centre-ville et du complexe culturel Le Parc, plutôt que des refontes lourdes et coûteuses.",
           "Forte densité de professions libérales (santé, juridique) sur la rive ouest de l'Orge, à proximité du pôle hospitalo-universitaire d'Évry et de Paris-Saclay : nos chatbots RAG et nos agents automatisent la prise de RDV, la réponse aux patients ou clients et la génération de comptes-rendus, ancrés sur vos propres documents, avec une UX mobile-first soignée.",
-          "Deux zones d'activités de proximité — Buisson foireux et route de Corbeil — peuplées de commerces de détail, d'artisans BTP et de TPE de services : on y greffe une vitrine ou une boutique e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou un widget IA sur l'existant, sans tout reconstruire ni casser le référencement déjà acquis.",
+          "Deux zones d'activités de proximité — Buisson foireux et route de Corbeil — peuplées de commerces de détail, d'artisans BTP et de PME de services : on y greffe une vitrine ou une boutique e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou un widget IA sur l'existant, sans tout reconstruire ni casser le référencement déjà acquis.",
           "Connexion structurante depuis décembre 2023 via le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes, RER C aux gares de Savigny-sur-Orge et Sainte-Geneviève-des-Bois, à 7 km d'Orly : un bassin d'emploi mixte et mobile pour qui une expérience web mobile-first, une recherche sémantique rapide et un hébergement UE conforme RGPD sont décisifs.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de RDV en ligne) sur le site existant d'un commerce de détail, d'un artisan BTP des zones du Buisson foireux ou de la route de Corbeil, ou d'un cabinet libéral, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

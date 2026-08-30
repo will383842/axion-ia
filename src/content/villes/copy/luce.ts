@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LUCE_COPY: VilleCopy = {
   pitchFr:
-    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu PME et ETI tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu PME et ETI tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lucé (28). Nous accompagnons tous types d'activités : PME et ETI tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lucé (28). Nous accompagnons tous types d'activités : PME et ETI tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
   seoHook: "tertiaires & commerce zones",
   ecosystemFr:
-    "Lucé est un pôle péri-urbain de l'agglomération Chartres (Eure-et-Loir), porté par ses zones d'activités et commerciales. Tissu TPE/PME tertiaires, enseignes commerciales, PME logistique et distribution, services aux entreprises, industrie légère.",
+    "Lucé est un pôle péri-urbain de l'agglomération Chartres (Eure-et-Loir), porté par ses zones d'activités et commerciales. Tissu PME et ETI tertiaires, enseignes commerciales, PME logistique et distribution, services aux entreprises, industrie légère.",
   ecosystemEn:
-    "Lucé est un pôle péri-urbain de l'agglomération Chartres (Eure-et-Loir), porté par ses zones d'activités et commerciales. Tissu TPE/PME tertiaires, enseignes commerciales, PME logistique et distribution, services aux entreprises, industrie légère.",
+    "Lucé est un pôle péri-urbain de l'agglomération Chartres (Eure-et-Loir), porté par ses zones d'activités et commerciales. Tissu PME et ETI tertiaires, enseignes commerciales, PME logistique et distribution, services aux entreprises, industrie légère.",
   distancesFr:
     "Chartres centre à 5 min. Gare Chartres à 10 min. Paris Montparnasse à 1h15 (TER direct). Dreux à 35 min. Orléans à 1h15.",
   distancesEn:
     "Chartres centre à 5 min. Gare Chartres à 10 min. Paris Montparnasse à 1h15 (TER direct). Dreux à 35 min. Orléans à 1h15.",
   topSectorsNaf: [
-    "TPE/PME tertiaires (agglo Chartres)",
+    "PME et ETI tertiaires (agglo Chartres)",
     "Commerce zones commerciales",
     "Logistique & distribution",
     "Services aux entreprises",
@@ -30,8 +30,8 @@ export const LUCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Lucé : diagnostic adapté aux PME et ETI tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lucé : diagnostic adapté aux PME et ETI tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lucé : formats adaptés au bureau tertiaire, enseigne commerciale, entrepôt logistique. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const LUCE_COPY: VilleCopy = {
       en: "Implémentation IA à Lucé : automatisation workflow tertiaire, CRM augmenté, agents conversationnels retail, optimisation tournées logistique, classification documents PME chartraine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lucé : sessions dans votre bureau, enseigne commerciale, entrepôt ou en visio. Gérants TPE/PME, responsables commerciaux, managers logistique de l'agglo chartraine.",
-      en: "Coaching 1-to-1 à Lucé : sessions dans votre bureau, enseigne commerciale, entrepôt ou en visio. Gérants TPE/PME, responsables commerciaux, managers logistique de l'agglo chartraine.",
+      fr: "Coaching 1-to-1 à Lucé : sessions dans votre bureau, enseigne commerciale, entrepôt ou en visio. Gérants PME et ETI, responsables commerciaux, managers logistique de l'agglo chartraine.",
+      en: "Coaching 1-to-1 à Lucé : sessions dans votre bureau, enseigne commerciale, entrepôt ou en visio. Gérants PME et ETI, responsables commerciaux, managers logistique de l'agglo chartraine.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const LUCE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lucé et toute l'agglomération de Chartres (Mainvilliers, Lèves, Luisant). Consultants depuis Chartres (5 min) ou Paris (1h15 TER).",
     },
     {
-      q: "Accompagnez-vous les TPE/PME tertiaires de Lucé ?",
+      q: "Accompagnez-vous les PME et ETI tertiaires de Lucé ?",
       a: "Oui, automatisation workflow, CRM augmenté, classification documents, agents conversationnels B2B. Formats adaptés aux structures chartraines.",
     },
     {
@@ -60,7 +60,7 @@ export const LUCE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels retail, analyse prédictive stocks, personnalisation parcours client, automatisation SAV.",
     },
     {
-      q: "Quels services pour les TPE et PME logistique ?",
+      q: "Quels services pour les PME et ETI logistique ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Optimisation tournées, classification colis, prévision demande.",
     },
     {

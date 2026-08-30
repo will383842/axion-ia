@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SCIEZ_COPY: VilleCopy = {
   pitchFr:
-    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
+    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu PME artisanales, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
+    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu PME artisanales, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sciez (74). Nous accompagnons PME et ETI : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sciez (74). Nous accompagnons PME et ETI : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   seoHook: "tourisme lacustre & viticulture crépy",
   ecosystemFr:
-    "Sciez-sur-Léman est une commune résidentielle et touristique du Chablais, en bordure du lac Léman (rive sud française). Le port de Sciez et les plages attirent un tourisme lacustre saisonnier. La commune fait partie de l'appellation AOC Crépy (vin blanc savoyard). Proximité Thonon-les-Bains (10 min) et bassin frontalier genevois. TPE artisans, commerces saisonniers, PME viticoles et touristiques, professions libérales.",
+    "Sciez-sur-Léman est une commune résidentielle et touristique du Chablais, en bordure du lac Léman (rive sud française). Le port de Sciez et les plages attirent un tourisme lacustre saisonnier. La commune fait partie de l'appellation AOC Crépy (vin blanc savoyard). Proximité Thonon-les-Bains (10 min) et bassin frontalier genevois. PME artisanales, commerces saisonniers, PME viticoles et touristiques, professions libérales.",
   ecosystemEn:
-    "Sciez-sur-Léman est une commune résidentielle et touristique du Chablais, en bordure du lac Léman (rive sud française). Le port de Sciez et les plages attirent un tourisme lacustre saisonnier. La commune fait partie de l'appellation AOC Crépy (vin blanc savoyard). Proximité Thonon-les-Bains (10 min) et bassin frontalier genevois. TPE artisans, commerces saisonniers, PME viticoles et touristiques, professions libérales.",
+    "Sciez-sur-Léman est une commune résidentielle et touristique du Chablais, en bordure du lac Léman (rive sud française). Le port de Sciez et les plages attirent un tourisme lacustre saisonnier. La commune fait partie de l'appellation AOC Crépy (vin blanc savoyard). Proximité Thonon-les-Bains (10 min) et bassin frontalier genevois. PME artisanales, commerces saisonniers, PME viticoles et touristiques, professions libérales.",
   distancesFr:
     "Thonon-les-Bains à 10 min. Évian-les-Bains à 25 min. Genève à 35 min (douane Hermance). Annemasse à 30 min. Aéroport Genève-Cointrin à 40 min. Liaison lacustre CGN vers Lausanne/Nyon.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SCIEZ_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme lacustre & hôtellerie-restauration (lac Léman)",
     "Viticulture AOC Crépy",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce saisonnier & proximité",
     "Services aux particuliers & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, TPE artisans et hébergeurs du Chablais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, TPE artisans et hébergeurs du Chablais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, PME artisanales et hébergeurs du Chablais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, PME artisanales et hébergeurs du Chablais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sciez : formats adaptés hôtel-restaurant, domaine viticole, commerce saisonnier ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -60,7 +60,7 @@ export const SCIEZ_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles AOC Crépy et Chablais : suivi parcellaire, prédiction vendanges, gestion de cave, automatisation commandes, marketing digital ciblé œnotourisme.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
     },
     {

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LARDY_COPY: VilleCopy = {
   pitchFr:
-    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre les activités professionnelles du bassin de la vallée de la Juine.",
+    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu PME artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre les activités professionnelles du bassin de la vallée de la Juine.",
   pitchEn:
-    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre les activités professionnelles du bassin de la vallée de la Juine.",
+    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu PME artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre les activités professionnelles du bassin de la vallée de la Juine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lardy (91). Nous accompagnons tous types d'activités : PME artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lardy (91). Nous accompagnons tous types d'activités : PME artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
   seoHook: "artisanat commerce & agriculture vallée",
   ecosystemFr:
-    "Lardy est une commune résidentielle rurale dans la vallée de la Juine (Essonne), à 38 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, exploitations agricoles, PME tertiaires, indépendants. Bassin d'emploi élargi vers Arpajon, Étampes et Brétigny-sur-Orge.",
+    "Lardy est une commune résidentielle rurale dans la vallée de la Juine (Essonne), à 38 km au sud-ouest de Paris. Tissu PME artisanales, commerces de proximité, exploitations agricoles, PME tertiaires, indépendants. Bassin d'emploi élargi vers Arpajon, Étampes et Brétigny-sur-Orge.",
   ecosystemEn:
-    "Lardy est une commune résidentielle rurale dans la vallée de la Juine (Essonne), à 38 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, exploitations agricoles, PME tertiaires, indépendants. Bassin d'emploi élargi vers Arpajon, Étampes et Brétigny-sur-Orge.",
+    "Lardy est une commune résidentielle rurale dans la vallée de la Juine (Essonne), à 38 km au sud-ouest de Paris. Tissu PME artisanales, commerces de proximité, exploitations agricoles, PME tertiaires, indépendants. Bassin d'emploi élargi vers Arpajon, Étampes et Brétigny-sur-Orge.",
   distancesFr:
     "Gare de Lardy (RER C, 45 min Gare d'Austerlitz). Arpajon à 10 min. Étampes à 15 min. Brétigny-sur-Orge à 15 min. Aéroport Orly à 35 min. Paris centre à 50 min par N20/A6.",
   distancesEn:
     "Gare de Lardy (RER C, 45 min Gare d'Austerlitz). Arpajon à 10 min. Étampes à 15 min. Brétigny-sur-Orge à 15 min. Aéroport Orly à 35 min. Paris centre à 50 min par N20/A6.",
   topSectorsNaf: [
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
     "Agriculture vallée de la Juine",
     "PME tertiaires sud-Essonne",
     "Professions libérales & indépendants",
@@ -30,20 +30,20 @@ export const LARDY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Lardy : diagnostic adapté aux PME artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lardy : diagnostic adapté aux PME artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lardy : formats adaptés aux TPE/PME et exploitations agricoles. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lardy : formats adaptés aux TPE/PME et exploitations agricoles. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lardy : formats adaptés aux PME et ETI et exploitations agricoles. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Lardy : formats adaptés aux PME et ETI et exploitations agricoles. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
       fr: "Implémentation IA à Lardy : prédiction récoltes, automatisation traçabilité agricole, agents conversationnels, CRM augmentés, automatisation devis BTP. Vallée de la Juine.",
       en: "Implémentation IA à Lardy : prédiction récoltes, automatisation traçabilité agricole, agents conversationnels, CRM augmentés, automatisation devis BTP. Vallée de la Juine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lardy : sessions dans votre exploitation, atelier, bureau ou en visio. Agriculteurs, artisans, gérants TPE/PME, indépendants lardycois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Lardy : sessions dans votre exploitation, atelier, bureau ou en visio. Agriculteurs, artisans, gérants TPE/PME, indépendants lardycois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Lardy : sessions dans votre exploitation, atelier, bureau ou en visio. Agriculteurs, artisans, gérants PME et ETI, indépendants lardycois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Lardy : sessions dans votre exploitation, atelier, bureau ou en visio. Agriculteurs, artisans, gérants PME et ETI, indépendants lardycois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const LARDY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lardy et toute la vallée de la Juine (Arpajon, Étampes, Bouray-sur-Juine, Janville-sur-Juine). Consultants depuis Paris (45 min RER C).",
     },
     {
-      q: "Quels services pour les TPE et artisans lardycois ?",
+      q: "Quels services pour les PME et artisans lardycois ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {

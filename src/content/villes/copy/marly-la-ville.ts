@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_LA_VILLE_COPY: VilleCopy = {
   pitchFr:
-    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu PME du commerce et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu PME du commerce et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly-la-Ville (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly-la-Ville (95). Nous accompagnons PME et ETI : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly-la-Ville (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly-la-Ville (95). Nous accompagnons PME et ETI : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & logistique transport",
   ecosystemFr:
-    "Marly-la-Ville est une commune du nord du Val-d'Oise, proche de l'aéroport Roissy-CDG et de l'unité urbaine de Fosses. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne.",
+    "Marly-la-Ville est une commune du nord du Val-d'Oise, proche de l'aéroport Roissy-CDG et de l'unité urbaine de Fosses. Tissu PME du commerce et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne.",
   ecosystemEn:
-    "Marly-la-Ville est une commune du nord du Val-d'Oise, proche de l'aéroport Roissy-CDG et de l'unité urbaine de Fosses. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne.",
+    "Marly-la-Ville est une commune du nord du Val-d'Oise, proche de l'aéroport Roissy-CDG et de l'unité urbaine de Fosses. Tissu PME du commerce et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne.",
   distancesFr:
     "Aéroport Paris-CDG à 10 min. Fosses à 5 min. Survilliers à 5 min. Luzarches à 10 min. Paris centre à 40 min via A1.",
   distancesEn:
@@ -42,8 +42,8 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Marly-la-Ville : CRM augmenté commerçants, automatisation flux logistique, outils gestion cabinet, facturation intelligente PME transport zone Roissy.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marly-la-Ville : sessions dans votre commerce, cabinet, entrepôt ou en visio. Dirigeants TPE/PME marlatois, professions libérales, artisans nord Val-d'Oise.",
-      en: "Coaching 1-to-1 à Marly-la-Ville : sessions dans votre commerce, cabinet, entrepôt ou en visio. Dirigeants TPE/PME marlatois, professions libérales, artisans nord Val-d'Oise.",
+      fr: "Coaching 1-to-1 à Marly-la-Ville : sessions dans votre commerce, cabinet, entrepôt ou en visio. Dirigeants PME et ETI marlatois, professions libérales, artisans nord Val-d'Oise.",
+      en: "Coaching 1-to-1 à Marly-la-Ville : sessions dans votre commerce, cabinet, entrepôt ou en visio. Dirigeants PME et ETI marlatois, professions libérales, artisans nord Val-d'Oise.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
       a: "Oui, automatisation flux logistique, suivi colis intelligent, planification IA des tournées, facturation automatisée, tableaux de bord temps réel.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

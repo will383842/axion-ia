@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRINDAS_COPY: VilleCopy = {
   pitchFr:
-    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre les activités professionnelles du bassin de l'ouest lyonnais.",
+    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre les activités professionnelles du bassin de l'ouest lyonnais.",
   pitchEn:
-    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre les activités professionnelles du bassin de l'ouest lyonnais.",
+    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre les activités professionnelles du bassin de l'ouest lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brindas (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants, agriculteurs monts du Lyonnais et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brindas (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, PME du BTP, commerçants, professions libérales, indépendants, agriculteurs monts du Lyonnais et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brindas (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants, agriculteurs monts du Lyonnais et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brindas (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, PME du BTP, commerçants, professions libérales, indépendants, agriculteurs monts du Lyonnais et services aux entreprises.",
   seoHook: "tertiaires ouest & agriculture monts",
   ecosystemFr:
-    "Brindas est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces, agriculture résiduelle monts du Lyonnais.",
+    "Brindas est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces, agriculture résiduelle monts du Lyonnais.",
   ecosystemEn:
-    "Brindas est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces, agriculture résiduelle monts du Lyonnais.",
+    "Brindas est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces, agriculture résiduelle monts du Lyonnais.",
   distancesFr:
     "Lyon centre à 25 min. Aéroport Lyon-Saint-Exupéry à 50 min. Craponne à 5 min. Vaugneray à 10 min. Francheville à 10 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const BRINDAS_COPY: VilleCopy = {
     "PME tertiaires ouest lyonnais",
     "Professions libérales",
     "Agriculture monts du Lyonnais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brindas : formats adaptés au bureau, cabinet, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BRINDAS_COPY: VilleCopy = {
       en: "Implémentation IA à Brindas : agents conversationnels B2B/patient, classification photos cultures, automatisation workflow, CRM augmentés. Ouest lyonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brindas : sessions dans votre bureau, cabinet, exploitation ou en visio. Dirigeants tertiaires, professions libérales, agriculteurs, artisans, gérants TPE/PME brindassiens.",
-      en: "Coaching 1-to-1 à Brindas : sessions dans votre bureau, cabinet, exploitation ou en visio. Dirigeants tertiaires, professions libérales, agriculteurs, artisans, gérants TPE/PME brindassiens.",
+      fr: "Coaching 1-to-1 à Brindas : sessions dans votre bureau, cabinet, exploitation ou en visio. Dirigeants tertiaires, professions libérales, agriculteurs, artisans, gérants PME et ETI brindassiens.",
+      en: "Coaching 1-to-1 à Brindas : sessions dans votre bureau, cabinet, exploitation ou en visio. Dirigeants tertiaires, professions libérales, agriculteurs, artisans, gérants PME et ETI brindassiens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BRINDAS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs des monts du Lyonnais sur leurs cas IA : prédiction récoltes, classification photos cultures, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Brindas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Brindas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

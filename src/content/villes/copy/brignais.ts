@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRIGNAIS_COPY: VilleCopy = {
   pitchFr:
-    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du SO lyonnais.",
+    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du SO lyonnais.",
   pitchEn:
-    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du SO lyonnais.",
+    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du SO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   seoHook: "tertiaires lyonnais & professions libérales",
   ecosystemFr:
-    "Brignais est positionnée dans la vallée du Garon, en banlieue SO lyonnaise. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture résiduelle.",
+    "Brignais est positionnée dans la vallée du Garon, en banlieue SO lyonnaise. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture résiduelle.",
   ecosystemEn:
-    "Brignais est positionnée dans la vallée du Garon, en banlieue SO lyonnaise. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture résiduelle.",
+    "Brignais est positionnée dans la vallée du Garon, en banlieue SO lyonnaise. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture résiduelle.",
   distancesFr:
     "Lyon centre à 20 min. Aéroport Lyon-Saint-Exupéry à 40 min. Oullins à 10 min. Pierre-Bénite à 10 min. Givors à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BRIGNAIS_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires SO lyonnais",
     "Professions libérales (santé, juridique)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brignais : formats adaptés au bureau, cabinet professionnel, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const BRIGNAIS_COPY: VilleCopy = {
       en: "Implémentation IA à Brignais : agents conversationnels patient/client, automatisation workflow tertiaire, classification dossiers, CRM augmentés. SO lyonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brignais : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants TPE/PME brignairots.",
-      en: "Coaching 1-to-1 à Brignais : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants TPE/PME brignairots.",
+      fr: "Coaching 1-to-1 à Brignais : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants PME et ETI brignairots.",
+      en: "Coaching 1-to-1 à Brignais : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants PME et ETI brignairots.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BRIGNAIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires SO lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Brignais, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Brignais, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

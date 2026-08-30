@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MOULINS_LES_METZ_COPY: VilleCopy = {
   pitchFr:
-    "Moulins-lès-Metz (57), commune mosellane de l''agglomération messine ouest le long des bords de la Moselle. Tissu TPE/PME services, tertiaire, professions libérales, commerces de proximité, artisanat, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''activités.",
+    "Moulins-lès-Metz (57), commune mosellane de l''agglomération messine ouest le long des bords de la Moselle. Tissu PME et ETI services, tertiaire, professions libérales, commerces de proximité, artisanat, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''activités.",
   pitchEn:
-    "Moulins-lès-Metz (57), commune mosellane de l''agglomération messine ouest le long des bords de la Moselle. Tissu TPE/PME services, tertiaire, professions libérales, commerces de proximité, artisanat, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''activités.",
+    "Moulins-lès-Metz (57), commune mosellane de l''agglomération messine ouest le long des bords de la Moselle. Tissu PME et ETI services, tertiaire, professions libérales, commerces de proximité, artisanat, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : TPE/PME services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : PME et ETI services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : TPE/PME services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Moulins-lès-Metz (57). Nous accompagnons tous types d''activités : PME et ETI services et tertiaire, professions libérales, artisans BTP, commerces de proximité, restaurateurs et entrepreneurs de l''agglomération Metz Métropole.",
   ecosystemFr:
-    "Moulins-lès-Metz est une commune mosellane résidentielle et tertiaire de l''agglomération Metz Ouest, sur les bords de Moselle. Tissu TPE/PME services, professions libérales, artisanat, BTP, commerces de proximité et restauration. Proximité immédiate avec le bassin économique messin et les axes routiers majeurs Grand Est.",
+    "Moulins-lès-Metz est une commune mosellane résidentielle et tertiaire de l''agglomération Metz Ouest, sur les bords de Moselle. Tissu PME et ETI services, professions libérales, artisanat, BTP, commerces de proximité et restauration. Proximité immédiate avec le bassin économique messin et les axes routiers majeurs Grand Est.",
   ecosystemEn:
-    "Moulins-lès-Metz est une commune mosellane résidentielle et tertiaire de l''agglomération Metz Ouest, sur les bords de Moselle. Tissu TPE/PME services, professions libérales, artisanat, BTP, commerces de proximité et restauration. Proximité immédiate avec le bassin économique messin et les axes routiers majeurs Grand Est.",
+    "Moulins-lès-Metz est une commune mosellane résidentielle et tertiaire de l''agglomération Metz Ouest, sur les bords de Moselle. Tissu PME et ETI services, professions libérales, artisanat, BTP, commerces de proximité et restauration. Proximité immédiate avec le bassin économique messin et les axes routiers majeurs Grand Est.",
   distancesFr:
     "Centre Metz à 10 min. Gare TGV Metz-Ville à 15 min. Aéroport Metz-Nancy-Lorraine à 30 min. Thionville à 35 min. Luxembourg-Ville à 55 min. Autoroutes A31/A4 accès direct. Sarrebruck à 1h. Nancy à 55 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux PME et ETI services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux PME et ETI services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moulins-lès-Metz : formats adaptés au bureau tertiaire, cabinet, atelier, chantier BTP, commerce ou restaurant. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
       en: "Implémentation IA à Moulins-lès-Metz : agents conversationnels B2B/B2C, automatisation devis BTP, gestion clientèle services, outils professions libérales, optimisation restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Moulins-lès-Metz : sessions dans votre bureau, cabinet, atelier, chantier, commerce ou en visio. Dirigeants TPE/PME, professions libérales, artisans, commerçants et restaurateurs moulinois.",
-      en: "Coaching 1-to-1 à Moulins-lès-Metz : sessions dans votre bureau, cabinet, atelier, chantier, commerce ou en visio. Dirigeants TPE/PME, professions libérales, artisans, commerçants et restaurateurs moulinois.",
+      fr: "Coaching 1-to-1 à Moulins-lès-Metz : sessions dans votre bureau, cabinet, atelier, chantier, commerce ou en visio. Dirigeants PME et ETI, professions libérales, artisans, commerçants et restaurateurs moulinois.",
+      en: "Coaching 1-to-1 à Moulins-lès-Metz : sessions dans votre bureau, cabinet, atelier, chantier, commerce ou en visio. Dirigeants PME et ETI, professions libérales, artisans, commerçants et restaurateurs moulinois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales et le tertiaire ?",
-      a: "Oui, nous accompagnons professions libérales, TPE/PME services, conseil et tertiaire de Moulins-lès-Metz : automatisation administrative, gestion clientèle, agents conversationnels, optimisation des process.",
+      a: "Oui, nous accompagnons professions libérales, PME et ETI services, conseil et tertiaire de Moulins-lès-Metz : automatisation administrative, gestion clientèle, agents conversationnels, optimisation des process.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerces ?",
@@ -61,7 +61,7 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Moulins-lès-Metz ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Comment se passe une mission à Moulins-lès-Metz ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MAULEON_COPY: VilleCopy = {
   pitchFr:
-    "Mauléon (79), commune des Deux-Sèvres en bocage bressuirais, 8 573 habitants. Capitale historique de l'espadrille, tissu de TPE artisans textile/chaussure, PME industrielles, agriculture bocagère et commerces. Axion-IA y intervient pour tous types d'activités du bocage deux-sévrien.",
+    "Mauléon (79), commune des Deux-Sèvres en bocage bressuirais, 8 573 habitants. Capitale historique de l'espadrille, tissu de PME artisanales textile/chaussure, PME industrielles, agriculture bocagère et commerces. Axion-IA y intervient pour tous types d'activités du bocage deux-sévrien.",
   pitchEn:
-    "Mauléon (79), commune des Deux-Sèvres en bocage bressuirais, 8 573 habitants. Capitale historique de l'espadrille, tissu de TPE artisans textile/chaussure, PME industrielles, agriculture bocagère et commerces. Axion-IA y intervient pour tous types d'activités du bocage deux-sévrien.",
+    "Mauléon (79), commune des Deux-Sèvres en bocage bressuirais, 8 573 habitants. Capitale historique de l'espadrille, tissu de PME artisanales textile/chaussure, PME industrielles, agriculture bocagère et commerces. Axion-IA y intervient pour tous types d'activités du bocage deux-sévrien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mauléon (79). Nous accompagnons PME, ETI et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mauléon (79). Nous accompagnons PME, ETI et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit sur place sur mesure.",
   seoHook: "textile espadrille & agriculture bocagère",
   ecosystemFr:
-    "Mauléon est une commune de 8 573 habitants dans le bocage bressuirais, capitale historique de l'espadrille (production artisanale encore active). Tissu de TPE artisans textile/chaussure, PME industrielles, TPE agricoles (élevage bovin, polyculture), commerces de bourg et services de proximité.",
+    "Mauléon est une commune de 8 573 habitants dans le bocage bressuirais, capitale historique de l'espadrille (production artisanale encore active). Tissu de PME artisanales textile/chaussure, PME industrielles, PME agricoles (élevage bovin, polyculture), commerces de bourg et services de proximité.",
   ecosystemEn:
-    "Mauléon est une commune de 8 573 habitants dans le bocage bressuirais, capitale historique de l'espadrille (production artisanale encore active). Tissu de TPE artisans textile/chaussure, PME industrielles, TPE agricoles (élevage bovin, polyculture), commerces de bourg et services de proximité.",
+    "Mauléon est une commune de 8 573 habitants dans le bocage bressuirais, capitale historique de l'espadrille (production artisanale encore active). Tissu de PME artisanales textile/chaussure, PME industrielles, PME agricoles (élevage bovin, polyculture), commerces de bourg et services de proximité.",
   distancesFr:
     "Bressuire à 20 min voiture. Cholet à 25 min. Poitiers à 1h10. Niort à 50 min. Accès N249. Gare de Bressuire (TER) à 20 min. Nantes à 1h20.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MAULEON_COPY: VilleCopy = {
     "Textile & espadrille artisanale",
     "Agriculture bocagère (élevage bovin)",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de bourg",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mauléon : diagnostic adapté aux ateliers espadrille/textile, TPE agricoles du bocage, PME industrielles et commerçants. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mauléon : diagnostic adapté aux ateliers espadrille/textile, TPE agricoles du bocage, PME industrielles et commerçants. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mauléon : diagnostic adapté aux ateliers espadrille/textile, PME agricoles du bocage, PME industrielles et commerçants. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mauléon : diagnostic adapté aux ateliers espadrille/textile, PME agricoles du bocage, PME industrielles et commerçants. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mauléon : déploiement outils IA dans vos ateliers textile, exploitations agricoles ou commerces. Automatisation production, gestion stocks et vente directe.",

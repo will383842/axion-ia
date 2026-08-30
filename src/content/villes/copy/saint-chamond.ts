@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CHAMOND_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Chamond, 35 646 habitants dans la Loire (Auvergne-Rhône-Alpes), est la troisième commune du département, au cœur de la vallée du Gier entre Saint-Étienne (12 km) et Lyon (49 km). Capitale historique du lacet (jusqu'à 75 % de la production nationale dans les années 1920) puis bassin métallurgique (Forges et aciéries de la Marine, plus tard Creusot-Loire jusqu'en 1985), la ville garde aujourd'hui un tissu de PME industrielles, de sous-traitants mécaniques et de commerces. Axion-IA y accompagne les TPE et PME locales avec du code custom (Python/TypeScript), sans no-code.",
+    "Saint-Chamond, 35 646 habitants dans la Loire (Auvergne-Rhône-Alpes), est la troisième commune du département, au cœur de la vallée du Gier entre Saint-Étienne (12 km) et Lyon (49 km). Capitale historique du lacet (jusqu'à 75 % de la production nationale dans les années 1920) puis bassin métallurgique (Forges et aciéries de la Marine, plus tard Creusot-Loire jusqu'en 1985), la ville garde aujourd'hui un tissu de PME industrielles, de sous-traitants mécaniques et de commerces. Axion-IA y accompagne les PME et ETI locales avec du code custom (Python/TypeScript), sans no-code.",
   pitchEn:
-    "Saint-Chamond, 35 646 habitants dans la Loire (Auvergne-Rhône-Alpes), est la troisième commune du département, au cœur de la vallée du Gier entre Saint-Étienne (12 km) et Lyon (49 km). Capitale historique du lacet (jusqu'à 75 % de la production nationale dans les années 1920) puis bassin métallurgique (Forges et aciéries de la Marine, plus tard Creusot-Loire jusqu'en 1985), la ville garde aujourd'hui un tissu de PME industrielles, de sous-traitants mécaniques et de commerces. Axion-IA y accompagne les TPE et PME locales avec du code custom (Python/TypeScript), sans no-code.",
+    "Saint-Chamond, 35 646 habitants dans la Loire (Auvergne-Rhône-Alpes), est la troisième commune du département, au cœur de la vallée du Gier entre Saint-Étienne (12 km) et Lyon (49 km). Capitale historique du lacet (jusqu'à 75 % de la production nationale dans les années 1920) puis bassin métallurgique (Forges et aciéries de la Marine, plus tard Creusot-Loire jusqu'en 1985), la ville garde aujourd'hui un tissu de PME industrielles, de sous-traitants mécaniques et de commerces. Axion-IA y accompagne les PME et ETI locales avec du code custom (Python/TypeScript), sans no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
+    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les PME et ETI de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
+    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les PME et ETI de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
   seoHook: "PME industrielles & sous-traitance mécanique",
   ecosystemFr:
-    "Saint-Chamond a hérité d'une longue tradition industrielle : capitale du lacet au tournant du XXe siècle, puis bassin métallurgique structuré par les Forges et aciéries de la Marine (devenues Creusot-Loire, fermées en 1985). Le tissu actuel est dominé par les PME de mécanique, de fonderie, de plasturgie, de transport et logistique, complété par les commerces du centre-ville et les services aux entreprises. La vallée du Gier concentre une sous-traitance industrielle dense, irriguée par l'A47 et la ligne TER Saint-Étienne–Lyon. C'est ce maillage de TPE et PME qui constitue le cœur de cible d'Axion-IA.",
+    "Saint-Chamond a hérité d'une longue tradition industrielle : capitale du lacet au tournant du XXe siècle, puis bassin métallurgique structuré par les Forges et aciéries de la Marine (devenues Creusot-Loire, fermées en 1985). Le tissu actuel est dominé par les PME de mécanique, de fonderie, de plasturgie, de transport et logistique, complété par les commerces du centre-ville et les services aux entreprises. La vallée du Gier concentre une sous-traitance industrielle dense, irriguée par l'A47 et la ligne TER Saint-Étienne–Lyon. C'est ce maillage de PME et ETI qui constitue le cœur de cible d'Axion-IA.",
   ecosystemEn:
-    "Saint-Chamond a hérité d'une longue tradition industrielle : capitale du lacet au tournant du XXe siècle, puis bassin métallurgique structuré par les Forges et aciéries de la Marine (devenues Creusot-Loire, fermées en 1985). Le tissu actuel est dominé par les PME de mécanique, de fonderie, de plasturgie, de transport et logistique, complété par les commerces du centre-ville et les services aux entreprises. La vallée du Gier concentre une sous-traitance industrielle dense, irriguée par l'A47 et la ligne TER Saint-Étienne–Lyon. C'est ce maillage de TPE et PME qui constitue le cœur de cible d'Axion-IA.",
+    "Saint-Chamond a hérité d'une longue tradition industrielle : capitale du lacet au tournant du XXe siècle, puis bassin métallurgique structuré par les Forges et aciéries de la Marine (devenues Creusot-Loire, fermées en 1985). Le tissu actuel est dominé par les PME de mécanique, de fonderie, de plasturgie, de transport et logistique, complété par les commerces du centre-ville et les services aux entreprises. La vallée du Gier concentre une sous-traitance industrielle dense, irriguée par l'A47 et la ligne TER Saint-Étienne–Lyon. C'est ce maillage de PME et ETI qui constitue le cœur de cible d'Axion-IA.",
   distancesFr:
     "Saint-Chamond est à 12 km de Saint-Étienne et 49 km de Lyon. La gare TER de Saint-Chamond relie directement Saint-Étienne Châteaucreux et Lyon Part-Dieu via la ligne du Gier. L'A47 longe la vallée et permet de rejoindre Lyon en environ 50 minutes en heures creuses. L'aéroport Lyon-Saint-Exupéry est à environ 70 km via l'A47 puis l'A46.",
   distancesEn:
@@ -86,12 +86,6 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA-ready",
-            detail:
-              "Pour artisans, commerces de Novaciéries et du centre-ville, indépendants de la vallée du Gier : site vitrine rapide et mobile-first, prise de contact et rendez-vous en ligne, assistant IA de réponse aux questions fréquentes.",
-          },
           {
             sizeLabel: "PME",
             price: "Vitrine technique ou e-commerce + IA",
@@ -173,12 +167,6 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-ready showcase site",
-            detail:
-              "For craftspeople, Novaciéries and town-centre retailers, Gier valley freelancers: a fast mobile-first showcase site, online contact and booking, an AI assistant answering frequent questions.",
-          },
-          {
             sizeLabel: "PME",
             price: "Technical showcase or e-commerce + AI",
             detail:
@@ -240,7 +228,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs de Saint-Chamond accompagnez-vous le plus ?",
-      a: "Principalement les TPE et PME industrielles de la vallée du Gier — mécanique, fonderie, plasturgie, sous-traitance auto — ainsi que les transporteurs, les commerces du centre-ville et les cabinets libéraux. Les ETI peuvent aussi nous solliciter en complément, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
+      a: "Principalement les PME et ETI industrielles de la vallée du Gier — mécanique, fonderie, plasturgie, sous-traitance auto — ainsi que les transporteurs, les commerces du centre-ville et les cabinets libéraux. Les grands groupes viennent en complément, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
     },
     {
       q: "Comment Axion-IA gère-t-il le RGPD à Saint-Chamond ?",

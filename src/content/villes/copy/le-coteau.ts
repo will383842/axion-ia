@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_COTEAU_COPY: VilleCopy = {
   pitchFr:
-    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
+    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), PME du BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
   pitchEn:
-    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
+    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), PME du BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   seoHook: "tertiaires roannais & industrielles",
   ecosystemFr:
-    "Le Coteau est intégrée à Roannais Agglomération (~99 000 hab), en banlieue est immédiate de Roanne (sur la rive opposée de la Loire — relié par pont). Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité.",
+    "Le Coteau est intégrée à Roannais Agglomération (~99 000 hab), en banlieue est immédiate de Roanne (sur la rive opposée de la Loire — relié par pont). Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Le Coteau est intégrée à Roannais Agglomération (~99 000 hab), en banlieue est immédiate de Roanne (sur la rive opposée de la Loire — relié par pont). Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité.",
+    "Le Coteau est intégrée à Roannais Agglomération (~99 000 hab), en banlieue est immédiate de Roanne (sur la rive opposée de la Loire — relié par pont). Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), PME du BTP, commerces de proximité.",
   distancesFr:
     "Roanne centre à 5 min. Gare Le Coteau (TER Lyon-Paris). Aéroport Lyon-Saint-Exupéry à 1h30. Lyon centre à 1h30. Saint-Étienne à 1h.",
   distancesEn:
@@ -25,13 +25,13 @@ export const LE_COTEAU_COPY: VilleCopy = {
     "PME tertiaires Roannais",
     "PME industrielles (héritage textile)",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Coteau : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA au Coteau : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Coteau : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Coteau : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Coteau : formats adaptés au bureau tertiaire, cabinet professionnel, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const LE_COTEAU_COPY: VilleCopy = {
       en: "Implémentation IA au Coteau : agents conversationnels B2B/patient, classification photos textile, prédiction maintenance industrielle, automatisation workflow. Roannais Agglomération.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Coteau : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants TPE/PME costellois.",
-      en: "Coaching 1-to-1 au Coteau : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants TPE/PME costellois.",
+      fr: "Coaching 1-to-1 au Coteau : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants PME et ETI costellois.",
+      en: "Coaching 1-to-1 au Coteau : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants PME et ETI costellois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LE_COTEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales au Coteau (médecins, avocats, expert-comptables) sur des cas IA respectueux du secret professionnel : agents conversationnels patients/clients, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants au Coteau, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce au Coteau, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

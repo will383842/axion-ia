@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIROFLAY_COPY: VilleCopy = {
   pitchFr:
-    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
+    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de PME et ETI tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
   pitchEn:
-    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
+    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de PME et ETI tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : PME et ETI tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : PME et ETI tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
   seoHook: "professions libérales & services aux",
   ecosystemFr:
-    "Viroflay est une commune résidentielle prisée de l'ouest parisien, idéalement placée entre Paris-Montparnasse et Versailles grâce à deux gares (Rive Gauche et Rive Droite). Tissu économique tertiaire : professions libérales, cabinets de conseil, TPE de services numériques, commerces de centre-ville, artisanat de qualité. Proximité immédiate de Vélizy-Villacoublay (pôle économique majeur) et du plateau de Saclay.",
+    "Viroflay est une commune résidentielle prisée de l'ouest parisien, idéalement placée entre Paris-Montparnasse et Versailles grâce à deux gares (Rive Gauche et Rive Droite). Tissu économique tertiaire : professions libérales, cabinets de conseil, PME de services numériques, commerces de centre-ville, artisanat de qualité. Proximité immédiate de Vélizy-Villacoublay (pôle économique majeur) et du plateau de Saclay.",
   ecosystemEn:
-    "Viroflay est une commune résidentielle prisée de l'ouest parisien, idéalement placée entre Paris-Montparnasse et Versailles grâce à deux gares (Rive Gauche et Rive Droite). Tissu économique tertiaire : professions libérales, cabinets de conseil, TPE de services numériques, commerces de centre-ville, artisanat de qualité. Proximité immédiate de Vélizy-Villacoublay (pôle économique majeur) et du plateau de Saclay.",
+    "Viroflay est une commune résidentielle prisée de l'ouest parisien, idéalement placée entre Paris-Montparnasse et Versailles grâce à deux gares (Rive Gauche et Rive Droite). Tissu économique tertiaire : professions libérales, cabinets de conseil, PME de services numériques, commerces de centre-ville, artisanat de qualité. Proximité immédiate de Vélizy-Villacoublay (pôle économique majeur) et du plateau de Saclay.",
   distancesFr:
     "Paris-Montparnasse à 15 min (Transilien N, gare Viroflay-Rive-Gauche). Versailles-Chantiers à 5 min train. Vélizy 2 et zone commerciale à 5 min voiture. Plateau de Saclay à 20 min. Accès A86/N118.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VIROFLAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Viroflay : diagnostic adapté aux TPE tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
-      en: "Audit IA à Viroflay : diagnostic adapté aux TPE tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      fr: "Audit IA à Viroflay : diagnostic adapté aux PME tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA à Viroflay : diagnostic adapté aux PME tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Viroflay : formats adaptés aux cabinets, PME tertiaires, commerces et professions libérales. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -42,8 +42,8 @@ export const VIROFLAY_COPY: VilleCopy = {
       en: "Implémentation IA à Viroflay : agents conversationnels client, automatisation administrative, CRM augmentés, outils de reporting, gestion documentaire intelligente. Adapté au tissu tertiaire et résidentiel ouest-parisien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Viroflay : sessions dans votre cabinet, bureau, commerce ou en visio. Consultants, professions libérales, gérants TPE/PME de l'axe Paris-Versailles souhaitant maîtriser l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à Viroflay : sessions dans votre cabinet, bureau, commerce ou en visio. Consultants, professions libérales, gérants TPE/PME de l'axe Paris-Versailles souhaitant maîtriser l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à Viroflay : sessions dans votre cabinet, bureau, commerce ou en visio. Consultants, professions libérales, gérants PME et ETI de l'axe Paris-Versailles souhaitant maîtriser l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à Viroflay : sessions dans votre cabinet, bureau, commerce ou en visio. Consultants, professions libérales, gérants PME et ETI de l'axe Paris-Versailles souhaitant maîtriser l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VIROFLAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un cabinet à Viroflay ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux cabinets, professions libérales et TPE tertiaires de Viroflay. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux cabinets, professions libérales et PME tertiaires de Viroflay. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Viroflay ?",

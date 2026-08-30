@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AVIGNON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avignon auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avignon auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "festival & agro provençal",
   ecosystemFr:
-    "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de TPE et PME couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
+    "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de PME et ETI couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
   ecosystemEn:
-    "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de TPE et PME couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
+    "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de PME et ETI couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
   distancesFr:
     "La gare d'Avignon TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min). L'aéroport d'Avignon-Provence et l'A7 / A9 desservent l'agglomération.",
   distancesEn:
@@ -42,8 +42,8 @@ export const AVIGNON_COPY: VilleCopy = {
       en: "Implémentation IA à Avignon : gestion des réservations et de la billetterie, agents conversationnels multilingues pour le tourisme, gestion des pics du Festival et du Off, traçabilité agroalimentaire et automatisation administrative.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Avignon pour dirigeants de TPE et PME du tourisme, du spectacle, de l'agroalimentaire ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
-      en: "Coaching 1-to-1 à Avignon pour dirigeants de TPE et PME du tourisme, du spectacle, de l'agroalimentaire ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      fr: "Coaching 1-to-1 à Avignon pour dirigeants de PME et d'ETI du tourisme, du spectacle, de l'agroalimentaire ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Avignon pour dirigeants de PME et d'ETI du tourisme, du spectacle, de l'agroalimentaire ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Avignon : plateformes de réservation et de billetterie, vitrines multilingues pour le tourisme culturel, et outils IA pour l'agroalimentaire provençal et le commerce.",
@@ -55,11 +55,11 @@ export const AVIGNON_COPY: VilleCopy = {
       fr: {
         hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; les formats Essentielle, Gagner du temps, Approfondie, Conférence et Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
         whyHere: [
-          "Avignon, cité des Papes classée UNESCO, concentre un tissu de TPE et PME du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
+          "Avignon, cité des Papes classée UNESCO, concentre un tissu de PME et ETI du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
           "Le Festival d'Avignon impose une saisonnalité forte : le In réunit environ 130 000 spectateurs et le Off environ 1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Nous formons vos équipes aux usages utiles pendant ce pic de juillet — réponses multilingues, gestion des réservations et de la billetterie, suivi des demandes.",
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
           "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à une trentaine de collaborateurs : hôtels, compagnies, cabinets, commerces et PME de terroir.",
-          "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE et PME du Vaucluse.",
+          "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de PME et ETI du Vaucluse.",
           "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
         ],
         methodology: [
@@ -90,12 +90,6 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures",
-            detail:
-              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 15 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps",
@@ -147,11 +141,11 @@ export const AVIGNON_COPY: VilleCopy = {
       en: {
         hero: "Les formations IA en entreprise d'Axion-IA à Avignon se déroulent sur site, dans vos locaux, du format de quatre heures aux deux journées. Vos collaborateurs ne repartent pas avec un jeu de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — réservation d'hôtel, billetterie de compagnie du Off, traçabilité agroalimentaire ou gestion de commerce. Nous calibrons chaque session sur les contraintes locales d'Avignon, à commencer par le pic d'été du Festival In et du Off, et par les exigences de la filière agroalimentaire d'Agroparc. La Formation 4 heures démarre à {{price:intervention-4h|flat}} ; les formats Essentielle, Gagner du temps, Approfondie, Conférence et Dirigeant complètent la gamme selon la taille de vos équipes et votre objectif.",
         whyHere: [
-          "Avignon, cité des Papes classée UNESCO, concentre un tissu de TPE et PME du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
+          "Avignon, cité des Papes classée UNESCO, concentre un tissu de PME et ETI du tourisme patrimonial (Palais des Papes, Pont Saint-Bénézet), de l'hôtellerie, de la restauration et du commerce : autant de métiers où l'IA s'apprend mieux sur des cas concrets que sur des exemples génériques.",
           "Le Festival d'Avignon impose une saisonnalité forte : le In réunit environ 130 000 spectateurs et le Off environ 1 780 spectacles répartis sur 248 lieux (chiffres 60e édition). Nous formons vos équipes aux usages utiles pendant ce pic de juillet — réponses multilingues, gestion des réservations et de la billetterie, suivi des demandes.",
           "La filière agroalimentaire provençale d'Agroparc, première zone d'activité du Vaucluse (~600 établissements, ~6 500 emplois) avec INRAE, Givaudan France Naturals et McCormick France, demande un vocabulaire précis : traçabilité, contrôle qualité, recherche documentaire. Nos sessions ajustent les exemples à ce contexte.",
           "Le format collectif d'une journée convient aux structures avignonnaises de quelques personnes à une trentaine de collaborateurs : hôtels, compagnies, cabinets, commerces et PME de terroir.",
-          "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de TPE et PME du Vaucluse.",
+          "Le format Conférence s'adresse aux plénières d'entreprise et aux événements professionnels ; le format Dirigeant permet un cadrage en huis-clos pour les directions de PME et ETI du Vaucluse.",
           "Avignon est accessible et facile à desservir en présentiel : la gare TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min), avec l'aéroport d'Avignon-Provence et les axes A7 / A9.",
         ],
         methodology: [
@@ -182,12 +176,6 @@ export const AVIGNON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures",
-            detail:
-              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 15 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps",
@@ -275,12 +263,6 @@ export const AVIGNON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG multilingue, recherche sémantique) sur le site existant d'un hôtel, d'un restaurant ou d'une compagnie du Off, en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -361,12 +343,6 @@ export const AVIGNON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (multilingual RAG chatbot, semantic search) to the existing site of a hotel, restaurant or Off company, within a few weeks, with no rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -416,7 +392,7 @@ export const AVIGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avignon et dans le Vaucluse ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Avignon et de l'agglomération vauclusienne. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI d'Avignon et de l'agglomération vauclusienne. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Comment l'IA aide pendant le Festival d'Avignon et le Off ?",
@@ -428,7 +404,7 @@ export const AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous l'agroalimentaire provençal d'Agroparc ?",
-      a: "Oui, traçabilité, contrôle qualité, prévision de la demande et automatisation administrative pour les PME agroalimentaires d'Avignon et du technopole Agroparc. Cible prioritaire TPE et PME.",
+      a: "Oui, traçabilité, contrôle qualité, prévision de la demande et automatisation administrative pour les PME agroalimentaires d'Avignon et du technopole Agroparc. Cible prioritaire PME et ETI.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

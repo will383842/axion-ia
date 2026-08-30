@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const LE_MESNIL_ESNARD_COPY: VilleCopy = {
   pitchFr:
-    "Le Mesnil-Esnard (76), commune residentielle de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 8 180 habitants. Ville residentielle prisee a l'est de Rouen, elle accueille des professions liberales, des TPE de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
+    "Le Mesnil-Esnard (76), commune residentielle de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 8 180 habitants. Ville residentielle prisee a l'est de Rouen, elle accueille des professions liberales, des PME de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Le Mesnil-Esnard (76), commune residentielle de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 8 180 habitants. Ville residentielle prisee a l'est de Rouen, elle accueille des professions liberales, des TPE de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
+    "Le Mesnil-Esnard (76), commune residentielle de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 8 180 habitants. Ville residentielle prisee a l'est de Rouen, elle accueille des professions liberales, des PME de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "professions liberales, services & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Esnard (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Esnard (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Esnard (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Esnard (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo rouennaise est : medecins, avocats, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Le Mesnil-Esnard est une commune residentielle prisee a l'est de Rouen, dans la Metropole Rouen Normandie. Tissu economique domine par les professions liberales, les TPE de services, les commerces de proximite et l'artisanat. Cadre de vie recherche, proximite immediate de Rouen.",
+    "Le Mesnil-Esnard est une commune residentielle prisee a l'est de Rouen, dans la Metropole Rouen Normandie. Tissu economique domine par les professions liberales, les PME de services, les commerces de proximite et l'artisanat. Cadre de vie recherche, proximite immediate de Rouen.",
   ecosystemEn:
-    "Le Mesnil-Esnard est une commune residentielle prisee a l'est de Rouen, dans la Metropole Rouen Normandie. Tissu economique domine par les professions liberales, les TPE de services, les commerces de proximite et l'artisanat. Cadre de vie recherche, proximite immediate de Rouen.",
+    "Le Mesnil-Esnard est une commune residentielle prisee a l'est de Rouen, dans la Metropole Rouen Normandie. Tissu economique domine par les professions liberales, les PME de services, les commerces de proximite et l'artisanat. Cadre de vie recherche, proximite immediate de Rouen.",
   distancesFr:
     "Rouen centre a 10 min. Gare Rouen Rive-Droite a 15 min (TGV Paris 1h15). A28 Rouen-Amiens a 10 min. Bonsecours a 5 min. Darnetal a 5 min. Paris a 1h25 via A13.",
   distancesEn:
     "Rouen centre a 10 min. Gare Rouen Rive-Droite a 15 min (TGV Paris 1h15). A28 Rouen-Amiens a 10 min. Bonsecours a 5 min. Darnetal a 5 min. Paris a 1h25 via A13.",
   topSectorsNaf: [
     "Professions liberales & sante",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat & renovation",
     "PME conseil & tertiaire",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mesnil-Esnard : diagnostic adapte aux professions liberales, TPE de services et commercants de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA au Mesnil-Esnard : diagnostic adapte aux professions liberales, TPE de services et commercants de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Mesnil-Esnard : diagnostic adapte aux professions liberales, PME de services et commercants de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Mesnil-Esnard : diagnostic adapte aux professions liberales, PME de services et commercants de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Mesnil-Esnard : formations adaptees aux cabinets liberaux, commerces et TPE de services de l'agglomeration rouennaise. Equipes autonomes.",
-      en: "Interventions IA sur site au Mesnil-Esnard : formations adaptees aux cabinets liberaux, commerces et TPE de services de l'agglomeration rouennaise. Equipes autonomes.",
+      fr: "Interventions IA sur site au Mesnil-Esnard : formations adaptees aux cabinets liberaux, commerces et PME de services de l'agglomeration rouennaise. Equipes autonomes.",
+      en: "Interventions IA sur site au Mesnil-Esnard : formations adaptees aux cabinets liberaux, commerces et PME de services de l'agglomeration rouennaise. Equipes autonomes.",
     },
     implementation: {
       fr: "Implementation IA au Mesnil-Esnard : automatisation documents juridiques/comptables, agents IA accueil patients, CRM augmentes pour professions liberales et commercants.",
       en: "Implementation IA au Mesnil-Esnard : automatisation documents juridiques/comptables, agents IA accueil patients, CRM augmentes pour professions liberales et commercants.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Mesnil-Esnard : accompagnement personnalise medecins, avocats, experts-comptables, dirigeants TPE et gerants commerces de l'agglo rouennaise.",
-      en: "Coaching 1-to-1 au Mesnil-Esnard : accompagnement personnalise medecins, avocats, experts-comptables, dirigeants TPE et gerants commerces de l'agglo rouennaise.",
+      fr: "Coaching 1-to-1 au Mesnil-Esnard : accompagnement personnalise medecins, avocats, experts-comptables, dirigeants de PME et d'ETI et gerants commerces de l'agglo rouennaise.",
+      en: "Coaching 1-to-1 au Mesnil-Esnard : accompagnement personnalise medecins, avocats, experts-comptables, dirigeants de PME et d'ETI et gerants commerces de l'agglo rouennaise.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LE_MESNIL_ESNARD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commercants du Mesnil-Esnard ?",
-      a: "Oui, nous accompagnons les commercants du Mesnil-Esnard : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees petites structures.",
+      a: "Oui, nous accompagnons les commercants du Mesnil-Esnard : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees PME.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD au Mesnil-Esnard ?",

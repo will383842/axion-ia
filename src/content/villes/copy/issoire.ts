@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ISSOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
+    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, PME du BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
+    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, PME du BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "industrie aéronautique & administration",
   ecosystemFr:
-    "Issoire est la sous-préfecture du sud Puy-de-Dôme. Basilique romane Saint-Austremoine (majeure romane Auvergne). Tissu industriel aéronautique et métallurgique notable (sous-traitants techniques). Administration, agriculture Limagne, tourisme roman, TPE artisanat BTP, commerces.",
+    "Issoire est la sous-préfecture du sud Puy-de-Dôme. Basilique romane Saint-Austremoine (majeure romane Auvergne). Tissu industriel aéronautique et métallurgique notable (sous-traitants techniques). Administration, agriculture Limagne, tourisme roman, PME du BTP, commerces.",
   ecosystemEn:
-    "Issoire est la sous-préfecture du sud Puy-de-Dôme. Basilique romane Saint-Austremoine (majeure romane Auvergne). Tissu industriel aéronautique et métallurgique notable (sous-traitants techniques). Administration, agriculture Limagne, tourisme roman, TPE artisanat BTP, commerces.",
+    "Issoire est la sous-préfecture du sud Puy-de-Dôme. Basilique romane Saint-Austremoine (majeure romane Auvergne). Tissu industriel aéronautique et métallurgique notable (sous-traitants techniques). Administration, agriculture Limagne, tourisme roman, PME du BTP, commerces.",
   distancesFr:
     "Clermont-Ferrand à 35 min A75. Aéroport Clermont-Auvergne à 45 min. Lyon à 2h15. Brioude à 25 min. Le Puy-en-Velay à 1h15.",
   distancesEn:
@@ -26,12 +26,12 @@ export const ISSOIRE_COPY: VilleCopy = {
     "Administration (sous-préfecture)",
     "Tourisme roman (basilique Saint-Austremoine)",
     "Agriculture Limagne",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Issoire : formats adaptés à l'atelier aéronautique, administration, site roman, exploitation, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const ISSOIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Issoire : prédiction maintenance aéronautique, contrôle qualité par vision (pièces métallurgiques), agents conversationnels visiteurs roman multilingue, automatisation flux administratifs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Issoire : sessions dans votre atelier, administration, site, exploitation ou en visio. Industriels aéronautique, administration, acteurs tourisme, agriculteurs, artisans, gérants TPE/PME issoiriens.",
-      en: "Coaching 1-to-1 à Issoire : sessions dans votre atelier, administration, site, exploitation ou en visio. Industriels aéronautique, administration, acteurs tourisme, agriculteurs, artisans, gérants TPE/PME issoiriens.",
+      fr: "Coaching 1-to-1 à Issoire : sessions dans votre atelier, administration, site, exploitation ou en visio. Industriels aéronautique, administration, acteurs tourisme, agriculteurs, artisans, gérants PME et ETI issoiriens.",
+      en: "Coaching 1-to-1 à Issoire : sessions dans votre atelier, administration, site, exploitation ou en visio. Industriels aéronautique, administration, acteurs tourisme, agriculteurs, artisans, gérants PME et ETI issoiriens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const ISSOIRE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels visiteurs basilique multilingue, automatisation réservations, classification feedback, recommandations parcours roman Auvergne.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

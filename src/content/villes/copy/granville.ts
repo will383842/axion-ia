@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GRANVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu PME pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu PME pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Granville (50). Nous accompagnons tous types d'activités : TPE pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Granville (50). Nous accompagnons tous types d'activités : PME pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Granville (50). Nous accompagnons tous types d'activités : TPE pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Granville (50). Nous accompagnons tous types d'activités : PME pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
   seoHook: "pêche ostréiculture & tourisme balnéaire",
   ecosystemFr:
     "Granville est le premier port coquillier de France, station balnéaire historique et porte d'accès aux îles Chausey. Le tissu économique repose sur la pêche (coquille Saint-Jacques, bulots), l'ostréiculture, le tourisme (carnaval de Granville, patrimoine Haute Ville), l'hôtellerie-restauration saisonnière, les commerces portuaires et l'artisanat. Accès vers Avranches (25 min) et Saint-Lô (40 min).",
@@ -23,15 +23,15 @@ export const GRANVILLE_COPY: VilleCopy = {
     "Gare de Granville (TER vers Paris-Montparnasse, 3 h). Avranches à 25 min. Saint-Lô à 40 min. Caen à 1 h 20. Rennes à 1 h 10. Aéroport Rennes à 1 h 20. Mont-Saint-Michel à 40 min.",
   topSectorsNaf: [
     "Pêche et ostréiculture (coquille Saint-Jacques, bulots)",
-    "TPE/PME tourisme balnéaire et hôtellerie-restauration",
+    "PME et ETI tourisme balnéaire et hôtellerie-restauration",
     "Commerce portuaire et artisanat local",
     "Activités nautiques et plaisance",
     "Services à la personne et santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Granville : diagnostic adapté aux PME pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Granville : diagnostic adapté aux PME pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Granville : formats adaptés à la criée, l'hôtel, le restaurant, le commerce portuaire, l'atelier artisanal. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const GRANVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Granville : automatisation traçabilité pêche, gestion réservations tourisme, prédiction stocks saisonniers, agents IA accueil hôtelier, CRM fidélisation clientèle balnéaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Granville : sessions dans votre entreprise portuaire, hôtel, restaurant ou en visio. Dirigeants TPE pêche, gérants PME tourisme, commerçants, artisans granvillais.",
-      en: "Coaching 1-to-1 à Granville : sessions dans votre entreprise portuaire, hôtel, restaurant ou en visio. Dirigeants TPE pêche, gérants PME tourisme, commerçants, artisans granvillais.",
+      fr: "Coaching 1-to-1 à Granville : sessions dans votre entreprise portuaire, hôtel, restaurant ou en visio. Dirigeants PME pêche, gérants PME tourisme, commerçants, artisans granvillais.",
+      en: "Coaching 1-to-1 à Granville : sessions dans votre entreprise portuaire, hôtel, restaurant ou en visio. Dirigeants PME pêche, gérants PME tourisme, commerçants, artisans granvillais.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const GRANVILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Granville et sur toute la côte ouest de la Manche (Avranches, Coutances, Villedieu-les-Poêles). Nos consultants se déplacent depuis Rennes (1 h 10) ou Caen (1 h 20), ou en visio.",
     },
     {
-      q: "Accompagnez-vous les TPE de la pêche et ostréiculture ?",
-      a: "Oui, nous accompagnons les TPE pêche et ostréiculture de Granville : automatisation traçabilité produits de la mer, prédiction rendements, optimisation logistique criée, classification qualité coquillages. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME de la pêche et ostréiculture ?",
+      a: "Oui, nous accompagnons les PME pêche et ostréiculture de Granville : automatisation traçabilité produits de la mer, prédiction rendements, optimisation logistique criée, classification qualité coquillages. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les hôteliers et restaurateurs granvillais ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SURZUR_COPY: VilleCopy = {
   pitchFr:
-    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
+    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu PME du BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
+    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu PME du BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surzur (56). Nous accompagnons tous types d'activités : PME du BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surzur (56). Nous accompagnons tous types d'activités : PME du BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
   ecosystemFr:
-    "Surzur est située aux portes nord de la presqu'île de Rhuys, à mi-chemin entre Vannes et Sarzeau, avec un accès direct au golfe du Morbihan. Commune à dominante rurale et résidentielle en croissance. Tissu d'exploitations agricoles (maraîchage, élevage bovin), TPE artisans BTP (construction neuve, rénovation), PME de services, commerces de proximité et hébergements touristiques (gîtes, campings). Proximité Vannes (15 min).",
+    "Surzur est située aux portes nord de la presqu'île de Rhuys, à mi-chemin entre Vannes et Sarzeau, avec un accès direct au golfe du Morbihan. Commune à dominante rurale et résidentielle en croissance. Tissu d'exploitations agricoles (maraîchage, élevage bovin), PME du BTP (construction neuve, rénovation), PME de services, commerces de proximité et hébergements touristiques (gîtes, campings). Proximité Vannes (15 min).",
   ecosystemEn:
-    "Surzur est située aux portes nord de la presqu'île de Rhuys, à mi-chemin entre Vannes et Sarzeau, avec un accès direct au golfe du Morbihan. Commune à dominante rurale et résidentielle en croissance. Tissu d'exploitations agricoles (maraîchage, élevage bovin), TPE artisans BTP (construction neuve, rénovation), PME de services, commerces de proximité et hébergements touristiques (gîtes, campings). Proximité Vannes (15 min).",
+    "Surzur est située aux portes nord de la presqu'île de Rhuys, à mi-chemin entre Vannes et Sarzeau, avec un accès direct au golfe du Morbihan. Commune à dominante rurale et résidentielle en croissance. Tissu d'exploitations agricoles (maraîchage, élevage bovin), PME du BTP (construction neuve, rénovation), PME de services, commerces de proximité et hébergements touristiques (gîtes, campings). Proximité Vannes (15 min).",
   distancesFr:
     "Vannes centre à 15 min voiture. Gare de Vannes (TGV Paris 2h30). Sarzeau (presqu'île de Rhuys) à 15 min. Muzillac à 10 min. Aéroport Lorient Bretagne Sud à 55 min. Golfe du Morbihan à 10 min.",
   distancesEn:
@@ -23,15 +23,15 @@ export const SURZUR_COPY: VilleCopy = {
   seoHook: "agriculture, BTP & presqu'île Rhuys",
   topSectorsNaf: [
     "Agriculture & maraîchage (élevage, polyculture)",
-    "TPE artisanat BTP (construction, rénovation)",
+    "PME du BTP (construction, rénovation)",
     "PME services aux entreprises",
     "Tourisme vert & hébergement (gîtes, campings)",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, PME du BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, PME du BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Surzur : formats adaptés à l'exploitation agricole, chantier BTP, entreprise de services ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -56,8 +56,8 @@ export const SURZUR_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles et maraîchers autour de Surzur sur leurs cas IA : optimisation production (prédiction météo locale, rendements), traçabilité exploitation, classification photos cultures, automatisation gestion sanitaire et commandes.",
     },
     {
-      q: "Quels services pour les TPE artisans BTP à Surzur ?",
-      a: "Pour les TPE artisans BTP (construction neuve, rénovation) à Surzur, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, planification chantier IA, classification photos avancement, gestion sous-traitants.",
+      q: "Quels services pour les PME du BTP à Surzur ?",
+      a: "Pour les PME du BTP (construction neuve, rénovation) à Surzur, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, planification chantier IA, classification photos avancement, gestion sous-traitants.",
     },
     {
       q: "Travaillez-vous avec les hébergeurs touristiques presqu'île de Rhuys ?",

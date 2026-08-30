@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Clément-de-Rivière (34), commune résidentielle au nord de Montpellier au pied du Pic Saint-Loup dans l'Hérault. Cadre de vie privilégié, pôle santé et tertiaire, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME tertiaires, artisans, commerces, santé. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Clément-de-Rivière (34), commune résidentielle au nord de Montpellier au pied du Pic Saint-Loup dans l'Hérault. Cadre de vie privilégié, pôle santé et tertiaire, vignoble Pic Saint-Loup. Tissu PME professions libérales, PME tertiaires, artisans, commerces, santé. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Saint-Clément-de-Rivière (34), commune résidentielle au nord de Montpellier au pied du Pic Saint-Loup dans l'Hérault. Cadre de vie privilégié, pôle santé et tertiaire, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME tertiaires, artisans, commerces, santé. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Clément-de-Rivière (34), commune résidentielle au nord de Montpellier au pied du Pic Saint-Loup dans l'Hérault. Cadre de vie privilégié, pôle santé et tertiaire, vignoble Pic Saint-Loup. Tissu PME professions libérales, PME tertiaires, artisans, commerces, santé. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, TPE artisans, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, PME artisanales, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, TPE artisans, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Clément-de-Rivière (34). Nous accompagnons tous types d'activités : professions libérales, PME tertiaires, cabinets médicaux, PME artisanales, commerçants, indépendants et acteurs de la filière Pic Saint-Loup nord-montpelliéraine.",
   seoHook: "professions libérales & santé cliniques",
   ecosystemFr:
     "Saint-Clément-de-Rivière est une commune résidentielle prisée au nord de Montpellier, au pied du Pic Saint-Loup. Cadre de vie privilégié attirant professions libérales et cadres. Pôle santé (cliniques, cabinets médicaux), PME tertiaires, vignoble AOC Pic Saint-Loup, artisans BTP, commerces de proximité.",
@@ -26,12 +26,12 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
     "Santé & cliniques (pôle nord Montpellier)",
     "PME tertiaires & services aux entreprises",
     "Viticulture AOC Pic Saint-Loup",
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, PME de l'artisanat et du commerce du nord de Montpellier. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, PME de l'artisanat et du commerce du nord de Montpellier. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Clément-de-Rivière : formats adaptés aux cabinets conseil, structures de santé, PME ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Clément-de-Rivière : automatisation administrative cabinets médicaux, classification documents juridiques, agents conversationnels patients, prédiction flux santé. Adapté professions libérales + santé.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Clément-de-Rivière : sessions dans votre cabinet, bureau, structure de santé ou en visio. Professions libérales, dirigeants PME, médecins, gérants TPE nord-montpelliérains.",
-      en: "Coaching 1-to-1 à Saint-Clément-de-Rivière : sessions dans votre cabinet, bureau, structure de santé ou en visio. Professions libérales, dirigeants PME, médecins, gérants TPE nord-montpelliérains.",
+      fr: "Coaching 1-to-1 à Saint-Clément-de-Rivière : sessions dans votre cabinet, bureau, structure de santé ou en visio. Professions libérales, dirigeants PME, médecins, gérants PME nord-montpelliérains.",
+      en: "Coaching 1-to-1 à Saint-Clément-de-Rivière : sessions dans votre cabinet, bureau, structure de santé ou en visio. Professions libérales, dirigeants PME, médecins, gérants PME nord-montpelliérains.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales et cabinets médicaux sur leurs cas IA : automatisation administrative (secrétariat, facturation), classification documents juridiques, agents conversationnels patients, optimisation planning rendez-vous.",
     },
     {
-      q: "Quels services pour les TPE et PME tertiaires saint-clémentoises ?",
-      a: "Pour les TPE et PME tertiaires à Saint-Clément-de-Rivière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation reporting, agents IA relation client, classification emails, gestion documentaire.",
+      q: "Quels services pour les PME et ETI tertiaires saint-clémentoises ?",
+      a: "Pour les PME et ETI tertiaires à Saint-Clément-de-Rivière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation reporting, agents IA relation client, classification emails, gestion documentaire.",
     },
     {
       q: "Accompagnez-vous le secteur viticole Pic Saint-Loup ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
   pitchFr:
-    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants.",
+    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants.",
+    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
   seoHook: "vallée rivière",
   ecosystemFr:
     "Château-Gontier-sur-Mayenne est la sous-préfecture du sud de la Mayenne, située aux bords de la rivière Mayenne. Foire aux bestiaux réputée (bovins), patrimoine médiéval, tourisme fluvial. Économie diversifiée : agroalimentaire, industrie, artisanat, commerces, services, agriculture (élevage bovin laitier).",
@@ -30,8 +30,8 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Château-Gontier-sur-Mayenne : formations adaptées aux PME agroalimentaires, industriels, artisans, commerçants et éleveurs du sud-Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
       en: "Implémentation IA à Château-Gontier-sur-Mayenne : traçabilité élevage bovin, contrôle qualité agroalimentaire, automatisation processus industriels, agents conversationnels tourisme fluvial.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Château-Gontier-sur-Mayenne : sessions dans vos locaux, exploitation, commerce ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, artisans, commerçants.",
-      en: "Coaching 1-to-1 à Château-Gontier-sur-Mayenne : sessions dans vos locaux, exploitation, commerce ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, artisans, commerçants.",
+      fr: "Coaching 1-to-1 à Château-Gontier-sur-Mayenne : sessions dans vos locaux, exploitation, commerce ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, artisans, commerçants.",
+      en: "Coaching 1-to-1 à Château-Gontier-sur-Mayenne : sessions dans vos locaux, exploitation, commerce ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, artisans, commerçants.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Château-Gontier-sur-Mayenne  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du sud-Mayenne. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agroalimentaires et industriels du sud-Mayenne. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME industrielles ?",

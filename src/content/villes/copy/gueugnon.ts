@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GUEUGNON_COPY: VilleCopy = {
   pitchFr:
-    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu PME et ETI sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu PME et ETI sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : PME et ETI sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
-  seoHook: "TPE & PME Saône-et-Loire",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : PME et ETI sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
+  seoHook: "PME & PME Saône-et-Loire",
   ecosystemFr:
-    "Gueugnon est une commune industrielle du val d'Arroux en Saône-et-Loire, historiquement liée à la métallurgie (aciers spéciaux, laminage). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services.",
+    "Gueugnon est une commune industrielle du val d'Arroux en Saône-et-Loire, historiquement liée à la métallurgie (aciers spéciaux, laminage). Tissu PME et ETI sous-traitance industrielle, artisans BTP, commerces de proximité, services.",
   ecosystemEn:
-    "Gueugnon est une commune industrielle du val d'Arroux en Saône-et-Loire, historiquement liée à la métallurgie (aciers spéciaux, laminage). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services.",
+    "Gueugnon est une commune industrielle du val d'Arroux en Saône-et-Loire, historiquement liée à la métallurgie (aciers spéciaux, laminage). Tissu PME et ETI sous-traitance industrielle, artisans BTP, commerces de proximité, services.",
   distancesFr:
     "Digoin à 20 min. Montceau-les-Mines à 30 min. Moulins à 45 min. Gare TGV Le Creusot à 50 min. Lyon à 2h15.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GUEUGNON_COPY: VilleCopy = {
   topSectorsNaf: [
     "Métallurgie aciers spéciaux",
     "Sous-traitance industrielle",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gueugnon : diagnostic adapté aux PME et ETI sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gueugnon : diagnostic adapté aux PME et ETI sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gueugnon : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const GUEUGNON_COPY: VilleCopy = {
       en: "Implémentation IA à Gueugnon : contrôle qualité visuel aciers, automatisation traçabilité production, agents conversationnels B2B, workflow sous-traitance industrielle.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gueugnon : sessions dans votre atelier, bureau, commerce ou en visio. Industriels, sous-traitants, artisans, gérants TPE/PME gueugnonnais.",
-      en: "Coaching 1-to-1 à Gueugnon : sessions dans votre atelier, bureau, commerce ou en visio. Industriels, sous-traitants, artisans, gérants TPE/PME gueugnonnais.",
+      fr: "Coaching 1-to-1 à Gueugnon : sessions dans votre atelier, bureau, commerce ou en visio. Industriels, sous-traitants, artisans, gérants PME et ETI gueugnonnais.",
+      en: "Coaching 1-to-1 à Gueugnon : sessions dans votre atelier, bureau, commerce ou en visio. Industriels, sous-traitants, artisans, gérants PME et ETI gueugnonnais.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const GUEUGNON_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME de sous-traitance industrielle ?",
-      a: "Oui, nous accompagnons les TPE/PME sous-traitance métallurgie et industrie : contrôle qualité visuel, traçabilité production, automatisation workflow, agents conversationnels B2B.",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitance métallurgie et industrie : contrôle qualité visuel, traçabilité production, automatisation workflow, agents conversationnels B2B.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces locaux ?",
@@ -61,7 +61,7 @@ export const GUEUGNON_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Gueugnon ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Gueugnon ?",

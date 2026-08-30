@@ -85,12 +85,6 @@ export const SAINT_MEDARD_EN_JALLES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour artisans, commerces et indépendants médardais et des sous-traitants de quelques personnes : site vitrine responsive ou boutique multi-CMS, avec un premier assistant IA simple (FAQ, qualification de contacts).",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier + briques IA",
             detail:
@@ -170,12 +164,6 @@ export const SAINT_MEDARD_EN_JALLES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Saint-Médard craftspeople, shops and freelancers and small subcontractors: responsive showcase site or multi-CMS store, with a first simple AI assistant (FAQ, contact qualification).",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform + AI blocks",

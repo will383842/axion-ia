@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const VENISSIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
+    "Axion-IA accompagne les PME et ETI de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
+    "Axion-IA accompagne les PME et ETI de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les PME et ETI de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les PME et ETI de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   seoHook: "automobile (Renault Trucks), équipementiers et logistique",
   ecosystemFr:
     "Vénissieux a connu une industrialisation forte au XXe siècle, passant d'un village agricole et viticole à un pôle automobile majeur. Le site Renault Trucks au quartier du Parilly et la présence de Bosch ancrent une filière équipementier et métallurgie. Les zones d'activité Chêne-Velin (commerciale et industrielle) et Parilly concentrent la sous-traitance. La desserte par le métro D (terminus Gare de Vénissieux), le tramway T4 vers Lyon 8e, et le boulevard Urbain Sud relient la commune au reste de la Métropole de Lyon en moins de 25 minutes.",
@@ -43,8 +43,8 @@ export const VENISSIEUX_COPY: VilleCopy = {
       en: "L'implémentation à Vénissieux raccorde les briques IA aux ERP industriels (SAP, Sage X3, Divalto) et MES (Aquiweb, Ordinal) existants, sans dépendance no-code. Compatible avec les exigences IATF 16949 des donneurs d'ordre auto.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Vénissieux s'adresse aux dirigeants TPE/PME de la Métropole de Lyon qui veulent évaluer l'IA sur un cas concret avant d'engager un budget — focus industrie 4.0 et sous-traitance auto.",
-      en: "L'accompagnement un-à-un à Vénissieux s'adresse aux dirigeants TPE/PME de la Métropole de Lyon qui veulent évaluer l'IA sur un cas concret avant d'engager un budget — focus industrie 4.0 et sous-traitance auto.",
+      fr: "L'accompagnement un-à-un à Vénissieux s'adresse aux dirigeants de PME et d'ETI de la Métropole de Lyon qui veulent évaluer l'IA sur un cas concret avant d'engager un budget — focus industrie 4.0 et sous-traitance auto.",
+      en: "L'accompagnement un-à-un à Vénissieux s'adresse aux dirigeants de PME et d'ETI de la Métropole de Lyon qui veulent évaluer l'IA sur un cas concret avant d'engager un budget — focus industrie 4.0 et sous-traitance auto.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const VENISSIEUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-ready",
-            detail:
-              "Pour artisans, négociants de proximité et petites structures des zones d'activité de Vénissieux : site mobile-first, e-commerce sur CMS (WooCommerce, Shopify, PrestaShop) et chatbot de pré-qualification, avec base prête à recevoir des briques IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou extranet B2B",
@@ -171,12 +165,6 @@ export const VENISSIEUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or AI-ready e-commerce",
-            detail:
-              "For craftspeople, local wholesalers and small structures in Vénissieux's activity zones: mobile-first site, CMS e-commerce (WooCommerce, Shopify, PrestaShop) and a pre-qualification chatbot, on a base ready for AI blocks.",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform or B2B extranet",

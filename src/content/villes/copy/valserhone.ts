@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VALSERHONE_COPY: VilleCopy = {
   pitchFr:
-    "Valserhône (01), commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine, Châtillon-en-Michaille, Lancrans), est positionnée au confluent de la Valserine et du Rhône, à proximité de la frontière suisse. Connue pour le barrage de Génissiat (grand aménagement hydroélectrique historique). Tissu PME industrielles, frontaliers, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Valserhône (01), commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine, Châtillon-en-Michaille, Lancrans), est positionnée au confluent de la Valserine et du Rhône, à proximité de la frontière suisse. Connue pour le barrage de Génissiat (grand aménagement hydroélectrique historique). Tissu PME industrielles, frontaliers, PME du BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Valserhône (01), commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine, Châtillon-en-Michaille, Lancrans), est positionnée au confluent de la Valserine et du Rhône, à proximité de la frontière suisse. Connue pour le barrage de Génissiat (grand aménagement hydroélectrique historique). Tissu PME industrielles, frontaliers, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Valserhône (01), commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine, Châtillon-en-Michaille, Lancrans), est positionnée au confluent de la Valserine et du Rhône, à proximité de la frontière suisse. Connue pour le barrage de Génissiat (grand aménagement hydroélectrique historique). Tissu PME industrielles, frontaliers, PME du BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valserhône (01). Nous accompagnons tous types d'activités : PME industrielles et tertiaires pays de Gex sud, travailleurs frontaliers Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'Ain sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valserhône (01). Nous accompagnons tous types d'activités : PME industrielles et tertiaires pays de Gex sud, travailleurs frontaliers Genève, PME du BTP, commerçants, indépendants et services aux entreprises de l'Ain sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valserhône (01). Nous accompagnons tous types d'activités : PME industrielles et tertiaires pays de Gex sud, travailleurs frontaliers Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'Ain sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valserhône (01). Nous accompagnons tous types d'activités : PME industrielles et tertiaires pays de Gex sud, travailleurs frontaliers Genève, PME du BTP, commerçants, indépendants et services aux entreprises de l'Ain sud.",
   seoHook: "industrielles pays & économie frontalière",
   ecosystemFr:
-    "Valserhône est une commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine + Châtillon-en-Michaille + Lancrans), au confluent de la Valserine et du Rhône. Proximité frontière suisse / Genève (40 min). Barrage de Génissiat (grand aménagement hydroélectrique CNR historique). Tissu PME industrielles, économie frontalière, TPE artisanat BTP, commerces.",
+    "Valserhône est une commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine + Châtillon-en-Michaille + Lancrans), au confluent de la Valserine et du Rhône. Proximité frontière suisse / Genève (40 min). Barrage de Génissiat (grand aménagement hydroélectrique CNR historique). Tissu PME industrielles, économie frontalière, PME du BTP, commerces.",
   ecosystemEn:
-    "Valserhône est une commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine + Châtillon-en-Michaille + Lancrans), au confluent de la Valserine et du Rhône. Proximité frontière suisse / Genève (40 min). Barrage de Génissiat (grand aménagement hydroélectrique CNR historique). Tissu PME industrielles, économie frontalière, TPE artisanat BTP, commerces.",
+    "Valserhône est une commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine + Châtillon-en-Michaille + Lancrans), au confluent de la Valserine et du Rhône. Proximité frontière suisse / Genève (40 min). Barrage de Génissiat (grand aménagement hydroélectrique CNR historique). Tissu PME industrielles, économie frontalière, PME du BTP, commerces.",
   distancesFr:
     "Gare Bellegarde-sur-Valserine à 5 min (TGV Paris 3h, TER Genève 20 min). Genève à 40 min. Lyon centre à 1h30. Annecy à 1h. Bourg-en-Bresse à 1h15.",
   distancesEn:
@@ -25,13 +25,13 @@ export const VALSERHONE_COPY: VilleCopy = {
     "PME industrielles pays de Gex sud",
     "Économie frontalière Genève",
     "Hydroélectricité (barrage Génissiat)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valserhône : formats adaptés à l'atelier industriel, bureau frontalier, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VALSERHONE_COPY: VilleCopy = {
       en: "Implémentation IA à Valserhône : agents conversationnels multilingue FR/DE/EN (économie frontalière Genève), prédiction maintenance industrielle, automatisation workflow, classification documents.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valserhône : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, frontaliers, artisans, gérants TPE/PME valserhônais.",
-      en: "Coaching 1-to-1 à Valserhône : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, frontaliers, artisans, gérants TPE/PME valserhônais.",
+      fr: "Coaching 1-to-1 à Valserhône : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, frontaliers, artisans, gérants PME et ETI valserhônais.",
+      en: "Coaching 1-to-1 à Valserhône : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, frontaliers, artisans, gérants PME et ETI valserhônais.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const VALSERHONE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME liées à l'économie frontalière Genève sur leurs cas IA multilingue FR/DE/EN : agents conversationnels B2B export, automatisation workflow transfrontalier, classification documents juridiques multi-juridiction.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {

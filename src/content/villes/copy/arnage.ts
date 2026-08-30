@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ARNAGE_COPY: VilleCopy = {
   pitchFr:
-    "Arnage (72), commune de l'agglomération du Mans en Sarthe, est mondialement connue pour la courbe d'Arnage du circuit des 24 Heures. Plus de 5 400 habitants, zones d'activités dynamiques, tissu de TPE artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Arnage (72), commune de l'agglomération du Mans en Sarthe, est mondialement connue pour la courbe d'Arnage du circuit des 24 Heures. Plus de 5 400 habitants, zones d'activités dynamiques, tissu de PME artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Arnage (72), commune de l'agglomération du Mans en Sarthe, est mondialement connue pour la courbe d'Arnage du circuit des 24 Heures. Plus de 5 400 habitants, zones d'activités dynamiques, tissu de TPE artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Arnage (72), commune de l'agglomération du Mans en Sarthe, est mondialement connue pour la courbe d'Arnage du circuit des 24 Heures. Plus de 5 400 habitants, zones d'activités dynamiques, tissu de PME artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnage (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile et sport mécanique, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnage (72). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo Le Mans, sous-traitants automobile et sport mécanique, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnage (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile et sport mécanique, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnage (72). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo Le Mans, sous-traitants automobile et sport mécanique, professions libérales et services de proximité.",
   seoHook: "industrie mécanique & sport mécanique",
   ecosystemFr:
     "Arnage fait partie de Le Mans Métropole (Sarthe). Le circuit des 24 Heures du Mans passe par la commune (virage d'Arnage). Zones d'activités à proximité du pôle économique sud Le Mans. Industries mécaniques, commerce, artisanat, services. Le Mans centre à 10 min.",
@@ -30,20 +30,20 @@ export const ARNAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arnage : diagnostic adapté aux TPE artisans, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Arnage : diagnostic adapté aux TPE artisans, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Arnage : diagnostic adapté aux PME artisanales, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Arnage : diagnostic adapté aux PME artisanales, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Arnage : formats adaptés aux PME industrielles, sous-traitants auto, TPE artisanales. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Arnage : formats adaptés aux PME industrielles, sous-traitants auto, TPE artisanales. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Arnage : formats adaptés aux PME industrielles, sous-traitants auto, PME artisanales. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Arnage : formats adaptés aux PME industrielles, sous-traitants auto, PME artisanales. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Arnage : maintenance prédictive industrie, contrôle qualité vision, automatisation logistique, gestion stocks. Adapté TPE/PME agglo Le Mans.",
-      en: "Implémentation IA à Arnage : maintenance prédictive industrie, contrôle qualité vision, automatisation logistique, gestion stocks. Adapté TPE/PME agglo Le Mans.",
+      fr: "Implémentation IA à Arnage : maintenance prédictive industrie, contrôle qualité vision, automatisation logistique, gestion stocks. Adapté PME et ETI agglo Le Mans.",
+      en: "Implémentation IA à Arnage : maintenance prédictive industrie, contrôle qualité vision, automatisation logistique, gestion stocks. Adapté PME et ETI agglo Le Mans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arnage : sessions dans vos locaux industriels ou en visio. Dirigeants TPE/PME mécaniques, sous-traitants automobile, gérants commerces agglo Le Mans.",
-      en: "Coaching 1-to-1 à Arnage : sessions dans vos locaux industriels ou en visio. Dirigeants TPE/PME mécaniques, sous-traitants automobile, gérants commerces agglo Le Mans.",
+      fr: "Coaching 1-to-1 à Arnage : sessions dans vos locaux industriels ou en visio. Dirigeants PME et ETI mécaniques, sous-traitants automobile, gérants commerces agglo Le Mans.",
+      en: "Coaching 1-to-1 à Arnage : sessions dans vos locaux industriels ou en visio. Dirigeants PME et ETI mécaniques, sous-traitants automobile, gérants commerces agglo Le Mans.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const ARNAGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arnage  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Arnage ?",

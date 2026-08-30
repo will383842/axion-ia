@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
   pitchFr:
-    "Mézidon Vallée d'Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un nœud ferroviaire historique (gare de Mézidon). Terre de fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre et calvados. Tissu TPE artisans, PME agroalimentaires, commerces, exploitations agricoles. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Mézidon Vallée d'Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un nœud ferroviaire historique (gare de Mézidon). Terre de fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre et calvados. Tissu PME artisanales, PME agroalimentaires, commerces, exploitations agricoles. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Mézidon Vallée d'Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un nœud ferroviaire historique (gare de Mézidon). Terre de fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre et calvados. Tissu TPE artisans, PME agroalimentaires, commerces, exploitations agricoles. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Mézidon Vallée d'Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un nœud ferroviaire historique (gare de Mézidon). Terre de fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre et calvados. Tissu PME artisanales, PME agroalimentaires, commerces, exploitations agricoles. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mézidon Vallée d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires Pays d'Auge (fromages AOP, cidre, calvados), exploitations agricoles, professions libérales et services aux entreprises de l'Augeron.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mézidon Vallée d'Auge (14). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires Pays d'Auge (fromages AOP, cidre, calvados), exploitations agricoles, professions libérales et services aux entreprises de l'Augeron.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mézidon Vallée d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires Pays d'Auge (fromages AOP, cidre, calvados), exploitations agricoles, professions libérales et services aux entreprises de l'Augeron.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mézidon Vallée d'Auge (14). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires Pays d'Auge (fromages AOP, cidre, calvados), exploitations agricoles, professions libérales et services aux entreprises de l'Augeron.",
   seoHook: "agroalimentaire pays & agriculture élevage",
   ecosystemFr:
-    "Mézidon Vallée d'Auge est une commune nouvelle au cœur du Pays d'Auge (Calvados). Nœud ferroviaire historique (gare de Mézidon, bifurcation vers Lisieux et Argentan). Terre de traditions : fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre, calvados. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles, commerces de proximité.",
+    "Mézidon Vallée d'Auge est une commune nouvelle au cœur du Pays d'Auge (Calvados). Nœud ferroviaire historique (gare de Mézidon, bifurcation vers Lisieux et Argentan). Terre de traditions : fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre, calvados. Tissu PME artisanales, PME agroalimentaires, exploitations agricoles, commerces de proximité.",
   ecosystemEn:
-    "Mézidon Vallée d'Auge est une commune nouvelle au cœur du Pays d'Auge (Calvados). Nœud ferroviaire historique (gare de Mézidon, bifurcation vers Lisieux et Argentan). Terre de traditions : fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre, calvados. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles, commerces de proximité.",
+    "Mézidon Vallée d'Auge est une commune nouvelle au cœur du Pays d'Auge (Calvados). Nœud ferroviaire historique (gare de Mézidon, bifurcation vers Lisieux et Argentan). Terre de traditions : fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre, calvados. Tissu PME artisanales, PME agroalimentaires, exploitations agricoles, commerces de proximité.",
   distancesFr:
     "Caen à 30 min N13. Lisieux à 20 min. Gare SNCF Mézidon (nœud ferroviaire TER Caen-Paris / Caen-Le Mans). Aéroport Caen-Carpiquet à 40 min.",
   distancesEn:
@@ -24,26 +24,26 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire Pays d'Auge (fromages AOP, cidre, calvados)",
     "Agriculture & élevage",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, TPE artisans et commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, TPE artisans et commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, PME de l'artisanat et du commerce. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, PME de l'artisanat et du commerce. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mézidon Vallée d'Auge : formats adaptés à la fromagerie, cidrerie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Mézidon Vallée d'Auge : formats adaptés à la fromagerie, cidrerie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Mézidon Vallée d'Auge : traçabilité AOP fromages/cidre, prédiction qualité affinage, automatisation gestion troupeaux, agents conversationnels vente directe. Adapté TPE/PME Pays d'Auge.",
-      en: "Implémentation IA à Mézidon Vallée d'Auge : traçabilité AOP fromages/cidre, prédiction qualité affinage, automatisation gestion troupeaux, agents conversationnels vente directe. Adapté TPE/PME Pays d'Auge.",
+      fr: "Implémentation IA à Mézidon Vallée d'Auge : traçabilité AOP fromages/cidre, prédiction qualité affinage, automatisation gestion troupeaux, agents conversationnels vente directe. Adapté PME et ETI Pays d'Auge.",
+      en: "Implémentation IA à Mézidon Vallée d'Auge : traçabilité AOP fromages/cidre, prédiction qualité affinage, automatisation gestion troupeaux, agents conversationnels vente directe. Adapté PME et ETI Pays d'Auge.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mézidon Vallée d'Auge : sessions dans votre fromagerie, cidrerie, exploitation ou en visio. Dirigeants agroalimentaires, agriculteurs, artisans, gérants TPE/PME du Pays d'Auge.",
-      en: "Coaching 1-to-1 à Mézidon Vallée d'Auge : sessions dans votre fromagerie, cidrerie, exploitation ou en visio. Dirigeants agroalimentaires, agriculteurs, artisans, gérants TPE/PME du Pays d'Auge.",
+      fr: "Coaching 1-to-1 à Mézidon Vallée d'Auge : sessions dans votre fromagerie, cidrerie, exploitation ou en visio. Dirigeants agroalimentaires, agriculteurs, artisans, gérants PME et ETI du Pays d'Auge.",
+      en: "Coaching 1-to-1 à Mézidon Vallée d'Auge : sessions dans votre fromagerie, cidrerie, exploitation ou en visio. Dirigeants agroalimentaires, agriculteurs, artisans, gérants PME et ETI du Pays d'Auge.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mézidon Vallée d'Auge  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",

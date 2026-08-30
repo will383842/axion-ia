@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIARMES_COPY: VilleCopy = {
   pitchFr:
-    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viarmes (95). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viarmes (95). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Viarmes est une commune résidentielle du Pays de France, en lisière de la forêt de Carnelle, appréciée pour son cadre de vie verdoyant et sa proximité avec Luzarches et Beaumont-sur-Oise. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Viarmes est une commune résidentielle du Pays de France, en lisière de la forêt de Carnelle, appréciée pour son cadre de vie verdoyant et sa proximité avec Luzarches et Beaumont-sur-Oise. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   ecosystemEn:
-    "Viarmes est une commune résidentielle du Pays de France, en lisière de la forêt de Carnelle, appréciée pour son cadre de vie verdoyant et sa proximité avec Luzarches et Beaumont-sur-Oise. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Viarmes est une commune résidentielle du Pays de France, en lisière de la forêt de Carnelle, appréciée pour son cadre de vie verdoyant et sa proximité avec Luzarches et Beaumont-sur-Oise. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   distancesFr:
     "Luzarches à 5 min. Beaumont-sur-Oise à 10 min. Gare Transilien Viarmes (ligne H). Aéroport Paris-CDG à 20 min. Paris Gare du Nord à 40 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VIARMES_COPY: VilleCopy = {
       en: "Implémentation IA à Viarmes : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services nord Val-d'Oise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Viarmes : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME viarmois, professions libérales, artisans du Pays de France.",
-      en: "Coaching 1-to-1 à Viarmes : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME viarmois, professions libérales, artisans du Pays de France.",
+      fr: "Coaching 1-to-1 à Viarmes : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI viarmois, professions libérales, artisans du Pays de France.",
+      en: "Coaching 1-to-1 à Viarmes : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI viarmois, professions libérales, artisans du Pays de France.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const VIARMES_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité pour les professionnels du Pays de France.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

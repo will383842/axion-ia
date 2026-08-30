@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Asnières-sur-Seine concentre plus de 7 500 établissements actifs dans un bassin économique dense entre Clichy et Levallois-Perret. Axion-IA intervient sur site auprès des TPE, PME et ETI asniéroises pour déployer des usages IA concrets, mesurables et opérationnels.",
+    "Asnières-sur-Seine concentre plus de 7 500 établissements actifs dans un bassin économique dense entre Clichy et Levallois-Perret. Axion-IA intervient sur site auprès des PME, ETI et grands groupes asniérois pour déployer des usages IA concrets, mesurables et opérationnels.",
   pitchEn:
-    "Asnières-sur-Seine concentre plus de 7 500 établissements actifs dans un bassin économique dense entre Clichy et Levallois-Perret. Axion-IA intervient sur site auprès des TPE, PME et ETI asniéroises pour déployer des usages IA concrets, mesurables et opérationnels.",
+    "Asnières-sur-Seine concentre plus de 7 500 établissements actifs dans un bassin économique dense entre Clichy et Levallois-Perret. Axion-IA intervient sur site auprès des PME, ETI et grands groupes asniérois pour déployer des usages IA concrets, mesurables et opérationnels.",
   directAnswerFr:
     "Axion-IA accompagne les entreprises d'Asnières-sur-Seine — du commerce de détail aux activités informatiques — avec une méthode structurée en trois temps : audit des processus, identification des chantiers prioritaires, implémentation outillée. La Zone d'activités des Hauts d'Asnières et la ZAC du Bac d'Asnières accueillent des structures pour lesquelles l'automatisation des tâches répétitives et la fiabilisation des données constituent des gains opérationnels directs.",
   directAnswerEn:
@@ -51,7 +51,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Asnières-sur-Seine, c'est le berceau de Louis Vuitton : l'atelier de la rue de la Comète, ouvert en 1859 sur les quais de Seine, produit toujours la Haute Maroquinerie avec près de 200 artisans (commandes spéciales, cuirs précieux et exotiques, malles rigides). Autour de ce pôle luxe gravitent l'industrie agroalimentaire (Lesieur, quai Aulagnier), le conseil et l'audit (KPMG), la reconversion tertiaire de la friche PSA Peugeot Citroën (ZAC PSA, campus Nexity) et une dense couche d'agences web, e-commerce et SEO du Quartier de Seine. Axion-IA conçoit pour ces TPE, PME et ETI asniéroises des sites web et plateformes SaaS augmentés par l'IA, sur site dans vos locaux le long de la Seine — du commerce de détail premium au e-commerce, en passant par les services financiers.",
+        hero: "Asnières-sur-Seine, c'est le berceau de Louis Vuitton : l'atelier de la rue de la Comète, ouvert en 1859 sur les quais de Seine, produit toujours la Haute Maroquinerie avec près de 200 artisans (commandes spéciales, cuirs précieux et exotiques, malles rigides). Autour de ce pôle luxe gravitent l'industrie agroalimentaire (Lesieur, quai Aulagnier), le conseil et l'audit (KPMG), la reconversion tertiaire de la friche PSA Peugeot Citroën (ZAC PSA, campus Nexity) et une dense couche d'agences web, e-commerce et SEO du Quartier de Seine. Axion-IA conçoit pour ces PME, ETI et grands groupes asniérois des sites web et plateformes SaaS augmentés par l'IA, sur site dans vos locaux le long de la Seine — du commerce de détail premium au e-commerce, en passant par les services financiers.",
         whyHere: [
           "Asnières-sur-Seine combine un patrimoine de luxe artisanal unique (atelier Louis Vuitton rue de la Comète, ~200 artisans, Galerie/Musée) et une attente e-commerce premium : nous concevons des vitrines et configurateurs produits dignes de ce positionnement, avec recherche sémantique et recommandation IA.",
           "Le tissu retail et grande distribution asniérois (commerce de détail dominant dans les créations d'entreprises) a besoin de sites marchands multi-CMS performants : nous livrons sur Shopify, WooCommerce, PrestaShop ou headless selon votre catalogue, hébergés en UE.",
@@ -86,12 +86,6 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA essentiel",
-            detail:
-              "Pour les commerces de détail, artisans et indépendants asniérois du Quartier de Seine : site vitrine ou boutique en ligne sur CMS, avec assistant IA et recherche produit. Hébergement UE/RGPD.",
-          },
           {
             price: "Plateforme e-commerce ou SaaS sur mesure",
             sizeLabel: "PME",
@@ -173,12 +167,6 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Essential AI showcase or e-commerce site",
-            detail:
-              "For Asnières retailers, artisans and freelancers of the Quartier de Seine: showcase site or online shop on a CMS, with AI assistant and product search. EU/GDPR hosting.",
-          },
-          {
             price: "Custom e-commerce or SaaS platform",
             sizeLabel: "SME",
             detail:
@@ -243,8 +231,8 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
       a: "Axion-IA travaille exclusivement avec des architectures où vos données restent sous votre contrôle (hébergement EU, pas de transfert vers des modèles tiers sans accord explicite). Chaque implémentation inclut une revue des flux de données et une documentation conforme aux exigences RGPD et AI Act.",
     },
     {
-      q: "En tant que dirigeant d'une TPE asniéroise, quel format d'accompagnement me correspond le mieux ?",
-      a: "Pour une TPE, le point d'entrée le plus efficace est l'Audit sur place à {{price:audit-flash|flat}} : il identifie en 4h le premier outil IA rentable à déployer. Si vous souhaitez un cadrage stratégique individuel, le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}}. Les deux formats sont disponibles sur site à Asnières-sur-Seine.",
+      q: "En tant que dirigeant d'une PME asniéroise, quel format d'accompagnement me correspond le mieux ?",
+      a: "Pour une PME, le point d'entrée le plus efficace est l'Audit sur place à {{price:audit-flash|flat}} : il identifie en 4h le premier outil IA rentable à déployer. Si vous souhaitez un cadrage stratégique individuel, le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}}. Les deux formats sont disponibles sur site à Asnières-sur-Seine.",
     },
     {
       q: "Axion-IA propose-t-il des formats adaptés aux secteurs commerce et services financiers présents à Asnières-sur-Seine ?",

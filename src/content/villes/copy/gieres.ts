@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GIERES_COPY: VilleCopy = {
   pitchFr:
-    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
+    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, PME artisanales, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   pitchEn:
-    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
+    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, PME artisanales, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, PME du BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, PME du BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   seoHook: "université recherche & tertiaires services",
   ecosystemFr:
-    "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, PME du BTP, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, PME du BTP, commerces de proximité, professions libérales.",
   distancesFr:
     "Gare Grenoble-Universités-Gières à 5 min. Grenoble centre à 15 min tramway B/D. Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Lyon-Saint-Exupéry à 1h15. Campus universitaire Saint-Martin-d'Hères limitrophe.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GIERES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Université & recherche (campus UGA)",
     "PME tertiaires & services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales (santé, juridique)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, PME artisanales et professions libérales du bassin grenoblois est. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, PME artisanales et professions libérales du bassin grenoblois est. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gières : formats adaptés au laboratoire universitaire, bureau PME, cabinet ou atelier. Vos équipes (chercheurs, commerciaux, assistants) repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const GIERES_COPY: VilleCopy = {
       en: "Implémentation IA à Gières : agents conversationnels documents scientifiques, automatisation processus administratifs universitaires, classification publications/dossiers, CRM augmentés. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gières : sessions dans votre laboratoire, cabinet, atelier ou en visio. Chercheurs, médecins, avocats, artisans, gérants TPE/PME giéroises souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Gières : sessions dans votre laboratoire, cabinet, atelier ou en visio. Chercheurs, médecins, avocats, artisans, gérants TPE/PME giéroises souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Gières : sessions dans votre laboratoire, cabinet, atelier ou en visio. Chercheurs, médecins, avocats, artisans, gérants PME et ETI giéroises souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Gières : sessions dans votre laboratoire, cabinet, atelier ou en visio. Chercheurs, médecins, avocats, artisans, gérants PME et ETI giéroises souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const GIERES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les structures universitaires et laboratoires de recherche à Gières (campus UGA) sur leurs cas IA : agents conversationnels documents scientifiques, classification publications/brevets, automatisation processus administratifs formations. RGPD strict.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans giérois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Gières sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
+      q: "Accompagnez-vous les PME et artisans giérois ?",
+      a: "Oui, nous accompagnons les PME du BTP à Gières sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les professions libérales ?",

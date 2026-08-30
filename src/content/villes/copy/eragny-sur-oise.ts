@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
   pitchFr:
-    "Éragny-sur-Oise (95), commune de l'agglomération Cergy-Pontoise en bord d'Oise, conjugue dynamisme commercial et cadre résidentiel. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Éragny-sur-Oise (95), commune de l'agglomération Cergy-Pontoise en bord d'Oise, conjugue dynamisme commercial et cadre résidentiel. Tissu PME du commerce et services, PME tertiaire, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Éragny-sur-Oise (95), commune de l'agglomération Cergy-Pontoise en bord d'Oise, conjugue dynamisme commercial et cadre résidentiel. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Éragny-sur-Oise (95), commune de l'agglomération Cergy-Pontoise en bord d'Oise, conjugue dynamisme commercial et cadre résidentiel. Tissu PME du commerce et services, PME tertiaire, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éragny-sur-Oise (95). Nous accompagnons PME et ETI : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éragny-sur-Oise (95). Nous accompagnons PME et ETI : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & tertiaire services",
   ecosystemFr:
-    "Éragny-sur-Oise fait partie de l'agglomération Cergy-Pontoise, pôle économique majeur du Val-d'Oise en bord d'Oise. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique.",
+    "Éragny-sur-Oise fait partie de l'agglomération Cergy-Pontoise, pôle économique majeur du Val-d'Oise en bord d'Oise. Tissu PME du commerce et services, PME tertiaire, professions libérales, restauration, prestataires logistique.",
   ecosystemEn:
-    "Éragny-sur-Oise fait partie de l'agglomération Cergy-Pontoise, pôle économique majeur du Val-d'Oise en bord d'Oise. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique.",
+    "Éragny-sur-Oise fait partie de l'agglomération Cergy-Pontoise, pôle économique majeur du Val-d'Oise en bord d'Oise. Tissu PME du commerce et services, PME tertiaire, professions libérales, restauration, prestataires logistique.",
   distancesFr:
     "Cergy-Pontoise à 5 min. Gare RER A Éragny-Neuville. Paris La Défense à 30 min (RER A). Paris centre à 40 min. Aéroport Paris-CDG à 40 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
       en: "Implémentation IA à Éragny-sur-Oise : CRM augmenté commerçants, automatisation back-office PME tertiaire, outils réservation restauration, optimisation flux logistique, facturation intelligente.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Éragny-sur-Oise : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME éragnyens, gérants zone commerciale, professions libérales.",
-      en: "Coaching 1-to-1 à Éragny-sur-Oise : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME éragnyens, gérants zone commerciale, professions libérales.",
+      fr: "Coaching 1-to-1 à Éragny-sur-Oise : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI éragnyens, gérants zone commerciale, professions libérales.",
+      en: "Coaching 1-to-1 à Éragny-sur-Oise : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI éragnyens, gérants zone commerciale, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, secrétariat IA, CRM clients, facturation automatisée, outils de pilotage activité, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOBIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Bobigny (93), préfecture de la Seine-Saint-Denis, est le cœur administratif et judiciaire du département, avec sa préfecture, son tribunal et ses grands équipements desservis par le tramway et le métro. Autour de ce pôle tertiaire et institutionnel gravitent de nombreuses TPE et PME : services aux entreprises, BTP, commerce, santé et transport. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser les tâches administratives et fiabiliser la relation client, avec des solutions concrètes et un retour sur investissement mesurable.",
+    "Bobigny (93), préfecture de la Seine-Saint-Denis, est le cœur administratif et judiciaire du département, avec sa préfecture, son tribunal et ses grands équipements desservis par le tramway et le métro. Autour de ce pôle tertiaire et institutionnel gravitent de nombreuses PME et ETI : services aux entreprises, BTP, commerce, santé et transport. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser les tâches administratives et fiabiliser la relation client, avec des solutions concrètes et un retour sur investissement mesurable.",
   pitchEn:
-    "Bobigny (93), préfecture de la Seine-Saint-Denis, est le cœur administratif et judiciaire du département, avec sa préfecture, son tribunal et ses grands équipements desservis par le tramway et le métro. Autour de ce pôle tertiaire et institutionnel gravitent de nombreuses TPE et PME : services aux entreprises, BTP, commerce, santé et transport. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser les tâches administratives et fiabiliser la relation client, avec des solutions concrètes et un retour sur investissement mesurable.",
+    "Bobigny (93), préfecture de la Seine-Saint-Denis, est le cœur administratif et judiciaire du département, avec sa préfecture, son tribunal et ses grands équipements desservis par le tramway et le métro. Autour de ce pôle tertiaire et institutionnel gravitent de nombreuses PME et ETI : services aux entreprises, BTP, commerce, santé et transport. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser les tâches administratives et fiabiliser la relation client, avec des solutions concrètes et un retour sur investissement mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bobigny (93, Seine-Saint-Denis) et dans le nord-est francilien. Nous accompagnons en priorité les TPE de services, de commerce et du BTP, puis les PME de services aux entreprises et de santé qui gravitent autour du pôle administratif et judiciaire. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bobigny (93, Seine-Saint-Denis) et dans le nord-est francilien. Nous accompagnons en priorité les PME de services, de commerce et du BTP, puis les PME de services aux entreprises et de santé qui gravitent autour du pôle administratif et judiciaire. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bobigny (93, Seine-Saint-Denis) et dans le nord-est francilien. Nous accompagnons en priorité les TPE de services, de commerce et du BTP, puis les PME de services aux entreprises et de santé qui gravitent autour du pôle administratif et judiciaire. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bobigny (93, Seine-Saint-Denis) et dans le nord-est francilien. Nous accompagnons en priorité les PME de services, de commerce et du BTP, puis les PME de services aux entreprises et de santé qui gravitent autour du pôle administratif et judiciaire. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "tertiaire & services publics",
   ecosystemFr:
-    "Bobigny concentre les fonctions de préfecture de la Seine-Saint-Denis : administration, tribunal, services publics départementaux et grands équipements. Bien reliée par le tramway T1, le métro et l'A86, la ville s'appuie sur un tissu de PME de services aux entreprises et aux administrations, complété par un commerce de proximité, des artisans du BTP et des acteurs de la santé et du transport. Ces TPE et PME, souvent en interface avec l'administration, croulent sous les tâches documentaires et la relation client : un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
+    "Bobigny concentre les fonctions de préfecture de la Seine-Saint-Denis : administration, tribunal, services publics départementaux et grands équipements. Bien reliée par le tramway T1, le métro et l'A86, la ville s'appuie sur un tissu de PME de services aux entreprises et aux administrations, complété par un commerce de proximité, des artisans du BTP et des acteurs de la santé et du transport. Ces PME et ETI, souvent en interface avec l'administration, croulent sous les tâches documentaires et la relation client : un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
   ecosystemEn:
-    "Bobigny concentre les fonctions de préfecture de la Seine-Saint-Denis : administration, tribunal, services publics départementaux et grands équipements. Bien reliée par le tramway T1, le métro et l'A86, la ville s'appuie sur un tissu de PME de services aux entreprises et aux administrations, complété par un commerce de proximité, des artisans du BTP et des acteurs de la santé et du transport. Ces TPE et PME, souvent en interface avec l'administration, croulent sous les tâches documentaires et la relation client : un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
+    "Bobigny concentre les fonctions de préfecture de la Seine-Saint-Denis : administration, tribunal, services publics départementaux et grands équipements. Bien reliée par le tramway T1, le métro et l'A86, la ville s'appuie sur un tissu de PME de services aux entreprises et aux administrations, complété par un commerce de proximité, des artisans du BTP et des acteurs de la santé et du transport. Ces PME et ETI, souvent en interface avec l'administration, croulent sous les tâches documentaires et la relation client : un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
   distancesFr:
     "Paris intra-muros à 15 min (métro ligne 5, tramway T1). Gare de Paris-Est à 8 km, aéroport de Roissy-CDG à 16 km, Paris-Orly à 25 km. Accès direct par l'A86 et l'A3. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio selon le format.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BOBIGNY_COPY: VilleCopy = {
       en: "Implémentation IA à Bobigny : automatisation du traitement de dossiers et de courriers, classification de documents administratifs, agents conversationnels pour l'accueil et le suivi, relances automatisées, intégrés à vos outils existants et conformes RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Bobigny : sessions individuelles avec le dirigeant ou le responsable de service, sur site ou en visio. Idéal pour les TPE qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
-      en: "Coaching un-à-un à Bobigny : sessions individuelles avec le dirigeant ou le responsable de service, sur site ou en visio. Idéal pour les TPE qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
+      fr: "Coaching un-à-un à Bobigny : sessions individuelles avec le dirigeant ou le responsable de service, sur site ou en visio. Idéal pour les PME qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
+      en: "Coaching un-à-un à Bobigny : sessions individuelles avec le dirigeant ou le responsable de service, sur site ou en visio. Idéal pour les PME qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bobigny : site ou portail métier sur mesure dopé à l'IA pour PME de services, artisans et commerces du nord-est francilien — demandes en ligne intelligentes, réponses automatiques, suivi de dossier et visibilité locale renforcée.",
@@ -53,7 +53,7 @@ export const BOBIGNY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Bobigny des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations documentaires. On travaille pour l'écosystème réel de la préfecture de Seine-Saint-Denis — cabinets d'avocats et experts gravitant autour du Tribunal judiciaire de Bobigny, acteurs de santé liés à l'Hôpital Avicenne et au campus Sorbonne Paris Nord, TPE de commerce, transport et BTP, structures issues de la ZAC Écocité Canal de l'Ourcq. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bobigny, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Bobigny des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations documentaires. On travaille pour l'écosystème réel de la préfecture de Seine-Saint-Denis — cabinets d'avocats et experts gravitant autour du Tribunal judiciaire de Bobigny, acteurs de santé liés à l'Hôpital Avicenne et au campus Sorbonne Paris Nord, PME de commerce, transport et BTP, structures issues de la ZAC Écocité Canal de l'Ourcq. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Bobigny, itérations à distance.",
         whyHere: [
           "Écosystème judiciaire et administratif : sites et portails métier pour cabinets d'avocats, huissiers, experts et associations d'aide aux justiciables gravitant autour du Tribunal judiciaire de Bobigny et de l'Hôtel du Département.",
           "Santé et formation : applications conformes RGPD pour les acteurs liés à l'Hôpital Avicenne (AP-HP) et au campus Sorbonne Paris Nord — UFR SMBH et IUT de Bobigny au Bâtiment de l'Illustration.",
@@ -88,12 +88,6 @@ export const BOBIGNY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, prise de demande en ligne, relances) sur le site existant d'un artisan, commerce ou cabinet du quartier préfecture / Bobigny 2, sans refonte, en quelques semaines.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -175,12 +169,6 @@ export const BOBIGNY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI brick grafted",
-            detail:
-              "Adding an AI brick (RAG chatbot, online enquiry intake, follow-ups) onto the existing site of a craftsperson, shop or small firm in the préfecture district / Bobigny 2, with no rebuild, in a few weeks.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -233,8 +221,8 @@ export const BOBIGNY_COPY: VilleCopy = {
       a: "Oui. Nous couvrons Bobigny et le nord-est francilien (Drancy, Noisy-le-Sec, Pantin, Bondy). Nos consultants se déplacent sur site depuis Paris, à 15 min par le tramway ou le métro, ou interviennent en visio selon votre besoin.",
     },
     {
-      q: "Accompagnez-vous les TPE de services, de commerce et du BTP ?",
-      a: "C'est notre priorité. Pour les artisans, commerçants et petites structures de services, nous automatisons devis, relances et traitement de dossiers, et nous formons le dirigeant à utiliser ces outils sans équipe technique.",
+      q: "Accompagnez-vous les PME de services, de commerce et du BTP ?",
+      a: "C'est notre priorité. Pour les artisans, commerçants et PME de services, nous automatisons devis, relances et traitement de dossiers, et nous formons le dirigeant à utiliser ces outils sans équipe technique.",
     },
     {
       q: "Travaillez-vous avec les PME en lien avec l'administration et la santé ?",
@@ -242,7 +230,7 @@ export const BOBIGNY_COPY: VilleCopy = {
     },
     {
       q: "Faut-il un service informatique interne pour démarrer à Bobigny ?",
-      a: "Non. Nous partons de vos outils existants et démarrons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, sans recruter de profil technique.",
+      a: "Non. Nous partons de vos outils existants et démarrons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une PME comme à une PME, sans recruter de profil technique.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

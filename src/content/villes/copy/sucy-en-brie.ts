@@ -1,22 +1,22 @@
 // MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
-// Sucy-en-Brie (94, Val-de-Marne) — banlieue résidentielle du sud-est parisien, tissu de TPE/PME de proximité, commerces, artisanat et services aux entreprises.
+// Sucy-en-Brie (94, Val-de-Marne) — banlieue résidentielle du sud-est parisien, tissu de PME et ETI de proximité, commerces, artisanat et services aux entreprises.
 
 import type { VilleCopy } from "./types";
 
 export const SUCY_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; Les grands groupes complètent notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; Les grands groupes complètent notre activité.",
   seoHook: "commerces & services de proximité",
   ecosystemFr:
-    "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
+    "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un tissu de PME et d'ETI dynamiques. Pour ces PME et ETI, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   ecosystemEn:
-    "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
+    "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un tissu de PME et d'ETI dynamiques. Pour ces PME et ETI, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   distancesFr:
     "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos experts se déplacent sur site dans tout le sud-est du Val-de-Marne.",
   distancesEn:
@@ -34,16 +34,16 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
       en: "Auditer à Sucy-en-Brie les processus d'un commerce, d'un cabinet libéral ou d'un artisan — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir sur site à Sucy-en-Brie pour automatiser la prise de rendez-vous, les devis et les relances clients des TPE/PME de proximité, sans alourdir leur quotidien.",
-      en: "Intervenir sur site à Sucy-en-Brie pour automatiser la prise de rendez-vous, les devis et les relances clients des TPE/PME de proximité, sans alourdir leur quotidien.",
+      fr: "Intervenir sur site à Sucy-en-Brie pour automatiser la prise de rendez-vous, les devis et les relances clients des PME et ETI de proximité, sans alourdir leur quotidien.",
+      en: "Intervenir sur site à Sucy-en-Brie pour automatiser la prise de rendez-vous, les devis et les relances clients des PME et ETI de proximité, sans alourdir leur quotidien.",
     },
     implementation: {
       fr: "Implémenter à Sucy-en-Brie des outils IA durables et documentés — assistants de gestion et de relation client conçus pour rester maîtrisés en interne après notre départ.",
       en: "Implémenter à Sucy-en-Brie des outils IA durables et documentés — assistants de gestion et de relation client conçus pour rester maîtrisés en interne après notre départ.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE/PME de Sucy-en-Brie pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie.",
-      en: "Accompagner en un-à-un les dirigeants de TPE/PME de Sucy-en-Brie pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et ETI de Sucy-en-Brie pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie.",
+      en: "Accompagner en un-à-un les dirigeants de PME et ETI de Sucy-en-Brie pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie.",
     },
     sitesWeb: {
       fr: "Concevoir à Sucy-en-Brie un site ou une plateforme web augmentée par l'IA pour un commerce ou un cabinet — prise de rendez-vous, devis en ligne et contenu enrichis intelligemment.",
@@ -58,7 +58,7 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
           "Industrie de précision et luxe : la Manufacture Cartier Lunettes (Kering Eyewear) fabrique à l'Écoparc montures optiques, solaires et acétate. Pour ce type de site, nous construisons des portails B2B de catalogue produit, des configurateurs et des outils de documentation technique enrichis par l'IA, intégrés aux systèmes internes sans dépendance à un éditeur.",
           "Logistique et industrie légère au SEGRO Parc des Petits Carreaux : avec Air Liquide Santé, Kärcher ou Ducros parmi les ~150 entreprises du parc, les besoins web tournent autour de portails fournisseurs, suivi de commandes et recherche documentaire — des plateformes que nous rendons IA-native (search sémantique, chatbot RAG sur vos référentiels).",
           "Services techniques et BTP des parcs d'activités : ZAC Les Portes de Sucy (BELFOR France, MISTRAS Group, Saint-Gobain Weber) et P.A. de la Sablière (ALTRAD ARNHOLDT, AXIMA Refrigeration France) regroupent des PME d'intervention terrain. Nous y déployons des sites avec devis en ligne, prise de rendez-vous et qualification de demandes assistées par IA.",
-          "Commerces, artisans et libéraux du centre-ville et de la Z.I. du Petit Marais (ALMA, MELLITUS CARE, voisinage LIDL) : pour ces TPE, nous concevons des vitrines e-commerce multi-CMS (WordPress/WooCommerce, Shopify, PrestaShop, ou headless sur mesure) avec UX/UI mobile-first et assistants de réservation ou de relance clients.",
+          "Commerces, artisans et libéraux du centre-ville et de la Z.I. du Petit Marais (ALMA, MELLITUS CARE, voisinage LIDL) : pour ces PME, nous concevons des vitrines e-commerce multi-CMS (WordPress/WooCommerce, Shopify, PrestaShop, ou headless sur mesure) avec UX/UI mobile-first et assistants de réservation ou de relance clients.",
         ],
         methodology: [
           {
@@ -89,12 +89,6 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Vitrine ou e-commerce IA essentiel",
-            detail:
-              "Pour les commerces, artisans et libéraux du centre-ville et de la Z.I. du Petit Marais (voisinage ALMA, MELLITUS CARE) : site vitrine ou boutique multi-CMS mobile-first avec prise de rendez-vous, devis ou relances clients assistés par IA.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site métier ou plateforme B2B sur mesure",
             detail:
@@ -124,7 +118,7 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce et de l'UX/UI mobile pour un commerce de Sucy ?",
-            a: "Oui, c'est notre cœur de métier pour les TPE. Nous concevons des boutiques multi-CMS (WooCommerce, Shopify, PrestaShop ou headless sur mesure) avec UX/UI mobile-first, ainsi que des assistants IA de réservation, de devis ou de relance clients adaptés à un artisan, un commerce de proximité ou un cabinet libéral.",
+            a: "Oui, c'est notre cœur de métier pour les PME. Nous concevons des boutiques multi-CMS (WooCommerce, Shopify, PrestaShop ou headless sur mesure) avec UX/UI mobile-first, ainsi que des assistants IA de réservation, de devis ou de relance clients adaptés à un artisan, un commerce de proximité ou un cabinet libéral.",
           },
           {
             q: "Mon site peut-il intégrer un configurateur ou un catalogue produit augmenté par l'IA ?",
@@ -174,12 +168,6 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Storefront or essential AI e-commerce",
-            detail:
-              "For town-centre shops, trades and professionals and the Z.I. du Petit Marais (near ALMA, MELLITUS CARE): mobile-first multi-CMS storefront or shop with AI-assisted booking, quotes or client follow-ups.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom business site or B2B platform",
@@ -234,11 +222,11 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Un commerce ou un cabinet libéral peut-il vraiment profiter de l'IA ?",
-      a: "Oui. Nous aidons commerces, artisans et professions libérales de Sucy-en-Brie à automatiser la prise de rendez-vous, les devis et la relation client, avec des outils proportionnés à une petite structure.",
+      a: "Oui. Nous aidons commerces, artisans et professions libérales de Sucy-en-Brie à automatiser la prise de rendez-vous, les devis et la relation client, avec des outils proportionnés à une PME.",
     },
     {
-      q: "L'IA est-elle accessible à une TPE de Sucy-en-Brie ?",
-      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites entreprises, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
+      q: "L'IA est-elle accessible à une PME de Sucy-en-Brie ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les PME, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
       q: "Connaît-on les tarifs à l'avance ?",

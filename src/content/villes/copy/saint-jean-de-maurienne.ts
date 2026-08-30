@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants.",
+    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, PME de l'artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants.",
+    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, PME de l'artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons TPE et PME de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons PME et ETI de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons TPE et PME de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons PME et ETI de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
   seoHook: "industrie aluminium & tourisme montagne",
   ecosystemFr:
-    "Saint-Jean-de-Maurienne est la sous-préfecture de Savoie et le centre de la vallée de la Maurienne, plus grande vallée alpine intra-européenne. Historiquement marquée par l'industrie de l'aluminium, la ville est aussi la porte d'accès aux cols alpins majeurs (Galibier, Croix-de-Fer, col du Télégraphe). Tissu industriel métallurgie, tourisme montagne/cyclisme, administration, TPE artisanat et commerces de vallée.",
+    "Saint-Jean-de-Maurienne est la sous-préfecture de Savoie et le centre de la vallée de la Maurienne, plus grande vallée alpine intra-européenne. Historiquement marquée par l'industrie de l'aluminium, la ville est aussi la porte d'accès aux cols alpins majeurs (Galibier, Croix-de-Fer, col du Télégraphe). Tissu industriel métallurgie, tourisme montagne/cyclisme, administration, PME de l'artisanat et du commerce de vallée.",
   ecosystemEn:
-    "Saint-Jean-de-Maurienne est la sous-préfecture de Savoie et le centre de la vallée de la Maurienne, plus grande vallée alpine intra-européenne. Historiquement marquée par l'industrie de l'aluminium, la ville est aussi la porte d'accès aux cols alpins majeurs (Galibier, Croix-de-Fer, col du Télégraphe). Tissu industriel métallurgie, tourisme montagne/cyclisme, administration, TPE artisanat et commerces de vallée.",
+    "Saint-Jean-de-Maurienne est la sous-préfecture de Savoie et le centre de la vallée de la Maurienne, plus grande vallée alpine intra-européenne. Historiquement marquée par l'industrie de l'aluminium, la ville est aussi la porte d'accès aux cols alpins majeurs (Galibier, Croix-de-Fer, col du Télégraphe). Tissu industriel métallurgie, tourisme montagne/cyclisme, administration, PME de l'artisanat et du commerce de vallée.",
   distancesFr:
     "Chambéry à 1h par A43. Modane à 30 min. Turin à 1h30 par le tunnel du Fréjus. Aéroport Lyon-Saint-Exupéry à 2h. Col du Galibier à 45 min (été).",
   distancesEn:
@@ -25,13 +25,13 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
     "Industrie aluminium & métallurgie",
     "Tourisme montagne & cols alpins",
     "Administration (sous-préfecture)",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de vallée",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, PME de l'artisanat et du commerce de la vallée de la Maurienne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, PME de l'artisanat et du commerce de la vallée de la Maurienne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Maurienne : ateliers en usine, site touristique, administration ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats adaptés vallée alpine.",
@@ -42,8 +42,8 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Jean-de-Maurienne : prédiction maintenance équipements industriels, contrôle qualité aluminium par vision, agents conversationnels tourisme multilingue, automatisation administrative sous-préfecture. Adapté industrie + montagne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Jean-de-Maurienne : sessions dans vos locaux industriels, bureau administratif ou en visio. Dirigeants usines, responsables tourisme, gérants TPE/PME de la Maurienne.",
-      en: "Coaching 1-to-1 à Saint-Jean-de-Maurienne : sessions dans vos locaux industriels, bureau administratif ou en visio. Dirigeants usines, responsables tourisme, gérants TPE/PME de la Maurienne.",
+      fr: "Coaching 1-to-1 à Saint-Jean-de-Maurienne : sessions dans vos locaux industriels, bureau administratif ou en visio. Dirigeants usines, responsables tourisme, gérants PME et ETI de la Maurienne.",
+      en: "Coaching 1-to-1 à Saint-Jean-de-Maurienne : sessions dans vos locaux industriels, bureau administratif ou en visio. Dirigeants usines, responsables tourisme, gérants PME et ETI de la Maurienne.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme montagne en Maurienne : agents conversationnels multilingues (accès cols Galibier, Croix-de-Fer), automatisation réservations, gestion saisonnalité, analyse données cyclotourisme, classification avis clients.",
     },
     {
-      q: "Quels tarifs pour les TPE artisans et commerçants de vallée ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Jean-de-Maurienne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      q: "Quels tarifs pour les PME de l'artisanat et du commerce de vallée ?",
+      a: "Pour les PME de l'artisanat et du commerce à Saint-Jean-de-Maurienne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission en vallée de la Maurienne ?",

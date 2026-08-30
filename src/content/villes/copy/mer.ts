@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MER_COPY: VilleCopy = {
   pitchFr:
-    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
+    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, PME artisanales, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
   pitchEn:
-    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
+    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, PME artisanales, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mer (41). Nous accompagnons PME artisanales, PME logistique et agroalimentaire, commerces et services. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mer (41). Nous accompagnons PME artisanales, PME logistique et agroalimentaire, commerces et services. Audit sur place sur mesure, démarrage sous 10 jours.",
   seoHook: "logistique transport & agroalimentaire beauce",
   ecosystemFr:
-    "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, TPE artisanat BTP et commerces de centre-bourg.",
+    "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, PME du BTP et commerces de centre-bourg.",
   ecosystemEn:
-    "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, TPE artisanat BTP et commerces de centre-bourg.",
+    "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, PME du BTP et commerces de centre-bourg.",
   distancesFr:
     "Blois à 20 min. Orléans à 40 min. Gare SNCF de Mer sur ligne Paris-Tours. Autoroute A10 à 5 min. Chambord à 10 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, PME de l'artisanat et du commerce du nord blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, PME de l'artisanat et du commerce du nord blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mer : formations en entrepôt, atelier de production, bureau ou commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const MER_COPY: VilleCopy = {
       en: "Implémentation IA à Mer : optimisation flux logistique, prédiction stocks agroalimentaire, automatisation facturation, agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mer : sessions sur site ou en visio pour dirigeants PME logistique, gérants TPE artisanat, commerçants du nord blésois.",
-      en: "Coaching 1-to-1 à Mer : sessions sur site ou en visio pour dirigeants PME logistique, gérants TPE artisanat, commerçants du nord blésois.",
+      fr: "Coaching 1-to-1 à Mer : sessions sur site ou en visio pour dirigeants PME logistique, gérants PME de l'artisanat, commerçants du nord blésois.",
+      en: "Coaching 1-to-1 à Mer : sessions sur site ou en visio pour dirigeants PME logistique, gérants PME de l'artisanat, commerçants du nord blésois.",
     },
   },
   faqGeolocalisee: [

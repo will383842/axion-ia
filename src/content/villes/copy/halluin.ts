@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const HALLUIN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. Williams intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
+    "Axion-IA accompagne les PME et ETI d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. Williams intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. Williams intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
+    "Axion-IA accompagne les PME et ETI d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. Williams intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME d'Halluin et de la zone frontalière Lille-Mouscron. Williams se déplace sur site dans le Nord pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris flux douaniers Belgique), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
+    "Axion-IA est un cabinet IA français qui sert les PME et ETI d'Halluin et de la zone frontalière Lille-Mouscron. Williams se déplace sur site dans le Nord pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris flux douaniers Belgique), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME d'Halluin et de la zone frontalière Lille-Mouscron. Williams se déplace sur site dans le Nord pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris flux douaniers Belgique), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
+    "Axion-IA est un cabinet IA français qui sert les PME et ETI d'Halluin et de la zone frontalière Lille-Mouscron. Williams se déplace sur site dans le Nord pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris flux douaniers Belgique), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
   seoHook: "logistique transfrontalière, valorisation déchets et commerce",
   ecosystemFr:
     "Halluin a vu décliner ses filières textile et ameublement historiques dans les années 1980, et s'est repositionnée sur la valorisation des déchets (Triselec Lille SAEML, Galloo France), la logistique européenne (Militzer und Münch France) et le commerce de détail. La proximité immédiate de Menen et Wervik en Belgique, et la desserte par l'A22 Lille-Belgique, en font un nœud cross-border pertinent pour automatiser les déclarations douanières, EORI, DEB intracommunautaires et le suivi de tournées camion.",
@@ -43,8 +43,8 @@ export const HALLUIN_COPY: VilleCopy = {
       en: "L'implémentation à Halluin raccorde les briques IA aux WMS, TMS et ERP existants (SAP, Sage X3, Akanea, AS400) sans dépendance à une plateforme no-code. Compatible des contraintes RGPD/GDPR cross-border.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Halluin s'adresse aux dirigeants TPE/PME de la MEL qui veulent évaluer l'IA avant d'engager un projet — focus opérations cross-border et industrie 4.0.",
-      en: "L'accompagnement un-à-un à Halluin s'adresse aux dirigeants TPE/PME de la MEL qui veulent évaluer l'IA avant d'engager un projet — focus opérations cross-border et industrie 4.0.",
+      fr: "L'accompagnement un-à-un à Halluin s'adresse aux dirigeants de PME et d'ETI de la MEL qui veulent évaluer l'IA avant d'engager un projet — focus opérations cross-border et industrie 4.0.",
+      en: "L'accompagnement un-à-un à Halluin s'adresse aux dirigeants de PME et d'ETI de la MEL qui veulent évaluer l'IA avant d'engager un projet — focus opérations cross-border et industrie 4.0.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const HALLUIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue FR-NL, recherche sémantique, automatisation de relances B2B ou de devis) sur le site existant d'un commerce du retail park, d'un artisan ou d'une exploitation agricole périurbaine halluinoise, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -171,12 +165,6 @@ export const HALLUIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue FR-NL, recherche sémantique, automatisation de relances B2B ou de devis) sur le site existant d'un commerce du retail park, d'un artisan ou d'une exploitation agricole périurbaine halluinoise, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

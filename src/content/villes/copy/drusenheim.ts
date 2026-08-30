@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DRUSENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
+    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, PME artisanales, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
+    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, PME artisanales, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : PME et ETI industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : PME et ETI industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
   seoHook: "industrie chimique & logistique fluviale",
   ecosystemFr:
-    "Drusenheim est un pôle industriel et logistique du nord-est Alsace, en bord de Rhin face à l'Allemagne. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique, PME sous-traitants industriels, logistique fluviale (port rhénan), TPE artisans, commerces, services transfrontaliers.",
+    "Drusenheim est un pôle industriel et logistique du nord-est Alsace, en bord de Rhin face à l'Allemagne. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique, PME sous-traitants industriels, logistique fluviale (port rhénan), PME artisanales, commerces, services transfrontaliers.",
   ecosystemEn:
-    "Drusenheim est un pôle industriel et logistique du nord-est Alsace, en bord de Rhin face à l'Allemagne. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique, PME sous-traitants industriels, logistique fluviale (port rhénan), TPE artisans, commerces, services transfrontaliers.",
+    "Drusenheim est un pôle industriel et logistique du nord-est Alsace, en bord de Rhin face à l'Allemagne. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique, PME sous-traitants industriels, logistique fluviale (port rhénan), PME artisanales, commerces, services transfrontaliers.",
   distancesFr:
     "Strasbourg à 30 min (A35). Haguenau à 15 min. Frontière allemande (pont Drusenheim-Greffern) à 5 min. Gare de Drusenheim (TER ligne Strasbourg-Lauterbourg). Aéroport Strasbourg-Entzheim à 40 min. Karlsruhe (Allemagne) à 40 min. Paris à 2h TGV via Strasbourg.",
   distancesEn:
@@ -25,13 +25,13 @@ export const DRUSENHEIM_COPY: VilleCopy = {
     "Industrie chimique et pétrochimique",
     "Logistique fluviale et transfrontalière",
     "PME sous-traitants industriels",
-    "TPE artisanat et commerce",
+    "PME de l'artisanat et du commerce",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Drusenheim : diagnostic adapté aux PME et ETI industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Drusenheim : diagnostic adapté aux PME et ETI industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Drusenheim : formats adaptés à la plateforme industrielle, PME sous-traitante, logistique fluviale, commerce transfrontalier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const DRUSENHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Drusenheim : maintenance prédictive industrie chimique, classification incidents HSE, optimisation supply chain rhénane, agents conversationnels multilingue (DE/FR/EN), automatisation conformité réglementaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Drusenheim : sessions dans votre site industriel, PME, atelier ou en visio. TPE/PME industries chimique/pétrochimique, sous-traitants, logistique fluviale, artisans et commerçants drusenheimois.",
-      en: "Coaching 1-to-1 à Drusenheim : sessions dans votre site industriel, PME, atelier ou en visio. TPE/PME industries chimique/pétrochimique, sous-traitants, logistique fluviale, artisans et commerçants drusenheimois.",
+      fr: "Coaching 1-to-1 à Drusenheim : sessions dans votre site industriel, PME, atelier ou en visio. PME et ETI industries chimique/pétrochimique, sous-traitants, logistique fluviale, artisans et commerçants drusenheimois.",
+      en: "Coaching 1-to-1 à Drusenheim : sessions dans votre site industriel, PME, atelier ou en visio. PME et ETI industries chimique/pétrochimique, sous-traitants, logistique fluviale, artisans et commerçants drusenheimois.",
     },
   },
   faqGeolocalisee: [
@@ -60,11 +60,11 @@ export const DRUSENHEIM_COPY: VilleCopy = {
       a: "Oui, optimisation flux supply chain rhénane, classification documents douaniers, agents conversationnels clients multilingue, prédiction maintenance équipements portuaires.",
     },
     {
-      q: "Quels services pour les TPE artisans transfrontaliers ?",
+      q: "Quels services pour les PME artisanales transfrontaliers ?",
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation administrative transfrontalière (DE/FR), classification factures multilingue, agents conversationnels clients multilingue, optimisation planning.",
     },
     {
-      q: "Quel est le tarif d'entrée pour une TPE à Drusenheim ?",
+      q: "Quel est le tarif d'entrée pour une PME à Drusenheim ?",
       a: "L'audit sur place s'adapte à votre périmètre. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],

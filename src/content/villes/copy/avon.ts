@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const AVON_COPY: VilleCopy = {
   pitchFr:
-    "Avon (77), commune résidentielle de Seine-et-Marne jumelle de Fontainebleau, adossée à la forêt domaniale. Elle accueille la gare de Fontainebleau-Avon (Transilien R). Tissu TPE artisans et prestataires, PME services, commerçants, professions libérales et métiers liés au cadre de vie résidentiel et forestier. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Avon (77), commune résidentielle de Seine-et-Marne jumelle de Fontainebleau, adossée à la forêt domaniale. Elle accueille la gare de Fontainebleau-Avon (Transilien R). Tissu PME artisanales et prestataires, PME services, commerçants, professions libérales et métiers liés au cadre de vie résidentiel et forestier. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Avon (77), commune résidentielle de Seine-et-Marne jumelle de Fontainebleau, adossée à la forêt domaniale. Elle accueille la gare de Fontainebleau-Avon (Transilien R). Tissu TPE artisans et prestataires, PME services, commerçants, professions libérales et métiers liés au cadre de vie résidentiel et forestier. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Avon (77), commune résidentielle de Seine-et-Marne jumelle de Fontainebleau, adossée à la forêt domaniale. Elle accueille la gare de Fontainebleau-Avon (Transilien R). Tissu PME artisanales et prestataires, PME services, commerçants, professions libérales et métiers liés au cadre de vie résidentiel et forestier. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avon (77). Nous accompagnons tous types d'activités : PME artisanales et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avon (77). Nous accompagnons tous types d'activités : PME artisanales et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit sur place sur mesure.",
   seoHook: "services personne & artisanat maintenance",
   ecosystemFr:
-    "Avon est la commune jumelle de Fontainebleau, formant avec elle une agglomération de près de 30 000 habitants en lisière de la forêt domaniale. La gare de Fontainebleau-Avon (Transilien R) en fait le point d'accès ferroviaire du bassin. Tissu résidentiel dense avec TPE artisans, commerçants centre-ville, professions libérales, services à la personne et PME services. Communes voisines : Fontainebleau, Vulaines-sur-Seine, Samois-sur-Seine, Héricy.",
+    "Avon est la commune jumelle de Fontainebleau, formant avec elle une agglomération de près de 30 000 habitants en lisière de la forêt domaniale. La gare de Fontainebleau-Avon (Transilien R) en fait le point d'accès ferroviaire du bassin. Tissu résidentiel dense avec PME artisanales, commerçants centre-ville, professions libérales, services à la personne et PME services. Communes voisines : Fontainebleau, Vulaines-sur-Seine, Samois-sur-Seine, Héricy.",
   ecosystemEn:
-    "Avon est la commune jumelle de Fontainebleau, formant avec elle une agglomération de près de 30 000 habitants en lisière de la forêt domaniale. La gare de Fontainebleau-Avon (Transilien R) en fait le point d'accès ferroviaire du bassin. Tissu résidentiel dense avec TPE artisans, commerçants centre-ville, professions libérales, services à la personne et PME services. Communes voisines : Fontainebleau, Vulaines-sur-Seine, Samois-sur-Seine, Héricy.",
+    "Avon est la commune jumelle de Fontainebleau, formant avec elle une agglomération de près de 30 000 habitants en lisière de la forêt domaniale. La gare de Fontainebleau-Avon (Transilien R) en fait le point d'accès ferroviaire du bassin. Tissu résidentiel dense avec PME artisanales, commerçants centre-ville, professions libérales, services à la personne et PME services. Communes voisines : Fontainebleau, Vulaines-sur-Seine, Samois-sur-Seine, Héricy.",
   distancesFr:
     "Gare de Fontainebleau-Avon (Transilien R) à 40 min de Paris Gare de Lyon. A6 sortie Fontainebleau à 60 km de Paris. Aéroport Orly à 55 min. Melun à 20 min. Fontainebleau centre à 5 min à pied.",
   distancesEn:
     "Gare de Fontainebleau-Avon (Transilien R) à 40 min de Paris Gare de Lyon. A6 sortie Fontainebleau à 60 km de Paris. Aéroport Orly à 55 min. Melun à 20 min. Fontainebleau centre à 5 min à pied.",
   topSectorsNaf: [
     "Services à la personne & santé",
-    "TPE artisanat BTP & maintenance",
+    "PME du BTP & maintenance",
     "Commerce de proximité",
     "Professions libérales & conseil",
     "Hôtellerie & restauration (bassin Fontainebleau)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avon : diagnostic adapté aux TPE artisans, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Avon : diagnostic adapté aux TPE artisans, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Avon : diagnostic adapté aux PME artisanales, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Avon : diagnostic adapté aux PME artisanales, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avon : formats adaptés au cabinet médical, au commerce ou à l'entreprise de services. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const AVON_COPY: VilleCopy = {
       en: "Implémentation IA à Avon : automatisation prise de rendez-vous santé, agents conversationnels clients, gestion documentaire professions libérales, optimisation services à la personne. Adapté tissu résidentiel Fontainebleau-Avon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Avon : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, professions libérales, praticiens santé, commerçants et entrepreneurs du bassin Fontainebleau-Avon.",
-      en: "Coaching 1-to-1 à Avon : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, professions libérales, praticiens santé, commerçants et entrepreneurs du bassin Fontainebleau-Avon.",
+      fr: "Coaching 1-to-1 à Avon : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, professions libérales, praticiens santé, commerçants et entrepreneurs du bassin Fontainebleau-Avon.",
+      en: "Coaching 1-to-1 à Avon : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, professions libérales, praticiens santé, commerçants et entrepreneurs du bassin Fontainebleau-Avon.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const AVON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales et praticiens de santé à Avon sur leurs cas IA : automatisation prise de rendez-vous, gestion documentaire, classification dossiers patients, agents conversationnels, optimisation planning.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE à Avon ?",
-      a: "Oui, nos interventions IA sur site à Avon sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
+      q: "Proposez-vous des formations IA pour les PME à Avon ?",
+      a: "Oui, nos interventions IA sur site à Avon sont adaptées aux PME de l'artisanat et du commerce. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
       q: "Comment accédez-vous à Avon depuis Paris ?",

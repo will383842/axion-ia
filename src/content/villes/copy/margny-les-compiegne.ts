@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
   pitchFr:
-    "Margny-lès-Compiègne (60), commune de 8 677 habitants dans l'Oise, est située en rive droite de l'Oise face à Compiègne, au cœur de l'agglomération de la Région de Compiègne. Tissu économique dynamique de TPE/PME : zones commerciales (Jaux-Venette), logistique, services aux entreprises, artisanat BTP et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Margny-lès-Compiègne (60), commune de 8 677 habitants dans l'Oise, est située en rive droite de l'Oise face à Compiègne, au cœur de l'agglomération de la Région de Compiègne. Tissu économique dynamique de PME et ETI : zones commerciales (Jaux-Venette), logistique, services aux entreprises, artisanat BTP et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Margny-lès-Compiègne (60), commune de 8 677 habitants dans l'Oise, est située en rive droite de l'Oise face à Compiègne, au cœur de l'agglomération de la Région de Compiègne. Tissu économique dynamique de TPE/PME : zones commerciales (Jaux-Venette), logistique, services aux entreprises, artisanat BTP et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Margny-lès-Compiègne (60), commune de 8 677 habitants dans l'Oise, est située en rive droite de l'Oise face à Compiègne, au cœur de l'agglomération de la Région de Compiègne. Tissu économique dynamique de PME et ETI : zones commerciales (Jaux-Venette), logistique, services aux entreprises, artisanat BTP et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Margny-lès-Compiègne (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Margny-lès-Compiègne (60). Nous accompagnons PME et ETI de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Margny-lès-Compiègne (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Margny-lès-Compiègne (60). Nous accompagnons PME et ETI de l'agglomération compiégnoise : commerces, logisticiens, prestataires de services, artisans BTP et entreprises des zones d'activités. Audit sur place sur mesure.",
   ecosystemFr:
     "Margny-lès-Compiègne est une commune résidentielle et commerciale de l'agglomération de Compiègne, en rive droite de l'Oise. Elle bénéficie de la proximité des grandes zones commerciales Jaux-Venette, de la plateforme logistique de la vallée de l'Oise et du pôle universitaire UTC Compiègne. Le tissu économique associe commerce de détail, logistique, services aux entreprises, artisanat BTP et restauration.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux TPE/PME commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux TPE/PME commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux PME et ETI commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux PME et ETI commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Margny-lès-Compiègne : formats adaptés au commerce, à l'entrepôt logistique, au cabinet conseil ou au chantier BTP. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
       en: "Implémentation IA à Margny-lès-Compiègne : automatisation gestion stocks commerce, optimisation flux logistique Oise, CRM et facturation PME services, devis BTP et planification chantiers.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Margny-lès-Compiègne : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants TPE/PME de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Margny-lès-Compiègne : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants TPE/PME de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Margny-lès-Compiègne : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants PME et ETI de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Margny-lès-Compiègne : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants PME et ETI de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Margny-lès-Compiègne  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME margnoliennes : commerces, logisticiens, prestataires de services, artisans BTP. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI margnoliennes : commerces, logisticiens, prestataires de services, artisans BTP. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les commerces et la grande distribution locale ?",
@@ -61,7 +61,7 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises de logistique et transport ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique de la vallée de l'Oise : optimisation flux entrepôts, planification tournées, traçabilité colis, OCR documents transport et facturation automatisée.",
+      a: "Oui, nous accompagnons les PME et ETI logistique de la vallée de l'Oise : optimisation flux entrepôts, planification tournées, traçabilité colis, OCR documents transport et facturation automatisée.",
     },
     {
       q: "Proposez-vous des formations IA à Margny-lès-Compiègne ?",

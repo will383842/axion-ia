@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const AURIOL_COPY: VilleCopy = {
   pitchFr:
-    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
+    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. PME artisanales viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
   pitchEn:
-    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
+    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. PME artisanales viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auriol (13). Nous accompagnons PME artisanales et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auriol (13). Nous accompagnons PME artisanales et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "vignoble, artisanat & vallée Huveaune",
   ecosystemFr:
-    "Auriol est une commune de la haute vallée de l'Huveaune, entre Marseille et le massif de la Sainte-Baume. Économie locale autour du vignoble provençal, de l'artisanat et des services. TPE viticulteurs, artisans du bâtiment, commerces de village, professions libérales et prestataires résidentiels.",
+    "Auriol est une commune de la haute vallée de l'Huveaune, entre Marseille et le massif de la Sainte-Baume. Économie locale autour du vignoble provençal, de l'artisanat et des services. PME viticulteurs, artisans du bâtiment, commerces de village, professions libérales et prestataires résidentiels.",
   ecosystemEn:
-    "Auriol est une commune de la haute vallée de l'Huveaune, entre Marseille et le massif de la Sainte-Baume. Économie locale autour du vignoble provençal, de l'artisanat et des services. TPE viticulteurs, artisans du bâtiment, commerces de village, professions libérales et prestataires résidentiels.",
+    "Auriol est une commune de la haute vallée de l'Huveaune, entre Marseille et le massif de la Sainte-Baume. Économie locale autour du vignoble provençal, de l'artisanat et des services. PME viticulteurs, artisans du bâtiment, commerces de village, professions libérales et prestataires résidentiels.",
   distancesFr:
     "Marseille centre à 30 min. Aubagne à 15 min. Aix-en-Provence à 35 min. Gare Aubagne à 15 min. Aéroport Marseille Provence à 45 min. Roquevaire à 5 min. Trets à 15 min.",
   distancesEn:
     "Marseille centre à 30 min. Aubagne à 15 min. Aix-en-Provence à 35 min. Gare Aubagne à 15 min. Aéroport Marseille Provence à 45 min. Roquevaire à 5 min. Trets à 15 min.",
   topSectorsNaf: [
     "Viticulture & agroalimentaire",
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "Commerce de village",
     "Professions libérales",
     "Services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Auriol : diagnostic adapté aux PME viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auriol : diagnostic adapté aux PME viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auriol : formats adaptés au domaine viticole, à l'atelier artisan et au cabinet. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const AURIOL_COPY: VilleCopy = {
       en: "Implémentation IA à Auriol : automatisation traçabilité viticole, agents IA gestion domaine, extraction données comptables, optimisation planning artisan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Auriol : sessions pour dirigeants TPE/PME, viticulteurs et artisans de la vallée de l'Huveaune souhaitant intégrer l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Auriol : sessions pour dirigeants TPE/PME, viticulteurs et artisans de la vallée de l'Huveaune souhaitant intégrer l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Auriol : sessions pour dirigeants de PME et d'ETI, viticulteurs et artisans de la vallée de l'Huveaune souhaitant intégrer l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Auriol : sessions pour dirigeants de PME et d'ETI, viticulteurs et artisans de la vallée de l'Huveaune souhaitant intégrer l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const AURIOL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants d'Auriol ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants d'Auriol : automatisation devis, gestion planning, facturation, prise de RDV par agent IA, gestion stocks. Solutions adaptées aux petites structures.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce d'Auriol : automatisation devis, gestion planning, facturation, prise de RDV par agent IA, gestion stocks. Solutions adaptées aux PME.",
     },
     {
       q: "Comment se déroule une mission IA à Auriol ?",

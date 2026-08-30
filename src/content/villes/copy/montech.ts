@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTECH_COPY: VilleCopy = {
   pitchFr:
-    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu TPE artisans, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants du bassin montéchois.",
+    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu PME artisanales, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants du bassin montéchois.",
   pitchEn:
-    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu TPE artisans, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants du bassin montéchois.",
+    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu PME artisanales, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants du bassin montéchois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montech (82). Nous accompagnons PME artisanales, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montech (82). Nous accompagnons PME artisanales, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place sur mesure.",
   seoHook: "bassin montéchois",
   ecosystemFr:
     "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Proximité Montauban (15 min), Toulouse (40 min via A62). Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",
@@ -30,20 +30,20 @@ export const MONTECH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montech : diagnostic adapté aux TPE artisans, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montech : diagnostic adapté aux TPE artisans, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montech : diagnostic adapté aux PME artisanales, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montech : diagnostic adapté aux PME artisanales, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montech : formats adaptés à l'exploitation agricole, PME logistique, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Montech : formats adaptés à l'exploitation agricole, PME logistique, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Montech : automatisation gestion logistique, traçabilité récoltes, CRM clients, gestion documentaire, agents conversationnels pour les TPE/PME du sud Tarn-et-Garonne.",
-      en: "Implémentation IA à Montech : automatisation gestion logistique, traçabilité récoltes, CRM clients, gestion documentaire, agents conversationnels pour les TPE/PME du sud Tarn-et-Garonne.",
+      fr: "Implémentation IA à Montech : automatisation gestion logistique, traçabilité récoltes, CRM clients, gestion documentaire, agents conversationnels pour les PME et ETI du sud Tarn-et-Garonne.",
+      en: "Implémentation IA à Montech : automatisation gestion logistique, traçabilité récoltes, CRM clients, gestion documentaire, agents conversationnels pour les PME et ETI du sud Tarn-et-Garonne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montech : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME, exploitants agricoles et professions libérales du bassin montéchois.",
-      en: "Coaching 1-to-1 à Montech : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME, exploitants agricoles et professions libérales du bassin montéchois.",
+      fr: "Coaching 1-to-1 à Montech : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME, exploitants agricoles et professions libérales du bassin montéchois.",
+      en: "Coaching 1-to-1 à Montech : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME, exploitants agricoles et professions libérales du bassin montéchois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const MONTECH_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Montech et dans le sud Tarn-et-Garonne (Escatalens, Lacourt-Saint-Pierre, Montbeton, Castelsarrasin). Nos consultants se déplacent depuis Montauban (15 min) ou Toulouse (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Montech ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Montech. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Montech ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Montech. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles de Montech ?",
@@ -65,7 +65,7 @@ export const MONTECH_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Montech ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Montech. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Montech. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

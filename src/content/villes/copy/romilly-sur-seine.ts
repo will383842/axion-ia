@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
+    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. PME et ETI textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
+    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. PME et ETI textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romilly-sur-Seine (10). Nous accompagnons PME et ETI : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Romilly-sur-Seine (10). Nous accompagnons PME et ETI : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit sur place sur mesure.",
   seoHook: "vallée seine",
   ecosystemFr:
-    "Romilly-sur-Seine est une sous-préfecture auboise au passé bonnetier marqué, à proximité immédiate de la Seine. Tissu TPE/PME diversifié : textile et confection, sous-traitance industrielle, logistique, artisanat, commerce de centre-ville et services aux entreprises.",
+    "Romilly-sur-Seine est une sous-préfecture auboise au passé bonnetier marqué, à proximité immédiate de la Seine. Tissu PME et ETI diversifié : textile et confection, sous-traitance industrielle, logistique, artisanat, commerce de centre-ville et services aux entreprises.",
   ecosystemEn:
-    "Romilly-sur-Seine est une sous-préfecture auboise au passé bonnetier marqué, à proximité immédiate de la Seine. Tissu TPE/PME diversifié : textile et confection, sous-traitance industrielle, logistique, artisanat, commerce de centre-ville et services aux entreprises.",
+    "Romilly-sur-Seine est une sous-préfecture auboise au passé bonnetier marqué, à proximité immédiate de la Seine. Tissu PME et ETI diversifié : textile et confection, sous-traitance industrielle, logistique, artisanat, commerce de centre-ville et services aux entreprises.",
   distancesFr:
     "Troyes à 40 min en voiture via N19. Nogent-sur-Seine à 20 min. Paris-Est à 1 h 30 en TER direct. Reims à 1 h 30 via A26. Aéroport CDG à 2 h.",
   distancesEn:
@@ -30,8 +30,8 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux TPE artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux TPE artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux PME artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux PME artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Romilly-sur-Seine : formats adaptés atelier confection, entrepôt logistique, bureau PME, commerce. Équipes formées à l'autonomie sur les outils IA.",
@@ -42,8 +42,8 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Romilly-sur-Seine : automatisation devis textile, gestion stocks bonneterie, suivi commandes confection, optimisation supply chain logistique, CRM commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Romilly-sur-Seine : sessions dans vos locaux centre-ville ou bords de Seine, ou en visio. Dirigeants TPE/PME textile, responsables logistique, commerçants, artisans.",
-      en: "Coaching 1-to-1 à Romilly-sur-Seine : sessions dans vos locaux centre-ville ou bords de Seine, ou en visio. Dirigeants TPE/PME textile, responsables logistique, commerçants, artisans.",
+      fr: "Coaching 1-to-1 à Romilly-sur-Seine : sessions dans vos locaux centre-ville ou bords de Seine, ou en visio. Dirigeants PME et ETI textile, responsables logistique, commerçants, artisans.",
+      en: "Coaching 1-to-1 à Romilly-sur-Seine : sessions dans vos locaux centre-ville ou bords de Seine, ou en visio. Dirigeants PME et ETI textile, responsables logistique, commerçants, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Romilly-sur-Seine  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME textile auboises.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME artisanales et PME textile auboises.",
     },
     {
       q: "Travaillez-vous avec les ateliers bonneterie et confection ?",
@@ -61,7 +61,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les acteurs logistiques des bords de Seine ?",
-      a: "Oui, optimisation tournées, gestion entrepôts, suivi expéditions, automatisation facturation, prévision stocks, reporting clients pour TPE/PME logistique et transport.",
+      a: "Oui, optimisation tournées, gestion entrepôts, suivi expéditions, automatisation facturation, prévision stocks, reporting clients pour PME et ETI logistique et transport.",
     },
     {
       q: "Comment accéder à Romilly-sur-Seine depuis Paris ?",

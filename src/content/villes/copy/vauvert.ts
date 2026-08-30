@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VAUVERT_COPY: VilleCopy = {
   pitchFr:
-    "Vauvert (30), commune de la Petite Camargue gardoise aux portes des Costières de Nîmes. Tissu TPE/PME viticulture Costières, agriculture Camargue, commerces, artisanat BTP et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin de la Vaunage sud et Petite Camargue.",
+    "Vauvert (30), commune de la Petite Camargue gardoise aux portes des Costières de Nîmes. Tissu PME et ETI viticulture Costières, agriculture Camargue, commerces, artisanat BTP et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin de la Vaunage sud et Petite Camargue.",
   pitchEn:
-    "Vauvert (30), commune de la Petite Camargue gardoise aux portes des Costières de Nîmes. Tissu TPE/PME viticulture Costières, agriculture Camargue, commerces, artisanat BTP et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin de la Vaunage sud et Petite Camargue.",
+    "Vauvert (30), commune de la Petite Camargue gardoise aux portes des Costières de Nîmes. Tissu PME et ETI viticulture Costières, agriculture Camargue, commerces, artisanat BTP et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin de la Vaunage sud et Petite Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit sur place sur mesure.",
   seoHook: "viticulture costières & agriculture camargue",
   ecosystemFr:
     "Vauvert (~11 700 hab) est une commune de la Petite Camargue gardoise, entre Nîmes et Aigues-Mortes. Viticulture Costières de Nîmes (AOP), agriculture camarguaise (riz, élevage), commerces centre-ville, artisanat BTP et services aux entreprises. Économie agri-viticole dominante.",
@@ -30,8 +30,8 @@ export const VAUVERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vauvert : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vauvert : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vauvert : diagnostic adapté aux PME et ETI viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vauvert : diagnostic adapté aux PME et ETI viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vauvert : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans Petite Camargue.",
@@ -42,8 +42,8 @@ export const VAUVERT_COPY: VilleCopy = {
       en: "Implémentation IA à Vauvert : prédiction vendanges Costières, gestion parcellaire viticole, automatisation traçabilité agricole, agents conversationnels commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vauvert : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Vauvert : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Vauvert : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Vauvert : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [

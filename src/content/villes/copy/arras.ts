@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const ARRAS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Arras, préfecture du Pas-de-Calais et cœur d'un bassin agroalimentaire au nord de Paris. La Communauté urbaine d'Arras rassemble 46 communes, dont Saint-Laurent-Blangy et Dainville, autour de la zone Actiparc dédiée à la logistique et à l'industrie.",
+    "Axion-IA accompagne les PME et ETI d'Arras, préfecture du Pas-de-Calais et cœur d'un bassin agroalimentaire au nord de Paris. La Communauté urbaine d'Arras rassemble 46 communes, dont Saint-Laurent-Blangy et Dainville, autour de la zone Actiparc dédiée à la logistique et à l'industrie.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Arras, préfecture du Pas-de-Calais et cœur d'un bassin agroalimentaire au nord de Paris. La Communauté urbaine d'Arras rassemble 46 communes, dont Saint-Laurent-Blangy et Dainville, autour de la zone Actiparc dédiée à la logistique et à l'industrie.",
+    "Axion-IA accompagne les PME et ETI d'Arras, préfecture du Pas-de-Calais et cœur d'un bassin agroalimentaire au nord de Paris. La Communauté urbaine d'Arras rassemble 46 communes, dont Saint-Laurent-Blangy et Dainville, autour de la zone Actiparc dédiée à la logistique et à l'industrie.",
   directAnswerFr:
-    "À Arras, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La filière agroalimentaire, la logistique de la zone Actiparc et les services aux entreprises liés à la Communauté urbaine constituent nos terrains d'intervention prioritaires. L'Université d'Artois alimente le vivier local de compétences techniques que nous mobilisons sur chaque mission.",
+    "À Arras, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La filière agroalimentaire, la logistique de la zone Actiparc et les services aux entreprises liés à la Communauté urbaine constituent nos terrains d'intervention prioritaires. L'Université d'Artois alimente le vivier local de compétences techniques que nous mobilisons sur chaque mission.",
   directAnswerEn:
-    "À Arras, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La filière agroalimentaire, la logistique de la zone Actiparc et les services aux entreprises liés à la Communauté urbaine constituent nos terrains d'intervention prioritaires. L'Université d'Artois alimente le vivier local de compétences techniques que nous mobilisons sur chaque mission.",
+    "À Arras, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La filière agroalimentaire, la logistique de la zone Actiparc et les services aux entreprises liés à la Communauté urbaine constituent nos terrains d'intervention prioritaires. L'Université d'Artois alimente le vivier local de compétences techniques que nous mobilisons sur chaque mission.",
   seoHook: "agroalimentaire & logistique Actiparc",
   ecosystemFr:
-    "Arras concentre une économie tertiaire de préfecture, un pôle agroalimentaire reconnu et la zone Actiparc à Saint-Laurent-Blangy orientée logistique et industrie de pointe. L'Université d'Artois et la position à 50 minutes TGV de Paris-Nord, 45 km de Lille, structurent un bassin d'emploi attractif pour les TPE et PME.",
+    "Arras concentre une économie tertiaire de préfecture, un pôle agroalimentaire reconnu et la zone Actiparc à Saint-Laurent-Blangy orientée logistique et industrie de pointe. L'Université d'Artois et la position à 50 minutes TGV de Paris-Nord, 45 km de Lille, structurent un bassin d'emploi attractif pour les PME et ETI.",
   ecosystemEn:
-    "Arras concentre une économie tertiaire de préfecture, un pôle agroalimentaire reconnu et la zone Actiparc à Saint-Laurent-Blangy orientée logistique et industrie de pointe. L'Université d'Artois et la position à 50 minutes TGV de Paris-Nord, 45 km de Lille, structurent un bassin d'emploi attractif pour les TPE et PME.",
+    "Arras concentre une économie tertiaire de préfecture, un pôle agroalimentaire reconnu et la zone Actiparc à Saint-Laurent-Blangy orientée logistique et industrie de pointe. L'Université d'Artois et la position à 50 minutes TGV de Paris-Nord, 45 km de Lille, structurent un bassin d'emploi attractif pour les PME et ETI.",
   distancesFr:
     "Gare TGV d'Arras directe (Paris-Nord ~50 min, Lille ~20 min). Aéroport de Lille-Lesquin à 50 km. Intersection des autoroutes A1 et A26 avec trois échangeurs.",
   distancesEn:
@@ -32,20 +32,20 @@ export const ARRAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Arras pour une TPE ou PME du bassin agroalimentaire ou de la zone Actiparc — identifier les processus administratifs et logistiques à automatiser en priorité.",
-      en: "Réaliser un audit IA à Arras pour une TPE ou PME du bassin agroalimentaire ou de la zone Actiparc — identifier les processus administratifs et logistiques à automatiser en priorité.",
+      fr: "Réaliser un audit IA à Arras pour une PME ou ETI du bassin agroalimentaire ou de la zone Actiparc — identifier les processus administratifs et logistiques à automatiser en priorité.",
+      en: "Réaliser un audit IA à Arras pour une PME ou ETI du bassin agroalimentaire ou de la zone Actiparc — identifier les processus administratifs et logistiques à automatiser en priorité.",
     },
     interventions: {
-      fr: "Intervenir à Arras et dans la Communauté urbaine (Saint-Laurent-Blangy, Dainville, Achicourt) pour automatiser saisies, devis et reportings des TPE-PME tertiaires.",
-      en: "Intervenir à Arras et dans la Communauté urbaine (Saint-Laurent-Blangy, Dainville, Achicourt) pour automatiser saisies, devis et reportings des TPE-PME tertiaires.",
+      fr: "Intervenir à Arras et dans la Communauté urbaine (Saint-Laurent-Blangy, Dainville, Achicourt) pour automatiser saisies, devis et reportings des PME et ETI tertiaires.",
+      en: "Intervenir à Arras et dans la Communauté urbaine (Saint-Laurent-Blangy, Dainville, Achicourt) pour automatiser saisies, devis et reportings des PME et ETI tertiaires.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure à Arras, code custom intégré aux outils existants, en s'appuyant sur les compétences techniques formées à l'Université d'Artois.",
       en: "Implémenter des solutions IA sur mesure à Arras, code custom intégré aux outils existants, en s'appuyant sur les compétences techniques formées à l'Université d'Artois.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME d'Arras pour cadrer une stratégie IA pragmatique alignée sur les enjeux agroalimentaires et logistiques locaux.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME d'Arras pour cadrer une stratégie IA pragmatique alignée sur les enjeux agroalimentaires et logistiques locaux.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI d'Arras pour cadrer une stratégie IA pragmatique alignée sur les enjeux agroalimentaires et logistiques locaux.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI d'Arras pour cadrer une stratégie IA pragmatique alignée sur les enjeux agroalimentaires et logistiques locaux.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const ARRAS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA-ready",
-            detail:
-              "Site vitrine ou e-commerce léger pour commerçants du centre d'Arras, artisans et TPE de la CU — design responsive, SEO local, chatbot de premier niveau, base e-commerce multi-CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -173,12 +167,6 @@ export const ARRAS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-ready showcase site",
-            detail:
-              "Showcase site or light e-commerce for Arras city-centre retailers, craftspeople and micro-businesses of the Urban Community — responsive design, local SEO, first-level chatbot, multi-CMS e-commerce base.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -243,12 +231,12 @@ export const ARRAS_COPY: VilleCopy = {
       a: "Oui, toutes nos interventions à Arras respectent strictement le RGPD. Code custom hébergé en Europe, traitements documentés et registre fourni.",
     },
     {
-      q: "Axion-IA travaille-t-elle avec les TPE du secteur agroalimentaire d'Arras ?",
-      a: "Oui, le bassin agroalimentaire au nord de Paris est l'un de nos terrains prioritaires. Nous automatisons traçabilité, devis fournisseurs et reportings qualité pour les TPE et PME du secteur.",
+      q: "Axion-IA travaille-t-elle avec les PME du secteur agroalimentaire d'Arras ?",
+      a: "Oui, le bassin agroalimentaire au nord de Paris est l'un de nos terrains prioritaires. Nous automatisons traçabilité, devis fournisseurs et reportings qualité pour les PME et ETI du secteur.",
     },
     {
       q: "Proposez-vous des formations IA pour les dirigeants à Arras ?",
-      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME d'Arras, à partir de {{price:intervention-dirigeants|flat}}, pour cadrer une feuille de route IA opérationnelle.",
+      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de PME et d'ETI d'Arras, à partir de {{price:intervention-dirigeants|flat}}, pour cadrer une feuille de route IA opérationnelle.",
     },
   ],
 };

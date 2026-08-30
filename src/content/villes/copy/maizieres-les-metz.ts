@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
   pitchFr:
-    "Maizières-lès-Metz (57), commune de 11 580 habitants en Moselle, située dans le pays messin au nord de Metz, est marquée par ses zones d'activités et son centre commercial régional. Tissu TPE/PME commerce, logistique, distribution, services, artisanat, sous-traitance industrielle messine. Axion-IA y intervient pour tous types d'activités.",
+    "Maizières-lès-Metz (57), commune de 11 580 habitants en Moselle, située dans le pays messin au nord de Metz, est marquée par ses zones d'activités et son centre commercial régional. Tissu PME et ETI commerce, logistique, distribution, services, artisanat, sous-traitance industrielle messine. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Maizières-lès-Metz (57), commune de 11 580 habitants en Moselle, située dans le pays messin au nord de Metz, est marquée par ses zones d'activités et son centre commercial régional. Tissu TPE/PME commerce, logistique, distribution, services, artisanat, sous-traitance industrielle messine. Axion-IA y intervient pour tous types d'activités.",
+    "Maizières-lès-Metz (57), commune de 11 580 habitants en Moselle, située dans le pays messin au nord de Metz, est marquée par ses zones d'activités et son centre commercial régional. Tissu PME et ETI commerce, logistique, distribution, services, artisanat, sous-traitance industrielle messine. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : TPE/PME commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : PME et ETI commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : TPE/PME commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maizières-lès-Metz (57). Nous accompagnons tous types d'activités : PME et ETI commerce et distribution, logisticiens, artisans, sous-traitants industriels, professions de services et acteurs des zones d'activités maizièroises.",
   ecosystemFr:
-    "Maizières-lès-Metz est un chef-lieu de canton du pays messin au nord de Metz, marqué par ses zones d'activités et son centre commercial régional. Tissu TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services aux entreprises, artisanat.",
+    "Maizières-lès-Metz est un chef-lieu de canton du pays messin au nord de Metz, marqué par ses zones d'activités et son centre commercial régional. Tissu PME et ETI commerce, distribution, logistique, sous-traitance industrielle, services aux entreprises, artisanat.",
   ecosystemEn:
-    "Maizières-lès-Metz est un chef-lieu de canton du pays messin au nord de Metz, marqué par ses zones d'activités et son centre commercial régional. Tissu TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services aux entreprises, artisanat.",
+    "Maizières-lès-Metz est un chef-lieu de canton du pays messin au nord de Metz, marqué par ses zones d'activités et son centre commercial régional. Tissu PME et ETI commerce, distribution, logistique, sous-traitance industrielle, services aux entreprises, artisanat.",
   distancesFr:
     "Metz à 15 min. Thionville à 20 min. Luxembourg à 50 min. Gare SNCF Maizières-lès-Metz (ligne Metz–Thionville). Autoroute A31 accès direct. Aéroport Metz-Nancy-Lorraine à 35 min. Aéroport Luxembourg à 1h.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux PME et ETI commerce, distribution, logistique, sous-traitance industrielle, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux PME et ETI commerce, distribution, logistique, sous-traitance industrielle, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maizières-lès-Metz : formats adaptés au commerce, l'entrepôt logistique, l'atelier industriel, le bureau. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
       en: "Implémentation IA à Maizières-lès-Metz : automatisation gestion commerciale et stocks, optimisation logistique, agents conversationnels retail, workflow distribution, traçabilité sous-traitance.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Maizières-lès-Metz : sessions dans votre commerce, entrepôt, atelier, bureau ou en visio. Commerçants, logisticiens, sous-traitants, artisans, gérants TPE/PME maizièrois.",
-      en: "Coaching 1-to-1 à Maizières-lès-Metz : sessions dans votre commerce, entrepôt, atelier, bureau ou en visio. Commerçants, logisticiens, sous-traitants, artisans, gérants TPE/PME maizièrois.",
+      fr: "Coaching 1-to-1 à Maizières-lès-Metz : sessions dans votre commerce, entrepôt, atelier, bureau ou en visio. Commerçants, logisticiens, sous-traitants, artisans, gérants PME et ETI maizièrois.",
+      en: "Coaching 1-to-1 à Maizières-lès-Metz : sessions dans votre commerce, entrepôt, atelier, bureau ou en visio. Commerçants, logisticiens, sous-traitants, artisans, gérants PME et ETI maizièrois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Maizières-lès-Metz et dans le pays messin nord (Hagondange, Talange, Semécourt). Consultants via gare SNCF Maizières-lès-Metz ou A31. Position stratégique entre Metz (15 min) et Thionville (20 min).",
     },
     {
-      q: "Travaillez-vous avec les TPE/PME commerce et distribution ?",
-      a: "Oui, nous accompagnons les TPE/PME commerce et distribution maizièroises : gestion stocks, optimisation parcours client, automatisation comptabilité, agents conversationnels retail, présence en ligne.",
+      q: "Travaillez-vous avec les PME et ETI commerce et distribution ?",
+      a: "Oui, nous accompagnons les PME et ETI commerce et distribution maizièroises : gestion stocks, optimisation parcours client, automatisation comptabilité, agents conversationnels retail, présence en ligne.",
     },
     {
       q: "Accompagnez-vous les logisticiens et sous-traitants industriels ?",
@@ -61,7 +61,7 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Maizières-lès-Metz ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Maizières-lès-Metz ?",

@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const BARLIN_COPY: VilleCopy = {
   pitchFr:
-    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
+    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille PME artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   pitchEn:
-    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
+    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille PME artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barlin (62). Nous accompagnons PME artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barlin (62). Nous accompagnons PME artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Barlin est une commune résidentielle du bassin minier entre Béthune et Bruay-la-Buissière. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et l'artisanat.",
+    "Barlin est une commune résidentielle du bassin minier entre Béthune et Bruay-la-Buissière. Tissu économique de PME du BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et l'artisanat.",
   ecosystemEn:
-    "Barlin est une commune résidentielle du bassin minier entre Béthune et Bruay-la-Buissière. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et l'artisanat.",
+    "Barlin est une commune résidentielle du bassin minier entre Béthune et Bruay-la-Buissière. Tissu économique de PME du BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et l'artisanat.",
   distancesFr:
     "Béthune à 10 min. Bruay-la-Buissière à 5 min. Auchel à 5 min. Lens à 20 min. Lille à 45 min A26. Gare de Béthune (TER vers Lille). Aéroport Lille-Lesquin à 50 min.",
   distancesEn:
     "Béthune à 10 min. Bruay-la-Buissière à 5 min. Auchel à 5 min. Lens à 20 min. Lille à 45 min A26. Gare de Béthune (TER vers Lille). Aéroport Lille-Lesquin à 50 min.",
   topSectorsNaf: [
     "Commerce de détail & proximité",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Services aux particuliers",
     "Professions libérales & santé",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barlin : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier béthunois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Barlin : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier béthunois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Barlin : diagnostic adapté aux PME artisanales, commerçants et professions libérales du bassin minier béthunois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Barlin : diagnostic adapté aux PME artisanales, commerçants et professions libérales du bassin minier béthunois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Barlin : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Barlin : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Barlin : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié TPE. Bassin béthunois.",
-      en: "Implémentation IA à Barlin : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié TPE. Bassin béthunois.",
+      fr: "Implémentation IA à Barlin : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié PME. Bassin béthunois.",
+      en: "Implémentation IA à Barlin : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié PME. Bassin béthunois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Barlin : sessions adaptées dirigeants TPE, artisans et gérants de commerces du bassin minier béthunois.",
-      en: "Coaching 1-to-1 à Barlin : sessions adaptées dirigeants TPE, artisans et gérants de commerces du bassin minier béthunois.",
+      fr: "Coaching 1-to-1 à Barlin : sessions adaptées dirigeants de PME et d'ETI, artisans et gérants de commerces du bassin minier béthunois.",
+      en: "Coaching 1-to-1 à Barlin : sessions adaptées dirigeants de PME et d'ETI, artisans et gérants de commerces du bassin minier béthunois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BARLIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Barlin  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans de Barlin ?",
@@ -61,7 +61,7 @@ export const BARLIN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA à Barlin ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants de PME et d'ETI du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Barlin ?",

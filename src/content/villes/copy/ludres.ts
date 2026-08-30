@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const LUDRES_COPY: VilleCopy = {
   pitchFr:
-    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu PME et ETI industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu PME et ETI industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ludres (54). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces, artisans et professions de services ludréennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ludres (54). Nous accompagnons tous types d'activités : PME et ETI des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces, artisans et professions de services ludréennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ludres (54). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces, artisans et professions de services ludréennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ludres (54). Nous accompagnons tous types d'activités : PME et ETI des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces, artisans et professions de services ludréennes.",
   ecosystemFr:
-    "Ludres est une commune périurbaine au sud immédiat de Nancy, marquée par d'importantes zones d'activités industrielles, logistiques et tertiaires. Tissu TPE/PME industrie, sous-traitance, logistique, services aux entreprises, commerces, artisanat, dynamique résidentielle familiale.",
+    "Ludres est une commune périurbaine au sud immédiat de Nancy, marquée par d'importantes zones d'activités industrielles, logistiques et tertiaires. Tissu PME et ETI industrie, sous-traitance, logistique, services aux entreprises, commerces, artisanat, dynamique résidentielle familiale.",
   ecosystemEn:
-    "Ludres est une commune périurbaine au sud immédiat de Nancy, marquée par d'importantes zones d'activités industrielles, logistiques et tertiaires. Tissu TPE/PME industrie, sous-traitance, logistique, services aux entreprises, commerces, artisanat, dynamique résidentielle familiale.",
+    "Ludres est une commune périurbaine au sud immédiat de Nancy, marquée par d'importantes zones d'activités industrielles, logistiques et tertiaires. Tissu PME et ETI industrie, sous-traitance, logistique, services aux entreprises, commerces, artisanat, dynamique résidentielle familiale.",
   distancesFr:
     "Nancy centre à 15 min. Autoroute A330 et A33 accès direct. Gare SNCF Ludres (ligne Nancy–Épinal). Metz à 50 min. Aéroport Metz-Nancy-Lorraine à 30 min. Luxembourg à 1h45.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LUDRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ludres : diagnostic adapté aux PME et ETI des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ludres : diagnostic adapté aux PME et ETI des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ludres : formats adaptés à l'atelier, l'entrepôt logistique, le bureau, le commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const LUDRES_COPY: VilleCopy = {
       en: "Implémentation IA à Ludres : contrôle qualité production, optimisation logistique, automatisation gestion commerciale, agents conversationnels B2B, workflow sous-traitance.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ludres : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants TPE/PME ludréens.",
-      en: "Coaching 1-to-1 à Ludres : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants TPE/PME ludréens.",
+      fr: "Coaching 1-to-1 à Ludres : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants PME et ETI ludréens.",
+      en: "Coaching 1-to-1 à Ludres : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, commerçants, artisans, gérants PME et ETI ludréens.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LUDRES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME des zones d'activités ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles, logisticiens et sous-traitants des parcs d'activités ludréens : contrôle qualité, optimisation flux, automatisation workflow, gestion fournisseurs.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles, logisticiens et sous-traitants des parcs d'activités ludréens : contrôle qualité, optimisation flux, automatisation workflow, gestion fournisseurs.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans ludréens ?",
@@ -61,7 +61,7 @@ export const LUDRES_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Ludres ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Ludres ?",

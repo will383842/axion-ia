@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const GAGNY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Gagny, commune de Seine-Saint-Denis située à 10 km à l'est de Paris (42 313 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Intégrée à la Métropole du Grand Paris et desservie par le RER E (gares de Gagny et Le Chénay-Gagny), la ville héberge un tissu économique de commerces de proximité, artisans du bâtiment, restaurateurs et services aux entreprises. Notre cabinet code en custom, sans no-code, pour les dirigeants gabiniens.",
+    "Axion-IA accompagne les PME et ETI de Gagny, commune de Seine-Saint-Denis située à 10 km à l'est de Paris (42 313 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Intégrée à la Métropole du Grand Paris et desservie par le RER E (gares de Gagny et Le Chénay-Gagny), la ville héberge un tissu économique de commerces de proximité, artisans du bâtiment, restaurateurs et services aux entreprises. Notre cabinet code en custom, sans no-code, pour les dirigeants gabiniens.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Gagny, commune de Seine-Saint-Denis située à 10 km à l'est de Paris (42 313 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Intégrée à la Métropole du Grand Paris et desservie par le RER E (gares de Gagny et Le Chénay-Gagny), la ville héberge un tissu économique de commerces de proximité, artisans du bâtiment, restaurateurs et services aux entreprises. Notre cabinet code en custom, sans no-code, pour les dirigeants gabiniens.",
+    "Axion-IA accompagne les PME et ETI de Gagny, commune de Seine-Saint-Denis située à 10 km à l'est de Paris (42 313 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Intégrée à la Métropole du Grand Paris et desservie par le RER E (gares de Gagny et Le Chénay-Gagny), la ville héberge un tissu économique de commerces de proximité, artisans du bâtiment, restaurateurs et services aux entreprises. Notre cabinet code en custom, sans no-code, pour les dirigeants gabiniens.",
   directAnswerFr:
-    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris.",
+    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris.",
   directAnswerEn:
-    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris.",
+    "Axion-IA se déplace à Gagny (Seine-Saint-Denis, Île-de-France) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Située à 10 km à l'est de Paris et desservie par le RER E, Gagny rassemble un tissu majoritairement composé de commerces de détail, d'artisans du BTP, de services à la personne et de restauration. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris.",
   seoHook: "commerce détail, BTP & services aux entreprises",
   ecosystemFr:
     "Gagny est intégrée à la Métropole du Grand Paris et bénéficie d'une desserte RER E avec deux gares (Gagny et Le Chénay-Gagny) reliant Paris-Est en environ 20 minutes. Le tissu économique gabinien est dominé par les commerces de proximité, l'artisanat du bâtiment (héritage de l'exploitation historique du plâtre de Paris jusqu'aux années 1950), la restauration, les services à la personne et l'enseignement. La ville accueille également l'Arena Léon-Yves Bohain pour les événements sportifs et culturels.",
@@ -33,16 +33,16 @@ export const GAGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gagny pour PME et ETI locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gagny pour PME et ETI locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement Williams depuis Paris.",
       en: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement Williams depuis Paris.",
     },
     implementation: {
-      fr: "Implémentation IA à Gagny pour TPE/PME du commerce ou du BTP — code custom intégré à vos outils (CRM, ERP, devis), dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Gagny pour TPE/PME du commerce ou du BTP — code custom intégré à vos outils (CRM, ERP, devis), dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Gagny pour PME et ETI du commerce ou du BTP — code custom intégré à vos outils (CRM, ERP, devis), dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Gagny pour PME et ETI du commerce ou du BTP — code custom intégré à vos outils (CRM, ERP, devis), dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Accompagnement 1-to-1 à Gagny pour dirigeants — adoption pas-à-pas de l'IA dans votre quotidien, dès {{price:intervention-dirigeants|flat}}.",
@@ -52,7 +52,7 @@ export const GAGNY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les TPE, PME et porteurs de projets gabiniens, à Gagny (Seine-Saint-Denis, RER E). Sur un tissu d'environ 5 900 établissements à dominante micro-entreprises — commerce de détail, artisanat du BTP, services de proximité — nous outillons les acteurs qui montent avec la ville : commerçants du Village du Chénay, futures enseignes du Cœur de Ville et de la halle gourmande, ou nouveaux services de l'écoquartier Le Parc de Maison Blanche. Code custom, UX/UI sur mesure, mobile-first, e-commerce multi-CMS et IA intégrée (chatbot RAG, recherche sémantique, génération de contenu), hébergement UE conforme RGPD, sans dépendance éditeur.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les PME, ETI et porteurs de projets gabiniens, à Gagny (Seine-Saint-Denis, RER E). Sur un tissu d'environ 5 900 établissements à dominante micro-entreprises — commerce de détail, artisanat du BTP, services de proximité — nous outillons les acteurs qui montent avec la ville : commerçants du Village du Chénay, futures enseignes du Cœur de Ville et de la halle gourmande, ou nouveaux services de l'écoquartier Le Parc de Maison Blanche. Code custom, UX/UI sur mesure, mobile-first, e-commerce multi-CMS et IA intégrée (chatbot RAG, recherche sémantique, génération de contenu), hébergement UE conforme RGPD, sans dépendance éditeur.",
         whyHere: [
           "Gagny entre dans une décennie de transformation urbaine : l'écoquartier Le Parc de Maison Blanche (labellisé ÉcoQuartier 2018, aménagé par C-DU, ~4 200 logements jusqu'en 2031, nouveau pôle commercial du Château d'eau) va faire éclore des commerces et services de proximité qui ont besoin d'une vitrine web et e-commerce dès l'ouverture.",
           "Le projet Cœur de Ville / Îlot Centre-Ville dévoilé en 2022 (halle gourmande, brasserie bistronomie, coiffeur, équipement sport/fitness) crée une vague de nouvelles enseignes gabiniennes : nous bâtissons leurs sites, réservation en ligne et boutiques multi-CMS avant même l'inauguration.",
@@ -87,12 +87,6 @@ export const GAGNY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA",
-            detail:
-              "Pour commerçants du Village du Chénay, artisans BTP gabiniens et indépendants : site vitrine ou e-commerce mono-boutique, prise de rendez-vous/devis assistée par IA, optimisé mobile et référencement local Gagny.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce + IA métier",
@@ -174,12 +168,6 @@ export const GAGNY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI showcase site or store",
-            detail:
-              "For Village du Chénay merchants, Gagny BTP tradespeople and freelancers: showcase site or single-store e-commerce, AI-assisted booking/quotes, optimised for mobile and Gagny local search.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform + business AI",
             detail:
@@ -241,7 +229,7 @@ export const GAGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il à Gagny ?",
-      a: "Nous accompagnons en priorité les TPE et PME gabiniennes du commerce de détail, du BTP, de la restauration, des services à la personne et de l'enseignement, secteurs majoritaires du tissu local.",
+      a: "Nous accompagnons en priorité les PME et ETI gabiniennes du commerce de détail, du BTP, de la restauration, des services à la personne et de l'enseignement, secteurs majoritaires du tissu local.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Gagny ?",

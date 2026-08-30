@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUDENGE_COPY: VilleCopy = {
   pitchFr:
-    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
+    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de PME artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
   pitchEn:
-    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
+    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de PME artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audenge (33). Nous accompagnons PME et ETI du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audenge (33). Nous accompagnons PME et ETI du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "artisanat & ostréiculture",
   ecosystemFr:
     "Audenge est une commune en forte croissance du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité, professions libérales et services à la personne. Gare TER Audenge sur la ligne Bordeaux-Arcachon.",
@@ -22,7 +22,7 @@ export const AUDENGE_COPY: VilleCopy = {
   distancesEn:
     "Gare TER Audenge (ligne Bordeaux-Arcachon). Bordeaux centre à 40 min. Arcachon à 20 min. Aéroport Bordeaux-Mérignac à 35 min. Accès A660.",
   topSectorsNaf: [
-    "TPE artisanat BTP (construction neuve)",
+    "PME du BTP (construction neuve)",
     "Ostréiculture",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const AUDENGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audenge : diagnostic pour TPE artisans BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Audenge : diagnostic pour TPE artisans BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Audenge : diagnostic pour PME du BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Audenge : diagnostic pour PME du BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audenge : ateliers adaptés aux artisans BTP, ostréiculteurs et commerces du Bassin. Équipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const AUDENGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Audenge  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et ostréiculteurs du Bassin d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME artisanales et ostréiculteurs du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Audenge ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP d'Audenge : automatisation devis chantier, agents IA prise de RDV, gestion planning, classification photos chantier.",
+      a: "Oui, nous accompagnons les PME du BTP d'Audenge : automatisation devis chantier, agents IA prise de RDV, gestion planning, classification photos chantier.",
     },
     {
       q: "Quels services pour les ostréiculteurs à Audenge ?",

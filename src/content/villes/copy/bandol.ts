@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BANDOL_COPY: VilleCopy = {
   pitchFr:
-    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y travaille avec les organisations du territoire.",
+    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de PME viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y travaille avec les organisations du territoire.",
+    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de PME viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bandol (83). Nous accompagnons PME viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bandol (83). Nous accompagnons PME viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit sur place sur mesure.",
   seoHook: "viticulture bandol & tourisme haut",
   ecosystemFr:
-    "Bandol est une station balnéaire historique et un terroir viticole majeur. Économie tirée par l'AOC Bandol (mourvèdre, vins de garde reconnus à l'export), le tourisme haut de gamme, la restauration gastronomique, le nautisme (port plaisance), le casino et le commerce de proximité. Tissu de TPE/PME viticulture-tourisme.",
+    "Bandol est une station balnéaire historique et un terroir viticole majeur. Économie tirée par l'AOC Bandol (mourvèdre, vins de garde reconnus à l'export), le tourisme haut de gamme, la restauration gastronomique, le nautisme (port plaisance), le casino et le commerce de proximité. Tissu de PME et ETI viticulture-tourisme.",
   ecosystemEn:
-    "Bandol est une station balnéaire historique et un terroir viticole majeur. Économie tirée par l'AOC Bandol (mourvèdre, vins de garde reconnus à l'export), le tourisme haut de gamme, la restauration gastronomique, le nautisme (port plaisance), le casino et le commerce de proximité. Tissu de TPE/PME viticulture-tourisme.",
+    "Bandol est une station balnéaire historique et un terroir viticole majeur. Économie tirée par l'AOC Bandol (mourvèdre, vins de garde reconnus à l'export), le tourisme haut de gamme, la restauration gastronomique, le nautisme (port plaisance), le casino et le commerce de proximité. Tissu de PME et ETI viticulture-tourisme.",
   distancesFr:
     "Toulon à 25 min. La Ciotat à 20 min. Marseille à 50 min par A50. Gare SNCF Bandol (TER) en centre-ville. Aéroport Toulon-Hyères à 45 min. Aéroport Marseille-Provence à 55 min. Saint-Cyr-sur-Mer à 10 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BANDOL_COPY: VilleCopy = {
       en: "Implémentation IA à Bandol : gestion parcellaire viticole, traçabilité vendanges, vente directe et export, yield management hôtelier, agents IA réservation et œnotourisme multilingues. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bandol : sessions pour vignerons AOC, restaurateurs, hôteliers et dirigeants TPE/PME tourisme et nautisme de la côte ouest-varoise.",
-      en: "Coaching 1-to-1 à Bandol : sessions pour vignerons AOC, restaurateurs, hôteliers et dirigeants TPE/PME tourisme et nautisme de la côte ouest-varoise.",
+      fr: "Coaching 1-to-1 à Bandol : sessions pour vignerons AOC, restaurateurs, hôteliers et dirigeants de PME et d'ETI tourisme et nautisme de la côte ouest-varoise.",
+      en: "Coaching 1-to-1 à Bandol : sessions pour vignerons AOC, restaurateurs, hôteliers et dirigeants de PME et d'ETI tourisme et nautisme de la côte ouest-varoise.",
     },
   },
   faqGeolocalisee: [

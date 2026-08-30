@@ -7,7 +7,7 @@
 //   - Mention systématique « frais de logement, repas et forfait trajet en sus »
 //     sur les formats interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Pas de mention de métier-type : tailles INSEE (TPE / PME / ETI / GE).
+//   - Pas de mention de métier-type : tailles INSEE (PME/ETI/GE).
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024.
 //   - Spécificité Toulouse : aérospatiale (Airbus, CNES, Thales Alenia Space,
 //     ATR, ONERA), IT (French Tech Toulouse, IoT Valley, Labège-Innopole),
@@ -19,7 +19,7 @@ import type { VilleCopy } from "./types";
 
 export const TOULOUSE_COPY: VilleCopy = {
   pitchFr:
-    "Toulouse regroupe 19 600 entreprises actives, capitale européenne de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA) et quatrième ville de France en termes d'emploi high-tech. Axion-IA y intervient sur site, des TPE locales aux ETI et grandes entreprises des pôles Aerospace Valley et Labège-Innopole.",
+    "Toulouse regroupe 19 600 entreprises actives, capitale européenne de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA) et quatrième ville de France en termes d'emploi high-tech. Axion-IA y intervient sur site, des PME locales aux ETI et grandes entreprises des pôles Aerospace Valley et Labège-Innopole.",
   pitchEn:
     "Toulouse hosts 19,600 active businesses, Europe's aerospace capital (Airbus, CNES, Thales Alenia Space, ONERA) and France's fourth city for high-tech employment. Axion-IA delivers on site, from local micro-businesses to mid-caps and large enterprises in the Aerospace Valley and Labège-Innopole hubs.",
 
@@ -49,7 +49,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack (modèles, PLM aéronautique, intégrations IoT Valley) après notre mission — sans verrou éditeur ni dépendance contractuelle continue.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les PME, ETI et grands groupes toulousains — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack (modèles, PLM aéronautique, intégrations IoT Valley) après notre mission — sans verrou éditeur ni dépendance contractuelle continue.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Toulouse (31) on site across the city and the greater Toulouse basin (Blagnac, Colomiers, Labège, Tournefeuille). We support Toulouse micro-businesses, SMEs, mid-caps and large enterprises — aerospace, digital, agri-food players — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -75,7 +75,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
         whyHere: [
           "Toulouse est la capitale européenne de l'aérospatiale : nos consultants connaissent les processus PLM, documentation technique et cycles de conformité qui caractérisent les acteurs de l'Aerospace Valley.",
           "Tissu numérique dense — French Tech Toulouse, IoT Valley à Labège, startups ESA BIC Sud France : nous auditons aussi bien les scale-ups IA émergentes que les sous-traitants Tier 1 et Tier 2 de la chaîne aéronautique.",
@@ -112,12 +112,6 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, bureaux d'études, PME sous-traitantes ou agences IT toulousaines jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -219,12 +213,6 @@ export const TOULOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Toulouse freelancers, engineering offices, small sub-contractors or IT agencies up to about ten staff.",
-          },
-          {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
             detail:
@@ -294,7 +282,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         whyHere: [
           "Toulouse est un pôle d'intervention prioritaire pour Axion-IA : industrie aérospatiale, numérique et agroalimentaire génèrent des besoins spécifiques que nos sessions adressent directement.",
           "Toute la métropole couverte en présentiel — Toulouse intra-muros, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — ainsi que les sites industriels de banlieue.",
-          "Le format collectif (1 journée) est calibré pour les TPE et PME de quelques personnes à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les PME et ETI de quelques personnes à une centaine de collaborateurs.",
           "Le format Conférence convient aux grandes plénières (amphithéâtres ISAE-SUPAERO, TBS Education, auditoriums d'entreprise Aerospace Valley).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction ou les équipes managériales de l'industrie.",
           "Vocabulaire ajusté à votre secteur : documentation aérospatiale, gestion de projet agilité/cascade, analyse de données capteurs IoT, processus qualité, agro-logistique. Pas de session générique recyclée.",
@@ -327,12 +315,6 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, bureaux d'études, agences IT ou PME sous-traitantes toulousaines jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -433,12 +415,6 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Toulouse freelancers, engineering offices, IT agencies or small sub-contractors up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -543,12 +519,6 @@ export const TOULOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple sur quelques semaines (génération de rapport, comptes-rendus de réunion, qualification leads).",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -584,7 +554,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Toulouse ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -648,12 +618,6 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks (report generation, meeting minutes, lead qualification).",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -757,12 +721,6 @@ export const TOULOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "à partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Pour indépendants, bureaux d'études et dirigeants de TPE du bassin toulousain. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires.",
-          },
-          {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
@@ -862,12 +820,6 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
-            detail:
-              "For Toulouse freelancers, engineering offices and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases.",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme — on quote",
@@ -969,12 +921,6 @@ export const TOULOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1055,12 +1001,6 @@ export const TOULOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1110,7 +1050,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulouse ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations toulousaines — Sur place pour les TPE de la ville rose ou bureaux d'études indépendants, Ciblé pour les PME sous-traitantes Aerospace Valley et services Toulouse centre, Stratégique PME pour les scale-ups French Tech Toulouse et acteurs agro-industriels, Stratégique ETI pour les opérateurs Aerospace Valley (Airbus, ATR, Thales) et grandes filiales Blagnac/Colomiers. La grille appliquée à Toulouse est strictement identique à celle de Paris ou Lyon — aucune pondération Occitanie.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations toulousaines — Sur place pour les PME de la ville rose ou bureaux d'études indépendants, Ciblé pour les PME sous-traitantes Aerospace Valley et services Toulouse centre, Stratégique PME pour les scale-ups French Tech Toulouse et acteurs agro-industriels, Stratégique ETI pour les opérateurs Aerospace Valley (Airbus, ATR, Thales) et grandes filiales Blagnac/Colomiers. La grille appliquée à Toulouse est strictement identique à celle de Paris ou Lyon — aucune pondération Occitanie.",
     },
     {
       q: "Avez-vous des références dans l'industrie aérospatiale toulousaine ?",

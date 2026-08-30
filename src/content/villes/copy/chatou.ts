@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATOU_COPY: VilleCopy = {
   pitchFr:
-    "Chatou (78, Yvelines), au cœur de la boucle de Seine et berceau de l'impressionnisme avec la Maison Fournaise sur l'île des Impressionnistes, est aussi la capitale française des antiquaires avec sa célèbre foire. Son tissu mêle TPE de commerce d'art et d'antiquités, artisans d'art, PME de services et d'ingénierie, professions libérales et commerces. Axion-IA accompagne en priorité ces TPE puis les PME, les ETI restant minoritaires.",
+    "Chatou (78, Yvelines), au cœur de la boucle de Seine et berceau de l'impressionnisme avec la Maison Fournaise sur l'île des Impressionnistes, est aussi la capitale française des antiquaires avec sa célèbre foire. Son tissu mêle PME de commerce d'art et d'antiquités, artisans d'art, PME de services et d'ingénierie, professions libérales et commerces. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes complètent ce socle.",
   pitchEn:
-    "Chatou (78, Yvelines), au cœur de la boucle de Seine et berceau de l'impressionnisme avec la Maison Fournaise sur l'île des Impressionnistes, est aussi la capitale française des antiquaires avec sa célèbre foire. Son tissu mêle TPE de commerce d'art et d'antiquités, artisans d'art, PME de services et d'ingénierie, professions libérales et commerces. Axion-IA accompagne en priorité ces TPE puis les PME, les ETI restant minoritaires.",
+    "Chatou (78, Yvelines), au cœur de la boucle de Seine et berceau de l'impressionnisme avec la Maison Fournaise sur l'île des Impressionnistes, est aussi la capitale française des antiquaires avec sa célèbre foire. Son tissu mêle PME de commerce d'art et d'antiquités, artisans d'art, PME de services et d'ingénierie, professions libérales et commerces. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes complètent ce socle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chatou (78) et dans la boucle de Seine. Nous accompagnons en priorité les TPE — antiquaires, artisans d'art, commerces et indépendants — puis les PME de services et d'ingénierie de l'ouest parisien, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — catalogue, devis, relation client, gestion documentaire — avant tout déploiement, sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chatou (78) et dans la boucle de Seine. Nous accompagnons en priorité les PME — antiquaires, artisans d'art, commerces et indépendants — puis les PME de services et d'ingénierie de l'ouest parisien, et plus marginalement les grands groupes. Nous définissons un cas d'usage IA concret — catalogue, devis, relation client, gestion documentaire — avant tout déploiement, sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chatou (78) et dans la boucle de Seine. Nous accompagnons en priorité les TPE — antiquaires, artisans d'art, commerces et indépendants — puis les PME de services et d'ingénierie de l'ouest parisien, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — catalogue, devis, relation client, gestion documentaire — avant tout déploiement, sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chatou (78) et dans la boucle de Seine. Nous accompagnons en priorité les PME — antiquaires, artisans d'art, commerces et indépendants — puis les PME de services et d'ingénierie de l'ouest parisien, et plus marginalement les grands groupes. Nous définissons un cas d'usage IA concret — catalogue, devis, relation client, gestion documentaire — avant tout déploiement, sur site ou en visio.",
   seoHook: "antiquaires & ouest parisien",
   ecosystemFr:
-    "Chatou occupe la boucle de Seine entre Le Vésinet, Rueil-Malmaison et Croissy. Ville résidentielle aisée de l'ouest parisien, marquée par l'héritage impressionniste de la Maison Fournaise et la foire nationale à la brocante et aux jambons. Tissu de TPE d'antiquités et d'art, artisans d'art, PME de services et d'ingénierie, commerces de centre-ville et professions libérales.",
+    "Chatou occupe la boucle de Seine entre Le Vésinet, Rueil-Malmaison et Croissy. Ville résidentielle aisée de l'ouest parisien, marquée par l'héritage impressionniste de la Maison Fournaise et la foire nationale à la brocante et aux jambons. Tissu de PME d'antiquités et d'art, artisans d'art, PME de services et d'ingénierie, commerces de centre-ville et professions libérales.",
   ecosystemEn:
-    "Chatou occupe la boucle de Seine entre Le Vésinet, Rueil-Malmaison et Croissy. Ville résidentielle aisée de l'ouest parisien, marquée par l'héritage impressionniste de la Maison Fournaise et la foire nationale à la brocante et aux jambons. Tissu de TPE d'antiquités et d'art, artisans d'art, PME de services et d'ingénierie, commerces de centre-ville et professions libérales.",
+    "Chatou occupe la boucle de Seine entre Le Vésinet, Rueil-Malmaison et Croissy. Ville résidentielle aisée de l'ouest parisien, marquée par l'héritage impressionniste de la Maison Fournaise et la foire nationale à la brocante et aux jambons. Tissu de PME d'antiquités et d'art, artisans d'art, PME de services et d'ingénierie, commerces de centre-ville et professions libérales.",
   distancesFr:
     "Paris-Saint-Lazare à 20 min par le RER A et la ligne L. La Défense à 12 min. Gare de Chatou-Croissy sur le RER A. Aéroport de Paris-Charles-de-Gaulle à 40 min. Rueil-Malmaison à 8 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const CHATOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chatou : diagnostic ciblé pour les TPE d'antiquités et d'art, artisans et PME de services de la boucle de Seine, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
-      en: "Audit IA à Chatou : diagnostic ciblé pour les TPE d'antiquités et d'art, artisans et PME de services de la boucle de Seine, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      fr: "Audit IA à Chatou : diagnostic ciblé pour les PME d'antiquités et d'art, artisans et PME de services de la boucle de Seine, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA à Chatou : diagnostic ciblé pour les PME d'antiquités et d'art, artisans et PME de services de la boucle de Seine, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chatou : ateliers pratiques pour l'antiquaire, l'artisan d'art, le commerce ou le cabinet de services. Vos collaborateurs sont autonomes ensuite.",
       en: "Interventions IA sur site à Chatou : ateliers pratiques pour l'antiquaire, l'artisan d'art, le commerce ou le cabinet de services. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA à Chatou : catalogue et estimation d'objets d'art assistés, classification d'images, devis, agents conversationnels et CRM augmentés pour TPE-PME de l'ouest parisien.",
-      en: "Implémentation IA à Chatou : catalogue et estimation d'objets d'art assistés, classification d'images, devis, agents conversationnels et CRM augmentés pour TPE-PME de l'ouest parisien.",
+      fr: "Implémentation IA à Chatou : catalogue et estimation d'objets d'art assistés, classification d'images, devis, agents conversationnels et CRM augmentés pour PME et ETI de l'ouest parisien.",
+      en: "Implémentation IA à Chatou : catalogue et estimation d'objets d'art assistés, classification d'images, devis, agents conversationnels et CRM augmentés pour PME et ETI de l'ouest parisien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chatou : sessions pour dirigeants de TPE — antiquaires, artisans d'art, commerçants — et de PME de services, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Chatou : sessions pour dirigeants de TPE — antiquaires, artisans d'art, commerçants — et de PME de services, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Chatou : sessions pour dirigeants de PME et d'ETI — antiquaires, artisans d'art, commerçants — et de PME de services, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Chatou : sessions pour dirigeants de PME et d'ETI — antiquaires, artisans d'art, commerçants — et de PME de services, dans vos locaux ou en visio.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Chatou : galeries et boutiques en ligne enrichies d'IA pour antiquaires et commerces d'art — fiches objets générées, recherche visuelle, prise de contact qualifiée.",
@@ -88,12 +88,6 @@ export const CHATOU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA",
-            detail:
-              "Antiquaires et marchands de la Foire de Chatou, artisans d'art, commerces et indépendants de la boucle de Seine : site vitrine ou boutique e-commerce avec fiches objets générées par IA et prise de contact qualifiée. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web sur mesure",
@@ -175,12 +169,6 @@ export const CHATOU_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI storefront or shop",
-            detail:
-              "Antique dealers from the Foire de Chatou, art craftspeople, retailers and freelancers of the Seine loop: brochure site or e-commerce shop with AI-generated item listings and qualified contact capture. Quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke web platform",
             detail:
@@ -234,15 +222,15 @@ export const CHATOU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les antiquaires et commerces d'art de Chatou ?",
-      a: "Oui, c'est une spécificité locale. Pour les TPE d'antiquités, brocanteurs et artisans d'art, l'IA aide au catalogage, à l'estimation assistée, à la recherche visuelle d'objets et à la relation client.",
+      a: "Oui, c'est une spécificité locale. Pour les PME d'antiquités, brocanteurs et artisans d'art, l'IA aide au catalogage, à l'estimation assistée, à la recherche visuelle d'objets et à la relation client.",
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité à Chatou ?",
-      a: "Nous accompagnons d'abord les TPE — antiquaires, artisans, commerces, indépendants — puis les PME de services et d'ingénierie de l'ouest parisien. Les ETI restent minoritaires sur la commune.",
+      a: "Nous accompagnons d'abord les PME — antiquaires, artisans, commerces, indépendants — puis les PME de services et d'ingénierie de l'ouest parisien. Les grands groupes complètent ce socle.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Chatou ?",
-      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la PME à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
     },
     {
       q: "Comment se déroule une intervention IA à Chatou ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const CHARNAY_LES_MACON_COPY: VilleCopy = {
   pitchFr:
-    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu TPE artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants.",
+    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu PME de l'artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu TPE artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants.",
+    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu PME de l'artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons TPE et PME : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons PME et ETI : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons TPE et PME : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons PME et ETI : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
-    "Charnay-lès-Mâcon est une commune résidentielle de l'agglomération mâconnaise, aux portes du vignoble Mâconnais (AOC Mâcon, Pouilly-Fuissé, Saint-Véran). Tissu PME tertiaires agglo Mâcon, viticulteurs et négoce vinicole, TPE artisanat, commerce, services aux entreprises.",
+    "Charnay-lès-Mâcon est une commune résidentielle de l'agglomération mâconnaise, aux portes du vignoble Mâconnais (AOC Mâcon, Pouilly-Fuissé, Saint-Véran). Tissu PME tertiaires agglo Mâcon, viticulteurs et négoce vinicole, PME de l'artisanat, commerce, services aux entreprises.",
   ecosystemEn:
-    "Charnay-lès-Mâcon est une commune résidentielle de l'agglomération mâconnaise, aux portes du vignoble Mâconnais (AOC Mâcon, Pouilly-Fuissé, Saint-Véran). Tissu PME tertiaires agglo Mâcon, viticulteurs et négoce vinicole, TPE artisanat, commerce, services aux entreprises.",
+    "Charnay-lès-Mâcon est une commune résidentielle de l'agglomération mâconnaise, aux portes du vignoble Mâconnais (AOC Mâcon, Pouilly-Fuissé, Saint-Véran). Tissu PME tertiaires agglo Mâcon, viticulteurs et négoce vinicole, PME de l'artisanat, commerce, services aux entreprises.",
   distancesFr:
     "Mâcon centre à 5 min. Gare TGV Mâcon-Loché à 10 min. Bourg-en-Bresse à 35 min. Lyon à 1h. Chalon-sur-Saône à 50 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires agglomération Mâcon",
     "Viticulture et négoce vinicole (AOC)",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, TPE artisans, commerçants. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, TPE artisans, commerçants. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, PME artisanales, commerçants. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, PME artisanales, commerçants. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charnay-lès-Mâcon : formats adaptés bureau tertiaire, exploitation viticole, commerce, atelier artisan. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
       en: "Implémentation IA à Charnay-lès-Mâcon : traçabilité parcelles viticoles, gestion vente directe domaine, CRM B2B agglo Mâcon, automatisation administrative PME tertiaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Charnay-lès-Mâcon : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants TPE/PME, viticulteurs, artisans, gérants agglo Mâcon.",
-      en: "Coaching 1-to-1 à Charnay-lès-Mâcon : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants TPE/PME, viticulteurs, artisans, gérants agglo Mâcon.",
+      fr: "Coaching 1-to-1 à Charnay-lès-Mâcon : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants PME et ETI, viticulteurs, artisans, gérants agglo Mâcon.",
+      en: "Coaching 1-to-1 à Charnay-lès-Mâcon : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants PME et ETI, viticulteurs, artisans, gérants agglo Mâcon.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, automatisation workflow documentaire, CRM augmenté, classification automatique emails et documents. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stock.",
     },
     {

@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLEPINTE_COPY: VilleCopy = {
   pitchFr:
-    "Villepinte, 41 470 habitants (2023), commune de Seine-Saint-Denis située à 18 km au nord-est de Paris, fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol. La ville héberge le Parc des Expositions Paris-Nord Villepinte (246 000 m² ouvert en 1982) et le Parc d'activités Paris-Nord 2, hub logistique majeur d'Île-de-France à proximité immédiate de l'aéroport Paris-Charles de Gaulle. Axion-IA, cabinet IA en code custom, accompagne les TPE et PME locales — logistique, commerce de gros, événementiel, services aux entreprises — avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
+    "Villepinte, 41 470 habitants (2023), commune de Seine-Saint-Denis située à 18 km au nord-est de Paris, fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol. La ville héberge le Parc des Expositions Paris-Nord Villepinte (246 000 m² ouvert en 1982) et le Parc d'activités Paris-Nord 2, hub logistique majeur d'Île-de-France à proximité immédiate de l'aéroport Paris-Charles de Gaulle. Axion-IA, cabinet IA en code custom, accompagne les PME et ETI locales — logistique, commerce de gros, événementiel, services aux entreprises — avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   pitchEn:
-    "Villepinte, 41 470 habitants (2023), commune de Seine-Saint-Denis située à 18 km au nord-est de Paris, fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol. La ville héberge le Parc des Expositions Paris-Nord Villepinte (246 000 m² ouvert en 1982) et le Parc d'activités Paris-Nord 2, hub logistique majeur d'Île-de-France à proximité immédiate de l'aéroport Paris-Charles de Gaulle. Axion-IA, cabinet IA en code custom, accompagne les TPE et PME locales — logistique, commerce de gros, événementiel, services aux entreprises — avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
+    "Villepinte, 41 470 habitants (2023), commune de Seine-Saint-Denis située à 18 km au nord-est de Paris, fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol. La ville héberge le Parc des Expositions Paris-Nord Villepinte (246 000 m² ouvert en 1982) et le Parc d'activités Paris-Nord 2, hub logistique majeur d'Île-de-France à proximité immédiate de l'aéroport Paris-Charles de Gaulle. Axion-IA, cabinet IA en code custom, accompagne les PME et ETI locales — logistique, commerce de gros, événementiel, services aux entreprises — avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   directAnswerFr:
-    "Axion-IA intervient à Villepinte (Seine-Saint-Denis, 93420) auprès des TPE, PME puis ETI implantées dans le Parc d'activités Paris-Nord 2, autour du Parc des Expositions Paris-Nord Villepinte et le long de la RER B. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour transporteurs, prestataires événementiels, commerçants de gros, sous-traitants aéroportuaires et services aux entreprises. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès direct depuis Roissy-CDG.",
+    "Axion-IA intervient à Villepinte (Seine-Saint-Denis, 93420) auprès des PME, ETI puis grands groupes implantés dans le Parc d'activités Paris-Nord 2, autour du Parc des Expositions Paris-Nord Villepinte et le long de la RER B. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour transporteurs, prestataires événementiels, commerçants de gros, sous-traitants aéroportuaires et services aux entreprises. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès direct depuis Roissy-CDG.",
   directAnswerEn:
-    "Axion-IA intervient à Villepinte (Seine-Saint-Denis, 93420) auprès des TPE, PME puis ETI implantées dans le Parc d'activités Paris-Nord 2, autour du Parc des Expositions Paris-Nord Villepinte et le long de la RER B. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour transporteurs, prestataires événementiels, commerçants de gros, sous-traitants aéroportuaires et services aux entreprises. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès direct depuis Roissy-CDG.",
+    "Axion-IA intervient à Villepinte (Seine-Saint-Denis, 93420) auprès des PME, ETI puis grands groupes implantés dans le Parc d'activités Paris-Nord 2, autour du Parc des Expositions Paris-Nord Villepinte et le long de la RER B. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour transporteurs, prestataires événementiels, commerçants de gros, sous-traitants aéroportuaires et services aux entreprises. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès direct depuis Roissy-CDG.",
   seoHook: "logistique Paris-Nord 2 & événementiel Parc Expositions",
   ecosystemFr:
-    "Villepinte est l'un des principaux pôles économiques du nord-est francilien. Le Parc des Expositions Paris-Nord Villepinte (246 000 m², 1982) et le Parc d'activités Paris-Nord 2 concentrent logistique aéroportuaire, commerce de gros, prestataires événementiels et services aux entreprises. La proximité de Paris-Charles de Gaulle structure le tissu de TPE/PME — sous-traitants aéroportuaires, transitaires, transporteurs routiers, hôteliers d'affaires. Le territoire de 10,37 km² mêle zones d'activités, forêts/parcs et zones résidentielles. EPT Paris Terres d'Envol fédère huit communes.",
+    "Villepinte est l'un des principaux pôles économiques du nord-est francilien. Le Parc des Expositions Paris-Nord Villepinte (246 000 m², 1982) et le Parc d'activités Paris-Nord 2 concentrent logistique aéroportuaire, commerce de gros, prestataires événementiels et services aux entreprises. La proximité de Paris-Charles de Gaulle structure le tissu de PME et ETI — sous-traitants aéroportuaires, transitaires, transporteurs routiers, hôteliers d'affaires. Le territoire de 10,37 km² mêle zones d'activités, forêts/parcs et zones résidentielles. EPT Paris Terres d'Envol fédère huit communes.",
   ecosystemEn:
-    "Villepinte est l'un des principaux pôles économiques du nord-est francilien. Le Parc des Expositions Paris-Nord Villepinte (246 000 m², 1982) et le Parc d'activités Paris-Nord 2 concentrent logistique aéroportuaire, commerce de gros, prestataires événementiels et services aux entreprises. La proximité de Paris-Charles de Gaulle structure le tissu de TPE/PME — sous-traitants aéroportuaires, transitaires, transporteurs routiers, hôteliers d'affaires. Le territoire de 10,37 km² mêle zones d'activités, forêts/parcs et zones résidentielles. EPT Paris Terres d'Envol fédère huit communes.",
+    "Villepinte est l'un des principaux pôles économiques du nord-est francilien. Le Parc des Expositions Paris-Nord Villepinte (246 000 m², 1982) et le Parc d'activités Paris-Nord 2 concentrent logistique aéroportuaire, commerce de gros, prestataires événementiels et services aux entreprises. La proximité de Paris-Charles de Gaulle structure le tissu de PME et ETI — sous-traitants aéroportuaires, transitaires, transporteurs routiers, hôteliers d'affaires. Le territoire de 10,37 km² mêle zones d'activités, forêts/parcs et zones résidentielles. EPT Paris Terres d'Envol fédère huit communes.",
   distancesFr:
     "Villepinte est à 18 km au nord-est de Paris, et à environ 7 km de l'aéroport Paris-Charles de Gaulle. Trois gares RER B desservent la commune : Villepinte, Parc des Expositions et Vert-Galant (Paris Châtelet-Les Halles en ~30 min). Autoroute A170 (ex-A104, Francilienne) et A1 à proximité. Gare TGV Paris Nord à environ 18 km, gare TGV Aéroport CDG 2-TGV à environ 8 km.",
   distancesEn:
@@ -32,20 +32,20 @@ export const VILLEPINTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Villepinte (4 h, {{price:audit-flash|flat}}) pour TPE/PME du Parc d'activités Paris-Nord 2 et de la logistique aéroportuaire — diagnostic ROI et conformité RGPD.",
-      en: "Audit sur place IA à Villepinte (4 h, {{price:audit-flash|flat}}) pour TPE/PME du Parc d'activités Paris-Nord 2 et de la logistique aéroportuaire — diagnostic ROI et conformité RGPD.",
+      fr: "Audit sur place IA à Villepinte (4 h, {{price:audit-flash|flat}}) pour PME et ETI du Parc d'activités Paris-Nord 2 et de la logistique aéroportuaire — diagnostic ROI et conformité RGPD.",
+      en: "Audit sur place IA à Villepinte (4 h, {{price:audit-flash|flat}}) pour PME et ETI du Parc d'activités Paris-Nord 2 et de la logistique aéroportuaire — diagnostic ROI et conformité RGPD.",
     },
     interventions: {
-      fr: "Intervention sur site à Villepinte dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation traçabilité colis, planification événementielle, devis prestataires, reporting transitaires.",
-      en: "Intervention sur site à Villepinte dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation traçabilité colis, planification événementielle, devis prestataires, reporting transitaires.",
+      fr: "Intervention sur site à Villepinte dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation traçabilité colis, planification événementielle, devis prestataires, reporting transitaires.",
+      en: "Intervention sur site à Villepinte dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation traçabilité colis, planification événementielle, devis prestataires, reporting transitaires.",
     },
     implementation: {
       fr: "Implémentation IA à Villepinte dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour transporteurs, prestataires événementiels et sous-traitants aéroportuaires.",
       en: "Implémentation IA à Villepinte dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour transporteurs, prestataires événementiels et sous-traitants aéroportuaires.",
     },
     unAUn: {
-      fr: "Coaching un-à-un dirigeants TPE/PME de Villepinte dès {{price:intervention-dirigeants|flat}} — stratégie IA pour acteurs de la logistique, du commerce de gros et de l'événementiel.",
-      en: "Coaching un-à-un dirigeants TPE/PME de Villepinte dès {{price:intervention-dirigeants|flat}} — stratégie IA pour acteurs de la logistique, du commerce de gros et de l'événementiel.",
+      fr: "Coaching un-à-un dirigeants de PME et d'ETI de Villepinte dès {{price:intervention-dirigeants|flat}} — stratégie IA pour acteurs de la logistique, du commerce de gros et de l'événementiel.",
+      en: "Coaching un-à-un dirigeants de PME et d'ETI de Villepinte dès {{price:intervention-dirigeants|flat}} — stratégie IA pour acteurs de la logistique, du commerce de gros et de l'événementiel.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const VILLEPINTE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA-ready",
-            detail:
-              "Pour artisans, commerçants et indépendants du 93420 (Z.A. Les Merisiers, abords RER B) : site mobile rapide, formulaire intelligent, chatbot de premier niveau. UX/UI soignée, hébergement UE.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce ou portail métier",
@@ -173,12 +167,6 @@ export const VILLEPINTE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase site",
-            detail:
-              "For craftspeople, retailers and freelancers of 93420 (Z.A. Les Merisiers, near RER B): fast mobile site, smart form, first-line chatbot. Polished UX/UI, EU hosting.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or business portal",
             detail:
@@ -248,7 +236,7 @@ export const VILLEPINTE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA propose-t-il du no-code à Villepinte ?",
-      a: "Non. Axion-IA développe en code custom (TypeScript, Python, Next.js) pour garantir propriété intellectuelle, portabilité et conformité — essentielles pour les TPE/PME logistiques, événementielles et aéroportuaires de Villepinte.",
+      a: "Non. Axion-IA développe en code custom (TypeScript, Python, Next.js) pour garantir propriété intellectuelle, portabilité et conformité — essentielles pour les PME et ETI logistiques, événementielles et aéroportuaires de Villepinte.",
     },
   ],
 };

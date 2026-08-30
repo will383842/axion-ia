@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const L_HAY_LES_ROSES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de L'Haÿ-les-Roses, ville résidentielle du Val-de-Marne mondialement connue pour sa roseraie, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, artisans et services de proximité.",
+    "Axion-IA accompagne les PME et ETI de L'Haÿ-les-Roses, ville résidentielle du Val-de-Marne mondialement connue pour sa roseraie, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, artisans et services de proximité.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de L'Haÿ-les-Roses, ville résidentielle du Val-de-Marne mondialement connue pour sa roseraie, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, artisans et services de proximité.",
+    "Axion-IA accompagne les PME et ETI de L'Haÿ-les-Roses, ville résidentielle du Val-de-Marne mondialement connue pour sa roseraie, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, artisans et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de L'Haÿ-les-Roses à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle de la banlieue sud parisienne, connue pour sa roseraie historique, le tissu économique se compose surtout de commerces de proximité, d'artisans du bâtiment et de services aux particuliers. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de L'Haÿ-les-Roses à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle de la banlieue sud parisienne, connue pour sa roseraie historique, le tissu économique se compose surtout de commerces de proximité, d'artisans du bâtiment et de services aux particuliers. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de L'Haÿ-les-Roses à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle de la banlieue sud parisienne, connue pour sa roseraie historique, le tissu économique se compose surtout de commerces de proximité, d'artisans du bâtiment et de services aux particuliers. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de L'Haÿ-les-Roses à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle de la banlieue sud parisienne, connue pour sa roseraie historique, le tissu économique se compose surtout de commerces de proximité, d'artisans du bâtiment et de services aux particuliers. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   seoHook: "commerce de proximité & artisanat",
   ecosystemFr:
-    "L'Haÿ-les-Roses est une ville résidentielle de la banlieue sud parisienne, dont la roseraie classée fait la renommée. Son économie repose sur un tissu de proximité : commerces de centre-ville, artisans du bâtiment, professions libérales, services aux particuliers et restauration. Ces TPE et petites PME, fortement sollicitées par la gestion administrative et la relation client, gagnent à automatiser devis, relances, prise de rendez-vous et planning de chantier. La proximité de Paris et des pôles d'innovation franciliens facilite l'accès aux meilleures pratiques. Axion-IA cible en priorité ces TPE, puis les PME locales.",
+    "L'Haÿ-les-Roses est une ville résidentielle de la banlieue sud parisienne, dont la roseraie classée fait la renommée. Son économie repose sur un tissu de proximité : commerces de centre-ville, artisans du bâtiment, professions libérales, services aux particuliers et restauration. Ces PME et petites PME, fortement sollicitées par la gestion administrative et la relation client, gagnent à automatiser devis, relances, prise de rendez-vous et planning de chantier. La proximité de Paris et des pôles d'innovation franciliens facilite l'accès aux meilleures pratiques. Axion-IA cible en priorité ces PME, puis les PME locales.",
   ecosystemEn:
-    "L'Haÿ-les-Roses est une ville résidentielle de la banlieue sud parisienne, dont la roseraie classée fait la renommée. Son économie repose sur un tissu de proximité : commerces de centre-ville, artisans du bâtiment, professions libérales, services aux particuliers et restauration. Ces TPE et petites PME, fortement sollicitées par la gestion administrative et la relation client, gagnent à automatiser devis, relances, prise de rendez-vous et planning de chantier. La proximité de Paris et des pôles d'innovation franciliens facilite l'accès aux meilleures pratiques. Axion-IA cible en priorité ces TPE, puis les PME locales.",
+    "L'Haÿ-les-Roses est une ville résidentielle de la banlieue sud parisienne, dont la roseraie classée fait la renommée. Son économie repose sur un tissu de proximité : commerces de centre-ville, artisans du bâtiment, professions libérales, services aux particuliers et restauration. Ces PME et petites PME, fortement sollicitées par la gestion administrative et la relation client, gagnent à automatiser devis, relances, prise de rendez-vous et planning de chantier. La proximité de Paris et des pôles d'innovation franciliens facilite l'accès aux meilleures pratiques. Axion-IA cible en priorité ces PME, puis les PME locales.",
   distancesFr:
     "L'Haÿ-les-Roses est desservie par la ligne 14 du métro prolongée et par un réseau de bus vers Paris. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 8 km et celui de Roissy-Charles-de-Gaulle à 28 km, ce qui permet à notre cabinet d'intervenir rapidement sur site dans tout le sud francilien.",
   distancesEn:
@@ -30,8 +30,8 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE commerçante ou un artisan de L'Haÿ-les-Roses pour repérer les automatisations utiles : devis, relances, prise de rendez-vous, planning de chantier.",
-      en: "Auditer une TPE commerçante ou un artisan de L'Haÿ-les-Roses pour repérer les automatisations utiles : devis, relances, prise de rendez-vous, planning de chantier.",
+      fr: "Auditer une PME du commercee ou un artisan de L'Haÿ-les-Roses pour repérer les automatisations utiles : devis, relances, prise de rendez-vous, planning de chantier.",
+      en: "Auditer une PME du commercee ou un artisan de L'Haÿ-les-Roses pour repérer les automatisations utiles : devis, relances, prise de rendez-vous, planning de chantier.",
     },
     interventions: {
       fr: "Intervenir sur site à L'Haÿ-les-Roses pour automatiser les tâches administratives des commerces et artisans, sans bouleverser vos outils existants.",
@@ -42,8 +42,8 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME de services de L'Haÿ-les-Roses : suivi client, devis automatisés, reporting et intégration à vos logiciels.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de L'Haÿ-les-Roses pour piloter leur adoption de l'IA en confiance et à leur rythme.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de L'Haÿ-les-Roses pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de L'Haÿ-les-Roses pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de L'Haÿ-les-Roses pour piloter leur adoption de l'IA en confiance et à leur rythme.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les commerces et artisans de L'Haÿ-les-Roses : prise de rendez-vous en ligne, devis instantané, assistant client.",
@@ -55,7 +55,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
       fr: {
         hero: "Depuis l'ouverture de la station L'Haÿ-les-Roses sur la ligne 14 le 24 juin 2024, cette ville résidentielle du Val-de-Marne — mondialement connue pour la Roseraie du Val-de-Marne, doyenne des roseraies créée en 1899 par Jules Gravereaux — bascule dans une nouvelle économie de proximité connectée. Autour de la gare, les ZAC Lallier – Gare Trois Communes et Paul Hochart font émerger un centre-ville commerçant (~1 800 m² de commerces et services, pôle tertiaire) qui attire commerces, artisans du bâtiment et services aux particuliers. Axion-IA conçoit pour eux des sites web et plateformes SaaS augmentés par l'IA — prise de rendez-vous en ligne, devis instantané, assistant client — avec UX/UI, mobile et e-commerce multi-CMS, hébergés en Europe et conformes RGPD.",
         whyHere: [
-          "L'arrivée de la ligne 14 (station L'Haÿ-les-Roses, rue de Bicêtre / rue de Lallier) et les nouveaux commerces des ZAC Lallier et Paul Hochart créent une vague de TPE locales — restauration, services, commerces de proximité — qui ont besoin d'un site mobile rapide avec réservation et devis en ligne, pas d'une brochure statique.",
+          "L'arrivée de la ligne 14 (station L'Haÿ-les-Roses, rue de Bicêtre / rue de Lallier) et les nouveaux commerces des ZAC Lallier et Paul Hochart créent une vague de PME locales — restauration, services, commerces de proximité — qui ont besoin d'un site mobile rapide avec réservation et devis en ligne, pas d'une brochure statique.",
           "Le tissu dominant de L'Haÿ-les-Roses est l'artisanat du bâtiment (~440 entreprises de travaux de construction spécialisés) et le commerce/réparation automobile (~455 entreprises) : nous bâtissons pour ces métiers des sites avec devis IA instantané, prise de rendez-vous, suivi de chantier et relances automatisées.",
           "À une station de l'Institut Gustave Roussy (premier centre anticancéreux d'Europe) via la gare voisine Villejuif – Gustave Roussy, la commune attire professions de santé, libéraux et services para-médicaux : nous concevons des plateformes de prise de rendez-vous et assistants client conformes RGPD, données hébergées en Europe.",
           "Intégrée à l'EPT Grand-Orly Seine Bièvre (24 communes, ~35 000 entreprises, ~300 000 emplois), la ville profite d'un bassin B2B dense : nos sites et SaaS sur mesure visent aussi les PME tertiaires qui s'installent dans le pôle de bureaux de la ZAC Lallier.",
@@ -89,12 +89,6 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine + IA essentielle",
-            detail:
-              "Pour les commerces, restaurants et artisans du bâtiment de L'Haÿ-les-Roses (centre-ville, quartiers gare Lallier) : site mobile-first avec prise de rendez-vous, devis en ligne et assistant client de base.",
-          },
-          {
             price: "Site e-commerce ou plateforme métier",
             sizeLabel: "PME",
             detail:
@@ -116,7 +110,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des sites pour les commerces et artisans du nouveau quartier de la gare L'Haÿ-les-Roses ?",
-            a: "Oui. Avec l'ouverture de la ligne 14 (station L'Haÿ-les-Roses) et les commerces des ZAC Lallier et Paul Hochart, de nombreuses TPE s'installent ou se modernisent. Nous concevons pour elles des sites mobile-first avec prise de rendez-vous, devis instantané et assistant client, adaptés à une clientèle qui arrive surtout par mobile.",
+            a: "Oui. Avec l'ouverture de la ligne 14 (station L'Haÿ-les-Roses) et les commerces des ZAC Lallier et Paul Hochart, de nombreuses PME s'installent ou se modernisent. Nous concevons pour elles des sites mobile-first avec prise de rendez-vous, devis instantané et assistant client, adaptés à une clientèle qui arrive surtout par mobile.",
           },
           {
             q: "Mes données de santé et clients sont-elles hébergées en conformité RGPD ?",
@@ -175,12 +169,6 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site + essential AI",
-            detail:
-              "For shops, restaurants and building trades of L'Haÿ-les-Roses (town centre, Lallier station district): mobile-first site with booking, online quoting and a basic customer assistant.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce site or trade platform",
             detail:
@@ -238,7 +226,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME de L'Haÿ-les-Roses. Les commerces et artisans de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI de L'Haÿ-les-Roses. Les commerces et artisans de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Proposez-vous des audits adaptés aux PME de L'Haÿ-les-Roses ?",

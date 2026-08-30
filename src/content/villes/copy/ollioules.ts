@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const OLLIOULES_COPY: VilleCopy = {
   pitchFr:
-    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de PME artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de PME artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : PME horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : PME horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Ollioules est un pôle économique de l'ouest toulonnais, célèbre pour son horticulture (fleurs coupées, marché aux fleurs historique), dans la vallée du Reppe. Zones d'activités, PME agroalimentaires, TPE artisanales et commerces. Toulon à 15 min, Sanary à 10 min, A50 directe.",
+    "Ollioules est un pôle économique de l'ouest toulonnais, célèbre pour son horticulture (fleurs coupées, marché aux fleurs historique), dans la vallée du Reppe. Zones d'activités, PME agroalimentaires, PME de l'artisanat et du commerce. Toulon à 15 min, Sanary à 10 min, A50 directe.",
   ecosystemEn:
-    "Ollioules est un pôle économique de l'ouest toulonnais, célèbre pour son horticulture (fleurs coupées, marché aux fleurs historique), dans la vallée du Reppe. Zones d'activités, PME agroalimentaires, TPE artisanales et commerces. Toulon à 15 min, Sanary à 10 min, A50 directe.",
+    "Ollioules est un pôle économique de l'ouest toulonnais, célèbre pour son horticulture (fleurs coupées, marché aux fleurs historique), dans la vallée du Reppe. Zones d'activités, PME agroalimentaires, PME de l'artisanat et du commerce. Toulon à 15 min, Sanary à 10 min, A50 directe.",
   distancesFr:
     "Toulon à 15 min. Sanary-sur-Mer à 10 min. Six-Fours à 10 min. Marseille à 55 min. A50 directe.",
   distancesEn:
@@ -30,20 +30,20 @@ export const OLLIOULES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ollioules : diagnostic adapté aux TPE horticulteurs, PME agroalimentaires, artisans et commerces de l'agglo Toulon ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ollioules : diagnostic adapté aux TPE horticulteurs, PME agroalimentaires, artisans et commerces de l'agglo Toulon ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ollioules : diagnostic adapté aux PME horticulteurs, PME agroalimentaires, artisans et commerces de l'agglo Toulon ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ollioules : diagnostic adapté aux PME horticulteurs, PME agroalimentaires, artisans et commerces de l'agglo Toulon ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ollioules : formats adaptés aux horticulteurs, PME agroalimentaires, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Ollioules : formats adaptés aux horticulteurs, PME agroalimentaires, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Ollioules : optimisation production horticole, prévision rendements, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté TPE/PME agglo Toulon ouest.",
-      en: "Implémentation IA à Ollioules : optimisation production horticole, prévision rendements, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté TPE/PME agglo Toulon ouest.",
+      fr: "Implémentation IA à Ollioules : optimisation production horticole, prévision rendements, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté PME et ETI agglo Toulon ouest.",
+      en: "Implémentation IA à Ollioules : optimisation production horticole, prévision rendements, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté PME et ETI agglo Toulon ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ollioules : sessions dans vos locaux ou en visio. Dirigeants TPE/PME horticulture, agroalimentaire, artisanat et commerce agglo Toulon ouest.",
-      en: "Coaching 1-to-1 à Ollioules : sessions dans vos locaux ou en visio. Dirigeants TPE/PME horticulture, agroalimentaire, artisanat et commerce agglo Toulon ouest.",
+      fr: "Coaching 1-to-1 à Ollioules : sessions dans vos locaux ou en visio. Dirigeants PME et ETI horticulture, agroalimentaire, artisanat et commerce agglo Toulon ouest.",
+      en: "Coaching 1-to-1 à Ollioules : sessions dans vos locaux ou en visio. Dirigeants PME et ETI horticulture, agroalimentaire, artisanat et commerce agglo Toulon ouest.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const OLLIOULES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Ollioules  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Ollioules ?",

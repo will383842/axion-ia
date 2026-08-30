@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AMBOISE_COPY: VilleCopy = {
   pitchFr:
-    "Amboise (37), cité royale du Val de Loire classée UNESCO, accueille le Château royal et le Clos Lucé (dernière demeure de Léonard de Vinci). Pôle touristique majeur. Tissu tourisme patrimonial, hôtellerie-restauration, viticulture AOC Touraine-Amboise, TPE artisans d'art, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Amboise (37), cité royale du Val de Loire classée UNESCO, accueille le Château royal et le Clos Lucé (dernière demeure de Léonard de Vinci). Pôle touristique majeur. Tissu tourisme patrimonial, hôtellerie-restauration, viticulture AOC Touraine-Amboise, PME artisanales d'art, commerces. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Amboise (37), cité royale du Val de Loire classée UNESCO, accueille le Château royal et le Clos Lucé (dernière demeure de Léonard de Vinci). Pôle touristique majeur. Tissu tourisme patrimonial, hôtellerie-restauration, viticulture AOC Touraine-Amboise, TPE artisans d'art, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Amboise (37), cité royale du Val de Loire classée UNESCO, accueille le Château royal et le Clos Lucé (dernière demeure de Léonard de Vinci). Pôle touristique majeur. Tissu tourisme patrimonial, hôtellerie-restauration, viticulture AOC Touraine-Amboise, PME artisanales d'art, commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amboise (37). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (Château royal, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art, commerçants et services aux entreprises du Val de Loire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amboise (37). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (Château royal, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, PME artisanales d'art, commerçants et services aux entreprises du Val de Loire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amboise (37). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (Château royal, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art, commerçants et services aux entreprises du Val de Loire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amboise (37). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (Château royal, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, PME artisanales d'art, commerçants et services aux entreprises du Val de Loire.",
   seoHook: "aoc touraine-",
   ecosystemFr:
-    "Amboise est une cité royale du Val de Loire classée UNESCO. Château royal d'Amboise, Clos Lucé (Léonard de Vinci), Pagode de Chanteloup. Pôle touristique patrimonial majeur. Tissu hôtellerie-restauration, viticulture AOC Touraine-Amboise, TPE artisans d'art, commerces, PME services.",
+    "Amboise est une cité royale du Val de Loire classée UNESCO. Château royal d'Amboise, Clos Lucé (Léonard de Vinci), Pagode de Chanteloup. Pôle touristique patrimonial majeur. Tissu hôtellerie-restauration, viticulture AOC Touraine-Amboise, PME artisanales d'art, commerces, PME services.",
   ecosystemEn:
-    "Amboise est une cité royale du Val de Loire classée UNESCO. Château royal d'Amboise, Clos Lucé (Léonard de Vinci), Pagode de Chanteloup. Pôle touristique patrimonial majeur. Tissu hôtellerie-restauration, viticulture AOC Touraine-Amboise, TPE artisans d'art, commerces, PME services.",
+    "Amboise est une cité royale du Val de Loire classée UNESCO. Château royal d'Amboise, Clos Lucé (Léonard de Vinci), Pagode de Chanteloup. Pôle touristique patrimonial majeur. Tissu hôtellerie-restauration, viticulture AOC Touraine-Amboise, PME artisanales d'art, commerces, PME services.",
   distancesFr:
     "Tours centre à 25 min. Gare TGV Saint-Pierre-des-Corps à 20 min. Gare d'Amboise (TER Tours-Blois-Orléans). Blois à 35 min. Aéroport Tours Val de Loire à 25 min. Paris à 1h30 TGV.",
   distancesEn:
@@ -25,13 +25,13 @@ export const AMBOISE_COPY: VilleCopy = {
     "Tourisme patrimonial (Château royal, Clos Lucé)",
     "Hôtellerie-restauration",
     "Viticulture AOC Touraine-Amboise",
-    "TPE artisanat d'art",
+    "PME de l'artisanat d'art",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Amboise : diagnostic adapté aux acteurs tourisme patrimonial (Château, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Amboise : diagnostic adapté aux acteurs tourisme patrimonial (Château, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Amboise : diagnostic adapté aux acteurs tourisme patrimonial (Château, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, PME artisanales d'art. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Amboise : diagnostic adapté aux acteurs tourisme patrimonial (Château, Clos Lucé), hôteliers-restaurateurs, viticulteurs AOC Touraine-Amboise, PME artisanales d'art. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Amboise : formats adaptés au site patrimonial, hôtellerie-restauration, domaine viticole, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const AMBOISE_COPY: VilleCopy = {
       en: "Implémentation IA à Amboise : agents conversationnels visiteurs patrimoine multilingue, yield management hôtelier, prédiction vendanges AOC Touraine-Amboise, automatisation réservations.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Amboise : sessions dans votre établissement, domaine viticole, commerce ou en visio. Acteurs tourisme patrimonial, hôteliers, viticulteurs, artisans d'art, gérants TPE/PME amboisiens.",
-      en: "Coaching 1-to-1 à Amboise : sessions dans votre établissement, domaine viticole, commerce ou en visio. Acteurs tourisme patrimonial, hôteliers, viticulteurs, artisans d'art, gérants TPE/PME amboisiens.",
+      fr: "Coaching 1-to-1 à Amboise : sessions dans votre établissement, domaine viticole, commerce ou en visio. Acteurs tourisme patrimonial, hôteliers, viticulteurs, artisans d'art, gérants PME et ETI amboisiens.",
+      en: "Coaching 1-to-1 à Amboise : sessions dans votre établissement, domaine viticole, commerce ou en visio. Acteurs tourisme patrimonial, hôteliers, viticulteurs, artisans d'art, gérants PME et ETI amboisiens.",
     },
   },
   faqGeolocalisee: [
@@ -64,7 +64,7 @@ export const AMBOISE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, yield management IA, automatisation réservations, classification avis clients, optimisation planning équipes saisonnières.",
     },
     {
-      q: "Quel est le tarif d'entrée pour une TPE à Amboise ?",
+      q: "Quel est le tarif d'entrée pour une PME à Amboise ?",
       a: "L'audit sur place démarre à {{price:audit-flash|flat}}. Coaching 1-to-1 à partir de {{price:intervention-membre-equipe|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],

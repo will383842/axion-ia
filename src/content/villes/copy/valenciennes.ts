@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VALENCIENNES_COPY: VilleCopy = {
   pitchFr:
-    "Valenciennes (59), sous-préfecture du Nord au cœur du Hainaut, a réussi une reconversion industrielle remarquable après l'ère du charbon : l'usine Toyota d'Onnaing toute proche et la présence d'Alstom dans le ferroviaire en font un pôle automobile et transport de premier plan. La ville s'est aussi imposée comme un pôle du jeu vidéo et du serious game autour de la Serre Numérique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME du Valenciennois dans une adoption concrète de l'intelligence artificielle.",
+    "Valenciennes (59), sous-préfecture du Nord au cœur du Hainaut, a réussi une reconversion industrielle remarquable après l'ère du charbon : l'usine Toyota d'Onnaing toute proche et la présence d'Alstom dans le ferroviaire en font un pôle automobile et transport de premier plan. La ville s'est aussi imposée comme un pôle du jeu vidéo et du serious game autour de la Serre Numérique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI du Valenciennois dans une adoption concrète de l'intelligence artificielle.",
   pitchEn:
-    "Valenciennes (59), sous-préfecture du Nord au cœur du Hainaut, a réussi une reconversion industrielle remarquable après l'ère du charbon : l'usine Toyota d'Onnaing toute proche et la présence d'Alstom dans le ferroviaire en font un pôle automobile et transport de premier plan. La ville s'est aussi imposée comme un pôle du jeu vidéo et du serious game autour de la Serre Numérique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME du Valenciennois dans une adoption concrète de l'intelligence artificielle.",
+    "Valenciennes (59), sous-préfecture du Nord au cœur du Hainaut, a réussi une reconversion industrielle remarquable après l'ère du charbon : l'usine Toyota d'Onnaing toute proche et la présence d'Alstom dans le ferroviaire en font un pôle automobile et transport de premier plan. La ville s'est aussi imposée comme un pôle du jeu vidéo et du serious game autour de la Serre Numérique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI du Valenciennois dans une adoption concrète de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valenciennes et dans le Hainaut. Nous accompagnons en priorité les TPE puis les PME : sous-traitants automobile gravitant autour de l'usine Toyota d'Onnaing, acteurs ferroviaires liés à Alstom, studios de jeu vidéo et serious game de la Serre Numérique, artisans, commerces et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valenciennes et dans le Hainaut. Nous accompagnons en priorité les PME puis les ETI : sous-traitants automobile gravitant autour de l'usine Toyota d'Onnaing, acteurs ferroviaires liés à Alstom, studios de jeu vidéo et serious game de la Serre Numérique, artisans, commerces et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valenciennes et dans le Hainaut. Nous accompagnons en priorité les TPE puis les PME : sous-traitants automobile gravitant autour de l'usine Toyota d'Onnaing, acteurs ferroviaires liés à Alstom, studios de jeu vidéo et serious game de la Serre Numérique, artisans, commerces et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valenciennes et dans le Hainaut. Nous accompagnons en priorité les PME puis les ETI : sous-traitants automobile gravitant autour de l'usine Toyota d'Onnaing, acteurs ferroviaires liés à Alstom, studios de jeu vidéo et serious game de la Serre Numérique, artisans, commerces et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
   seoHook: "automobile Toyota & jeu vidéo",
   ecosystemFr:
     "Valenciennes incarne une reconversion industrielle réussie : l'ancien bassin houiller du Hainaut a laissé place à une économie automobile dynamisée par l'usine Toyota d'Onnaing et son réseau de sous-traitants, ainsi qu'à une filière ferroviaire portée par Alstom. La Serre Numérique a fait émerger un pôle reconnu du jeu vidéo, du serious game et de l'image animée, soutenu par l'Université Polytechnique Hauts-de-France. Autour gravitent des artisans, commerces et PME de services. Sur ce tissu en mutation, l'IA peut accélérer la production, le contrôle qualité et la création numérique.",
@@ -42,8 +42,8 @@ export const VALENCIENNES_COPY: VilleCopy = {
       en: "Implémentation IA à Valenciennes : automatisation de la planification de production, contrôle qualité assisté, assistants de création pour studios et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valenciennes : sessions sur site ou en visio pour dirigeants de TPE/PME, industriels, studios numériques, artisans et gérants souhaitant piloter l'IA.",
-      en: "Coaching 1-to-1 à Valenciennes : sessions sur site ou en visio pour dirigeants de TPE/PME, industriels, studios numériques, artisans et gérants souhaitant piloter l'IA.",
+      fr: "Coaching 1-to-1 à Valenciennes : sessions sur site ou en visio pour dirigeants de PME et ETI, industriels, studios numériques, artisans et gérants souhaitant piloter l'IA.",
+      en: "Coaching 1-to-1 à Valenciennes : sessions sur site ou en visio pour dirigeants de PME et ETI, industriels, studios numériques, artisans et gérants souhaitant piloter l'IA.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Valenciennes : plateformes pour PME industrielles, studios numériques et commerces, avec recherche IA, devis automatisés et formulaires intelligents.",
@@ -53,7 +53,7 @@ export const VALENCIENNES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Valenciennes, le web et le SaaS ne se conçoivent pas comme dans une métropole de services : ils servent un tissu industriel ultra-spécialisé. L'usine Toyota d'Onnaing (env. 5 000 salariés, un véhicule toutes les 58 secondes) et son réseau de sous-traitants automobile, le pôle ferroviaire Alstom de Petite-Forêt et Crespin (env. 4 000 salariés, ex-Bombardier), le siège valenciennois de l'Agence de l'Union européenne pour les chemins de fer (ERA) et les studios de la Serre Numérique (jeu vidéo, serious game, animation 3D autour de Rubika) ont chacun des besoins digitaux radicalement différents. Axion-IA conçoit à Valenciennes des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile, e-commerce multi-CMS, agents conversationnels et recherche sémantique — pour ces équipementiers, ces fournisseurs ferroviaires, ces studios numériques et les TPE/PME du Hainaut, avec du code maîtrisé et un hébergement UE conforme RGPD.",
+        hero: "À Valenciennes, le web et le SaaS ne se conçoivent pas comme dans une métropole de services : ils servent un tissu industriel ultra-spécialisé. L'usine Toyota d'Onnaing (env. 5 000 salariés, un véhicule toutes les 58 secondes) et son réseau de sous-traitants automobile, le pôle ferroviaire Alstom de Petite-Forêt et Crespin (env. 4 000 salariés, ex-Bombardier), le siège valenciennois de l'Agence de l'Union européenne pour les chemins de fer (ERA) et les studios de la Serre Numérique (jeu vidéo, serious game, animation 3D autour de Rubika) ont chacun des besoins digitaux radicalement différents. Axion-IA conçoit à Valenciennes des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile, e-commerce multi-CMS, agents conversationnels et recherche sémantique — pour ces équipementiers, ces fournisseurs ferroviaires, ces studios numériques et les PME et ETI du Hainaut, avec du code maîtrisé et un hébergement UE conforme RGPD.",
         whyHere: [
           "Sous-traitance automobile et ferroviaire : autour de Toyota Onnaing et des sites Alstom de Petite-Forêt/Crespin gravitent des équipementiers et fournisseurs qui ont besoin de portails fournisseurs, de catalogues de pièces avec configurateur e-commerce et de recherche IA dans des nomenclatures techniques volumineuses — pas de simple site vitrine.",
           "Filière numérique de la Serre Numérique : les studios de jeu vidéo, serious game et animation 3D issus de l'écosystème Rubika ont besoin de sites builds/portfolios performants, de plateformes de diffusion et d'outils SaaS d'organisation de pipeline de production — un usage très différent de l'industriel d'à côté.",
@@ -88,12 +88,6 @@ export const VALENCIENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour artisans, commerces et indépendants de Valenciennes, Anzin ou Denain : site mobile-first, référencement local et formulaire intelligent qui qualifie et trie les demandes entrantes.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce / métier",
@@ -175,12 +169,6 @@ export const VALENCIENNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented brochure site",
-            detail:
-              "For craftspeople, shops and freelancers in Valenciennes, Anzin or Denain: mobile-first site, local SEO and a smart form that qualifies and sorts inbound requests.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce / business platform",
             detail:
@@ -230,7 +218,7 @@ export const VALENCIENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valenciennes et dans le Valenciennois ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Valenciennes, Onnaing, Anzin, Denain et tout le Hainaut. Nos consultants se déplacent depuis Lille et Paris pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Valenciennes, Onnaing, Anzin, Denain et tout le Hainaut. Nos consultants se déplacent depuis Lille et Paris pour les missions sur site.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile et ferroviaires ?",
@@ -241,7 +229,7 @@ export const VALENCIENNES_COPY: VilleCopy = {
       a: "Oui, dans la lignée de la Serre Numérique : assistants de création, automatisation des pipelines de production et agents conversationnels pour les studios numériques locaux.",
     },
     {
-      q: "Quels services proposez-vous aux TPE et artisans valenciennois ?",
+      q: "Quels services proposez-vous aux PME et artisans valenciennois ?",
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {

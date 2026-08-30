@@ -5,25 +5,25 @@ import type { VilleCopy } from "./types";
 
 export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   pitchFr:
-    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu PME artisanales, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu PME artisanales, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saulx-les-Chartreux (91). Nous accompagnons PME et ETI : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saulx-les-Chartreux (91). Nous accompagnons PME et ETI : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit sur place sur mesure.",
   seoHook: "maraîchage horticulture & artisanat second",
   ecosystemFr:
-    "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",
+    "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu PME artisanales, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",
   ecosystemEn:
-    "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",
+    "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu PME artisanales, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",
   distancesFr:
     "Longjumeau à 5 min. Massy TGV à 10 min. Paris centre à 30 min (N20/A6). Aéroport Paris-Orly à 15 min. Palaiseau à 10 min.",
   distancesEn:
     "Longjumeau à 5 min. Massy TGV à 10 min. Paris centre à 30 min (N20/A6). Aéroport Paris-Orly à 15 min. Palaiseau à 10 min.",
   topSectorsNaf: [
     "Maraîchage & horticulture",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Commerce de proximité & services",
     "Professions libérales (santé, conseil)",
     "PME services aux entreprises",

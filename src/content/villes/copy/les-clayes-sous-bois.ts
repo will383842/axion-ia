@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie son expertise pour toutes les organisations des Yvelines ouest.",
+    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de PME et ETI et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie son expertise pour toutes les organisations des Yvelines ouest.",
   pitchEn:
-    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie son expertise pour toutes les organisations des Yvelines ouest.",
+    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de PME et ETI et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie son expertise pour toutes les organisations des Yvelines ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : PME du commerce et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : PME du commerce et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
   seoHook: "commerce distribution & services aux",
   ecosystemFr:
-    "Les Clayes-sous-Bois est une commune résidentielle et commerçante de l'ouest francilien, à mi-chemin entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique diversifié : commerces de centre-ville et zones commerciales, TPE artisanat et services, professions libérales, PME tertiaires. Proximité du Technocentre Renault (Guyancourt) et du pôle d'activités de Saint-Quentin-en-Yvelines (SQY).",
+    "Les Clayes-sous-Bois est une commune résidentielle et commerçante de l'ouest francilien, à mi-chemin entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique diversifié : commerces de centre-ville et zones commerciales, PME de l'artisanat et services, professions libérales, PME tertiaires. Proximité du Technocentre Renault (Guyancourt) et du pôle d'activités de Saint-Quentin-en-Yvelines (SQY).",
   ecosystemEn:
-    "Les Clayes-sous-Bois est une commune résidentielle et commerçante de l'ouest francilien, à mi-chemin entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique diversifié : commerces de centre-ville et zones commerciales, TPE artisanat et services, professions libérales, PME tertiaires. Proximité du Technocentre Renault (Guyancourt) et du pôle d'activités de Saint-Quentin-en-Yvelines (SQY).",
+    "Les Clayes-sous-Bois est une commune résidentielle et commerçante de l'ouest francilien, à mi-chemin entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique diversifié : commerces de centre-ville et zones commerciales, PME de l'artisanat et services, professions libérales, PME tertiaires. Proximité du Technocentre Renault (Guyancourt) et du pôle d'activités de Saint-Quentin-en-Yvelines (SQY).",
   distancesFr:
     "Gare de Villepreux-Les Clayes (Transilien N, Paris-Montparnasse 35 min). Saint-Quentin-en-Yvelines à 10 min voiture. Versailles à 15 min. Alpha Park et zones commerciales à proximité immédiate. Accès A12/N12.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux TPE commerçants, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
-      en: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux TPE commerçants, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      fr: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux PME du commerce, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux PME du commerce, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Clayes-sous-Bois : formats adaptés aux commerces, PME tertiaires, artisans et cabinets. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -42,8 +42,8 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
       en: "Implémentation IA aux Clayes-sous-Bois : agents conversationnels client, automatisation commerciale, CRM augmentés, gestion stocks, outils de reporting. Adapté au tissu commercial et tertiaire ouest-francilien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Clayes-sous-Bois : sessions dans votre commerce, bureau, atelier ou en visio. Commerçants, gérants TPE/PME, professions libérales des Yvelines ouest souhaitant maîtriser l'IA dans leur métier.",
-      en: "Coaching 1-to-1 aux Clayes-sous-Bois : sessions dans votre commerce, bureau, atelier ou en visio. Commerçants, gérants TPE/PME, professions libérales des Yvelines ouest souhaitant maîtriser l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 aux Clayes-sous-Bois : sessions dans votre commerce, bureau, atelier ou en visio. Commerçants, gérants PME et ETI, professions libérales des Yvelines ouest souhaitant maîtriser l'IA dans leur métier.",
+      en: "Coaching 1-to-1 aux Clayes-sous-Bois : sessions dans votre commerce, bureau, atelier ou en visio. Commerçants, gérants PME et ETI, professions libérales des Yvelines ouest souhaitant maîtriser l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un commerce aux Clayes-sous-Bois ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux commerces, artisans et TPE des Clayes-sous-Bois. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux commerces, artisans et PME des Clayes-sous-Bois. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les PME proches de Saint-Quentin-en-Yvelines ?",

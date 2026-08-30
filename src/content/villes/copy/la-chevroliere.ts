@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHEVROLIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre les activités professionnelles du bassin du sud nantais.",
+    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu PME de l'artisanat et du commerce, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre les activités professionnelles du bassin du sud nantais.",
   pitchEn:
-    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre les activités professionnelles du bassin du sud nantais.",
+    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu PME de l'artisanat et du commerce, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre les activités professionnelles du bassin du sud nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
-    "La Chevrolière est une commune résidentielle en bordure du lac de Grand-Lieu, au sud de Nantes. Maraîchage, viticulture, artisanat. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services de proximité. Cadre de vie nature attractif.",
+    "La Chevrolière est une commune résidentielle en bordure du lac de Grand-Lieu, au sud de Nantes. Maraîchage, viticulture, artisanat. Tissu PME artisanales, commerçants, PME tertiaires, professions libérales et services de proximité. Cadre de vie nature attractif.",
   ecosystemEn:
-    "La Chevrolière est une commune résidentielle en bordure du lac de Grand-Lieu, au sud de Nantes. Maraîchage, viticulture, artisanat. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services de proximité. Cadre de vie nature attractif.",
+    "La Chevrolière est une commune résidentielle en bordure du lac de Grand-Lieu, au sud de Nantes. Maraîchage, viticulture, artisanat. Tissu PME artisanales, commerçants, PME tertiaires, professions libérales et services de proximité. Cadre de vie nature attractif.",
   distancesFr:
     "Nantes centre à 20 min. Gare Nantes TGV à 25 min. Aéroport Nantes-Atlantique à 15 min. Pont-Saint-Martin à 10 min. Saint-Philbert-de-Grand-Lieu à 10 min.",
   distancesEn:
     "Nantes centre à 20 min. Gare Nantes TGV à 25 min. Aéroport Nantes-Atlantique à 15 min. Pont-Saint-Martin à 10 min. Saint-Philbert-de-Grand-Lieu à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "PME tertiaires & services",
     "Maraîchage & agriculture",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Chevrolière : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Chevrolière : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Chevrolière : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Chevrolière : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Chevrolière : formats adaptés au bureau, au cabinet, au commerce ou à l'exploitation maraîchère. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
       en: "Implémentation IA à La Chevrolière : agents conversationnels B2B, automatisation workflow tertiaire, gestion exploitation maraîchère, extraction données commerciales. Sud Nantes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Chevrolière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du sud nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à La Chevrolière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du sud nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à La Chevrolière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du sud nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à La Chevrolière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du sud nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Chevrolière  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du sud nantais.",
     },
     {
       q: "Comment se déroule une mission depuis Nantes ?",

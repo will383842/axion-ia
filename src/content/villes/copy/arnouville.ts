@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ARNOUVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Arnouville (95), anciennement Arnouville-lès-Gonesse, est une commune du Val-d'Oise située au nord de Paris entre Sarcelles et Gonesse. Tissu TPE artisans, commerçants, PME tertiaires et de services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Arnouville (95), anciennement Arnouville-lès-Gonesse, est une commune du Val-d'Oise située au nord de Paris entre Sarcelles et Gonesse. Tissu PME artisanales, commerçants, PME tertiaires et de services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Arnouville (95), anciennement Arnouville-lès-Gonesse, est une commune du Val-d'Oise située au nord de Paris entre Sarcelles et Gonesse. Tissu TPE artisans, commerçants, PME tertiaires et de services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Arnouville (95), anciennement Arnouville-lès-Gonesse, est une commune du Val-d'Oise située au nord de Paris entre Sarcelles et Gonesse. Tissu PME artisanales, commerçants, PME tertiaires et de services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arnouville (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME tertiaires et de services du bassin Gonesse-Sarcelles, professions libérales, indépendants et entreprises du nord parisien.",
   seoHook: "artisanat services & commerce proximité",
   ecosystemFr:
-    "Arnouville (anciennement Arnouville-lès-Gonesse) est positionnée au nord de Paris entre Sarcelles et Gonesse, à proximité de l'aéroport Roissy-CDG. Tissu TPE artisans, commerces de proximité, PME tertiaires et services aux entreprises, professions libérales tournées vers le bassin économique nord-francilien.",
+    "Arnouville (anciennement Arnouville-lès-Gonesse) est positionnée au nord de Paris entre Sarcelles et Gonesse, à proximité de l'aéroport Roissy-CDG. Tissu PME artisanales, commerces de proximité, PME tertiaires et services aux entreprises, professions libérales tournées vers le bassin économique nord-francilien.",
   ecosystemEn:
-    "Arnouville (anciennement Arnouville-lès-Gonesse) est positionnée au nord de Paris entre Sarcelles et Gonesse, à proximité de l'aéroport Roissy-CDG. Tissu TPE artisans, commerces de proximité, PME tertiaires et services aux entreprises, professions libérales tournées vers le bassin économique nord-francilien.",
+    "Arnouville (anciennement Arnouville-lès-Gonesse) est positionnée au nord de Paris entre Sarcelles et Gonesse, à proximité de l'aéroport Roissy-CDG. Tissu PME artisanales, commerces de proximité, PME tertiaires et services aux entreprises, professions libérales tournées vers le bassin économique nord-francilien.",
   distancesFr:
     "Gare d'Arnouville — Luzarches (Transilien H). Paris Gare du Nord à 20 min. Sarcelles à 5 min. Gonesse à 5 min. Garges-lès-Gonesse à 5 min. Aéroport Roissy-CDG à 15 min.",
   distancesEn:
     "Gare d'Arnouville — Luzarches (Transilien H). Paris Gare du Nord à 20 min. Sarcelles à 5 min. Gonesse à 5 min. Garges-lès-Gonesse à 5 min. Aéroport Roissy-CDG à 15 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & services",
+    "PME du BTP & services",
     "Commerce de proximité & restauration",
     "PME tertiaires nord-francilien",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const ARNOUVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Arnouville : diagnostic adapté aux PME artisanales, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arnouville : diagnostic adapté aux PME artisanales, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arnouville : formats adaptés au bureau, cabinet, commerce ou atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const ARNOUVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Arnouville : agents conversationnels B2B, automatisation workflow, classification documents, gestion planning. Tous secteurs bassin Gonesse-Sarcelles.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arnouville : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME, professions libérales, gérants arnouvillois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Arnouville : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME, professions libérales, gérants arnouvillois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Arnouville : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI, professions libérales, gérants arnouvillois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Arnouville : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI, professions libérales, gérants arnouvillois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const ARNOUVILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Arnouville et tout le bassin Gonesse-Sarcelles (Garges-lès-Gonesse, Villiers-le-Bel, Sarcelles, Gonesse). Consultants depuis Paris Gare du Nord (20 min Transilien H).",
     },
     {
-      q: "Travaillez-vous avec les TPE et commerçants arnouvillois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Arnouville sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Travaillez-vous avec les PME et commerçants arnouvillois ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce à Arnouville sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Arnouville ?",

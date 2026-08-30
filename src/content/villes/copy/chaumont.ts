@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Chaumont, préfecture de la Haute-Marne (20 827 habitants), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. La ville, marquée historiquement par la ganterie, la bonneterie et la draperie, conserve un tissu industriel actif autour des zones Plein'Est, La Vendue et Dame Huguenotte. Aux côtés des commerçants du centre, des artisans, de l'École de gendarmerie et du 61ᵉ régiment d'artillerie, nous concevons des solutions IA sur mesure en code custom — jamais en no-code — pour libérer du temps administratif sur la facturation, la relance client, la planification ou le reporting. Notre cabinet francophone se déplace sur site pour des audits Sur place, des interventions ciblées et des implémentations durables, avec une démarche RGPD-by-design.",
+    "Axion-IA accompagne les PME et ETI de Chaumont, préfecture de la Haute-Marne (20 827 habitants), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. La ville, marquée historiquement par la ganterie, la bonneterie et la draperie, conserve un tissu industriel actif autour des zones Plein'Est, La Vendue et Dame Huguenotte. Aux côtés des commerçants du centre, des artisans, de l'École de gendarmerie et du 61ᵉ régiment d'artillerie, nous concevons des solutions IA sur mesure en code custom — jamais en no-code — pour libérer du temps administratif sur la facturation, la relance client, la planification ou le reporting. Notre cabinet francophone se déplace sur site pour des audits Sur place, des interventions ciblées et des implémentations durables, avec une démarche RGPD-by-design.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Chaumont, préfecture de la Haute-Marne (20 827 habitants), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. La ville, marquée historiquement par la ganterie, la bonneterie et la draperie, conserve un tissu industriel actif autour des zones Plein'Est, La Vendue et Dame Huguenotte. Aux côtés des commerçants du centre, des artisans, de l'École de gendarmerie et du 61ᵉ régiment d'artillerie, nous concevons des solutions IA sur mesure en code custom — jamais en no-code — pour libérer du temps administratif sur la facturation, la relance client, la planification ou le reporting. Notre cabinet francophone se déplace sur site pour des audits Sur place, des interventions ciblées et des implémentations durables, avec une démarche RGPD-by-design.",
+    "Axion-IA accompagne les PME et ETI de Chaumont, préfecture de la Haute-Marne (20 827 habitants), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. La ville, marquée historiquement par la ganterie, la bonneterie et la draperie, conserve un tissu industriel actif autour des zones Plein'Est, La Vendue et Dame Huguenotte. Aux côtés des commerçants du centre, des artisans, de l'École de gendarmerie et du 61ᵉ régiment d'artillerie, nous concevons des solutions IA sur mesure en code custom — jamais en no-code — pour libérer du temps administratif sur la facturation, la relance client, la planification ou le reporting. Notre cabinet francophone se déplace sur site pour des audits Sur place, des interventions ciblées et des implémentations durables, avec une démarche RGPD-by-design.",
   directAnswerFr:
-    "À Chaumont (Haute-Marne, Grand Est), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces du centre-ville, artisans, sous-traitants industriels des zones Plein'Est et Dame Huguenotte, professionnels de santé, prestataires gravitant autour de l'École de gendarmerie. Nous codons des agents IA et automatisations sur mesure (facturation, devis, suivi chantier, planning, reporting comptable) en code custom francophone, avec un cadrage clair, un livrable opérationnel et une conformité RGPD intégrée dès la conception. Williams se déplace sur site pour auditer, prototyper puis transférer la solution à votre équipe.",
+    "À Chaumont (Haute-Marne, Grand Est), Axion-IA déploie ses interventions IA chez les PME et ETI locales : commerces du centre-ville, artisans, sous-traitants industriels des zones Plein'Est et Dame Huguenotte, professionnels de santé, prestataires gravitant autour de l'École de gendarmerie. Nous codons des agents IA et automatisations sur mesure (facturation, devis, suivi chantier, planning, reporting comptable) en code custom francophone, avec un cadrage clair, un livrable opérationnel et une conformité RGPD intégrée dès la conception. Williams se déplace sur site pour auditer, prototyper puis transférer la solution à votre équipe.",
   directAnswerEn:
-    "À Chaumont (Haute-Marne, Grand Est), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces du centre-ville, artisans, sous-traitants industriels des zones Plein'Est et Dame Huguenotte, professionnels de santé, prestataires gravitant autour de l'École de gendarmerie. Nous codons des agents IA et automatisations sur mesure (facturation, devis, suivi chantier, planning, reporting comptable) en code custom francophone, avec un cadrage clair, un livrable opérationnel et une conformité RGPD intégrée dès la conception. Williams se déplace sur site pour auditer, prototyper puis transférer la solution à votre équipe.",
+    "À Chaumont (Haute-Marne, Grand Est), Axion-IA déploie ses interventions IA chez les PME et ETI locales : commerces du centre-ville, artisans, sous-traitants industriels des zones Plein'Est et Dame Huguenotte, professionnels de santé, prestataires gravitant autour de l'École de gendarmerie. Nous codons des agents IA et automatisations sur mesure (facturation, devis, suivi chantier, planning, reporting comptable) en code custom francophone, avec un cadrage clair, un livrable opérationnel et une conformité RGPD intégrée dès la conception. Williams se déplace sur site pour auditer, prototyper puis transférer la solution à votre équipe.",
   seoHook: "commerce, artisanat & sous-traitance industrielle",
   ecosystemFr:
     "Chaumont concentre son activité économique sur trois zones structurantes : Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME industrielles, logistique et services aux entreprises. Le commerce de centre-ville, l'artisanat, la santé, ainsi que les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie forment un socle économique stable. Le campus de l'Université de Reims Champagne-Ardenne et le Centre national du graphisme ouvrent un pôle tertiaire en croissance lente mais réelle.",
@@ -34,26 +34,26 @@ export const CHAUMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les PME et ETI du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les PME et ETI du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Intervention sur site à Chaumont — Williams se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Formation 4 h dès {{price:intervention-4h|flat}}.",
       en: "Intervention sur site à Chaumont — Williams se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA pour TPE/PME de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA pour TPE/PME de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA pour PME et ETI de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA pour PME et ETI de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec dirigeants de TPE/PME chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions un-à-un avec dirigeants de TPE/PME chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions un-à-un avec dirigeants de PME et ETI chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions un-à-un avec dirigeants de PME et ETI chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les PME du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle structurée autour des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME de mécanique, logistique et services aux entreprises : terrain idéal pour des portails clients, des configurateurs de devis et des automatisations qui relient atelier, GPAO, facturation et suivi de chantier sans aucune ressaisie entre le bureau et la production.",
           "Commerce de centre-ville et artisanat (BTP, métallerie) très denses autour de la basilique Saint-Jean-Baptiste et des Halles : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites mobile-first qui captent la clientèle locale, avec un chatbot RAG ancré sur vos fiches produits, vos stocks et vos horaires d'ouverture.",
@@ -88,12 +88,6 @@ export const CHAUMONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) sur le site existant d'un commerce du centre-ville, d'un artisan du BTP ou d'un professionnel de santé chaumontais, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const CHAUMONT_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou un portail déjà en activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire local du Grand Est.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les TPE du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chaumont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la préfecture de la Haute-Marne (environ 20 800 habitants), où les PME du commerce de centre-ville et de la rue Toupot de Béveaux côtoient la sous-traitance industrielle des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, héritière de la ganterie et de la bonneterie. On greffe aussi l'IA sur les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chaumont, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle structurée autour des zones Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME de mécanique, logistique et services aux entreprises : terrain idéal pour des portails clients, des configurateurs de devis et des automatisations qui relient atelier, GPAO, facturation et suivi de chantier sans aucune ressaisie entre le bureau et la production.",
           "Commerce de centre-ville et artisanat (BTP, métallerie) très denses autour de la basilique Saint-Jean-Baptiste et des Halles : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites mobile-first qui captent la clientèle locale, avec un chatbot RAG ancré sur vos fiches produits, vos stocks et vos horaires d'ouverture.",
@@ -174,12 +168,6 @@ export const CHAUMONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) sur le site existant d'un commerce du centre-ville, d'un artisan du BTP ou d'un professionnel de santé chaumontais, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -242,7 +230,7 @@ export const CHAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques chaumontais ciblez-vous en priorité ?",
-      a: "Nous accompagnons en priorité les TPE et PME du commerce de détail, de l'artisanat (BTP, métallerie), de la sous-traitance industrielle des zones Plein'Est et Dame Huguenotte, de la santé libérale et des services aux entreprises. Les ETI sont accompagnées de façon plus marginale.",
+      a: "Nous accompagnons en priorité les PME et ETI du commerce de détail, de l'artisanat (BTP, métallerie), de la sous-traitance industrielle des zones Plein'Est et Dame Huguenotte, de la santé libérale et des services aux entreprises. Les grands groupes complètent ce socle.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Chaumont ?",

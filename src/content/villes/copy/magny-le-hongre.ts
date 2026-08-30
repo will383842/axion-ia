@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   pitchFr:
-    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu PME et ETI tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu PME et ETI tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-le-Hongre (77). Nous accompagnons PME et ETI : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Seine-et-Marne",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-le-Hongre (77). Nous accompagnons PME et ETI : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
+  seoHook: "PME & PME Seine-et-Marne",
   ecosystemFr:
     "Magny-le-Hongre est une commune du Val d'Europe en Seine-et-Marne, à proximité immédiate de Disneyland Paris. Son tissu économique est porté par le tourisme, l'hôtellerie, la restauration, le commerce et les prestataires événementiels. Proximité avec Serris, Chessy, Bailly-Romainvilliers et Bussy-Saint-Georges.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Magny-le-Hongre : diagnostic adapté aux PME et ETI hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Magny-le-Hongre : diagnostic adapté aux PME et ETI hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magny-le-Hongre : formats adaptés hôtel, restaurant, commerce ou bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier tourisme et services.",
@@ -42,8 +42,8 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
       en: "Implémentation IA à Magny-le-Hongre : CRM augmenté hôtellerie, chatbot multilingue touristes, automatisation réservations et revenue management, gestion stocks restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Magny-le-Hongre : sessions dans vos locaux Val d'Europe ou en visio. Dirigeants TPE/PME hôtellerie, restauration, commerces, prestataires événementiels.",
-      en: "Coaching 1-to-1 à Magny-le-Hongre : sessions dans vos locaux Val d'Europe ou en visio. Dirigeants TPE/PME hôtellerie, restauration, commerces, prestataires événementiels.",
+      fr: "Coaching 1-to-1 à Magny-le-Hongre : sessions dans vos locaux Val d'Europe ou en visio. Dirigeants PME et ETI hôtellerie, restauration, commerces, prestataires événementiels.",
+      en: "Coaching 1-to-1 à Magny-le-Hongre : sessions dans vos locaux Val d'Europe ou en visio. Dirigeants PME et ETI hôtellerie, restauration, commerces, prestataires événementiels.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants du Val d'Europe ?",
-      a: "Oui, nous accompagnons les TPE et PME hôtellerie et restauration à Magny-le-Hongre : CRM augmenté réservations, chatbot multilingue, revenue management, automatisation facturation et gestion stocks.",
+      a: "Oui, nous accompagnons les PME et ETI hôtellerie et restauration à Magny-le-Hongre : CRM augmenté réservations, chatbot multilingue, revenue management, automatisation facturation et gestion stocks.",
     },
     {
       q: "Proposez-vous des formations IA pour les commerces du Val d'Europe ?",
@@ -65,7 +65,7 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching IA individuel à Magny-le-Hongre ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Magny-le-Hongre ou en visio. Sessions de 2h à la demi-journée pour dirigeants TPE/PME hôtellerie, restauration, commerce ou événementiel.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Magny-le-Hongre ou en visio. Sessions de 2h à la demi-journée pour dirigeants de PME et d'ETI hôtellerie, restauration, commerce ou événementiel.",
     },
   ],
 };

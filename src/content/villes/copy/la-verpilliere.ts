@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_VERPILLIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA collabore avec toutes les structures locales du Nord-Isère.",
+    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, PME artisanales, commerces. Axion-IA collabore avec toutes les structures locales du Nord-Isère.",
   pitchEn:
-    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA collabore avec toutes les structures locales du Nord-Isère.",
+    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, PME artisanales, commerces. Axion-IA collabore avec toutes les structures locales du Nord-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verpillière (38). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Saint-Exupéry, PME industrielles Nord-Isère, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la CAPI.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verpillière (38). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Saint-Exupéry, PME industrielles Nord-Isère, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de la CAPI.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verpillière (38). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Saint-Exupéry, PME industrielles Nord-Isère, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la CAPI.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verpillière (38). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Saint-Exupéry, PME industrielles Nord-Isère, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de la CAPI.",
   seoHook: "agglomération porte",
   ecosystemFr:
-    "La Verpillière appartient à la Communauté d'agglomération Porte de l'Isère (CAPI), dont le siège est à L'Isle-d'Abeau. Position géographique stratégique au cœur de l'unité urbaine Villefontaine et de l'aire d'attraction est de Lyon. Tissu logistique majeur (proximité immédiate Lyon-Saint-Exupéry à 10 min), PME industrielles, TPE artisanat BTP, commerces, services aux entreprises.",
+    "La Verpillière appartient à la Communauté d'agglomération Porte de l'Isère (CAPI), dont le siège est à L'Isle-d'Abeau. Position géographique stratégique au cœur de l'unité urbaine Villefontaine et de l'aire d'attraction est de Lyon. Tissu logistique majeur (proximité immédiate Lyon-Saint-Exupéry à 10 min), PME industrielles, PME du BTP, commerces, services aux entreprises.",
   ecosystemEn:
-    "La Verpillière appartient à la Communauté d'agglomération Porte de l'Isère (CAPI), dont le siège est à L'Isle-d'Abeau. Position géographique stratégique au cœur de l'unité urbaine Villefontaine et de l'aire d'attraction est de Lyon. Tissu logistique majeur (proximité immédiate Lyon-Saint-Exupéry à 10 min), PME industrielles, TPE artisanat BTP, commerces, services aux entreprises.",
+    "La Verpillière appartient à la Communauté d'agglomération Porte de l'Isère (CAPI), dont le siège est à L'Isle-d'Abeau. Position géographique stratégique au cœur de l'unité urbaine Villefontaine et de l'aire d'attraction est de Lyon. Tissu logistique majeur (proximité immédiate Lyon-Saint-Exupéry à 10 min), PME industrielles, PME du BTP, commerces, services aux entreprises.",
   distancesFr:
     "Gare La Verpillière (TER Lyon-Grenoble, 25 min Lyon). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 10 min. Grenoble centre à 1h.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique aéroportuaire (Lyon-Saint-Exupéry)",
     "Industrie Nord-Isère & sous-traitance",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "PME services aux entreprises CAPI",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, PME de l'artisanat et du commerce de la CAPI. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, PME de l'artisanat et du commerce de la CAPI. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Verpillière : formats adaptés à l'entrepôt logistique aéroportuaire, atelier industriel ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
       en: "Implémentation IA à La Verpillière : optimisation tournées logistiques (Saint-Exupéry), automatisation supply chain, agents conversationnels multilingues, prédiction maintenance. Adapté CAPI / aéroport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Verpillière : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants logistique aéroportuaire, industriels, artisans, gérants TPE/PME verpilliéroises souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à La Verpillière : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants logistique aéroportuaire, industriels, artisans, gérants TPE/PME verpilliéroises souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à La Verpillière : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants logistique aéroportuaire, industriels, artisans, gérants PME et ETI verpilliéroises souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à La Verpillière : sessions dans votre entrepôt, atelier, commerce ou en visio. Dirigeants logistique aéroportuaire, industriels, artisans, gérants PME et ETI verpilliéroises souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les opérateurs logistiques de la zone Lyon-Saint-Exupéry (entrepôts e-commerce, prestataires fret, services au sol aéroport) sur leurs cas IA : optimisation tournées, prédiction demande, automatisation préparation commandes, agents IA service client B2B multilingue.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans verpilliérois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à La Verpillière sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME et artisans verpilliérois ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce à La Verpillière sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour les PME industrielles CAPI ?",

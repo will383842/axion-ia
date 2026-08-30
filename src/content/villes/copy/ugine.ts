@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const UGINE_COPY: VilleCopy = {
   pitchFr:
-    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
+    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, PME de l'artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
+    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, PME de l'artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ugine (73). Nous accompagnons PME et ETI de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ugine (73). Nous accompagnons PME et ETI de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   seoHook: "métallurgie aciers & industrie mécanique",
   ecosystemFr:
-    "Ugine est une commune industrielle de la vallée d'Arly (7 150 habitants), positionnée entre Albertville et Annecy en Savoie. Historiquement marquée par la métallurgie des aciers spéciaux (tradition sidérurgique alpine), elle conserve un tissu industriel mécanique significatif. Commerces de vallée, TPE artisanat et services aux entreprises complètent l'économie locale, à la croisée des bassins d'emploi d'Albertville et d'Annecy.",
+    "Ugine est une commune industrielle de la vallée d'Arly (7 150 habitants), positionnée entre Albertville et Annecy en Savoie. Historiquement marquée par la métallurgie des aciers spéciaux (tradition sidérurgique alpine), elle conserve un tissu industriel mécanique significatif. Commerces de vallée, PME de l'artisanat et services aux entreprises complètent l'économie locale, à la croisée des bassins d'emploi d'Albertville et d'Annecy.",
   ecosystemEn:
-    "Ugine est une commune industrielle de la vallée d'Arly (7 150 habitants), positionnée entre Albertville et Annecy en Savoie. Historiquement marquée par la métallurgie des aciers spéciaux (tradition sidérurgique alpine), elle conserve un tissu industriel mécanique significatif. Commerces de vallée, TPE artisanat et services aux entreprises complètent l'économie locale, à la croisée des bassins d'emploi d'Albertville et d'Annecy.",
+    "Ugine est une commune industrielle de la vallée d'Arly (7 150 habitants), positionnée entre Albertville et Annecy en Savoie. Historiquement marquée par la métallurgie des aciers spéciaux (tradition sidérurgique alpine), elle conserve un tissu industriel mécanique significatif. Commerces de vallée, PME de l'artisanat et services aux entreprises complètent l'économie locale, à la croisée des bassins d'emploi d'Albertville et d'Annecy.",
   distancesFr:
     "Albertville à 10 min. Annecy à 35 min par D1508. Chambéry à 50 min par A43. Aéroport Lyon-Saint-Exupéry à 1h45. Megève/Flumet à 20 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const UGINE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Métallurgie & aciers spéciaux",
     "Industrie mécanique",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce vallée d'Arly",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, PME de l'artisanat et du commerce de la vallée d'Arly. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, PME de l'artisanat et du commerce de la vallée d'Arly. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ugine : ateliers en usine métallurgique, atelier mécanique ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure industrie et artisanat.",
@@ -42,8 +42,8 @@ export const UGINE_COPY: VilleCopy = {
       en: "Implémentation IA à Ugine : prédiction maintenance équipements métallurgiques, contrôle qualité aciers par vision, optimisation production mécanique, classification documents techniques, automatisation logistique industrielle.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ugine : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants usines métallurgie, responsables mécanique, artisans, gérants TPE/PME vallée d'Arly.",
-      en: "Coaching 1-to-1 à Ugine : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants usines métallurgie, responsables mécanique, artisans, gérants TPE/PME vallée d'Arly.",
+      fr: "Coaching 1-to-1 à Ugine : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants usines métallurgie, responsables mécanique, artisans, gérants PME et ETI vallée d'Arly.",
+      en: "Coaching 1-to-1 à Ugine : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants usines métallurgie, responsables mécanique, artisans, gérants PME et ETI vallée d'Arly.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const UGINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises de mécanique de précision et industrielle à Ugine : automatisation contrôle qualité pièces, optimisation planning production, maintenance prédictive machines-outils, gestion stocks outillage, classification plans techniques.",
     },
     {
-      q: "Quels tarifs pour les TPE artisans et commerçants d'Ugine ?",
-      a: "Pour les TPE artisans et commerçants à Ugine, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      q: "Quels tarifs pour les PME de l'artisanat et du commerce d'Ugine ?",
+      a: "Pour les PME de l'artisanat et du commerce à Ugine, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à Ugine ?",

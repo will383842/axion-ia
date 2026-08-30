@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BETHONCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Bethoncourt (25), commune residentielle du Pays de Montbeliard, est situee entre Montbeliard et la frontiere suisse. Tissu TPE/PME commerce de proximite, services a la personne, sous-traitance industrielle, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
+    "Bethoncourt (25), commune residentielle du Pays de Montbeliard, est situee entre Montbeliard et la frontiere suisse. Tissu PME et ETI commerce de proximite, services a la personne, sous-traitance industrielle, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Bethoncourt (25), commune residentielle du Pays de Montbeliard, est situee entre Montbeliard et la frontiere suisse. Tissu TPE/PME commerce de proximite, services a la personne, sous-traitance industrielle, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
+    "Bethoncourt (25), commune residentielle du Pays de Montbeliard, est situee entre Montbeliard et la frontiere suisse. Tissu PME et ETI commerce de proximite, services a la personne, sous-traitance industrielle, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bethoncourt (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services a la personne, sous-traitants industriels du bassin automobile, artisans BTP et restaurateurs du Pays de Montbeliard. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bethoncourt (25). Nous accompagnons PME et ETI : commercants de proximite, prestataires de services a la personne, sous-traitants industriels du bassin automobile, artisans BTP et restaurateurs du Pays de Montbeliard. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bethoncourt (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services a la personne, sous-traitants industriels du bassin automobile, artisans BTP et restaurateurs du Pays de Montbeliard. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bethoncourt (25). Nous accompagnons PME et ETI : commercants de proximite, prestataires de services a la personne, sous-traitants industriels du bassin automobile, artisans BTP et restaurateurs du Pays de Montbeliard. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "commerce proximite & services personne",
   ecosystemFr:
     "Bethoncourt est une commune residentielle du Pays de Montbeliard, au nord du Doubs. La ville beneficie de la proximite du bassin industriel automobile Stellantis-Sochaux. L'economie locale repose sur le commerce de proximite, les services a la personne, la sous-traitance industrielle et l'artisanat du batiment.",
@@ -42,8 +42,8 @@ export const BETHONCOURT_COPY: VilleCopy = {
       en: "Implementation IA a Bethoncourt : gestion stocks commerce, planification services a la personne, optimisation production sous-traitance automobile, automatisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Bethoncourt : sessions dans votre commerce, bureau, atelier ou en visio. Dirigeants TPE/PME du Pays de Montbeliard, gerants commerces et services.",
-      en: "Coaching 1-to-1 a Bethoncourt : sessions dans votre commerce, bureau, atelier ou en visio. Dirigeants TPE/PME du Pays de Montbeliard, gerants commerces et services.",
+      fr: "Coaching 1-to-1 a Bethoncourt : sessions dans votre commerce, bureau, atelier ou en visio. Dirigeants PME et ETI du Pays de Montbeliard, gerants commerces et services.",
+      en: "Coaching 1-to-1 a Bethoncourt : sessions dans votre commerce, bureau, atelier ou en visio. Dirigeants PME et ETI du Pays de Montbeliard, gerants commerces et services.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const BETHONCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Bethoncourt ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Bethoncourt, nous proposons des audits approfondis adaptes aux enjeux commerce, services ou industrie.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Bethoncourt, nous proposons des audits approfondis adaptes aux enjeux commerce, services ou industrie.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants industriels du secteur ?",

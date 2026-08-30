@@ -9,9 +9,9 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
   pitchEn:
     "Téteghem-Coudekerque-Village (59), commune nouvelle de l'agglomération dunkerquoise (CUD) issue de la fusion 2016, profite de la proximité du port de Dunkerque, deuxième port maritime français en tonnage. Tissu économique : services portuaires et logistiques, PME industrielles sous-traitantes, commerces, artisanat, agriculture flandrienne. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin dunkerquois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons TPE et PME : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons PME et ETI : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons TPE et PME : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons PME et ETI : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
   seoHook: "agglomération port maritime",
   ecosystemFr:
     "Téteghem-Coudekerque-Village est une commune nouvelle (fusion 2016) intégrée à la Communauté Urbaine de Dunkerque (CUD), à 10 minutes du centre dunkerquois et du port. L'économie locale est portée par les services logistiques et industriels gravitant autour du Grand Port Maritime de Dunkerque (sidérurgie, énergie, agroalimentaire). PME sous-traitantes, commerces de proximité, artisanat et agriculture flandrienne complètent un écosystème entre flandre maritime et bassin industrialo-portuaire.",
@@ -42,8 +42,8 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
       en: "Implémentation IA à Téteghem-Coudekerque-Village : tracking flux portuaires, optimisation tournées logistiques, maintenance prédictive industrie, agents conversationnels suivi commandes, CRM augmenté commerces et PME B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Téteghem-Coudekerque-Village : sessions dans votre entrepôt, usine, commerce, exploitation ou en visio. Dirigeants TPE/PME du bassin dunkerquois souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Téteghem-Coudekerque-Village : sessions dans votre entrepôt, usine, commerce, exploitation ou en visio. Dirigeants TPE/PME du bassin dunkerquois souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Téteghem-Coudekerque-Village : sessions dans votre entrepôt, usine, commerce, exploitation ou en visio. Dirigeants PME et ETI du bassin dunkerquois souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Téteghem-Coudekerque-Village : sessions dans votre entrepôt, usine, commerce, exploitation ou en visio. Dirigeants PME et ETI du bassin dunkerquois souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Téteghem-Coudekerque-Village  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, industrie sous-traitante, commerce, agriculture). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du Dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, industrie sous-traitante, commerce, agriculture). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME industrielles sous-traitantes Dunkerque ?",

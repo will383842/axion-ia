@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Mont-Saint-Aignan (76, Seine-Maritime) compte 20 165 habitants (recensement 2023), accolée à Rouen et intégrée à la Métropole Rouen Normandie. Ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus accueillant l'Université de Rouen Normandie et NEOMA Business School), elle conjugue économie de l'enseignement supérieur, sièges d'entreprises (Ferrero France), commerce de détail, services et un patrimoine reconnu (ruines de l'église Saint-Jacques XIIe, Saint-Thomas-de-Canterbury, espace Marc-Sangnier). Axion-IA accompagne TPE et PME normandes en code custom.",
+    "Mont-Saint-Aignan (76, Seine-Maritime) compte 20 165 habitants (recensement 2023), accolée à Rouen et intégrée à la Métropole Rouen Normandie. Ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus accueillant l'Université de Rouen Normandie et NEOMA Business School), elle conjugue économie de l'enseignement supérieur, sièges d'entreprises (Ferrero France), commerce de détail, services et un patrimoine reconnu (ruines de l'église Saint-Jacques XIIe, Saint-Thomas-de-Canterbury, espace Marc-Sangnier). Axion-IA accompagne PME et ETI normandes en code custom.",
   pitchEn:
-    "Mont-Saint-Aignan (76, Seine-Maritime) compte 20 165 habitants (recensement 2023), accolée à Rouen et intégrée à la Métropole Rouen Normandie. Ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus accueillant l'Université de Rouen Normandie et NEOMA Business School), elle conjugue économie de l'enseignement supérieur, sièges d'entreprises (Ferrero France), commerce de détail, services et un patrimoine reconnu (ruines de l'église Saint-Jacques XIIe, Saint-Thomas-de-Canterbury, espace Marc-Sangnier). Axion-IA accompagne TPE et PME normandes en code custom.",
+    "Mont-Saint-Aignan (76, Seine-Maritime) compte 20 165 habitants (recensement 2023), accolée à Rouen et intégrée à la Métropole Rouen Normandie. Ville la plus étudiante de France en proportion (environ 12 000 étudiants sur le campus accueillant l'Université de Rouen Normandie et NEOMA Business School), elle conjugue économie de l'enseignement supérieur, sièges d'entreprises (Ferrero France), commerce de détail, services et un patrimoine reconnu (ruines de l'église Saint-Jacques XIIe, Saint-Thomas-de-Canterbury, espace Marc-Sangnier). Axion-IA accompagne PME et ETI normandes en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les TPE et PME locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les PME et ETI locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les TPE et PME locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mont-Saint-Aignan (76) et dans toute la Métropole Rouen Normandie. Nous accompagnons en priorité les PME et ETI locales (laboratoires & spin-off universitaires, sièges et établissements industriels comme Ferrero France, commerces de détail, services aux étudiants, artisans BTP) avec du code custom — sans no-code. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD, déplacement facilité par la gare Rouen Rive-Droite.",
   seoHook: "campus universitaire, ferrero & services rouen métropole",
   ecosystemFr:
     "Mont-Saint-Aignan est accolée à Rouen sur le plateau nord, intégrée à la Métropole Rouen Normandie (71 communes, environ 500 000 habitants). Son campus universitaire (Université de Rouen Normandie, NEOMA Business School) en fait la ville la plus étudiante de France en proportion. Économie tirée par l'enseignement supérieur, le siège Ferrero France, le commerce de détail et les services aux étudiants. Communes limitrophes Rouen, Bois-Guillaume, Déville-lès-Rouen, Houppeville et Notre-Dame-de-Bondeville. Ligne T1 TEOR vers Rouen toutes les 6 min en heure de pointe.",
@@ -33,8 +33,8 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux TPE et PME du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux TPE et PME du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux PME et ETI du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Mont-Saint-Aignan : diagnostic adapté aux PME et ETI du plateau nord rouennais (services aux étudiants, commerces, laboratoires, artisans). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mont-Saint-Aignan : formats adaptés à votre commerce campus, votre cabinet, votre laboratoire ou vos bureaux du plateau. Atelier 1 journée pour vos équipes opérationnelles.",
@@ -45,8 +45,8 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
       en: "Implémentation IA code custom à Mont-Saint-Aignan : assistants conversationnels services étudiants, OCR documents administratifs universitaires, automatisation devis artisans, classification feedback clients commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mont-Saint-Aignan : sessions dans vos locaux du plateau, sur le campus ou en visio. Format dédié aux gérants TPE/PME commerces, services, laboratoires et artisans mont-saint-aignanais.",
-      en: "Coaching 1-to-1 à Mont-Saint-Aignan : sessions dans vos locaux du plateau, sur le campus ou en visio. Format dédié aux gérants TPE/PME commerces, services, laboratoires et artisans mont-saint-aignanais.",
+      fr: "Coaching 1-to-1 à Mont-Saint-Aignan : sessions dans vos locaux du plateau, sur le campus ou en visio. Format dédié aux gérants PME et ETI commerces, services, laboratoires et artisans mont-saint-aignanais.",
+      en: "Coaching 1-to-1 à Mont-Saint-Aignan : sessions dans vos locaux du plateau, sur le campus ou en visio. Format dédié aux gérants PME et ETI commerces, services, laboratoires et artisans mont-saint-aignanais.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
           "Ville la plus étudiante de France en proportion : un campus de ~12 000 étudiants (Université de Rouen Normandie, NEOMA Business School) appelle des portails de services, des intranets de scolarité et des applis mobiles à fort trafic. On y déploie des parcours utilisateurs augmentés à l'IA, une recherche sémantique sur vos contenus de scolarité et un chatbot RAG multilingue dimensionné pour les pics de rentrée et les campagnes d'admission.",
           "Pôles d'activités structurants du plateau — parc technologique de la Vatine et parc Biosciences de Normandie autour de l'Institut Polytechnique UniLaSalle — où cohabitent PME tertiaires, sociétés de services et acteurs des biosciences : pour ces établissements, on construit des plateformes métier IA-native branchées sur le SI (CRM, ERP) ou on greffe une brique IA sur l'existant, sans refonte coûteuse ni rupture d'exploitation.",
           "Siège Ferrero France et laboratoires universitaires manipulant des corpus de recherche et des données réglementées : nos chatbots RAG, agents et OCR documentaires s'ancrent sur vos jeux de données internes, avec hébergement strictement UE, conformité RGPD et AI Act, traçabilité des traitements — indispensable pour des données sensibles industrielles ou scientifiques.",
-          "Tissu dense de TPE du commerce de détail, de la restauration et de l'artisanat BTP du plateau (Mont-Saint-Aignan, Bois-Guillaume, Déville-lès-Rouen) : on livre des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), mobile-first, avec automatisation des devis, des factures et du suivi de stock, calibrées pour de petites équipes sans DSI.",
+          "Tissu dense de PME du commerce de détail, de la restauration et de l'artisanat BTP du plateau (Mont-Saint-Aignan, Bois-Guillaume, Déville-lès-Rouen) : on livre des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), mobile-first, avec automatisation des devis, des factures et du suivi de stock, calibrées pour de petites équipes sans DSI.",
         ],
         methodology: [
           {
@@ -87,12 +87,6 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis et de factures) sur le site existant d'un commerce de détail, d'un restaurateur, d'un artisan BTP ou d'un service de campus, en quelques semaines et sans refonte du site.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
           "Ville la plus étudiante de France en proportion : un campus de ~12 000 étudiants (Université de Rouen Normandie, NEOMA Business School) appelle des portails de services, des intranets de scolarité et des applis mobiles à fort trafic. On y déploie des parcours utilisateurs augmentés à l'IA, une recherche sémantique sur vos contenus de scolarité et un chatbot RAG multilingue dimensionné pour les pics de rentrée et les campagnes d'admission.",
           "Pôles d'activités structurants du plateau — parc technologique de la Vatine et parc Biosciences de Normandie autour de l'Institut Polytechnique UniLaSalle — où cohabitent PME tertiaires, sociétés de services et acteurs des biosciences : pour ces établissements, on construit des plateformes métier IA-native branchées sur le SI (CRM, ERP) ou on greffe une brique IA sur l'existant, sans refonte coûteuse ni rupture d'exploitation.",
           "Siège Ferrero France et laboratoires universitaires manipulant des corpus de recherche et des données réglementées : nos chatbots RAG, agents et OCR documentaires s'ancrent sur vos jeux de données internes, avec hébergement strictement UE, conformité RGPD et AI Act, traçabilité des traitements — indispensable pour des données sensibles industrielles ou scientifiques.",
-          "Tissu dense de TPE du commerce de détail, de la restauration et de l'artisanat BTP du plateau (Mont-Saint-Aignan, Bois-Guillaume, Déville-lès-Rouen) : on livre des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), mobile-first, avec automatisation des devis, des factures et du suivi de stock, calibrées pour de petites équipes sans DSI.",
+          "Tissu dense de PME du commerce de détail, de la restauration et de l'artisanat BTP du plateau (Mont-Saint-Aignan, Bois-Guillaume, Déville-lès-Rouen) : on livre des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), mobile-first, avec automatisation des devis, des factures et du suivi de stock, calibrées pour de petites équipes sans DSI.",
         ],
         methodology: [
           {
@@ -173,12 +167,6 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis et de factures) sur le site existant d'un commerce de détail, d'un restaurateur, d'un artisan BTP ou d'un service de campus, en quelques semaines et sans refonte du site.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -245,11 +233,11 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec l'écosystème universitaire et NEOMA Business School ?",
-      a: "Oui, nous accompagnons les TPE/PME prestataires du campus (services étudiants, restauration, librairies, coworking, formations privées) ainsi que les laboratoires souhaitant déployer des assistants IA sur leurs jeux de données de recherche.",
+      a: "Oui, nous accompagnons les PME et ETI prestataires du campus (services étudiants, restauration, librairies, coworking, formations privées) ainsi que les laboratoires souhaitant déployer des assistants IA sur leurs jeux de données de recherche.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans du plateau nord rouennais ?",
-      a: "Oui. Pour les TPE commerce de détail, restauration et artisans BTP de Mont-Saint-Aignan, Bois-Guillaume et Déville-lès-Rouen, nous proposons assistants conversationnels, automatisation devis et factures, gestion stocks et reporting commercial.",
+      a: "Oui. Pour les PME du commerce, restauration et artisans BTP de Mont-Saint-Aignan, Bois-Guillaume et Déville-lès-Rouen, nous proposons assistants conversationnels, automatisation devis et factures, gestion stocks et reporting commercial.",
     },
   ],
 };

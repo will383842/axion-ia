@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RABASTENS_COPY: VilleCopy = {
   pitchFr:
-    "Rabastens (81), cité médiévale sur les bords du Tarn au coeur du vignoble de Gaillac, près de 6 000 habitants. Tissu TPE viticoles et artisans, PME services, commerces de bourg, professions libérales et agriculture. Axion-IA accompagne tout le tissu professionnel local du bassin rabastinois.",
+    "Rabastens (81), cité médiévale sur les bords du Tarn au coeur du vignoble de Gaillac, près de 6 000 habitants. Tissu PME viticoles et artisans, PME services, commerces de bourg, professions libérales et agriculture. Axion-IA accompagne tout le tissu professionnel local du bassin rabastinois.",
   pitchEn:
-    "Rabastens (81), cité médiévale sur les bords du Tarn au coeur du vignoble de Gaillac, près de 6 000 habitants. Tissu TPE viticoles et artisans, PME services, commerces de bourg, professions libérales et agriculture. Axion-IA accompagne tout le tissu professionnel local du bassin rabastinois.",
+    "Rabastens (81), cité médiévale sur les bords du Tarn au coeur du vignoble de Gaillac, près de 6 000 habitants. Tissu PME viticoles et artisans, PME services, commerces de bourg, professions libérales et agriculture. Axion-IA accompagne tout le tissu professionnel local du bassin rabastinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons PME vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rabastens (81). Nous accompagnons PME vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   seoHook: "viticulture gaillac & agriculture grandes",
   ecosystemFr:
     "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Proximité Toulouse (35 min A68), Albi (30 min), Gaillac (10 min). Commune résidentielle attractive entre Toulouse et Albi.",
@@ -30,20 +30,20 @@ export const RABASTENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rabastens : diagnostic adapté aux PME vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rabastens : diagnostic adapté aux PME vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rabastens : formats adaptés au domaine viticole, commerce de bourg, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Rabastens : formats adaptés au domaine viticole, commerce de bourg, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Rabastens : traçabilité parcellaire, gestion cave, CRM oenotourisme, automatisation comptabilité, agents conversationnels pour les TPE/PME du vignoble tarnais.",
-      en: "Implémentation IA à Rabastens : traçabilité parcellaire, gestion cave, CRM oenotourisme, automatisation comptabilité, agents conversationnels pour les TPE/PME du vignoble tarnais.",
+      fr: "Implémentation IA à Rabastens : traçabilité parcellaire, gestion cave, CRM oenotourisme, automatisation comptabilité, agents conversationnels pour les PME et ETI du vignoble tarnais.",
+      en: "Implémentation IA à Rabastens : traçabilité parcellaire, gestion cave, CRM oenotourisme, automatisation comptabilité, agents conversationnels pour les PME et ETI du vignoble tarnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rabastens : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants TPE vignerons, gérants PME, commerçants et professions libérales du vignoble Gaillac.",
-      en: "Coaching 1-to-1 à Rabastens : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants TPE vignerons, gérants PME, commerçants et professions libérales du vignoble Gaillac.",
+      fr: "Coaching 1-to-1 à Rabastens : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants PME vignerons, gérants PME, commerçants et professions libérales du vignoble Gaillac.",
+      en: "Coaching 1-to-1 à Rabastens : sessions dans vos locaux, domaine viticole ou en visio. Dirigeants PME vignerons, gérants PME, commerçants et professions libérales du vignoble Gaillac.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const RABASTENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un vigneron à Rabastens ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE vignerons de Rabastens. Diagnostic complet : traçabilité parcellaire, gestion cave, vente directe, administratif. Plan d'action IA avec ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME vignerons de Rabastens. Diagnostic complet : traçabilité parcellaire, gestion cave, vente directe, administratif. Plan d'action IA avec ROI chiffré.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles du Tarnais ?",
@@ -65,7 +65,7 @@ export const RABASTENS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Rabastens ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Rabastens. Format flexible : dans vos locaux, en visio ou sur votre domaine viticole. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Rabastens. Format flexible : dans vos locaux, en visio ou sur votre domaine viticole. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

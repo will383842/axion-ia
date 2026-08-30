@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MALZEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu PME et ETI services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu PME et ETI services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : PME et ETI de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : PME et ETI de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
   ecosystemFr:
     "Malzéville est une commune résidentielle du nord de la Métropole du Grand Nancy, adossée au plateau de Haye et bordée par la Meurthe. Son tissu économique repose sur les services aux entreprises, le commerce de proximité, l'artisanat BTP, les professions libérales et la restauration. Cadre périurbain prisé, accès direct au centre de Nancy.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const MALZEVILLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises & tertiaire",
     "Commerce de proximité & détail",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Professions libérales & santé",
     "Restauration & hôtellerie",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Malzéville : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Malzéville : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Malzéville : formats adaptés au bureau tertiaire, au commerce de proximité ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const MALZEVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Malzéville : agents conversationnels relation client, automatisation workflow tertiaire, chatbots prise de RDV, classification documentaire, gestion stocks commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Malzéville : sessions dans vos locaux ou en visio. Gérants TPE/PME, commerçants, professions libérales et dirigeants du nord de la Métropole du Grand Nancy.",
-      en: "Coaching 1-to-1 à Malzéville : sessions dans vos locaux ou en visio. Gérants TPE/PME, commerçants, professions libérales et dirigeants du nord de la Métropole du Grand Nancy.",
+      fr: "Coaching 1-to-1 à Malzéville : sessions dans vos locaux ou en visio. Gérants PME et ETI, commerçants, professions libérales et dirigeants du nord de la Métropole du Grand Nancy.",
+      en: "Coaching 1-to-1 à Malzéville : sessions dans vos locaux ou en visio. Gérants PME et ETI, commerçants, professions libérales et dirigeants du nord de la Métropole du Grand Nancy.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MALZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME de services et commerçants de Malzéville ?",
-      a: "Oui, nous accompagnons les TPE/PME de services et commerçants : agents conversationnels relation client, automatisation workflow, chatbots prise de RDV, gestion stocks, facturation automatique.",
+      a: "Oui, nous accompagnons les PME et ETI de services et commerçants : agents conversationnels relation client, automatisation workflow, chatbots prise de RDV, gestion stocks, facturation automatique.",
     },
     {
       q: "Accompagnez-vous les professions libérales et artisans de Malzéville ?",
@@ -61,7 +61,7 @@ export const MALZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Malzéville  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Malzéville et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Malzéville et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Malzéville ?",

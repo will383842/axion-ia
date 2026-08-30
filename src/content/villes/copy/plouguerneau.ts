@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLOUGUERNEAU_COPY: VilleCopy = {
   pitchFr:
-    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
+    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. PME artisanales, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
   pitchEn:
-    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
+    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. PME artisanales, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : PME artisanales et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : PME artisanales et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
   seoHook: "tourisme littoral & goémon",
   ecosystemFr:
     "Plouguerneau est une commune littorale étendue du pays des Abers, entre Aber Wrac'h et Aber Benoît. Son économie repose sur le tourisme balnéaire (phare de l'Île Vierge, sentier côtier GR34), la récolte et la transformation du goémon, l'ostréiculture, l'agriculture et les commerces de proximité. La commune attire résidents et touristes grâce à son patrimoine maritime exceptionnel.",
@@ -30,8 +30,8 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Plouguerneau : diagnostic adapté aux PME touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Plouguerneau : diagnostic adapté aux PME touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouguerneau : formats adaptés aux hébergeurs touristiques, goémoniers, ostréiculteurs ou commerces littoraux. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -56,12 +56,12 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergeurs touristiques, ostréiculteurs et goémoniers du pays des Abers sur leurs cas IA : automatisation réservations, agents conversationnels visiteurs, traçabilité produits marins, optimisation planning saisonnier. Confidentialité métier garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants de Plouguerneau ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Plouguerneau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation présence en ligne saisonnière. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Plouguerneau ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Plouguerneau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation présence en ligne saisonnière. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
-      q: "Quels tarifs pour une TPE ou PME du pays des Abers ?",
-      a: "L'audit sur place s'adapte à votre périmètre, accessible aux TPE. Pour les PME touristiques et exploitations marines, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      q: "Quels tarifs pour une PME ou ETI du pays des Abers ?",
+      a: "L'audit sur place s'adapte à votre périmètre, accessible aux PME. Pour les PME touristiques et exploitations marines, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Plouguerneau ?",

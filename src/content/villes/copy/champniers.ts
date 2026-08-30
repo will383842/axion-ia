@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPNIERS_COPY: VilleCopy = {
   pitchFr:
-    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
+    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de PME artisanales, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   pitchEn:
-    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
+    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de PME artisanales, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champniers (16). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champniers (16). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   seoHook: "logistique transport & industrielles zones",
   ecosystemFr:
-    "Champniers est une commune du nord de l'agglomération GrandAngoulême concentrant plusieurs zones d'activités (parc Agora, zones industrielles). PME industrielles, logistique et transport, TPE artisans BTP, commerces, services aux entreprises. Nœud routier (N10/N141) facilitant l'accès au bassin angoumoisin.",
+    "Champniers est une commune du nord de l'agglomération GrandAngoulême concentrant plusieurs zones d'activités (parc Agora, zones industrielles). PME industrielles, logistique et transport, PME du BTP, commerces, services aux entreprises. Nœud routier (N10/N141) facilitant l'accès au bassin angoumoisin.",
   ecosystemEn:
-    "Champniers est une commune du nord de l'agglomération GrandAngoulême concentrant plusieurs zones d'activités (parc Agora, zones industrielles). PME industrielles, logistique et transport, TPE artisans BTP, commerces, services aux entreprises. Nœud routier (N10/N141) facilitant l'accès au bassin angoumoisin.",
+    "Champniers est une commune du nord de l'agglomération GrandAngoulême concentrant plusieurs zones d'activités (parc Agora, zones industrielles). PME industrielles, logistique et transport, PME du BTP, commerces, services aux entreprises. Nœud routier (N10/N141) facilitant l'accès au bassin angoumoisin.",
   distancesFr:
     "Champniers est à 10 min d'Angoulême centre (nord, N10). Gare TGV d'Angoulême à 15 min (Paris Montparnasse 2h05, Bordeaux 55 min). Aéroport Angoulême-Cognac à 15 min. Carrefour N10/N141.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CHAMPNIERS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique & transport",
     "PME industrielles & zones d'activités",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce & distribution",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, PME artisanales, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, PME artisanales, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champniers : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const CHAMPNIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Champniers : optimisation flux logistiques, automatisation gestion stocks entrepôts, maintenance prédictive équipements industriels, agents conversationnels gestion commandes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Champniers : sessions dans vos locaux industriels, entrepôt ou en visio. Dirigeants TPE/PME logistiques, industriels et artisans de l'agglomération angoumoisine souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Champniers : sessions dans vos locaux industriels, entrepôt ou en visio. Dirigeants TPE/PME logistiques, industriels et artisans de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Champniers : sessions dans vos locaux industriels, entrepôt ou en visio. Dirigeants PME et ETI logistiques, industriels et artisans de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Champniers : sessions dans vos locaux industriels, entrepôt ou en visio. Dirigeants PME et ETI logistiques, industriels et artisans de l'agglomération angoumoisine souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

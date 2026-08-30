@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MEXIMIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de la plaine de l'Ain.",
+    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), PME du BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de la plaine de l'Ain.",
   pitchEn:
-    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de la plaine de l'Ain.",
+    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), PME du BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de la plaine de l'Ain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, TPE artisans BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, PME du BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, TPE artisans BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, PME du BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
   seoHook: "tertiaires plaine & industrielles",
   ecosystemFr:
-    "Meximieux est positionnée sur la Côtière est de Lyon, plaine de l'Ain. Tissu PME tertiaires et industrielles, agriculture plaine de l'Ain, TPE artisanat BTP, commerces.",
+    "Meximieux est positionnée sur la Côtière est de Lyon, plaine de l'Ain. Tissu PME tertiaires et industrielles, agriculture plaine de l'Ain, PME du BTP, commerces.",
   ecosystemEn:
-    "Meximieux est positionnée sur la Côtière est de Lyon, plaine de l'Ain. Tissu PME tertiaires et industrielles, agriculture plaine de l'Ain, TPE artisanat BTP, commerces.",
+    "Meximieux est positionnée sur la Côtière est de Lyon, plaine de l'Ain. Tissu PME tertiaires et industrielles, agriculture plaine de l'Ain, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 40 min. Aéroport Lyon-Saint-Exupéry à 25 min. Miribel à 20 min. Ambérieu-en-Bugey à 15 min. Bourg-en-Bresse à 40 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MEXIMIEUX_COPY: VilleCopy = {
     "PME tertiaires plaine de l'Ain",
     "PME industrielles",
     "Agriculture plaine de l'Ain",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Meximieux : diagnostic adapté aux PME tertiaires/industrielles plaine de l'Ain, agriculteurs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Meximieux : diagnostic adapté aux PME tertiaires/industrielles plaine de l'Ain, agriculteurs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Meximieux : diagnostic adapté aux PME tertiaires/industrielles plaine de l'Ain, agriculteurs, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Meximieux : diagnostic adapté aux PME tertiaires/industrielles plaine de l'Ain, agriculteurs, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Meximieux : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MEXIMIEUX_COPY: VilleCopy = {
       en: "Implémentation IA à Meximieux : agents conversationnels B2B, prédiction maintenance, classification photos cultures, automatisation workflow. Plaine de l'Ain.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Meximieux : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants TPE/PME meximolan.",
-      en: "Coaching 1-to-1 à Meximieux : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants TPE/PME meximolan.",
+      fr: "Coaching 1-to-1 à Meximieux : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants PME et ETI meximolan.",
+      en: "Coaching 1-to-1 à Meximieux : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants PME et ETI meximolan.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MEXIMIEUX_COPY: VilleCopy = {
       a: "Oui, prédiction récoltes, classification photos cultures, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

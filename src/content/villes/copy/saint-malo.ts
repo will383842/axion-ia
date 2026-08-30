@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MALO_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Malo : commerces et hôtels-restaurants de la cité corsaire, acteurs du port et du nautisme, PME agroalimentaires du bassin Roullier. On déploie des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les TPE et PME de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les PME et ETI de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les TPE et PME de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Malo, en Ille-et-Vilaine, pour les PME et ETI de la cité corsaire : hôtels, restaurants et commerces touristiques d'Intra-Muros, acteurs du port (ferries vers l'Angleterre, pêche, nautisme et Route du Rhum), PME agroalimentaires du bassin du groupe Roullier-Timac. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "tourisme, port & agroalimentaire",
   ecosystemFr:
-    "Saint-Malo, cité corsaire et port d'Ille-et-Vilaine, vit du tourisme et de l'hôtellerie-restauration concentrés autour d'Intra-Muros, d'une activité portuaire dense (ferries transmanche vers l'Angleterre, pêche, nautisme et départ de la Route du Rhum) et d'un solide socle agroalimentaire — le groupe Roullier, via Timac Agro, y a son siège historique. Ce tissu mêle TPE saisonnières, commerces, PME agroalimentaires et acteurs du nautisme. Pour ces structures à forte charge administrative et saisonnalité marquée, l'IA bien cadrée fluidifie la gestion.",
+    "Saint-Malo, cité corsaire et port d'Ille-et-Vilaine, vit du tourisme et de l'hôtellerie-restauration concentrés autour d'Intra-Muros, d'une activité portuaire dense (ferries transmanche vers l'Angleterre, pêche, nautisme et départ de la Route du Rhum) et d'un solide socle agroalimentaire — le groupe Roullier, via Timac Agro, y a son siège historique. Ce tissu mêle PME saisonnières, commerces, PME agroalimentaires et acteurs du nautisme. Pour ces structures à forte charge administrative et saisonnalité marquée, l'IA bien cadrée fluidifie la gestion.",
   ecosystemEn:
-    "Saint-Malo, cité corsaire et port d'Ille-et-Vilaine, vit du tourisme et de l'hôtellerie-restauration concentrés autour d'Intra-Muros, d'une activité portuaire dense (ferries transmanche vers l'Angleterre, pêche, nautisme et départ de la Route du Rhum) et d'un solide socle agroalimentaire — le groupe Roullier, via Timac Agro, y a son siège historique. Ce tissu mêle TPE saisonnières, commerces, PME agroalimentaires et acteurs du nautisme. Pour ces structures à forte charge administrative et saisonnalité marquée, l'IA bien cadrée fluidifie la gestion.",
+    "Saint-Malo, cité corsaire et port d'Ille-et-Vilaine, vit du tourisme et de l'hôtellerie-restauration concentrés autour d'Intra-Muros, d'une activité portuaire dense (ferries transmanche vers l'Angleterre, pêche, nautisme et départ de la Route du Rhum) et d'un solide socle agroalimentaire — le groupe Roullier, via Timac Agro, y a son siège historique. Ce tissu mêle PME saisonnières, commerces, PME agroalimentaires et acteurs du nautisme. Pour ces structures à forte charge administrative et saisonnalité marquée, l'IA bien cadrée fluidifie la gestion.",
   distancesFr:
     "Saint-Malo dispose d'une gare TGV reliant Paris-Montparnasse en environ 2h30 via Rennes. La N137 connecte directement la cité à Rennes, à une cinquantaine de kilomètres, et à son aéroport de Rennes-Bretagne, à environ 75 km. Le port de Saint-Malo assure les liaisons ferries vers l'Angleterre et les îles anglo-normandes. Cette desserte facilite nos déplacements sur site dans toute la côte d'Émeraude et le pays malouin.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SAINT_MALO_COPY: VilleCopy = {
       en: "L'implémentation déploie à Saint-Malo des assistants IA et workflows sur mesure pour le tourisme, le nautisme et l'agroalimentaire, avec formation des équipes et conformité RGPD intégrée dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Saint-Malo forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
-      en: "L'accompagnement un-à-un à Saint-Malo forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
+      fr: "L'accompagnement un-à-un à Saint-Malo forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
+      en: "L'accompagnement un-à-un à Saint-Malo forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés équipent hôtels, restaurants et commerces de Saint-Malo d'une plateforme rapide avec réservation en ligne, chatbot multilingue et contenu IA, optimisée pour le tourisme et la recherche locale.",
@@ -57,7 +57,7 @@ export const SAINT_MALO_COPY: VilleCopy = {
         whyHere: [
           "Sites & SaaS calibrés pour la saisonnalité corsaire : pics extrêmes du village de la Route du Rhum (~1,5 M de visiteurs en 2022) et du festival Étonnants Voyageurs (~50 000 visiteurs) — réservation en ligne, file d'attente et e-commerce qui tiennent la charge.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — multilingue FR/EN/anglo-normand pour les flux ferries Jersey, Guernesey et Poole, pas seulement la brique IA.",
-          "Augmentation de l'existant (widget, API, plugin sur PMS hôtelier, moteur de réservation ou CMS) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois pour TPE touristiques et startups de l'écosystème French Tech Rennes St-Malo.",
+          "Augmentation de l'existant (widget, API, plugin sur PMS hôtelier, moteur de réservation ou CMS) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois pour PME touristiques et startups de l'écosystème French Tech Rennes St-Malo.",
           "Données agro-industrielles et clients sensibles : hébergement UE strict et chaîne IA souveraine RGPD — un vrai atout pour les PME du bassin Roullier/Timac Agro et les acteurs portuaires gérant des flux transmanche.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const SAINT_MALO_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG multilingue, recherche sémantique, réservation) sur le site existant d'un hôtel-restaurant d'Intra-Muros ou d'un commerce touristique, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -174,12 +168,6 @@ export const SAINT_MALO_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (multilingual RAG chatbot, semantic search, booking) onto the existing site of an Intra-Muros hotel-restaurant or a tourism retailer, in a few weeks, with no rebuild.",
-          },
           {
             sizeLabel: "PME",
             price: "Bespoke site / application",

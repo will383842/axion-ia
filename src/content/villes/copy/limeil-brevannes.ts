@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const LIMEIL_BREVANNES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les ETI viennent en complément.",
+    "Axion-IA accompagne les PME et ETI de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les grands groupes viennent en complément.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les ETI viennent en complément.",
+    "Axion-IA accompagne les PME et ETI de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les grands groupes viennent en complément.",
   directAnswerFr:
-    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nos consultants se déplacent sur site depuis Paris (16 km, accès RER A via Boissy-Saint-Léger ou RER D via Créteil-Pompadour) pour auditer, automatiser et implémenter des solutions IA en code custom. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
+    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les PME et ETI locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nos consultants se déplacent sur site depuis Paris (16 km, accès RER A via Boissy-Saint-Léger ou RER D via Créteil-Pompadour) pour auditer, automatiser et implémenter des solutions IA en code custom. Les grands groupes sont accompagnés en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
   directAnswerEn:
-    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nos consultants se déplacent sur site depuis Paris (16 km, accès RER A via Boissy-Saint-Léger ou RER D via Créteil-Pompadour) pour auditer, automatiser et implémenter des solutions IA en code custom. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
+    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les PME et ETI locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nos consultants se déplacent sur site depuis Paris (16 km, accès RER A via Boissy-Saint-Léger ou RER D via Créteil-Pompadour) pour auditer, automatiser et implémenter des solutions IA en code custom. Les grands groupes sont accompagnés en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
   seoHook: "PME services & santé",
   ecosystemFr:
     "Limeil-Brévannes s'insère dans le bassin sud-est francilien, à 16 km de Paris. La commune accueille l'hôpital Émile-Roux de l'AP-HP (spécialisé en gériatrie) et plusieurs employeurs industriels comme Sodern, Philips et Ommic SAS. Le bassin est connecté par les RN 19 et 406, le RER A (Boissy-Saint-Léger), le RER D (Créteil-Pompadour, Villeneuve-Saint-Georges), la ligne 8 du métro via Pointe du Lac et le téléphérique Câble 1. Communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Yerres et Villecresnes.",
@@ -35,16 +35,16 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
       en: "Audit IA Sur place à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
     },
     interventions: {
-      fr: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
-      en: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
+      fr: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour PME et ETI de services, santé et industrie.",
+      en: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour PME et ETI de services, santé et industrie.",
     },
     implementation: {
       fr: "Implémentation IA à Limeil-Brévannes dès {{price:impl-poc|entry}} : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
       en: "Implémentation IA à Limeil-Brévannes dès {{price:impl-poc|entry}} : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Limeil-Brévannes dès {{price:intervention-dirigeants|flat}} : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
-      en: "Sessions 1-to-1 à Limeil-Brévannes dès {{price:intervention-dirigeants|flat}} : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
+      fr: "Sessions 1-to-1 à Limeil-Brévannes dès {{price:intervention-dirigeants|flat}} : accompagnement personnalisé des dirigeants de PME et d'ETI pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
+      en: "Sessions 1-to-1 à Limeil-Brévannes dès {{price:intervention-dirigeants|flat}} : accompagnement personnalisé des dirigeants de PME et d'ETI pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les artisans, commerces et indépendants du bassin et du Parc des entrepreneurs : site multi-CMS responsive, référencement local, première brique IA (assistant FAQ, génération de fiches). Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier + IA intégrée",
@@ -172,12 +166,6 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For craftspeople, shops and freelancers in the area and at the Parc des entrepreneurs: responsive multi-CMS site, local SEO, a first AI block (FAQ assistant, product-sheet generation). Quote within 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "PME",
             price: "Business platform + integrated AI",
             detail:
@@ -243,11 +231,11 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux sont prioritaires à Limeil-Brévannes ?",
-      a: "TPE et PME en santé, services, commerce et sous-traitance industrielle (autour de Sodern, Philips, Ommic SAS) sont prioritaires. Les ETI viennent en complément.",
+      a: "PME et ETI en santé, services, commerce et sous-traitance industrielle (autour de Sodern, Philips, Ommic SAS) sont prioritaires. Les grands groupes viennent en complément.",
     },
     {
       q: "Axion-IA propose-t-il du no-code à Limeil-Brévannes ?",
-      a: "Non. Nous développons exclusivement en code custom : maîtrise du code source, indépendance vis-à-vis des plateformes propriétaires et conformité RGPD renforcée pour nos clients TPE et PME.",
+      a: "Non. Nous développons exclusivement en code custom : maîtrise du code source, indépendance vis-à-vis des plateformes propriétaires et conformité RGPD renforcée pour nos clients PME et ETI.",
     },
   ],
 };

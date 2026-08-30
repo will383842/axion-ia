@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ANDRESY_COPY: VilleCopy = {
   pitchFr:
-    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y travaille avec les organisations du territoire.",
+    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y travaille avec les organisations du territoire.",
+    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Andrésy (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Andrésy (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Andrésy (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Andrésy (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Andrésy est une commune des Yvelines située à la confluence de la Seine et de l'Oise, à 20 km de Paris, appréciée pour son cadre fluvial et sa proximité avec Conflans-Sainte-Honorine et Maurecourt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques.",
+    "Andrésy est une commune des Yvelines située à la confluence de la Seine et de l'Oise, à 20 km de Paris, appréciée pour son cadre fluvial et sa proximité avec Conflans-Sainte-Honorine et Maurecourt. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités nautiques.",
   ecosystemEn:
-    "Andrésy est une commune des Yvelines située à la confluence de la Seine et de l'Oise, à 20 km de Paris, appréciée pour son cadre fluvial et sa proximité avec Conflans-Sainte-Honorine et Maurecourt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques.",
+    "Andrésy est une commune des Yvelines située à la confluence de la Seine et de l'Oise, à 20 km de Paris, appréciée pour son cadre fluvial et sa proximité avec Conflans-Sainte-Honorine et Maurecourt. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités nautiques.",
   distancesFr:
     "Conflans-Sainte-Honorine à 5 min. Poissy à 10 min. Gare Transilien Andrésy (ligne J). Paris Saint-Lazare à 35 min. Paris La Défense à 25 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const ANDRESY_COPY: VilleCopy = {
       en: "Implémentation IA à Andrésy : CRM augmenté commerçants, automatisation back-office PME, gestion cabinet, outils réservation restauration, plateformes booking nautique IA.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Andrésy : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME andrésiens, professions libérales, prestataires tourisme fluvial.",
-      en: "Coaching 1-to-1 à Andrésy : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME andrésiens, professions libérales, prestataires tourisme fluvial.",
+      fr: "Coaching 1-to-1 à Andrésy : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI andrésiens, professions libérales, prestataires tourisme fluvial.",
+      en: "Coaching 1-to-1 à Andrésy : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI andrésiens, professions libérales, prestataires tourisme fluvial.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const ANDRESY_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, CRM clients, facturation automatisée, outils de pilotage activité, tableaux de bord IA, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

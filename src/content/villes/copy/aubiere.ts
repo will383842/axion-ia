@@ -9,9 +9,9 @@ export const AUBIERE_COPY: VilleCopy = {
   pitchEn:
     "Aubière (63), commune de Clermont Auvergne Métropole, accueille le campus universitaire des Cézeaux (UCA) et une zone commerciale dynamique au sud de Clermont-Ferrand. Recherche universitaire, startups deeptech, commerce, PME tertiaires, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubière (63). Nous accompagnons TPE et PME : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubière (63). Nous accompagnons PME et ETI : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubière (63). Nous accompagnons TPE et PME : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubière (63). Nous accompagnons PME et ETI : startups deeptech campus Cézeaux, laboratoires de recherche UCA, commerces zone commerciale sud, PME tertiaires, prestataires de services.",
   seoHook: "recherche universitaire & startups deeptech",
   ecosystemFr:
     "Aubière accueille le campus des Cézeaux de l'Université Clermont Auvergne (UCA), pôle recherche et innovation. Startups deeptech, incubateurs, zone commerciale sud dynamique, PME tertiaires, services aux entreprises et étudiants.",
@@ -38,12 +38,12 @@ export const AUBIERE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Aubière : formats adaptés labo, incubateur, bureau startup, commerce, siège PME. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémentation IA à Aubière : prototypage IA startups deeptech, automatisation recherche UCA, CRM augmentés commerces, outils gestion TPE/PME.",
-      en: "Implémentation IA à Aubière : prototypage IA startups deeptech, automatisation recherche UCA, CRM augmentés commerces, outils gestion TPE/PME.",
+      fr: "Implémentation IA à Aubière : prototypage IA startups deeptech, automatisation recherche UCA, CRM augmentés commerces, outils gestion PME et ETI.",
+      en: "Implémentation IA à Aubière : prototypage IA startups deeptech, automatisation recherche UCA, CRM augmentés commerces, outils gestion PME et ETI.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubière : sessions dans votre labo, incubateur, commerce ou en visio. Fondateurs startups, chercheurs, gérants TPE/PME, commerçants aubiérois.",
-      en: "Coaching 1-to-1 à Aubière : sessions dans votre labo, incubateur, commerce ou en visio. Fondateurs startups, chercheurs, gérants TPE/PME, commerçants aubiérois.",
+      fr: "Coaching 1-to-1 à Aubière : sessions dans votre labo, incubateur, commerce ou en visio. Fondateurs startups, chercheurs, gérants PME et ETI, commerçants aubiérois.",
+      en: "Coaching 1-to-1 à Aubière : sessions dans votre labo, incubateur, commerce ou en visio. Fondateurs startups, chercheurs, gérants PME et ETI, commerçants aubiérois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const AUBIERE_COPY: VilleCopy = {
       a: "Oui, automatisation traitement données expérimentales, analyse publications, classification résultats, outils veille scientifique IA.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

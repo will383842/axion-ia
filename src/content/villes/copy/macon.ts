@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MACON_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Mâcon — domaines viticoles du Mâconnais, négoce de vins, agroalimentaire, commerce le long de la Saône. Nous concevons des automatisations sobres et durables, sans dépendance à un éditeur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Mâcon, porte sud de la Bourgogne adossée au vignoble Mâconnais (Pouilly-Fuissé) et à la Saône. Nous intervenons sur site auprès des domaines viticoles, du négoce de vins, de l'agroalimentaire et du commerce de centre-ville pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni enfermement technologique ; les grands groupes complètent ce socle.",
   seoHook: "vins du Mâconnais & agroalimentaire",
   ecosystemFr:
-    "Mâcon vit au rythme du vignoble Mâconnais et de ses AOP prestigieuses comme le Pouilly-Fuissé, structuré autour de caves coopératives et de maisons de négoce qui exportent dans le monde entier. La Saône irrigue une logistique fluviale et un tissu agroalimentaire actif, tandis que le commerce et les services portent l'économie d'une ville chère à Lamartine. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi des stocks et la relation client sans alourdir des structures déjà sobres.",
+    "Mâcon vit au rythme du vignoble Mâconnais et de ses AOP prestigieuses comme le Pouilly-Fuissé, structuré autour de caves coopératives et de maisons de négoce qui exportent dans le monde entier. La Saône irrigue une logistique fluviale et un tissu agroalimentaire actif, tandis que le commerce et les services portent l'économie d'une ville chère à Lamartine. Pour ces PME et ETI, l'IA bien dosée fluidifie la gestion commerciale, le suivi des stocks et la relation client sans alourdir des structures déjà sobres.",
   ecosystemEn:
-    "Mâcon vit au rythme du vignoble Mâconnais et de ses AOP prestigieuses comme le Pouilly-Fuissé, structuré autour de caves coopératives et de maisons de négoce qui exportent dans le monde entier. La Saône irrigue une logistique fluviale et un tissu agroalimentaire actif, tandis que le commerce et les services portent l'économie d'une ville chère à Lamartine. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi des stocks et la relation client sans alourdir des structures déjà sobres.",
+    "Mâcon vit au rythme du vignoble Mâconnais et de ses AOP prestigieuses comme le Pouilly-Fuissé, structuré autour de caves coopératives et de maisons de négoce qui exportent dans le monde entier. La Saône irrigue une logistique fluviale et un tissu agroalimentaire actif, tandis que le commerce et les services portent l'économie d'une ville chère à Lamartine. Pour ces PME et ETI, l'IA bien dosée fluidifie la gestion commerciale, le suivi des stocks et la relation client sans alourdir des structures déjà sobres.",
   distancesFr:
     "Mâcon est reliée par la gare TGV de Mâcon-Loché à environ 7 km du centre, plaçant Lyon Part-Dieu à 40 minutes et Paris en 1h40. L'autoroute A6 longe la ville et l'aéroport Lyon-Saint Exupéry est accessible en une heure de route. Nos experts se déplacent sur site dans toute la Saône-et-Loire sud, de Charnay-lès-Mâcon à Tournus.",
   distancesEn:
@@ -34,16 +34,16 @@ export const MACON_COPY: VilleCopy = {
       en: "Auditer à Mâcon les processus d'un domaine viticole, d'une cave coopérative ou d'un négoce — cartographie des tâches automatisables et feuille de route IA priorisée par retour sur investissement.",
     },
     interventions: {
-      fr: "Intervenir sur site à Mâcon auprès des TPE/PME de l'agroalimentaire et du commerce pour automatiser devis, relances clients et suivi de stocks sans bouleverser les équipes.",
-      en: "Intervenir sur site à Mâcon auprès des TPE/PME de l'agroalimentaire et du commerce pour automatiser devis, relances clients et suivi de stocks sans bouleverser les équipes.",
+      fr: "Intervenir sur site à Mâcon auprès des PME et ETI de l'agroalimentaire et du commerce pour automatiser devis, relances clients et suivi de stocks sans bouleverser les équipes.",
+      en: "Intervenir sur site à Mâcon auprès des PME et ETI de l'agroalimentaire et du commerce pour automatiser devis, relances clients et suivi de stocks sans bouleverser les équipes.",
     },
     implementation: {
       fr: "Implémenter à Mâcon des outils IA durables et documentés — assistants de gestion commerciale et de relation client, conçus pour rester maîtrisés en interne après notre départ.",
       en: "Implémenter à Mâcon des outils IA durables et documentés — assistants de gestion commerciale et de relation client, conçus pour rester maîtrisés en interne après notre départ.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE/PME mâconnaises pour comprendre l'IA, arbitrer les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
-      en: "Accompagner en un-à-un les dirigeants de TPE/PME mâconnaises pour comprendre l'IA, arbitrer les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et ETI mâconnaises pour comprendre l'IA, arbitrer les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de PME et ETI mâconnaises pour comprendre l'IA, arbitrer les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
     },
     sitesWeb: {
       fr: "Concevoir à Mâcon un site ou une plateforme web augmentée par l'IA pour un domaine ou un commerce — vente en ligne, prise de réservation et contenu enrichis intelligemment.",
@@ -88,12 +88,6 @@ export const MACON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique essentielle augmentée IA",
-            detail:
-              "Pour un domaine viticole du Mâconnais, un commerce de centre-ville ou un artisan : site responsive, e-commerce simple bouteille/panier, chatbot de premier niveau, fiches produits assistées par l'IA.",
-          },
           {
             price: "Plateforme e-commerce ou portail B2B",
             sizeLabel: "PME",
@@ -175,12 +169,6 @@ export const MACON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase site or essential store",
-            detail:
-              "For a Mâconnais wine estate, a town-centre shop or a craftsperson: responsive site, simple bottle/cart e-commerce, first-level chatbot, AI-assisted product sheets.",
-          },
-          {
             price: "E-commerce platform or B2B portal",
             sizeLabel: "SME",
             detail:
@@ -237,8 +225,8 @@ export const MACON_COPY: VilleCopy = {
       a: "Absolument. Nous accompagnons domaines, caves coopératives et négoces sur la gestion commerciale, le suivi des expéditions et la relation client, en respectant le rythme saisonnier propre au vignoble Mâconnais.",
     },
     {
-      q: "L'IA est-elle adaptée à une TPE de quelques salariés à Mâcon ?",
-      a: "Oui, c'est même notre priorité. Nous concevons des automatisations sobres, proportionnées à une petite structure, qui font gagner du temps sans imposer d'outils complexes ni de coûts récurrents disproportionnés.",
+      q: "L'IA est-elle adaptée à une PME de quelques salariés à Mâcon ?",
+      a: "Oui, c'est même notre priorité. Nous concevons des automatisations sobres, proportionnées à une PME, qui font gagner du temps sans imposer d'outils complexes ni de coûts récurrents disproportionnés.",
     },
     {
       q: "Vos tarifs sont-ils annoncés à l'avance ?",

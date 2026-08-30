@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   pitchFr:
-    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
+    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de PME et ETI tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
   pitchEn:
-    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
+    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de PME et ETI tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Balme-de-Sillingy (74). Nous accompagnons PME et ETI : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Balme-de-Sillingy (74). Nous accompagnons PME et ETI : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
   seoHook: "tertiaires bureaux & artisanat construction",
   ecosystemFr:
     "La Balme-de-Sillingy est située au nord d'Annecy, dans la communauté de communes Fier et Usses. Commune périurbaine en forte croissance démographique, elle combine un tissu tertiaire (PME services, bureaux d'études), un artisanat BTP dynamique porté par la pression immobilière, des commerces de proximité et une agriculture résiduelle (élevage, polyculture). Accès rapide à Annecy (15 min) et à l'autoroute A41.",
@@ -23,7 +23,7 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
     "Annecy centre à 15 min, Aéroport Genève-Cointrin à 45 min, Gare d'Annecy à 20 min (TER Annecy-Aix-les-Bains-Lyon). Axe A41 vers Genève et Chambéry. Frangy à 15 min, Rumilly à 20 min.",
   topSectorsNaf: [
     "PME tertiaires & bureaux d'études",
-    "TPE artisanat BTP & construction",
+    "PME du BTP & construction",
     "Agriculture & élevage résiduel",
     "Commerce de proximité",
     "Professions libérales (santé, conseil)",
@@ -42,8 +42,8 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
       en: "Implémentation IA à La Balme-de-Sillingy : automatisation workflow tertiaire, agents conversationnels client, gestion devis BTP, outils IA exploitation agricole (suivi troupeau, prévision récolte), CRM augmenté.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Balme-de-Sillingy : sessions dans vos locaux, bureau ou en visio. Dirigeants TPE/PME du bassin annécien nord souhaitant maîtriser l'IA dans leur activité tertiaire, artisanale ou agricole.",
-      en: "Coaching 1-to-1 à La Balme-de-Sillingy : sessions dans vos locaux, bureau ou en visio. Dirigeants TPE/PME du bassin annécien nord souhaitant maîtriser l'IA dans leur activité tertiaire, artisanale ou agricole.",
+      fr: "Coaching 1-to-1 à La Balme-de-Sillingy : sessions dans vos locaux, bureau ou en visio. Dirigeants PME et ETI du bassin annécien nord souhaitant maîtriser l'IA dans leur activité tertiaire, artisanale ou agricole.",
+      en: "Coaching 1-to-1 à La Balme-de-Sillingy : sessions dans vos locaux, bureau ou en visio. Dirigeants PME et ETI du bassin annécien nord souhaitant maîtriser l'IA dans leur activité tertiaire, artisanale ou agricole.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à La Balme-de-Sillingy  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annécien, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, agriculture, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du bassin annécien, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, agriculture, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles du secteur ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIZIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA opère pour entreprises et indépendants du secteur : industriels, artisans, agriculteurs, PME tertiaires.",
+    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu PME de l'artisanat. Axion-IA opère pour entreprises et indépendants du secteur : industriels, artisans, agriculteurs, PME tertiaires.",
   pitchEn:
-    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA opère pour entreprises et indépendants du secteur : industriels, artisans, agriculteurs, PME tertiaires.",
+    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu PME de l'artisanat. Axion-IA opère pour entreprises et indépendants du secteur : industriels, artisans, agriculteurs, PME tertiaires.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, TPE artisans BTP, commerçants centre-ville, professions libérales et services publics bragards.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, PME du BTP, commerçants centre-ville, professions libérales et services publics bragards.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, TPE artisans BTP, commerçants centre-ville, professions libérales et services publics bragards.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, PME du BTP, commerçants centre-ville, professions libérales et services publics bragards.",
   seoHook: "industrie métallurgique & mécanique précision",
   ecosystemFr:
-    "Saint-Dizier est le pôle industriel historique de Haute-Marne : tissu métallurgique (fonderie, mécanique de précision, équipementiers automobile), industrie agroalimentaire (transformation), PME logistique fluviale (Marne canalisée). Activité agricole majeure du département : élevage bovin, céréales, fromagerie. Tissu TPE artisanat dense, commerces centre-ville.",
+    "Saint-Dizier est le pôle industriel historique de Haute-Marne : tissu métallurgique (fonderie, mécanique de précision, équipementiers automobile), industrie agroalimentaire (transformation), PME logistique fluviale (Marne canalisée). Activité agricole majeure du département : élevage bovin, céréales, fromagerie. Tissu PME de l'artisanat dense, commerces centre-ville.",
   ecosystemEn:
-    "Saint-Dizier est le pôle industriel historique de Haute-Marne : tissu métallurgique (fonderie, mécanique de précision, équipementiers automobile), industrie agroalimentaire (transformation), PME logistique fluviale (Marne canalisée). Activité agricole majeure du département : élevage bovin, céréales, fromagerie. Tissu TPE artisanat dense, commerces centre-ville.",
+    "Saint-Dizier est le pôle industriel historique de Haute-Marne : tissu métallurgique (fonderie, mécanique de précision, équipementiers automobile), industrie agroalimentaire (transformation), PME logistique fluviale (Marne canalisée). Activité agricole majeure du département : élevage bovin, céréales, fromagerie. Tissu PME de l'artisanat dense, commerces centre-ville.",
   distancesFr:
     "Gare Saint-Dizier (TER ligne Paris-Strasbourg, 2h Paris-Est). Aéroport Châlons-Vatry à 50 min. Reims à 1h20 voiture (A26). Troyes à 1h. Axe A4 vers Metz/Strasbourg.",
   distancesEn:
@@ -25,7 +25,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
     "Industrie métallurgique & fonderie",
     "Mécanique de précision & équipementiers auto",
     "Agriculture (élevage, céréales) & agroalimentaire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & PME tertiaires",
   ],
   servicesContext: {
@@ -42,18 +42,18 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Dizier : prédiction maintenance industrielle, contrôle qualité par vision, classification photos production/élevage, automatisation devis/factures BTP, agents conversationnels. Tous secteurs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Dizier : sessions dans votre atelier, exploitation, cabinet ou en visio. Industriels, éleveurs, artisans, commerçants, gérants TPE/PME bragardes souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Dizier : sessions dans votre atelier, exploitation, cabinet ou en visio. Industriels, éleveurs, artisans, commerçants, gérants TPE/PME bragardes souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Dizier : sessions dans votre atelier, exploitation, cabinet ou en visio. Industriels, éleveurs, artisans, commerçants, gérants PME et ETI bragardes souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Dizier : sessions dans votre atelier, exploitation, cabinet ou en visio. Industriels, éleveurs, artisans, commerçants, gérants PME et ETI bragardes souhaitant maîtriser l'IA.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de TPE du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de PME du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
         whyHere: [
           "Pôle industriel historique de la Haute-Marne, premier département français pour la fonderie : autour des grands sites comme ArcelorMittal, La Meusienne (laminage, tubes, cintrage) et la Société des Fonderies de Saint-Dizier, on construit des portails B2B, configurateurs techniques et catalogues de pièces, ou on greffe une recherche sémantique sur vos documentations, plans et nomenclatures sans tout refondre.",
           "Activité agricole structurante du département — élevage bovin, grandes cultures céréalières et fromagerie : sites de vente directe, boutiques e-commerce de produits fermiers (WooCommerce, Shopify) et agents conversationnels pour gérer commandes, traçabilité et points de retrait au plus près des exploitations du Perthois et de la vallée de la Marne canalisée.",
-          "Tissu serré de TPE de l'artisanat du BTP et de commerces du centre-ville bragard, du quartier de la gare à la rue Gambetta : vitrines mobile-first, prise de contact et de devis en ligne, fiches Google Business optimisées, le tout livré clé en main sans abonnement imposé, pour des gérants souvent seuls et pressés.",
+          "Tissu serré de PME de l'artisanat du BTP et de commerces du centre-ville bragard, du quartier de la gare à la rue Gambetta : vitrines mobile-first, prise de contact et de devis en ligne, fiches Google Business optimisées, le tout livré clé en main sans abonnement imposé, pour des gérants souvent seuls et pressés.",
           "Bassin labellisé Territoire d'Industrie mais éloigné des grandes métropoles tech (2 h de Paris-Est en TER, 1 h 20 de Reims, A4 vers Metz et Strasbourg) : on cadre sur place puis on itère à distance, avec un hébergement UE strict et conforme RGPD pour les données industrielles sensibles des fondeurs, équipementiers automobile et acteurs comme AGORA Technologies (mobilier urbain, éclairage).",
         ],
         methodology: [
@@ -80,16 +80,10 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           {
             step: "Livraison + autonomie",
             detail:
-              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes — ouvriers de fonderie, gérants de TPE, commerciaux, exploitants agricoles — pilotent l'outil en autonomie depuis Saint-Dizier, sans verrou ni abonnement imposé, avec une passation documentée.",
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes — ouvriers de fonderie, dirigeants de PME, commerciaux, exploitants agricoles — pilotent l'outil en autonomie depuis Saint-Dizier, sans verrou ni abonnement imposé, avec une passation documentée.",
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site d'un artisan BTP, d'un commerce de la rue Gambetta ou d'un producteur fermier du Perthois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -135,11 +129,11 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine charge de production. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Tout est documenté et transférable — repris en interne par vos équipes bragardes ou confié à un prestataire local du Grand-Est, à Saint-Dizier, Chaumont ou Reims, sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de TPE du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Dizier des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture haut-marnaise labellisée Territoire d'Industrie, où la métallurgie, la fonderie, la mécanique de précision et les équipementiers automobile pèsent plus de 8 000 emplois industriels, aux côtés d'un monde agricole d'élevage bovin et de céréales et d'un tissu dense de PME du commerce et de l'artisanat bragard. Des grands fondeurs comme ArcelorMittal, La Meusienne ou la Société des Fonderies de Saint-Dizier au commerce de la rue Gambetta, on couvre toute la chaîne. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Dizier, itérations à distance.",
         whyHere: [
           "Pôle industriel historique de la Haute-Marne, premier département français pour la fonderie : autour des grands sites comme ArcelorMittal, La Meusienne (laminage, tubes, cintrage) et la Société des Fonderies de Saint-Dizier, on construit des portails B2B, configurateurs techniques et catalogues de pièces, ou on greffe une recherche sémantique sur vos documentations, plans et nomenclatures sans tout refondre.",
           "Activité agricole structurante du département — élevage bovin, grandes cultures céréalières et fromagerie : sites de vente directe, boutiques e-commerce de produits fermiers (WooCommerce, Shopify) et agents conversationnels pour gérer commandes, traçabilité et points de retrait au plus près des exploitations du Perthois et de la vallée de la Marne canalisée.",
-          "Tissu serré de TPE de l'artisanat du BTP et de commerces du centre-ville bragard, du quartier de la gare à la rue Gambetta : vitrines mobile-first, prise de contact et de devis en ligne, fiches Google Business optimisées, le tout livré clé en main sans abonnement imposé, pour des gérants souvent seuls et pressés.",
+          "Tissu serré de PME de l'artisanat du BTP et de commerces du centre-ville bragard, du quartier de la gare à la rue Gambetta : vitrines mobile-first, prise de contact et de devis en ligne, fiches Google Business optimisées, le tout livré clé en main sans abonnement imposé, pour des gérants souvent seuls et pressés.",
           "Bassin labellisé Territoire d'Industrie mais éloigné des grandes métropoles tech (2 h de Paris-Est en TER, 1 h 20 de Reims, A4 vers Metz et Strasbourg) : on cadre sur place puis on itère à distance, avec un hébergement UE strict et conforme RGPD pour les données industrielles sensibles des fondeurs, équipementiers automobile et acteurs comme AGORA Technologies (mobilier urbain, éclairage).",
         ],
         methodology: [
@@ -166,16 +160,10 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
           {
             step: "Livraison + autonomie",
             detail:
-              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes — ouvriers de fonderie, gérants de TPE, commerciaux, exploitants agricoles — pilotent l'outil en autonomie depuis Saint-Dizier, sans verrou ni abonnement imposé, avec une passation documentée.",
+              "Code, bases et modèles livrés chez vous (hébergement UE possible). Vos équipes — ouvriers de fonderie, dirigeants de PME, commerciaux, exploitants agricoles — pilotent l'outil en autonomie depuis Saint-Dizier, sans verrou ni abonnement imposé, avec une passation documentée.",
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site d'un artisan BTP, d'un commerce de la rue Gambetta ou d'un producteur fermier du Perthois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -237,8 +225,8 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et éleveurs bragards et haut-marnais sur leurs cas IA spécifiques : prédiction météo locale, optimisation alimentation bovine, classification photos animaux/cultures, automatisation traçabilité, agents conversationnels pour vente directe. Adapté à l'élevage rural.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants bragards ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Dizier (BTP, commerces, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : automatisation devis, agents IA pour relation client, gestion stocks, classification photos chantier.",
+      q: "Quels services pour les PME de l'artisanat et du commerce bragards ?",
+      a: "Pour les PME de l'artisanat et du commerce à Saint-Dizier (BTP, commerces, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : automatisation devis, agents IA pour relation client, gestion stocks, classification photos chantier.",
     },
     {
       q: "Quels formats pour les PME tertiaires et services publics ?",

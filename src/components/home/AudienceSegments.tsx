@@ -1,11 +1,16 @@
-// Server Component — les 4 segments cible « Pour qui » de la home.
+// Server Component — les 3 segments cible « Pour qui » de la home.
 //
-// Refonte Will 2026-08-10 : les 4 cartes n'étaient que du texte dans un cadre
+// Refonte Will 2026-08-10 : les cartes n'étaient que du texte dans un cadre
 // (« pas assez visuel »). Chaque segment porte maintenant une bande visuelle
-// qui MONTRE la progression d'échelle : une jauge de 4 barres dont le nombre
-// de barres pleines correspond à la taille d'entreprise (1 pour l'artisan,
-// 4 pour le grand groupe). Lue de gauche à droite, la rangée dessine un
-// escalier — l'idée « toutes les tailles » passe sans être écrite.
+// qui MONTRE la progression d'échelle : une jauge de 3 barres dont le nombre
+// de barres pleines correspond à la taille d'entreprise (1 pour la PME,
+// 3 pour le grand groupe). Lue de gauche à droite, la rangée dessine un
+// escalier — l'idée d'une montée en échelle passe sans être écrite.
+//
+// 2026-08-29 : le palier TPE est retiré (repositionnement PME / ETI / grands
+// groupes). La jauge passe de 4 à 3 barres pour que la dernière carte reste
+// pleine — une jauge de 4 barres dont aucune carte n'atteint le 4ᵉ cran
+// donnerait à lire une échelle tronquée.
 //
 // La bande accepte aussi une vraie image (`image`) au même ratio 16:9, donc la
 // bascule vers des photos se fera à CLS = 0 sans toucher au layout. Fichiers
@@ -14,7 +19,7 @@
 // Composant serveur pur : icônes Lucide rendues en HTML au build, 0 KB de JS.
 
 import Image from "next/image";
-import { Hammer, Building2, Building, Landmark } from "lucide-react";
+import { Building2, Building, Landmark } from "lucide-react";
 
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { homeImageFor } from "@/content/home/home-images";
@@ -41,15 +46,15 @@ const BAR_FILL: Record<ServiceAccent, string> = {
   plum: "bg-plum",
 };
 
-/** Hauteurs des 4 barres de la jauge — escalier régulier. */
-const BAR_HEIGHTS = ["h-6", "h-10", "h-14", "h-[4.5rem]"] as const;
+/** Hauteurs des 3 barres de la jauge — escalier régulier. */
+const BAR_HEIGHTS = ["h-6", "h-12", "h-[4.5rem]"] as const;
 
 interface SegmentVisual {
   id: string;
   accent: ServiceAccent;
-  Icon: typeof Hammer;
-  /** Nombre de barres pleines sur 4 — matérialise la taille d'entreprise. */
-  level: 1 | 2 | 3 | 4;
+  Icon: typeof Building2;
+  /** Nombre de barres pleines sur 3 — matérialise la taille d'entreprise. */
+  level: 1 | 2 | 3;
   /**
    * Tranche d'effectif affichée EN GRAND dans la bande.
    *
@@ -63,22 +68,14 @@ interface SegmentVisual {
   slot: string;
 }
 
-/** Ordre = celui de `audienceSegments` dans la home (TPE → PME → ETI → GE). */
+/** Ordre = celui de `audienceSegments` dans la home (PME → ETI → GE). */
 const SEGMENT_VISUALS: readonly SegmentVisual[] = [
-  {
-    id: "tpe",
-    headcount: "1 – 9",
-    accent: "terracotta",
-    Icon: Hammer,
-    level: 1,
-    slot: "audience-01-tpe",
-  },
   {
     id: "pme",
     headcount: "10 – 249",
     accent: "ochre",
     Icon: Building2,
-    level: 2,
+    level: 1,
     slot: "audience-02-pme",
   },
   {
@@ -86,7 +83,7 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     headcount: "250 – 4 999",
     accent: "primary",
     Icon: Building,
-    level: 3,
+    level: 2,
     slot: "audience-03-eti",
   },
   {
@@ -94,7 +91,7 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     headcount: "5 000+",
     accent: "sage",
     Icon: Landmark,
-    level: 4,
+    level: 3,
     slot: "audience-04-grands-comptes",
   },
 ] as const;
@@ -120,7 +117,7 @@ export function AudienceSegments({
     // 2026-08-10 dans globals.css — l'ordre est rétabli, `sm:` est de nouveau
     // utilisable partout.)
     <>
-      <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {segments.map((seg, idx) => {
           const v = SEGMENT_VISUALS[idx];
           if (!v) return null;
@@ -149,7 +146,7 @@ export function AudienceSegments({
                         src={image.src}
                         alt={image.alt}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (

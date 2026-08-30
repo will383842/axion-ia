@@ -9,14 +9,14 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-le-Roi, ville du Val-de-Marne (94) en banlieue sud de Paris, est ancrée dans le bassin aéroportuaire d'Orly (15 000+ emplois aéroport). Tissu logistique, industrie aéroportuaire, BTP, artisanat, commerces et PME tertiaires. Axion-IA y travaille avec les organisations du territoire du sud-94.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, TPE artisans BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, PME du BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, TPE artisans BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, PME du BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
   seoHook: "aéronautique services & logistique e-commerce",
   ecosystemFr:
-    "Villeneuve-le-Roi est aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, 31 M passagers/an, 30 000+ emplois directs/indirects), un des écosystèmes logistique-aéroportuaire majeurs d'Europe. Services au sol (catering, maintenance avions, fret), sous-traitants aéronautiques, plateformes logistiques e-commerce. Tissu TPE artisanat BTP dense, PME tertiaires.",
+    "Villeneuve-le-Roi est aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, 31 M passagers/an, 30 000+ emplois directs/indirects), un des écosystèmes logistique-aéroportuaire majeurs d'Europe. Services au sol (catering, maintenance avions, fret), sous-traitants aéronautiques, plateformes logistiques e-commerce. Tissu PME du BTP dense, PME tertiaires.",
   ecosystemEn:
-    "Villeneuve-le-Roi est aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, 31 M passagers/an, 30 000+ emplois directs/indirects), un des écosystèmes logistique-aéroportuaire majeurs d'Europe. Services au sol (catering, maintenance avions, fret), sous-traitants aéronautiques, plateformes logistiques e-commerce. Tissu TPE artisanat BTP dense, PME tertiaires.",
+    "Villeneuve-le-Roi est aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, 31 M passagers/an, 30 000+ emplois directs/indirects), un des écosystèmes logistique-aéroportuaire majeurs d'Europe. Services au sol (catering, maintenance avions, fret), sous-traitants aéronautiques, plateformes logistiques e-commerce. Tissu PME du BTP dense, PME tertiaires.",
   distancesFr:
     "Gare Villeneuve-le-Roi (RER C, 25 min Gare d'Austerlitz). Aéroport Orly à 5 min en voiture (limitrophe). Axe A86 vers Créteil et A6 vers Paris (30 min). Aéroport CDG à 1h via A86.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   topSectorsNaf: [
     "Aéronautique & services au sol (Orly)",
     "Logistique & e-commerce",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "PME tertiaires & services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, PME artisanales et PME tertiaires sud-94. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, PME artisanales et PME tertiaires sud-94. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-le-Roi : formats adaptés au métier (aérogare, entrepôt logistique, atelier maintenance, commerce). Vos équipes opérationnelles repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
       en: "Implémentation IA à Villeneuve-le-Roi : agents conversationnels passagers (multilingue), automatisation tournées logistiques, prédiction maintenance avions, classification documents douaniers. Adapté Orly.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villeneuve-le-Roi : sessions dans vos bureaux Orly, atelier ou en visio. Dirigeants services aéroportuaires, responsables logistique, artisans, gérants TPE/PME villeneuvoises.",
-      en: "Coaching 1-to-1 à Villeneuve-le-Roi : sessions dans vos bureaux Orly, atelier ou en visio. Dirigeants services aéroportuaires, responsables logistique, artisans, gérants TPE/PME villeneuvoises.",
+      fr: "Coaching 1-to-1 à Villeneuve-le-Roi : sessions dans vos bureaux Orly, atelier ou en visio. Dirigeants services aéroportuaires, responsables logistique, artisans, gérants PME et ETI villeneuvoises.",
+      en: "Coaching 1-to-1 à Villeneuve-le-Roi : sessions dans vos bureaux Orly, atelier ou en visio. Dirigeants services aéroportuaires, responsables logistique, artisans, gérants PME et ETI villeneuvoises.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           "Bassin Orly captif (2e aéroport français, services au sol, catering, maintenance avions, ground handling, fret) : nous bâtissons des portails passagers et des espaces clients B2B avec chatbot RAG multilingue par défaut, calibrés pour des flux internationaux et opérés sans downtime sur des installations 24/7, jusqu'à Paray-Vieille-Poste et Athis-Mons.",
           "Logistique e-commerce dense sur l'axe A86/A6 vers le MIN de Rungis (premier marché de produits frais au monde) : nous greffons l'IA sur l'existant — suivi de tournées dernier kilomètre, prédiction de demande, agents service client B2B — ou construisons une plateforme métier branchée sur votre WMS et votre TMS via API.",
           "Sous-traitants aéronautiques et industriels du sud-94 : recherche sémantique sur la documentation technique, classification de documents douaniers et portails fournisseurs sur mesure, branchés sur vos ERP existants, avec gestion fine des habilitations et des accès en zone sûreté aéroportuaire.",
-          "Tissu serré de TPE artisans BTP et de commerces villeneuvois (gare RER C, 25 min de Paris-Austerlitz, bord de Seine) : on monte une vitrine ou une boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec prise de RDV, devis automatisés et paiement en ligne, sans refonte coûteuse ni abonnement imposé.",
+          "Tissu serré de PME du BTP et de commerces villeneuvois (gare RER C, 25 min de Paris-Austerlitz, bord de Seine) : on monte une vitrine ou une boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec prise de RDV, devis automatisés et paiement en ligne, sans refonte coûteuse ni abonnement imposé.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de RDV, devis automatisé) sur le site existant d'un artisan BTP, d'un commerce de la gare RER C ou d'un service de proximité villeneuvois, en quelques semaines et sans refonte. Mise en ligne sans interruption d'activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -123,8 +117,8 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
             a: "Oui. Pour les opérateurs logistiques de l'axe A86/A6 vers le MIN de Rungis, on greffe l'IA sur l'existant — suivi de tournées dernier kilomètre, prédiction de demande, automatisation de la préparation de commandes, agents service client B2B — ou on bâtit une plateforme métier branchée sur votre WMS et votre TMS. Boutiques e-commerce multi-CMS également.",
           },
           {
-            q: "Quels services pour une TPE, un artisan BTP ou un commerce villeneuvois ?",
-            a: "Pour une TPE de Villeneuve-le-Roi — artisan BTP, commerce de la gare RER C, service de proximité — on monte une vitrine ou une boutique e-commerce multi-CMS avec prise de RDV, devis automatisés, paiement en ligne et, si utile, un chatbot. Sans refonte coûteuse, sans abonnement imposé, code et données à vous, transférable à tout prestataire local d'Île-de-France.",
+            q: "Quels services pour une PME, un artisan BTP ou un commerce villeneuvois ?",
+            a: "Pour une PME de Villeneuve-le-Roi — artisan BTP, commerce de la gare RER C, service de proximité — on monte une vitrine ou une boutique e-commerce multi-CMS avec prise de RDV, devis automatisés, paiement en ligne et, si utile, un chatbot. Sans refonte coûteuse, sans abonnement imposé, code et données à vous, transférable à tout prestataire local d'Île-de-France.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -140,7 +134,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           "Bassin Orly captif (2e aéroport français, services au sol, catering, maintenance avions, ground handling, fret) : nous bâtissons des portails passagers et des espaces clients B2B avec chatbot RAG multilingue par défaut, calibrés pour des flux internationaux et opérés sans downtime sur des installations 24/7, jusqu'à Paray-Vieille-Poste et Athis-Mons.",
           "Logistique e-commerce dense sur l'axe A86/A6 vers le MIN de Rungis (premier marché de produits frais au monde) : nous greffons l'IA sur l'existant — suivi de tournées dernier kilomètre, prédiction de demande, agents service client B2B — ou construisons une plateforme métier branchée sur votre WMS et votre TMS via API.",
           "Sous-traitants aéronautiques et industriels du sud-94 : recherche sémantique sur la documentation technique, classification de documents douaniers et portails fournisseurs sur mesure, branchés sur vos ERP existants, avec gestion fine des habilitations et des accès en zone sûreté aéroportuaire.",
-          "Tissu serré de TPE artisans BTP et de commerces villeneuvois (gare RER C, 25 min de Paris-Austerlitz, bord de Seine) : on monte une vitrine ou une boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec prise de RDV, devis automatisés et paiement en ligne, sans refonte coûteuse ni abonnement imposé.",
+          "Tissu serré de PME du BTP et de commerces villeneuvois (gare RER C, 25 min de Paris-Austerlitz, bord de Seine) : on monte une vitrine ou une boutique e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec prise de RDV, devis automatisés et paiement en ligne, sans refonte coûteuse ni abonnement imposé.",
         ],
         methodology: [
           {
@@ -170,12 +164,6 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de RDV, devis automatisé) sur le site existant d'un artisan BTP, d'un commerce de la gare RER C ou d'un service de proximité villeneuvois, en quelques semaines et sans refonte. Mise en ligne sans interruption d'activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -209,8 +197,8 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
             a: "Oui. Pour les opérateurs logistiques de l'axe A86/A6 vers le MIN de Rungis, on greffe l'IA sur l'existant — suivi de tournées dernier kilomètre, prédiction de demande, automatisation de la préparation de commandes, agents service client B2B — ou on bâtit une plateforme métier branchée sur votre WMS et votre TMS. Boutiques e-commerce multi-CMS également.",
           },
           {
-            q: "Quels services pour une TPE, un artisan BTP ou un commerce villeneuvois ?",
-            a: "Pour une TPE de Villeneuve-le-Roi — artisan BTP, commerce de la gare RER C, service de proximité — on monte une vitrine ou une boutique e-commerce multi-CMS avec prise de RDV, devis automatisés, paiement en ligne et, si utile, un chatbot. Sans refonte coûteuse, sans abonnement imposé, code et données à vous, transférable à tout prestataire local d'Île-de-France.",
+            q: "Quels services pour une PME, un artisan BTP ou un commerce villeneuvois ?",
+            a: "Pour une PME de Villeneuve-le-Roi — artisan BTP, commerce de la gare RER C, service de proximité — on monte une vitrine ou une boutique e-commerce multi-CMS avec prise de RDV, devis automatisés, paiement en ligne et, si utile, un chatbot. Sans refonte coûteuse, sans abonnement imposé, code et données à vous, transférable à tout prestataire local d'Île-de-France.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -237,8 +225,8 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les opérateurs logistiques du bassin Orly-Rungis sur leurs cas IA opérationnels : optimisation tournées dernière kilomètre, prédiction demande, automatisation préparation commandes, agents IA service client B2B. ROI chiffré sur productivité avant mission.",
     },
     {
-      q: "Quels services pour les TPE artisans BTP villeneuvois ?",
-      a: "Pour les TPE artisans BTP à Villeneuve-le-Roi, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux petites structures.",
+      q: "Quels services pour les PME du BTP villeneuvois ?",
+      a: "Pour les PME du BTP à Villeneuve-le-Roi, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux PME.",
     },
     {
       q: "Comment se déroule une intervention près de l'aéroport Orly ?",

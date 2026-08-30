@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const QUIMPER_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Quimper, préfecture du Finistère (64 385 habitants, troisième ville de Bretagne), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. Située à la confluence de l'Odet, du Steïr, du Frout et du Jet, classée Ville d'art et d'histoire, Quimper combine un patrimoine fort (cathédrale Saint-Corentin, faïenceries) et une économie tertiarisée portée par les services, le tourisme, la santé et un tissu industriel historique (agroalimentaire, faïence, textile). Nous concevons pour les artisans, commerçants du centre historique, prestataires touristiques, PME agroalimentaires et professionnels de santé des solutions IA sur mesure en code custom francophone — jamais en no-code. Williams se déplace sur site pour auditer, prototyper et déployer.",
+    "Axion-IA accompagne les PME et ETI de Quimper, préfecture du Finistère (64 385 habitants, troisième ville de Bretagne), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. Située à la confluence de l'Odet, du Steïr, du Frout et du Jet, classée Ville d'art et d'histoire, Quimper combine un patrimoine fort (cathédrale Saint-Corentin, faïenceries) et une économie tertiarisée portée par les services, le tourisme, la santé et un tissu industriel historique (agroalimentaire, faïence, textile). Nous concevons pour les artisans, commerçants du centre historique, prestataires touristiques, PME agroalimentaires et professionnels de santé des solutions IA sur mesure en code custom francophone — jamais en no-code. Williams se déplace sur site pour auditer, prototyper et déployer.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Quimper, préfecture du Finistère (64 385 habitants, troisième ville de Bretagne), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. Située à la confluence de l'Odet, du Steïr, du Frout et du Jet, classée Ville d'art et d'histoire, Quimper combine un patrimoine fort (cathédrale Saint-Corentin, faïenceries) et une économie tertiarisée portée par les services, le tourisme, la santé et un tissu industriel historique (agroalimentaire, faïence, textile). Nous concevons pour les artisans, commerçants du centre historique, prestataires touristiques, PME agroalimentaires et professionnels de santé des solutions IA sur mesure en code custom francophone — jamais en no-code. Williams se déplace sur site pour auditer, prototyper et déployer.",
+    "Axion-IA accompagne les PME et ETI de Quimper, préfecture du Finistère (64 385 habitants, troisième ville de Bretagne), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. Située à la confluence de l'Odet, du Steïr, du Frout et du Jet, classée Ville d'art et d'histoire, Quimper combine un patrimoine fort (cathédrale Saint-Corentin, faïenceries) et une économie tertiarisée portée par les services, le tourisme, la santé et un tissu industriel historique (agroalimentaire, faïence, textile). Nous concevons pour les artisans, commerçants du centre historique, prestataires touristiques, PME agroalimentaires et professionnels de santé des solutions IA sur mesure en code custom francophone — jamais en no-code. Williams se déplace sur site pour auditer, prototyper et déployer.",
   directAnswerFr:
-    "À Quimper (Finistère, Bretagne), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces du centre historique, artisans, prestataires touristiques (cathédrale Saint-Corentin, faïenceries de Locmaria), PME agroalimentaires et de la transformation des produits de la mer, professionnels de santé, services. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, planning équipes, OCR factures fournisseurs, suivi qualité agroalimentaire, reporting. Cadrage clair, conformité RGPD by design. Williams se déplace sur site pour cadrer, prototyper et transférer la solution à votre équipe.",
+    "À Quimper (Finistère, Bretagne), Axion-IA déploie ses interventions IA chez les PME et ETI locales : commerces du centre historique, artisans, prestataires touristiques (cathédrale Saint-Corentin, faïenceries de Locmaria), PME agroalimentaires et de la transformation des produits de la mer, professionnels de santé, services. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, planning équipes, OCR factures fournisseurs, suivi qualité agroalimentaire, reporting. Cadrage clair, conformité RGPD by design. Williams se déplace sur site pour cadrer, prototyper et transférer la solution à votre équipe.",
   directAnswerEn:
-    "À Quimper (Finistère, Bretagne), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces du centre historique, artisans, prestataires touristiques (cathédrale Saint-Corentin, faïenceries de Locmaria), PME agroalimentaires et de la transformation des produits de la mer, professionnels de santé, services. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, planning équipes, OCR factures fournisseurs, suivi qualité agroalimentaire, reporting. Cadrage clair, conformité RGPD by design. Williams se déplace sur site pour cadrer, prototyper et transférer la solution à votre équipe.",
+    "À Quimper (Finistère, Bretagne), Axion-IA déploie ses interventions IA chez les PME et ETI locales : commerces du centre historique, artisans, prestataires touristiques (cathédrale Saint-Corentin, faïenceries de Locmaria), PME agroalimentaires et de la transformation des produits de la mer, professionnels de santé, services. Nous codons des agents IA et automatisations sur mesure en code custom francophone (Python, Node) : devis, facturation, planning équipes, OCR factures fournisseurs, suivi qualité agroalimentaire, reporting. Cadrage clair, conformité RGPD by design. Williams se déplace sur site pour cadrer, prototyper et transférer la solution à votre équipe.",
   seoHook: "agroalimentaire, tourisme & artisanat d'art",
   ecosystemFr:
     "L'économie quimpéroise s'appuie sur un socle tertiaire (services aux entreprises, santé, administration préfectorale), un tourisme patrimonial soutenu (Ville d'art et d'histoire, quatre fleurs), et un tissu industriel historique : faïenceries de Locmaria, agroalimentaire et transformation halieutique, textile. La communauté d'agglomération Quimper Bretagne Occidentale rassemble 14 communes pour ~101 591 habitants, ce qui élargit le bassin économique au-delà de la ville-centre.",
@@ -34,20 +34,20 @@ export const QUIMPER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quimper — cartographie des processus à automatiser chez les TPE/PME du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
-      en: "Audit IA à Quimper — cartographie des processus à automatiser chez les TPE/PME du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
+      fr: "Audit IA à Quimper — cartographie des processus à automatiser chez les PME et ETI du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
+      en: "Audit IA à Quimper — cartographie des processus à automatiser chez les PME et ETI du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
     },
     interventions: {
       fr: "Intervention sur site à Quimper — Williams se déplace pour cadrer et déployer un agent IA opérationnel (suivi qualité agroalimentaire, OCR factures, planning saisonnier tourisme). Formation 4 h dès {{price:intervention-4h|flat}}.",
       en: "Intervention sur site à Quimper — Williams se déplace pour cadrer et déployer un agent IA opérationnel (suivi qualité agroalimentaire, OCR factures, planning saisonnier tourisme). Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA pour TPE/PME quimpéroises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Sage, Pennylane, EBP, Notion, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA pour TPE/PME quimpéroises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Sage, Pennylane, EBP, Notion, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA pour PME et ETI quimpéroises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Sage, Pennylane, EBP, Notion, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA pour PME et ETI quimpéroises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Sage, Pennylane, EBP, Notion, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec dirigeants de TPE/PME quimpéroises pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions un-à-un avec dirigeants de TPE/PME quimpéroises pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions un-à-un avec dirigeants de PME et ETI quimpéroises pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions un-à-un avec dirigeants de PME et ETI quimpéroises pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -88,12 +88,6 @@ export const QUIMPER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel + brique IA",
-            detail:
-              "Pour artisans, commerçants du centre historique, faïenceries de Locmaria, prestataires touristiques et indépendants : site rapide, mobile-first, avec assistant IA ou recherche sémantique sur catalogue.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce B2B augmenté",
@@ -175,12 +169,6 @@ export const QUIMPER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce + AI block",
-            detail:
-              "For craftspeople, historic-centre shops, Locmaria faience workshops, tourism operators and freelancers: a fast, mobile-first site with an AI assistant or semantic catalogue search.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or AI-augmented B2B e-commerce",
             detail:
@@ -242,7 +230,7 @@ export const QUIMPER_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques quimpérois ciblez-vous en priorité ?",
-      a: "Nous accompagnons en priorité les TPE et PME de l'agroalimentaire et de la transformation halieutique, du tourisme et de l'hébergement, du commerce de détail, de l'artisanat d'art (faïence), de la santé libérale et des services aux entreprises. Les ETI sont accompagnées de façon plus marginale.",
+      a: "Nous accompagnons en priorité les PME et ETI de l'agroalimentaire et de la transformation halieutique, du tourisme et de l'hébergement, du commerce de détail, de l'artisanat d'art (faïence), de la santé libérale et des services aux entreprises. Les grands groupes complètent ce socle.",
     },
     {
       q: "Intervenez-vous aussi dans les communes de Quimper Bretagne Occidentale ?",

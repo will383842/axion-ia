@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MAULE_COPY: VilleCopy = {
   pitchFr:
-    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA répond aux besoins des activités professionnelles présentes de la vallée de la Mauldre.",
+    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de PME artisanales, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA répond aux besoins des activités professionnelles présentes de la vallée de la Mauldre.",
   pitchEn:
-    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA répond aux besoins des activités professionnelles présentes de la vallée de la Mauldre.",
+    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de PME artisanales, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA répond aux besoins des activités professionnelles présentes de la vallée de la Mauldre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maule (78). Nous accompagnons PME et ETI : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maule (78). Nous accompagnons PME et ETI : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
   seoHook: "agriculture viticulture & commerce proximité",
   ecosystemFr:
-    "Maule est un bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Commune au patrimoine architectural remarquable (église romane, lavoir) et au tissu agricole vivant. Économie locale : TPE artisans, commerces de centre-bourg, PME agricoles et viticoles, professions libérales, hébergements ruraux et services de proximité. Communes voisines : Épône, Nézel, Bazemont, Herbeville, Mareil-sur-Mauldre, Montainville.",
+    "Maule est un bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Commune au patrimoine architectural remarquable (église romane, lavoir) et au tissu agricole vivant. Économie locale : PME artisanales, commerces de centre-bourg, PME agricoles et viticoles, professions libérales, hébergements ruraux et services de proximité. Communes voisines : Épône, Nézel, Bazemont, Herbeville, Mareil-sur-Mauldre, Montainville.",
   ecosystemEn:
-    "Maule est un bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Commune au patrimoine architectural remarquable (église romane, lavoir) et au tissu agricole vivant. Économie locale : TPE artisans, commerces de centre-bourg, PME agricoles et viticoles, professions libérales, hébergements ruraux et services de proximité. Communes voisines : Épône, Nézel, Bazemont, Herbeville, Mareil-sur-Mauldre, Montainville.",
+    "Maule est un bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Commune au patrimoine architectural remarquable (église romane, lavoir) et au tissu agricole vivant. Économie locale : PME artisanales, commerces de centre-bourg, PME agricoles et viticoles, professions libérales, hébergements ruraux et services de proximité. Communes voisines : Épône, Nézel, Bazemont, Herbeville, Mareil-sur-Mauldre, Montainville.",
   distancesFr:
     "Gare d'Épône — Mézières à 10 min (Transilien J, 40 min Paris Saint-Lazare). A13 à 10 min. Mantes-la-Jolie à 15 min, Poissy à 20 min, Versailles à 25 min, La Défense à 40 min. Aéroport Roissy-CDG à 55 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const MAULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maule : diagnostic adapté aux TPE artisans, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Maule : diagnostic adapté aux TPE artisans, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Maule : diagnostic adapté aux PME artisanales, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Maule : diagnostic adapté aux PME artisanales, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maule : formats adaptés à l'exploitation, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Maule : formats adaptés à l'exploitation, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Maule : automatisation gestion clients, agents conversationnels, gestion stocks, traçabilité agricole. Solutions sur mesure pour TPE et PME de l'ouest Yvelines.",
-      en: "Implémentation IA à Maule : automatisation gestion clients, agents conversationnels, gestion stocks, traçabilité agricole. Solutions sur mesure pour TPE et PME de l'ouest Yvelines.",
+      fr: "Implémentation IA à Maule : automatisation gestion clients, agents conversationnels, gestion stocks, traçabilité agricole. Solutions sur mesure pour PME et ETI de l'ouest Yvelines.",
+      en: "Implémentation IA à Maule : automatisation gestion clients, agents conversationnels, gestion stocks, traçabilité agricole. Solutions sur mesure pour PME et ETI de l'ouest Yvelines.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Maule : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et exploitants agricoles de la vallée de la Mauldre.",
-      en: "Coaching 1-to-1 à Maule : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et exploitants agricoles de la vallée de la Mauldre.",
+      fr: "Coaching 1-to-1 à Maule : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et exploitants agricoles de la vallée de la Mauldre.",
+      en: "Coaching 1-to-1 à Maule : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et exploitants agricoles de la vallée de la Mauldre.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const MAULE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitants agricoles à Maule ?",
-      a: "Oui, nous accompagnons les TPE et PME agricoles de Maule sur leurs cas IA : traçabilité, gestion parcellaire, automatisation administrative, optimisation logistique. Formats adaptés à votre calendrier d'exploitation.",
+      a: "Oui, nous accompagnons les PME et ETI agricoles de Maule sur leurs cas IA : traçabilité, gestion parcellaire, automatisation administrative, optimisation logistique. Formats adaptés à votre calendrier d'exploitation.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME à Maule ?",

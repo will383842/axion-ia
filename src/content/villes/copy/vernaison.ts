@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VERNAISON_COPY: VilleCopy = {
   pitchFr:
-    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
+    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
   pitchEn:
-    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
+    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, PME du BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, PME du BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires sud",
   ecosystemFr:
-    "Vernaison est intégrée à la Métropole de Lyon, en banlieue sud (rive droite Rhône). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",
+    "Vernaison est intégrée à la Métropole de Lyon, en banlieue sud (rive droite Rhône). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces.",
   ecosystemEn:
-    "Vernaison est intégrée à la Métropole de Lyon, en banlieue sud (rive droite Rhône). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",
+    "Vernaison est intégrée à la Métropole de Lyon, en banlieue sud (rive droite Rhône). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 20 min. Aéroport Lyon-Saint-Exupéry à 35 min. Irigny limitrophe à 5 min. Pierre-Bénite à 10 min. Charly à 5 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VERNAISON_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires sud lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vernaison : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VERNAISON_COPY: VilleCopy = {
       en: "Implémentation IA à Vernaison : agents conversationnels B2B/patient, automatisation workflow, classification dossiers, CRM augmentés. Métropole Lyon sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vernaison : sessions dans votre bureau, cabinet, commerce ou en visio. Professions libérales, dirigeants tertiaires, artisans, gérants TPE/PME vernaisonnais.",
-      en: "Coaching 1-to-1 à Vernaison : sessions dans votre bureau, cabinet, commerce ou en visio. Professions libérales, dirigeants tertiaires, artisans, gérants TPE/PME vernaisonnais.",
+      fr: "Coaching 1-to-1 à Vernaison : sessions dans votre bureau, cabinet, commerce ou en visio. Professions libérales, dirigeants tertiaires, artisans, gérants PME et ETI vernaisonnais.",
+      en: "Coaching 1-to-1 à Vernaison : sessions dans votre bureau, cabinet, commerce ou en visio. Professions libérales, dirigeants tertiaires, artisans, gérants PME et ETI vernaisonnais.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const VERNAISON_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

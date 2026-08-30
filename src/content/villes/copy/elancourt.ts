@@ -7,14 +7,14 @@ import type { VilleCopy } from "./types";
 
 export const ELANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Élancourt, ville de 26 365 habitants au cœur de Saint-Quentin-en-Yvelines à 29,5 km à l'ouest de Paris. Nous intervenons auprès des sous-traitants défense et aérospatial du quartier de la Clef de Saint-Pierre (Thales/ex-Thomson-CSF, CRMA, Fenwick, Bayer, Matra, Kawasaki), mais aussi auprès des PME des Yvelines en commerce, services et artisanat qui souhaitent automatiser leurs processus métier.",
+    "Axion-IA accompagne les PME et ETI d'Élancourt, ville de 26 365 habitants au cœur de Saint-Quentin-en-Yvelines à 29,5 km à l'ouest de Paris. Nous intervenons auprès des sous-traitants défense et aérospatial du quartier de la Clef de Saint-Pierre (Thales/ex-Thomson-CSF, CRMA, Fenwick, Bayer, Matra, Kawasaki), mais aussi auprès des PME des Yvelines en commerce, services et artisanat qui souhaitent automatiser leurs processus métier.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Élancourt, ville de 26 365 habitants au cœur de Saint-Quentin-en-Yvelines à 29,5 km à l'ouest de Paris. Nous intervenons auprès des sous-traitants défense et aérospatial du quartier de la Clef de Saint-Pierre (Thales/ex-Thomson-CSF, CRMA, Fenwick, Bayer, Matra, Kawasaki), mais aussi auprès des PME des Yvelines en commerce, services et artisanat qui souhaitent automatiser leurs processus métier.",
+    "Axion-IA accompagne les PME et ETI d'Élancourt, ville de 26 365 habitants au cœur de Saint-Quentin-en-Yvelines à 29,5 km à l'ouest de Paris. Nous intervenons auprès des sous-traitants défense et aérospatial du quartier de la Clef de Saint-Pierre (Thales/ex-Thomson-CSF, CRMA, Fenwick, Bayer, Matra, Kawasaki), mais aussi auprès des PME des Yvelines en commerce, services et artisanat qui souhaitent automatiser leurs processus métier.",
   directAnswerFr:
-    "Élancourt fait partie de l'agglomération de Saint-Quentin-en-Yvelines et concentre un pôle industriel défense et aérospatial autour du quartier de la Clef de Saint-Pierre, avec notamment un bâtiment Thales/Airbus Defence and Space de 80 000 m². Axion-IA intervient sur site auprès des TPE/PME élancourtoises et de leurs sous-traitants. Nos audits démarrent à {{price:audit-flash|flat}}, nos interventions à {{price:intervention-4h|flat}}, nos implémentations à {{price:impl-poc|entry}}. Code source custom, conformité RGPD et secret défense quand le contexte l'exige.",
+    "Élancourt fait partie de l'agglomération de Saint-Quentin-en-Yvelines et concentre un pôle industriel défense et aérospatial autour du quartier de la Clef de Saint-Pierre, avec notamment un bâtiment Thales/Airbus Defence and Space de 80 000 m². Axion-IA intervient sur site auprès des PME et ETI élancourtoises et de leurs sous-traitants. Nos audits démarrent à {{price:audit-flash|flat}}, nos interventions à {{price:intervention-4h|flat}}, nos implémentations à {{price:impl-poc|entry}}. Code source custom, conformité RGPD et secret défense quand le contexte l'exige.",
   directAnswerEn:
-    "Élancourt fait partie de l'agglomération de Saint-Quentin-en-Yvelines et concentre un pôle industriel défense et aérospatial autour du quartier de la Clef de Saint-Pierre, avec notamment un bâtiment Thales/Airbus Defence and Space de 80 000 m². Axion-IA intervient sur site auprès des TPE/PME élancourtoises et de leurs sous-traitants. Nos audits démarrent à {{price:audit-flash|flat}}, nos interventions à {{price:intervention-4h|flat}}, nos implémentations à {{price:impl-poc|entry}}. Code source custom, conformité RGPD et secret défense quand le contexte l'exige.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Élancourt fait partie de l'agglomération de Saint-Quentin-en-Yvelines et concentre un pôle industriel défense et aérospatial autour du quartier de la Clef de Saint-Pierre, avec notamment un bâtiment Thales/Airbus Defence and Space de 80 000 m². Axion-IA intervient sur site auprès des PME et ETI élancourtoises et de leurs sous-traitants. Nos audits démarrent à {{price:audit-flash|flat}}, nos interventions à {{price:intervention-4h|flat}}, nos implémentations à {{price:impl-poc|entry}}. Code source custom, conformité RGPD et secret défense quand le contexte l'exige.",
+  seoHook: "PME & PME · IA opérationnelle",
   ecosystemFr:
     "Le tissu économique d'Élancourt est structuré autour du quartier de la Clef de Saint-Pierre, qui héberge le bâtiment historique de Thomson-CSF (aujourd'hui Thales / Airbus Defence and Space) de 80 000 m², complété par CRMA, Fenwick, Bayer, Matra et Kawasaki. La ville a connu une croissance massive après 1970 avec sa désignation au sein de la ville nouvelle de Saint-Quentin-en-Yvelines, passant de 598 habitants au début du XXe siècle à plus de 26 000 aujourd'hui. Autour de ces grands donneurs d'ordres gravite un écosystème dense de sous-traitants industriels et de services.",
   ecosystemEn:
@@ -45,8 +45,8 @@ export const ELANCOURT_COPY: VilleCopy = {
       en: "Implémenter des solutions IA en code source à Élancourt — intégration ERP/MES pour la fabrication électronique et l'aérospatial — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants TPE/PME d'Élancourt — sessions 1-to-1 sur l'IA opérationnelle — à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner les dirigeants TPE/PME d'Élancourt — sessions 1-to-1 sur l'IA opérationnelle — à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner les dirigeants de PME et d'ETI d'Élancourt — sessions 1-to-1 sur l'IA opérationnelle — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de PME et d'ETI d'Élancourt — sessions 1-to-1 sur l'IA opérationnelle — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -88,12 +88,6 @@ export const ELANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation d'un flux administratif) ou refonte d'une vitrine sur le site existant d'un commerce, artisan, restaurant ou service de la ZAC d'Élancourt et du centre-ville, en quelques semaines et sans tout reconstruire.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -119,7 +113,7 @@ export const ELANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les sous-traitants défense de la Clef de Saint-Pierre ?",
-            a: "Oui. On accompagne les TPE et PME du parc d'activités qui travaillent pour Thales DMS France (siège avenue Gay-Lussac), Airbus Defence and Space ou Matra : portails fournisseurs, recherche sémantique dans la documentation technique, automatisations métier. On livre du code source auditable, on héberge en France et on signe des NDA et clauses de confidentialité renforcées quand le contexte défense l'exige.",
+            a: "Oui. On accompagne les PME et ETI du parc d'activités qui travaillent pour Thales DMS France (siège avenue Gay-Lussac), Airbus Defence and Space ou Matra : portails fournisseurs, recherche sémantique dans la documentation technique, automatisations métier. On livre du code source auditable, on héberge en France et on signe des NDA et clauses de confidentialité renforcées quand le contexte défense l'exige.",
           },
           {
             q: "Pouvez-vous vous brancher sur l'ERP ou le MES d'une usine élancourtoise ?",
@@ -174,12 +168,6 @@ export const ELANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation d'un flux administratif) ou refonte d'une vitrine sur le site existant d'un commerce, artisan, restaurant ou service de la ZAC d'Élancourt et du centre-ville, en quelques semaines et sans tout reconstruire.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -205,7 +193,7 @@ export const ELANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les sous-traitants défense de la Clef de Saint-Pierre ?",
-            a: "Oui. On accompagne les TPE et PME du parc d'activités qui travaillent pour Thales DMS France (siège avenue Gay-Lussac), Airbus Defence and Space ou Matra : portails fournisseurs, recherche sémantique dans la documentation technique, automatisations métier. On livre du code source auditable, on héberge en France et on signe des NDA et clauses de confidentialité renforcées quand le contexte défense l'exige.",
+            a: "Oui. On accompagne les PME et ETI du parc d'activités qui travaillent pour Thales DMS France (siège avenue Gay-Lussac), Airbus Defence and Space ou Matra : portails fournisseurs, recherche sémantique dans la documentation technique, automatisations métier. On livre du code source auditable, on héberge en France et on signe des NDA et clauses de confidentialité renforcées quand le contexte défense l'exige.",
           },
           {
             q: "Pouvez-vous vous brancher sur l'ERP ou le MES d'une usine élancourtoise ?",
@@ -241,7 +229,7 @@ export const ELANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les sous-traitants défense d'Élancourt ?",
-      a: "Oui, nous accompagnons les TPE et PME du quartier de la Clef de Saint-Pierre qui travaillent pour Thales, Airbus Defence and Space ou Matra. Nous livrons du code source auditable, hébergé en France, et signons NDA / clauses de confidentialité renforcées.",
+      a: "Oui, nous accompagnons les PME et ETI du quartier de la Clef de Saint-Pierre qui travaillent pour Thales, Airbus Defence and Space ou Matra. Nous livrons du code source auditable, hébergé en France, et signons NDA / clauses de confidentialité renforcées.",
     },
     {
       q: "Vos solutions IA sont-elles conformes RGPD à Élancourt ?",

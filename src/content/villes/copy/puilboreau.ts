@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PUILBOREAU_COPY: VilleCopy = {
   pitchFr:
-    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération rochelaise.",
+    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de PME artisanales, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération rochelaise.",
   pitchEn:
-    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération rochelaise.",
+    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de PME artisanales, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : PME artisanales, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : PME artisanales, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
   seoHook: "commerce grande & artisanat",
   ecosystemFr:
-    "Puilboreau est un pôle commercial majeur de l'agglomération de La Rochelle, concentrant la zone commerciale Beaulieu (l'une des plus grandes du département). Enseignes de distribution, PME commerciales, TPE artisans, services aux entreprises, professions libérales. Fort trafic commercial toute l'année.",
+    "Puilboreau est un pôle commercial majeur de l'agglomération de La Rochelle, concentrant la zone commerciale Beaulieu (l'une des plus grandes du département). Enseignes de distribution, PME commerciales, PME artisanales, services aux entreprises, professions libérales. Fort trafic commercial toute l'année.",
   ecosystemEn:
-    "Puilboreau est un pôle commercial majeur de l'agglomération de La Rochelle, concentrant la zone commerciale Beaulieu (l'une des plus grandes du département). Enseignes de distribution, PME commerciales, TPE artisans, services aux entreprises, professions libérales. Fort trafic commercial toute l'année.",
+    "Puilboreau est un pôle commercial majeur de l'agglomération de La Rochelle, concentrant la zone commerciale Beaulieu (l'une des plus grandes du département). Enseignes de distribution, PME commerciales, PME artisanales, services aux entreprises, professions libérales. Fort trafic commercial toute l'année.",
   distancesFr:
     "Puilboreau est à 8 min de La Rochelle centre (nord). Gare TGV de La Rochelle à 12 min (Paris Montparnasse 2h50, Bordeaux 2h). Aéroport La Rochelle-Île de Ré à 10 min. Axe N11/N237.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PUILBOREAU_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & grande distribution",
     "Services aux entreprises",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Logistique & transport",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Puilboreau : diagnostic adapté aux enseignes commerciales, PME distribution, TPE artisans et services de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Puilboreau : diagnostic adapté aux enseignes commerciales, PME distribution, TPE artisans et services de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Puilboreau : diagnostic adapté aux enseignes commerciales, PME distribution, PME artisanales et services de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Puilboreau : diagnostic adapté aux enseignes commerciales, PME distribution, PME artisanales et services de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Puilboreau : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const PUILBOREAU_COPY: VilleCopy = {
       en: "Implémentation IA à Puilboreau : automatisation gestion stocks distribution, prédiction fréquentation zone commerciale, agents conversationnels accueil client, optimisation logistique livraison et marketing IA.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Puilboreau : sessions dans vos locaux commerciaux ou en visio. Dirigeants TPE/PME, responsables enseignes et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Puilboreau : sessions dans vos locaux commerciaux ou en visio. Dirigeants TPE/PME, responsables enseignes et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Puilboreau : sessions dans vos locaux commerciaux ou en visio. Dirigeants PME et ETI, responsables enseignes et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Puilboreau : sessions dans vos locaux commerciaux ou en visio. Dirigeants PME et ETI, responsables enseignes et commerçants de l'agglomération rochelaise souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const PUILBOREAU_COPY: VilleCopy = {
       a: "Nous accompagnons les enseignes et commerces de Puilboreau : automatisation gestion stocks, prédiction fréquentation, agents conversationnels accueil client, marketing IA personnalisé et optimisation merchandising.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME à Puilboreau ?",
-      a: "Oui, nous accompagnons les TPE artisans, PME commerciales et services de Puilboreau : automatisation gestion administrative, agents IA relation client, optimisation logistique et outils IA productivité.",
+      q: "Accompagnez-vous les PME et ETI à Puilboreau ?",
+      a: "Oui, nous accompagnons les PME artisanales, PME commerciales et services de Puilboreau : automatisation gestion administrative, agents IA relation client, optimisation logistique et outils IA productivité.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Puilboreau ?",

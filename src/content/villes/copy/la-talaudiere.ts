@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_TALAUDIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Talaudière (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Position notable de zones d'activités. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du nord stéphanois.",
+    "La Talaudière (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Position notable de zones d'activités. Tissu PME tertiaires et industrielles, PME du BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du nord stéphanois.",
   pitchEn:
-    "La Talaudière (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Position notable de zones d'activités. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du nord stéphanois.",
+    "La Talaudière (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Position notable de zones d'activités. Tissu PME tertiaires et industrielles, PME du BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du nord stéphanois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Talaudière (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles zones d'activités, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "tertiaires zones & industrielles diversifiées",
   ecosystemFr:
-    "La Talaudière est intégrée à Saint-Étienne Métropole, en banlieue nord immédiate de Saint-Étienne. Position stratégique : zones d'activités notables (concentration PME tertiaires et industrielles diversifiées). Tissu péri-urbain mixte, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "La Talaudière est intégrée à Saint-Étienne Métropole, en banlieue nord immédiate de Saint-Étienne. Position stratégique : zones d'activités notables (concentration PME tertiaires et industrielles diversifiées). Tissu péri-urbain mixte, PME du BTP, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "La Talaudière est intégrée à Saint-Étienne Métropole, en banlieue nord immédiate de Saint-Étienne. Position stratégique : zones d'activités notables (concentration PME tertiaires et industrielles diversifiées). Tissu péri-urbain mixte, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "La Talaudière est intégrée à Saint-Étienne Métropole, en banlieue nord immédiate de Saint-Étienne. Position stratégique : zones d'activités notables (concentration PME tertiaires et industrielles diversifiées). Tissu péri-urbain mixte, PME du BTP, commerces de proximité, professions libérales.",
   distancesFr:
     "Saint-Étienne centre à 10 min. Aéroport Saint-Étienne-Bouthéon à 20 min. Lyon centre à 50 min. Sorbiers limitrophe à 5 min. Villars à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
     "PME tertiaires zones d'activités",
     "PME industrielles diversifiées",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Talaudière : formats adaptés au bureau tertiaire, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
       en: "Implémentation IA à La Talaudière : agents conversationnels B2B, automatisation workflow tertiaire, prédiction maintenance industrielle, classification documents. Saint-Étienne Métropole nord.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Talaudière : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, artisans, gérants TPE/PME talaudiérois.",
-      en: "Coaching 1-to-1 à La Talaudière : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, artisans, gérants TPE/PME talaudiérois.",
+      fr: "Coaching 1-to-1 à La Talaudière : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, artisans, gérants PME et ETI talaudiérois.",
+      en: "Coaching 1-to-1 à La Talaudière : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, artisans, gérants PME et ETI talaudiérois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et industrielles diversifiées des zones d'activités La Talaudière sur leurs cas IA : agents conversationnels B2B, automatisation workflow, prédiction maintenance, classification documents.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à La Talaudière sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce à La Talaudière sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Quels services pour les professions libérales ?",

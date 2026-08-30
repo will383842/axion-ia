@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PACY_SUR_EURE_COPY: VilleCopy = {
   pitchFr:
-    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu PME artisanales, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu PME artisanales, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : PME artisanales, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : PME artisanales, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
   seoHook: "commerce proximité & agriculture vallée",
   ecosystemFr:
-    "Pacy-sur-Eure est un bourg de la vallée de l'Eure, entre Évreux (20 min) et Vernon (15 min), carrefour entre Normandie et Île-de-France. Tissu TPE/PME de proximité : artisans, commerces, professions libérales, services. Agriculture vallée de l'Eure (maraîchage, céréales). Cadre de vie prisé, population en croissance.",
+    "Pacy-sur-Eure est un bourg de la vallée de l'Eure, entre Évreux (20 min) et Vernon (15 min), carrefour entre Normandie et Île-de-France. Tissu PME et ETI de proximité : artisans, commerces, professions libérales, services. Agriculture vallée de l'Eure (maraîchage, céréales). Cadre de vie prisé, population en croissance.",
   ecosystemEn:
-    "Pacy-sur-Eure est un bourg de la vallée de l'Eure, entre Évreux (20 min) et Vernon (15 min), carrefour entre Normandie et Île-de-France. Tissu TPE/PME de proximité : artisans, commerces, professions libérales, services. Agriculture vallée de l'Eure (maraîchage, céréales). Cadre de vie prisé, population en croissance.",
+    "Pacy-sur-Eure est un bourg de la vallée de l'Eure, entre Évreux (20 min) et Vernon (15 min), carrefour entre Normandie et Île-de-France. Tissu PME et ETI de proximité : artisans, commerces, professions libérales, services. Agriculture vallée de l'Eure (maraîchage, céréales). Cadre de vie prisé, population en croissance.",
   distancesFr:
     "Évreux à 20 min. Vernon-Giverny à 15 min. Gare Vernon-Giverny à 20 min (TGV Paris 50 min). Paris à 1h20 A13. Mantes-la-Jolie à 30 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce de proximité et artisanat",
     "Agriculture vallée de l'Eure",
-    "TPE BTP et second œuvre",
+    "PME BTP et second œuvre",
     "Services aux entreprises et professions libérales",
     "Tourisme vert et loisirs de plein air",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux PME artisanales, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux PME artisanales, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pacy-sur-Eure : formats adaptés au commerce, à l'exploitation agricole, à l'atelier, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
       en: "Implémentation IA à Pacy-sur-Eure : automatisation commerce, agriculture de précision vallée Eure, chatbot tourisme vert, gestion documentaire cabinet. Secteur Évreux-Vernon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pacy-sur-Eure : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants TPE/PME artisans, commerçants, agriculteurs, professions libérales vallée de l'Eure.",
-      en: "Coaching 1-to-1 à Pacy-sur-Eure : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants TPE/PME artisans, commerçants, agriculteurs, professions libérales vallée de l'Eure.",
+      fr: "Coaching 1-to-1 à Pacy-sur-Eure : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME et ETI artisans, commerçants, agriculteurs, professions libérales vallée de l'Eure.",
+      en: "Coaching 1-to-1 à Pacy-sur-Eure : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME et ETI artisans, commerçants, agriculteurs, professions libérales vallée de l'Eure.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les commerçants et artisans de Pacy-sur-Eure sur leurs cas IA : chatbot accueil, automatisation commandes, gestion stocks, classification photos produits, agents IA prise de RDV, facturation.",
     },
     {
-      q: "Quels services pour les TPE et professions libérales du secteur ?",
-      a: "Pour les TPE et professions libérales à Pacy-sur-Eure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
+      q: "Quels services pour les PME et professions libérales du secteur ?",
+      a: "Pour les PME et professions libérales à Pacy-sur-Eure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LES_ULIS_COPY: VilleCopy = {
   pitchFr:
-    "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de TPE de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
+    "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de PME de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes en complément.",
   pitchEn:
-    "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de TPE de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
+    "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de PME de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les PME de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, les grands groupes venant en complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les PME de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, les grands groupes venant en complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
   seoHook: "tech, pharma & électronique",
   ecosystemFr:
-    "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de TPE de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
+    "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de PME de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
   ecosystemEn:
-    "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de TPE de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
+    "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de PME de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
   distancesFr:
     "Massy TGV à 15 min (Paris en 20 min en RER B depuis Massy). Paris-Orly à 25 min. La Défense à 35 min par l'A10/A86. Orsay à 8 min. Parc de Courtaboeuf sur place.",
   distancesEn:
@@ -30,20 +30,20 @@ export const LES_ULIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Ulis : diagnostic ciblé pour TPE de services techniques et PME sous-traitantes pharma/électronique/IT du parc de Courtaboeuf, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
-      en: "Audit IA aux Ulis : diagnostic ciblé pour TPE de services techniques et PME sous-traitantes pharma/électronique/IT du parc de Courtaboeuf, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      fr: "Audit IA aux Ulis : diagnostic ciblé pour PME de services techniques et PME sous-traitantes pharma/électronique/IT du parc de Courtaboeuf, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA aux Ulis : diagnostic ciblé pour PME de services techniques et PME sous-traitantes pharma/électronique/IT du parc de Courtaboeuf, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Ulis : ateliers pratiques pour l'équipe technique, le support, le bureau d'études ou le commerce B2B. Vos collaborateurs sont autonomes ensuite.",
       en: "Interventions IA sur site aux Ulis : ateliers pratiques pour l'équipe technique, le support, le bureau d'études ou le commerce B2B. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA aux Ulis : assistance à la documentation technique, classification, support automatisé, agents conversationnels et CRM augmentés pour TPE-PME du sud Saclay.",
-      en: "Implémentation IA aux Ulis : assistance à la documentation technique, classification, support automatisé, agents conversationnels et CRM augmentés pour TPE-PME du sud Saclay.",
+      fr: "Implémentation IA aux Ulis : assistance à la documentation technique, classification, support automatisé, agents conversationnels et CRM augmentés pour PME et ETI du sud Saclay.",
+      en: "Implémentation IA aux Ulis : assistance à la documentation technique, classification, support automatisé, agents conversationnels et CRM augmentés pour PME et ETI du sud Saclay.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Ulis : sessions pour dirigeants de TPE techniques et de PME sous-traitantes du parc de Courtaboeuf, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 aux Ulis : sessions pour dirigeants de TPE techniques et de PME sous-traitantes du parc de Courtaboeuf, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 aux Ulis : sessions pour dirigeants de PME et d'ETI techniques et de PME sous-traitantes du parc de Courtaboeuf, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 aux Ulis : sessions pour dirigeants de PME et d'ETI techniques et de PME sous-traitantes du parc de Courtaboeuf, dans vos locaux ou en visio.",
     },
     sitesWeb: {
       fr: "Sites web augmentés aux Ulis : sites produits et portails techniques enrichis d'IA pour éditeurs, fournisseurs pharma/électronique et services — documentation interactive, support et qualification de leads.",
@@ -53,11 +53,11 @@ export const LES_ULIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente aux Ulis (91) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de pointe structurée par le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe — pharma, électronique, instrumentation, logiciel et R&D — et son dense tissu de TPE techniques et de PME sous-traitantes du sud Saclay, à la lisière du plateau de Saclay. Que vous soyez éditeur de logiciels, fournisseur d'instruments, sous-traitant pharma ou bureau d'études, on calibre un site qui parle à des acheteurs B2B exigeants. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Ulis ou à Courtaboeuf, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Ulis (91) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de pointe structurée par le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe — pharma, électronique, instrumentation, logiciel et R&D — et son dense tissu de PME techniques et de PME sous-traitantes du sud Saclay, à la lisière du plateau de Saclay. Que vous soyez éditeur de logiciels, fournisseur d'instruments, sous-traitant pharma ou bureau d'études, on calibre un site qui parle à des acheteurs B2B exigeants. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Ulis ou à Courtaboeuf, itérations à distance.",
         whyHere: [
           "Parc de Courtaboeuf, pôle techno majeur du sud Saclay et l'une des plus grandes zones d'activités d'Europe : pour les éditeurs de logiciels, fournisseurs d'instrumentation et acteurs pharma, on bâtit des portails produits techniques, des sites SaaS IA-native et de la documentation interactive augmentée, pensés pour des cycles de vente B2B longs et des décideurs ingénieurs du plateau de Saclay.",
           "Filières pharma, santé et électronique exigeantes en traçabilité et en conformité : chatbot RAG multilingue ancré sur vos fiches techniques, notices et catalogues, recherche sémantique sur la doc réglementaire et qualification automatisée des leads — sans jamais exposer vos données sensibles hors UE, en cohérence avec les contraintes des dispositifs médicaux et de l'instrumentation.",
-          "Tissu dense de TPE de services techniques et de PME sous-traitantes du commerce de gros B2B : on greffe une brique IA sur l'existant (widget, API, plugin WordPress, Shopify, WooCommerce, PrestaShop ou Magento) sans refonte coûteuse, ou on construit une vitrine e-commerce B2B pour vendre pièces, instruments et prestations avec devis en ligne et tarifs par compte client.",
+          "Tissu dense de PME de services techniques et de PME sous-traitantes du commerce de gros B2B : on greffe une brique IA sur l'existant (widget, API, plugin WordPress, Shopify, WooCommerce, PrestaShop ou Magento) sans refonte coûteuse, ou on construit une vitrine e-commerce B2B pour vendre pièces, instruments et prestations avec devis en ligne et tarifs par compte client.",
           "Cœur du cluster Paris-Saclay, à 15 min de Massy TGV et à proximité immédiate d'Orsay et Gif-sur-Yvette : projets web et SaaS calibrés pour des équipes techniques, bureaux d'études et services R&D, avec UX/UI sur mesure, mobile-first, hébergement UE strict et conformité RGPD et AI Act dès la conception.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const LES_ULIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot sur vos fiches techniques, recherche sémantique, qualification de leads — sur le site existant d'un indépendant ou d'une TPE de services techniques du parc de Courtaboeuf, sans refonte ni interruption de votre activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const LES_ULIS_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre vos flux commerciaux. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Site et briques IA transférables à tout prestataire local du sud Saclay (Courtaboeuf, Orsay, Gif-sur-Yvette) ou repris en interne par vos équipes techniques.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente aux Ulis (91) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de pointe structurée par le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe — pharma, électronique, instrumentation, logiciel et R&D — et son dense tissu de TPE techniques et de PME sous-traitantes du sud Saclay, à la lisière du plateau de Saclay. Que vous soyez éditeur de logiciels, fournisseur d'instruments, sous-traitant pharma ou bureau d'études, on calibre un site qui parle à des acheteurs B2B exigeants. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Ulis ou à Courtaboeuf, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Ulis (91) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de pointe structurée par le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe — pharma, électronique, instrumentation, logiciel et R&D — et son dense tissu de PME techniques et de PME sous-traitantes du sud Saclay, à la lisière du plateau de Saclay. Que vous soyez éditeur de logiciels, fournisseur d'instruments, sous-traitant pharma ou bureau d'études, on calibre un site qui parle à des acheteurs B2B exigeants. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Ulis ou à Courtaboeuf, itérations à distance.",
         whyHere: [
           "Parc de Courtaboeuf, pôle techno majeur du sud Saclay et l'une des plus grandes zones d'activités d'Europe : pour les éditeurs de logiciels, fournisseurs d'instrumentation et acteurs pharma, on bâtit des portails produits techniques, des sites SaaS IA-native et de la documentation interactive augmentée, pensés pour des cycles de vente B2B longs et des décideurs ingénieurs du plateau de Saclay.",
           "Filières pharma, santé et électronique exigeantes en traçabilité et en conformité : chatbot RAG multilingue ancré sur vos fiches techniques, notices et catalogues, recherche sémantique sur la doc réglementaire et qualification automatisée des leads — sans jamais exposer vos données sensibles hors UE, en cohérence avec les contraintes des dispositifs médicaux et de l'instrumentation.",
-          "Tissu dense de TPE de services techniques et de PME sous-traitantes du commerce de gros B2B : on greffe une brique IA sur l'existant (widget, API, plugin WordPress, Shopify, WooCommerce, PrestaShop ou Magento) sans refonte coûteuse, ou on construit une vitrine e-commerce B2B pour vendre pièces, instruments et prestations avec devis en ligne et tarifs par compte client.",
+          "Tissu dense de PME de services techniques et de PME sous-traitantes du commerce de gros B2B : on greffe une brique IA sur l'existant (widget, API, plugin WordPress, Shopify, WooCommerce, PrestaShop ou Magento) sans refonte coûteuse, ou on construit une vitrine e-commerce B2B pour vendre pièces, instruments et prestations avec devis en ligne et tarifs par compte client.",
           "Cœur du cluster Paris-Saclay, à 15 min de Massy TGV et à proximité immédiate d'Orsay et Gif-sur-Yvette : projets web et SaaS calibrés pour des équipes techniques, bureaux d'études et services R&D, avec UX/UI sur mesure, mobile-first, hébergement UE strict et conformité RGPD et AI Act dès la conception.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const LES_ULIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot sur vos fiches techniques, recherche sémantique, qualification de leads — sur le site existant d'un indépendant ou d'une TPE de services techniques du parc de Courtaboeuf, sans refonte ni interruption de votre activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -234,7 +222,7 @@ export const LES_ULIS_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité aux Ulis ?",
-      a: "Nous accompagnons d'abord les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique. Les grandes entreprises et ETI du parc restent un complément.",
+      a: "Nous accompagnons d'abord les PME de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique. Les grandes entreprises et ETI du parc restent un complément.",
     },
     {
       q: "L'IA peut-elle aider une PME tech sous-traitante du sud Saclay ?",
@@ -242,7 +230,7 @@ export const LES_ULIS_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA aux Ulis ?",
-      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la PME à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
     },
     {
       q: "Comment se déroule une intervention IA aux Ulis ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
   pitchFr:
-    "Tassin-la-Demi-Lune, commune résidentielle et tertiaire de l'ouest lyonnais, concentre professions libérales, cabinets de conseil, commerces et petites PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME de l'ouest de la Métropole de Lyon pour automatiser sans recruter.",
+    "Tassin-la-Demi-Lune, commune résidentielle et tertiaire de l'ouest lyonnais, concentre professions libérales, cabinets de conseil, commerces et petites PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI de l'ouest de la Métropole de Lyon pour automatiser sans recruter.",
   pitchEn:
-    "Tassin-la-Demi-Lune, commune résidentielle et tertiaire de l'ouest lyonnais, concentre professions libérales, cabinets de conseil, commerces et petites PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME de l'ouest de la Métropole de Lyon pour automatiser sans recruter.",
+    "Tassin-la-Demi-Lune, commune résidentielle et tertiaire de l'ouest lyonnais, concentre professions libérales, cabinets de conseil, commerces et petites PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI de l'ouest de la Métropole de Lyon pour automatiser sans recruter.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Tassin-la-Demi-Lune (69) et dans l'ouest de la Métropole de Lyon. Nous accompagnons en priorité les TPE puis les PME : professions libérales, cabinets de conseil et d'expertise, commerces, agences immobilières et PME de services. Audit, interventions et implémentation pour automatiser rendez-vous, devis, relances et gestion documentaire, avec des livrables documentés et sans dépendance technique durable.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Tassin-la-Demi-Lune (69) et dans l'ouest de la Métropole de Lyon. Nous accompagnons en priorité les PME puis les ETI : professions libérales, cabinets de conseil et d'expertise, commerces, agences immobilières et PME de services. Audit, interventions et implémentation pour automatiser rendez-vous, devis, relances et gestion documentaire, avec des livrables documentés et sans dépendance technique durable.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Tassin-la-Demi-Lune (69) et dans l'ouest de la Métropole de Lyon. Nous accompagnons en priorité les TPE puis les PME : professions libérales, cabinets de conseil et d'expertise, commerces, agences immobilières et PME de services. Audit, interventions et implémentation pour automatiser rendez-vous, devis, relances et gestion documentaire, avec des livrables documentés et sans dépendance technique durable.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Tassin-la-Demi-Lune (69) et dans l'ouest de la Métropole de Lyon. Nous accompagnons en priorité les PME puis les ETI : professions libérales, cabinets de conseil et d'expertise, commerces, agences immobilières et PME de services. Audit, interventions et implémentation pour automatiser rendez-vous, devis, relances et gestion documentaire, avec des livrables documentés et sans dépendance technique durable.",
   seoHook: "libéral, conseil & services",
   ecosystemFr:
     "Tassin-la-Demi-Lune est une commune prisée de l'ouest lyonnais, à la fois résidentielle et tertiaire. Son tissu économique repose sur les professions libérales — santé, droit, expertise comptable — les cabinets de conseil, les agences immobilières et les commerces, complétés par de petites PME de services. Proche d'Écully et de son pôle d'enseignement et de sièges sociaux, elle bénéficie de la dynamique de la Métropole de Lyon tout en gardant une échelle de proximité. Axion-IA y adapte ses chantiers IA aux cabinets et PME de services qui cherchent à libérer du temps.",
@@ -42,8 +42,8 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
       en: "Implémentation IA à Tassin-la-Demi-Lune : automatisation de la prise de rendez-vous, des devis, des relances et du classement documentaire pour cabinets et PME de services.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Tassin-la-Demi-Lune : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de l'ouest lyonnais souhaitant piloter leur adoption de l'IA.",
-      en: "Accompagnement un-à-un à Tassin-la-Demi-Lune : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de l'ouest lyonnais souhaitant piloter leur adoption de l'IA.",
+      fr: "Accompagnement un-à-un à Tassin-la-Demi-Lune : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de l'ouest lyonnais souhaitant piloter leur adoption de l'IA.",
+      en: "Accompagnement un-à-un à Tassin-la-Demi-Lune : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de l'ouest lyonnais souhaitant piloter leur adoption de l'IA.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Tassin-la-Demi-Lune : vitrine ou plateforme dotée d'IA pour cabinets et agences — prise de rendez-vous automatisée, espace client, réponses instantanées aux demandes.",
@@ -88,12 +88,6 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous, relances automatisées) sur le site d'un cabinet libéral, d'un commerce de la Demi-Lune ou d'une agence immobilière, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -174,12 +168,6 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous, relances automatisées) sur le site d'un cabinet libéral, d'un commerce de la Demi-Lune ou d'une agence immobilière, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CORBEIL_ESSONNES_COPY: VilleCopy = {
   pitchFr:
-    "Corbeil-Essonnes (91), ville du sud francilien sur la Seine, conjugue un patrimoine industriel fort : semi-conducteurs (héritage Altis / STMicroelectronics), moteurs aéronautiques avec Snecma-Safran, et les emblématiques Grands Moulins de la minoterie. Son tissu mêle sous-traitance industrielle, deeptech, agroalimentaire et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME corbeil-essonnoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Corbeil-Essonnes (91), ville du sud francilien sur la Seine, conjugue un patrimoine industriel fort : semi-conducteurs (héritage Altis / STMicroelectronics), moteurs aéronautiques avec Snecma-Safran, et les emblématiques Grands Moulins de la minoterie. Son tissu mêle sous-traitance industrielle, deeptech, agroalimentaire et un dense réseau de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI corbeil-essonnoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Corbeil-Essonnes (91), ville du sud francilien sur la Seine, conjugue un patrimoine industriel fort : semi-conducteurs (héritage Altis / STMicroelectronics), moteurs aéronautiques avec Snecma-Safran, et les emblématiques Grands Moulins de la minoterie. Son tissu mêle sous-traitance industrielle, deeptech, agroalimentaire et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME corbeil-essonnoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Corbeil-Essonnes (91), ville du sud francilien sur la Seine, conjugue un patrimoine industriel fort : semi-conducteurs (héritage Altis / STMicroelectronics), moteurs aéronautiques avec Snecma-Safran, et les emblématiques Grands Moulins de la minoterie. Son tissu mêle sous-traitance industrielle, deeptech, agroalimentaire et un dense réseau de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI corbeil-essonnoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corbeil-Essonnes (91, Essonne). Nous accompagnons en priorité les TPE, puis les PME du sud francilien : sous-traitants des semi-conducteurs et de l'aéronautique (écosystèmes Altis/STMicroelectronics et Safran), agroalimentaire de la minoterie, construction, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corbeil-Essonnes (91, Essonne). Nous accompagnons en priorité les PME, puis les PME du sud francilien : sous-traitants des semi-conducteurs et de l'aéronautique (écosystèmes Altis/STMicroelectronics et Safran), agroalimentaire de la minoterie, construction, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corbeil-Essonnes (91, Essonne). Nous accompagnons en priorité les TPE, puis les PME du sud francilien : sous-traitants des semi-conducteurs et de l'aéronautique (écosystèmes Altis/STMicroelectronics et Safran), agroalimentaire de la minoterie, construction, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corbeil-Essonnes (91, Essonne). Nous accompagnons en priorité les PME, puis les PME du sud francilien : sous-traitants des semi-conducteurs et de l'aéronautique (écosystèmes Altis/STMicroelectronics et Safran), agroalimentaire de la minoterie, construction, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "semi-conducteurs & aéronautique",
   ecosystemFr:
-    "Corbeil-Essonnes possède un ADN industriel et deeptech rare en grande couronne : le pôle de semi-conducteurs hérité d'Altis et de STMicroelectronics, la production de moteurs aéronautiques de Snecma-Safran, et les Grands Moulins de Corbeil, fleuron historique de la minoterie française. Autour de ces piliers gravitent sous-traitants industriels, bureaux d'études, agroalimentaire et un secteur construction soutenu, complétés par les commerces et les services de proximité. Ce tissu de TPE et PME conjugue technicité et besoin de modernisation des processus.",
+    "Corbeil-Essonnes possède un ADN industriel et deeptech rare en grande couronne : le pôle de semi-conducteurs hérité d'Altis et de STMicroelectronics, la production de moteurs aéronautiques de Snecma-Safran, et les Grands Moulins de Corbeil, fleuron historique de la minoterie française. Autour de ces piliers gravitent sous-traitants industriels, bureaux d'études, agroalimentaire et un secteur construction soutenu, complétés par les commerces et les services de proximité. Ce tissu de PME et ETI conjugue technicité et besoin de modernisation des processus.",
   ecosystemEn:
-    "Corbeil-Essonnes possède un ADN industriel et deeptech rare en grande couronne : le pôle de semi-conducteurs hérité d'Altis et de STMicroelectronics, la production de moteurs aéronautiques de Snecma-Safran, et les Grands Moulins de Corbeil, fleuron historique de la minoterie française. Autour de ces piliers gravitent sous-traitants industriels, bureaux d'études, agroalimentaire et un secteur construction soutenu, complétés par les commerces et les services de proximité. Ce tissu de TPE et PME conjugue technicité et besoin de modernisation des processus.",
+    "Corbeil-Essonnes possède un ADN industriel et deeptech rare en grande couronne : le pôle de semi-conducteurs hérité d'Altis et de STMicroelectronics, la production de moteurs aéronautiques de Snecma-Safran, et les Grands Moulins de Corbeil, fleuron historique de la minoterie française. Autour de ces piliers gravitent sous-traitants industriels, bureaux d'études, agroalimentaire et un secteur construction soutenu, complétés par les commerces et les services de proximité. Ce tissu de PME et ETI conjugue technicité et besoin de modernisation des processus.",
   distancesFr:
     "Paris-Gare de Lyon à environ 30 min par le RER D. Aéroport de Paris-Orly à 20 min, gare TGV de Massy à 30 min. Évry-Courcouronnes à 10 min, Melun à 25 min, francilienne et A6 à proximité.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Corbeil-Essonnes : diagnostic adapté aux TPE et PME — sous-traitants semi-conducteurs et aéronautique, agroalimentaire, BTP, commerces et services. Nous ciblons les automatisations à fort ROI.",
-      en: "Audit IA à Corbeil-Essonnes : diagnostic adapté aux TPE et PME — sous-traitants semi-conducteurs et aéronautique, agroalimentaire, BTP, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      fr: "Audit IA à Corbeil-Essonnes : diagnostic adapté aux PME et ETI — sous-traitants semi-conducteurs et aéronautique, agroalimentaire, BTP, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Corbeil-Essonnes : diagnostic adapté aux PME et ETI — sous-traitants semi-conducteurs et aéronautique, agroalimentaire, BTP, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Corbeil-Essonnes : formats courts pour automatiser devis, planning d'atelier et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
@@ -42,8 +42,8 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
       en: "Implémentation IA à Corbeil-Essonnes : agents conversationnels, automatisation des flux de production et classification documentaire pour l'industrie et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Corbeil-Essonnes : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME industrielles, deeptech, BTP et commerçantes corbeil-essonnoises.",
-      en: "Coaching un-à-un à Corbeil-Essonnes : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME industrielles, deeptech, BTP et commerçantes corbeil-essonnoises.",
+      fr: "Coaching un-à-un à Corbeil-Essonnes : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI industrielles, deeptech, BTP et commerçantes corbeil-essonnoises.",
+      en: "Coaching un-à-un à Corbeil-Essonnes : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI industrielles, deeptech, BTP et commerçantes corbeil-essonnoises.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Corbeil-Essonnes : plateformes et outils sur mesure pour sous-traitants industriels, acteurs deeptech et commerces du sud francilien, avec automatisations et SEO local.",
@@ -89,12 +89,6 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine + IA essentielle",
-            detail:
-              "Pour artisans, commerces des Coquibus/Montconseil et indépendants corbeil-essonnois : site mobile-first, formulaire de contact intelligent et chatbot FAQ branché sur votre activité.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
             detail:
@@ -128,7 +122,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai livrez-vous un devis ?",
-            a: "À partir de 24-48 h selon la complexité. Un site vitrine TPE pour un commerce des Coquibus est cadré rapidement ; une plateforme SaaS pour un sous-traitant Safran ou un acteur de l'écosystème Altis/X-FAB demande un cadrage technique plus poussé avant chiffrage.",
+            a: "À partir de 24-48 h selon la complexité. Un site vitrine PME pour un commerce des Coquibus est cadré rapidement ; une plateforme SaaS pour un sous-traitant Safran ou un acteur de l'écosystème Altis/X-FAB demande un cadrage technique plus poussé avant chiffrage.",
           },
           {
             q: "Mes données et mon site restent-ils ma propriété ?",
@@ -174,12 +168,6 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site + essential AI",
-            detail:
-              "For Corbeil-Essonnes craftspeople, Coquibus/Montconseil shops and freelancers: mobile-first site, smart contact form and FAQ chatbot connected to your activity.",
-          },
           {
             sizeLabel: "SME",
             price: "E-commerce platform or business portal",
@@ -230,15 +218,15 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Corbeil-Essonnes et dans l'Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Corbeil-Essonnes et des communes voisines : Évry-Courcouronnes, Saint-Germain-lès-Corbeil, Le Coudray-Montceaux, Étampes. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Corbeil-Essonnes et des communes voisines : Évry-Courcouronnes, Saint-Germain-lès-Corbeil, Le Coudray-Montceaux, Étampes. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants industriels et deeptech ?",
-      a: "Oui. Beaucoup de TPE et PME corbeil-essonnoises sont sous-traitantes des semi-conducteurs ou de l'aéronautique (Safran). Nous automatisons leurs devis, leurs flux de production, leur planning d'atelier et leur classification documentaire.",
+      a: "Oui. Beaucoup de PME et ETI corbeil-essonnoises sont sous-traitantes des semi-conducteurs ou de l'aéronautique (Safran). Nous automatisons leurs devis, leurs flux de production, leur planning d'atelier et leur classification documentaire.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire, le BTP et les commerces ?",
-      a: "Absolument — c'est notre priorité. Traçabilité, devis, plannings et relances : nous adaptons les automatisations aux TPE et PME de l'agroalimentaire, de la construction et du commerce de proximité.",
+      a: "Absolument — c'est notre priorité. Traçabilité, devis, plannings et relances : nous adaptons les automatisations aux PME et ETI de l'agroalimentaire, de la construction et du commerce de proximité.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

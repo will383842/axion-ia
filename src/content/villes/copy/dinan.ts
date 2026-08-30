@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DINAN_COPY: VilleCopy = {
   pitchFr:
-    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
+    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de PME artisanales d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
   pitchEn:
-    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
+    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de PME artisanales d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dinan (22). Nous accompagnons PME et ETI : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dinan (22). Nous accompagnons PME et ETI : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
   seoHook: "tourisme, hôtellerie & artisanat d'art",
   ecosystemFr:
-    "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : TPE artisans d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",
+    "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : PME artisanales d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",
   ecosystemEn:
-    "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : TPE artisans d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",
+    "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : PME artisanales d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",
   distancesFr:
     "Gare SNCF de Dinan (TER vers Saint-Brieuc et Dol-de-Bretagne). Saint-Malo à 30 min, Saint-Brieuc à 45 min, Rennes à 55 min, Lamballe à 25 min. RN176 axe Saint-Brieuc — Saint-Malo. Aéroport Dinard-Pleurtuit à 20 min, Rennes-Bretagne à 1 h.",
   distancesEn:
@@ -30,20 +30,20 @@ export const DINAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Dinan : diagnostic adapté aux PME artisanales d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Dinan : diagnostic adapté aux PME artisanales d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dinan : formats adaptés à l'atelier, à l'hôtel, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Dinan : formats adaptés à l'atelier, à l'hôtel, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Dinan : automatisation réservation et accueil, agents conversationnels, gestion stock artisanal, CRM augmenté. Solutions sur mesure pour TPE et PME du pays de Dinan.",
-      en: "Implémentation IA à Dinan : automatisation réservation et accueil, agents conversationnels, gestion stock artisanal, CRM augmenté. Solutions sur mesure pour TPE et PME du pays de Dinan.",
+      fr: "Implémentation IA à Dinan : automatisation réservation et accueil, agents conversationnels, gestion stock artisanal, CRM augmenté. Solutions sur mesure pour PME et ETI du pays de Dinan.",
+      en: "Implémentation IA à Dinan : automatisation réservation et accueil, agents conversationnels, gestion stock artisanal, CRM augmenté. Solutions sur mesure pour PME et ETI du pays de Dinan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Dinan : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants hôteliers, commerçants et professions libérales du pays de Dinan.",
-      en: "Coaching 1-to-1 à Dinan : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants hôteliers, commerçants et professions libérales du pays de Dinan.",
+      fr: "Coaching 1-to-1 à Dinan : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants hôteliers, commerçants et professions libérales du pays de Dinan.",
+      en: "Coaching 1-to-1 à Dinan : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants hôteliers, commerçants et professions libérales du pays de Dinan.",
     },
   },
   faqGeolocalisee: [

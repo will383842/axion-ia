@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PLESSE_COPY: VilleCopy = {
   pitchFr:
-    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
+    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de PME agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
   pitchEn:
-    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
+    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de PME agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   seoHook: "agriculture élevage & artisanat filière",
   ecosystemFr:
-    "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les TPE artisanales BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",
+    "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les PME du BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",
   ecosystemEn:
-    "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les TPE artisanales BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",
+    "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les PME du BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",
   distancesFr:
     "Gare de Redon (TER Rennes–Nantes–Quimper) à 20 min. Nantes centre à 55 min via N137/N171. Rennes à 1h10. Aéroport Nantes Atlantique à 55 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const PLESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} accessible aux petites structures rurales.",
-      en: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} accessible aux petites structures rurales.",
+      fr: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, PME artisanales, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} accessible aux PME rurales.",
+      en: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, PME artisanales, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} accessible aux PME rurales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plessé : formations et ateliers pratiques adaptés aux exploitants agricoles, artisans BTP et commerçants. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -42,18 +42,18 @@ export const PLESSE_COPY: VilleCopy = {
       en: "Implémentation IA à Plessé : automatisation gestion troupeau et traçabilité, agents IA devis chantier BTP, outils prédiction stocks commerçants, digitalisation PME agroalimentaires pays de Redon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plessé : sessions sur votre exploitation, atelier ou commerce. Dirigeants agricoles, artisans, gérants TPE/PME du pays de Redon souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Plessé : sessions sur votre exploitation, atelier ou commerce. Dirigeants agricoles, artisans, gérants TPE/PME du pays de Redon souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Plessé : sessions sur votre exploitation, atelier ou commerce. Dirigeants agricoles, artisans, gérants PME et ETI du pays de Redon souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Plessé : sessions sur votre exploitation, atelier ou commerce. Dirigeants agricoles, artisans, gérants PME et ETI du pays de Redon souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plessé et dans le pays de Redon ?",
-      a: "Oui, Axion-IA intervient à Plessé et dans tout le nord Loire-Atlantique (Blain, Guémené-Penfao, Redon, Savenay). Nos consultants se déplacent sur site pour accompagner TPE, PME, exploitants agricoles et commerçants locaux.",
+      a: "Oui, Axion-IA intervient à Plessé et dans tout le nord Loire-Atlantique (Blain, Guémené-Penfao, Redon, Savenay). Nos consultants se déplacent sur site pour accompagner PME, ETI, exploitants agricoles et commerçants locaux.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation agricole à Plessé ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et TPE rurales. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, automatisation administrative, prédiction rendements.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et PME rurales. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, automatisation administrative, prédiction rendements.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Plessé ?",
@@ -61,7 +61,7 @@ export const PLESSE_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle utile pour les commerces de bourg comme à Plessé ?",
-      a: "Absolument. Pour les commerces de proximité à Plessé, l'IA permet d'automatiser la gestion de stocks, les relances clients, la comptabilité et la communication locale. Des outils accessibles même pour les très petites structures.",
+      a: "Absolument. Pour les commerces de proximité à Plessé, l'IA permet d'automatiser la gestion de stocks, les relances clients, la comptabilité et la communication locale. Des outils accessibles même pour les très PME.",
     },
     {
       q: "Comment se déroule une intervention sur site à Plessé ?",

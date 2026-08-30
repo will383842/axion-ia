@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONS_EN_BAR_UL_COPY: VilleCopy = {
   pitchFr:
-    "Mons-en-Barœul, dans le Nord, est une commune de la métropole européenne de Lille qui a réussi sa reconversion d'ancienne cité ouvrière en pôle tertiaire et résidentiel dynamique, aux portes immédiates de Lille. Son tissu mêle services aux entreprises, commerces, artisanat et professions libérales, dans l'orbite de l'un des plus grands bassins économiques du nord de l'Europe. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME locales pour automatiser leurs processus avec un ROI mesurable.",
+    "Mons-en-Barœul, dans le Nord, est une commune de la métropole européenne de Lille qui a réussi sa reconversion d'ancienne cité ouvrière en pôle tertiaire et résidentiel dynamique, aux portes immédiates de Lille. Son tissu mêle services aux entreprises, commerces, artisanat et professions libérales, dans l'orbite de l'un des plus grands bassins économiques du nord de l'Europe. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI locales pour automatiser leurs processus avec un ROI mesurable.",
   pitchEn:
-    "Mons-en-Barœul, dans le Nord, est une commune de la métropole européenne de Lille qui a réussi sa reconversion d'ancienne cité ouvrière en pôle tertiaire et résidentiel dynamique, aux portes immédiates de Lille. Son tissu mêle services aux entreprises, commerces, artisanat et professions libérales, dans l'orbite de l'un des plus grands bassins économiques du nord de l'Europe. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME locales pour automatiser leurs processus avec un ROI mesurable.",
+    "Mons-en-Barœul, dans le Nord, est une commune de la métropole européenne de Lille qui a réussi sa reconversion d'ancienne cité ouvrière en pôle tertiaire et résidentiel dynamique, aux portes immédiates de Lille. Son tissu mêle services aux entreprises, commerces, artisanat et professions libérales, dans l'orbite de l'un des plus grands bassins économiques du nord de l'Europe. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI locales pour automatiser leurs processus avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mons-en-Barœul (59, Nord). Nous accompagnons en priorité les TPE puis les PME de cette commune de la métropole lilloise : services aux entreprises, professions libérales, commerces, artisanat et ESN. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mons-en-Barœul (59, Nord). Nous accompagnons en priorité les PME puis les ETI de cette commune de la métropole lilloise : services aux entreprises, professions libérales, commerces, artisanat et ESN. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mons-en-Barœul (59, Nord). Nous accompagnons en priorité les TPE puis les PME de cette commune de la métropole lilloise : services aux entreprises, professions libérales, commerces, artisanat et ESN. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mons-en-Barœul (59, Nord). Nous accompagnons en priorité les PME puis les ETI de cette commune de la métropole lilloise : services aux entreprises, professions libérales, commerces, artisanat et ESN. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   seoHook: "tertiaire & services métropole Lille",
   ecosystemFr:
-    "Mons-en-Barœul a transformé son ancien passé industriel et ses grands ensembles en un pôle tertiaire et résidentiel intégré à la métropole européenne de Lille, l'un des plus vastes bassins économiques du nord de l'Europe. La proximité immédiate de Lille, de son écosystème numérique EuraTechnologies et de ses sièges sociaux irrigue un tissu local de services aux entreprises, professions libérales, commerces et artisans. Ces TPE et PME, riches en tâches administratives répétitives, sont idéales pour l'automatisation IA.",
+    "Mons-en-Barœul a transformé son ancien passé industriel et ses grands ensembles en un pôle tertiaire et résidentiel intégré à la métropole européenne de Lille, l'un des plus vastes bassins économiques du nord de l'Europe. La proximité immédiate de Lille, de son écosystème numérique EuraTechnologies et de ses sièges sociaux irrigue un tissu local de services aux entreprises, professions libérales, commerces et artisans. Ces PME et ETI, riches en tâches administratives répétitives, sont idéales pour l'automatisation IA.",
   ecosystemEn:
-    "Mons-en-Barœul a transformé son ancien passé industriel et ses grands ensembles en un pôle tertiaire et résidentiel intégré à la métropole européenne de Lille, l'un des plus vastes bassins économiques du nord de l'Europe. La proximité immédiate de Lille, de son écosystème numérique EuraTechnologies et de ses sièges sociaux irrigue un tissu local de services aux entreprises, professions libérales, commerces et artisans. Ces TPE et PME, riches en tâches administratives répétitives, sont idéales pour l'automatisation IA.",
+    "Mons-en-Barœul a transformé son ancien passé industriel et ses grands ensembles en un pôle tertiaire et résidentiel intégré à la métropole européenne de Lille, l'un des plus vastes bassins économiques du nord de l'Europe. La proximité immédiate de Lille, de son écosystème numérique EuraTechnologies et de ses sièges sociaux irrigue un tissu local de services aux entreprises, professions libérales, commerces et artisans. Ces PME et ETI, riches en tâches administratives répétitives, sont idéales pour l'automatisation IA.",
   distancesFr:
     "Mons-en-Barœul est limitrophe de Lille et desservie par la ligne 2 du métro lillois, qui rejoint le centre en quelques minutes. La gare de Lille-Europe, hub TGV et Eurostar, est à 5 km, plaçant Paris à une heure et Bruxelles à 35 minutes. L'aéroport de Lille-Lesquin est à environ 15 km. Cette intégration au cœur de la métropole facilite nos interventions sur tout l'est lillois.",
   distancesEn:
@@ -34,16 +34,16 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
       en: "Audit IA à Mons-en-Barœul : diagnostic des processus pour professions libérales, services aux entreprises et commerces de la métropole lilloise. Nous priorisons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mons-en-Barœul : automatisation des devis, relances et tâches administratives pour les TPE et PME locales, avec montée en autonomie des équipes.",
-      en: "Interventions IA sur site à Mons-en-Barœul : automatisation des devis, relances et tâches administratives pour les TPE et PME locales, avec montée en autonomie des équipes.",
+      fr: "Interventions IA sur site à Mons-en-Barœul : automatisation des devis, relances et tâches administratives pour les PME et ETI locales, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Mons-en-Barœul : automatisation des devis, relances et tâches administratives pour les PME et ETI locales, avec montée en autonomie des équipes.",
     },
     implementation: {
       fr: "Implémentation IA à Mons-en-Barœul : agents conversationnels, classification de documents et automatisation des flux entre CRM et outils métier des entreprises de services.",
       en: "Implémentation IA à Mons-en-Barœul : agents conversationnels, classification de documents et automatisation des flux entre CRM et outils métier des entreprises de services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mons-en-Barœul : sessions dans vos locaux ou en visio pour les dirigeants de TPE et PME souhaitant piloter l'IA en autonomie au sein de la métropole lilloise.",
-      en: "Coaching 1-to-1 à Mons-en-Barœul : sessions dans vos locaux ou en visio pour les dirigeants de TPE et PME souhaitant piloter l'IA en autonomie au sein de la métropole lilloise.",
+      fr: "Coaching 1-to-1 à Mons-en-Barœul : sessions dans vos locaux ou en visio pour les dirigeants de PME et d'ETI souhaitant piloter l'IA en autonomie au sein de la métropole lilloise.",
+      en: "Coaching 1-to-1 à Mons-en-Barœul : sessions dans vos locaux ou en visio pour les dirigeants de PME et d'ETI souhaitant piloter l'IA en autonomie au sein de la métropole lilloise.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Mons-en-Barœul : plateformes sur mesure avec IA intégrée pour professions libérales, commerces et services souhaitant capter une clientèle de toute la métropole lilloise.",
@@ -88,12 +88,6 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous, recherche sémantique) sur le site existant d'un commerce, artisan, restaurateur ou libéral montois, en quelques semaines et sans refonte — idéal autour du centre-ville et du Fort de Mons.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous, recherche sémantique) sur le site existant d'un commerce, artisan, restaurateur ou libéral montois, en quelques semaines et sans refonte — idéal autour du centre-ville et du Fort de Mons.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -237,8 +225,8 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
       a: "Oui. Avocats, experts-comptables, cabinets et autres libéraux sont un public clé. Nous automatisons devis, relances, gestion documentaire et réponses aux demandes pour leur faire gagner un temps administratif considérable.",
     },
     {
-      q: "Travaillez-vous avec les TPE et PME locales en priorité ?",
-      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Mons-en-Barœul. Nous adaptons les formats aux petites structures de services et commerces. Les ETI restent un public marginal de notre activité.",
+      q: "Travaillez-vous avec les PME et ETI locales en priorité ?",
+      a: "Oui. Les les PME puis les ETI sont notre public prioritaire à Mons-en-Barœul. Nous adaptons les formats aux PME de services et commerces. Les grands groupes complètent ce socle.",
     },
     {
       q: "Quels services pour les commerces et artisans de Mons-en-Barœul ?",

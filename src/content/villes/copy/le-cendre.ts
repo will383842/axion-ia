@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_CENDRE_COPY: VilleCopy = {
   pitchFr:
-    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, PME du BTP, commerce de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, PME du BTP, commerce de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cendre (63). Nous accompagnons PME et ETI : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Cendre (63). Nous accompagnons PME et ETI : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   seoHook: "proche clermont-ferrand",
   ecosystemFr:
-    "Le Cendre est une commune résidentielle du sud de l'agglomération clermontoise, dans Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises.",
+    "Le Cendre est une commune résidentielle du sud de l'agglomération clermontoise, dans Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales, PME du BTP, commerce de proximité, services aux entreprises.",
   ecosystemEn:
-    "Le Cendre est une commune résidentielle du sud de l'agglomération clermontoise, dans Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises.",
+    "Le Cendre est une commune résidentielle du sud de l'agglomération clermontoise, dans Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales, PME du BTP, commerce de proximité, services aux entreprises.",
   distancesFr:
     "Clermont-Ferrand à 15 min. Cournon-d'Auvergne à 5 min. Issoire à 25 min. Aéroport Clermont-Auvergne à 20 min.",
   distancesEn:
@@ -24,7 +24,7 @@ export const LE_CENDRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
@@ -42,8 +42,8 @@ export const LE_CENDRE_COPY: VilleCopy = {
       en: "Implémentation IA au Cendre : automatisation facturation et relances, CRM augmenté PME, devis automatisés artisans BTP, gestion planning professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Cendre : sessions dans votre bureau, cabinet, atelier ou en visio. Dirigeants TPE/PME, professions libérales, artisans du sud Clermont.",
-      en: "Coaching 1-to-1 au Cendre : sessions dans votre bureau, cabinet, atelier ou en visio. Dirigeants TPE/PME, professions libérales, artisans du sud Clermont.",
+      fr: "Coaching 1-to-1 au Cendre : sessions dans votre bureau, cabinet, atelier ou en visio. Dirigeants PME et ETI, professions libérales, artisans du sud Clermont.",
+      en: "Coaching 1-to-1 au Cendre : sessions dans votre bureau, cabinet, atelier ou en visio. Dirigeants PME et ETI, professions libérales, artisans du sud Clermont.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const LE_CENDRE_COPY: VilleCopy = {
       a: "Oui, devis automatisés par IA, suivi chantiers, gestion stocks matériaux, facturation et relances automatiques.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

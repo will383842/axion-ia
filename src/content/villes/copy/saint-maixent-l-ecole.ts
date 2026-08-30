@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Maixent-l'École (79), commune des Deux-Sèvres sur la Sèvre niortaise, 7 595 habitants. Ville de garnison (ENSOA, école des sous-officiers), patrimoine médiéval, tissu de TPE artisans, PME de services et commerces. Axion-IA opère pour toutes les structures économiques de la commune du Val de Sèvre.",
+    "Saint-Maixent-l'École (79), commune des Deux-Sèvres sur la Sèvre niortaise, 7 595 habitants. Ville de garnison (ENSOA, école des sous-officiers), patrimoine médiéval, tissu de PME artisanales, PME de services et commerces. Axion-IA opère pour toutes les structures économiques de la commune du Val de Sèvre.",
   pitchEn:
-    "Saint-Maixent-l'École (79), commune des Deux-Sèvres sur la Sèvre niortaise, 7 595 habitants. Ville de garnison (ENSOA, école des sous-officiers), patrimoine médiéval, tissu de TPE artisans, PME de services et commerces. Axion-IA opère pour toutes les structures économiques de la commune du Val de Sèvre.",
+    "Saint-Maixent-l'École (79), commune des Deux-Sèvres sur la Sèvre niortaise, 7 595 habitants. Ville de garnison (ENSOA, école des sous-officiers), patrimoine médiéval, tissu de PME artisanales, PME de services et commerces. Axion-IA opère pour toutes les structures économiques de la commune du Val de Sèvre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maixent-l'École (79). Nous accompagnons TPE, PME et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maixent-l'École (79). Nous accompagnons PME, ETI et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maixent-l'École (79). Nous accompagnons TPE, PME et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maixent-l'École (79). Nous accompagnons PME, ETI et artisans du Val de Sèvre : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   seoHook: "services prestataires & commerce centre-ville",
   ecosystemFr:
-    "Saint-Maixent-l'École est une commune de 7 595 habitants sur la Sèvre niortaise. Ville de garnison historique (ENSOA, école nationale des sous-officiers d'active), patrimoine médiéval (abbatiale). Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et prestataires liés à la défense.",
+    "Saint-Maixent-l'École est une commune de 7 595 habitants sur la Sèvre niortaise. Ville de garnison historique (ENSOA, école nationale des sous-officiers d'active), patrimoine médiéval (abbatiale). Tissu de PME artisanales, PME de services, commerces de centre-ville, professions libérales et prestataires liés à la défense.",
   ecosystemEn:
-    "Saint-Maixent-l'École est une commune de 7 595 habitants sur la Sèvre niortaise. Ville de garnison historique (ENSOA, école nationale des sous-officiers d'active), patrimoine médiéval (abbatiale). Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et prestataires liés à la défense.",
+    "Saint-Maixent-l'École est une commune de 7 595 habitants sur la Sèvre niortaise. Ville de garnison historique (ENSOA, école nationale des sous-officiers d'active), patrimoine médiéval (abbatiale). Tissu de PME artisanales, PME de services, commerces de centre-ville, professions libérales et prestataires liés à la défense.",
   distancesFr:
     "Gare de Saint-Maixent (TGV Paris 2h15 direct). Niort à 25 min voiture. Poitiers à 45 min. Parthenay à 25 min. Accès A10 (Paris-Bordeaux, échangeur Saint-Maixent). La Rochelle à 1h10.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services & prestataires défense",
     "Commerce de centre-ville",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
     "Restauration & hébergement",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, TPE artisans, commerçants et professions libérales du Val de Sèvre. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, TPE artisans, commerçants et professions libérales du Val de Sèvre. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, PME artisanales, commerçants et professions libérales du Val de Sèvre. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, PME artisanales, commerçants et professions libérales du Val de Sèvre. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Maixent : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et optimisation planning.",
@@ -42,8 +42,8 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Maixent : automatisation gestion cabinet libéral, chatbot accueil client, classification documents, optimisation comptabilité PME et marketing digital commerce centre-ville.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Maixent-l'École : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, professions libérales, commerçants et artisans du Val de Sèvre.",
-      en: "Coaching 1-to-1 à Saint-Maixent-l'École : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, professions libérales, commerçants et artisans du Val de Sèvre.",
+      fr: "Coaching 1-to-1 à Saint-Maixent-l'École : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, professions libérales, commerçants et artisans du Val de Sèvre.",
+      en: "Coaching 1-to-1 à Saint-Maixent-l'École : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, professions libérales, commerçants et artisans du Val de Sèvre.",
     },
   },
   faqGeolocalisee: [

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CHANTONNAY_COPY: VilleCopy = {
   pitchFr:
-    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de PME artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de PME artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
-  seoHook: "TPE & PME Vendée",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
+  seoHook: "PME & PME Vendée",
   ecosystemFr:
     "Chantonnay est un bourg-centre du bocage vendéen entre La Roche-sur-Yon (25 min) et Fontenay-le-Comte (30 min). PME industrielles (mécanique, agroalimentaire), agriculture (élevage bovin, cultures), artisanat BTP, commerces. Gare SNCF sur ligne La Roche-sur-Yon / La Rochelle.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const CHANTONNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Chantonnay : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chantonnay : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Chantonnay : gestion élevage prédictive, automatisation PME agroalimentaires, optimisation chaîne industrielle, outils artisans BTP. Adapté TPE/PME bocage vendéen.",
-      en: "Implémentation IA à Chantonnay : gestion élevage prédictive, automatisation PME agroalimentaires, optimisation chaîne industrielle, outils artisans BTP. Adapté TPE/PME bocage vendéen.",
+      fr: "Implémentation IA à Chantonnay : gestion élevage prédictive, automatisation PME agroalimentaires, optimisation chaîne industrielle, outils artisans BTP. Adapté PME et ETI bocage vendéen.",
+      en: "Implémentation IA à Chantonnay : gestion élevage prédictive, automatisation PME agroalimentaires, optimisation chaîne industrielle, outils artisans BTP. Adapté PME et ETI bocage vendéen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chantonnay : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME industrie, agriculture, agroalimentaire, artisanat bocage vendéen.",
-      en: "Coaching 1-to-1 à Chantonnay : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME industrie, agriculture, agroalimentaire, artisanat bocage vendéen.",
+      fr: "Coaching 1-to-1 à Chantonnay : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI industrie, agriculture, agroalimentaire, artisanat bocage vendéen.",
+      en: "Coaching 1-to-1 à Chantonnay : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI industrie, agriculture, agroalimentaire, artisanat bocage vendéen.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const CHANTONNAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Chantonnay  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Chantonnay ?",

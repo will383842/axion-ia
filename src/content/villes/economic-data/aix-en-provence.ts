@@ -315,7 +315,7 @@ export const AIX_EN_PROVENCE_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Pas de label EPV individuellement sourcé pour Aix-en-Provence en V1
   // (à compléter via annuaire data.economie.gouv.fr/explore/dataset/entreprises-du-patrimoine-vivant-epv).

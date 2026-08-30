@@ -9,9 +9,9 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   pitchEn:
     "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   seoHook: "littoral",
   ecosystemFr:
     "Talmont-Saint-Hilaire est une commune littorale vendéenne avec le château de Talmont (XIe siècle, Richard Cœur de Lion) et le port ostréicole du Payré. Tourisme patrimonial et balnéaire, ostréiculture, camping, artisanat. Les Sables-d'Olonne à 10 min, La Roche-sur-Yon à 30 min.",
@@ -30,20 +30,20 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux PME ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux PME ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Talmont-Saint-Hilaire : traçabilité ostréicole, pricing dynamique campings, agents conversationnels tourisme patrimoine, automatisation réservations. Adapté TPE/PME littoral vendéen.",
-      en: "Implémentation IA à Talmont-Saint-Hilaire : traçabilité ostréicole, pricing dynamique campings, agents conversationnels tourisme patrimoine, automatisation réservations. Adapté TPE/PME littoral vendéen.",
+      fr: "Implémentation IA à Talmont-Saint-Hilaire : traçabilité ostréicole, pricing dynamique campings, agents conversationnels tourisme patrimoine, automatisation réservations. Adapté PME et ETI littoral vendéen.",
+      en: "Implémentation IA à Talmont-Saint-Hilaire : traçabilité ostréicole, pricing dynamique campings, agents conversationnels tourisme patrimoine, automatisation réservations. Adapté PME et ETI littoral vendéen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Talmont-Saint-Hilaire : sessions dans votre exploitation ostréicole, camping, hôtel ou en visio. Dirigeants TPE/PME tourisme, conchyliculture, commerce littoral.",
-      en: "Coaching 1-to-1 à Talmont-Saint-Hilaire : sessions dans votre exploitation ostréicole, camping, hôtel ou en visio. Dirigeants TPE/PME tourisme, conchyliculture, commerce littoral.",
+      fr: "Coaching 1-to-1 à Talmont-Saint-Hilaire : sessions dans votre exploitation ostréicole, camping, hôtel ou en visio. Dirigeants PME et ETI tourisme, conchyliculture, commerce littoral.",
+      en: "Coaching 1-to-1 à Talmont-Saint-Hilaire : sessions dans votre exploitation ostréicole, camping, hôtel ou en visio. Dirigeants PME et ETI tourisme, conchyliculture, commerce littoral.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Talmont-Saint-Hilaire  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Talmont-Saint-Hilaire ?",

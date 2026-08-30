@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   pitchFr:
-    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de PME artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de PME artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   seoHook: "agriculture élevage & industrielles zones",
   ecosystemFr:
     "Essarts-en-Bocage est une commune nouvelle du bocage vendéen (fusion 2016), entre La Roche-sur-Yon (20 min) et Les Herbiers (25 min). Zones d'activités industrielles, agriculture (élevage, cultures), artisanat BTP, commerces. Axe D160 La Roche / Les Herbiers.",
@@ -30,20 +30,20 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux PME artisanales, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux PME artisanales, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
       en: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Essarts-en-Bocage : optimisation exploitation agricole, automatisation PME industrielles, gestion chantiers artisans, outils prédictifs. Adapté TPE/PME bocage vendéen.",
-      en: "Implémentation IA à Essarts-en-Bocage : optimisation exploitation agricole, automatisation PME industrielles, gestion chantiers artisans, outils prédictifs. Adapté TPE/PME bocage vendéen.",
+      fr: "Implémentation IA à Essarts-en-Bocage : optimisation exploitation agricole, automatisation PME industrielles, gestion chantiers artisans, outils prédictifs. Adapté PME et ETI bocage vendéen.",
+      en: "Implémentation IA à Essarts-en-Bocage : optimisation exploitation agricole, automatisation PME industrielles, gestion chantiers artisans, outils prédictifs. Adapté PME et ETI bocage vendéen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Essarts-en-Bocage : sessions dans vos locaux ou en visio. Dirigeants TPE/PME agriculture, industrie, artisanat et commerce bocage vendéen.",
-      en: "Coaching 1-to-1 à Essarts-en-Bocage : sessions dans vos locaux ou en visio. Dirigeants TPE/PME agriculture, industrie, artisanat et commerce bocage vendéen.",
+      fr: "Coaching 1-to-1 à Essarts-en-Bocage : sessions dans vos locaux ou en visio. Dirigeants PME et ETI agriculture, industrie, artisanat et commerce bocage vendéen.",
+      en: "Coaching 1-to-1 à Essarts-en-Bocage : sessions dans vos locaux ou en visio. Dirigeants PME et ETI agriculture, industrie, artisanat et commerce bocage vendéen.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Essarts-en-Bocage  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Essarts-en-Bocage ?",

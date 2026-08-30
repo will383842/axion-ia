@@ -194,7 +194,7 @@ export async function Header() {
               </span>
             </span>
           </Link>
-          {/* Tagline B2B sous le logo — signal d'audience cible (TPE/PME/ETI).
+          {/* Tagline B2B sous le logo — signal d'audience cible (PME/ETI/grands groupes).
               Serif italique pour cohérence éditoriale avec le « IA » du logo.
               Visibilité — simplifiée le 2026-08-04 : `lg:block`, sans trou.
               Elle portait un `xl:hidden` + `min-[1400px]:block` destinés à

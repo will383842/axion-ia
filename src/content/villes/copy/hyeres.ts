@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const HYERES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
+    "Axion-IA accompagne les PME et ETI de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
+    "Axion-IA accompagne les PME et ETI de Hyères, cité varoise des îles d'Or et capitale française du palmier, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser réservations, devis et gestion saisonnière au service des acteurs du tourisme, de l'horticulture et de la viticulture.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce bassin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce bassin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de Hyères à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire tourné vers le tourisme des îles d'Or et de Porquerolles, l'horticulture du palmier, la viticulture des Côtes de Provence et les activités nautiques, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   seoHook: "tourisme îles d'Or & horticulture",
   ecosystemFr:
-    "Hyères concentre une économie de saison : tourisme balnéaire et insulaire vers Porquerolles, Port-Cros et le Levant, hébergement hôtelier et de plein air, horticulture historique du palmier, viticulture des Côtes de Provence et activités nautiques. Ce tissu de TPE et de PME, soumis à de fortes variations saisonnières, gagne à automatiser réservations, relations client multilingues, devis et gestion des stocks. La présence de l'aéroport de Toulon-Hyères renforce l'accessibilité. Axion-IA cible en priorité ces TPE touristiques et agricoles, puis les PME viticoles et hôtelières.",
+    "Hyères concentre une économie de saison : tourisme balnéaire et insulaire vers Porquerolles, Port-Cros et le Levant, hébergement hôtelier et de plein air, horticulture historique du palmier, viticulture des Côtes de Provence et activités nautiques. Ce tissu de PME et de PME, soumis à de fortes variations saisonnières, gagne à automatiser réservations, relations client multilingues, devis et gestion des stocks. La présence de l'aéroport de Toulon-Hyères renforce l'accessibilité. Axion-IA cible en priorité ces PME touristiques et agricoles, puis les PME viticoles et hôtelières.",
   ecosystemEn:
-    "Hyères concentre une économie de saison : tourisme balnéaire et insulaire vers Porquerolles, Port-Cros et le Levant, hébergement hôtelier et de plein air, horticulture historique du palmier, viticulture des Côtes de Provence et activités nautiques. Ce tissu de TPE et de PME, soumis à de fortes variations saisonnières, gagne à automatiser réservations, relations client multilingues, devis et gestion des stocks. La présence de l'aéroport de Toulon-Hyères renforce l'accessibilité. Axion-IA cible en priorité ces TPE touristiques et agricoles, puis les PME viticoles et hôtelières.",
+    "Hyères concentre une économie de saison : tourisme balnéaire et insulaire vers Porquerolles, Port-Cros et le Levant, hébergement hôtelier et de plein air, horticulture historique du palmier, viticulture des Côtes de Provence et activités nautiques. Ce tissu de PME et de PME, soumis à de fortes variations saisonnières, gagne à automatiser réservations, relations client multilingues, devis et gestion des stocks. La présence de l'aéroport de Toulon-Hyères renforce l'accessibilité. Axion-IA cible en priorité ces PME touristiques et agricoles, puis les PME viticoles et hôtelières.",
   distancesFr:
     "L'aéroport de Toulon-Hyères est à environ 4 km du centre, la gare de Hyères est reliée à Toulon en une vingtaine de minutes et la gare TGV de Toulon à 20 km. Les communes voisines comme La Garde, Carqueiranne et La Crau sont à portée immédiate, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
   distancesEn:
@@ -42,8 +42,8 @@ export const HYERES_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME viticoles et hôtelières de Hyères : gestion des stocks, suivi client, reporting et pilotage saisonnier.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Hyères pour piloter sereinement leur transition vers l'IA, au fil des saisons.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Hyères pour piloter sereinement leur transition vers l'IA, au fil des saisons.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Hyères pour piloter sereinement leur transition vers l'IA, au fil des saisons.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Hyères pour piloter sereinement leur transition vers l'IA, au fil des saisons.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les hôtels et domaines de Hyères : réservation directe, vente en ligne, assistant client multilingue pour la clientèle insulaire.",
@@ -57,7 +57,7 @@ export const HYERES_COPY: VilleCopy = {
         whyHere: [
           "Filière fleur coupée surreprésentée : ~350 horticulteurs du bassin hyérois et la SICA Marché aux Fleurs (1er marché de France, 4e européen) ont besoin de portails de commande, de catalogues variétaux (roses, œillets, gerberas, strélitzias) et de tableaux de bord de production sous serre — pas d'un site vitrine générique.",
           "Tourisme insulaire à forte jauge : la fréquentation de Porquerolles est plafonnée (~6 000 visiteurs/jour) et les traversées TLV-TVM limitées (~4 000 passagers/jour). Nous construisons des moteurs de réservation qui gèrent ces quotas, le multilingue et les pics de saison, hébergement de plein air compris.",
-          "Bassin de TPE/PME saisonnières : ~2 035 TPE et ~95 PME à Hyères, dont la charge bascule entre haute et basse saison. Nos plateformes IA-native automatisent devis, relances et e-commerce (vente directe pépinières, domaines viticoles, produits insulaires) sans dépendance éditeur.",
+          "Bassin de PME et ETI saisonnières : ~2 035 PME et ~95 PME à Hyères, dont la charge bascule entre haute et basse saison. Nos plateformes IA-native automatisent devis, relances et e-commerce (vente directe pépinières, domaines viticoles, produits insulaires) sans dépendance éditeur.",
           "Ancrage zones d'activité et déplacements : nous intervenons sur la ZAE du Chibasson (85 entreprises, ~2 000 emplois), le futur pôle horticole de 16 ha, l'aéroport (concession VINCI Airports) et les communes voisines — Toulon, La Garde, Carqueiranne, La Crau.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const HYERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour horticulteurs, pépiniéristes (vente directe), chambres d'hôtes et petits restaurants hyérois : site mobile-first, catalogue variétal ou réservation simple, assistant IA multilingue pour la clientèle estivale.",
-          },
           {
             price: "Plateforme métier IA-native",
             sizeLabel: "PME",
@@ -128,7 +122,7 @@ export const HYERES_COPY: VilleCopy = {
           },
           {
             q: "Faut-il être une grande entreprise pour un site ou un SaaS avec Axion-IA ?",
-            a: "Non. Notre cœur de cible à Hyères, ce sont les ~2 035 TPE et ~95 PME du tourisme et de l'horticulture. Un site e-commerce de pépinière en vente directe ou un moteur de réservation d'un camping de plein air sont des projets typiques pour nous ; les ETI restent marginales sur ce bassin.",
+            a: "Non. Notre cœur de cible à Hyères, ce sont les ~2 035 PME et ~95 PME du tourisme et de l'horticulture. Un site e-commerce de pépinière en vente directe ou un moteur de réservation d'un camping de plein air sont des projets typiques pour nous ; les grands groupes complètent ce socle.",
           },
           {
             q: "Où sont hébergées les données et le site ? Êtes-vous conformes RGPD ?",
@@ -174,12 +168,6 @@ export const HYERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For Hyères horticulturists, nurseries (direct sales), guesthouses and small restaurants: mobile-first site, variety catalogue or simple booking, multilingual AI assistant for summer visitors.",
-          },
           {
             price: "AI-native business platform",
             sizeLabel: "PME",
@@ -238,7 +226,7 @@ export const HYERES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Hyères ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME du Var. Les hôtels, domaines et commerces de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI du Var. Les hôtels, domaines et commerces de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de Hyères ?",

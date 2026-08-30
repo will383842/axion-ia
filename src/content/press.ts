@@ -495,7 +495,7 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Qui sont vos clients types ?",
       answer:
-        "Axion-IA accompagne tous types d'entreprises — artisans, TPE, PME, ETI, grandes organisations. La méthode s'adapte à l'échelle, mais reste identique : démo sur données réelles, plan chiffré, mise en production rapide.",
+        "Axion-IA accompagne tous types d'entreprises — artisans, PME, ETI et grands groupes, grandes organisations. La méthode s'adapte à l'échelle, mais reste identique : démo sur données réelles, plan chiffré, mise en production rapide.",
     },
     en: {
       question: "Who are your typical clients?",
@@ -508,7 +508,7 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Pouvez-vous fournir des cas concrets pour articles ?",
       answer:
-        "Oui. Plusieurs cas documentés sont disponibles sur axion-ia.com/cas-concrets — industrie, retail, juridique, banque, TPE — avec contexte, problème, solution et chiffres post-livraison. Sur demande, nous mettons en relation avec des clients prêts à témoigner.",
+        "Oui. Plusieurs cas documentés sont disponibles sur axion-ia.com/cas-concrets — industrie, retail, juridique, banque, PME — avec contexte, problème, solution et chiffres post-livraison. Sur demande, nous mettons en relation avec des clients prêts à témoigner.",
     },
     en: {
       question: "Can you provide concrete cases for articles?",

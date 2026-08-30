@@ -9,10 +9,10 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Beaufort-en-Anjou (49), commune nouvelle entre Baugeois et Val d'Authion, compte près de 6 900 habitants dans un territoire agricole et commerçant. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les PME, ETI et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
-  seoHook: "TPE & PME Maine-et-Loire",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les PME, ETI et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+  seoHook: "PME & PME Maine-et-Loire",
   ecosystemFr:
     "Beaufort-en-Anjou est un bourg-centre dynamique entre Baugeois et Val d'Authion. L'économie repose sur l'agriculture (grandes cultures, horticulture, semences végétales), l'artisanat, les commerces de centre-bourg et les PME agroalimentaires. Territoire historique de la liqueur et des vergers angevins.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et PME et ETI du Beaufortais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et PME et ETI du Beaufortais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaufort-en-Anjou : formations pour équipes agricoles, horticoles et commerciales. Ateliers pratiques adaptés au contexte Beaufortais.",
@@ -42,8 +42,8 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
       en: "Implémentation IA à Beaufort-en-Anjou : automatisation traçabilité semences, gestion parcellaire, devis artisans, CRM commerces de bourg. Solutions adaptées agriculture et horticulture.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Beaufort-en-Anjou : sessions pour dirigeants TPE/PME, exploitants agricoles, horticulteurs et commerçants du Beaufortais.",
-      en: "Coaching IA 1-to-1 à Beaufort-en-Anjou : sessions pour dirigeants TPE/PME, exploitants agricoles, horticulteurs et commerçants du Beaufortais.",
+      fr: "Coaching IA 1-to-1 à Beaufort-en-Anjou : sessions pour dirigeants de PME et d'ETI, exploitants agricoles, horticulteurs et commerçants du Beaufortais.",
+      en: "Coaching IA 1-to-1 à Beaufort-en-Anjou : sessions pour dirigeants de PME et d'ETI, exploitants agricoles, horticulteurs et commerçants du Beaufortais.",
     },
   },
   faqGeolocalisee: [

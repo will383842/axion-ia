@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const EMBRUN_COPY: VilleCopy = {
   pitchFr:
-    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA répond aux besoins de toutes les entreprises de l'Embrunais.",
+    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu PME artisanales, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA répond aux besoins de toutes les entreprises de l'Embrunais.",
   pitchEn:
-    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA répond aux besoins de toutes les entreprises de l'Embrunais.",
+    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu PME artisanales, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA répond aux besoins de toutes les entreprises de l'Embrunais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Embrun (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Embrun (05). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Embrun (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Embrun (05). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
   seoHook: "tourisme sports & hôtellerie, camping",
   ecosystemFr:
-    "Embrun est sous-préfecture des Hautes-Alpes (~6 400 hab), perchée au-dessus du lac de Serre-Ponçon (2 800 ha, plus grand lac artificiel de France métropolitaine). Tourisme été (voile, kayak, VTT, randonnée) et hiver (ski aux Orres, Réallon). PME hébergement/camping/restauration, TPE artisans BTP, commerces, agriculture montagne (vergers, élevage) et services sous-préfectoraux.",
+    "Embrun est sous-préfecture des Hautes-Alpes (~6 400 hab), perchée au-dessus du lac de Serre-Ponçon (2 800 ha, plus grand lac artificiel de France métropolitaine). Tourisme été (voile, kayak, VTT, randonnée) et hiver (ski aux Orres, Réallon). PME hébergement/camping/restauration, PME du BTP, commerces, agriculture montagne (vergers, élevage) et services sous-préfectoraux.",
   ecosystemEn:
-    "Embrun est sous-préfecture des Hautes-Alpes (~6 400 hab), perchée au-dessus du lac de Serre-Ponçon (2 800 ha, plus grand lac artificiel de France métropolitaine). Tourisme été (voile, kayak, VTT, randonnée) et hiver (ski aux Orres, Réallon). PME hébergement/camping/restauration, TPE artisans BTP, commerces, agriculture montagne (vergers, élevage) et services sous-préfectoraux.",
+    "Embrun est sous-préfecture des Hautes-Alpes (~6 400 hab), perchée au-dessus du lac de Serre-Ponçon (2 800 ha, plus grand lac artificiel de France métropolitaine). Tourisme été (voile, kayak, VTT, randonnée) et hiver (ski aux Orres, Réallon). PME hébergement/camping/restauration, PME du BTP, commerces, agriculture montagne (vergers, élevage) et services sous-préfectoraux.",
   distancesFr:
     "Gare Embrun (TER Marseille-Briançon via Gap, 45 min Gap). Briançon à 50 min nord. Gap à 45 min sud. Grenoble à 2h30. Aéroport Marseille-Provence à 2h30. Accès N94 vallée Durance.",
   distancesEn:
@@ -24,14 +24,14 @@ export const EMBRUN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme & sports nature (lac Serre-Ponçon)",
     "Hôtellerie, camping & hébergement",
-    "TPE artisanat BTP montagne",
+    "PME du BTP montagne",
     "Agriculture montagne (vergers & élevage)",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Embrun : diagnostic adapté aux PME artisanales, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Embrun : diagnostic adapté aux PME artisanales, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Embrun : formats adaptés aux bases nautiques, campings, hébergements ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const EMBRUN_COPY: VilleCopy = {
       en: "Implémentation IA à Embrun : agents conversationnels réservation activités nautiques, prédiction fréquentation lac, automatisation gestion campings/hébergements saisonniers, classification photos nature.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Embrun : sessions dans votre hébergement, base nautique ou en visio. Dirigeants TPE/PME embrunaises souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
-      en: "Coaching 1-to-1 à Embrun : sessions dans votre hébergement, base nautique ou en visio. Dirigeants TPE/PME embrunaises souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
+      fr: "Coaching 1-to-1 à Embrun : sessions dans votre hébergement, base nautique ou en visio. Dirigeants PME et ETI embrunaises souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
+      en: "Coaching 1-to-1 à Embrun : sessions dans votre hébergement, base nautique ou en visio. Dirigeants PME et ETI embrunaises souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const EMBRUN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Embrun  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME embrunaises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME artisanales, hébergeurs et PME embrunaises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Embrun ?",

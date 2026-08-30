@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTMORENCY_COPY: VilleCopy = {
   pitchFr:
-    "Montmorency, dans le Val-d'Oise, est une ville résidentielle de caractère, dominée par sa collégiale Saint-Martin et marquée par le souvenir de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency. Au nord de Paris, son économie repose sur le commerce de proximité, les professions de santé, l'artisanat et les services aux particuliers et aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME locales pour automatiser leurs tâches répétitives avec un ROI mesurable.",
+    "Montmorency, dans le Val-d'Oise, est une ville résidentielle de caractère, dominée par sa collégiale Saint-Martin et marquée par le souvenir de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency. Au nord de Paris, son économie repose sur le commerce de proximité, les professions de santé, l'artisanat et les services aux particuliers et aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI locales pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   pitchEn:
-    "Montmorency, dans le Val-d'Oise, est une ville résidentielle de caractère, dominée par sa collégiale Saint-Martin et marquée par le souvenir de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency. Au nord de Paris, son économie repose sur le commerce de proximité, les professions de santé, l'artisanat et les services aux particuliers et aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME locales pour automatiser leurs tâches répétitives avec un ROI mesurable.",
+    "Montmorency, dans le Val-d'Oise, est une ville résidentielle de caractère, dominée par sa collégiale Saint-Martin et marquée par le souvenir de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency. Au nord de Paris, son économie repose sur le commerce de proximité, les professions de santé, l'artisanat et les services aux particuliers et aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI locales pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmorency (95, Val-d'Oise). Nous accompagnons en priorité les TPE puis les PME de cette ville résidentielle du nord parisien : commerces de proximité, professions de santé, artisans, professions libérales et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmorency (95, Val-d'Oise). Nous accompagnons en priorité les PME puis les ETI de cette ville résidentielle du nord parisien : commerces de proximité, professions de santé, artisans, professions libérales et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmorency (95, Val-d'Oise). Nous accompagnons en priorité les TPE puis les PME de cette ville résidentielle du nord parisien : commerces de proximité, professions de santé, artisans, professions libérales et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmorency (95, Val-d'Oise). Nous accompagnons en priorité les PME puis les ETI de cette ville résidentielle du nord parisien : commerces de proximité, professions de santé, artisans, professions libérales et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   seoHook: "commerce proximité & santé",
   ecosystemFr:
-    "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces TPE et PME de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
+    "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces PME et ETI de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
   ecosystemEn:
-    "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces TPE et PME de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
+    "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces PME et ETI de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
   distancesFr:
     "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Cette position dans le nord du Val-d'Oise facilite nos interventions sur tout le bassin résidentiel local.",
   distancesEn:
@@ -34,16 +34,16 @@ export const MONTMORENCY_COPY: VilleCopy = {
       en: "Audit IA à Montmorency : diagnostic des processus pour commerces, cabinets de santé et professions libérales. Nous identifions les automatisations utiles pour la gestion des rendez-vous et relances.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montmorency : automatisation des devis, rappels de rendez-vous et relances pour les TPE et PME de services, avec montée en autonomie des équipes.",
-      en: "Interventions IA sur site à Montmorency : automatisation des devis, rappels de rendez-vous et relances pour les TPE et PME de services, avec montée en autonomie des équipes.",
+      fr: "Interventions IA sur site à Montmorency : automatisation des devis, rappels de rendez-vous et relances pour les PME et ETI de services, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Montmorency : automatisation des devis, rappels de rendez-vous et relances pour les PME et ETI de services, avec montée en autonomie des équipes.",
     },
     implementation: {
       fr: "Implémentation IA à Montmorency : agents conversationnels pour l'accueil et la prise de rendez-vous, classification de documents et automatisation des flux des cabinets et commerces.",
       en: "Implémentation IA à Montmorency : agents conversationnels pour l'accueil et la prise de rendez-vous, classification de documents et automatisation des flux des cabinets et commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montmorency : sessions dans votre commerce, cabinet ou en visio pour les dirigeants de TPE et PME du nord du Val-d'Oise.",
-      en: "Coaching 1-to-1 à Montmorency : sessions dans votre commerce, cabinet ou en visio pour les dirigeants de TPE et PME du nord du Val-d'Oise.",
+      fr: "Coaching 1-to-1 à Montmorency : sessions dans votre commerce, cabinet ou en visio pour les dirigeants de PME et d'ETI du nord du Val-d'Oise.",
+      en: "Coaching 1-to-1 à Montmorency : sessions dans votre commerce, cabinet ou en visio pour les dirigeants de PME et d'ETI du nord du Val-d'Oise.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Montmorency : plateformes sur mesure avec IA intégrée pour commerces, cabinets de santé et libéraux souhaitant gérer rendez-vous et demandes en ligne.",
@@ -88,12 +88,6 @@ export const MONTMORENCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot d'accueil, prise de rendez-vous, recherche sémantique) sur le site existant d'un commerce du centre, d'un artisan du bâtiment ou d'un cabinet libéral de Montmorency, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const MONTMORENCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot d'accueil, prise de rendez-vous, recherche sémantique) sur le site existant d'un commerce du centre, d'un artisan du bâtiment ou d'un cabinet libéral de Montmorency, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -241,8 +229,8 @@ export const MONTMORENCY_COPY: VilleCopy = {
       a: "Oui. Les commerces du centre et les artisans sont au cœur de notre cible. Nous déployons des agents conversationnels pour répondre aux demandes clients et automatisons devis et relances, avec montée en autonomie des équipes.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME de Montmorency en priorité ?",
-      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Montmorency. Nous adaptons les formats aux petites structures de services et commerces. Les ETI restent un public marginal de notre activité.",
+      q: "Accompagnez-vous les PME et ETI de Montmorency en priorité ?",
+      a: "Oui. Les les PME puis les ETI sont notre public prioritaire à Montmorency. Nous adaptons les formats aux PME de services et commerces. Les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Enghien-les-Bains ?",

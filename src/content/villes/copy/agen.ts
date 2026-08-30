@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AGEN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Agen auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Agen auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   seoHook: "pruneau & agroalimentaire",
   ecosystemFr:
-    "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de TPE et PME que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
+    "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de PME et ETI que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
   ecosystemEn:
-    "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de TPE et PME que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
+    "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de PME et ETI que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
   distancesFr:
     "La gare d'Agen est en centre-ville sur l'axe Bordeaux-Toulouse (environ 1h de chaque). L'A62 traverse l'agglomération et l'aéroport d'Agen-La Garenne dessert le bassin.",
   distancesEn:
@@ -42,8 +42,8 @@ export const AGEN_COPY: VilleCopy = {
       en: "Implémentation IA à Agen : contrôle qualité visuel des fruits, prévision de la demande, optimisation de la logistique fraîche, agents conversationnels pour le négoce et automatisation administrative des PME agroalimentaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Agen pour dirigeants de TPE et PME agroalimentaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à Agen pour dirigeants de TPE et PME agroalimentaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à Agen pour dirigeants de PME et d'ETI agroalimentaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Agen pour dirigeants de PME et d'ETI agroalimentaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Agen : plateformes et outils IA sur mesure pour le négoce agricole, la vente directe de produits du terroir et les services aux entreprises locales.",
@@ -88,12 +88,6 @@ export const AGEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour producteurs de pruneaux, artisans du terroir, commerces et indépendants agenais : boutique en ligne, prise de commande, génération de fiches produit assistée par IA et référencement local soigné.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce / portail métier sur mesure",
@@ -175,12 +169,6 @@ export const AGEN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented brochure or essential e-commerce site",
-            detail:
-              "For Agen prune growers, terroir artisans, shops and freelancers: online store, order taking, AI-assisted product sheet generation and polished local SEO.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom e-commerce platform / business portal",
             detail:
@@ -229,8 +217,8 @@ export const AGEN_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA accompagne-t-il les TPE et PME agroalimentaires d'Agen ?",
-      a: "Oui, l'agroalimentaire est notre cible prioritaire à Agen : conserveries, coopératives fruitières, transformation du pruneau, négoce et logistique fraîche. Nous travaillons d'abord avec les TPE et PME, l'accompagnement des ETI restant marginal.",
+      q: "Axion-IA accompagne-t-il les PME et ETI agroalimentaires d'Agen ?",
+      a: "Oui, l'agroalimentaire est notre cible prioritaire à Agen : conserveries, coopératives fruitières, transformation du pruneau, négoce et logistique fraîche. Nous travaillons d'abord avec les PME et ETI, les grands groupes venant en complément.",
     },
     {
       q: "Quels gains IA pour une conserverie ou coopérative agenaise ?",

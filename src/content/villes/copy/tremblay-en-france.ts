@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Tremblay-en-France, commune de 38 348 habitants en Seine-Saint-Denis qui héberge plus de 1 600 entreprises et environ 55 000 emplois. Notre cabinet conçoit du code IA sur mesure pour les PME logistiques, sous-traitants aéroportuaires, prestataires de services et commerces implantés autour de Paris-Nord 2, Roissypôle, Aéroville et de la zone Tremblay-CDG. En complément, nos interventions couvrent les ETI locales du transport et de l'entreposage.",
+    "Axion-IA accompagne les PME et ETI de Tremblay-en-France, commune de 38 348 habitants en Seine-Saint-Denis qui héberge plus de 1 600 entreprises et environ 55 000 emplois. Notre cabinet conçoit du code IA sur mesure pour les PME logistiques, sous-traitants aéroportuaires, prestataires de services et commerces implantés autour de Paris-Nord 2, Roissypôle, Aéroville et de la zone Tremblay-CDG. En complément, nos interventions couvrent les ETI locales du transport et de l'entreposage.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Tremblay-en-France, commune de 38 348 habitants en Seine-Saint-Denis qui héberge plus de 1 600 entreprises et environ 55 000 emplois. Notre cabinet conçoit du code IA sur mesure pour les PME logistiques, sous-traitants aéroportuaires, prestataires de services et commerces implantés autour de Paris-Nord 2, Roissypôle, Aéroville et de la zone Tremblay-CDG. En complément, nos interventions couvrent les ETI locales du transport et de l'entreposage.",
+    "Axion-IA accompagne les PME et ETI de Tremblay-en-France, commune de 38 348 habitants en Seine-Saint-Denis qui héberge plus de 1 600 entreprises et environ 55 000 emplois. Notre cabinet conçoit du code IA sur mesure pour les PME logistiques, sous-traitants aéroportuaires, prestataires de services et commerces implantés autour de Paris-Nord 2, Roissypôle, Aéroville et de la zone Tremblay-CDG. En complément, nos interventions couvrent les ETI locales du transport et de l'entreposage.",
   directAnswerFr:
-    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des TPE et PME locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit sur place 4h à {{price:audit-flash|flat}}. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des PME et ETI locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit sur place 4h à {{price:audit-flash|flat}}. Les ETI sont également couvertes.",
   directAnswerEn:
-    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des TPE et PME locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit sur place 4h à {{price:audit-flash|flat}}. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des PME et ETI locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit sur place 4h à {{price:audit-flash|flat}}. Les ETI sont également couvertes.",
   seoHook: "logistique aéroportuaire & entreposage",
   ecosystemFr:
     "Tremblay-en-France structure son activité autour de trois zones majeures : Roissypôle (557 des 719 entreprises aéroportuaires, incluant le siège d'Air France), Paris-Nord 2 (577 entreprises sur 200 hectares, services et logistique) et la zone Tremblay-CDG (110 entreprises en logistique, construction et industrie). Le centre commercial Aéroville, ouvert en octobre 2013, ajoute environ 3 000 emplois dans le commerce et la restauration.",
@@ -32,8 +32,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h sur site à Tremblay-en-France pour les TPE/PME logistiques de Paris-Nord 2 ou Roissypôle — {{price:audit-flash|flat}}.",
-      en: "Audit sur place 4h sur site à Tremblay-en-France pour les TPE/PME logistiques de Paris-Nord 2 ou Roissypôle — {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Tremblay-en-France pour les PME et ETI logistiques de Paris-Nord 2 ou Roissypôle — {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Tremblay-en-France pour les PME et ETI logistiques de Paris-Nord 2 ou Roissypôle — {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions Axion-IA à Tremblay-en-France pour automatiser suivi de flotte, bordereaux, facturation et reporting des PME logistiques.",
@@ -44,8 +44,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
       en: "Implémentation de code IA sur mesure à Tremblay-en-France pour PME du transport et de l'entreposage — pas de no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE/PME à Tremblay-en-France pour cadrer leur feuille de route IA.",
-      en: "Accompagnement un-à-un des dirigeants de TPE/PME à Tremblay-en-France pour cadrer leur feuille de route IA.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et ETI à Tremblay-en-France pour cadrer leur feuille de route IA.",
+      en: "Accompagnement un-à-un des dirigeants de PME et ETI à Tremblay-en-France pour cadrer leur feuille de route IA.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou landing IA",
-            detail:
-              "Pour artisans, commerces d'Aéroville et indépendants de Tremblay-en-France : site vitrine mobile-first, prise de rendez-vous, chatbot FAQ. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce",
@@ -172,12 +166,6 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or AI landing page",
-            detail:
-              "For craftsmen, Aéroville shops and Tremblay-en-France freelancers: mobile-first showcase site, booking, FAQ chatbot. Quote from 24-48 h depending on complexity.",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform or e-commerce",

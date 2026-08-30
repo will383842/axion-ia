@@ -8,7 +8,7 @@
 // Doctrine (même que paris.ts) :
 //   - Aucun délai chiffré, aucun « frais de déplacement intégrés ».
 //   - Durée minimale = 1 journée.
-//   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - Aucun prix hardcodé (source : src/content/pricing.ts).
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway.
 //   - PAS de heroSchema (champ optionnel non requis).
@@ -47,7 +47,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des TPE du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Vos équipes restent maîtres de la stack (modèles, prompts, intégrations) après notre passage — pas de verrou éditeur ni dépendance contractuelle continue.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des PME du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Vos équipes restent maîtres de la stack (modèles, prompts, intégrations) après notre passage — pas de verrou éditeur ni dépendance contractuelle continue.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Marseille (13) on site, from Joliette to Euroméditerranée, from Panier micro-businesses to maritime mid-caps at the Grand Port. We support Marseille businesses on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: transport/logistics, health/biotech, B2B services. No tech lock-in, your teams stay in control.",
 
@@ -73,7 +73,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation marseillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du commerce marseillais aux grands groupes logistiques du Vieux-Port ou du quartier Joliette.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation marseillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du commerce marseillais aux grands groupes logistiques du Vieux-Port ou du quartier Joliette.",
         whyHere: [
           "Marseille est l'un de nos pôles d'intervention prioritaires sur la façade méditerranéenne : transport maritime, logistique portuaire, santé/biotech et services sont nos secteurs de prédilection dans la métropole.",
           "Le tissu économique marseillais concentre des profils B2B atypiques à fort potentiel IA : opérateurs logistiques multi-modaux (export, dédouanement, TMS), ETI industrielles Château-Gombert, cabinets de santé Luminy, directions IA des filiales CMA CGM.",
@@ -110,12 +110,6 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, négoces, agences ou cabinets marseillais jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -216,12 +210,6 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Marseille freelancers, traders, agencies or practices up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -326,12 +314,6 @@ export const MARSEILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, cabinets, agences ou commerces marseillais jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -431,12 +413,6 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Marseille freelancers, firms, agencies or businesses up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -541,12 +517,6 @@ export const MARSEILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines (rédaction emails, comptes-rendus, qualification contacts).",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -582,7 +552,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Marseille ?",
-            a: "Cela dépend de l'ampleur. Un POC TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -646,12 +616,6 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks (email drafting, meeting minutes, contact qualification).",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -756,12 +720,6 @@ export const MARSEILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Session découverte à partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Idéal pour l'indépendant, le consultant ou le dirigeant de TPE marseillaise qui veut évaluer l'apport du coaching 1-to-1 IA avant de s'engager sur un programme.",
-          },
-          {
             sizeLabel: "PME",
             price: "Programme PME sur devis",
             detail:
@@ -861,12 +819,6 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Discovery session from {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Ideal for the freelancer, consultant or Marseille micro-business owner who wants to evaluate the value of 1-to-1 AI coaching before committing to a programme.",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme on quote",
@@ -968,12 +920,6 @@ export const MARSEILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1054,12 +1000,6 @@ export const MARSEILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1109,7 +1049,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Marseille ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations marseillaises — Sur place pour les TPE du Panier ou commerces de proximité, Ciblé pour les PME de la Joliette et services portuaires, Stratégique PME pour les cabinets santé Luminy et services Euroméditerranée, Stratégique ETI pour les opérateurs maritimes du Grand Port, filiales CMA CGM et industriels Château-Gombert. La grille appliquée à Marseille est strictement identique à celle de Paris ou Lyon — pas de pondération régionale.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations marseillaises — Sur place pour les PME du Panier ou commerces de proximité, Ciblé pour les PME de la Joliette et services portuaires, Stratégique PME pour les cabinets santé Luminy et services Euroméditerranée, Stratégique ETI pour les opérateurs maritimes du Grand Port, filiales CMA CGM et industriels Château-Gombert. La grille appliquée à Marseille est strictement identique à celle de Paris ou Lyon — pas de pondération régionale.",
     },
     {
       q: "Avez-vous des cas clients à Marseille ou dans la métropole Aix-Marseille ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BAILLEUL_COPY: VilleCopy = {
   pitchFr:
-    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales de la Flandre intérieure.",
+    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu PME artisanales, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales de la Flandre intérieure.",
   pitchEn:
-    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales de la Flandre intérieure.",
+    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu PME artisanales, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales de la Flandre intérieure.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bailleul (59). Nous accompagnons PME artisanales, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bailleul (59). Nous accompagnons PME artisanales, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "agroalimentaire brasserie & artisanat",
   ecosystemFr:
-    "Bailleul est une sous-préfecture historique de Flandre française, célèbre pour son beffroi UNESCO, son marché flamand hebdomadaire et sa brasserie traditionnelle. Tissu TPE artisans BTP, PME agroalimentaire (brasserie, transformation), commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position frontalière avec la Belgique, axe Lille-Dunkerque.",
+    "Bailleul est une sous-préfecture historique de Flandre française, célèbre pour son beffroi UNESCO, son marché flamand hebdomadaire et sa brasserie traditionnelle. Tissu PME du BTP, PME agroalimentaire (brasserie, transformation), commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position frontalière avec la Belgique, axe Lille-Dunkerque.",
   ecosystemEn:
-    "Bailleul est une sous-préfecture historique de Flandre française, célèbre pour son beffroi UNESCO, son marché flamand hebdomadaire et sa brasserie traditionnelle. Tissu TPE artisans BTP, PME agroalimentaire (brasserie, transformation), commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position frontalière avec la Belgique, axe Lille-Dunkerque.",
+    "Bailleul est une sous-préfecture historique de Flandre française, célèbre pour son beffroi UNESCO, son marché flamand hebdomadaire et sa brasserie traditionnelle. Tissu PME du BTP, PME agroalimentaire (brasserie, transformation), commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position frontalière avec la Belgique, axe Lille-Dunkerque.",
   distancesFr:
     "Lille à 35 min. Gare Lille-Flandres à 40 min (Paris en 1h02 TGV). Aéroport Lille-Lesquin à 45 min. Frontière belge (Ypres) à 15 min. Hazebrouck à 15 min, Armentières à 20 min, Estaires à 12 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const BAILLEUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bailleul : diagnostic adapté aux TPE artisans, PME agroalimentaire et brasserie, commerçants et professions libérales de la Flandre française. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Bailleul : diagnostic adapté aux TPE artisans, PME agroalimentaire et brasserie, commerçants et professions libérales de la Flandre française. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Bailleul : diagnostic adapté aux PME artisanales, PME agroalimentaire et brasserie, commerçants et professions libérales de la Flandre française. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Bailleul : diagnostic adapté aux PME artisanales, PME agroalimentaire et brasserie, commerçants et professions libérales de la Flandre française. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bailleul : formations adaptées TPE/PME agroalimentaire et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
-      en: "Interventions IA sur site à Bailleul : formations adaptées TPE/PME agroalimentaire et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      fr: "Interventions IA sur site à Bailleul : formations adaptées PME et ETI agroalimentaire et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      en: "Interventions IA sur site à Bailleul : formations adaptées PME et ETI agroalimentaire et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
     },
     implementation: {
       fr: "Implémentation IA à Bailleul : automatisation devis artisans BTP, prévision production brasserie agroalimentaire, classification documents professions libérales, agents conversationnels commerce, RPA PME Flandre.",
       en: "Implémentation IA à Bailleul : automatisation devis artisans BTP, prévision production brasserie agroalimentaire, classification documents professions libérales, agents conversationnels commerce, RPA PME Flandre.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bailleul : sessions en visio ou dans vos locaux Flandre française. Dirigeants TPE artisans, gérants PME agroalimentaire et brasserie, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Bailleul : sessions en visio ou dans vos locaux Flandre française. Dirigeants TPE artisans, gérants PME agroalimentaire et brasserie, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Bailleul : sessions en visio ou dans vos locaux Flandre française. Dirigeants PME artisanales, gérants PME agroalimentaire et brasserie, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Bailleul : sessions en visio ou dans vos locaux Flandre française. Dirigeants PME artisanales, gérants PME agroalimentaire et brasserie, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const BAILLEUL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bailleul  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Bailleul souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les PME et ETI de Bailleul souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaire à Bailleul ?",
       a: "Oui, nous accompagnons les PME agroalimentaire et brasseries de Bailleul et de la Flandre française. Cas typiques IA : prévision production, contrôle qualité par vision, automatisation traçabilité, optimisation chaîne logistique.",
     },
     {
-      q: "Quels formats d'intervention pour les TPE à Bailleul ?",
-      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants flamands.",
+      q: "Quels formats d'intervention pour les PME à Bailleul ?",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME de l'artisanat et du commerce flamands.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Bailleul ?",

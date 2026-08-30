@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const BREBIERES_COPY: VilleCopy = {
   pitchFr:
-    "Brebieres (62), commune du Pas-de-Calais situee entre Douai et Arras, reunit pres de 5 280 habitants. Son economie beneficie de la double proximite Douai-Arras : PME tertiaires, TPE de services, commerces, artisanat BTP et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
+    "Brebieres (62), commune du Pas-de-Calais situee entre Douai et Arras, reunit pres de 5 280 habitants. Son economie beneficie de la double proximite Douai-Arras : PME tertiaires, PME de services, commerces, artisanat BTP et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Brebieres (62), commune du Pas-de-Calais situee entre Douai et Arras, reunit pres de 5 280 habitants. Son economie beneficie de la double proximite Douai-Arras : PME tertiaires, TPE de services, commerces, artisanat BTP et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
+    "Brebieres (62), commune du Pas-de-Calais situee entre Douai et Arras, reunit pres de 5 280 habitants. Son economie beneficie de la double proximite Douai-Arras : PME tertiaires, PME de services, commerces, artisanat BTP et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "axe Douai-Arras, tertiaire & logistique",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Brebieres (62). Nous accompagnons les PME, ETI et grands groupes de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Brebieres (62). Nous accompagnons les PME, ETI et grands groupes de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Brebieres est situee entre Douai (8 km) et Arras (15 km), sur l'axe A1/A26. Tissu economique mixte : PME tertiaires, TPE de services, commerces de proximite, artisanat BTP et activites logistiques liees a la desserte autoroutiere.",
+    "Brebieres est situee entre Douai (8 km) et Arras (15 km), sur l'axe A1/A26. Tissu economique mixte : PME tertiaires, PME de services, commerces de proximite, artisanat BTP et activites logistiques liees a la desserte autoroutiere.",
   ecosystemEn:
-    "Brebieres est situee entre Douai (8 km) et Arras (15 km), sur l'axe A1/A26. Tissu economique mixte : PME tertiaires, TPE de services, commerces de proximite, artisanat BTP et activites logistiques liees a la desserte autoroutiere.",
+    "Brebieres est situee entre Douai (8 km) et Arras (15 km), sur l'axe A1/A26. Tissu economique mixte : PME tertiaires, PME de services, commerces de proximite, artisanat BTP et activites logistiques liees a la desserte autoroutiere.",
   distancesFr:
     "Gare de Douai a 10 min. Gare d'Arras (TGV) a 15 min. Lille Europe a 35 min en TGV depuis Douai. Aeroport Lille-Lesquin a 40 min. Paris-Nord a 55 min via TGV Arras.",
   distancesEn:
     "Gare de Douai a 10 min. Gare d'Arras (TGV) a 15 min. Lille Europe a 35 min en TGV depuis Douai. Aeroport Lille-Lesquin a 40 min. Paris-Nord a 55 min via TGV Arras.",
   topSectorsNaf: [
     "PME tertiaires & conseil",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP",
     "Logistique & transport",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, TPE de services et artisans de l'axe Douai-Arras. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, TPE de services et artisans de l'axe Douai-Arras. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, PME de services et artisans de l'axe Douai-Arras. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, PME de services et artisans de l'axe Douai-Arras. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Brebieres : formations adaptees aux bureaux tertiaires, commerces, ateliers artisanaux et entrepots logistiques. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BREBIERES_COPY: VilleCopy = {
       en: "Implementation IA a Brebieres : automatisation processus tertiaires, agents conversationnels B2B, gestion logistique intelligente, CRM augmentes pour PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Brebieres : accompagnement personnalise dirigeants PME tertiaires, gerants TPE et responsables logistiques de l'axe Douai-Arras.",
-      en: "Coaching 1-to-1 a Brebieres : accompagnement personnalise dirigeants PME tertiaires, gerants TPE et responsables logistiques de l'axe Douai-Arras.",
+      fr: "Coaching 1-to-1 a Brebieres : accompagnement personnalise dirigeants PME tertiaires, gerants PME et responsables logistiques de l'axe Douai-Arras.",
+      en: "Coaching 1-to-1 a Brebieres : accompagnement personnalise dirigeants PME tertiaires, gerants PME et responsables logistiques de l'axe Douai-Arras.",
     },
   },
   faqGeolocalisee: [

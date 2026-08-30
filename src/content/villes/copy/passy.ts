@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PASSY_COPY: VilleCopy = {
   pitchFr:
-    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
+    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, PME de l'artisanat, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
+    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, PME de l'artisanat, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Passy (74). Nous accompagnons TPE et PME : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Passy (74). Nous accompagnons PME et ETI : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Passy (74). Nous accompagnons TPE et PME : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Passy (74). Nous accompagnons PME et ETI : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
   seoHook: "tourisme montagne & hôtellerie hébergement",
   ecosystemFr:
-    "Passy est une commune de la vallée de l'Arve face au Mont-Blanc, connue pour le plateau d'Assy (sanatoriums Art déco, église Notre-Dame-de-Toute-Grâce classée). Tissu tourisme montagne (stations, randonnée, ski), hôtellerie/hébergement saisonnier, TPE artisanat BTP, commerces, patrimoine culturel.",
+    "Passy est une commune de la vallée de l'Arve face au Mont-Blanc, connue pour le plateau d'Assy (sanatoriums Art déco, église Notre-Dame-de-Toute-Grâce classée). Tissu tourisme montagne (stations, randonnée, ski), hôtellerie/hébergement saisonnier, PME du BTP, commerces, patrimoine culturel.",
   ecosystemEn:
-    "Passy est une commune de la vallée de l'Arve face au Mont-Blanc, connue pour le plateau d'Assy (sanatoriums Art déco, église Notre-Dame-de-Toute-Grâce classée). Tissu tourisme montagne (stations, randonnée, ski), hôtellerie/hébergement saisonnier, TPE artisanat BTP, commerces, patrimoine culturel.",
+    "Passy est une commune de la vallée de l'Arve face au Mont-Blanc, connue pour le plateau d'Assy (sanatoriums Art déco, église Notre-Dame-de-Toute-Grâce classée). Tissu tourisme montagne (stations, randonnée, ski), hôtellerie/hébergement saisonnier, PME du BTP, commerces, patrimoine culturel.",
   distancesFr:
     "Sallanches à 5 min. Chamonix-Mont-Blanc à 20 min. Cluses à 25 min. Annecy à 50 min. Aéroport Genève-Cointrin à 1h10.",
   distancesEn:
@@ -25,13 +25,13 @@ export const PASSY_COPY: VilleCopy = {
     "Tourisme montagne Mont-Blanc",
     "Hôtellerie & hébergement saisonnier",
     "Patrimoine culturel & sites classés",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerces de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, TPE commerces. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, TPE commerces. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, PME du commerce. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, PME du commerce. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Passy : formats adaptés hébergements, hôtels, commerces, ateliers artisans. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const PASSY_COPY: VilleCopy = {
       en: "Implémentation IA à Passy : agents conversationnels multilingues pour touristes Mont-Blanc, automatisation réservations hébergement, classification avis clients saisonniers.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Passy : sessions dans vos locaux vallée de l'Arve ou en visio. Hébergeurs, hôteliers, artisans, gérants TPE/PME passérands.",
-      en: "Coaching 1-to-1 à Passy : sessions dans vos locaux vallée de l'Arve ou en visio. Hébergeurs, hôteliers, artisans, gérants TPE/PME passérands.",
+      fr: "Coaching 1-to-1 à Passy : sessions dans vos locaux vallée de l'Arve ou en visio. Hébergeurs, hôteliers, artisans, gérants PME et ETI passérands.",
+      en: "Coaching 1-to-1 à Passy : sessions dans vos locaux vallée de l'Arve ou en visio. Hébergeurs, hôteliers, artisans, gérants PME et ETI passérands.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const PASSY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Passy  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME de la vallée de l'Arve.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux PME et ETI de la vallée de l'Arve.",
     },
     {
       q: "Accompagnez-vous les acteurs tourisme montagne Mont-Blanc ?",
       a: "Oui, agents conversationnels multilingues pour touristes, automatisation réservations hébergement, gestion saisonnalité hiver/été, classification avis clients.",
     },
     {
-      q: "Travaillez-vous avec les artisans et TPE de Passy ?",
-      a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE.",
+      q: "Travaillez-vous avec les artisans et PME de Passy ?",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants PME.",
     },
     {
       q: "Proposez-vous des formations IA individuelles à Passy ?",

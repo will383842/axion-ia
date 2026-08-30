@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const NOISY_LE_GRAND_COPY: VilleCopy = {
   pitchFr:
-    "Noisy-le-Grand (93), ville de Seine-Saint-Denis à l'entrée ouest de Marne-la-Vallée, abrite l'un des grands quartiers d'affaires de l'est francilien autour du Mont d'Est (Arche de Noisy, immeubles tertiaires) et bénéficie du RER A. Son économie est avant tout tertiaire : services aux entreprises, informatique, professions libérales, commerces. Le tissu repose d'abord sur les TPE et les indépendants, puis sur des PME de services et de programmation informatique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME noiséennes pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du bureau du Mont d'Est au commerce de quartier.",
+    "Noisy-le-Grand (93), ville de Seine-Saint-Denis à l'entrée ouest de Marne-la-Vallée, abrite l'un des grands quartiers d'affaires de l'est francilien autour du Mont d'Est (Arche de Noisy, immeubles tertiaires) et bénéficie du RER A. Son économie est avant tout tertiaire : services aux entreprises, informatique, professions libérales, commerces. Le tissu repose d'abord sur les PME et les indépendants, puis sur des PME de services et de programmation informatique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI noiséennes pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du bureau du Mont d'Est au commerce de quartier.",
   pitchEn:
-    "Noisy-le-Grand (93), ville de Seine-Saint-Denis à l'entrée ouest de Marne-la-Vallée, abrite l'un des grands quartiers d'affaires de l'est francilien autour du Mont d'Est (Arche de Noisy, immeubles tertiaires) et bénéficie du RER A. Son économie est avant tout tertiaire : services aux entreprises, informatique, professions libérales, commerces. Le tissu repose d'abord sur les TPE et les indépendants, puis sur des PME de services et de programmation informatique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME noiséennes pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du bureau du Mont d'Est au commerce de quartier.",
+    "Noisy-le-Grand (93), ville de Seine-Saint-Denis à l'entrée ouest de Marne-la-Vallée, abrite l'un des grands quartiers d'affaires de l'est francilien autour du Mont d'Est (Arche de Noisy, immeubles tertiaires) et bénéficie du RER A. Son économie est avant tout tertiaire : services aux entreprises, informatique, professions libérales, commerces. Le tissu repose d'abord sur les PME et les indépendants, puis sur des PME de services et de programmation informatique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI noiséennes pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du bureau du Mont d'Est au commerce de quartier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Grand (93). Nous accompagnons en priorité les TPE puis les PME : indépendants et professions libérales, PME tertiaires et de services aux entreprises, agences informatiques du quartier d'affaires du Mont d'Est, commerçants. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Grand (93). Nous accompagnons en priorité les PME puis les ETI : indépendants et professions libérales, PME tertiaires et de services aux entreprises, agences informatiques du quartier d'affaires du Mont d'Est, commerçants. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Grand (93). Nous accompagnons en priorité les TPE puis les PME : indépendants et professions libérales, PME tertiaires et de services aux entreprises, agences informatiques du quartier d'affaires du Mont d'Est, commerçants. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Grand (93). Nous accompagnons en priorité les PME puis les ETI : indépendants et professions libérales, PME tertiaires et de services aux entreprises, agences informatiques du quartier d'affaires du Mont d'Est, commerçants. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les grands groupes complètent ce socle.",
   seoHook: "tertiaire & informatique Mont d'Est",
   ecosystemFr:
-    "Noisy-le-Grand structure son économie autour du quartier d'affaires du Mont d'Est (Arche de Noisy, immeubles tertiaires) à l'entrée de Marne-la-Vallée, desservi par le RER A. L'activité est très majoritairement tertiaire : services aux entreprises, programmation informatique, professions libérales, commerces. Le tissu local est avant tout composé de TPE et d'indépendants, complétés par des PME de services et de technologie. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Noisy-le-Grand structure son économie autour du quartier d'affaires du Mont d'Est (Arche de Noisy, immeubles tertiaires) à l'entrée de Marne-la-Vallée, desservi par le RER A. L'activité est très majoritairement tertiaire : services aux entreprises, programmation informatique, professions libérales, commerces. Le tissu local est avant tout composé de PME et d'indépendants, complétés par des PME de services et de technologie. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   ecosystemEn:
-    "Noisy-le-Grand structure son économie autour du quartier d'affaires du Mont d'Est (Arche de Noisy, immeubles tertiaires) à l'entrée de Marne-la-Vallée, desservi par le RER A. L'activité est très majoritairement tertiaire : services aux entreprises, programmation informatique, professions libérales, commerces. Le tissu local est avant tout composé de TPE et d'indépendants, complétés par des PME de services et de technologie. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Noisy-le-Grand structure son économie autour du quartier d'affaires du Mont d'Est (Arche de Noisy, immeubles tertiaires) à l'entrée de Marne-la-Vallée, desservi par le RER A. L'activité est très majoritairement tertiaire : services aux entreprises, programmation informatique, professions libérales, commerces. Le tissu local est avant tout composé de PME et d'indépendants, complétés par des PME de services et de technologie. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   distancesFr:
     "Paris à 20 min (RER A, Noisy-le-Grand–Mont d'Est). La Défense à 35 min. Gare TGV de Marne-la-Vallée–Chessy à 20 min. Aéroport Paris-CDG à 40 min. Marne-la-Vallée à proximité immédiate.",
   distancesEn:
@@ -42,12 +42,12 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
       en: "Implémentation IA à Noisy-le-Grand : automatisation des workflows tertiaires, agents conversationnels B2B, copilotes de développement pour agences informatiques, CRM augmentés, classification documentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE et PME noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
-      en: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE et PME noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
+      fr: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
+      en: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
     },
     sitesWeb: {
-      fr: "Sites web & SaaS IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
-      en: "Sites web & SaaS IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
+      fr: "Sites web & SaaS IA à Noisy-le-Grand : plateformes sur mesure pour PME et ETI tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
+      en: "Sites web & SaaS IA à Noisy-le-Grand : plateformes sur mesure pour PME et ETI tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
         hero: "Noisy-le-Grand site web et plateforme SaaS augmentés par l'IA : Axion-IA conçoit des sites et applications métier IA-native pour le tissu tertiaire du Mont d'Est et de Marne-la-Vallée. Le quartier d'affaires concentre des back-offices financiers et d'assurance (RCI Banque / Mobilize Financial Services avenue du Pavé Neuf, Groupama Paris Val de Loire), du marketing agroalimentaire (Lactalis Nestlé Ultra-Frais) et une direction régionale France Travail, sur fond d'un tissu à 70 % d'entreprises individuelles — 1 159 créations d'EI sur les 1 655 établissements ouverts en 2024. Pour ces structures, nous construisons des plateformes sur mesure : agents conversationnels RAG, automatisation du suivi client B2B, prise de RDV et portails self-service, avec hébergement en Union européenne et conformité RGPD. UX/UI, mobile, e-commerce multi-CMS et IA dans la même mission.",
         whyHere: [
           "Le Mont d'Est est d'abord un quartier de back-offices financiers et d'assurance : RCI Banque / Mobilize Financial Services (avenue du Pavé Neuf) et Groupama Paris Val de Loire y opèrent des fonctions support à fort volume documentaire, terrain naturel pour des portails B2B et des agents IA de qualification et de traitement de dossiers.",
-          "Le tissu économique noiséen est massivement composé de TPE et d'indépendants : 1 159 des 1 655 établissements créés en 2024 sont des entreprises individuelles (70 %). Nous livrons à ces structures des sites vitrines et e-commerce avec assistant IA intégré, sans budget de scale-up.",
+          "Le tissu économique noiséen est massivement composé de PME et d'indépendants : 1 159 des 1 655 établissements créés en 2024 sont des entreprises individuelles (70 %). Nous livrons à ces structures des sites vitrines et e-commerce avec assistant IA intégré, sans budget de scale-up.",
           "Les créations 2024 se concentrent dans les services scientifiques et techniques (441) puis l'information-communication (216) : éditeurs, agences et cabinets pour lesquels nous développons des plateformes SaaS sur mesure, search sémantique et copilotes, plutôt que des templates génériques.",
           "Le programme de restructuration du Mont d'Est (environ 37 M€, voté en 2024) et l'arrivée de la gare Noisy-Champs du Grand Paris Express (lignes 15/16/17, Ligne 15 Sud en 2027) redéfinissent le quartier : moment opportun pour refondre un site institutionnel ou commercial avec une couche IA durable.",
         ],
@@ -89,12 +89,6 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce avec assistant IA",
-            detail:
-              "Pour les indépendants, professions libérales et commerçants noiséens (70 % du tissu en entreprises individuelles) : site mobile-first, e-commerce multi-CMS et chatbot de prise de RDV ou de réponse client, livré clés en main.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou SaaS IA-native",
             detail:
@@ -119,7 +113,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
             a: "Oui. Les fonctions support financières et assurance du quartier d'affaires noiséen, comme celles opérées par RCI Banque / Mobilize Financial Services ou Groupama Paris Val de Loire, manipulent de gros volumes documentaires. Nous y déployons des portails B2B et des agents IA de qualification, de traitement de dossiers et de réponse client, avec hébergement en Union européenne et conformité RGPD stricte.",
           },
           {
-            q: "Accompagnez-vous les nombreuses TPE et indépendants de Noisy-le-Grand ?",
+            q: "Accompagnez-vous les nombreuses PME et indépendants de Noisy-le-Grand ?",
             a: "Oui, c'est notre cas d'usage prioritaire. En 2024, 1 159 des 1 655 établissements créés à Noisy-le-Grand étaient des entreprises individuelles (70 %). Pour ces indépendants, professions libérales et commerçants, nous livrons un site vitrine ou e-commerce mobile-first avec assistant IA intégré (prise de RDV, réponse client), sans budget de grande structure. Devis à partir de 24-48 h selon la complexité.",
           },
           {
@@ -174,12 +168,6 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase or e-commerce site with AI assistant",
-            detail:
-              "For Noisy-le-Grand freelancers, professionals and retailers (70% of the fabric as sole proprietorships): mobile-first site, multi-CMS e-commerce and a booking or client-response chatbot, delivered turnkey.",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform or AI-native SaaS",
@@ -241,8 +229,8 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
       a: "Oui, pour les PME de programmation informatique : copilotes de développement, automatisation des tests, agents internes, intégration de modèles IA dans vos produits, dans le respect du RGPD.",
     },
     {
-      q: "Accompagnez-vous les TPE, indépendants et professions libérales ?",
-      a: "Oui, les TPE sont notre priorité : indépendants, professions libérales, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
+      q: "Accompagnez-vous les PME, indépendants et professions libérales ?",
+      a: "Oui, les PME sont notre priorité : indépendants, professions libérales, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
     },
     {
       q: "Comment se déroule une mission à Noisy-le-Grand ?",

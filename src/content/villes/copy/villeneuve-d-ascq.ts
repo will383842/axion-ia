@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-d'Ascq, commune du Nord de 62 868 habitants et deuxième plus grande de la métropole lilloise par sa superficie (27,46 km²), accueille plus de 2 500 entreprises dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville compte 23 zones d'activité, dont le Parc scientifique de la Haute-Borne (200 hectares), ainsi qu'une Cité scientifique de 150 hectares hébergeant environ 50 000 étudiants. Axion-IA accompagne en priorité les TPE et PME locales dans l'intégration concrète de l'IA opérationnelle.",
+    "Villeneuve-d'Ascq, commune du Nord de 62 868 habitants et deuxième plus grande de la métropole lilloise par sa superficie (27,46 km²), accueille plus de 2 500 entreprises dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville compte 23 zones d'activité, dont le Parc scientifique de la Haute-Borne (200 hectares), ainsi qu'une Cité scientifique de 150 hectares hébergeant environ 50 000 étudiants. Axion-IA accompagne en priorité les PME et ETI locales dans l'intégration concrète de l'IA opérationnelle.",
   pitchEn:
-    "Villeneuve-d'Ascq, commune du Nord de 62 868 habitants et deuxième plus grande de la métropole lilloise par sa superficie (27,46 km²), accueille plus de 2 500 entreprises dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville compte 23 zones d'activité, dont le Parc scientifique de la Haute-Borne (200 hectares), ainsi qu'une Cité scientifique de 150 hectares hébergeant environ 50 000 étudiants. Axion-IA accompagne en priorité les TPE et PME locales dans l'intégration concrète de l'IA opérationnelle.",
+    "Villeneuve-d'Ascq, commune du Nord de 62 868 habitants et deuxième plus grande de la métropole lilloise par sa superficie (27,46 km²), accueille plus de 2 500 entreprises dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville compte 23 zones d'activité, dont le Parc scientifique de la Haute-Borne (200 hectares), ainsi qu'une Cité scientifique de 150 hectares hébergeant environ 50 000 étudiants. Axion-IA accompagne en priorité les PME et ETI locales dans l'intégration concrète de l'IA opérationnelle.",
   directAnswerFr:
-    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des TPE et PME des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
+    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des PME et ETI des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
   directAnswerEn:
-    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des TPE et PME des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
+    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des PME et ETI des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
   seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Villeneuve-d'Ascq concentre l'un des écosystèmes économiques les plus denses des Hauts-de-France : 23 zones d'activité, le Parc scientifique de la Haute-Borne (200 hectares), une Cité scientifique de 150 hectares, et les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville accueille environ 50 000 étudiants et héberge l'École centrale de Lille ainsi que l'IMT Nord Europe. Elle est reliée à Lille en 10 minutes par le métro VAL.",
@@ -33,20 +33,20 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit sur place à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
-      en: "Réaliser un audit sur place à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
+      fr: "Réaliser un audit sur place à Villeneuve-d'Ascq permet aux PME et ETI du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit sur place à Villeneuve-d'Ascq permet aux PME et ETI du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Villeneuve-d'Ascq pour automatiser les flux administratifs et commerciaux des PME du tissu local — éditeurs, e-commerçants, sous-traitants de Bonduelle, Decathlon, Cofidis.",
       en: "Intervenir à Villeneuve-d'Ascq pour automatiser les flux administratifs et commerciaux des PME du tissu local — éditeurs, e-commerçants, sous-traitants de Bonduelle, Decathlon, Cofidis.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA clés en main à Villeneuve-d'Ascq, en code custom Python/TypeScript, intégrées aux SI existants des TPE et PME — sans no-code.",
-      en: "Implémenter des solutions IA clés en main à Villeneuve-d'Ascq, en code custom Python/TypeScript, intégrées aux SI existants des TPE et PME — sans no-code.",
+      fr: "Implémenter des solutions IA clés en main à Villeneuve-d'Ascq, en code custom Python/TypeScript, intégrées aux SI existants des PME et ETI — sans no-code.",
+      en: "Implémenter des solutions IA clés en main à Villeneuve-d'Ascq, en code custom Python/TypeScript, intégrées aux SI existants des PME et ETI — sans no-code.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME villeneuvoises — sessions personnalisées dans vos locaux du Parc de la Haute-Borne ou de la Cité scientifique.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME villeneuvoises — sessions personnalisées dans vos locaux du Parc de la Haute-Borne ou de la Cité scientifique.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI villeneuvoises — sessions personnalisées dans vos locaux du Parc de la Haute-Borne ou de la Cité scientifique.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI villeneuvoises — sessions personnalisées dans vos locaux du Parc de la Haute-Borne ou de la Cité scientifique.",
     },
   },
   services: {
@@ -87,12 +87,6 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour indépendants, commerçants et petites structures villeneuvoises : site vitrine ou boutique e-commerce avec une brique IA (assistant de recherche produit, FAQ conversationnelle), UX/UI soignée, hébergement UE.",
-          },
           {
             price: "Plateforme SaaS IA sur mesure",
             sizeLabel: "PME",
@@ -174,12 +168,6 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For freelancers, retailers and small Villeneuve-d'Ascq structures: showcase site or e-commerce store with one AI block (product search assistant, conversational FAQ), polished UX/UI, EU hosting.",
-          },
-          {
             price: "Bespoke AI SaaS platform",
             sizeLabel: "PME",
             detail:
@@ -249,7 +237,7 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Villeneuve-d'Ascq ?",
-      a: "Nous accompagnons en priorité les TPE et PME de la programmation informatique, du commerce de détail, de la recherche-développement, des sièges sociaux et de l'enseignement supérieur — secteurs très représentés sur le Parc de la Haute-Borne et la Cité scientifique. Les ETI sont également bienvenues.",
+      a: "Nous accompagnons en priorité les PME et ETI de la programmation informatique, du commerce de détail, de la recherche-développement, des sièges sociaux et de l'enseignement supérieur — secteurs très représentés sur le Parc de la Haute-Borne et la Cité scientifique. Les ETI sont également bienvenues.",
     },
   ],
 };

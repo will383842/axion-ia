@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Cyr-l'École, commune des Yvelines (21 268 habitants en 2023, +13 % depuis 2017), se situe à 21,5 km à l'ouest de Paris, accolée à Versailles. Axion-IA y accompagne les TPE et PME du tissu local — commerces, prestataires de services, écosystème aéronautique autour de l'aérodrome historique et de l'Institut aérotechnique — dans la mise en place d'automatisations IA codées maison : devis, relances, suivi qualité, reporting. Approche artisanale, sans no-code, code livré au client.",
+    "Saint-Cyr-l'École, commune des Yvelines (21 268 habitants en 2023, +13 % depuis 2017), se situe à 21,5 km à l'ouest de Paris, accolée à Versailles. Axion-IA y accompagne les PME et ETI du tissu local — commerces, prestataires de services, écosystème aéronautique autour de l'aérodrome historique et de l'Institut aérotechnique — dans la mise en place d'automatisations IA codées maison : devis, relances, suivi qualité, reporting. Approche artisanale, sans no-code, code livré au client.",
   pitchEn:
-    "Saint-Cyr-l'École, commune des Yvelines (21 268 habitants en 2023, +13 % depuis 2017), se situe à 21,5 km à l'ouest de Paris, accolée à Versailles. Axion-IA y accompagne les TPE et PME du tissu local — commerces, prestataires de services, écosystème aéronautique autour de l'aérodrome historique et de l'Institut aérotechnique — dans la mise en place d'automatisations IA codées maison : devis, relances, suivi qualité, reporting. Approche artisanale, sans no-code, code livré au client.",
+    "Saint-Cyr-l'École, commune des Yvelines (21 268 habitants en 2023, +13 % depuis 2017), se situe à 21,5 km à l'ouest de Paris, accolée à Versailles. Axion-IA y accompagne les PME et ETI du tissu local — commerces, prestataires de services, écosystème aéronautique autour de l'aérodrome historique et de l'Institut aérotechnique — dans la mise en place d'automatisations IA codées maison : devis, relances, suivi qualité, reporting. Approche artisanale, sans no-code, code livré au client.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Cyr-l'École (Yvelines, Île-de-France) auprès des TPE et PME, et plus marginalement des ETI, de la commune et du bassin versaillais. La présence du Lycée militaire (héritier de l'École spéciale militaire 1808-1940), de l'aérodrome civil (un des plus anciens de France, 1907) et de l'Institut aérotechnique structure un tissu mixte enseignement / aéronautique / services. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1, entièrement codés maison.",
+    "Axion-IA intervient à Saint-Cyr-l'École (Yvelines, Île-de-France) auprès des PME et ETI, et plus marginalement les grands groupes, de la commune et du bassin versaillais. La présence du Lycée militaire (héritier de l'École spéciale militaire 1808-1940), de l'aérodrome civil (un des plus anciens de France, 1907) et de l'Institut aérotechnique structure un tissu mixte enseignement / aéronautique / services. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1, entièrement codés maison.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Cyr-l'École (Yvelines, Île-de-France) auprès des TPE et PME, et plus marginalement des ETI, de la commune et du bassin versaillais. La présence du Lycée militaire (héritier de l'École spéciale militaire 1808-1940), de l'aérodrome civil (un des plus anciens de France, 1907) et de l'Institut aérotechnique structure un tissu mixte enseignement / aéronautique / services. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1, entièrement codés maison.",
+    "Axion-IA intervient à Saint-Cyr-l'École (Yvelines, Île-de-France) auprès des PME et ETI, et plus marginalement les grands groupes, de la commune et du bassin versaillais. La présence du Lycée militaire (héritier de l'École spéciale militaire 1808-1940), de l'aérodrome civil (un des plus anciens de France, 1907) et de l'Institut aérotechnique structure un tissu mixte enseignement / aéronautique / services. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1, entièrement codés maison.",
   seoHook: "aéronautique & enseignement",
   ecosystemFr:
-    "Le tissu économique saint-cyrien combine l'écosystème aéronautique (aérodrome géré par Paris Aéroport, Institut aérotechnique fondé en 1911), le secteur de l'enseignement (Lycée militaire, écoles), et un réseau de TPE/PME dans le commerce et les services. Les communes voisines Versailles, Guyancourt, Montigny-le-Bretonneux, Bois-d'Arcy, Fontenay-le-Fleury et Bailly forment un bassin d'emploi dense de l'ouest francilien.",
+    "Le tissu économique saint-cyrien combine l'écosystème aéronautique (aérodrome géré par Paris Aéroport, Institut aérotechnique fondé en 1911), le secteur de l'enseignement (Lycée militaire, écoles), et un réseau de PME et ETI dans le commerce et les services. Les communes voisines Versailles, Guyancourt, Montigny-le-Bretonneux, Bois-d'Arcy, Fontenay-le-Fleury et Bailly forment un bassin d'emploi dense de l'ouest francilien.",
   ecosystemEn:
-    "Le tissu économique saint-cyrien combine l'écosystème aéronautique (aérodrome géré par Paris Aéroport, Institut aérotechnique fondé en 1911), le secteur de l'enseignement (Lycée militaire, écoles), et un réseau de TPE/PME dans le commerce et les services. Les communes voisines Versailles, Guyancourt, Montigny-le-Bretonneux, Bois-d'Arcy, Fontenay-le-Fleury et Bailly forment un bassin d'emploi dense de l'ouest francilien.",
+    "Le tissu économique saint-cyrien combine l'écosystème aéronautique (aérodrome géré par Paris Aéroport, Institut aérotechnique fondé en 1911), le secteur de l'enseignement (Lycée militaire, écoles), et un réseau de PME et ETI dans le commerce et les services. Les communes voisines Versailles, Guyancourt, Montigny-le-Bretonneux, Bois-d'Arcy, Fontenay-le-Fleury et Bailly forment un bassin d'emploi dense de l'ouest francilien.",
   distancesFr:
     "Saint-Cyr-l'École est à 21,5 km de Paris Notre-Dame. La gare de Saint-Cyr est un hub Transilien (lignes N, U et RER C) ; le tramway T13 relie Saint-Germain-en-Laye depuis 2022. Accès autoroute A12 via l'échangeur de Bois-d'Arcy.",
   distancesEn:
@@ -32,8 +32,8 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place à Saint-Cyr-l'École pour TPE/PME du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
-      en: "Audit sur place à Saint-Cyr-l'École pour TPE/PME du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
+      fr: "Audit sur place à Saint-Cyr-l'École pour PME et ETI du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
+      en: "Audit sur place à Saint-Cyr-l'École pour PME et ETI du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
     },
     interventions: {
       fr: "Interventions ciblées à Saint-Cyr-l'École pour les commerces, prestataires de la filière aéronautique et services aux entreprises : assistants email, génération de devis, reporting hebdomadaire.",
@@ -44,14 +44,14 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
       en: "Implémentation de solutions IA codées maison à Saint-Cyr-l'École, hébergées en France, intégrées aux outils métier existants sans dépendance no-code.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Saint-Cyr-l'École pour dirigeants de TPE/PME : 2 heures de coaching IA opérationnel, cas concrets, prompts métier, sensibilisation RGPD et AI Act.",
-      en: "Accompagnement 1-à-1 à Saint-Cyr-l'École pour dirigeants de TPE/PME : 2 heures de coaching IA opérationnel, cas concrets, prompts métier, sensibilisation RGPD et AI Act.",
+      fr: "Accompagnement 1-à-1 à Saint-Cyr-l'École pour dirigeants de PME et ETI : 2 heures de coaching IA opérationnel, cas concrets, prompts métier, sensibilisation RGPD et AI Act.",
+      en: "Accompagnement 1-à-1 à Saint-Cyr-l'École pour dirigeants de PME et ETI : 2 heures de coaching IA opérationnel, cas concrets, prompts métier, sensibilisation RGPD et AI Act.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
+        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de PME du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
         whyHere: [
           "Filière aéronautique et aérotechnique structurante : l'aérodrome civil (1907, un des plus anciens de France), géré par le Groupe ADP, et l'héritage de l'Institut aérotechnique fondé en 1911 forment un terrain idéal pour des portails techniques, des plateformes de gestion de pièces et des outils documentaires augmentés par recherche sémantique sur catalogues, procédures et exigences de traçabilité, branchés sur votre GED et votre SI métier.",
           "Bassin d'enseignement marqué par le Lycée militaire (héritier de l'École spéciale militaire 1808-1940) et un réseau dense d'écoles et d'établissements : nous construisons des sites institutionnels accessibles (RGAA), des espaces élèves/parents sécurisés et des chatbots multilingues calibrés pour répondre aux questions récurrentes de scolarité, d'admission et de calendrier sans alourdir la charge administrative des secrétariats, avec une recherche sémantique sur règlements et procédures internes.",
@@ -86,12 +86,6 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site d'un commerce de détail, d'un restaurateur ou d'un artisan saint-cyrien du centre-ville ou des abords de la gare Transilien, en quelques semaines et sans refonte de l'existant. On greffe par widget, plugin ou API sur votre WordPress ou WooCommerce actuel, pour capter les flux pendulaires de la gare sans changer votre stack.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,7 +131,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre figé par écrit, pas de dérive horaire cachée, pas de coût par exécution. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un site institutionnel du Lycée militaire ou une boutique du centre-ville et des abords de la gare en pleine activité commerciale. Web Vitals et accessibilité RGAA contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, en France), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, pas de lock-in no-code, documentation et passation incluses, transférable à tout prestataire local de Versailles, Guyancourt ou Montigny-le-Bretonneux, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de TPE du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
+        hero: "À Saint-Cyr-l'École, aux portes de Versailles, Axion-IA conçoit et augmente sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 21 268 habitants (+13 % depuis 2017) où coexistent l'écosystème aéronautique de l'aérodrome historique (un des plus anciens de France, 1907), l'héritage de l'Institut aérotechnique fondé en 1911, le Lycée militaire et un réseau dense de PME du commerce et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Cyr-l'École, à 21,5 km de Paris, itérations à distance via la gare Transilien (lignes N, U, RER C) et le tramway T13 vers Saint-Germain-en-Laye.",
         whyHere: [
           "Filière aéronautique et aérotechnique structurante : l'aérodrome civil (1907, un des plus anciens de France), géré par le Groupe ADP, et l'héritage de l'Institut aérotechnique fondé en 1911 forment un terrain idéal pour des portails techniques, des plateformes de gestion de pièces et des outils documentaires augmentés par recherche sémantique sur catalogues, procédures et exigences de traçabilité, branchés sur votre GED et votre SI métier.",
           "Bassin d'enseignement marqué par le Lycée militaire (héritier de l'École spéciale militaire 1808-1940) et un réseau dense d'écoles et d'établissements : nous construisons des sites institutionnels accessibles (RGAA), des espaces élèves/parents sécurisés et des chatbots multilingues calibrés pour répondre aux questions récurrentes de scolarité, d'admission et de calendrier sans alourdir la charge administrative des secrétariats, avec une recherche sémantique sur règlements et procédures internes.",
@@ -172,12 +166,6 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site d'un commerce de détail, d'un restaurateur ou d'un artisan saint-cyrien du centre-ville ou des abords de la gare Transilien, en quelques semaines et sans refonte de l'existant. On greffe par widget, plugin ou API sur votre WordPress ou WooCommerce actuel, pour capter les flux pendulaires de la gare sans changer votre stack.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Cyr-l'École ?",
-      a: "Principalement les TPE et PME du commerce, des services aux entreprises, de la filière aéronautique (aérodrome, Institut aérotechnique) et de l'enseignement. Plus marginalement, quelques ETI locales.",
+      a: "Principalement les PME et ETI du commerce, des services aux entreprises, de la filière aéronautique (aérodrome, Institut aérotechnique) et de l'enseignement. Plus marginalement, quelques ETI locales.",
     },
     {
       q: "Pourquoi Axion-IA refuse les outils no-code à Saint-Cyr-l'École ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const H_NHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
+    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. PME et ETI services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
+    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. PME et ETI services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hœnheim (67). Nous accompagnons PME et ETI : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hœnheim (67). Nous accompagnons PME et ETI : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
-    "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les TPE/PME locales.",
+    "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les PME et ETI locales.",
   ecosystemEn:
-    "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les TPE/PME locales.",
+    "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les PME et ETI locales.",
   distancesFr:
     "Strasbourg centre à 15 min en tram B (terminus Hœnheim-Gare). Gare SNCF Strasbourg à 20 min. Aéroport Strasbourg-Entzheim à 25 min. Allemagne (Kehl) à 25 min. Bischheim à 5 min. Haguenau à 25 min via A4.",
   distancesEn:
@@ -38,12 +38,12 @@ export const H_NHEIM_COPY: VilleCopy = {
       en: "Interventions IA sur site à Hœnheim : formats adaptés au commerce, au cabinet libéral, à l'artisanat ou à la PME de services tertiaires. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Hœnheim : automatisation prise de rendez-vous cabinets libéraux, gestion stocks commerces, devis artisans, agents conversationnels accueil et SAV pour TPE/PME de l'Eurométropole de Strasbourg.",
-      en: "Implémentation IA à Hœnheim : automatisation prise de rendez-vous cabinets libéraux, gestion stocks commerces, devis artisans, agents conversationnels accueil et SAV pour TPE/PME de l'Eurométropole de Strasbourg.",
+      fr: "Implémentation IA à Hœnheim : automatisation prise de rendez-vous cabinets libéraux, gestion stocks commerces, devis artisans, agents conversationnels accueil et SAV pour PME et ETI de l'Eurométropole de Strasbourg.",
+      en: "Implémentation IA à Hœnheim : automatisation prise de rendez-vous cabinets libéraux, gestion stocks commerces, devis artisans, agents conversationnels accueil et SAV pour PME et ETI de l'Eurométropole de Strasbourg.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hœnheim : sessions dans vos locaux, au cabinet ou en visio. Dirigeants TPE/PME et indépendants de l'Eurométropole de Strasbourg souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Hœnheim : sessions dans vos locaux, au cabinet ou en visio. Dirigeants TPE/PME et indépendants de l'Eurométropole de Strasbourg souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Hœnheim : sessions dans vos locaux, au cabinet ou en visio. Dirigeants PME et ETI et indépendants de l'Eurométropole de Strasbourg souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Hœnheim : sessions dans vos locaux, au cabinet ou en visio. Dirigeants PME et ETI et indépendants de l'Eurométropole de Strasbourg souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const H_NHEIM_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hœnheim  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
     },
     {
       q: "Accompagnez-vous les professions libérales de l'Eurométropole ?",

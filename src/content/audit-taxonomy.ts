@@ -8,7 +8,7 @@
 //   /audit/strategique-eti → 1 sous-tier (12k+) extensible
 //
 // Doctrine : 2 portes d'entrée mutuellement complémentaires pour le visiteur :
-//   AXE 1 « Par taille »    → segmentation INSEE (TPE/PME/ETI/grande-entreprise)
+//   AXE 1 « Par taille »    → segmentation INSEE (PME/ETI/grande-entreprise)
 //   AXE 2 « Par situation » → segmentation contextuelle (urgence / premier audit /
 //                              approfondissement / multi-BU gouvernance)
 // Les 2 axes pointent vers les MÊMES 4 pages détail tier. Switch UI au niveau
@@ -57,7 +57,7 @@ export const AUDIT_TIERS_META: ReadonlyArray<AuditTierMeta> = [
     pathEn: "/audit/tpe-1-jour",
     labelFr: "Audit sur place",
     labelEn: "On-site audit",
-    taglineFr: `Audit complet de l'entreprise pour TPE, artisan ou commerçant — une journée complète sur place (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", { compact: true })} · réservation calendrier).`,
+    taglineFr: `Audit complet de l'entreprise pour PME ou ETI — une journée complète sur place (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", { compact: true })} · réservation calendrier).`,
     taglineEn: `Complete company audit for a small business, artisan or retailer — one full day on site (${formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "en", { compact: true })} · calendar booking).`,
     audienceSizes: ["tpe"],
     accent: "terracotta",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VICHY_COPY: VilleCopy = {
   pitchFr:
-    "À Vichy (03), reine des villes d'eaux, Axion-IA accompagne les TPE et PME du thermalisme, du bien-être et du tourisme santé. Établissements thermaux et spas, hôtellerie et résidences de cure, instituts de cosmétique et de soins dans le sillage de la marque Vichy, restauration, commerces et professions libérales : nous concevons des usages IA concrets qui allègent la gestion sans rien retirer à la qualité d'accueil.",
+    "À Vichy (03), reine des villes d'eaux, Axion-IA accompagne les PME et ETI du thermalisme, du bien-être et du tourisme santé. Établissements thermaux et spas, hôtellerie et résidences de cure, instituts de cosmétique et de soins dans le sillage de la marque Vichy, restauration, commerces et professions libérales : nous concevons des usages IA concrets qui allègent la gestion sans rien retirer à la qualité d'accueil.",
   pitchEn:
-    "À Vichy (03), reine des villes d'eaux, Axion-IA accompagne les TPE et PME du thermalisme, du bien-être et du tourisme santé. Établissements thermaux et spas, hôtellerie et résidences de cure, instituts de cosmétique et de soins dans le sillage de la marque Vichy, restauration, commerces et professions libérales : nous concevons des usages IA concrets qui allègent la gestion sans rien retirer à la qualité d'accueil.",
+    "À Vichy (03), reine des villes d'eaux, Axion-IA accompagne les PME et ETI du thermalisme, du bien-être et du tourisme santé. Établissements thermaux et spas, hôtellerie et résidences de cure, instituts de cosmétique et de soins dans le sillage de la marque Vichy, restauration, commerces et professions libérales : nous concevons des usages IA concrets qui allègent la gestion sans rien retirer à la qualité d'accueil.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vichy (Allier) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les établissements thermaux et spas, l'hôtellerie de cure, les instituts de cosmétique et de bien-être, la restauration et les commerces de cette destination thermale de renom. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vichy (Allier) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les établissements thermaux et spas, l'hôtellerie de cure, les instituts de cosmétique et de bien-être, la restauration et les commerces de cette destination thermale de renom. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vichy (Allier) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les établissements thermaux et spas, l'hôtellerie de cure, les instituts de cosmétique et de bien-être, la restauration et les commerces de cette destination thermale de renom. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vichy (Allier) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les établissements thermaux et spas, l'hôtellerie de cure, les instituts de cosmétique et de bien-être, la restauration et les commerces de cette destination thermale de renom. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "thermalisme & bien-être",
   ecosystemFr:
-    "Vichy bâtit son économie sur le thermalisme et le bien-être, héritage de la reine des villes d'eaux : établissements thermaux, spas et résidences de cure rythment l'activité saisonnière. La notoriété mondiale de l'eau minérale et de la cosmétique de marque Vichy irrigue un tissu d'instituts de soins et d'esthétique. Le pôle sportif du CREPS, l'hôtellerie et un tourisme santé en croissance complètent un écosystème de TPE et PME de services où l'IA optimise réservations, accueil et fidélisation.",
+    "Vichy bâtit son économie sur le thermalisme et le bien-être, héritage de la reine des villes d'eaux : établissements thermaux, spas et résidences de cure rythment l'activité saisonnière. La notoriété mondiale de l'eau minérale et de la cosmétique de marque Vichy irrigue un tissu d'instituts de soins et d'esthétique. Le pôle sportif du CREPS, l'hôtellerie et un tourisme santé en croissance complètent un écosystème de PME et ETI de services où l'IA optimise réservations, accueil et fidélisation.",
   ecosystemEn:
-    "Vichy bâtit son économie sur le thermalisme et le bien-être, héritage de la reine des villes d'eaux : établissements thermaux, spas et résidences de cure rythment l'activité saisonnière. La notoriété mondiale de l'eau minérale et de la cosmétique de marque Vichy irrigue un tissu d'instituts de soins et d'esthétique. Le pôle sportif du CREPS, l'hôtellerie et un tourisme santé en croissance complètent un écosystème de TPE et PME de services où l'IA optimise réservations, accueil et fidélisation.",
+    "Vichy bâtit son économie sur le thermalisme et le bien-être, héritage de la reine des villes d'eaux : établissements thermaux, spas et résidences de cure rythment l'activité saisonnière. La notoriété mondiale de l'eau minérale et de la cosmétique de marque Vichy irrigue un tissu d'instituts de soins et d'esthétique. Le pôle sportif du CREPS, l'hôtellerie et un tourisme santé en croissance complètent un écosystème de PME et ETI de services où l'IA optimise réservations, accueil et fidélisation.",
   distancesFr:
     "Vichy est reliée à Paris en 3 heures par train direct (gare de Vichy) et à Clermont-Ferrand en 35 minutes. L'aéroport de Clermont-Ferrand Auvergne est à 60 km, l'autoroute A719 connecte la ville à l'A71 vers Paris et Montluçon.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VICHY_COPY: VilleCopy = {
       en: "Implémentation IA à Vichy : automatisation des réservations de cures et de soins, gestion des plannings thermaux, relances et fidélisation des curistes, reporting d'occupation pour l'hôtellerie de cure.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Vichy : sessions individuelles pour dirigeants de TPE et PME du thermalisme et du bien-être, dans vos locaux ou en visio, pour adopter l'IA à votre rythme saisonnier.",
-      en: "Accompagnement un-à-un à Vichy : sessions individuelles pour dirigeants de TPE et PME du thermalisme et du bien-être, dans vos locaux ou en visio, pour adopter l'IA à votre rythme saisonnier.",
+      fr: "Accompagnement un-à-un à Vichy : sessions individuelles pour dirigeants de PME et d'ETI du thermalisme et du bien-être, dans vos locaux ou en visio, pour adopter l'IA à votre rythme saisonnier.",
+      en: "Accompagnement un-à-un à Vichy : sessions individuelles pour dirigeants de PME et d'ETI du thermalisme et du bien-être, dans vos locaux ou en visio, pour adopter l'IA à votre rythme saisonnier.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Vichy : plateformes de réservation pour établissements thermaux, spas et hôtels de cure, avec devis de cure intelligent, contenu multilingue et fidélisation des curistes.",
@@ -88,12 +88,6 @@ export const VICHY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous, recherche sémantique, diagnostic de soin guidé) sur le site existant d'un institut de beauté, d'un spa, d'un restaurant ou d'un commerce vichyssois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const VICHY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de rendez-vous, recherche sémantique, diagnostic de soin guidé) sur le site existant d'un institut de beauté, d'un spa, d'un restaurant ou d'un commerce vichyssois, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -230,7 +218,7 @@ export const VICHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vichy et dans l'Allier ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vichy et de son agglomération thermale. Nos consultants se déplacent sur site ou interviennent en visio, avec Clermont-Ferrand à 35 minutes et Paris à 3 heures de train.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Vichy et de son agglomération thermale. Nos consultants se déplacent sur site ou interviennent en visio, avec Clermont-Ferrand à 35 minutes et Paris à 3 heures de train.",
     },
     {
       q: "Travaillez-vous avec les établissements thermaux et de bien-être ?",

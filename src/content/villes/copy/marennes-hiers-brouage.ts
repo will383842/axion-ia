@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
   pitchFr:
-    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
+    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de PME artisanales, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
   pitchEn:
-    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
+    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de PME artisanales, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : PME artisanales, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : PME artisanales, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   seoHook: "bassin de marennes",
   ecosystemFr:
-    "Marennes-Hiers-Brouage est la capitale de l'huître Marennes-Oléron (IGP), premier bassin ostréicole d'Europe. Citadelle de Brouage (patrimoine Vauban/Champlain). PME ostréicoles et aquacoles, tourisme patrimonial et gastronomique, TPE artisans, commerces de centre-ville. Position stratégique entre Rochefort et l'île d'Oléron.",
+    "Marennes-Hiers-Brouage est la capitale de l'huître Marennes-Oléron (IGP), premier bassin ostréicole d'Europe. Citadelle de Brouage (patrimoine Vauban/Champlain). PME ostréicoles et aquacoles, tourisme patrimonial et gastronomique, PME artisanales, commerces de centre-ville. Position stratégique entre Rochefort et l'île d'Oléron.",
   ecosystemEn:
-    "Marennes-Hiers-Brouage est la capitale de l'huître Marennes-Oléron (IGP), premier bassin ostréicole d'Europe. Citadelle de Brouage (patrimoine Vauban/Champlain). PME ostréicoles et aquacoles, tourisme patrimonial et gastronomique, TPE artisans, commerces de centre-ville. Position stratégique entre Rochefort et l'île d'Oléron.",
+    "Marennes-Hiers-Brouage est la capitale de l'huître Marennes-Oléron (IGP), premier bassin ostréicole d'Europe. Citadelle de Brouage (patrimoine Vauban/Champlain). PME ostréicoles et aquacoles, tourisme patrimonial et gastronomique, PME artisanales, commerces de centre-ville. Position stratégique entre Rochefort et l'île d'Oléron.",
   distancesFr:
     "Marennes-Hiers-Brouage est à 20 min de Rochefort et 40 min de La Rochelle (N137). Pont d'Oléron à 5 min. Gare de Rochefort à 20 min (TER vers La Rochelle). Saintes à 30 min. Aéroport La Rochelle-Île de Ré à 50 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
     "Ostréiculture & aquaculture Marennes-Oléron",
     "Tourisme patrimonial & gastronomique",
     "Commerce & vente directe produits de la mer",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Services & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et PME et ETI du bassin de Marennes. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et PME et ETI du bassin de Marennes. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marennes-Hiers-Brouage : formats adaptés au parc ostréicole, au site touristique, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",

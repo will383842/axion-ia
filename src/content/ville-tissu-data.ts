@@ -6,7 +6,7 @@
  * pertinents pour le secteur, applicable à toute ville française. **Aucune
  * donnée chiffrée fabriquée** ; uniquement des catégories qualitatives
  * (« forte présence », « émergente »…) et des opportunités métiers vraies
- * pour TPE/PME/ETI/GE indépendamment du territoire.
+ * pour PME / ETI / grands groupes indépendamment du territoire.
  *
  * Le matching se fait par mot-clé (`includes` insensible aux accents/casse)
  * sur les libellés `VilleCopy.topSectorsNaf` (ex « Banque & Finance »,
@@ -183,7 +183,7 @@ export const SECTOR_IA_OPPORTUNITIES: ReadonlyArray<SectorIaOpportunity> = [
 
 /**
  * Phrase d'opportunité IA générique pour secteur sans mapping spécifique.
- * Vrai pour la quasi-totalité des TPE/PME/ETI/GE françaises — pas de chiffres.
+ * Vrai pour la quasi-totalité des PME / ETI / grands groupes français — pas de chiffres.
  */
 export const SECTOR_IA_FALLBACK_FR =
   "Automatisation des tâches répétitives, gestion documentaire augmentée et accélération du support client.";

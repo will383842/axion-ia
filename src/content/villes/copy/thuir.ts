@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const THUIR_COPY: VilleCopy = {
   pitchFr:
-    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie son expertise pour toutes les organisations du piémont catalan.",
+    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu PME artisanales, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie son expertise pour toutes les organisations du piémont catalan.",
   pitchEn:
-    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie son expertise pour toutes les organisations du piémont catalan.",
+    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu PME artisanales, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie son expertise pour toutes les organisations du piémont catalan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thuir (66). Nous accompagnons tous types d'activités : PME artisanales, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thuir (66). Nous accompagnons tous types d'activités : PME artisanales, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
   seoHook: "massif du",
   ecosystemFr:
-    "Thuir est le bourg-centre des Aspres, piémont entre la plaine du Roussillon et le massif du Canigou. Célèbre pour les caves Byrrh (patrimoine industriel). Viticulture (Côtes du Roussillon), arboriculture (pêches, abricots), TPE artisanat, commerces de centre-bourg, tourisme patrimoine.",
+    "Thuir est le bourg-centre des Aspres, piémont entre la plaine du Roussillon et le massif du Canigou. Célèbre pour les caves Byrrh (patrimoine industriel). Viticulture (Côtes du Roussillon), arboriculture (pêches, abricots), PME de l'artisanat, commerces de centre-bourg, tourisme patrimoine.",
   ecosystemEn:
-    "Thuir est le bourg-centre des Aspres, piémont entre la plaine du Roussillon et le massif du Canigou. Célèbre pour les caves Byrrh (patrimoine industriel). Viticulture (Côtes du Roussillon), arboriculture (pêches, abricots), TPE artisanat, commerces de centre-bourg, tourisme patrimoine.",
+    "Thuir est le bourg-centre des Aspres, piémont entre la plaine du Roussillon et le massif du Canigou. Célèbre pour les caves Byrrh (patrimoine industriel). Viticulture (Côtes du Roussillon), arboriculture (pêches, abricots), PME de l'artisanat, commerces de centre-bourg, tourisme patrimoine.",
   distancesFr:
     "Perpignan centre à 15 min. Céret à 20 min. Aéroport Perpignan-Rivesaltes à 25 min. Elne à 15 min. Prades à 35 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const THUIR_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture Côtes du Roussillon",
     "Agroalimentaire & arboriculture",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Tourisme patrimonial (caves Byrrh)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Thuir : diagnostic adapté aux PME artisanales, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thuir : diagnostic adapté aux PME artisanales, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thuir : formats adaptés à la cave viticole, exploitation fruitière, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const THUIR_COPY: VilleCopy = {
       en: "Implémentation IA à Thuir : classification qualité fruits par vision, gestion cave viticole, automatisation traçabilité agroalimentaire, agents conversationnels. Aspres.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Thuir : sessions dans votre cave, exploitation, commerce ou en visio. Dirigeants viticulteurs, arboriculteurs, artisans, commerçants, gérants TPE/PME thuirinois.",
-      en: "Coaching 1-to-1 à Thuir : sessions dans votre cave, exploitation, commerce ou en visio. Dirigeants viticulteurs, arboriculteurs, artisans, commerçants, gérants TPE/PME thuirinois.",
+      fr: "Coaching 1-to-1 à Thuir : sessions dans votre cave, exploitation, commerce ou en visio. Dirigeants viticulteurs, arboriculteurs, artisans, commerçants, gérants PME et ETI thuirinois.",
+      en: "Coaching 1-to-1 à Thuir : sessions dans votre cave, exploitation, commerce ou en visio. Dirigeants viticulteurs, arboriculteurs, artisans, commerçants, gérants PME et ETI thuirinois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const THUIR_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les arboriculteurs (pêches, abricots, cerises) et agriculteurs des Aspres : tri qualité fruits par vision, prédiction récoltes, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Thuir, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce à Thuir, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Thuir ?",

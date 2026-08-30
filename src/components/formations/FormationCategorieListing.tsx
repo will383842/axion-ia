@@ -143,7 +143,7 @@ export function FormationCategorieListing({ categorie, locale }: Props): ReactNo
       courseMode: ["Onsite"],
       duration: formationDureeIso(f.duree),
       audienceType:
-        "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)",
+        "Décideurs, managers, équipes opérationnelles PME ETI grandes entreprises (B2B)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
   );

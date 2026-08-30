@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const DOUCHY_LES_MINES_COPY: VilleCopy = {
   pitchFr:
-    "Douchy-les-Mines (59), commune du Nord en agglomération Valenciennes, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
+    "Douchy-les-Mines (59), commune du Nord en agglomération Valenciennes, est issue du bassin minier reconverti. Tissu mixte : PME du BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Douchy-les-Mines (59), commune du Nord en agglomération Valenciennes, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
+    "Douchy-les-Mines (59), commune du Nord en agglomération Valenciennes, est issue du bassin minier reconverti. Tissu mixte : PME du BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douchy-les-Mines (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   seoHook: "agglomération valenciennes",
   ecosystemFr:
-    "Douchy-les-Mines est intégrée à l'agglomération de Valenciennes, dans l'ancien bassin minier reconverti. Tissu péri-urbain : TPE artisanat BTP, PME industrielles reconverties (sous-traitance auto, métallurgie légère, plasturgie), commerces de proximité, professions libérales, logistique.",
+    "Douchy-les-Mines est intégrée à l'agglomération de Valenciennes, dans l'ancien bassin minier reconverti. Tissu péri-urbain : PME du BTP, PME industrielles reconverties (sous-traitance auto, métallurgie légère, plasturgie), commerces de proximité, professions libérales, logistique.",
   ecosystemEn:
-    "Douchy-les-Mines est intégrée à l'agglomération de Valenciennes, dans l'ancien bassin minier reconverti. Tissu péri-urbain : TPE artisanat BTP, PME industrielles reconverties (sous-traitance auto, métallurgie légère, plasturgie), commerces de proximité, professions libérales, logistique.",
+    "Douchy-les-Mines est intégrée à l'agglomération de Valenciennes, dans l'ancien bassin minier reconverti. Tissu péri-urbain : PME du BTP, PME industrielles reconverties (sous-traitance auto, métallurgie légère, plasturgie), commerces de proximité, professions libérales, logistique.",
   distancesFr:
     "Valenciennes centre à 10 min. Denain limitrophe à 5 min. Aéroport Lille-Lesquin à 45 min. Cambrai à 25 min. Lille à 50 min. Mons (Belgique) à 30 min.",
   distancesEn:
     "Valenciennes centre à 10 min. Denain limitrophe à 5 min. Aéroport Lille-Lesquin à 45 min. Cambrai à 25 min. Lille à 50 min. Mons (Belgique) à 30 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME industrielles reconverties",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douchy-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Douchy-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Douchy-les-Mines : diagnostic adapté aux PME du BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Douchy-les-Mines : diagnostic adapté aux PME du BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douchy-les-Mines : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
       en: "Implémentation IA à Douchy-les-Mines : agents conversationnels B2B, automatisation devis BTP, classification dossiers industriels, CRM augmentés. Agglo Valenciennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Douchy-les-Mines : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles, professions libérales, commerçants douchynois.",
-      en: "Coaching 1-to-1 à Douchy-les-Mines : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles, professions libérales, commerçants douchynois.",
+      fr: "Coaching 1-to-1 à Douchy-les-Mines : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles, professions libérales, commerçants douchynois.",
+      en: "Coaching 1-to-1 à Douchy-les-Mines : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles, professions libérales, commerçants douchynois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Douchy-les-Mines et tout le Valenciennois (Denain limitrophe, Valenciennes, Anzin, Lourches). Consultants depuis Lille (50 min).",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP douchynois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Douchy-les-Mines sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      q: "Accompagnez-vous les PME du BTP douchynois ?",
+      a: "Oui, nous accompagnons les PME du BTP à Douchy-les-Mines sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bassin minier reconverti ?",

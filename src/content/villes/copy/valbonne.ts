@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VALBONNE_COPY: VilleCopy = {
   pitchFr:
-    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
+    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu PME et ETI tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
+    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu PME et ETI tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, TPE/PME R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, PME et ETI R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, TPE/PME R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, PME et ETI R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
   seoHook: "tech startups & r&d biotech",
   ecosystemFr:
     "Valbonne héberge le cœur de la technopôle Sophia Antipolis, première d'Europe (créée 1969, 2 500+ entreprises, 38 000 emplois). Pôles d'excellence : IA, IoT, biotech, télécoms (siège W3C Europe, INRIA, CNRS, EURECOM). Tissu dense de startups, PME tech et centres R&D multinationaux. Le village provençal historique (place des Arcades, abbaye) attire tourisme culturel et commerces de proximité.",
@@ -30,16 +30,16 @@ export const VALBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, PME et ETI R&D, biotech et éditeurs logiciels du parc technologique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux PME.",
+      en: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, PME et ETI R&D, biotech et éditeurs logiciels du parc technologique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valbonne : formats adaptés au bureau Sophia Antipolis, lab R&D ou espace coworking tech. Vos équipes dev et produit repartent avec intégrations IA configurées sur votre stack.",
       en: "Interventions IA sur site à Valbonne : formats adaptés au bureau Sophia Antipolis, lab R&D ou espace coworking tech. Vos équipes dev et produit repartent avec intégrations IA configurées sur votre stack.",
     },
     implementation: {
-      fr: "Implémentation IA à Valbonne : pipelines ML production, agents conversationnels, automatisation tests, RAG documentation technique, monitoring modèles. Adapté aux TPE/PME tech et startups Sophia Antipolis.",
-      en: "Implémentation IA à Valbonne : pipelines ML production, agents conversationnels, automatisation tests, RAG documentation technique, monitoring modèles. Adapté aux TPE/PME tech et startups Sophia Antipolis.",
+      fr: "Implémentation IA à Valbonne : pipelines ML production, agents conversationnels, automatisation tests, RAG documentation technique, monitoring modèles. Adapté aux PME et ETI tech et startups Sophia Antipolis.",
+      en: "Implémentation IA à Valbonne : pipelines ML production, agents conversationnels, automatisation tests, RAG documentation technique, monitoring modèles. Adapté aux PME et ETI tech et startups Sophia Antipolis.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Valbonne : sessions dans votre bureau Sophia Antipolis, lab ou en visio. CTO startups, dirigeants PME tech, chercheurs R&D et fondateurs souhaitant industrialiser l'IA dans leur produit.",

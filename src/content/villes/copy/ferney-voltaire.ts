@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, TPE artisans BTP, commerces internationaux. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, PME du BTP, commerces internationaux. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, TPE artisans BTP, commerces internationaux. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, PME du BTP, commerces internationaux. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, PME du BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, PME du BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "économie frontalière & internationales",
   ecosystemFr:
-    "Ferney-Voltaire est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Ville historique : château de Voltaire (domaine restauré, patrimoine culturel). Économie frontalière très dynamique : PME tertiaires et internationales, organisations internationales (proximité ONU Genève), commerces transfrontaliers, TPE artisanat BTP.",
+    "Ferney-Voltaire est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Ville historique : château de Voltaire (domaine restauré, patrimoine culturel). Économie frontalière très dynamique : PME tertiaires et internationales, organisations internationales (proximité ONU Genève), commerces transfrontaliers, PME du BTP.",
   ecosystemEn:
-    "Ferney-Voltaire est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Ville historique : château de Voltaire (domaine restauré, patrimoine culturel). Économie frontalière très dynamique : PME tertiaires et internationales, organisations internationales (proximité ONU Genève), commerces transfrontaliers, TPE artisanat BTP.",
+    "Ferney-Voltaire est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Ville historique : château de Voltaire (domaine restauré, patrimoine culturel). Économie frontalière très dynamique : PME tertiaires et internationales, organisations internationales (proximité ONU Genève), commerces transfrontaliers, PME du BTP.",
   distancesFr:
     "Genève centre à 10 min. Aéroport Genève-Cointrin à 10 min. Lyon centre à 1h30. Gex à 10 min. Saint-Genis-Pouilly à 5 min. CERN à 10 min.",
   distancesEn:
@@ -26,12 +26,12 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     "PME internationales (proximité ONU)",
     "Tourisme patrimonial (château Voltaire)",
     "PME tertiaires pays de Gex",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ferney-Voltaire : formats adaptés au bureau international, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Ferney-Voltaire : agents conversationnels multilingue FR/EN/DE (économie frontalière Genève/ONU), automatisation workflow international, classification documents multi-juridiction.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ferney-Voltaire : sessions dans votre bureau, commerce ou en visio. Dirigeants internationaux, frontaliers, artisans, gérants TPE/PME ferneysiennes.",
-      en: "Coaching 1-to-1 à Ferney-Voltaire : sessions dans votre bureau, commerce ou en visio. Dirigeants internationaux, frontaliers, artisans, gérants TPE/PME ferneysiennes.",
+      fr: "Coaching 1-to-1 à Ferney-Voltaire : sessions dans votre bureau, commerce ou en visio. Dirigeants internationaux, frontaliers, artisans, gérants PME et ETI ferneysiennes.",
+      en: "Coaching 1-to-1 à Ferney-Voltaire : sessions dans votre bureau, commerce ou en visio. Dirigeants internationaux, frontaliers, artisans, gérants PME et ETI ferneysiennes.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels multilingue FR/EN/DE (économie internationale Genève/ONU), automatisation workflow international, classification documents multi-juridiction.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

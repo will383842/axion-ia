@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHECY_COPY: VilleCopy = {
   pitchFr:
-    "Checy (45), commune de l'agglomeration d'Orleans en bords de Loire a l'est, allie cadre ligérien et dynamisme economique metropolitain. Tissu TPE/PME industrie, services, commerce, artisanat, viticulture. Axion-IA y intervient pour tous types d'activites.",
+    "Checy (45), commune de l'agglomeration d'Orleans en bords de Loire a l'est, allie cadre ligérien et dynamisme economique metropolitain. Tissu PME et ETI industrie, services, commerce, artisanat, viticulture. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Checy (45), commune de l'agglomeration d'Orleans en bords de Loire a l'est, allie cadre ligérien et dynamisme economique metropolitain. Tissu TPE/PME industrie, services, commerce, artisanat, viticulture. Axion-IA y intervient pour tous types d'activites.",
+    "Checy (45), commune de l'agglomeration d'Orleans en bords de Loire a l'est, allie cadre ligérien et dynamisme economique metropolitain. Tissu PME et ETI industrie, services, commerce, artisanat, viticulture. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Checy (45). Nous accompagnons PME et ETI : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Checy (45). Nous accompagnons PME et ETI : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Checy est situee en bords de Loire a l'est d'Orleans Metropole, sur l'axe logistique Orleans-Montargis. L'economie locale s'appuie sur des PME industrielles, les services aux entreprises, le commerce, l'artisanat du batiment et la viticulture AOC Orleans-Clery en bordure du Val de Loire UNESCO.",
   ecosystemEn:
@@ -34,16 +34,16 @@ export const CHECY_COPY: VilleCopy = {
       en: "Audit IA a Checy : diagnostic adapte aux PME industrielles, prestataires de services, commercants et viticulteurs de l'est de l'agglomeration orleanaise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site a Checy : formats adaptes aux ateliers industriels, TPE de services, commerces, artisans et exploitations viticoles du secteur est d'Orleans.",
-      en: "Interventions IA sur site a Checy : formats adaptes aux ateliers industriels, TPE de services, commerces, artisans et exploitations viticoles du secteur est d'Orleans.",
+      fr: "Interventions IA sur site a Checy : formats adaptes aux ateliers industriels, PME de services, commerces, artisans et exploitations viticoles du secteur est d'Orleans.",
+      en: "Interventions IA sur site a Checy : formats adaptes aux ateliers industriels, PME de services, commerces, artisans et exploitations viticoles du secteur est d'Orleans.",
     },
     implementation: {
       fr: "Implementation IA a Checy : optimisation processus industriels, automatisation gestion clients, gestion stocks commerce, planification chantiers artisans, tracabilite viticole.",
       en: "Implementation IA a Checy : optimisation processus industriels, automatisation gestion clients, gestion stocks commerce, planification chantiers artisans, tracabilite viticole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Checy : sessions dans vos locaux professionnels ou en visio. Dirigeants TPE/PME de l'est d'Orleans Metropole, gerants industrie, services et viticulture.",
-      en: "Coaching 1-to-1 a Checy : sessions dans vos locaux professionnels ou en visio. Dirigeants TPE/PME de l'est d'Orleans Metropole, gerants industrie, services et viticulture.",
+      fr: "Coaching 1-to-1 a Checy : sessions dans vos locaux professionnels ou en visio. Dirigeants PME et ETI de l'est d'Orleans Metropole, gerants industrie, services et viticulture.",
+      en: "Coaching 1-to-1 a Checy : sessions dans vos locaux professionnels ou en visio. Dirigeants PME et ETI de l'est d'Orleans Metropole, gerants industrie, services et viticulture.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHECY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Checy ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Checy, nous proposons des audits approfondis adaptes aux enjeux industrie, services ou viticulture.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Checy, nous proposons des audits approfondis adaptes aux enjeux industrie, services ou viticulture.",
     },
     {
       q: "L'IA peut-elle aider les PME industrielles a Checy ?",

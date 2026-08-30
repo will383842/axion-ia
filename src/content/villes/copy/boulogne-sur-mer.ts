@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Boulogne-sur-Mer (62), premier port de pêche de France, est le cœur de la filière des produits de la mer : marée, transformation et logistique du froid sur la zone de Capécure, tourisme autour de Nausicaá. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME boulonnaises, les ETI en complément.",
+    "Boulogne-sur-Mer (62), premier port de pêche de France, est le cœur de la filière des produits de la mer : marée, transformation et logistique du froid sur la zone de Capécure, tourisme autour de Nausicaá. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI boulonnaises, les grands groupes en complément.",
   pitchEn:
-    "Boulogne-sur-Mer (62), premier port de pêche de France, est le cœur de la filière des produits de la mer : marée, transformation et logistique du froid sur la zone de Capécure, tourisme autour de Nausicaá. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME boulonnaises, les ETI en complément.",
+    "Boulogne-sur-Mer (62), premier port de pêche de France, est le cœur de la filière des produits de la mer : marée, transformation et logistique du froid sur la zone de Capécure, tourisme autour de Nausicaá. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI boulonnaises, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Boulogne-sur-Mer et sur toute la Côte d'Opale. Nous accompagnons en priorité les TPE et PME locales — mareyeurs et transformateurs de produits de la mer de Capécure, logistique du froid, tourisme et restauration, commerces — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Boulogne-sur-Mer et sur toute la Côte d'Opale. Nous accompagnons en priorité les PME et ETI locales — mareyeurs et transformateurs de produits de la mer de Capécure, logistique du froid, tourisme et restauration, commerces — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Boulogne-sur-Mer et sur toute la Côte d'Opale. Nous accompagnons en priorité les TPE et PME locales — mareyeurs et transformateurs de produits de la mer de Capécure, logistique du froid, tourisme et restauration, commerces — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Boulogne-sur-Mer et sur toute la Côte d'Opale. Nous accompagnons en priorité les PME et ETI locales — mareyeurs et transformateurs de produits de la mer de Capécure, logistique du froid, tourisme et restauration, commerces — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "port de pêche & produits de la mer",
   ecosystemFr:
-    "Boulogne-sur-Mer structure la première filière française des produits de la mer : pêche, mareyage et transformation agroalimentaire sur la zone de Capécure, logistique du froid, complétés par le tourisme (Nausicaá) et le commerce. Un tissu de TPE/PME spécialisées, avec quelques ETI agroalimentaires.",
+    "Boulogne-sur-Mer structure la première filière française des produits de la mer : pêche, mareyage et transformation agroalimentaire sur la zone de Capécure, logistique du froid, complétés par le tourisme (Nausicaá) et le commerce. Un tissu de PME et ETI spécialisées, avec quelques ETI agroalimentaires.",
   ecosystemEn:
-    "Boulogne-sur-Mer structure la première filière française des produits de la mer : pêche, mareyage et transformation agroalimentaire sur la zone de Capécure, logistique du froid, complétés par le tourisme (Nausicaá) et le commerce. Un tissu de TPE/PME spécialisées, avec quelques ETI agroalimentaires.",
+    "Boulogne-sur-Mer structure la première filière française des produits de la mer : pêche, mareyage et transformation agroalimentaire sur la zone de Capécure, logistique du froid, complétés par le tourisme (Nausicaá) et le commerce. Un tissu de PME et ETI spécialisées, avec quelques ETI agroalimentaires.",
   distancesFr:
     "Gare de Boulogne-Ville sur la ligne Paris-Calais. Gare TGV de Calais-Fréthun à 35 km. Calais à 35 min, Lille à 1h30, tunnel sous la Manche à 40 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
       en: "Implémentation IA à Boulogne-sur-Mer : traçabilité et contrôle qualité dans la transformation des produits de la mer, prévision de la demande et des stocks, optimisation de la logistique du froid, automatisation administrative du mareyage.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Boulogne-sur-Mer : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — mareyeurs, transformateurs, logisticiens, restaurateurs et commerçants de la Côte d'Opale.",
-      en: "Coaching un-à-un à Boulogne-sur-Mer : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — mareyeurs, transformateurs, logisticiens, restaurateurs et commerçants de la Côte d'Opale.",
+      fr: "Coaching un-à-un à Boulogne-sur-Mer : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — mareyeurs, transformateurs, logisticiens, restaurateurs et commerçants de la Côte d'Opale.",
+      en: "Coaching un-à-un à Boulogne-sur-Mer : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — mareyeurs, transformateurs, logisticiens, restaurateurs et commerçants de la Côte d'Opale.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Boulogne-sur-Mer : portails B2B et boutiques en ligne avec IA intégrée pour mareyeurs et transformateurs — catalogue marée, suivi de commandes, traçabilité et espace client.",
@@ -88,12 +88,6 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine + e-commerce produits de la mer",
-            detail:
-              "Pour les poissonneries, petits mareyeurs et restaurateurs de la Côte d'Opale : boutique en ligne frais/réfrigéré, prise de commande, chatbot de renseignement, mobile-first. Adapté à un modèle CBM Marée ou Delta Marée.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail B2B + catalogue marée connecté",
@@ -175,12 +169,6 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site + seafood e-commerce",
-            detail:
-              "For fishmongers, small wholesalers and Côte d'Opale restaurateurs: chilled-fresh online store, order-taking, info chatbot, mobile-first. Suited to a CBM Marée or Delta Marée profile.",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B portal + connected catch catalogue",
             detail:
@@ -230,7 +218,7 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boulogne-sur-Mer et sur la Côte d'Opale ?",
-      a: "Oui, Axion-IA se déplace sur site à Boulogne-sur-Mer, Calais et sur toute la Côte d'Opale. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Boulogne-sur-Mer, Calais et sur toute la Côte d'Opale. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les mareyeurs et transformateurs de Capécure ?",
@@ -246,7 +234,7 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Boulogne-sur-Mer ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME de la filière mer et du commerce. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les PME et ETI de la filière mer et du commerce. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Boulogne-sur-Mer ?",

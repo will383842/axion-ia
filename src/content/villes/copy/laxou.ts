@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LAXOU_COPY: VilleCopy = {
   pitchFr:
-    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. PME et ETI tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. PME et ETI tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laxou (54). Nous accompagnons PME et ETI : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laxou (54). Nous accompagnons PME et ETI : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
   seoHook: "tertiaires & esn services",
   ecosystemFr:
-    "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
+    "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu PME et ETI tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
   ecosystemEn:
-    "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
+    "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu PME et ETI tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
   distancesFr:
     "Nancy centre à 10 min. Gare Nancy à 15 min. Metz à 50 min. Strasbourg à 1 h 40. Luxembourg à 1 h 40. Paris-Est à 1 h 30 (TGV via Nancy). Autoroute A33 accessible en 5 min.",
   distancesEn:
     "Nancy centre à 10 min. Gare Nancy à 15 min. Metz à 50 min. Strasbourg à 1 h 40. Luxembourg à 1 h 40. Paris-Est à 1 h 30 (TGV via Nancy). Autoroute A33 accessible en 5 min.",
   topSectorsNaf: [
-    "TPE/PME tertiaires (Métropole Grand Nancy)",
+    "PME et ETI tertiaires (Métropole Grand Nancy)",
     "ESN et services numériques",
     "Cabinets conseil",
     "Commerce de zone et de proximité",
@@ -30,8 +30,8 @@ export const LAXOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Laxou : diagnostic adapté aux PME et ETI tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laxou : diagnostic adapté aux PME et ETI tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laxou : formats adaptés au bureau tertiaire, parc d'activités, commerce de zone, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const LAXOU_COPY: VilleCopy = {
       en: "Implémentation IA à Laxou : automatisation workflows ESN, CRM augmenté cabinets conseil, agents conversationnels retail, devis intelligents, gestion documentaire professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Laxou : sessions dans vos bureaux des zones d'activités, commerce ou en visio. Dirigeants TPE/PME, consultants ESN, responsables cabinets, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Laxou : sessions dans vos bureaux des zones d'activités, commerce ou en visio. Dirigeants TPE/PME, consultants ESN, responsables cabinets, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 à Laxou : sessions dans vos bureaux des zones d'activités, commerce ou en visio. Dirigeants PME et ETI, consultants ESN, responsables cabinets, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 à Laxou : sessions dans vos bureaux des zones d'activités, commerce ou en visio. Dirigeants PME et ETI, consultants ESN, responsables cabinets, commerçants, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LAXOU_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Laxou  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME et ETI tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
     },
     {
       q: "Accompagnez-vous les ESN et cabinets conseil de Laxou ?",
@@ -61,7 +61,7 @@ export const LAXOU_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces de zone et professions libérales ?",
-      a: "Oui, agents conversationnels, gestion stocks, programmes fidélité, gestion documentaire, prise de rendez-vous augmentée, facturation intelligente pour TPE retail et professions libérales.",
+      a: "Oui, agents conversationnels, gestion stocks, programmes fidélité, gestion documentaire, prise de rendez-vous augmentée, facturation intelligente pour PME retail et professions libérales.",
     },
     {
       q: "Comment accéder à Laxou depuis Paris ?",

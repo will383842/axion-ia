@@ -7,7 +7,7 @@
 //   - Mention systématique "frais de logement, repas et forfait trajet en sus"
 //     sur les formats interventions.
 //   - Aucun prix hardcodé : libellés contextuels uniquement (pricing.ts = SSOT).
-//   - Tailles d'entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles d'entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Ancres réelles Nîmes : Maison Carrée UNESCO, Arènes romaines, BRL Groupe,
 //     Royal Canin (Aimargues), Perrier (Vergèze), denim "serge de Nîmes",
@@ -19,13 +19,13 @@ import type { VilleCopy } from "./types";
 
 export const NIMES_COPY: VilleCopy = {
   pitchFr:
-    "Nîmes regroupe un tissu de TPE et PME actives dans le commerce, les services aux entreprises et le BTP, ancré autour du Parc Georges Besse (technopôle), du CHU Carémeau et de grands groupes comme BRL Groupe et Royal Canin. Axion-IA y intervient sur site pour accompagner les entreprises gardoises dans leurs cas IA opérationnels.",
+    "Nîmes regroupe un tissu de PME et ETI actives dans le commerce, les services aux entreprises et le BTP, ancré autour du Parc Georges Besse (technopôle), du CHU Carémeau et de grands groupes comme BRL Groupe et Royal Canin. Axion-IA y intervient sur site pour accompagner les entreprises gardoises dans leurs cas IA opérationnels.",
   pitchEn:
     "Nîmes hosts an active fabric of micro-businesses and SMEs in trade, business services and construction, centered on Parc Georges Besse (tech park), CHU Carémeau and major employers such as BRL Groupe and Royal Canin. Axion-IA delivers on site to help Gard companies tackle their operational AI use cases.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nîmes : nous cartographions ce qui peut être automatisé dans votre organisation gardoise et chiffrons le ROI. Du Sur place TPE au Stratégique ETI, quatre niveaux couvrent tous les profils.",
+      fr: "Audit IA opérationnel à Nîmes : nous cartographions ce qui peut être automatisé dans votre organisation gardoise et chiffrons le ROI. Du Sur place PME au Stratégique ETI, quatre niveaux couvrent tous les profils.",
       en: "Operational AI audit in Nîmes: we map what can be automated in your Gard organisation and quantify the ROI. From Sur place micro-business to Mid-cap Strategic, four tiers cover every profile.",
     },
     interventions: {
@@ -47,7 +47,7 @@ export const NIMES_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nîmes (30) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du Gard — commerce, services, BTP, agroalimentaire, ingénierie — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Le Parc Georges Besse, la zone Grézan et les entreprises implantées autour du CHU Carémeau font partie de notre terrain d'intervention régulier. Tarifs publics, aucun lock-in.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nîmes (30) sur site. Nous accompagnons les PME, ETI et grands groupes du Gard — commerce, services, BTP, agroalimentaire, ingénierie — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Le Parc Georges Besse, la zone Grézan et les entreprises implantées autour du CHU Carémeau font partie de notre terrain d'intervention régulier. Tarifs publics, aucun lock-in.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Nîmes (30) on site. We support micro-businesses, SMEs, mid-caps and large companies in the Gard — trade, services, construction, agri-food, engineering — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. Parc Georges Besse, the Grézan zone and companies around CHU Carémeau are part of our regular intervention area. Public pricing, no lock-in.",
 
@@ -75,9 +75,9 @@ export const NIMES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Nîmes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux — du Sur place TPE à l'Audit Stratégique ETI — couvrent toutes les tailles d'entreprise gardoise, des indépendants du centre-ville aux PME du Parc Georges Besse en passant par les ETI de services aux entreprises.",
+        hero: "L'audit IA Axion-IA à Nîmes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux — du Sur place PME à l'Audit Stratégique ETI — couvrent toutes les tailles d'entreprise gardoise, des indépendants du centre-ville aux PME du Parc Georges Besse en passant par les ETI de services aux entreprises.",
         whyHere: [
-          "Nîmes est une ville de tissu B2B dense : TPE et PME du commerce, de la logistique et des services aux entreprises constituent l'essentiel de nos cas locaux.",
+          "Nîmes est une ville de tissu B2B dense : PME et ETI du commerce, de la logistique et des services aux entreprises constituent l'essentiel de nos cas locaux.",
           "La présence de BRL Groupe (siège social) et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des besoins réels en automatisation documentaire et en pilotage de données opérationnelles.",
           "Le CHU Carémeau et les structures médico-sociales du Gard représentent un terrain fertile pour l'IA appliquée à la gestion administrative et à la coordination de soins.",
           "Le Parc Georges Besse concentre des structures tertiaires et numériques où les cas IA (qualification de leads, génération de contenus, analyse contractuelle) sont immédiatement activables.",
@@ -112,12 +112,6 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, artisans et petites structures du Gard jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -219,12 +213,6 @@ export const NIMES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Gard independents, tradespeople and small structures up to about ten staff.",
-          },
-          {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
             detail:
@@ -292,7 +280,7 @@ export const NIMES_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Nîmes se déclinent en formats sur site d'une à plusieurs journées. Vos collaborateurs gardois ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — BTP, commerce, services, ingénierie, agroalimentaire.",
         whyHere: [
-          "Nîmes est une ville de TPE et PME actives : le format collectif (1 journée) est le plus calibré pour les structures de quelques personnes à une centaine de collaborateurs.",
+          "Nîmes est une ville de PME et ETI actives : le format collectif (1 journée) est le plus calibré pour les structures de quelques personnes à une centaine de collaborateurs.",
           "Le tissu commercial (centre-ville, zones Grézan et Parc Georges Besse) concentre des équipes qui gagnent directement à automatiser devis, emails commerciaux, suivi client et reporting.",
           "Les PME du BTP nîmois bénéficient particulièrement des outils IA pour les comptes-rendus de chantier, la rédaction de CCTP et la gestion documentaire.",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction des ETI gardoises.",
@@ -327,12 +315,6 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal artisans, commerçants, cabinets et petites structures nîmoises jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -433,12 +415,6 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Nîmes tradespeople, retailers, firms and small structures up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -543,12 +519,6 @@ export const NIMES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture devis/factures, comptes-rendus, qualification leads) pour artisans et petites structures nîmoises.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -584,7 +554,7 @@ export const NIMES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nîmes ?",
-            a: "Cela dépend de l'ampleur du projet. Un POC pour TPE peut tenir en quelques semaines, une mission PME sur quelques mois, une mission ETI sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur du projet. Un POC pour PME peut tenir en quelques semaines, une mission PME sur quelques mois, une mission ETI sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -648,12 +618,6 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (quote/invoice reading, meeting minutes, lead qualification) for Nîmes tradespeople and small structures.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -722,7 +686,7 @@ export const NIMES_COPY: VilleCopy = {
       fr: {
         hero: "Le coaching IA 1-to-1 Axion-IA à Nîmes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier gardois, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de PME BTP, gérants de négoce, responsables logistique et experts agroalimentaires du Gard.",
         whyHere: [
-          "Nîmes est un bassin de TPE et PME indépendantes où le dirigeant porte souvent plusieurs casquettes : le coaching 1-to-1 s'adapte à votre agenda chargé, à votre rythme réel et à vos cas opérationnels immédiats.",
+          "Nîmes est un bassin de PME et ETI indépendantes où le dirigeant porte souvent plusieurs casquettes : le coaching 1-to-1 s'adapte à votre agenda chargé, à votre rythme réel et à vos cas opérationnels immédiats.",
           "Le BTP et les services aux entreprises nîmois génèrent un volume documentaire quotidien élevé (devis, bons de commande, comptes-rendus de chantier) : chaque séance travaille sur vos vrais documents pour des gains immédiats.",
           "La présence de BRL Groupe et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des profils techniques qui ont besoin d'un coaching ancré dans les spécificités de leur métier, pas d'une formation générique.",
           "Le Parc Georges Besse accueille des structures tertiaires et numériques dont les responsables IA ou referents tech bénéficient d'un coaching individualisé avant de former leurs équipes.",
@@ -757,12 +721,6 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Entrée coaching 1-to-1 — artisan, commerçant, dirigeant TPE de services ou BTP nîmois.",
-          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -803,7 +761,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Combien de séances faut-il pour être autonome sur l'IA à Nîmes ?",
-            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant TPE atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations avancées aura un programme plus étendu. Le plan est cadré à la première séance.",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeants de PME et d'ETI atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations avancées aura un programme plus étendu. Le plan est cadré à la première séance.",
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux nîmois ?",
@@ -863,12 +821,6 @@ export const NIMES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
-            detail:
-              "Entry-level 1-to-1 coaching — Nîmes tradesperson, retailer, service or construction micro-business executive.",
-          },
           {
             sizeLabel: "SME",
             price: "On quote",
@@ -969,12 +921,6 @@ export const NIMES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1055,12 +1001,6 @@ export const NIMES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1110,7 +1050,7 @@ export const NIMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nîmes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France.",
     },
     {
       q: "Quels secteurs nîmois sont les plus concernés par l'IA ?",
@@ -1126,7 +1066,7 @@ export const NIMES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA peut-il intervenir pour des entreprises liées au tourisme ou à la Féria de Nîmes ?",
-      a: "Oui. Le tissu touristique et événementiel nîmois (hôtels, restaurants, prestataires Féria, musées, agences événementielles) bénéficie de cas IA concrets : gestion des réservations, communication clients, analyse de feedback, automatisation des emails. L'Audit sur place est particulièrement adapté aux TPE de ce secteur.",
+      a: "Oui. Le tissu touristique et événementiel nîmois (hôtels, restaurants, prestataires Féria, musées, agences événementielles) bénéficie de cas IA concrets : gestion des réservations, communication clients, analyse de feedback, automatisation des emails. L'Audit sur place est particulièrement adapté aux PME de ce secteur.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Nîmes ?",

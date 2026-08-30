@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ANGLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Anglet auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Anglet auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "surf & tourisme Côte basque",
   ecosystemFr:
-    "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de TPE et PME couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
+    "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de PME et ETI couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
   ecosystemEn:
-    "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de TPE et PME couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
+    "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de PME et ETI couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
   distancesFr:
     "Anglet est encadrée par Bayonne et Biarritz : gare TGV de Bayonne à environ 5 km, aéroport de Biarritz-Pays Basque à environ 3 km, accès direct A63 vers Bordeaux et l'Espagne.",
   distancesEn:
@@ -38,12 +38,12 @@ export const ANGLET_COPY: VilleCopy = {
       en: "Interventions IA sur site à Anglet : formats adaptés à l'hôtel, à l'école de glisse, au commerce ou à l'artisan du BTP. Vos collaborateurs gèrent ensuite les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Anglet : gestion des réservations et de la saisonnalité touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des TPE et PME de la Côte basque.",
-      en: "Implémentation IA à Anglet : gestion des réservations et de la saisonnalité touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des TPE et PME de la Côte basque.",
+      fr: "Implémentation IA à Anglet : gestion des réservations et de la saisonnalité touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des PME et ETI de la Côte basque.",
+      en: "Implémentation IA à Anglet : gestion des réservations et de la saisonnalité touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des PME et ETI de la Côte basque.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Anglet pour dirigeants de TPE et PME touristiques, commerce ou BTP : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
-      en: "Coaching 1-to-1 à Anglet pour dirigeants de TPE et PME touristiques, commerce ou BTP : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      fr: "Coaching 1-to-1 à Anglet pour dirigeants de PME et d'ETI touristiques, commerce ou BTP : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Anglet pour dirigeants de PME et d'ETI touristiques, commerce ou BTP : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Anglet : plateformes de réservation directe, e-shops glisse et outils IA multilingues pour le tourisme, le commerce et les loisirs nautiques de la Côte basque.",
@@ -88,12 +88,6 @@ export const ANGLET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-shop essentiel augmenté IA",
-            detail:
-              "Pour les artisans, shapers indépendants, écoles de surf, commerces et hôtels d'Anglet jusqu'à une dizaine de personnes : site mobile-first, réservation ou boutique en ligne, assistant IA multilingue de premier niveau.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou métier sur mesure",
@@ -175,12 +169,6 @@ export const ANGLET_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential AI-augmented e-shop",
-            detail:
-              "For Anglet craftsmen, independent shapers, surf schools, shops and hotels up to about ten people: mobile-first site, booking or online store, first-level multilingual AI assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Tailor-made e-commerce or trade platform",
             detail:
@@ -230,7 +218,7 @@ export const ANGLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Anglet et sur la Côte basque ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Anglet et de l'agglomération Bayonne-Anglet-Biarritz. Nous nous déplaçons sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les PME et ETI d'Anglet et de l'agglomération Bayonne-Anglet-Biarritz. Nous nous déplaçons sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un hôtel ou une école de surf angloye ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
+    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu PME et ETI tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
+    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu PME et ETI tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ville-du-Bois (91). Nous accompagnons PME et ETI : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ville-du-Bois (91). Nous accompagnons PME et ETI : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit sur place sur mesure.",
   seoHook: "commerce zone",
   ecosystemFr:
-    "La Ville-du-Bois est une commune résidentielle du Hurepoix en Essonne, à 23 km au sud-ouest de Paris, proche de Montlhéry et Longjumeau. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services.",
+    "La Ville-du-Bois est une commune résidentielle du Hurepoix en Essonne, à 23 km au sud-ouest de Paris, proche de Montlhéry et Longjumeau. Tissu PME et ETI tertiaires, commerces zone commerciale, professions libérales, artisanat, services.",
   ecosystemEn:
-    "La Ville-du-Bois est une commune résidentielle du Hurepoix en Essonne, à 23 km au sud-ouest de Paris, proche de Montlhéry et Longjumeau. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services.",
+    "La Ville-du-Bois est une commune résidentielle du Hurepoix en Essonne, à 23 km au sud-ouest de Paris, proche de Montlhéry et Longjumeau. Tissu PME et ETI tertiaires, commerces zone commerciale, professions libérales, artisanat, services.",
   distancesFr:
     "Paris centre à 35 min. Longjumeau à 5 min. Évry-Courcouronnes à 20 min. Gare RER C Longjumeau à 8 min. Aéroport Orly à 15 min.",
   distancesEn:
@@ -25,7 +25,7 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
     "PME tertiaires",
     "Commerce zone commerciale",
     "Professions libérales",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Services aux entreprises",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
       en: "Implémentation IA à La Ville-du-Bois : automatisation facturation et relances, CRM augmenté PME, gestion stocks commerces, planning professions libérales, devis artisans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Ville-du-Bois : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE/PME, professions libérales, artisans du Hurepoix.",
-      en: "Coaching 1-to-1 à La Ville-du-Bois : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE/PME, professions libérales, artisans du Hurepoix.",
+      fr: "Coaching 1-to-1 à La Ville-du-Bois : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants PME et ETI, professions libérales, artisans du Hurepoix.",
+      en: "Coaching 1-to-1 à La Ville-du-Bois : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants PME et ETI, professions libérales, artisans du Hurepoix.",
     },
   },
   faqGeolocalisee: [

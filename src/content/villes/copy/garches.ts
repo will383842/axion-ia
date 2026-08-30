@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GARCHES_COPY: VilleCopy = {
   pitchFr:
-    "Garches (92), commune résidentielle bourgeoise de l'ouest parisien dans les Hauts-de-Seine, accueille un tissu de PME tertiaires, professions libérales de santé (pôle hospitalier Raymond-Poincaré), TPE artisans, commerces et cabinets conseil. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
+    "Garches (92), commune résidentielle bourgeoise de l'ouest parisien dans les Hauts-de-Seine, accueille un tissu de PME tertiaires, professions libérales de santé (pôle hospitalier Raymond-Poincaré), PME artisanales, commerces et cabinets conseil. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
   pitchEn:
-    "Garches (92), commune résidentielle bourgeoise de l'ouest parisien dans les Hauts-de-Seine, accueille un tissu de PME tertiaires, professions libérales de santé (pôle hospitalier Raymond-Poincaré), TPE artisans, commerces et cabinets conseil. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
+    "Garches (92), commune résidentielle bourgeoise de l'ouest parisien dans les Hauts-de-Seine, accueille un tissu de PME tertiaires, professions libérales de santé (pôle hospitalier Raymond-Poincaré), PME artisanales, commerces et cabinets conseil. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Garches (92). Nous accompagnons PME et ETI : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Garches (92). Nous accompagnons PME et ETI : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
   seoHook: "professions libérales & tertiaires cabinets",
   ecosystemFr:
-    "Garches est une commune résidentielle haut de gamme de l'ouest des Hauts-de-Seine, entre Saint-Cloud et Vaucresson. Présence marquée du secteur médical (hôpital Raymond-Poincaré AP-HP, médecins spécialistes, paramédicaux). Tissu économique : PME tertiaires et cabinets conseil, professions libérales (santé, juridique, patrimoine), TPE artisanat bâtiment, commerces de centre-ville. Proximité immédiate de La Défense et du quartier d'affaires.",
+    "Garches est une commune résidentielle haut de gamme de l'ouest des Hauts-de-Seine, entre Saint-Cloud et Vaucresson. Présence marquée du secteur médical (hôpital Raymond-Poincaré AP-HP, médecins spécialistes, paramédicaux). Tissu économique : PME tertiaires et cabinets conseil, professions libérales (santé, juridique, patrimoine), PME de l'artisanat bâtiment, commerces de centre-ville. Proximité immédiate de La Défense et du quartier d'affaires.",
   ecosystemEn:
-    "Garches est une commune résidentielle haut de gamme de l'ouest des Hauts-de-Seine, entre Saint-Cloud et Vaucresson. Présence marquée du secteur médical (hôpital Raymond-Poincaré AP-HP, médecins spécialistes, paramédicaux). Tissu économique : PME tertiaires et cabinets conseil, professions libérales (santé, juridique, patrimoine), TPE artisanat bâtiment, commerces de centre-ville. Proximité immédiate de La Défense et du quartier d'affaires.",
+    "Garches est une commune résidentielle haut de gamme de l'ouest des Hauts-de-Seine, entre Saint-Cloud et Vaucresson. Présence marquée du secteur médical (hôpital Raymond-Poincaré AP-HP, médecins spécialistes, paramédicaux). Tissu économique : PME tertiaires et cabinets conseil, professions libérales (santé, juridique, patrimoine), PME de l'artisanat bâtiment, commerces de centre-ville. Proximité immédiate de La Défense et du quartier d'affaires.",
   distancesFr:
     "La Défense à 10 min, Paris centre à 25 min, Gare de Garches — Marnes-la-Coquette (Transilien L Saint-Lazare). Saint-Cloud à 5 min, Rueil-Malmaison à 10 min, Versailles à 15 min. Aéroport Paris-Orly à 35 min, Roissy-CDG à 45 min.",
   distancesEn:
@@ -25,7 +25,7 @@ export const GARCHES_COPY: VilleCopy = {
     "Professions libérales santé (médecins, paramédicaux)",
     "PME tertiaires & cabinets conseil",
     "Gestion de patrimoine & juridique",
-    "TPE artisanat bâtiment & rénovation",
+    "PME de l'artisanat bâtiment & rénovation",
     "Commerce de centre-ville",
   ],
   servicesContext: {
@@ -57,7 +57,7 @@ export const GARCHES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Garches  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest parisien, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, conseil, patrimoine, commerce). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de l'ouest parisien, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, conseil, patrimoine, commerce). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les cabinets conseil des Hauts-de-Seine ?",

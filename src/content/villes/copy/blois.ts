@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BLOIS_COPY: VilleCopy = {
   pitchFr:
-    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
+    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI blésoises, les grands groupes en complément.",
   pitchEn:
-    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
+    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI blésoises, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les PME et ETI locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les PME et ETI locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "tourisme Loire, cosmétique & PME",
   ecosystemFr:
-    "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de TPE/PME. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",
+    "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de PME et ETI. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",
   ecosystemEn:
-    "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de TPE/PME. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",
+    "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de PME et ETI. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",
   distancesFr:
     "Gare de Blois-Chambord sur la ligne Paris-Tours. Gare TGV de Vendôme à 30 km (Paris en 1h). Tours à 45 min, Orléans à 45 min, Chambord à 20 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BLOIS_COPY: VilleCopy = {
       en: "Implémentation IA à Blois : agents de réservation pour le tourisme patrimonial, contrôle qualité et prévision en industrie cosmétique, automatisation administrative et relation client pour les commerces.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Blois : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME blésoises — hôteliers, industriels cosmétique, commerçants et artisans du Val de Loire.",
-      en: "Coaching un-à-un à Blois : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME blésoises — hôteliers, industriels cosmétique, commerçants et artisans du Val de Loire.",
+      fr: "Coaching un-à-un à Blois : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI blésoises — hôteliers, industriels cosmétique, commerçants et artisans du Val de Loire.",
+      en: "Coaching un-à-un à Blois : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI blésoises — hôteliers, industriels cosmétique, commerçants et artisans du Val de Loire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Blois : sites de réservation et boutiques en ligne avec IA intégrée pour le tourisme, la cosmétique et le commerce — réservation, recommandation produit, multilingue FR/EN.",
@@ -57,7 +57,7 @@ export const BLOIS_COPY: VilleCopy = {
         whyHere: [
           "Projets web & SaaS blésois : configurateurs et portails fournisseurs pour l'aftermarket auto (Phinia Delphi France, Valeo), boutiques cosmétique-parfumerie multilingues pour la filière Cosmetic Valley (Sisley/Francos), interfaces métier pour les services de paiement (R&D Worldline) et sites de réservation pour les hôtels et sites patrimoniaux du Val de Loire.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA. Un atout face au vivier local de profils web formés à l'IUT de Blois (BUT MMI, Licence Pro UX2i).",
-          "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois — du e-shop cosmétique d'une TPE blésoise au portail technique d'un équipementier automobile.",
+          "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois — du e-shop cosmétique d'une PME blésoise au portail technique d'un équipementier automobile.",
           "Données sensibles (R&D injection, formulation cosmétique, flux de paiement) : hébergement UE strict, chaîne IA souveraine RGPD — essentiel pour l'industrie de la Cosmetic Valley et les acteurs paiement comme Worldline.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const BLOIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, recommandation) sur un site existant en quelques semaines, sans refonte — boutique de centre-ville, gîte ou hôtel proche du château royal de Blois, artisan d'art du Val de Loire.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -175,12 +169,6 @@ export const BLOIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, recommendation) onto an existing site in a few weeks, no rebuild — town-centre shop, guesthouse or hotel near the royal Château de Blois, Loire Valley craft artisan.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / application",
             detail:
@@ -230,7 +218,7 @@ export const BLOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blois et dans le Val de Loire ?",
-      a: "Oui, Axion-IA se déplace sur site à Blois, Vendôme, Chambord et dans tout le Loir-et-Cher. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Blois, Vendôme, Chambord et dans tout le Loir-et-Cher. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et des châteaux de la Loire ?",
@@ -246,7 +234,7 @@ export const BLOIS_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Blois ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME blésoises. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les PME et ETI blésoises. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Blois ?",

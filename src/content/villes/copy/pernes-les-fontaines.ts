@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
   pitchFr:
-    "Pernes-les-Fontaines (84), cité du Comtat Venaissin aux quarante fontaines, conjugue patrimoine historique exceptionnel, tourisme culturel et tissu artisanal provençal. TPE artisans et patrimoine, PME tourisme et agroalimentaire, professions libérales, commerces et viticulture AOC Ventoux. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Pernes-les-Fontaines (84), cité du Comtat Venaissin aux quarante fontaines, conjugue patrimoine historique exceptionnel, tourisme culturel et tissu artisanal provençal. PME artisanales et patrimoine, PME tourisme et agroalimentaire, professions libérales, commerces et viticulture AOC Ventoux. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Pernes-les-Fontaines (84), cité du Comtat Venaissin aux quarante fontaines, conjugue patrimoine historique exceptionnel, tourisme culturel et tissu artisanal provençal. TPE artisans et patrimoine, PME tourisme et agroalimentaire, professions libérales, commerces et viticulture AOC Ventoux. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Pernes-les-Fontaines (84), cité du Comtat Venaissin aux quarante fontaines, conjugue patrimoine historique exceptionnel, tourisme culturel et tissu artisanal provençal. PME artisanales et patrimoine, PME tourisme et agroalimentaire, professions libérales, commerces et viticulture AOC Ventoux. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pernes-les-Fontaines (84). Nous accompagnons TPE artisans, PME tourisme et agroalimentaire, professions libérales, commerces et viticulteurs du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pernes-les-Fontaines (84). Nous accompagnons PME artisanales, PME tourisme et agroalimentaire, professions libérales, commerces et viticulteurs du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pernes-les-Fontaines (84). Nous accompagnons TPE artisans, PME tourisme et agroalimentaire, professions libérales, commerces et viticulteurs du Comtat Venaissin. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pernes-les-Fontaines (84). Nous accompagnons PME artisanales, PME tourisme et agroalimentaire, professions libérales, commerces et viticulteurs du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "tourisme patrimoine & artisanat métiers",
   ecosystemFr:
-    "Pernes-les-Fontaines est positionnée au cœur du Comtat Venaissin, ancienne capitale historique, entre Avignon et Carpentras. Son économie repose sur le tourisme patrimonial (40 fontaines, marché provençal), les TPE artisans (BTP, métiers d'art, restauration patrimoine), les PME agroalimentaires et hôtellerie-restauration, la viticulture AOC Ventoux, les professions libérales et commerces de proximité.",
+    "Pernes-les-Fontaines est positionnée au cœur du Comtat Venaissin, ancienne capitale historique, entre Avignon et Carpentras. Son économie repose sur le tourisme patrimonial (40 fontaines, marché provençal), les PME artisanales (BTP, métiers d'art, restauration patrimoine), les PME agroalimentaires et hôtellerie-restauration, la viticulture AOC Ventoux, les professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Pernes-les-Fontaines est positionnée au cœur du Comtat Venaissin, ancienne capitale historique, entre Avignon et Carpentras. Son économie repose sur le tourisme patrimonial (40 fontaines, marché provençal), les TPE artisans (BTP, métiers d'art, restauration patrimoine), les PME agroalimentaires et hôtellerie-restauration, la viticulture AOC Ventoux, les professions libérales et commerces de proximité.",
+    "Pernes-les-Fontaines est positionnée au cœur du Comtat Venaissin, ancienne capitale historique, entre Avignon et Carpentras. Son économie repose sur le tourisme patrimonial (40 fontaines, marché provençal), les PME artisanales (BTP, métiers d'art, restauration patrimoine), les PME agroalimentaires et hôtellerie-restauration, la viticulture AOC Ventoux, les professions libérales et commerces de proximité.",
   distancesFr:
     "Carpentras à 10 min. Avignon à 25 min. L'Isle-sur-la-Sorgue à 15 min. Monteux à 10 min. Gare TGV Avignon à 30 min. Aéroport Avignon-Provence à 30 min. Aéroport Marseille-Provence à 1h. Accès D938.",
   distancesEn:
     "Carpentras à 10 min. Avignon à 25 min. L'Isle-sur-la-Sorgue à 15 min. Monteux à 10 min. Gare TGV Avignon à 30 min. Aéroport Avignon-Provence à 30 min. Aéroport Marseille-Provence à 1h. Accès D938.",
   topSectorsNaf: [
     "Tourisme & patrimoine culturel",
-    "TPE artisanat & métiers d'art",
+    "PME de l'artisanat & métiers d'art",
     "PME hôtellerie-restauration",
     "Viticulture AOC Ventoux & agriculture",
     "Commerces & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux PME artisanales, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux PME artisanales, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
-      en: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
+      fr: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes PME et ETI tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
+      en: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes PME et ETI tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
     },
     implementation: {
       fr: "Implémentation IA à Pernes-les-Fontaines : gestion réservations hôtels et gîtes, agents conversationnels multilingues touristes, automatisation cave viticole, content marketing patrimoine, fiches Google Business commerces. RGPD strict.",
       en: "Implémentation IA à Pernes-les-Fontaines : gestion réservations hôtels et gîtes, agents conversationnels multilingues touristes, automatisation cave viticole, content marketing patrimoine, fiches Google Business commerces. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pernes-les-Fontaines : sessions pour dirigeants TPE artisans, viticulteurs, hôteliers et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
-      en: "Coaching 1-to-1 à Pernes-les-Fontaines : sessions pour dirigeants TPE artisans, viticulteurs, hôteliers et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      fr: "Coaching 1-to-1 à Pernes-les-Fontaines : sessions pour dirigeants PME artisanales, viticulteurs, hôteliers et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      en: "Coaching 1-to-1 à Pernes-les-Fontaines : sessions pour dirigeants PME artisanales, viticulteurs, hôteliers et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pernes-les-Fontaines  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME tourisme, viticulteurs et commerces pernois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME tourisme, viticulteurs et commerces pernois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hôteliers, restaurateurs et acteurs du tourisme patrimonial ?",

@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ISMIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, PME du BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   pitchEn:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, PME du BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : PME du BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : PME du BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   seoHook: "tertiaires services & artisanat",
   ecosystemFr:
-    "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, TPE artisans BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",
+    "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, PME du BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",
   ecosystemEn:
-    "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, TPE artisans BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",
+    "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, PME du BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",
   distancesFr:
     "Grenoble centre à 20 min voiture A41. Tramway B à proximité Meylan (10 min). Aéroport Grenoble-Alpes-Isère à 50 min. Chambéry à 50 min A41. Axe vers Crolles et Pontcharra (Grésivaudan).",
   distancesEn:
     "Grenoble centre à 20 min voiture A41. Tramway B à proximité Meylan (10 min). Aéroport Grenoble-Alpes-Isère à 50 min. Chambéry à 50 min A41. Axe vers Crolles et Pontcharra (Grésivaudan).",
   topSectorsNaf: [
     "PME tertiaires & services aux entreprises",
-    "TPE artisanat BTP (haut de gamme)",
+    "PME du BTP (haut de gamme)",
     "Professions libérales (santé, juridique)",
     "Commerce de proximité",
     "Tech périphérique Inovallée",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, PME artisanales haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, PME artisanales haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Ismier : formats adaptés au cabinet professionnel, atelier artisan haut de gamme, bureau PME tertiaire. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Ismier : agents conversationnels patient/client, automatisation devis BTP haut de gamme, classification dossiers, CRM augmentés. Adapté tissu résidentiel premium.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Ismier : sessions dans votre cabinet, atelier, commerce ou en visio. Médecins, avocats, artisans haut de gamme, gérants TPE/PME saint-ismiéroises souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Ismier : sessions dans votre cabinet, atelier, commerce ou en visio. Médecins, avocats, artisans haut de gamme, gérants TPE/PME saint-ismiéroises souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Ismier : sessions dans votre cabinet, atelier, commerce ou en visio. Médecins, avocats, artisans haut de gamme, gérants PME et ETI saint-ismiéroises souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Ismier : sessions dans votre cabinet, atelier, commerce ou en visio. Médecins, avocats, artisans haut de gamme, gérants PME et ETI saint-ismiéroises souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Saint-Ismier (médecins, avocats, expert-comptables, consultants) sur des cas IA respectueux du secret professionnel : agents conversationnels patients/clients, automatisation gestion RDV, transcription consultations, classification dossiers. RGPD strict.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP haut de gamme ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP haut de gamme à Saint-Ismier (second œuvre premium, paysagistes, architecture intérieure) sur des cas IA pratiques : automatisation devis chantier détaillés, agents IA prise de RDV, classification photos chantier, gestion stocks.",
+      q: "Travaillez-vous avec les PME du BTP haut de gamme ?",
+      a: "Oui, nous accompagnons les PME du BTP haut de gamme à Saint-Ismier (second œuvre premium, paysagistes, architecture intérieure) sur des cas IA pratiques : automatisation devis chantier détaillés, agents IA prise de RDV, classification photos chantier, gestion stocks.",
     },
     {
       q: "Quels services pour les PME tertiaires ?",

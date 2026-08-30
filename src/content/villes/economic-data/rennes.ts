@@ -287,7 +287,7 @@ export const RENNES_ECONOMIC_DATA: VilleEconomicData = {
   // près de Nantes, Anjou à ~120 km). Champ honnêtement vide.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : pas d'extraction CSV par ville faite en V1 du sprint.
   // À compléter Phase 2 via data.economie.gouv.fr/explore/dataset/

@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const CLAPIERS_COPY: VilleCopy = {
   pitchFr:
-    "Clapiers (34830, Hérault) compte environ 6 006 habitants et appartient à Montpellier Méditerranée Métropole. Cette commune résidentielle limitrophe de Castelnau-le-Lez, Jacou, Montferrier-sur-Lez, Prades-le-Lez, Assas, Teyran et Montpellier s'étend sur 178 hectares de forêt (pins d'Alep dominants). Son tissu économique repose sur les activités scientifiques et spécialisées (28,2 % des entreprises) — Osmozis (télécoms), R2D Automation (machinisme) — et l'administration, santé, éducation (20 %). Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici TPE professions libérales, PME de services, artisans et commerces.",
+    "Clapiers (34830, Hérault) compte environ 6 006 habitants et appartient à Montpellier Méditerranée Métropole. Cette commune résidentielle limitrophe de Castelnau-le-Lez, Jacou, Montferrier-sur-Lez, Prades-le-Lez, Assas, Teyran et Montpellier s'étend sur 178 hectares de forêt (pins d'Alep dominants). Son tissu économique repose sur les activités scientifiques et spécialisées (28,2 % des entreprises) — Osmozis (télécoms), R2D Automation (machinisme) — et l'administration, santé, éducation (20 %). Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici PME professions libérales, PME de services, artisans et commerces.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clapiers (34830, Montpellier Méditerranée Métropole). Nous accompagnons en priorité les TPE professions libérales, artisans et commerces de proximité, puis les PME de services et de R&D ; les ETI restent marginales dans ce tissu de 6 006 habitants. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clapiers (34830, Montpellier Méditerranée Métropole). Nous accompagnons en priorité les PME professions libérales, artisans et commerces de proximité, puis les PME de services et de R&D ; les grands groupes complètent ce socle6 006 habitants. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
   ecosystemFr:
     "Clapiers s'inscrit dans Montpellier Méditerranée Métropole, en bordure du Lez face à Castelnau-le-Lez. Tissu dominé par les activités scientifiques et spécialisées (28,2 % — dont Osmozis télécoms et R2D Automation machinisme), suivies par l'administration publique, la santé et l'éducation (20 %), puis les installations électriques/thermiques. Les 178 hectares de forêt (pins d'Alep, pins parasols) et la proximité immédiate de Montpellier en font un pôle résidentiel pour cadres et professions libérales. Lignes de bus TAM 22 et 36, tramway ligne 5 aux portes de la commune.",
   distancesFr:
@@ -24,8 +24,8 @@ export const CLAPIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), TPE de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours ouvrés.",
-      en: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), TPE de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours ouvrés.",
+      fr: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), PME de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours ouvrés.",
+      en: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), PME de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
@@ -36,8 +36,8 @@ export const CLAPIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Clapiers : automatisation prise de RDV cabinets libéraux, chatbot client PME services, classification dossiers santé, optimisation supervision R&D pour acteurs scientifiques locaux. Code custom, pas de no-code.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Clapiers : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants de commerces. Accompagnement adapté au tissu résidentiel et scientifique de Montpellier Méditerranée Métropole.",
-      en: "Coaching 1-to-1 à Clapiers : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants de commerces. Accompagnement adapté au tissu résidentiel et scientifique de Montpellier Méditerranée Métropole.",
+      fr: "Coaching 1-to-1 à Clapiers : sessions sur site ou en visio pour professions libérales, dirigeants de PME et d'ETI, artisans et gérants de commerces. Accompagnement adapté au tissu résidentiel et scientifique de Montpellier Méditerranée Métropole.",
+      en: "Coaching 1-to-1 à Clapiers : sessions sur site ou en visio pour professions libérales, dirigeants de PME et d'ETI, artisans et gérants de commerces. Accompagnement adapté au tissu résidentiel et scientifique de Montpellier Méditerranée Métropole.",
     },
   },
   faqGeolocalisee: [
@@ -68,9 +68,9 @@ export const CLAPIERS_COPY: VilleCopy = {
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
   pitchEn:
-    "Clapiers (34830, Hérault) compte environ 6 006 habitants et appartient à Montpellier Méditerranée Métropole. Cette commune résidentielle limitrophe de Castelnau-le-Lez, Jacou, Montferrier-sur-Lez, Prades-le-Lez, Assas, Teyran et Montpellier s'étend sur 178 hectares de forêt (pins d'Alep dominants). Son tissu économique repose sur les activités scientifiques et spécialisées (28,2 % des entreprises) — Osmozis (télécoms), R2D Automation (machinisme) — et l'administration, santé, éducation (20 %). Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici TPE professions libérales, PME de services, artisans et commerces.",
+    "Clapiers (34830, Hérault) compte environ 6 006 habitants et appartient à Montpellier Méditerranée Métropole. Cette commune résidentielle limitrophe de Castelnau-le-Lez, Jacou, Montferrier-sur-Lez, Prades-le-Lez, Assas, Teyran et Montpellier s'étend sur 178 hectares de forêt (pins d'Alep dominants). Son tissu économique repose sur les activités scientifiques et spécialisées (28,2 % des entreprises) — Osmozis (télécoms), R2D Automation (machinisme) — et l'administration, santé, éducation (20 %). Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici PME professions libérales, PME de services, artisans et commerces.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clapiers (34830, Montpellier Méditerranée Métropole). Nous accompagnons en priorité les TPE professions libérales, artisans et commerces de proximité, puis les PME de services et de R&D ; les ETI restent marginales dans ce tissu de 6 006 habitants. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clapiers (34830, Montpellier Méditerranée Métropole). Nous accompagnons en priorité les PME professions libérales, artisans et commerces de proximité, puis les PME de services et de R&D ; les grands groupes complètent ce socle6 006 habitants. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
   ecosystemEn:
     "Clapiers s'inscrit dans Montpellier Méditerranée Métropole, en bordure du Lez face à Castelnau-le-Lez. Tissu dominé par les activités scientifiques et spécialisées (28,2 % — dont Osmozis télécoms et R2D Automation machinisme), suivies par l'administration publique, la santé et l'éducation (20 %), puis les installations électriques/thermiques. Les 178 hectares de forêt (pins d'Alep, pins parasols) et la proximité immédiate de Montpellier en font un pôle résidentiel pour cadres et professions libérales. Lignes de bus TAM 22 et 36, tramway ligne 5 aux portes de la commune.",
   distancesEn:

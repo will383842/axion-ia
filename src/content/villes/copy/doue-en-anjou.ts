@@ -9,9 +9,9 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre les activités professionnelles du bassin : horticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les PME, ETI et acteurs touristiques douésiens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les PME, ETI et acteurs touristiques douésiens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "horticulture roses & tourisme patrimoine",
   ecosystemFr:
     "Doué-en-Anjou est connue mondialement pour sa roseraie (Journées de la Rose) et son Bioparc zoo troglodytique. L'économie locale mêle horticulture (roses, pépinières), tourisme patrimonial, artisanat, commerces de bourg et agriculture (viticulture, maraîchage). Troglodytes classés, patrimoine souterrain unique.",
@@ -30,8 +30,8 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et TPE/PME du Douessin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et TPE/PME du Douessin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et PME et ETI du Douessin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et PME et ETI du Douessin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Doué-en-Anjou : formations pour équipes tourisme, horticulture et commerces. Ateliers métier adaptés au tissu économique douésien.",
@@ -42,8 +42,8 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
       en: "Implémentation IA à Doué-en-Anjou : agents conversationnels touristes multilingues, automatisation réservations Bioparc, gestion stocks horticoles, CRM commerces. Solutions adaptées.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Doué-en-Anjou : sessions pour dirigeants TPE tourisme, horticulteurs, commerçants et gérants PME souhaitant intégrer l'IA.",
-      en: "Coaching IA 1-to-1 à Doué-en-Anjou : sessions pour dirigeants TPE tourisme, horticulteurs, commerçants et gérants PME souhaitant intégrer l'IA.",
+      fr: "Coaching IA 1-to-1 à Doué-en-Anjou : sessions pour dirigeants PME tourisme, horticulteurs, commerçants et gérants PME souhaitant intégrer l'IA.",
+      en: "Coaching IA 1-to-1 à Doué-en-Anjou : sessions pour dirigeants PME tourisme, horticulteurs, commerçants et gérants PME souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const GRAVELINES_COPY: VilleCopy = {
   pitchFr:
-    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu PME et ETI énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu PME et ETI énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gravelines (59). Nous accompagnons PME et ETI : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gravelines (59). Nous accompagnons PME et ETI : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
   ecosystemFr:
-    "Gravelines est une commune littorale du Nord, entre Dunkerque et Calais, connue pour sa citadelle Vauban et la centrale nucléaire de Gravelines (6 réacteurs, la plus puissante d'Europe occidentale). L'économie locale associe sous-traitance nucléaire-énergie, pêche et mareyage, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (proximité port de Dunkerque) et commerces. Tissu TPE/PME diversifié.",
+    "Gravelines est une commune littorale du Nord, entre Dunkerque et Calais, connue pour sa citadelle Vauban et la centrale nucléaire de Gravelines (6 réacteurs, la plus puissante d'Europe occidentale). L'économie locale associe sous-traitance nucléaire-énergie, pêche et mareyage, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (proximité port de Dunkerque) et commerces. Tissu PME et ETI diversifié.",
   ecosystemEn:
-    "Gravelines est une commune littorale du Nord, entre Dunkerque et Calais, connue pour sa citadelle Vauban et la centrale nucléaire de Gravelines (6 réacteurs, la plus puissante d'Europe occidentale). L'économie locale associe sous-traitance nucléaire-énergie, pêche et mareyage, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (proximité port de Dunkerque) et commerces. Tissu TPE/PME diversifié.",
+    "Gravelines est une commune littorale du Nord, entre Dunkerque et Calais, connue pour sa citadelle Vauban et la centrale nucléaire de Gravelines (6 réacteurs, la plus puissante d'Europe occidentale). L'économie locale associe sous-traitance nucléaire-énergie, pêche et mareyage, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (proximité port de Dunkerque) et commerces. Tissu PME et ETI diversifié.",
   distancesFr:
     "Dunkerque à 15 min. Calais à 25 min. Lille centre à 1 h. Boulogne-sur-Mer à 40 min. Gare SNCF Gravelines (TER Dunkerque–Calais). Port de Dunkerque à 10 min. Autoroute A16 à proximité. Aéroport Lille-Lesquin à 1 h 10.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GRAVELINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gravelines : diagnostic adapté aux PME et ETI sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gravelines : diagnostic adapté aux PME et ETI sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gravelines : formats adaptés au site industriel nucléaire, à la criée, à l'hôtel-restaurant balnéaire ou à l'entrepôt portuaire. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const GRAVELINES_COPY: VilleCopy = {
       en: "Implémentation IA à Gravelines : maintenance prédictive sous-traitance énergie, traçabilité pêche-mareyage, revenue management tourisme balnéaire, optimisation flux logistiques portuaires, automatisation administrative PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gravelines : sessions dans votre bureau, atelier, établissement balnéaire ou en visio. Dirigeants TPE/PME du littoral dunkerquois souhaitant intégrer l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Gravelines : sessions dans votre bureau, atelier, établissement balnéaire ou en visio. Dirigeants TPE/PME du littoral dunkerquois souhaitant intégrer l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Gravelines : sessions dans votre bureau, atelier, établissement balnéaire ou en visio. Dirigeants PME et ETI du littoral dunkerquois souhaitant intégrer l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Gravelines : sessions dans votre bureau, atelier, établissement balnéaire ou en visio. Dirigeants PME et ETI du littoral dunkerquois souhaitant intégrer l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -52,12 +52,12 @@ export const GRAVELINES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Gravelines et sur tout le littoral dunkerquois (Dunkerque, Grand-Fort-Philippe, Loon-Plage, Bourbourg). Nos consultants accèdent via la gare SNCF Gravelines ou l'autoroute A16.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME de la sous-traitance nucléaire ?",
-      a: "Oui, nous accompagnons les TPE et PME sous-traitantes du secteur nucléaire-énergie à Gravelines : maintenance prédictive, conformité documentaire, automatisation rapports sûreté, planification interventions, traçabilité équipements.",
+      q: "Accompagnez-vous les PME et ETI de la sous-traitance nucléaire ?",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitantes du secteur nucléaire-énergie à Gravelines : maintenance prédictive, conformité documentaire, automatisation rapports sûreté, planification interventions, traçabilité équipements.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Gravelines  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du littoral dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du littoral dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour la pêche et le tourisme balnéaire à Gravelines ?",

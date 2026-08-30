@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   pitchFr:
-    "Marcq-en-Barœul (59), commune résidentielle prisée de la Métropole Européenne de Lille, est un pôle tertiaire reconnu, accueillant sièges sociaux, cabinets de conseil et services aux entreprises, à proximité immédiate des grands groupes nordistes (univers Auchan, Décathlon). Son tissu mêle TPE de services et commerces, professions libérales, indépendants et PME tertiaires. Connue pour son hippodrome, la ville offre un environnement d'affaires dense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME marcquoises, l'ETI restant marginale.",
+    "Marcq-en-Barœul (59), commune résidentielle prisée de la Métropole Européenne de Lille, est un pôle tertiaire reconnu, accueillant sièges sociaux, cabinets de conseil et services aux entreprises, à proximité immédiate des grands groupes nordistes (univers Auchan, Décathlon). Son tissu mêle PME de services et commerces, professions libérales, indépendants et PME tertiaires. Connue pour son hippodrome, la ville offre un environnement d'affaires dense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI marcquoises, les grands groupes venant en complément.",
   pitchEn:
-    "Marcq-en-Barœul (59), commune résidentielle prisée de la Métropole Européenne de Lille, est un pôle tertiaire reconnu, accueillant sièges sociaux, cabinets de conseil et services aux entreprises, à proximité immédiate des grands groupes nordistes (univers Auchan, Décathlon). Son tissu mêle TPE de services et commerces, professions libérales, indépendants et PME tertiaires. Connue pour son hippodrome, la ville offre un environnement d'affaires dense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME marcquoises, l'ETI restant marginale.",
+    "Marcq-en-Barœul (59), commune résidentielle prisée de la Métropole Européenne de Lille, est un pôle tertiaire reconnu, accueillant sièges sociaux, cabinets de conseil et services aux entreprises, à proximité immédiate des grands groupes nordistes (univers Auchan, Décathlon). Son tissu mêle PME de services et commerces, professions libérales, indépendants et PME tertiaires. Connue pour son hippodrome, la ville offre un environnement d'affaires dense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI marcquoises, les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les PME — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les PME — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire, conseil & sièges Lille",
   ecosystemFr:
-    "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de TPE — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
+    "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de PME — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les PME et ETI, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
   ecosystemEn:
-    "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de TPE — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
+    "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de PME — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les PME et ETI, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
   distancesFr:
     "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nos consultants rejoignent Marcq-en-Barœul depuis Lille.",
   distancesEn:
@@ -34,16 +34,16 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
       en: "Audit IA à Marcq-en-Barœul : cartographie des tâches chronophages d'un cabinet de conseil, d'une agence ou d'une PME tertiaire. Nous priorisons 2-3 cas d'usage à fort ROI et chiffrons les gains.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marcq-en-Barœul : formats courts pour TPE, professions libérales et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, propositions) et repartent autonomes.",
-      en: "Interventions IA sur site à Marcq-en-Barœul : formats courts pour TPE, professions libérales et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, propositions) et repartent autonomes.",
+      fr: "Interventions IA sur site à Marcq-en-Barœul : formats courts pour PME, professions libérales et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, propositions) et repartent autonomes.",
+      en: "Interventions IA sur site à Marcq-en-Barœul : formats courts pour PME, professions libérales et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, propositions) et repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à Marcq-en-Barœul : automatisation des propositions commerciales, relances et reporting, agents de support, traitement documentaire pour cabinets de conseil et professions libérales. Solutions RGPD-conformes.",
       en: "Implémentation IA à Marcq-en-Barœul : automatisation des propositions commerciales, relances et reporting, agents de support, traitement documentaire pour cabinets de conseil et professions libérales. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marcq-en-Barœul : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, consultants, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un tiers.",
-      en: "Coaching 1-to-1 à Marcq-en-Barœul : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, consultants, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un tiers.",
+      fr: "Coaching 1-to-1 à Marcq-en-Barœul : sessions dans vos locaux ou en visio pour dirigeants de PME et ETI, consultants, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un tiers.",
+      en: "Coaching 1-to-1 à Marcq-en-Barœul : sessions dans vos locaux ou en visio pour dirigeants de PME et ETI, consultants, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un tiers.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA à Marcq-en-Barœul : sites vitrines et portails B2B pour cabinets, agences et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés pour le référencement local.",
@@ -53,7 +53,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Marcq-en-Barœul, ville-siège de Promod (prêt-à-porter féminin, ~394 magasins dans 7 pays, fondée en 1975 par Francis-Charles Pollet) et terrain d'ancrage de Keolis Lille Métropole au Parc Europe, le besoin n'est pas un site vitrine de plus : c'est de l'e-commerce et du logiciel métier qui tiennent la charge multi-pays et la mobilité. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile, e-commerce multi-CMS et agents intelligents — pour les marques de mode et de retail, les acteurs de la mobilité partagée, les sièges tertiaires des Parcs Europe et Europe Jean Monnet et le dense réseau de TPE/PME marcquoises. Code sur mesure, hébergement Europe RGPD, zéro lock-in éditeur.",
+        hero: "À Marcq-en-Barœul, ville-siège de Promod (prêt-à-porter féminin, ~394 magasins dans 7 pays, fondée en 1975 par Francis-Charles Pollet) et terrain d'ancrage de Keolis Lille Métropole au Parc Europe, le besoin n'est pas un site vitrine de plus : c'est de l'e-commerce et du logiciel métier qui tiennent la charge multi-pays et la mobilité. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile, e-commerce multi-CMS et agents intelligents — pour les marques de mode et de retail, les acteurs de la mobilité partagée, les sièges tertiaires des Parcs Europe et Europe Jean Monnet et le dense réseau de PME et ETI marcquoises. Code sur mesure, hébergement Europe RGPD, zéro lock-in éditeur.",
         whyHere: [
           "Capitale locale de la mode omnicanale : avec le siège de Promod Chemin du Verseau, Marcq-en-Barœul concentre un savoir-faire retail/e-commerce féminin diffusé dans 7 pays — nous y déployons fiches produits générées et traduites par IA, recommandation d'articles, recherche sémantique catalogue et automatisation du SAV mode (retours, tailles, disponibilités).",
           "Mobilité et services au Parc Europe : Keolis Lille Métropole, exploitant des transports de la MEL, y occupe ~5 300 m² pour 350+ salariés — un terrain naturel pour des portails voyageurs, des SaaS d'information temps réel et des agents conversationnels d'aide à l'usager.",
@@ -88,12 +88,6 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-boutique augmentée IA",
-            detail:
-              "Pour indépendants, commerces et cabinets libéraux marcquois : site rapide mobile-first, mini-catalogue e-commerce, prise de rendez-vous automatisée et chatbot de premier niveau, sur un CMS que vous administrez seul.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier sur mesure",
@@ -174,12 +168,6 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented brochure site or e-shop",
-            detail:
-              "For Marcq freelancers, shops and liberal practices: fast mobile-first site, mini e-commerce catalogue, automated booking and first-level chatbot, on a CMS you administer alone.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom e-commerce platform or trade portal",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCEL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu PME et ETI industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu PME et ETI industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : TPE/PME des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : PME et ETI des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : TPE/PME des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : PME et ETI des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
   seoHook: "agglomération chalon-sur-",
   ecosystemFr:
-    "Saint-Marcel est une commune industrielle de l'agglomération Chalon-sur-Saône dotée de zones industrielles majeures. Tissu TPE/PME industrie, métallurgie, sous-traitance, logistique, services aux entreprises, artisanat BTP.",
+    "Saint-Marcel est une commune industrielle de l'agglomération Chalon-sur-Saône dotée de zones industrielles majeures. Tissu PME et ETI industrie, métallurgie, sous-traitance, logistique, services aux entreprises, artisanat BTP.",
   ecosystemEn:
-    "Saint-Marcel est une commune industrielle de l'agglomération Chalon-sur-Saône dotée de zones industrielles majeures. Tissu TPE/PME industrie, métallurgie, sous-traitance, logistique, services aux entreprises, artisanat BTP.",
+    "Saint-Marcel est une commune industrielle de l'agglomération Chalon-sur-Saône dotée de zones industrielles majeures. Tissu PME et ETI industrie, métallurgie, sous-traitance, logistique, services aux entreprises, artisanat BTP.",
   distancesFr:
     "Chalon-sur-Saône centre à 5 min. Gare TGV Le Creusot à 30 min. Beaune à 30 min. Dijon à 55 min. Lyon à 1h30.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     "Industrie métallurgie",
     "Sous-traitance industrielle",
     "Logistique et distribution",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Marcel : diagnostic adapté aux PME et ETI zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcel : diagnostic adapté aux PME et ETI zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Marcel : formats adaptés à l'atelier industriel, entrepôt, bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Marcel : contrôle qualité visuel production, traçabilité industrielle, optimisation logistique, agents conversationnels B2B, workflow sous-traitance.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Marcel : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, artisans, gérants TPE/PME saint-marcellois.",
-      en: "Coaching 1-to-1 à Saint-Marcel : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, artisans, gérants TPE/PME saint-marcellois.",
+      fr: "Coaching 1-to-1 à Saint-Marcel : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, artisans, gérants PME et ETI saint-marcellois.",
+      en: "Coaching 1-to-1 à Saint-Marcel : sessions dans votre atelier, entrepôt, bureau ou en visio. Industriels, sous-traitants, logisticiens, artisans, gérants PME et ETI saint-marcellois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et sous-traitants : contrôle qualité visuel, traçabilité production, automatisation workflow, agents conversationnels B2B.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et sous-traitants : contrôle qualité visuel, traçabilité production, automatisation workflow, agents conversationnels B2B.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique ?",
@@ -61,7 +61,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Saint-Marcel ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Saint-Marcel ?",

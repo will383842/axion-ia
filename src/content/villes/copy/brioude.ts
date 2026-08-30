@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRIOUDE_COPY: VilleCopy = {
   pitchFr:
-    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre les activités professionnelles du bassin.",
+    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), PME artisanales, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre les activités professionnelles du bassin.",
+    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), PME artisanales, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brioude (43). Nous accompagnons TPE et PME : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brioude (43). Nous accompagnons PME et ETI : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brioude (43). Nous accompagnons TPE et PME : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brioude (43). Nous accompagnons PME et ETI : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
   seoHook: "tourisme patrimoine & agriculture vallée",
   ecosystemFr:
-    "Brioude est une sous-préfecture de la Haute-Loire dans la vallée de l'Allier. Patrimoine roman exceptionnel (basilique Saint-Julien, plus grande église romane d'Auvergne). Agriculture vallée Allier (maraîchage, élevage). Tourisme patrimoine et nature, TPE artisanat, commerces, administration.",
+    "Brioude est une sous-préfecture de la Haute-Loire dans la vallée de l'Allier. Patrimoine roman exceptionnel (basilique Saint-Julien, plus grande église romane d'Auvergne). Agriculture vallée Allier (maraîchage, élevage). Tourisme patrimoine et nature, PME de l'artisanat, commerces, administration.",
   ecosystemEn:
-    "Brioude est une sous-préfecture de la Haute-Loire dans la vallée de l'Allier. Patrimoine roman exceptionnel (basilique Saint-Julien, plus grande église romane d'Auvergne). Agriculture vallée Allier (maraîchage, élevage). Tourisme patrimoine et nature, TPE artisanat, commerces, administration.",
+    "Brioude est une sous-préfecture de la Haute-Loire dans la vallée de l'Allier. Patrimoine roman exceptionnel (basilique Saint-Julien, plus grande église romane d'Auvergne). Agriculture vallée Allier (maraîchage, élevage). Tourisme patrimoine et nature, PME de l'artisanat, commerces, administration.",
   distancesFr:
     "Le Puy-en-Velay à 45 min. Clermont-Ferrand à 1h. Issoire à 25 min. Saint-Flour à 50 min. Aéroport Clermont-Ferrand Auvergne à 1h10.",
   distancesEn:
@@ -25,13 +25,13 @@ export const BRIOUDE_COPY: VilleCopy = {
     "Tourisme patrimoine roman",
     "Agriculture vallée Allier",
     "Administration (sous-préfecture)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brioude : formats adaptés au site patrimonial, exploitation agricole, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const BRIOUDE_COPY: VilleCopy = {
       en: "Implémentation IA à Brioude : agents conversationnels visiteurs basilique multilingue, traçabilité produits vallée Allier, automatisation gestion exploitation agricole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brioude : sessions dans vos locaux (site patrimonial, exploitation, commerce) ou en visio. Acteurs tourisme, agriculteurs, artisans, gérants TPE/PME brivadois.",
-      en: "Coaching 1-to-1 à Brioude : sessions dans vos locaux (site patrimonial, exploitation, commerce) ou en visio. Acteurs tourisme, agriculteurs, artisans, gérants TPE/PME brivadois.",
+      fr: "Coaching 1-to-1 à Brioude : sessions dans vos locaux (site patrimonial, exploitation, commerce) ou en visio. Acteurs tourisme, agriculteurs, artisans, gérants PME et ETI brivadois.",
+      en: "Coaching 1-to-1 à Brioude : sessions dans vos locaux (site patrimonial, exploitation, commerce) ou en visio. Acteurs tourisme, agriculteurs, artisans, gérants PME et ETI brivadois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const BRIOUDE_COPY: VilleCopy = {
       a: "Oui, traçabilité produits vallée Allier, prédiction récoltes, automatisation gestion exploitation, vente directe circuit court.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LESIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de PME artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de PME artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lésigny (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lésigny (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
-    "Lésigny est une commune résidentielle du sud-est de la Seine-et-Marne, entre Brie-Comte-Robert et Pontault-Combault. Cadre verdoyant avec le golf de Lésigny et les espaces boisés. Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales, PME de services aux entreprises. Accès rapide à la Francilienne (N104) et à la zone commerciale Val d'Europe/Marne-la-Vallée.",
+    "Lésigny est une commune résidentielle du sud-est de la Seine-et-Marne, entre Brie-Comte-Robert et Pontault-Combault. Cadre verdoyant avec le golf de Lésigny et les espaces boisés. Tissu économique de PME du BTP, commerces de centre-bourg, professions libérales, PME de services aux entreprises. Accès rapide à la Francilienne (N104) et à la zone commerciale Val d'Europe/Marne-la-Vallée.",
   ecosystemEn:
-    "Lésigny est une commune résidentielle du sud-est de la Seine-et-Marne, entre Brie-Comte-Robert et Pontault-Combault. Cadre verdoyant avec le golf de Lésigny et les espaces boisés. Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales, PME de services aux entreprises. Accès rapide à la Francilienne (N104) et à la zone commerciale Val d'Europe/Marne-la-Vallée.",
+    "Lésigny est une commune résidentielle du sud-est de la Seine-et-Marne, entre Brie-Comte-Robert et Pontault-Combault. Cadre verdoyant avec le golf de Lésigny et les espaces boisés. Tissu économique de PME du BTP, commerces de centre-bourg, professions libérales, PME de services aux entreprises. Accès rapide à la Francilienne (N104) et à la zone commerciale Val d'Europe/Marne-la-Vallée.",
   distancesFr:
     "Gare de Brie-Comte-Robert à 10 min, RER A Boissy-Saint-Léger à 15 min. Paris centre à 35 min via A4. Francilienne (N104) à 5 min. Aéroport Paris-Orly à 25 min, Roissy-CDG à 45 min. Marne-la-Vallée à 20 min.",
   distancesEn:
     "Gare de Brie-Comte-Robert à 10 min, RER A Boissy-Saint-Léger à 15 min. Paris centre à 35 min via A4. Francilienne (N104) à 5 min. Aéroport Paris-Orly à 25 min, Roissy-CDG à 45 min. Marne-la-Vallée à 20 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de proximité & services à la personne",
     "PME tertiaires & services aux entreprises",
     "Professions libérales (santé, juridique, conseil)",
@@ -30,8 +30,8 @@ export const LESIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lésigny : diagnostic adapté aux TPE artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Lésigny : diagnostic adapté aux TPE artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Lésigny : diagnostic adapté aux PME artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Lésigny : diagnostic adapté aux PME artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lésigny : formats adaptés à l'artisan, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const LESIGNY_COPY: VilleCopy = {
       en: "Implémentation IA à Lésigny : automatisation devis BTP, agents conversationnels, gestion planning artisans, CRM augmenté PME tertiaires, classification documents comptables.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lésigny : sessions dans vos locaux ou en visio. Artisans, gérants TPE/PME, professions libérales et dirigeants de l'est Seine-et-Marne souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Lésigny : sessions dans vos locaux ou en visio. Artisans, gérants TPE/PME, professions libérales et dirigeants de l'est Seine-et-Marne souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Lésigny : sessions dans vos locaux ou en visio. Artisans, gérants PME et ETI, professions libérales et dirigeants de l'est Seine-et-Marne souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Lésigny : sessions dans vos locaux ou en visio. Artisans, gérants PME et ETI, professions libérales et dirigeants de l'est Seine-et-Marne souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment à Lésigny ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP de Lésigny (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME du BTP de Lésigny (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lésigny  ?",

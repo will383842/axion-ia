@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CALVISSON_COPY: VilleCopy = {
   pitchFr:
-    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la Vaunage.",
+    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu PME et ETI viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la Vaunage.",
   pitchEn:
-    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la Vaunage.",
+    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu PME et ETI viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la Vaunage.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
   seoHook: "viticulture & agriculture méditerranéenne",
   ecosystemFr:
     "Calvisson (~6 500 hab) est le bourg central de la Vaunage, plaine viticole entre Nîmes (20 min) et Sommières (10 min). Viticulture (caves coopératives et indépendants), agriculture méditerranéenne (oliviers), commerces de proximité, artisanat BTP et professions libérales. Marché provençal vivant.",
@@ -30,8 +30,8 @@ export const CALVISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Calvisson : diagnostic adapté aux PME et ETI viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Calvisson : diagnostic adapté aux PME et ETI viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Calvisson : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans de la Vaunage.",
@@ -42,8 +42,8 @@ export const CALVISSON_COPY: VilleCopy = {
       en: "Implémentation IA à Calvisson : prédiction vendanges, gestion parcellaire viticole, automatisation traçabilité, agents conversationnels commerce, devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Calvisson : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
-      en: "Coaching 1-to-1 à Calvisson : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
+      fr: "Coaching 1-to-1 à Calvisson : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
+      en: "Coaching 1-to-1 à Calvisson : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
     },
   },
   faqGeolocalisee: [

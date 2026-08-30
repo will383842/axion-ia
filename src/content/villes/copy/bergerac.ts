@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BERGERAC_COPY: VilleCopy = {
   pitchFr:
-    "Bergerac, sous-préfecture de la Dordogne (24) en Périgord pourpre, est la capitale des vignobles de Bergerac et Monbazillac (13 000 ha, AOC). Tissu agroalimentaire artisanal, conserveries de canard, tourisme patrimoine et TPE/PME locales. Axion-IA y intervient pour les viticulteurs, artisans, indépendants et PME du Périgord.",
+    "Bergerac, sous-préfecture de la Dordogne (24) en Périgord pourpre, est la capitale des vignobles de Bergerac et Monbazillac (13 000 ha, AOC). Tissu agroalimentaire artisanal, conserveries de canard, tourisme patrimoine et PME et ETI locales. Axion-IA y intervient pour les viticulteurs, artisans, indépendants et PME du Périgord.",
   pitchEn:
-    "Bergerac, sous-préfecture de la Dordogne (24) en Périgord pourpre, est la capitale des vignobles de Bergerac et Monbazillac (13 000 ha, AOC). Tissu agroalimentaire artisanal, conserveries de canard, tourisme patrimoine et TPE/PME locales. Axion-IA y intervient pour les viticulteurs, artisans, indépendants et PME du Périgord.",
+    "Bergerac, sous-préfecture de la Dordogne (24) en Périgord pourpre, est la capitale des vignobles de Bergerac et Monbazillac (13 000 ha, AOC). Tissu agroalimentaire artisanal, conserveries de canard, tourisme patrimoine et PME et ETI locales. Axion-IA y intervient pour les viticulteurs, artisans, indépendants et PME du Périgord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bergerac (24) en Périgord. Nous accompagnons les viticulteurs (caves coopératives, négociants), artisans agroalimentaires (conserveries canard, foies gras, fromageries), TPE/PME tertiaires bergeracoises et acteurs du tourisme patrimoine sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bergerac (24) en Périgord. Nous accompagnons les viticulteurs (caves coopératives, négociants), artisans agroalimentaires (conserveries canard, foies gras, fromageries), PME et ETI tertiaires bergeracoises et acteurs du tourisme patrimoine sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bergerac (24) en Périgord. Nous accompagnons les viticulteurs (caves coopératives, négociants), artisans agroalimentaires (conserveries canard, foies gras, fromageries), TPE/PME tertiaires bergeracoises et acteurs du tourisme patrimoine sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bergerac (24) en Périgord. Nous accompagnons les viticulteurs (caves coopératives, négociants), artisans agroalimentaires (conserveries canard, foies gras, fromageries), PME et ETI tertiaires bergeracoises et acteurs du tourisme patrimoine sur leurs cas IA opérationnels.",
   seoHook: "viticulture & artisanat agroalimentaire",
   ecosystemFr:
-    "Bergerac est le centre économique du Périgord pourpre : 13 000 ha de vignobles AOC (Bergerac, Monbazillac, Pécharmant), artisanat agroalimentaire (canards gras, conserveries, fromage), tourisme patrimoine (Cyrano, vieille ville Renaissance, Dordogne navigable). Tissu TPE artisanat dense, PME tertiaires liées au tourisme et viticulture.",
+    "Bergerac est le centre économique du Périgord pourpre : 13 000 ha de vignobles AOC (Bergerac, Monbazillac, Pécharmant), artisanat agroalimentaire (canards gras, conserveries, fromage), tourisme patrimoine (Cyrano, vieille ville Renaissance, Dordogne navigable). Tissu PME de l'artisanat dense, PME tertiaires liées au tourisme et viticulture.",
   ecosystemEn:
-    "Bergerac est le centre économique du Périgord pourpre : 13 000 ha de vignobles AOC (Bergerac, Monbazillac, Pécharmant), artisanat agroalimentaire (canards gras, conserveries, fromage), tourisme patrimoine (Cyrano, vieille ville Renaissance, Dordogne navigable). Tissu TPE artisanat dense, PME tertiaires liées au tourisme et viticulture.",
+    "Bergerac est le centre économique du Périgord pourpre : 13 000 ha de vignobles AOC (Bergerac, Monbazillac, Pécharmant), artisanat agroalimentaire (canards gras, conserveries, fromage), tourisme patrimoine (Cyrano, vieille ville Renaissance, Dordogne navigable). Tissu PME de l'artisanat dense, PME tertiaires liées au tourisme et viticulture.",
   distancesFr:
     "Gare Bergerac (TER ligne Bordeaux-Sarlat, 1h15 Bordeaux). Aéroport Bergerac-Roumanière (low-cost UK/Belgique). Sarlat à 50 min. Bordeaux centre 1h30 voiture. Axe D936 vers Périgueux (45 min).",
   distancesEn:
@@ -25,13 +25,13 @@ export const BERGERAC_COPY: VilleCopy = {
     "Viticulture (Bergerac, Monbazillac, Pécharmant)",
     "Artisanat agroalimentaire (canard, foie gras)",
     "Tourisme patrimoine & oenotourisme",
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
     "PME tertiaires (cabinets, services)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et TPE/PME du Périgord. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux exploitations familiales.",
-      en: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et TPE/PME du Périgord. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux exploitations familiales.",
+      fr: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et PME et ETI du Périgord. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux exploitations familiales.",
+      en: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et PME et ETI du Périgord. ROI chiffré pratique, audit sur place {{price:audit-flash|flat}} accessible aux exploitations familiales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bergerac : sessions au chai, dans la conserverie ou en bureau. Vos équipes (vignerons, ouvriers conserverie, vendeurs cave) repartent avec outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const BERGERAC_COPY: VilleCopy = {
       en: "Implémentation IA à Bergerac : agents conversationnels oenotourisme, automatisation gestion vendanges, classification photos produits, traçabilité agroalimentaire, e-commerce. Adapté au tissu Périgord.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bergerac : sessions confidentielles au chai, dans votre conserverie ou en visio. Vignerons, artisans, gérants TPE/PME bergeracoises souhaitant intégrer l'IA dans leur métier traditionnel.",
-      en: "Coaching 1-to-1 à Bergerac : sessions confidentielles au chai, dans votre conserverie ou en visio. Vignerons, artisans, gérants TPE/PME bergeracoises souhaitant intégrer l'IA dans leur métier traditionnel.",
+      fr: "Coaching 1-to-1 à Bergerac : sessions confidentielles au chai, dans votre conserverie ou en visio. Vignerons, artisans, gérants PME et ETI bergeracoises souhaitant intégrer l'IA dans leur métier traditionnel.",
+      en: "Coaching 1-to-1 à Bergerac : sessions confidentielles au chai, dans votre conserverie ou en visio. Vignerons, artisans, gérants PME et ETI bergeracoises souhaitant intégrer l'IA dans leur métier traditionnel.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const BERGERAC_COPY: VilleCopy = {
           "Vignoble Bergerac & Duras : ~1 200 vignerons, 13 AOC (Monbazillac liquoreux, Pécharmant, Côtes de Bergerac, Saussignac, Montravel). Nous construisons des boutiques e-commerce vente directe producteur, des espaces club/allocation et des agents conversationnels d'œnotourisme reliés à l'écosystème CIVRB / Maison des Vins au Cloître des Récollets et au pôle Quai Cyrano.",
           "Réindustrialisation de défense Eurenco (ex-poudrerie SNPE, site depuis 1915) : effectif passé d'environ 200 à 500 salariés, nouvelle poudrerie d'obus d'artillerie. Pour ce tissu industriel sensible et ses sous-traitants, nous concevons des portails et applications métier avec hébergement UE souverain, contrôle d'accès strict et données qui ne sortent jamais de votre infrastructure.",
           "Tourisme international via l'aéroport Bergerac Dordogne Périgord (Roumanière) : lignes low-cost UK (Ryanair, Jet2) et Bruxelles-Charleroi/Rotterdam. Nous livrons des sites multilingues FR/EN/NL, réservation chambres d'hôtes et gîtes, et automatisation de la gestion saisonnière pour les acteurs du tourisme patrimoine périgourdin.",
-          "Agroalimentaire et artisanat du Périgord pourpre (canard gras, foie gras, conserveries, fromage) et PME de la ZI de Campréal : e-commerce B2C/B2B, catalogues produits avec classification photo, traçabilité et automatisation des devis pour conserveries, négociants et TPE bergeracoises.",
+          "Agroalimentaire et artisanat du Périgord pourpre (canard gras, foie gras, conserveries, fromage) et PME de la ZI de Campréal : e-commerce B2C/B2B, catalogues produits avec classification photo, traçabilité et automatisation des devis pour conserveries, négociants et PME bergeracoises.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const BERGERAC_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot œnotourisme, recherche sémantique, agent FAQ multilingue) sur le site existant d'un vigneron, d'un artisan foie gras ou d'une chambre d'hôtes, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
@@ -171,12 +165,6 @@ export const BERGERAC_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (wine-tourism chatbot, semantic search, multilingual FAQ agent) onto the existing site of a winegrower, foie gras craftsman or guesthouse, in a few weeks, with no rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / shop",
             detail:
@@ -237,8 +225,8 @@ export const BERGERAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les conserveries de canard et artisans foie gras du Périgord sur leurs cas IA : automatisation traçabilité production, agents conversationnels pour vente B2C, classification photos produits, optimisation stocks saisonniers. Conformité agroalimentaire garantie.",
     },
     {
-      q: "Quels services pour les TPE et artisans bergeracois ?",
-      a: "Pour les TPE et artisans à Bergerac (commerces, BTP, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA pour vente directe, gestion administrative simplifiée.",
+      q: "Quels services pour les PME et artisans bergeracois ?",
+      a: "Pour les PME et artisans à Bergerac (commerces, BTP, services), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA pour vente directe, gestion administrative simplifiée.",
     },
     {
       q: "Quels formats pour le tourisme et oenotourisme ?",

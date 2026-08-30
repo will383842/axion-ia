@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_RAPHAEL_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Raphaël : hôtels, restaurants et commerces de la station balnéaire varoise, acteurs du port de plaisance et du nautisme, prestataires touristiques de l'Estérel. On déploie des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Raphaël : hôtels, restaurants et commerces de la station balnéaire varoise, acteurs du port de plaisance et du nautisme, prestataires touristiques de l'Estérel. On déploie des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Raphaël : hôtels, restaurants et commerces de la station balnéaire varoise, acteurs du port de plaisance et du nautisme, prestataires touristiques de l'Estérel. On déploie des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Raphaël : hôtels, restaurants et commerces de la station balnéaire varoise, acteurs du port de plaisance et du nautisme, prestataires touristiques de l'Estérel. On déploie des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Raphaël, dans le Var, pour les TPE et PME de cette station balnéaire de la côte d'Azur : hôtels, restaurants et commerces du front de mer, acteurs du port de plaisance, du nautisme et des activités de l'Estérel, prestataires de services au sein du bassin Fréjus-Saint-Raphaël. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Raphaël, dans le Var, pour les PME et ETI de cette station balnéaire de la côte d'Azur : hôtels, restaurants et commerces du front de mer, acteurs du port de plaisance, du nautisme et des activités de l'Estérel, prestataires de services au sein du bassin Fréjus-Saint-Raphaël. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Raphaël, dans le Var, pour les TPE et PME de cette station balnéaire de la côte d'Azur : hôtels, restaurants et commerces du front de mer, acteurs du port de plaisance, du nautisme et des activités de l'Estérel, prestataires de services au sein du bassin Fréjus-Saint-Raphaël. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Raphaël, dans le Var, pour les PME et ETI de cette station balnéaire de la côte d'Azur : hôtels, restaurants et commerces du front de mer, acteurs du port de plaisance, du nautisme et des activités de l'Estérel, prestataires de services au sein du bassin Fréjus-Saint-Raphaël. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (réservations, devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "tourisme balnéaire & nautisme varois",
   ecosystemFr:
-    "Saint-Raphaël, station balnéaire phare de l'est varois, vit du tourisme et de l'hôtellerie-restauration concentrés sur son front de mer, d'une intense activité de plaisance autour de ses ports et d'une offre de loisirs nature adossée au massif de l'Estérel. La commune forme avec Fréjus un bassin économique commun de commerces, services et artisans. Ce tissu de TPE saisonnières et de PME du tourisme, soumis à de fortes pointes d'activité estivales, gagne beaucoup à automatiser réservations, relances et gestion administrative grâce à une IA bien cadrée.",
+    "Saint-Raphaël, station balnéaire phare de l'est varois, vit du tourisme et de l'hôtellerie-restauration concentrés sur son front de mer, d'une intense activité de plaisance autour de ses ports et d'une offre de loisirs nature adossée au massif de l'Estérel. La commune forme avec Fréjus un bassin économique commun de commerces, services et artisans. Ce tissu de PME saisonnières et de PME du tourisme, soumis à de fortes pointes d'activité estivales, gagne beaucoup à automatiser réservations, relances et gestion administrative grâce à une IA bien cadrée.",
   ecosystemEn:
-    "Saint-Raphaël, station balnéaire phare de l'est varois, vit du tourisme et de l'hôtellerie-restauration concentrés sur son front de mer, d'une intense activité de plaisance autour de ses ports et d'une offre de loisirs nature adossée au massif de l'Estérel. La commune forme avec Fréjus un bassin économique commun de commerces, services et artisans. Ce tissu de TPE saisonnières et de PME du tourisme, soumis à de fortes pointes d'activité estivales, gagne beaucoup à automatiser réservations, relances et gestion administrative grâce à une IA bien cadrée.",
+    "Saint-Raphaël, station balnéaire phare de l'est varois, vit du tourisme et de l'hôtellerie-restauration concentrés sur son front de mer, d'une intense activité de plaisance autour de ses ports et d'une offre de loisirs nature adossée au massif de l'Estérel. La commune forme avec Fréjus un bassin économique commun de commerces, services et artisans. Ce tissu de PME saisonnières et de PME du tourisme, soumis à de fortes pointes d'activité estivales, gagne beaucoup à automatiser réservations, relances et gestion administrative grâce à une IA bien cadrée.",
   distancesFr:
     "Saint-Raphaël dispose de la gare TGV de Saint-Raphaël-Valescure, qui relie Paris en environ 4h et place Nice et Marseille à moins d'une heure et demie. L'A8 (« la Provençale ») dessert directement la commune, et l'aéroport de Nice-Côte d'Azur se trouve à environ 65 km vers l'est, tandis que celui de Toulon-Hyères est accessible vers l'ouest. Le port de plaisance structure l'activité nautique locale. Cette desserte facilite nos déplacements sur site dans tout le bassin Fréjus-Saint-Raphaël.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
       en: "L'implémentation déploie à Saint-Raphaël des assistants IA et workflows sur mesure pour le tourisme, le nautisme et les loisirs, avec formation des équipes et conformité RGPD intégrée dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Saint-Raphaël forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
-      en: "L'accompagnement un-à-un à Saint-Raphaël forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
+      fr: "L'accompagnement un-à-un à Saint-Raphaël forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
+      en: "L'accompagnement un-à-un à Saint-Raphaël forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : gestion de la saisonnalité, choix d'outils, prompts métier et gouvernance des données clients.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés équipent hôtels, restaurants et commerces de Saint-Raphaël d'une plateforme rapide avec réservation en ligne, chatbot multilingue et contenu IA, optimisée pour le tourisme et la recherche locale.",
@@ -58,7 +58,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           "Hôtellerie, restauration et loueurs nautiques du front de mer et de Port Santa Lucia : nous déployons des sites avec moteur de réservation en ligne, paiement, et gestion des pics saisonniers estivaux — du Vieux Port au quartier Valescure et à la calanque d'Agay.",
           "PME high-tech des Technoparcs Epsilon I (rue Isaac Newton, ISO 14001) et Epsilon II — cosmétique, pharma, biologie moléculaire, mécanique de précision, ingénierie : nous construisons des plateformes SaaS métier, catalogues B2B et portails clients sur mesure, pas de simples vitrines.",
           "Acteurs du tourisme et de l'événementiel adossés à la Base Nature François Léotard (Roc d'Azur, T100, Festival de l'Air) et au Palais des Congrès : sites multilingues rapides, billetterie, et contenu optimisé pour la recherche locale et les assistants IA.",
-          "Tissu de TPE et de commerces du bassin Fréjus-Saint-Raphaël, desservi par la gare TGV de Saint-Raphaël-Valescure et l'A8 : e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et refontes mobile-first, avec un interlocuteur qui se déplace sur site.",
+          "Tissu de PME et de commerces du bassin Fréjus-Saint-Raphaël, desservi par la gare TGV de Saint-Raphaël-Valescure et l'A8 : e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) et refontes mobile-first, avec un interlocuteur qui se déplace sur site.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour commerces du front de mer, loueurs nautiques de Santa Lucia, restaurants et indépendants : site rapide mobile-first, réservation ou prise de contact, chatbot multilingue, SEO local Saint-Raphaël et bassin varois.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou plateforme métier",
@@ -174,12 +168,6 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Augmented brochure site",
-            detail:
-              "For seafront retailers, Santa Lucia boat rentals, restaurants and freelancers: fast mobile-first site, booking or contact, multilingual chatbot, local SEO for Saint-Raphaël and the Var basin.",
-          },
           {
             sizeLabel: "SME",
             price: "E-commerce site or business platform",

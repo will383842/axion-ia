@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MORNANT_COPY: VilleCopy = {
   pitchFr:
-    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
+    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), PME du BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
   pitchEn:
-    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
+    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), PME du BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, PME du BTP, commerçants et services aux entreprises du pays mornantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, PME du BTP, commerçants et services aux entreprises du pays mornantais.",
   seoHook: "pays mornantais",
   ecosystemFr:
-    "Mornant est le bourg-centre du pays mornantais (SO lyonnais). Tissu mixte : PME tertiaires, agriculture et viticulture (coteaux du Lyonnais — AOC Coteaux-du-Lyonnais), TPE artisanat BTP, commerces de proximité.",
+    "Mornant est le bourg-centre du pays mornantais (SO lyonnais). Tissu mixte : PME tertiaires, agriculture et viticulture (coteaux du Lyonnais — AOC Coteaux-du-Lyonnais), PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Mornant est le bourg-centre du pays mornantais (SO lyonnais). Tissu mixte : PME tertiaires, agriculture et viticulture (coteaux du Lyonnais — AOC Coteaux-du-Lyonnais), TPE artisanat BTP, commerces de proximité.",
+    "Mornant est le bourg-centre du pays mornantais (SO lyonnais). Tissu mixte : PME tertiaires, agriculture et viticulture (coteaux du Lyonnais — AOC Coteaux-du-Lyonnais), PME du BTP, commerces de proximité.",
   distancesFr:
     "Lyon centre à 30 min. Aéroport Lyon-Saint-Exupéry à 45 min. Brignais à 10 min. Givors à 15 min. Vienne à 25 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MORNANT_COPY: VilleCopy = {
     "Viticulture AOC Coteaux-du-Lyonnais",
     "PME tertiaires SO lyonnais",
     "Agriculture pays mornantais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mornant : formats adaptés au domaine viticole, exploitation agricole, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MORNANT_COPY: VilleCopy = {
       en: "Implémentation IA à Mornant : prédiction vendanges coteaux Lyonnais, classification photos cépages, traçabilité AOC, agents conversationnels oenotourisme. SO lyonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mornant : sessions dans votre domaine viticole, exploitation, bureau ou en visio. Viticulteurs, agriculteurs, dirigeants tertiaires, artisans, gérants TPE/PME mornantais.",
-      en: "Coaching 1-to-1 à Mornant : sessions dans votre domaine viticole, exploitation, bureau ou en visio. Viticulteurs, agriculteurs, dirigeants tertiaires, artisans, gérants TPE/PME mornantais.",
+      fr: "Coaching 1-to-1 à Mornant : sessions dans votre domaine viticole, exploitation, bureau ou en visio. Viticulteurs, agriculteurs, dirigeants tertiaires, artisans, gérants PME et ETI mornantais.",
+      en: "Coaching 1-to-1 à Mornant : sessions dans votre domaine viticole, exploitation, bureau ou en visio. Viticulteurs, agriculteurs, dirigeants tertiaires, artisans, gérants PME et ETI mornantais.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const MORNANT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs du pays mornantais sur leurs cas IA : prédiction récoltes, classification photos cultures, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mornant, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Mornant, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

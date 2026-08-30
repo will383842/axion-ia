@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   pitchFr:
-    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
+    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu PME et ETI commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
+    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu PME et ETI commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : PME et ETI commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : PME et ETI commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
   ecosystemFr:
     "Jarville-la-Malgrange est une commune du sud de la Métropole du Grand Nancy, connue pour son musée de l'Histoire du fer. Son tissu économique repose sur le commerce, les services aux entreprises, l'artisanat BTP, les professions libérales et la restauration. Accès direct au centre de Nancy et aux zones d'activités du sud nancéien.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce de détail & grande distribution",
     "Services aux entreprises & prestataires",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Professions libérales & santé",
     "Restauration & hôtellerie",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux PME et ETI commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux PME et ETI commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jarville-la-Malgrange : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
       en: "Implémentation IA à Jarville-la-Malgrange : agents conversationnels relation client, automatisation gestion stocks, chatbots prise de RDV, classification documentaire, workflow facturation.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Jarville-la-Malgrange : sessions dans vos locaux ou en visio. Gérants TPE/PME commerçants, professions libérales, artisans et dirigeants du sud de l'agglomération nancéienne.",
-      en: "Coaching 1-to-1 à Jarville-la-Malgrange : sessions dans vos locaux ou en visio. Gérants TPE/PME commerçants, professions libérales, artisans et dirigeants du sud de l'agglomération nancéienne.",
+      fr: "Coaching 1-to-1 à Jarville-la-Malgrange : sessions dans vos locaux ou en visio. Gérants PME et ETI commerçants, professions libérales, artisans et dirigeants du sud de l'agglomération nancéienne.",
+      en: "Coaching 1-to-1 à Jarville-la-Malgrange : sessions dans vos locaux ou en visio. Gérants PME et ETI commerçants, professions libérales, artisans et dirigeants du sud de l'agglomération nancéienne.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerçants et PME de services de Jarville ?",
-      a: "Oui, nous accompagnons les TPE/PME commerçantes et prestataires de services : agents conversationnels relation client, automatisation gestion stocks, chatbots prise de RDV, facturation automatique.",
+      a: "Oui, nous accompagnons les PME et ETI commerçantes et prestataires de services : agents conversationnels relation client, automatisation gestion stocks, chatbots prise de RDV, facturation automatique.",
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales de Jarville-la-Malgrange ?",
@@ -61,7 +61,7 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Jarville-la-Malgrange  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Jarville-la-Malgrange et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Jarville-la-Malgrange et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Jarville-la-Malgrange ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const PLOUAY_COPY: VilleCopy = {
   pitchFr:
-    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
+    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu PME du BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
+    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu PME du BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), PME du BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), PME du BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
   ecosystemFr:
-    "Plouay est une commune du centre Morbihan mondialement connue pour le cyclisme : le vélodrome Raymond Poulidor a accueilli les championnats du monde sur route UCI. La commune s'appuie sur un tissu agricole (élevage, polyculture), des PME agroalimentaires, des TPE artisans BTP et un tourisme sportif et vert (forêt de Pontcallec, vallée du Scorff). Bassin de vie entre Lorient (25 min) et Pontivy (35 min).",
+    "Plouay est une commune du centre Morbihan mondialement connue pour le cyclisme : le vélodrome Raymond Poulidor a accueilli les championnats du monde sur route UCI. La commune s'appuie sur un tissu agricole (élevage, polyculture), des PME agroalimentaires, des PME du BTP et un tourisme sportif et vert (forêt de Pontcallec, vallée du Scorff). Bassin de vie entre Lorient (25 min) et Pontivy (35 min).",
   ecosystemEn:
-    "Plouay est une commune du centre Morbihan mondialement connue pour le cyclisme : le vélodrome Raymond Poulidor a accueilli les championnats du monde sur route UCI. La commune s'appuie sur un tissu agricole (élevage, polyculture), des PME agroalimentaires, des TPE artisans BTP et un tourisme sportif et vert (forêt de Pontcallec, vallée du Scorff). Bassin de vie entre Lorient (25 min) et Pontivy (35 min).",
+    "Plouay est une commune du centre Morbihan mondialement connue pour le cyclisme : le vélodrome Raymond Poulidor a accueilli les championnats du monde sur route UCI. La commune s'appuie sur un tissu agricole (élevage, polyculture), des PME agroalimentaires, des PME du BTP et un tourisme sportif et vert (forêt de Pontcallec, vallée du Scorff). Bassin de vie entre Lorient (25 min) et Pontivy (35 min).",
   distancesFr:
     "Lorient centre à 25 min voiture N24. Pontivy à 35 min. Gare de Lorient (TGV Paris 3h15). Aéroport Lorient Bretagne Sud à 30 min. Hennebont à 15 min. Vannes à 50 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PLOUAY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Cyclisme & tourisme sportif (vélodrome Raymond Poulidor)",
     "Agroalimentaire & élevage breton",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & polyculture centre Morbihan",
     "Commerce de proximité & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, PME du BTP et du commerce du centre Morbihan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, PME du BTP et du commerce du centre Morbihan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouay : formats adaptés à l'exploitation agricole, atelier agroalimentaire, structure sportive ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const PLOUAY_COPY: VilleCopy = {
       en: "Implémentation IA à Plouay : gestion événementielle cyclisme (billetterie, logistique compétitions), traçabilité agroalimentaire, optimisation production agricole, agents conversationnels tourisme sportif. Adapté sport + agro.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plouay : sessions dans votre exploitation, atelier, structure sportive ou en visio. Dirigeants PME agroalimentaires, exploitants agricoles, artisans, gérants TPE du centre Morbihan.",
-      en: "Coaching 1-to-1 à Plouay : sessions dans votre exploitation, atelier, structure sportive ou en visio. Dirigeants PME agroalimentaires, exploitants agricoles, artisans, gérants TPE du centre Morbihan.",
+      fr: "Coaching 1-to-1 à Plouay : sessions dans votre exploitation, atelier, structure sportive ou en visio. Dirigeants PME agroalimentaires, exploitants agricoles, artisans, gérants PME du centre Morbihan.",
+      en: "Coaching 1-to-1 à Plouay : sessions dans votre exploitation, atelier, structure sportive ou en visio. Dirigeants PME agroalimentaires, exploitants agricoles, artisans, gérants PME du centre Morbihan.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const PLOUAY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et exploitants agricoles autour de Plouay sur leurs cas IA : traçabilité production, optimisation alimentation animale, classification photos qualité, automatisation gestion sanitaire, prédiction rendements.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants plouaysiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Plouay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce plouaysiens ?",
+      a: "Pour les PME du BTP et du commerce à Plouay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks.",
     },
     {
       q: "Comment se passe une mission à Plouay depuis Lorient ?",

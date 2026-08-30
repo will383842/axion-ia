@@ -9,9 +9,9 @@ export const MURS_ERIGNE_COPY: VilleCopy = {
   pitchEn:
     "Mûrs-Erigné (49), commune résidentielle en bords de Loire au sud d'Angers, accueille plus de 6 400 habitants dans un cadre verdoyant entre vignoble et fleuve. Axion-IA accompagne entreprises et indépendants : PME tertiaires, professions libérales, commerces, artisanat et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les TPE, PME et professions libérales du sud angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les PME, ETI et professions libérales du sud angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les TPE, PME et professions libérales du sud angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les PME, ETI et professions libérales du sud angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Mûrs-Erigné est une commune résidentielle attractive en bords de Loire, porte sud d'Angers Loire Métropole. Tissu économique mixte : professions libérales, PME tertiaires, commerces de proximité, artisanat BTP, services à la personne. Vignoble AOC Anjou à proximité, cadre de vie entre Loire et coteaux.",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
   pitchFr:
-    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu TPE viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu PME viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu TPE viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu PME viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, PME artisanales, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, PME artisanales, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
   seoHook: "viticulture vinification & négoce vin",
   ecosystemFr:
-    "Cazouls-lès-Béziers est une commune viticole de l'agglomération de Béziers, au cœur de l'AOC Languedoc et du vignoble biterrois. Le canal du Midi passe à proximité (tourisme fluvial). Tissu TPE domaines viticoles et caves coopératives, PME négoce vin, artisans BTP, commerces de proximité, œnotourisme en développement.",
+    "Cazouls-lès-Béziers est une commune viticole de l'agglomération de Béziers, au cœur de l'AOC Languedoc et du vignoble biterrois. Le canal du Midi passe à proximité (tourisme fluvial). Tissu PME domaines viticoles et caves coopératives, PME négoce vin, artisans BTP, commerces de proximité, œnotourisme en développement.",
   ecosystemEn:
-    "Cazouls-lès-Béziers est une commune viticole de l'agglomération de Béziers, au cœur de l'AOC Languedoc et du vignoble biterrois. Le canal du Midi passe à proximité (tourisme fluvial). Tissu TPE domaines viticoles et caves coopératives, PME négoce vin, artisans BTP, commerces de proximité, œnotourisme en développement.",
+    "Cazouls-lès-Béziers est une commune viticole de l'agglomération de Béziers, au cœur de l'AOC Languedoc et du vignoble biterrois. Le canal du Midi passe à proximité (tourisme fluvial). Tissu PME domaines viticoles et caves coopératives, PME négoce vin, artisans BTP, commerces de proximité, œnotourisme en développement.",
   distancesFr:
     "Béziers centre à 10 min voiture. Gare de Béziers TGV à 12 min. Aéroport Béziers Cap d'Agde à 20 min. Montpellier à 1h10 A75. Narbonne à 25 min A9.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture & vinification (AOC Languedoc)",
     "Négoce vin & caves coopératives",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Œnotourisme & tourisme fluvial (canal du Midi)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cazouls-lès-Béziers : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants du Biterrois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cazouls-lès-Béziers : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants du Biterrois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cazouls-lès-Béziers : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, PME de l'artisanat et du commerce du Biterrois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cazouls-lès-Béziers : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, PME de l'artisanat et du commerce du Biterrois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cazouls-lès-Béziers : formats adaptés aux domaines viticoles, caves, négoce vin ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Cazouls-lès-Béziers : classification parcellaire, prédiction rendements, automatisation traçabilité cave, chatbot œnotourisme multilingue. Adapté viticulture + négoce + tourisme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cazouls-lès-Béziers : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants TPE/PME biterrois.",
-      en: "Coaching 1-to-1 à Cazouls-lès-Béziers : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants TPE/PME biterrois.",
+      fr: "Coaching 1-to-1 à Cazouls-lès-Béziers : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants PME et ETI biterrois.",
+      en: "Coaching 1-to-1 à Cazouls-lès-Béziers : sessions dans votre domaine viticole, cave, commerce ou en visio. Viticulteurs, dirigeants PME négoce, artisans, gérants PME et ETI biterrois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles et caves coopératives sur leurs cas IA : classification parcellaire par imagerie, prédiction rendements vendanges, automatisation traçabilité cave, optimisation gestion stocks et expéditions, chatbot œnotourisme multilingue.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants cazoulins ?",
-      a: "Pour les TPE artisans et commerçants à Cazouls-lès-Béziers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
+      q: "Quels services pour les PME de l'artisanat et du commerce cazoulins ?",
+      a: "Pour les PME de l'artisanat et du commerce à Cazouls-lès-Béziers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous les acteurs de l'œnotourisme ?",

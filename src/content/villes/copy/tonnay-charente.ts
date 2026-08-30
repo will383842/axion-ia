@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TONNAY_CHARENTE_COPY: VilleCopy = {
   pitchFr:
-    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du bassin Rochefort-Tonnay.",
+    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de PME artisanales, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du bassin Rochefort-Tonnay.",
   pitchEn:
-    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du bassin Rochefort-Tonnay.",
+    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de PME artisanales, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du bassin Rochefort-Tonnay.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
   seoHook: "bassin rochefort-tonnay",
   ecosystemFr:
-    "Tonnay-Charente est une commune en bords de Charente, entre Rochefort et Saintes, connue pour son pont suspendu classé. Zones d'activités industrielles et logistiques, agriculture (céréales, vignes), TPE artisans BTP, commerces de proximité, port fluvial historique.",
+    "Tonnay-Charente est une commune en bords de Charente, entre Rochefort et Saintes, connue pour son pont suspendu classé. Zones d'activités industrielles et logistiques, agriculture (céréales, vignes), PME du BTP, commerces de proximité, port fluvial historique.",
   ecosystemEn:
-    "Tonnay-Charente est une commune en bords de Charente, entre Rochefort et Saintes, connue pour son pont suspendu classé. Zones d'activités industrielles et logistiques, agriculture (céréales, vignes), TPE artisans BTP, commerces de proximité, port fluvial historique.",
+    "Tonnay-Charente est une commune en bords de Charente, entre Rochefort et Saintes, connue pour son pont suspendu classé. Zones d'activités industrielles et logistiques, agriculture (céréales, vignes), PME du BTP, commerces de proximité, port fluvial historique.",
   distancesFr:
     "Tonnay-Charente est à 10 min de Rochefort et 25 min de La Rochelle (N137). Gare TGV de La Rochelle à 30 min. Gare de Rochefort à 10 min (TER vers La Rochelle). Saintes à 25 min. Axe N137.",
   distancesEn:
@@ -24,14 +24,14 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie & logistique",
     "Agriculture & viticulture",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services & transport fluvial",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, PME artisanales, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, PME artisanales, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tonnay-Charente : formats adaptés à l'entrepôt, à l'exploitation agricole, à l'atelier ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
       en: "Implémentation IA à Tonnay-Charente : optimisation flux logistiques, automatisation traçabilité agricole, gestion stocks prédictive, agents conversationnels gestion commandes et documentation.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tonnay-Charente : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME industrielles, agriculteurs, artisans et commerçants du bassin Rochefort-Tonnay souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Tonnay-Charente : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME industrielles, agriculteurs, artisans et commerçants du bassin Rochefort-Tonnay souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Tonnay-Charente : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI industrielles, agriculteurs, artisans et commerçants du bassin Rochefort-Tonnay souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Tonnay-Charente : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI industrielles, agriculteurs, artisans et commerçants du bassin Rochefort-Tonnay souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

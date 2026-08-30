@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const HETTANGE_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre les activités professionnelles du bassin.",
+    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu PME et ETI services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre les activités professionnelles du bassin.",
+    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu PME et ETI services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hettange-Grande (57). Nous accompagnons tous types d'activités : TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales, transporteurs et acteurs transfrontaliers du nord mosellan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hettange-Grande (57). Nous accompagnons tous types d'activités : PME et ETI services aux frontaliers, commerces, artisans BTP, professions libérales, transporteurs et acteurs transfrontaliers du nord mosellan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hettange-Grande (57). Nous accompagnons tous types d'activités : TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales, transporteurs et acteurs transfrontaliers du nord mosellan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hettange-Grande (57). Nous accompagnons tous types d'activités : PME et ETI services aux frontaliers, commerces, artisans BTP, professions libérales, transporteurs et acteurs transfrontaliers du nord mosellan.",
   ecosystemFr:
-    "Hettange-Grande est une commune frontalière du Luxembourg au nord de Thionville, bourg-centre du Pays des Trois Frontières. Économie dynamisée par le flux transfrontalier (travailleurs frontaliers Luxembourg). Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et transport.",
+    "Hettange-Grande est une commune frontalière du Luxembourg au nord de Thionville, bourg-centre du Pays des Trois Frontières. Économie dynamisée par le flux transfrontalier (travailleurs frontaliers Luxembourg). Tissu PME et ETI services, commerce, BTP, professions libérales, artisanat et transport.",
   ecosystemEn:
-    "Hettange-Grande est une commune frontalière du Luxembourg au nord de Thionville, bourg-centre du Pays des Trois Frontières. Économie dynamisée par le flux transfrontalier (travailleurs frontaliers Luxembourg). Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et transport.",
+    "Hettange-Grande est une commune frontalière du Luxembourg au nord de Thionville, bourg-centre du Pays des Trois Frontières. Économie dynamisée par le flux transfrontalier (travailleurs frontaliers Luxembourg). Tissu PME et ETI services, commerce, BTP, professions libérales, artisanat et transport.",
   distancesFr:
     "Thionville à 10 min. Luxembourg-Ville à 25 min. Metz à 40 min. Gare SNCF Hettange-Grande sur ligne Thionville-Luxembourg. Autoroute A31 puis D653. Aéroport Luxembourg-Findel à 35 min. Aéroport Metz-Nancy-Lorraine à 55 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Hettange-Grande : diagnostic adapté aux PME et ETI services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hettange-Grande : diagnostic adapté aux PME et ETI services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hettange-Grande : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou dépôt logistique. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
       en: "Implémentation IA à Hettange-Grande : automatisation services frontaliers, gestion clientèle commerce, devis BTP, outils administratifs professions libérales, optimisation transport transfrontalier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hettange-Grande : sessions dans votre bureau, commerce, atelier, cabinet ou en visio. Gérants TPE/PME, commerçants, artisans, professions libérales, frontaliers hettangeois.",
-      en: "Coaching 1-to-1 à Hettange-Grande : sessions dans votre bureau, commerce, atelier, cabinet ou en visio. Gérants TPE/PME, commerçants, artisans, professions libérales, frontaliers hettangeois.",
+      fr: "Coaching 1-to-1 à Hettange-Grande : sessions dans votre bureau, commerce, atelier, cabinet ou en visio. Gérants PME et ETI, commerçants, artisans, professions libérales, frontaliers hettangeois.",
+      en: "Coaching 1-to-1 à Hettange-Grande : sessions dans votre bureau, commerce, atelier, cabinet ou en visio. Gérants PME et ETI, commerçants, artisans, professions libérales, frontaliers hettangeois.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises liées au flux frontalier Luxembourg ?",
-      a: "Oui, nous accompagnons les TPE/PME qui servent les travailleurs frontaliers Luxembourg : services immobiliers, commerces, restauration, services à la personne, transport et conseil. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et ETI qui servent les travailleurs frontaliers Luxembourg : services immobiliers, commerces, restauration, services à la personne, transport et conseil. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Hettange-Grande ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les professions libérales et le conseil transfrontalier ?",

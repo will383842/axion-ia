@@ -535,7 +535,7 @@ export async function renderVilleServicePage({
             }
             description={
               isFr
-                ? "Réponses précises calibrées à votre ville et à votre type d'entreprise (TPE, PME, ETI, grande entreprise)."
+                ? "Réponses précises calibrées à votre ville et à votre type d'entreprise (PME, ETI, grande entreprise)."
                 : "Precise answers calibrated to your city and company size (micro, SME, mid-cap, large enterprise)."
             }
             items={localeCopy.faq.map((f, idx) => ({

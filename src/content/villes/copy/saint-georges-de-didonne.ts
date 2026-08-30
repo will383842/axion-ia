@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la station didonnaise.",
+    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de PME artisanales, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la station didonnaise.",
   pitchEn:
-    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la station didonnaise.",
+    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de PME artisanales, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la station didonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
   seoHook: "tourisme balnéaire & commerce saisonnier",
   ecosystemFr:
-    "Saint-Georges-de-Didonne est une station balnéaire familiale de la Côte de Beauté, en bordure de l'estuaire de la Gironde. Économie touristique (hôtellerie, restauration, campings, plages), commerces saisonniers, TPE artisans BTP, professions libérales. Phare de la Coubre à proximité, site naturel attractif.",
+    "Saint-Georges-de-Didonne est une station balnéaire familiale de la Côte de Beauté, en bordure de l'estuaire de la Gironde. Économie touristique (hôtellerie, restauration, campings, plages), commerces saisonniers, PME du BTP, professions libérales. Phare de la Coubre à proximité, site naturel attractif.",
   ecosystemEn:
-    "Saint-Georges-de-Didonne est une station balnéaire familiale de la Côte de Beauté, en bordure de l'estuaire de la Gironde. Économie touristique (hôtellerie, restauration, campings, plages), commerces saisonniers, TPE artisans BTP, professions libérales. Phare de la Coubre à proximité, site naturel attractif.",
+    "Saint-Georges-de-Didonne est une station balnéaire familiale de la Côte de Beauté, en bordure de l'estuaire de la Gironde. Économie touristique (hôtellerie, restauration, campings, plages), commerces saisonniers, PME du BTP, professions libérales. Phare de la Coubre à proximité, site naturel attractif.",
   distancesFr:
     "Saint-Georges-de-Didonne est à 5 min de Royan. Gare de Royan à 10 min (TER vers Saintes). Saintes à 40 min voiture. La Rochelle à 1h15 (A837/N137). Bordeaux à 1h40. Aéroport Bordeaux-Mérignac à 1h40.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
     "Tourisme balnéaire & hôtellerie-restauration",
     "Commerce saisonnier & de centre-ville",
     "Campings & hébergements de plein air",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et PME et ETI de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et PME et ETI de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Georges-de-Didonne : formats adaptés à l'hôtel, au camping, au restaurant, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Georges-de-Didonne : automatisation yield management hôtelier, agents conversationnels accueil touristique multilingue, prédiction fréquentation saisonnière, gestion stocks restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Georges-de-Didonne : sessions dans votre hôtel, camping, commerce ou en visio. Dirigeants TPE/PME tourisme et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Georges-de-Didonne : sessions dans votre hôtel, camping, commerce ou en visio. Dirigeants TPE/PME tourisme et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Georges-de-Didonne : sessions dans votre hôtel, camping, commerce ou en visio. Dirigeants PME et ETI tourisme et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Georges-de-Didonne : sessions dans votre hôtel, camping, commerce ou en visio. Dirigeants PME et ETI tourisme et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

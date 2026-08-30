@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PITHIVIERS_COPY: VilleCopy = {
   pitchFr:
-    "Pithiviers (45), sous-prefecture du Loiret au coeur de la Beauce, est le pole economique du Pithiverais avec un tissu TPE/PME ancre dans l'agroalimentaire, l'agriculture cerealiere, le commerce, l'artisanat et les services. Axion-IA y intervient pour tous types d'activites.",
+    "Pithiviers (45), sous-prefecture du Loiret au coeur de la Beauce, est le pole economique du Pithiverais avec un tissu PME et ETI ancre dans l'agroalimentaire, l'agriculture cerealiere, le commerce, l'artisanat et les services. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Pithiviers (45), sous-prefecture du Loiret au coeur de la Beauce, est le pole economique du Pithiverais avec un tissu TPE/PME ancre dans l'agroalimentaire, l'agriculture cerealiere, le commerce, l'artisanat et les services. Axion-IA y intervient pour tous types d'activites.",
+    "Pithiviers (45), sous-prefecture du Loiret au coeur de la Beauce, est le pole economique du Pithiverais avec un tissu PME et ETI ancre dans l'agroalimentaire, l'agriculture cerealiere, le commerce, l'artisanat et les services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Pithiviers (45). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Pithiviers (45). Nous accompagnons PME et ETI : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Pithiviers (45). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Pithiviers (45). Nous accompagnons PME et ETI : entreprises agroalimentaires, exploitants agricoles, commercants, artisans et prestataires de services du Pithiverais. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Pithiviers est la sous-prefecture nord du Loiret, au coeur de la Beauce cerealiere. L'economie locale repose sur l'agroalimentaire (sucreries, silos, cooperatives cerealieres), l'agriculture intensive, le commerce de centre-ville, l'artisanat et les services. La ville est celebre pour son pithiviers patissier et son fromage de chevre.",
   ecosystemEn:
@@ -42,8 +42,8 @@ export const PITHIVIERS_COPY: VilleCopy = {
       en: "Implementation IA a Pithiviers : optimisation chaines agroalimentaires, agriculture de precision, gestion stocks commerce, automatisation devis artisans, prevision recoltes cerealieres.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Pithiviers : sessions dans vos locaux professionnels, sur votre exploitation ou en visio. Dirigeants TPE/PME du Pithiverais, gerants agroalimentaire et agriculture.",
-      en: "Coaching 1-to-1 a Pithiviers : sessions dans vos locaux professionnels, sur votre exploitation ou en visio. Dirigeants TPE/PME du Pithiverais, gerants agroalimentaire et agriculture.",
+      fr: "Coaching 1-to-1 a Pithiviers : sessions dans vos locaux professionnels, sur votre exploitation ou en visio. Dirigeants PME et ETI du Pithiverais, gerants agroalimentaire et agriculture.",
+      en: "Coaching 1-to-1 a Pithiviers : sessions dans vos locaux professionnels, sur votre exploitation ou en visio. Dirigeants PME et ETI du Pithiverais, gerants agroalimentaire et agriculture.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PITHIVIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Pithiviers ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Pithiviers, nous proposons des audits approfondis adaptes aux enjeux agroalimentaire, agriculture ou commerce.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Pithiviers, nous proposons des audits approfondis adaptes aux enjeux agroalimentaire, agriculture ou commerce.",
     },
     {
       q: "L'IA peut-elle aider les cooperatives cerealieres a Pithiviers ?",

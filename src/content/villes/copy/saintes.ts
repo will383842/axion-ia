@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINTES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
+    "Axion-IA accompagne les PME et ETI de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
+    "Axion-IA accompagne les PME et ETI de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:audit-flash|flat}}. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les PME et ETI locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:audit-flash|flat}}. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:audit-flash|flat}}. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les PME et ETI locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Sur place à partir de {{price:audit-flash|flat}}. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
   seoHook: "tertiaire & coopératif Charente-Maritime",
   ecosystemFr:
     "Saintes est sous-préfecture de Charente-Maritime et deuxième pôle urbain du département. L'économie repose sur le tertiaire (administration, justice, banques, éducation, santé), le commerce régional, le siège de Coop Atlantique (première coopérative de consommateurs de France), un dépôt ferroviaire SNCF et quelques industries de niche (électronique, équipements de levage). Le patrimoine gallo-romain et médiéval soutient un tissu touristique structurant.",
@@ -32,8 +32,8 @@ export const SAINTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
-      en: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      fr: "Audit IA à Saintes pour PME et ETI tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      en: "Audit IA à Saintes pour PME et ETI tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Saintes pour PME tertiaires, agences bancaires régionales, acteurs du tourisme patrimonial. Refonte prompts, intégration LLM via APIs, debug de pipelines IA existants.",
@@ -44,8 +44,8 @@ export const SAINTES_COPY: VilleCopy = {
       en: "Implémentation IA à Saintes en code custom (Python/TypeScript) : assistants administratifs, automatisation back-office services, outils métiers pour le commerce coopératif et le tourisme.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Saintes pour dirigeants TPE/PME : feuille de route IA, choix des outils, anticipation des coûts. 1h30 à {{price:intervention-dirigeants|flat}}, sur site Charente-Maritime ou en visio.",
-      en: "Coaching un-à-un à Saintes pour dirigeants TPE/PME : feuille de route IA, choix des outils, anticipation des coûts. 1h30 à {{price:intervention-dirigeants|flat}}, sur site Charente-Maritime ou en visio.",
+      fr: "Coaching un-à-un à Saintes pour dirigeants de PME et d'ETI : feuille de route IA, choix des outils, anticipation des coûts. 1h30 à {{price:intervention-dirigeants|flat}}, sur site Charente-Maritime ou en visio.",
+      en: "Coaching un-à-un à Saintes pour dirigeants de PME et d'ETI : feuille de route IA, choix des outils, anticipation des coûts. 1h30 à {{price:intervention-dirigeants|flat}}, sur site Charente-Maritime ou en visio.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const SAINTES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, génération de fiches) sur le site existant d'un commerce de centre-ville, d'un artisan, d'un cabinet de santé ou d'un acteur touristique saintais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const SAINTES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, génération de fiches) sur le site existant d'un commerce de centre-ville, d'un artisan, d'un cabinet de santé ou d'un acteur touristique saintais, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -248,7 +236,7 @@ export const SAINTES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions 1-to-1 pour dirigeants saintais ?",
-      a: "Oui. Sessions un-à-un à Saintes à {{price:intervention-dirigeants|flat}} (1h30), sur site ou visio. Cible : dirigeants de TPE/PME du tertiaire, du commerce coopératif ou du tourisme souhaitant cadrer leur stratégie IA en code custom.",
+      a: "Oui. Sessions un-à-un à Saintes à {{price:intervention-dirigeants|flat}} (1h30), sur site ou visio. Cible : dirigeants de PME et ETI du tertiaire, du commerce coopératif ou du tourisme souhaitant cadrer leur stratégie IA en code custom.",
     },
   ],
 };

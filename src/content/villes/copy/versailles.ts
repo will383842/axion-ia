@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VERSAILLES_COPY: VilleCopy = {
   pitchFr:
-    "À Versailles (78), cité royale classée UNESCO et destination touristique mondiale, Axion-IA accompagne les TPE et PME du tertiaire de prestige. Hôtellerie haut de gamme, agences évènementielles et réceptives, professions libérales, commerces et galeries d'art, services aux entreprises gravitant autour du château et du pôle de Saint-Quentin-en-Yvelines : nous concevons des usages IA concrets, sobres et rentables pour des structures à forte exigence d'image.",
+    "À Versailles (78), cité royale classée UNESCO et destination touristique mondiale, Axion-IA accompagne les PME et ETI du tertiaire de prestige. Hôtellerie haut de gamme, agences évènementielles et réceptives, professions libérales, commerces et galeries d'art, services aux entreprises gravitant autour du château et du pôle de Saint-Quentin-en-Yvelines : nous concevons des usages IA concrets, sobres et rentables pour des structures à forte exigence d'image.",
   pitchEn:
-    "À Versailles (78), cité royale classée UNESCO et destination touristique mondiale, Axion-IA accompagne les TPE et PME du tertiaire de prestige. Hôtellerie haut de gamme, agences évènementielles et réceptives, professions libérales, commerces et galeries d'art, services aux entreprises gravitant autour du château et du pôle de Saint-Quentin-en-Yvelines : nous concevons des usages IA concrets, sobres et rentables pour des structures à forte exigence d'image.",
+    "À Versailles (78), cité royale classée UNESCO et destination touristique mondiale, Axion-IA accompagne les PME et ETI du tertiaire de prestige. Hôtellerie haut de gamme, agences évènementielles et réceptives, professions libérales, commerces et galeries d'art, services aux entreprises gravitant autour du château et du pôle de Saint-Quentin-en-Yvelines : nous concevons des usages IA concrets, sobres et rentables pour des structures à forte exigence d'image.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Versailles (Yvelines) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons l'hôtellerie de prestige, les agences évènementielles, les professions libérales, les commerces et les services aux entreprises proches du château et de Saint-Quentin-en-Yvelines. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Versailles (Yvelines) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons l'hôtellerie de prestige, les agences évènementielles, les professions libérales, les commerces et les services aux entreprises proches du château et de Saint-Quentin-en-Yvelines. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Versailles (Yvelines) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons l'hôtellerie de prestige, les agences évènementielles, les professions libérales, les commerces et les services aux entreprises proches du château et de Saint-Quentin-en-Yvelines. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Versailles (Yvelines) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons l'hôtellerie de prestige, les agences évènementielles, les professions libérales, les commerces et les services aux entreprises proches du château et de Saint-Quentin-en-Yvelines. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "tourisme prestige & tertiaire",
   ecosystemFr:
-    "Versailles structure son économie autour de trois moteurs : le tourisme international porté par le château et le domaine classés UNESCO, un tertiaire de prestige (cabinets, conseil, services aux entreprises) et un pôle d'enseignement supérieur dense, de l'UVSQ aux grandes écoles. La proximité immédiate de Saint-Quentin-en-Yvelines apporte un tissu de PME technologiques et industrielles. Cet environnement à forte valeur ajoutée et exigeant sur l'image se prête aux usages IA mesurés que privilégient les TPE et PME locales.",
+    "Versailles structure son économie autour de trois moteurs : le tourisme international porté par le château et le domaine classés UNESCO, un tertiaire de prestige (cabinets, conseil, services aux entreprises) et un pôle d'enseignement supérieur dense, de l'UVSQ aux grandes écoles. La proximité immédiate de Saint-Quentin-en-Yvelines apporte un tissu de PME technologiques et industrielles. Cet environnement à forte valeur ajoutée et exigeant sur l'image se prête aux usages IA mesurés que privilégient les PME et ETI locales.",
   ecosystemEn:
-    "Versailles structure son économie autour de trois moteurs : le tourisme international porté par le château et le domaine classés UNESCO, un tertiaire de prestige (cabinets, conseil, services aux entreprises) et un pôle d'enseignement supérieur dense, de l'UVSQ aux grandes écoles. La proximité immédiate de Saint-Quentin-en-Yvelines apporte un tissu de PME technologiques et industrielles. Cet environnement à forte valeur ajoutée et exigeant sur l'image se prête aux usages IA mesurés que privilégient les TPE et PME locales.",
+    "Versailles structure son économie autour de trois moteurs : le tourisme international porté par le château et le domaine classés UNESCO, un tertiaire de prestige (cabinets, conseil, services aux entreprises) et un pôle d'enseignement supérieur dense, de l'UVSQ aux grandes écoles. La proximité immédiate de Saint-Quentin-en-Yvelines apporte un tissu de PME technologiques et industrielles. Cet environnement à forte valeur ajoutée et exigeant sur l'image se prête aux usages IA mesurés que privilégient les PME et ETI locales.",
   distancesFr:
     "Versailles est reliée à Paris en 12 minutes par le RER C (Versailles-Château Rive Gauche) et le Transilien (gares Chantiers et Rive Droite). Saint-Quentin-en-Yvelines est à 10 minutes, La Défense à 25 minutes, l'aéroport de Paris-Orly à 30 minutes par la N118.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VERSAILLES_COPY: VilleCopy = {
       en: "Implémentation IA à Versailles : automatisation des devis évènementiels, gestion des réservations hôtelières, traitement des demandes touristiques multilingues et reporting pour services aux entreprises.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Versailles : sessions individuelles pour dirigeants de TPE et PME, dans vos locaux près du château ou en visio, pour exploiter l'IA sans dénaturer une image de marque exigeante.",
-      en: "Accompagnement un-à-un à Versailles : sessions individuelles pour dirigeants de TPE et PME, dans vos locaux près du château ou en visio, pour exploiter l'IA sans dénaturer une image de marque exigeante.",
+      fr: "Accompagnement un-à-un à Versailles : sessions individuelles pour dirigeants de PME et d'ETI, dans vos locaux près du château ou en visio, pour exploiter l'IA sans dénaturer une image de marque exigeante.",
+      en: "Accompagnement un-à-un à Versailles : sessions individuelles pour dirigeants de PME et d'ETI, dans vos locaux près du château ou en visio, pour exploiter l'IA sans dénaturer une image de marque exigeante.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Versailles : plateformes haut de gamme pour hôtels, agences et professions libérales, avec moteur de réservation, devis intelligent et contenu multilingue pour la clientèle internationale.",
@@ -88,12 +88,6 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour les indépendants, hôtels de charme, galeries d'art et professions libérales du centre de Versailles : site multilingue, prise de contact qualifiée et assistant de réponse aux demandes touristiques.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce",
@@ -175,12 +169,6 @@ export const VERSAILLES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site",
-            detail:
-              "For freelancers, boutique hotels, art galleries and professional practices in central Versailles: multilingual site, qualified contact capture and a tourism enquiry assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or e-commerce",
             detail:
@@ -230,15 +218,15 @@ export const VERSAILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Versailles et dans les Yvelines ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Versailles et du secteur de Saint-Quentin-en-Yvelines. Nos consultants se déplacent sur site, à 12 minutes de Paris par le RER C, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Versailles et du secteur de Saint-Quentin-en-Yvelines. Nos consultants se déplacent sur site, à 12 minutes de Paris par le RER C, ou interviennent en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec l'hôtellerie et le tourisme de prestige versaillais ?",
       a: "Oui, c'est un de nos terrains privilégiés. Nous automatisons la gestion des réservations, les réponses multilingues aux demandes touristiques, les devis évènementiels et le reporting, sans jamais dénaturer une image de marque haut de gamme.",
     },
     {
-      q: "Accompagnez-vous les très petites entreprises et professions libérales ?",
-      a: "Les TPE et professions libérales sont notre priorité à Versailles : cabinets, commerces, agences. Nous démarrons par un audit sur place qui chiffre le retour sur investissement, puis déployons des outils simples et durables.",
+      q: "Accompagnez-vous les PME et ETI et professions libérales ?",
+      a: "Les PME et professions libérales sont notre priorité à Versailles : cabinets, commerces, agences. Nous démarrons par un audit sur place qui chiffre le retour sur investissement, puis déployons des outils simples et durables.",
     },
     {
       q: "Quels usages IA pour les agences évènementielles de Versailles ?",

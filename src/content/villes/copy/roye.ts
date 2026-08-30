@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROYE_COPY: VilleCopy = {
   pitchFr:
-    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y travaille avec les organisations du territoire du Santerre Est.",
+    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de PME artisanales, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y travaille avec les organisations du territoire du Santerre Est.",
   pitchEn:
-    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y travaille avec les organisations du territoire du Santerre Est.",
+    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de PME artisanales, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y travaille avec les organisations du territoire du Santerre Est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roye (80). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
-  seoHook: "TPE & PME Somme",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roye (80). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
+  seoHook: "PME & PME Somme",
   ecosystemFr:
-    "Roye est un bourg picard au cœur du Santerre (Somme), historiquement lié à l'agroalimentaire (conserveries, sucreries betteravières). Tissu agricole dominant (céréales, betteraves sucrières, pommes de terre), PME industrielles agroalimentaires, logistique (carrefour A1/RN17/RN334), TPE artisans, commerces de centre-ville.",
+    "Roye est un bourg picard au cœur du Santerre (Somme), historiquement lié à l'agroalimentaire (conserveries, sucreries betteravières). Tissu agricole dominant (céréales, betteraves sucrières, pommes de terre), PME industrielles agroalimentaires, logistique (carrefour A1/RN17/RN334), PME artisanales, commerces de centre-ville.",
   ecosystemEn:
-    "Roye est un bourg picard au cœur du Santerre (Somme), historiquement lié à l'agroalimentaire (conserveries, sucreries betteravières). Tissu agricole dominant (céréales, betteraves sucrières, pommes de terre), PME industrielles agroalimentaires, logistique (carrefour A1/RN17/RN334), TPE artisans, commerces de centre-ville.",
+    "Roye est un bourg picard au cœur du Santerre (Somme), historiquement lié à l'agroalimentaire (conserveries, sucreries betteravières). Tissu agricole dominant (céréales, betteraves sucrières, pommes de terre), PME industrielles agroalimentaires, logistique (carrefour A1/RN17/RN334), PME artisanales, commerces de centre-ville.",
   distancesFr:
     "Gare de Roye (TER Picardie vers Amiens 30 min, Compiègne 25 min). Amiens centre à 40 min voiture. Paris à 1h20 voiture (A1 sortie Roye). Aéroport Beauvais-Tillé à 55 min. Carrefour A1/RN17 axe Paris-Lille.",
   distancesEn:
@@ -25,13 +25,13 @@ export const ROYE_COPY: VilleCopy = {
     "Agroalimentaire & conserveries betteravières",
     "Agriculture grandes cultures Santerre",
     "Logistique & transport routier A1",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et TPE artisans du Santerre. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et TPE artisans du Santerre. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et PME artisanales du Santerre. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et PME artisanales du Santerre. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roye : formats adaptés à l'usine agroalimentaire, l'exploitation agricole, l'entrepôt logistique ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const ROYE_COPY: VilleCopy = {
       en: "Implémentation IA à Roye : optimisation lignes production agroalimentaire, automatisation traçabilité conserveries, prédiction rendements betteraviers, agents IA gestion logistique entrepôts.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roye : sessions dans votre usine, exploitation ou en visio. Dirigeants TPE/PME agroalimentaires, agriculteurs, transporteurs et commerçants du Santerre souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Roye : sessions dans votre usine, exploitation ou en visio. Dirigeants TPE/PME agroalimentaires, agriculteurs, transporteurs et commerçants du Santerre souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Roye : sessions dans votre usine, exploitation ou en visio. Dirigeants PME et ETI agroalimentaires, agriculteurs, transporteurs et commerçants du Santerre souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Roye : sessions dans votre usine, exploitation ou en visio. Dirigeants PME et ETI agroalimentaires, agriculteurs, transporteurs et commerçants du Santerre souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

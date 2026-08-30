@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const IGNY_COPY: VilleCopy = {
   pitchFr:
-    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
+    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu PME services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
+    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu PME services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Igny (91). Nous accompagnons PME et ETI : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Igny (91). Nous accompagnons PME et ETI : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
   seoHook: "conseil ingénierie & services aux",
   ecosystemFr:
-    "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de TPE services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",
+    "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de PME services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",
   ecosystemEn:
-    "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de TPE services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",
+    "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de PME services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",
   distancesFr:
     "Paris centre à 30 min RER B+C. Massy-Palaiseau (RER B+C, TGV) à 10 min. Aéroport Orly à 20 min. Plateau de Saclay à 15 min. A6/A10 à 5 min.",
   distancesEn:
@@ -24,26 +24,26 @@ export const IGNY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Conseil et ingénierie (proximité Saclay)",
     "Professions libérales",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximité",
     "Artisanat BTP et services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, PME services et commerces du nord-Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, PME services et commerces du nord-Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Igny : formats adaptés cabinet, bureau, commerce ou domicile professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Igny : formats adaptés cabinet, bureau, commerce ou domicile professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Igny : automatisation administrative, CRM intelligent, classification documents, agents IA prise de RDV. Adapté professions libérales, conseil, TPE services.",
-      en: "Implémentation IA à Igny : automatisation administrative, CRM intelligent, classification documents, agents IA prise de RDV. Adapté professions libérales, conseil, TPE services.",
+      fr: "Implémentation IA à Igny : automatisation administrative, CRM intelligent, classification documents, agents IA prise de RDV. Adapté professions libérales, conseil, PME services.",
+      en: "Implémentation IA à Igny : automatisation administrative, CRM intelligent, classification documents, agents IA prise de RDV. Adapté professions libérales, conseil, PME services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Igny : sessions dans vos locaux, en espace coworking ou en visio. Dirigeants TPE/PME ignyaciens, professions libérales, consultants indépendants.",
-      en: "Coaching 1-to-1 à Igny : sessions dans vos locaux, en espace coworking ou en visio. Dirigeants TPE/PME ignyaciens, professions libérales, consultants indépendants.",
+      fr: "Coaching 1-to-1 à Igny : sessions dans vos locaux, en espace coworking ou en visio. Dirigeants PME et ETI ignyaciens, professions libérales, consultants indépendants.",
+      en: "Coaching 1-to-1 à Igny : sessions dans vos locaux, en espace coworking ou en visio. Dirigeants PME et ETI ignyaciens, professions libérales, consultants indépendants.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const IGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons professions libérales et cabinets conseil sur leurs cas IA : automatisation administrative, classification documents, CRM intelligent, agents conversationnels prise de RDV, rédaction assistée.",
     },
     {
-      q: "Quels services pour les TPE et commerces ignyaciens ?",
+      q: "Quels services pour les PME et commerces ignyaciens ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
     },
     {

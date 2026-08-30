@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CHATENAY_MALABRY_COPY: VilleCopy = {
   pitchFr:
-    "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne TPE, PME et professions libérales locales.",
+    "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne PME, ETI et professions libérales locales.",
   pitchEn:
-    "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne TPE, PME et professions libérales locales.",
+    "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne PME, ETI et professions libérales locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit sur place à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenay-Malabry (92). Nous accompagnons les PME, ETI, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit sur place à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit sur place à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
-  seoHook: "TPE/PME résidentielles & professions libérales sud Paris",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenay-Malabry (92). Nous accompagnons les PME, ETI, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit sur place à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
+  seoHook: "PME et ETI résidentielles & professions libérales sud Paris",
   ecosystemFr:
     "Tissu économique de Châtenay-Malabry dominé par les services aux entreprises, professions libérales (santé, conseil), commerces de proximité du centre-ville et de la rue Jean Longuet, artisanat et BTP. Présence institutionnelle forte (AFLD, CREPS Île-de-France). L'éco-quartier LaVallée (ex-Centrale) ouvre une nouvelle dynamique tertiaire. Proximité du pôle d'affaires d'Antony et du plateau de Saclay.",
   ecosystemEn:
@@ -30,30 +30,30 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
-      en: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      fr: "Audit IA à Châtenay-Malabry : diagnostic pour PME, ETI, professions libérales et commerces du sud des Hauts-de-Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Châtenay-Malabry : diagnostic pour PME, ETI, professions libérales et commerces du sud des Hauts-de-Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtenay-Malabry : ateliers adaptés cabinet libéral, PME services, artisan ou commerce. Équipes formées et autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Châtenay-Malabry : ateliers adaptés cabinet libéral, PME services, artisan ou commerce. Équipes formées et autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Châtenay-Malabry : automatisation prise de RDV, chatbot client, classification de dossiers, optimisation administrative pour TPE et PME du 92 sud.",
-      en: "Implémentation IA à Châtenay-Malabry : automatisation prise de RDV, chatbot client, classification de dossiers, optimisation administrative pour TPE et PME du 92 sud.",
+      fr: "Implémentation IA à Châtenay-Malabry : automatisation prise de RDV, chatbot client, classification de dossiers, optimisation administrative pour PME et ETI du 92 sud.",
+      en: "Implémentation IA à Châtenay-Malabry : automatisation prise de RDV, chatbot client, classification de dossiers, optimisation administrative pour PME et ETI du 92 sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châtenay-Malabry : sessions sur site ou en visio pour dirigeants TPE/PME, professions libérales, artisans et commerçants du sud parisien.",
-      en: "Coaching 1-to-1 à Châtenay-Malabry : sessions sur site ou en visio pour dirigeants TPE/PME, professions libérales, artisans et commerçants du sud parisien.",
+      fr: "Coaching 1-to-1 à Châtenay-Malabry : sessions sur site ou en visio pour dirigeants de PME et d'ETI, professions libérales, artisans et commerçants du sud parisien.",
+      en: "Coaching 1-to-1 à Châtenay-Malabry : sessions sur site ou en visio pour dirigeants de PME et d'ETI, professions libérales, artisans et commerçants du sud parisien.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Châtenay-Malabry n'est pas une banlieue dortoir comme une autre : depuis septembre 2024, le siège France de Lidl (près de 1 000 salariés, ~40 000 m²) s'est installé dans l'éco-quartier LaVallée, bâti sur l'ancien site de l'École Centrale Paris. Autour de ce poids lourd, le tissu local reste très atomisé — environ 2 031 entreprises dont près des trois quarts dans le commerce et les services, et une majorité de TPE de moins de dix salariés (centre-ville, rue Jean Longuet, Zone Europe, projet Appert-Justice). Axion-IA conçoit pour ces structures des sites web et plateformes SaaS augmentés par l'IA : code custom, hébergement UE/RGPD, UX/UI, mobile, e-commerce multi-CMS et IA conversationnelle, sans verrou éditeur.",
+        hero: "Châtenay-Malabry n'est pas une banlieue dortoir comme une autre : depuis septembre 2024, le siège France de Lidl (près de 1 000 salariés, ~40 000 m²) s'est installé dans l'éco-quartier LaVallée, bâti sur l'ancien site de l'École Centrale Paris. Autour de ce poids lourd, le tissu local reste très atomisé — environ 2 031 entreprises dont près des trois quarts dans le commerce et les services, et une majorité de PME de moins de dix salariés (centre-ville, rue Jean Longuet, Zone Europe, projet Appert-Justice). Axion-IA conçoit pour ces structures des sites web et plateformes SaaS augmentés par l'IA : code custom, hébergement UE/RGPD, UX/UI, mobile, e-commerce multi-CMS et IA conversationnelle, sans verrou éditeur.",
         whyHere: [
           "Le siège France de Lidl à LaVallée et son campus tertiaire attirent prestataires, sous-traitants logistiques et services B2B autour de Châtenay-Malabry : un terreau direct pour des portails fournisseurs, des plateformes SaaS métier et des sites corporate IA-native.",
           "L'éco-quartier LaVallée (ex-École Centrale, première SEMOP d'aménagement de France) mêle 40 000 m² de bureaux, 15 000 m² de commerces et une ferme urbaine : commerces, restaurants et nouvelles enseignes y ont besoin de vitrines e-commerce et de réservation en ligne, pas de sites figés.",
-          "Le tissu réel est dominé par les TPE de proximité (~73,6 % commerce/services, 16 % d'entreprises de 1 à 9 salariés) : boucherie, primeur, poissonnerie, traiteurs, professions libérales du centre-ville et de la rue Jean Longuet — cibles idéales pour un site mobile-first avec prise de commande et chatbot RAG sur le catalogue.",
+          "Le tissu réel est dominé par les PME de proximité (~73,6 % commerce/services, 16 % d'entreprises de 1 à 9 salariés) : boucherie, primeur, poissonnerie, traiteurs, professions libérales du centre-ville et de la rue Jean Longuet — cibles idéales pour un site mobile-first avec prise de commande et chatbot RAG sur le catalogue.",
           "Le départ de la Faculté de Pharmacie et du laboratoire antidopage vers Saclay libère ~13 ha pour un futur quartier économique : les entreprises qui s'y projettent ont besoin de plateformes scalables dès le départ, conçues IA-native plutôt que rafistolées plus tard.",
         ],
         methodology: [
@@ -84,12 +84,6 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les commerces de proximité et professions libérales de Châtenay-Malabry — boucherie, primeur, poissonnerie, traiteur, cabinet — rue Jean Longuet, centre-ville ou nouvelles enseignes de LaVallée : site mobile-first, prise de commande ou de RDV, chatbot sur le catalogue.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -170,12 +164,6 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Châtenay-Malabry local shops and professionals — butcher, greengrocer, fishmonger, caterer, practice — on rue Jean Longuet, the town centre or new LaVallée brands: mobile-first site, ordering or booking, catalogue chatbot.",
-          },
           {
             sizeLabel: "SME",
             price: "Vertical or advanced e-commerce platform",

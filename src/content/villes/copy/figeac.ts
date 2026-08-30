@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FIGEAC_COPY: VilleCopy = {
   pitchFr:
-    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, PME artisanales, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, PME artisanales, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, PME artisanales, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, PME artisanales, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
   seoHook: "aéronautique usinage & mécanique industrielle",
   ecosystemFr:
-    "Figeac est une sous-préfecture du Lot, cité médiévale classée et ville natale de Champollion. Pôle aéronautique majeur (usinage de précision, mécanique de haute technologie). Chemin de Saint-Jacques-de-Compostelle (GR 65). Tissu PME aéronautique et mécanique, TPE artisans, commerces centre médiéval, tourisme culturel et pèlerin.",
+    "Figeac est une sous-préfecture du Lot, cité médiévale classée et ville natale de Champollion. Pôle aéronautique majeur (usinage de précision, mécanique de haute technologie). Chemin de Saint-Jacques-de-Compostelle (GR 65). Tissu PME aéronautique et mécanique, PME artisanales, commerces centre médiéval, tourisme culturel et pèlerin.",
   ecosystemEn:
-    "Figeac est une sous-préfecture du Lot, cité médiévale classée et ville natale de Champollion. Pôle aéronautique majeur (usinage de précision, mécanique de haute technologie). Chemin de Saint-Jacques-de-Compostelle (GR 65). Tissu PME aéronautique et mécanique, TPE artisans, commerces centre médiéval, tourisme culturel et pèlerin.",
+    "Figeac est une sous-préfecture du Lot, cité médiévale classée et ville natale de Champollion. Pôle aéronautique majeur (usinage de précision, mécanique de haute technologie). Chemin de Saint-Jacques-de-Compostelle (GR 65). Tissu PME aéronautique et mécanique, PME artisanales, commerces centre médiéval, tourisme culturel et pèlerin.",
   distancesFr:
     "Cahors à 1h N122. Toulouse à 1h40 A20. Rodez à 1h. Gare SNCF Figeac (ligne Brive-Toulouse). Aéroport Toulouse-Blagnac à 1h45. Aéroport Rodez-Marcillac à 55 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const FIGEAC_COPY: VilleCopy = {
     "Aéronautique & usinage de précision",
     "Mécanique industrielle haute technologie",
     "Tourisme patrimoine & pèlerinage (Saint-Jacques)",
-    "TPE artisanat & commerce centre médiéval",
+    "PME de l'artisanat & commerce centre médiéval",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, PME artisanales, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, PME artisanales, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Figeac : formats adaptés à l'atelier aéronautique, commerce patrimoine, hôtellerie ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const FIGEAC_COPY: VilleCopy = {
       en: "Implémentation IA à Figeac : contrôle qualité vision pièces usinées, prédiction maintenance machines-outils, automatisation traçabilité aéronautique, chatbot tourisme multilingue pèlerins. Adapté aéro + patrimoine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Figeac : sessions dans votre atelier aéronautique, commerce, hébergement touristique ou en visio. Dirigeants PME aéro, artisans, commerçants, gérants TPE/PME lotois.",
-      en: "Coaching 1-to-1 à Figeac : sessions dans votre atelier aéronautique, commerce, hébergement touristique ou en visio. Dirigeants PME aéro, artisans, commerçants, gérants TPE/PME lotois.",
+      fr: "Coaching 1-to-1 à Figeac : sessions dans votre atelier aéronautique, commerce, hébergement touristique ou en visio. Dirigeants PME aéro, artisans, commerçants, gérants PME et ETI lotois.",
+      en: "Coaching 1-to-1 à Figeac : sessions dans votre atelier aéronautique, commerce, hébergement touristique ou en visio. Dirigeants PME aéro, artisans, commerçants, gérants PME et ETI lotois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const FIGEAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME aéronautiques et mécanique de précision sur leurs cas IA : contrôle qualité par vision industrielle, prédiction maintenance machines-outils, traçabilité automatisée, optimisation planification production, documentation technique.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants du centre médiéval ?",
-      a: "Pour les TPE artisans et commerçants à Figeac, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, visibilité web locale, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce du centre médiéval ?",
+      a: "Pour les PME de l'artisanat et du commerce à Figeac, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, visibilité web locale, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme et pèlerinage ?",

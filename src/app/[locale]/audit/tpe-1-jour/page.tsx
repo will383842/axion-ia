@@ -58,7 +58,7 @@ export default async function AuditFlashPage({ params }: Props) {
 
   // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
   // + portrait fondateur pour exposition Google Images + AI Overviews sur
-  // requêtes « audit flash IA », « audit IA TPE PME 490 € sur site ».
+  // requêtes « audit flash IA », « audit IA PME 490 € sur site ».
   const c = AUDIT_DETAIL_CONFIGS[TIER];
   const imagesJsonLd = buildPageImageGraphJsonLd({ locale: loc, path: "/audit/tpe-1-jour" });
   // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.

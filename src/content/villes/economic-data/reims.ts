@@ -349,7 +349,7 @@ export const REIMS_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : annuaire EPV recense des maisons de Champagne (Veuve
   // Clicquot, Ruinart, etc. déjà listées en marquesHistoriques + grands

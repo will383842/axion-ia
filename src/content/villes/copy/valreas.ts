@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VALREAS_COPY: VilleCopy = {
   pitchFr:
-    "Valréas (84), capitale de l'Enclave des Papes en Drôme provençale, conjugue tradition industrielle (cartonnage), viticulture AOC Côtes du Rhône et tissu artisanal rural. TPE artisans et viticulteurs, PME cartonnage et agroalimentaires, professions libérales, commerces et tourisme oenologique. Axion-IA accompagne tout le tissu professionnel local.",
+    "Valréas (84), capitale de l'Enclave des Papes en Drôme provençale, conjugue tradition industrielle (cartonnage), viticulture AOC Côtes du Rhône et tissu artisanal rural. PME artisanales et viticulteurs, PME cartonnage et agroalimentaires, professions libérales, commerces et tourisme oenologique. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Valréas (84), capitale de l'Enclave des Papes en Drôme provençale, conjugue tradition industrielle (cartonnage), viticulture AOC Côtes du Rhône et tissu artisanal rural. TPE artisans et viticulteurs, PME cartonnage et agroalimentaires, professions libérales, commerces et tourisme oenologique. Axion-IA accompagne tout le tissu professionnel local.",
+    "Valréas (84), capitale de l'Enclave des Papes en Drôme provençale, conjugue tradition industrielle (cartonnage), viticulture AOC Côtes du Rhône et tissu artisanal rural. PME artisanales et viticulteurs, PME cartonnage et agroalimentaires, professions libérales, commerces et tourisme oenologique. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valréas (84). Nous accompagnons PME artisanales, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valréas (84). Nous accompagnons PME artisanales, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & cartonnage industrie",
   ecosystemFr:
-    "Valréas est positionnée dans l'Enclave des Papes, exclave du Vaucluse au cœur de la Drôme provençale. Son économie historique repose sur l'industrie du cartonnage (capitale du cartonnage), la viticulture AOC Côtes du Rhône et Grignan-les-Adhémar, les TPE artisans (BTP, métiers d'art), les PME agroalimentaires et tourisme oenologique, les professions libérales et commerces de centre-bourg.",
+    "Valréas est positionnée dans l'Enclave des Papes, exclave du Vaucluse au cœur de la Drôme provençale. Son économie historique repose sur l'industrie du cartonnage (capitale du cartonnage), la viticulture AOC Côtes du Rhône et Grignan-les-Adhémar, les PME artisanales (BTP, métiers d'art), les PME agroalimentaires et tourisme oenologique, les professions libérales et commerces de centre-bourg.",
   ecosystemEn:
-    "Valréas est positionnée dans l'Enclave des Papes, exclave du Vaucluse au cœur de la Drôme provençale. Son économie historique repose sur l'industrie du cartonnage (capitale du cartonnage), la viticulture AOC Côtes du Rhône et Grignan-les-Adhémar, les TPE artisans (BTP, métiers d'art), les PME agroalimentaires et tourisme oenologique, les professions libérales et commerces de centre-bourg.",
+    "Valréas est positionnée dans l'Enclave des Papes, exclave du Vaucluse au cœur de la Drôme provençale. Son économie historique repose sur l'industrie du cartonnage (capitale du cartonnage), la viticulture AOC Côtes du Rhône et Grignan-les-Adhémar, les PME artisanales (BTP, métiers d'art), les PME agroalimentaires et tourisme oenologique, les professions libérales et commerces de centre-bourg.",
   distancesFr:
     "Orange à 45 min. Avignon à 1h. Montélimar à 30 min. Nyons à 25 min. Vaison-la-Romaine à 35 min. Gare TGV Avignon à 1h. Aéroport Marseille-Provence à 1h30. Accès D941 et A7.",
   distancesEn:
@@ -24,22 +24,22 @@ export const VALREAS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Côtes du Rhône",
     "PME cartonnage & industrie",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Tourisme oenologique & rural",
     "Commerces & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Valréas : diagnostic adapté aux PME artisanales, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valréas : diagnostic adapté aux PME artisanales, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
-      en: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
+      fr: "Interventions IA sur site à Valréas : ateliers pour équipes PME et ETI cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
+      en: "Interventions IA sur site à Valréas : ateliers pour équipes PME et ETI cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
     },
     implementation: {
-      fr: "Implémentation IA à Valréas : optimisation chaîne cartonnage et prévision demande, traçabilité parcellaire viticole, e-commerce direct producteur, content marketing oenotouristique, automatisation comptabilité TPE. RGPD strict.",
-      en: "Implémentation IA à Valréas : optimisation chaîne cartonnage et prévision demande, traçabilité parcellaire viticole, e-commerce direct producteur, content marketing oenotouristique, automatisation comptabilité TPE. RGPD strict.",
+      fr: "Implémentation IA à Valréas : optimisation chaîne cartonnage et prévision demande, traçabilité parcellaire viticole, e-commerce direct producteur, content marketing oenotouristique, automatisation comptabilité PME. RGPD strict.",
+      en: "Implémentation IA à Valréas : optimisation chaîne cartonnage et prévision demande, traçabilité parcellaire viticole, e-commerce direct producteur, content marketing oenotouristique, automatisation comptabilité PME. RGPD strict.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Valréas : sessions pour dirigeants PME cartonnage, viticulteurs AOC, artisans et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
@@ -53,7 +53,7 @@ export const VALREAS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Valréas  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et commerces valréassiens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, viticulteurs AOC, PME cartonnage et commerces valréassiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les viticulteurs AOC Côtes du Rhône ?",

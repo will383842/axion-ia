@@ -156,7 +156,7 @@ export const AUTOMATABLE_TASKS: readonly AutomatableTask[] = [
     howFr:
       "Chaque devis déclenche sa propre séquence de relance, adaptée au montant et au délai, et s'interrompt dès que le client répond.",
     proofFr:
-      "Temps amorti sur tous les devis émis : environ deux devis sur trois demandent une à deux relances de cinq minutes. C'est la tâche la plus systématiquement oubliée en TPE-PME, donc celle où le gain est le plus net.",
+      "Temps amorti sur tous les devis émis : environ deux devis sur trois demandent une à deux relances de cinq minutes. C'est la tâche la plus systématiquement oubliée en PME et ETI, donc celle où le gain est le plus net.",
   },
   {
     id: "prospect_qualification",

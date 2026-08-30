@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const HAUTE_GOULAINE_COPY: VilleCopy = {
   pitchFr:
-    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA collabore avec toutes les structures locales de l'est nantais viticole.",
+    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu PME viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA collabore avec toutes les structures locales de l'est nantais viticole.",
   pitchEn:
-    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA collabore avec toutes les structures locales de l'est nantais viticole.",
+    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu PME viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA collabore avec toutes les structures locales de l'est nantais viticole.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : PME viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : PME viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
   seoHook: "viticulture muscadet & tertiaires services",
   ecosystemFr:
-    "Haute-Goulaine est une commune résidentielle et viticole à l'est de Nantes. Château classé, vignoble Muscadet, marais de Goulaine. Tissu TPE viticulteurs, artisans, commerçants, PME tertiaires, professions libérales et restauration. Cadre patrimonial et viticole attractif.",
+    "Haute-Goulaine est une commune résidentielle et viticole à l'est de Nantes. Château classé, vignoble Muscadet, marais de Goulaine. Tissu PME viticulteurs, artisans, commerçants, PME tertiaires, professions libérales et restauration. Cadre patrimonial et viticole attractif.",
   ecosystemEn:
-    "Haute-Goulaine est une commune résidentielle et viticole à l'est de Nantes. Château classé, vignoble Muscadet, marais de Goulaine. Tissu TPE viticulteurs, artisans, commerçants, PME tertiaires, professions libérales et restauration. Cadre patrimonial et viticole attractif.",
+    "Haute-Goulaine est une commune résidentielle et viticole à l'est de Nantes. Château classé, vignoble Muscadet, marais de Goulaine. Tissu PME viticulteurs, artisans, commerçants, PME tertiaires, professions libérales et restauration. Cadre patrimonial et viticole attractif.",
   distancesFr:
     "Nantes centre à 15 min. Gare Nantes TGV à 20 min. Vertou à 5 min. Vallet à 20 min. Aéroport Nantes-Atlantique à 25 min. Clisson à 25 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture Muscadet",
     "PME tertiaires & services",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "Professions libérales",
     "Restauration & œnotourisme",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Haute-Goulaine : diagnostic adapté aux TPE viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Haute-Goulaine : diagnostic adapté aux TPE viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Haute-Goulaine : diagnostic adapté aux PME viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Haute-Goulaine : diagnostic adapté aux PME viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Haute-Goulaine : formats adaptés au domaine viticole, au bureau, au commerce ou au restaurant. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
       en: "Implémentation IA à Haute-Goulaine : automatisation gestion vignoble, agents conversationnels œnotourisme, optimisation workflow tertiaire, extraction données commerciales. Est nantais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Haute-Goulaine : sessions dans votre domaine, bureau, commerce ou en visio. Dirigeants TPE/PME de l'est nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Haute-Goulaine : sessions dans votre domaine, bureau, commerce ou en visio. Dirigeants TPE/PME de l'est nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Haute-Goulaine : sessions dans votre domaine, bureau, commerce ou en visio. Dirigeants PME et ETI de l'est nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Haute-Goulaine : sessions dans votre domaine, bureau, commerce ou en visio. Dirigeants PME et ETI de l'est nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Haute-Goulaine  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de l'est nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI de l'est nantais.",
     },
     {
       q: "Intervenez-vous dans les domaines viticoles sur site ?",

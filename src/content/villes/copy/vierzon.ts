@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIERZON_COPY: VilleCopy = {
   pitchFr:
-    "À Vierzon (18), carrefour ferroviaire majeur du Centre-Val de Loire et ancienne capitale du machinisme agricole, Axion-IA accompagne les TPE et PME de l'industrie en reconversion, de la logistique et des services. PME mécaniques et métallurgiques héritières du tracteur et de la porcelaine, transporteurs profitant de l'étoile ferroviaire, artisans, commerces et professions libérales : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
+    "À Vierzon (18), carrefour ferroviaire majeur du Centre-Val de Loire et ancienne capitale du machinisme agricole, Axion-IA accompagne les PME et ETI de l'industrie en reconversion, de la logistique et des services. PME mécaniques et métallurgiques héritières du tracteur et de la porcelaine, transporteurs profitant de l'étoile ferroviaire, artisans, commerces et professions libérales : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
   pitchEn:
-    "À Vierzon (18), carrefour ferroviaire majeur du Centre-Val de Loire et ancienne capitale du machinisme agricole, Axion-IA accompagne les TPE et PME de l'industrie en reconversion, de la logistique et des services. PME mécaniques et métallurgiques héritières du tracteur et de la porcelaine, transporteurs profitant de l'étoile ferroviaire, artisans, commerces et professions libérales : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
+    "À Vierzon (18), carrefour ferroviaire majeur du Centre-Val de Loire et ancienne capitale du machinisme agricole, Axion-IA accompagne les PME et ETI de l'industrie en reconversion, de la logistique et des services. PME mécaniques et métallurgiques héritières du tracteur et de la porcelaine, transporteurs profitant de l'étoile ferroviaire, artisans, commerces et professions libérales : nous concevons des usages IA concrets pour gagner en productivité sans complexité.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vierzon (Cher) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les PME industrielles et mécaniques issues de l'histoire du machinisme agricole, les acteurs de la logistique adossés au carrefour ferroviaire, les artisans et les commerces locaux. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vierzon (Cher) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les PME industrielles et mécaniques issues de l'histoire du machinisme agricole, les acteurs de la logistique adossés au carrefour ferroviaire, les artisans et les commerces locaux. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vierzon (Cher) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les PME industrielles et mécaniques issues de l'histoire du machinisme agricole, les acteurs de la logistique adossés au carrefour ferroviaire, les artisans et les commerces locaux. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vierzon (Cher) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les PME industrielles et mécaniques issues de l'histoire du machinisme agricole, les acteurs de la logistique adossés au carrefour ferroviaire, les artisans et les commerces locaux. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "industrie & logistique ferroviaire",
   ecosystemFr:
-    "Vierzon doit son économie à sa position de carrefour ferroviaire, à l'intersection des grandes lignes du Centre, qui a fait sa prospérité industrielle. La ville garde l'empreinte du machinisme agricole et de la porcelaine, aujourd'hui prolongée par des PME de mécanique, de métallurgie et de fabrication en reconversion. La logistique tire parti de l'étoile ferroviaire et autoroutière. Ce tissu de TPE et PME industrielles et de services trouve dans l'IA un levier concret pour optimiser planning, devis et maintenance.",
+    "Vierzon doit son économie à sa position de carrefour ferroviaire, à l'intersection des grandes lignes du Centre, qui a fait sa prospérité industrielle. La ville garde l'empreinte du machinisme agricole et de la porcelaine, aujourd'hui prolongée par des PME de mécanique, de métallurgie et de fabrication en reconversion. La logistique tire parti de l'étoile ferroviaire et autoroutière. Ce tissu de PME et ETI industrielles et de services trouve dans l'IA un levier concret pour optimiser planning, devis et maintenance.",
   ecosystemEn:
-    "Vierzon doit son économie à sa position de carrefour ferroviaire, à l'intersection des grandes lignes du Centre, qui a fait sa prospérité industrielle. La ville garde l'empreinte du machinisme agricole et de la porcelaine, aujourd'hui prolongée par des PME de mécanique, de métallurgie et de fabrication en reconversion. La logistique tire parti de l'étoile ferroviaire et autoroutière. Ce tissu de TPE et PME industrielles et de services trouve dans l'IA un levier concret pour optimiser planning, devis et maintenance.",
+    "Vierzon doit son économie à sa position de carrefour ferroviaire, à l'intersection des grandes lignes du Centre, qui a fait sa prospérité industrielle. La ville garde l'empreinte du machinisme agricole et de la porcelaine, aujourd'hui prolongée par des PME de mécanique, de métallurgie et de fabrication en reconversion. La logistique tire parti de l'étoile ferroviaire et autoroutière. Ce tissu de PME et ETI industrielles et de services trouve dans l'IA un levier concret pour optimiser planning, devis et maintenance.",
   distancesFr:
     "Vierzon est un nœud ferroviaire majeur : Paris-Austerlitz en 1 h 40, Bourges en 20 minutes, Tours en 50 minutes, Châteauroux en 35 minutes. L'autoroute A71 traverse la ville et l'aéroport de Châteauroux-Centre est à 60 km.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VIERZON_COPY: VilleCopy = {
       en: "Implémentation IA à Vierzon : automatisation des devis industriels, planification de production et de maintenance, optimisation des tournées logistiques et reporting pour PME mécaniques et transporteurs.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Vierzon : sessions individuelles pour dirigeants de TPE et PME industrielles ou de services, dans vos locaux ou en visio, pour adopter l'IA sans bouleverser l'organisation.",
-      en: "Accompagnement un-à-un à Vierzon : sessions individuelles pour dirigeants de TPE et PME industrielles ou de services, dans vos locaux ou en visio, pour adopter l'IA sans bouleverser l'organisation.",
+      fr: "Accompagnement un-à-un à Vierzon : sessions individuelles pour dirigeants de PME et d'ETI industrielles ou de services, dans vos locaux ou en visio, pour adopter l'IA sans bouleverser l'organisation.",
+      en: "Accompagnement un-à-un à Vierzon : sessions individuelles pour dirigeants de PME et d'ETI industrielles ou de services, dans vos locaux ou en visio, pour adopter l'IA sans bouleverser l'organisation.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Vierzon : plateformes pour PME industrielles, transporteurs et artisans, avec demande de devis intelligente, catalogue produits et suivi de commande automatisé.",
@@ -53,7 +53,7 @@ export const VIERZON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
+        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les PME et ETI de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
         whyHere: [
           "Héritage du machinisme agricole et de la mécanique de précision : les PME industrielles et métallurgiques vierzonnaises, dans la lignée de la Société Française de Vierzon et autour d'employeurs comme Parker Hannifin (hydraulique), ont besoin de sites catalogues techniques, de configurateurs de devis et de portails de pièces — on greffe l'IA sur l'existant (configurateur, recherche sémantique de références) sans refonte coûteuse.",
           "Étoile ferroviaire et autoroute A71 : les transporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un portail client de suivi d'expéditions, de prise de commande en ligne et d'automatisation du reporting, que l'on conçoit en plateforme SaaS sur mesure branchée sur votre SI.",
@@ -88,12 +88,6 @@ export const VIERZON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de références, devis automatisé) sur le site d'un artisan du bâtiment, d'un commerce du centre-ville de Vierzon ou d'un atelier de mécanique, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const VIERZON_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de production des ateliers vierzonnais. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Tout est transférable à un prestataire local du Centre-Val de Loire ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les TPE et PME de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
+        hero: "Axion-IA conçoit et augmente à Vierzon des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de carrefour ferroviaire et d'industrie en reconversion, héritière de la Société Française de Vierzon, du machinisme agricole et de la porcelaine, où dominent les PME et ETI de mécanique, de métallurgie, de logistique et des services. Du Parc Technologique de Sologne au Parc d'activités des Forges, on greffe l'IA sur l'existant ou on build IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Vierzon, itérations à distance en visio.",
         whyHere: [
           "Héritage du machinisme agricole et de la mécanique de précision : les PME industrielles et métallurgiques vierzonnaises, dans la lignée de la Société Française de Vierzon et autour d'employeurs comme Parker Hannifin (hydraulique), ont besoin de sites catalogues techniques, de configurateurs de devis et de portails de pièces — on greffe l'IA sur l'existant (configurateur, recherche sémantique de références) sans refonte coûteuse.",
           "Étoile ferroviaire et autoroute A71 : les transporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un portail client de suivi d'expéditions, de prise de commande en ligne et d'automatisation du reporting, que l'on conçoit en plateforme SaaS sur mesure branchée sur votre SI.",
@@ -174,12 +168,6 @@ export const VIERZON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de références, devis automatisé) sur le site d'un artisan du bâtiment, d'un commerce du centre-ville de Vierzon ou d'un atelier de mécanique, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,7 +218,7 @@ export const VIERZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vierzon et dans le Cher ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vierzon et du nord du Cher. Nos consultants se déplacent sur site, profitant du carrefour ferroviaire (Paris-Austerlitz à 1 h 40, Bourges à 20 minutes), ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Vierzon et du nord du Cher. Nos consultants se déplacent sur site, profitant du carrefour ferroviaire (Paris-Austerlitz à 1 h 40, Bourges à 20 minutes), ou interviennent en visio.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et mécaniques vierzonnaises ?",
@@ -242,7 +230,7 @@ export const VIERZON_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et commerces de Vierzon ?",
-      a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous mettons en place devis automatisés, gestion de planning, relances clients et facturation intelligente, après un audit qui chiffre le retour attendu.",
+      a: "Oui, les PME sont notre priorité. Pour artisans et commerçants, nous mettons en place devis automatisés, gestion de planning, relances clients et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Bourges ?",

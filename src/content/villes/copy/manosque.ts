@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MANOSQUE_COPY: VilleCopy = {
   pitchFr:
-    "Manosque (04), plus grande ville des Alpes-de-Haute-Provence et terre de Jean Giono, abrite le siège mondial de L'Occitane en Provence. Entre lavande, cosmétique, tourisme et proximité du centre de recherche Cadarache (réacteur de fusion ITER), son tissu mêle TPE artisanales, commerces et PME de services. Axion-IA accompagne en priorité les TPE puis les PME manosquines.",
+    "Manosque (04), plus grande ville des Alpes-de-Haute-Provence et terre de Jean Giono, abrite le siège mondial de L'Occitane en Provence. Entre lavande, cosmétique, tourisme et proximité du centre de recherche Cadarache (réacteur de fusion ITER), son tissu mêle PME artisanales, commerces et PME de services. Axion-IA accompagne en priorité les PME puis les ETI manosquines.",
   pitchEn:
-    "Manosque (04), plus grande ville des Alpes-de-Haute-Provence et terre de Jean Giono, abrite le siège mondial de L'Occitane en Provence. Entre lavande, cosmétique, tourisme et proximité du centre de recherche Cadarache (réacteur de fusion ITER), son tissu mêle TPE artisanales, commerces et PME de services. Axion-IA accompagne en priorité les TPE puis les PME manosquines.",
+    "Manosque (04), plus grande ville des Alpes-de-Haute-Provence et terre de Jean Giono, abrite le siège mondial de L'Occitane en Provence. Entre lavande, cosmétique, tourisme et proximité du centre de recherche Cadarache (réacteur de fusion ITER), son tissu mêle PME artisanales, commerces et PME de services. Axion-IA accompagne en priorité les PME puis les ETI manosquines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Manosque (04) auprès des TPE en priorité, puis des PME : cosmétique et lavande, commerces, hôtellerie-restauration touristique, artisans du BTP, professions libérales et prestataires de l'écosystème Cadarache-ITER. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Manosque (04) auprès des PME en priorité, puis des PME : cosmétique et lavande, commerces, hôtellerie-restauration touristique, artisans du BTP, professions libérales et prestataires de l'écosystème Cadarache-ITER. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Manosque (04) auprès des TPE en priorité, puis des PME : cosmétique et lavande, commerces, hôtellerie-restauration touristique, artisans du BTP, professions libérales et prestataires de l'écosystème Cadarache-ITER. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Manosque (04) auprès des PME en priorité, puis des PME : cosmétique et lavande, commerces, hôtellerie-restauration touristique, artisans du BTP, professions libérales et prestataires de l'écosystème Cadarache-ITER. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   seoHook: "cosmétique provence & tourisme",
   ecosystemFr:
     "Manosque rayonne grâce au siège mondial de L'Occitane en Provence, locomotive de la filière cosmétique et lavande. La proximité du centre CEA de Cadarache et du projet de fusion nucléaire ITER alimente un écosystème de PME prestataires high-tech. S'y ajoutent un tourisme provençal actif, des commerces de centre-ville, des artisans du BTP et de nombreuses professions libérales.",
@@ -30,8 +30,8 @@ export const MANOSQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Manosque : diagnostic pour TPE cosmétiques, commerces, hôtellerie touristique et prestataires Cadarache. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
-      en: "Audit IA à Manosque : diagnostic pour TPE cosmétiques, commerces, hôtellerie touristique et prestataires Cadarache. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      fr: "Audit IA à Manosque : diagnostic pour PME cosmétiques, commerces, hôtellerie touristique et prestataires Cadarache. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Manosque : diagnostic pour PME cosmétiques, commerces, hôtellerie touristique et prestataires Cadarache. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Manosque : formats adaptés à l'atelier cosmétique, au commerce, à l'hôtel ou au bureau. Vos équipes prennent ensuite la main en autonomie.",
@@ -42,8 +42,8 @@ export const MANOSQUE_COPY: VilleCopy = {
       en: "Implémentation IA à Manosque : agents conversationnels multilingues pour le tourisme, contrôle qualité par vision en cosmétique, automatisation administrative et CRM augmentés.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Manosque : sessions dans votre commerce, atelier, hôtel ou en visio. Pour gérants de TPE, artisans et dirigeants de PME manosquines.",
-      en: "Coaching 1-to-1 à Manosque : sessions dans votre commerce, atelier, hôtel ou en visio. Pour gérants de TPE, artisans et dirigeants de PME manosquines.",
+      fr: "Coaching 1-to-1 à Manosque : sessions dans votre commerce, atelier, hôtel ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME manosquines.",
+      en: "Coaching 1-to-1 à Manosque : sessions dans votre commerce, atelier, hôtel ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME manosquines.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Manosque : plateformes et outils SaaS IA sur mesure — boutiques en ligne cosmétiques, réservation touristique multilingue, portails clients connectés à vos process.",
@@ -58,7 +58,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           "Filière cosmétique et lavande tirée par le siège mondial de L'Occitane en Provence, premier employeur privé du bassin : un terrain idéal pour des boutiques e-commerce sur mesure multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), des fiches produits enrichies par recherche sémantique et des parcours d'achat multilingues calibrés pour une clientèle internationale exigeante.",
           "Tourisme provençal et thermalisme du bassin (Gréoux-les-Bains, pays de Forcalquier, montagne de Lure, plateau de Valensole) : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut et conçus mobile-first, adaptés à l'hôtellerie, aux gîtes, aux producteurs de lavande et aux artisans d'art de la Haute-Provence qui captent une clientèle saisonnière.",
           "Écosystème de PME prestataires high-tech autour du CEA de Cadarache et du projet de fusion ITER, à 30 min, et du site Géosel-Géométhane de stockage souterrain d'hydrocarbures et de gaz : on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, ou on greffe une brique IA d'automatisation B2B sur l'existant sans refonte.",
-          "Tissu dense de TPE du commerce de centre-ville ancien, de l'artisanat, du BTP et des professions libérales, relayé par la zone d'activité de Saint-Maurice : on augmente l'existant (widget, API, plugin WordPress) ou on livre un site vitrine clé en main, avec UX/UI sur mesure, hébergement UE et conformité RGPD — vos données clients restent maîtrisées.",
+          "Tissu dense de PME du commerce de centre-ville ancien, de l'artisanat, du BTP et des professions libérales, relayé par la zone d'activité de Saint-Maurice : on augmente l'existant (widget, API, plugin WordPress) ou on livre un site vitrine clé en main, avec UX/UI sur mesure, hébergement UE et conformité RGPD — vos données clients restent maîtrisées.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de réservation) sur le site existant d'un commerce du centre ancien, d'un hôtel de Gréoux, d'un producteur de lavande ou d'un artisan manosquin, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -144,7 +138,7 @@ export const MANOSQUE_COPY: VilleCopy = {
           "Filière cosmétique et lavande tirée par le siège mondial de L'Occitane en Provence, premier employeur privé du bassin : un terrain idéal pour des boutiques e-commerce sur mesure multi-CMS (Shopify, WooCommerce, PrestaShop, Magento), des fiches produits enrichies par recherche sémantique et des parcours d'achat multilingues calibrés pour une clientèle internationale exigeante.",
           "Tourisme provençal et thermalisme du bassin (Gréoux-les-Bains, pays de Forcalquier, montagne de Lure, plateau de Valensole) : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut et conçus mobile-first, adaptés à l'hôtellerie, aux gîtes, aux producteurs de lavande et aux artisans d'art de la Haute-Provence qui captent une clientèle saisonnière.",
           "Écosystème de PME prestataires high-tech autour du CEA de Cadarache et du projet de fusion ITER, à 30 min, et du site Géosel-Géométhane de stockage souterrain d'hydrocarbures et de gaz : on construit des portails clients, des plateformes documentaires, de la recherche sémantique sur normes et procédures, ou on greffe une brique IA d'automatisation B2B sur l'existant sans refonte.",
-          "Tissu dense de TPE du commerce de centre-ville ancien, de l'artisanat, du BTP et des professions libérales, relayé par la zone d'activité de Saint-Maurice : on augmente l'existant (widget, API, plugin WordPress) ou on livre un site vitrine clé en main, avec UX/UI sur mesure, hébergement UE et conformité RGPD — vos données clients restent maîtrisées.",
+          "Tissu dense de PME du commerce de centre-ville ancien, de l'artisanat, du BTP et des professions libérales, relayé par la zone d'activité de Saint-Maurice : on augmente l'existant (widget, API, plugin WordPress) ou on livre un site vitrine clé en main, avec UX/UI sur mesure, hébergement UE et conformité RGPD — vos données clients restent maîtrisées.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const MANOSQUE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de réservation) sur le site existant d'un commerce du centre ancien, d'un hôtel de Gréoux, d'un producteur de lavande ou d'un artisan manosquin, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,8 +221,8 @@ export const MANOSQUE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Manosque et tout le bassin du pays de Forcalquier-Montagne de Lure (Volx, Sainte-Tulle, Gréoux-les-Bains). Nos consultants viennent d'Aix-en-Provence, à 50 minutes.",
     },
     {
-      q: "Accompagnez-vous les TPE du tourisme et de la cosmétique ?",
-      a: "Oui, les TPE sont notre priorité : agents conversationnels multilingues pour l'hôtellerie, automatisation des réservations, contrôle qualité cosmétique. Audit sur place dès {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME du tourisme et de la cosmétique ?",
+      a: "Oui, les PME sont notre priorité : agents conversationnels multilingues pour l'hôtellerie, automatisation des réservations, contrôle qualité cosmétique. Audit sur place dès {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les prestataires de Cadarache et ITER ?",

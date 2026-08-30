@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VAUGNERAY_COPY: VilleCopy = {
   pitchFr:
-    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, PME du BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, PME du BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, PME du BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, PME du BTP, commerçants, professions libérales et services aux entreprises.",
   seoHook: "tertiaires ouest & agriculture monts",
   ecosystemFr:
-    "Vaugneray est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu mixte péri-urbain et rural : PME tertiaires, agriculture monts du Lyonnais (élevage, cultures), TPE artisanat BTP, commerces, professions libérales.",
+    "Vaugneray est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu mixte péri-urbain et rural : PME tertiaires, agriculture monts du Lyonnais (élevage, cultures), PME du BTP, commerces, professions libérales.",
   ecosystemEn:
-    "Vaugneray est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu mixte péri-urbain et rural : PME tertiaires, agriculture monts du Lyonnais (élevage, cultures), TPE artisanat BTP, commerces, professions libérales.",
+    "Vaugneray est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu mixte péri-urbain et rural : PME tertiaires, agriculture monts du Lyonnais (élevage, cultures), PME du BTP, commerces, professions libérales.",
   distancesFr:
     "Lyon centre à 25 min. Aéroport Lyon-Saint-Exupéry à 50 min. Craponne à 10 min. Brindas à 10 min. Grézieu-la-Varenne à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const VAUGNERAY_COPY: VilleCopy = {
     "PME tertiaires ouest lyonnais",
     "Agriculture monts du Lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaugneray : formats adaptés au bureau, exploitation agricole, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VAUGNERAY_COPY: VilleCopy = {
       en: "Implémentation IA à Vaugneray : agents conversationnels B2B/patient, classification photos cultures/animaux, automatisation workflow, vente directe. Ouest lyonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vaugneray : sessions dans votre bureau, exploitation, cabinet ou en visio. Dirigeants tertiaires, agriculteurs, professions libérales, artisans, gérants TPE/PME valnégriens.",
-      en: "Coaching 1-to-1 à Vaugneray : sessions dans votre bureau, exploitation, cabinet ou en visio. Dirigeants tertiaires, agriculteurs, professions libérales, artisans, gérants TPE/PME valnégriens.",
+      fr: "Coaching 1-to-1 à Vaugneray : sessions dans votre bureau, exploitation, cabinet ou en visio. Dirigeants tertiaires, agriculteurs, professions libérales, artisans, gérants PME et ETI valnégriens.",
+      en: "Coaching 1-to-1 à Vaugneray : sessions dans votre bureau, exploitation, cabinet ou en visio. Dirigeants tertiaires, agriculteurs, professions libérales, artisans, gérants PME et ETI valnégriens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VAUGNERAY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et professions libérales ouest lyonnais sur leurs cas IA : agents conversationnels, automatisation workflow, classification documents. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Vaugneray, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Vaugneray, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

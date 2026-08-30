@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GOUSSAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Goussainville (95), aux portes de l'aéroport Roissy-Charles-de-Gaulle, vit au rythme de la logistique aéroportuaire, de l'entreposage, du transport et d'un commerce de proximité dense. Ses zones d'activité concentrent de nombreuses TPE et PME de fret, de services aux entreprises et d'artisanat. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME val-d'oisiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui fluidifie flux, planning et relation client sans dépendance technique.",
+    "Goussainville (95), aux portes de l'aéroport Roissy-Charles-de-Gaulle, vit au rythme de la logistique aéroportuaire, de l'entreposage, du transport et d'un commerce de proximité dense. Ses zones d'activité concentrent de nombreuses PME et ETI de fret, de services aux entreprises et d'artisanat. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI val-d'oisiennes, plus rarement les grands groupes, pour déployer une IA opérationnelle qui fluidifie flux, planning et relation client sans dépendance technique.",
   pitchEn:
-    "Goussainville (95), aux portes de l'aéroport Roissy-Charles-de-Gaulle, vit au rythme de la logistique aéroportuaire, de l'entreposage, du transport et d'un commerce de proximité dense. Ses zones d'activité concentrent de nombreuses TPE et PME de fret, de services aux entreprises et d'artisanat. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME val-d'oisiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui fluidifie flux, planning et relation client sans dépendance technique.",
+    "Goussainville (95), aux portes de l'aéroport Roissy-Charles-de-Gaulle, vit au rythme de la logistique aéroportuaire, de l'entreposage, du transport et d'un commerce de proximité dense. Ses zones d'activité concentrent de nombreuses PME et ETI de fret, de services aux entreprises et d'artisanat. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI val-d'oisiennes, plus rarement les grands groupes, pour déployer une IA opérationnelle qui fluidifie flux, planning et relation client sans dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Goussainville (95) auprès des TPE et PME : logistique et fret aéroportuaire de Roissy-CDG, entreposage, transport, services aux entreprises et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Goussainville (95) auprès des PME et ETI : logistique et fret aéroportuaire de Roissy-CDG, entreposage, transport, services aux entreprises et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Goussainville (95) auprès des TPE et PME : logistique et fret aéroportuaire de Roissy-CDG, entreposage, transport, services aux entreprises et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Goussainville (95) auprès des PME et ETI : logistique et fret aéroportuaire de Roissy-CDG, entreposage, transport, services aux entreprises et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   seoHook: "logistique Roissy & entreposage",
   ecosystemFr:
-    "Goussainville, dans le Val-d'Oise au nord de la plaine de France, tire son dynamisme de la proximité immédiate de l'aéroport Roissy-Charles-de-Gaulle. Ses zones d'activité accueillent des TPE et PME de logistique, fret, entreposage, transport routier et services aux entreprises, complétées par un commerce de détail et un artisanat de proximité. Le contraste entre le Vieux Pays patrimonial et les pôles logistiques modernes nourrit un écosystème où l'IA appliquée aux flux et à l'administration crée une vraie valeur.",
+    "Goussainville, dans le Val-d'Oise au nord de la plaine de France, tire son dynamisme de la proximité immédiate de l'aéroport Roissy-Charles-de-Gaulle. Ses zones d'activité accueillent des PME et ETI de logistique, fret, entreposage, transport routier et services aux entreprises, complétées par un commerce de détail et un artisanat de proximité. Le contraste entre le Vieux Pays patrimonial et les pôles logistiques modernes nourrit un écosystème où l'IA appliquée aux flux et à l'administration crée une vraie valeur.",
   ecosystemEn:
-    "Goussainville, dans le Val-d'Oise au nord de la plaine de France, tire son dynamisme de la proximité immédiate de l'aéroport Roissy-Charles-de-Gaulle. Ses zones d'activité accueillent des TPE et PME de logistique, fret, entreposage, transport routier et services aux entreprises, complétées par un commerce de détail et un artisanat de proximité. Le contraste entre le Vieux Pays patrimonial et les pôles logistiques modernes nourrit un écosystème où l'IA appliquée aux flux et à l'administration crée une vraie valeur.",
+    "Goussainville, dans le Val-d'Oise au nord de la plaine de France, tire son dynamisme de la proximité immédiate de l'aéroport Roissy-Charles-de-Gaulle. Ses zones d'activité accueillent des PME et ETI de logistique, fret, entreposage, transport routier et services aux entreprises, complétées par un commerce de détail et un artisanat de proximité. Le contraste entre le Vieux Pays patrimonial et les pôles logistiques modernes nourrit un écosystème où l'IA appliquée aux flux et à l'administration crée une vraie valeur.",
   distancesFr:
     "Goussainville est à 10 min de l'aéroport Roissy-Charles-de-Gaulle et desservie par le RER D. La gare de Paris-Nord est à environ 30 min, et l'A1 relie directement Paris et le nord.",
   distancesEn:
@@ -38,12 +38,12 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Goussainville : ateliers pratiques pour exploitation logistique, planning et administration, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Goussainville : optimisation des tournées, suivi des expéditions, automatisation documentaire douane et CRM augmenté pour TPE et PME de fret aéroportuaire.",
-      en: "Implémentation IA à Goussainville : optimisation des tournées, suivi des expéditions, automatisation documentaire douane et CRM augmenté pour TPE et PME de fret aéroportuaire.",
+      fr: "Implémentation IA à Goussainville : optimisation des tournées, suivi des expéditions, automatisation documentaire douane et CRM augmenté pour PME et ETI de fret aéroportuaire.",
+      en: "Implémentation IA à Goussainville : optimisation des tournées, suivi des expéditions, automatisation documentaire douane et CRM augmenté pour PME et ETI de fret aéroportuaire.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Goussainville : sessions sur site ou en visio pour dirigeants de TPE et PME logistiques, ciblées sur vos priorités d'exploitation et de gestion.",
-      en: "Accompagnement un-à-un à Goussainville : sessions sur site ou en visio pour dirigeants de TPE et PME logistiques, ciblées sur vos priorités d'exploitation et de gestion.",
+      fr: "Accompagnement un-à-un à Goussainville : sessions sur site ou en visio pour dirigeants de PME et d'ETI logistiques, ciblées sur vos priorités d'exploitation et de gestion.",
+      en: "Accompagnement un-à-un à Goussainville : sessions sur site ou en visio pour dirigeants de PME et d'ETI logistiques, ciblées sur vos priorités d'exploitation et de gestion.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Goussainville : portail client ou vitrine B2B avec IA intégrée (suivi colis, devis transport, recherche) pour logisticiens, transporteurs et services aux entreprises.",
@@ -56,7 +56,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
         hero: "À Goussainville (95), aux portes de Roissy-Charles-de-Gaulle, l'économie tourne autour du fret aéroportuaire, de l'entreposage et du transport routier : 946 entreprises et 8 374 salariés, des transitaires comme Dachser et Barsan Global Logistics, et trois pôles logistiques structurants — la Z.A. Le Pied de Fer, la Z.A.E. Le Pont de la Brèche en cours de requalification et la Z.I. du Dessous de l'Orme de la Garde. Axion-IA conçoit pour ces logisticiens, transporteurs et services aux entreprises des sites web et plateformes SaaS augmentés par l'IA — portail client de suivi d'expéditions, devis transport et douane, recherche sémantique — en code maîtrisé, hébergement UE/RGPD, sans dépendance éditeur. Nous adressons aussi la facette singulière de la ville : le Vieux Pays patrimonial revitalisé, lieu de tournages et d'attractions comme Abracadaparc.",
         whyHere: [
           "Goussainville vit du fret aéroportuaire de Roissy : nos sites et SaaS sont calibrés pour les transitaires et transporteurs des zones Le Pied de Fer, Le Pont de la Brèche et Dessous de l'Orme — suivi d'expéditions, portail transporteur, documents douane, là où Dachser et Barsan Global Logistics donnent le tempo local.",
-          "Tissu de TPE/PME dense (564 établissements en services, commerce et transport) : nous concevons des vitrines B2B et e-commerce multi-CMS pour la messagerie (Messageries Courses Express), les services aux entreprises et le commerce de gros, plutôt que des sites génériques sans ancrage métier.",
+          "Tissu de PME et ETI dense (564 établissements en services, commerce et transport) : nous concevons des vitrines B2B et e-commerce multi-CMS pour la messagerie (Messageries Courses Express), les services aux entreprises et le commerce de gros, plutôt que des sites génériques sans ancrage métier.",
           "Le Vieux Pays, village déserté depuis les années 1970 et aujourd'hui revitalisé, accueille tournages, shootings et l'accrobranche Abracadaparc ouvert en 2024 : nous outillons billetterie, réservation et présence en ligne de ces activités touristiques et culturelles avec IA intégrée.",
           "Implantation à 10 min de Roissy, desservie par le RER D et les A1/A104/A3 : nos consultants se déplacent sur site dans les zones d'activité goussainvilloises et les communes voisines (Le Thillay, Louvres, Gonesse, Sarcelles) pour un cadrage en présentiel.",
         ],
@@ -88,12 +88,6 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Vitrine augmentée",
-            detail:
-              "Site vitrine ou mini-e-commerce avec IA légère (recherche, formulaire de devis intelligent, chatbot) pour artisans, commerces et petits transporteurs goussainvillois, ou pour les activités du Vieux Pays (réservation, billetterie).",
-          },
           {
             sizeLabel: "PME",
             price: "Portail métier ou e-commerce",
@@ -175,12 +169,6 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase",
-            detail:
-              "Showcase site or mini e-commerce with light AI (search, smart quote form, chatbot) for Goussainville artisans, shops and small carriers, or for Vieux Pays activities (booking, ticketing).",
-          },
-          {
             sizeLabel: "SME",
             price: "Business portal or e-commerce",
             detail:
@@ -234,11 +222,11 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Goussainville ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME val-d'oisiennes : logistique, transport, entreposage et services aux entreprises.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux PME et ETI val-d'oisiennes : logistique, transport, entreposage et services aux entreprises.",
     },
     {
       q: "Comment l'IA aide-t-elle les entreprises logistiques de Roissy ?",
-      a: "Pour les TPE et PME de fret et d'entreposage : optimisation des tournées, suivi des expéditions, automatisation documentaire et douanière, et réponses client plus rapides, par étapes maîtrisées.",
+      a: "Pour les PME et ETI de fret et d'entreposage : optimisation des tournées, suivi des expéditions, automatisation documentaire et douanière, et réponses client plus rapides, par étapes maîtrisées.",
     },
     {
       q: "Quels services pour les commerces et artisans de Goussainville ?",
@@ -246,7 +234,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous priorisons les TPE puis les PME de Goussainville ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+      a: "Non. Nous priorisons les PME puis les ETI de Goussainville ; les grands groupes sont accompagnés en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
     },
     {
       q: "Comment se déroule une mission à Goussainville ?",

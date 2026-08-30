@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des petites structures rhodaniennes.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des PME rhodaniennes.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des petites structures rhodaniennes.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des PME rhodaniennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Lyon. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les PME puis les ETI du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Lyon. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Lyon. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les PME puis les ETI du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Lyon. Les grands groupes complètent ce socle.",
   seoHook: "vin & négoce du Beaujolais",
   ecosystemFr:
-    "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de TPE artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des petites entreprises caladoises.",
+    "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de PME artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des PME caladoises.",
   ecosystemEn:
-    "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de TPE artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des petites entreprises caladoises.",
+    "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de PME artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des PME caladoises.",
   distancesFr:
     "Gare de Villefranche-sur-Saône (TER vers Lyon ~25 min, accès TGV à Lyon Part-Dieu ~35 km). Lyon centre à 35 km par l'A6. Aéroport Lyon-Saint-Exupéry à 50 km. Mâcon et la Bourgogne accessibles au nord par l'A6.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
       en: "Implémentation IA à Villefranche-sur-Saône : traçabilité viticole, automatisation des commandes et de la facturation, agents conversationnels et CRM augmentés pour le négoce et le commerce de gros.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villefranche-sur-Saône : sessions individuelles pour vignerons, négociants et dirigeants de TPE et PME, au domaine, en entrepôt ou en visio, pour piloter l'IA en autonomie.",
-      en: "Coaching 1-to-1 à Villefranche-sur-Saône : sessions individuelles pour vignerons, négociants et dirigeants de TPE et PME, au domaine, en entrepôt ou en visio, pour piloter l'IA en autonomie.",
+      fr: "Coaching 1-to-1 à Villefranche-sur-Saône : sessions individuelles pour vignerons, négociants et dirigeants de PME et d'ETI, au domaine, en entrepôt ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Villefranche-sur-Saône : sessions individuelles pour vignerons, négociants et dirigeants de PME et d'ETI, au domaine, en entrepôt ou en visio, pour piloter l'IA en autonomie.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Villefranche-sur-Saône : plateformes et SaaS IA sur mesure pour domaines et négociants — boutiques en ligne, oenotourisme, portails B2B de commande connectés à votre gestion.",
@@ -88,12 +88,6 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour un domaine du Beaujolais, un artisan ou un commerce caladois : site mobile-first, boutique de vente directe, réservation de visites/dégustations, avec une brique IA simple (chatbot FAQ, recherche produit).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail B2B augmenté",
@@ -175,12 +169,6 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site",
-            detail:
-              "For a Beaujolais estate, a craftsperson or a Caladois shop: mobile-first site, direct-sales store, visit/tasting booking, with a simple AI block (FAQ chatbot, product search).",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or augmented B2B portal",
             detail:
@@ -234,7 +222,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villefranche-sur-Saône ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME caladoises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux PME et ETI caladoises, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et le négoce du vin ?",

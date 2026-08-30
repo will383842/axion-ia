@@ -109,7 +109,7 @@ export const CLIENT_SECTORS: readonly ClientSector[] = [
   {
     slug: "artisanat_services",
     labelFr: "Artisanat & services",
-    fullFr: "artisans, TPE de services et professions indépendantes",
+    fullFr: "artisans, PME de services et professions indépendantes",
     emoji: "🔧",
     blogSector: "conseil",
     kbSectorTags: ["conseil-affaires"],

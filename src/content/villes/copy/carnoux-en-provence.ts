@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de PME indépendants, professions libérales, commerçants et artisans. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de PME indépendants, professions libérales, commerçants et artisans. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carnoux-en-Provence (13). Nous accompagnons PME indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carnoux-en-Provence (13). Nous accompagnons PME indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit sur place sur mesure.",
   seoHook: "bassin marseillais",
   ecosystemFr:
-    "Carnoux-en-Provence est une commune résidentielle créée dans les années 1950 (rapatriés d'Afrique du Nord), nichée entre les collines de Cassis et Aubagne. Population aisée, professions libérales et cadres. Centre commercial de proximité, TPE artisans et indépendants. Proximité immédiate d'Aubagne et de la technopôle de Gémenos.",
+    "Carnoux-en-Provence est une commune résidentielle créée dans les années 1950 (rapatriés d'Afrique du Nord), nichée entre les collines de Cassis et Aubagne. Population aisée, professions libérales et cadres. Centre commercial de proximité, PME artisanales et indépendants. Proximité immédiate d'Aubagne et de la technopôle de Gémenos.",
   ecosystemEn:
-    "Carnoux-en-Provence est une commune résidentielle créée dans les années 1950 (rapatriés d'Afrique du Nord), nichée entre les collines de Cassis et Aubagne. Population aisée, professions libérales et cadres. Centre commercial de proximité, TPE artisans et indépendants. Proximité immédiate d'Aubagne et de la technopôle de Gémenos.",
+    "Carnoux-en-Provence est une commune résidentielle créée dans les années 1950 (rapatriés d'Afrique du Nord), nichée entre les collines de Cassis et Aubagne. Population aisée, professions libérales et cadres. Centre commercial de proximité, PME artisanales et indépendants. Proximité immédiate d'Aubagne et de la technopôle de Gémenos.",
   distancesFr:
     "Marseille centre à 25 min par A50. Aubagne à 10 min. Cassis à 10 min. Gare TGV Aix-en-Provence à 45 min. Aéroport Marseille-Provence à 40 min. Gémenos technopôle à 10 min.",
   distancesEn:
     "Marseille centre à 25 min par A50. Aubagne à 10 min. Cassis à 10 min. Gare TGV Aix-en-Provence à 45 min. Aéroport Marseille-Provence à 40 min. Gémenos technopôle à 10 min.",
   topSectorsNaf: [
     "Professions libérales & conseil",
-    "TPE indépendants & freelances",
+    "PME indépendants & freelances",
     "Commerce de proximité",
     "Artisanat & services à la personne",
     "BTP & rénovation résidentielle",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, TPE indépendants et commerçants de l'est marseillais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, TPE indépendants et commerçants de l'est marseillais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, PME indépendants et commerçants de l'est marseillais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, PME indépendants et commerçants de l'est marseillais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Carnoux-en-Provence : ateliers pratiques pour cabinets libéraux, TPE et commerçants. Outils IA configurés métier réel, format demi-journée.",
-      en: "Interventions IA sur site à Carnoux-en-Provence : ateliers pratiques pour cabinets libéraux, TPE et commerçants. Outils IA configurés métier réel, format demi-journée.",
+      fr: "Interventions IA sur site à Carnoux-en-Provence : ateliers pratiques pour cabinets libéraux, PME et commerçants. Outils IA configurés métier réel, format demi-journée.",
+      en: "Interventions IA sur site à Carnoux-en-Provence : ateliers pratiques pour cabinets libéraux, PME et commerçants. Outils IA configurés métier réel, format demi-journée.",
     },
     implementation: {
       fr: "Implémentation IA à Carnoux-en-Provence : automatisation gestion cabinet, rédaction assistée, classification dossiers, CRM augmentés, agents conversationnels clients. RGPD strict.",
       en: "Implémentation IA à Carnoux-en-Provence : automatisation gestion cabinet, rédaction assistée, classification dossiers, CRM augmentés, agents conversationnels clients. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Carnoux-en-Provence : sessions confidentielles pour professions libérales, indépendants et gérants TPE/PME de l'est marseillais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Carnoux-en-Provence : sessions confidentielles pour professions libérales, indépendants et gérants TPE/PME de l'est marseillais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Carnoux-en-Provence : sessions confidentielles pour professions libérales, indépendants et gérants PME et ETI de l'est marseillais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Carnoux-en-Provence : sessions confidentielles pour professions libérales, indépendants et gérants PME et ETI de l'est marseillais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Carnoux-en-Provence  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux professions libérales, TPE indépendants et commerçants carnousiens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux professions libérales, PME indépendants et commerçants carnousiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Carnoux ?",

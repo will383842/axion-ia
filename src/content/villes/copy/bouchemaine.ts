@@ -9,9 +9,9 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
   pitchEn:
     "Bouchemaine (49), commune résidentielle prisée au confluent de la Maine et de la Loire, à l'ouest d'Angers, accueille plus de 6 500 habitants. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, professions libérales, commerces, artisanat et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les PME, ETI et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les PME, ETI et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Bouchemaine bénéficie d'un cadre exceptionnel au confluent Maine-Loire, en position résidentielle haut de gamme de l'ouest angevin. Tissu économique : professions libérales (santé, juridique, conseil), PME tertiaires, commerces de proximité, artisanat et services à la personne. Activités nautiques et de loisirs Loire.",

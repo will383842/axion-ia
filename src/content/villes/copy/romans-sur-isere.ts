@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Romans-sur-Isère dans l'automatisation de leurs opérations. Sous-préfecture de la Drôme (33 464 habitants en 2023, environ 58 000 avec Bourg-de-Péage en unité urbaine), Romans est historiquement associée à la chaussure (Charles Jourdan, Stéphane Kélian, Robert Clergerie) et au cuir, complétés par l'agroalimentaire (ravioles), la métallurgie et le commerce. Nous livrons du code custom — sans no-code — adapté aux PME industrielles drômoises.",
+    "Axion-IA accompagne les PME et ETI de Romans-sur-Isère dans l'automatisation de leurs opérations. Sous-préfecture de la Drôme (33 464 habitants en 2023, environ 58 000 avec Bourg-de-Péage en unité urbaine), Romans est historiquement associée à la chaussure (Charles Jourdan, Stéphane Kélian, Robert Clergerie) et au cuir, complétés par l'agroalimentaire (ravioles), la métallurgie et le commerce. Nous livrons du code custom — sans no-code — adapté aux PME industrielles drômoises.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Romans-sur-Isère dans l'automatisation de leurs opérations. Sous-préfecture de la Drôme (33 464 habitants en 2023, environ 58 000 avec Bourg-de-Péage en unité urbaine), Romans est historiquement associée à la chaussure (Charles Jourdan, Stéphane Kélian, Robert Clergerie) et au cuir, complétés par l'agroalimentaire (ravioles), la métallurgie et le commerce. Nous livrons du code custom — sans no-code — adapté aux PME industrielles drômoises.",
+    "Axion-IA accompagne les PME et ETI de Romans-sur-Isère dans l'automatisation de leurs opérations. Sous-préfecture de la Drôme (33 464 habitants en 2023, environ 58 000 avec Bourg-de-Péage en unité urbaine), Romans est historiquement associée à la chaussure (Charles Jourdan, Stéphane Kélian, Robert Clergerie) et au cuir, complétés par l'agroalimentaire (ravioles), la métallurgie et le commerce. Nous livrons du code custom — sans no-code — adapté aux PME industrielles drômoises.",
   directAnswerFr:
-    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les TPE, PME et, en complément, les ETI de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
+    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les PME, ETI et, en complément, les grands groupes de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
   directAnswerEn:
-    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les TPE, PME et, en complément, les ETI de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
+    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les PME, ETI et, en complément, les grands groupes de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
   seoHook: "chaussure, cuir & agroalimentaire",
   ecosystemFr:
     "Romans-sur-Isère est le berceau historique de la chaussure française : Charles Jourdan, Stéphane Kélian, Robert Clergerie et plusieurs ateliers de tannerie ont structuré son économie. Le bassin s'est diversifié vers l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. L'unité urbaine Romans–Bourg-de-Péage rassemble environ 58 000 habitants, dans la basse vallée du Rhône à 20 km de Valence.",
@@ -46,8 +46,8 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
       en: "Implémentation IA sur mesure à Romans-sur-Isère pour les PME de la chaussure, du cuir et de l'agroalimentaire : intégration ERP, suivi production, prévision de la demande — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching un-à-un d'un dirigeant de TPE-PME romanaise pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
-      en: "Coaching un-à-un d'un dirigeant de TPE-PME romanaise pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      fr: "Coaching un-à-un d'un dirigeant de PME et ETI romanaise pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant de PME et ETI romanaise pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
     },
   },
   services: {
@@ -88,12 +88,6 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique produits, recommandations) sur la boutique existante d'un artisan chaussure, d'un producteur de ravioles ou d'une marque DTC romanaise, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
@@ -174,12 +168,6 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic product search, recommendations) onto the existing store of a Romans footwear artisan, ravioles maker or DTC brand, in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / store",

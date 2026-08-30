@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const THIZY_LES_BOURGS_COPY: VilleCopy = {
   pitchFr:
-    "Thizy-les-Bourgs (69), commune du haut-Beaujolais dans le Rhône (commune nouvelle issue de la fusion de Thizy et communes voisines), est positionnée dans les monts du Beaujolais. Héritage textile historique fort. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Thizy-les-Bourgs (69), commune du haut-Beaujolais dans le Rhône (commune nouvelle issue de la fusion de Thizy et communes voisines), est positionnée dans les monts du Beaujolais. Héritage textile historique fort. Tissu PME industrielles diversifiées, PME du BTP, commerces, agriculture montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Thizy-les-Bourgs (69), commune du haut-Beaujolais dans le Rhône (commune nouvelle issue de la fusion de Thizy et communes voisines), est positionnée dans les monts du Beaujolais. Héritage textile historique fort. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Thizy-les-Bourgs (69), commune du haut-Beaujolais dans le Rhône (commune nouvelle issue de la fusion de Thizy et communes voisines), est positionnée dans les monts du Beaujolais. Héritage textile historique fort. Tissu PME industrielles diversifiées, PME du BTP, commerces, agriculture montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, PME du BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thizy-les-Bourgs (69). Nous accompagnons tous types d'activités : PME industrielles haut-Beaujolais (héritage textile), agriculteurs montagne, PME du BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "industrielles & agriculture montagne",
   ecosystemFr:
-    "Thizy-les-Bourgs est positionnée dans les monts du Beaujolais (haut-Beaujolais). Commune nouvelle issue de la fusion de Thizy et communes voisines. Héritage textile historique fort (filature, tissage). Tissu PME industrielles diversifiées, agriculture montagne, TPE artisanat BTP, commerces.",
+    "Thizy-les-Bourgs est positionnée dans les monts du Beaujolais (haut-Beaujolais). Commune nouvelle issue de la fusion de Thizy et communes voisines. Héritage textile historique fort (filature, tissage). Tissu PME industrielles diversifiées, agriculture montagne, PME du BTP, commerces.",
   ecosystemEn:
-    "Thizy-les-Bourgs est positionnée dans les monts du Beaujolais (haut-Beaujolais). Commune nouvelle issue de la fusion de Thizy et communes voisines. Héritage textile historique fort (filature, tissage). Tissu PME industrielles diversifiées, agriculture montagne, TPE artisanat BTP, commerces.",
+    "Thizy-les-Bourgs est positionnée dans les monts du Beaujolais (haut-Beaujolais). Commune nouvelle issue de la fusion de Thizy et communes voisines. Héritage textile historique fort (filature, tissage). Tissu PME industrielles diversifiées, agriculture montagne, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 1h. Roanne à 30 min. Villefranche-sur-Saône à 35 min. Tarare à 20 min. Amplepuis à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles (héritage textile)",
     "Agriculture montagne Beaujolais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thizy-les-Bourgs : diagnostic adapté aux PME industrielles textile, agriculteurs montagne Beaujolais, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Thizy-les-Bourgs : diagnostic adapté aux PME industrielles textile, agriculteurs montagne Beaujolais, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Thizy-les-Bourgs : diagnostic adapté aux PME industrielles textile, agriculteurs montagne Beaujolais, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Thizy-les-Bourgs : diagnostic adapté aux PME industrielles textile, agriculteurs montagne Beaujolais, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thizy-les-Bourgs : formats adaptés à l'atelier textile/industriel, exploitation agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
       en: "Implémentation IA à Thizy-les-Bourgs : classification photos textile, prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Thizy-les-Bourgs : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants textile, agriculteurs, artisans, gérants TPE/PME thizéens.",
-      en: "Coaching 1-to-1 à Thizy-les-Bourgs : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants textile, agriculteurs, artisans, gérants TPE/PME thizéens.",
+      fr: "Coaching 1-to-1 à Thizy-les-Bourgs : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants textile, agriculteurs, artisans, gérants PME et ETI thizéens.",
+      en: "Coaching 1-to-1 à Thizy-les-Bourgs : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants textile, agriculteurs, artisans, gérants PME et ETI thizéens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs de montagne Beaujolais sur leurs cas IA : prédiction récoltes, classification photos cultures/animaux, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
+    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   pitchEn:
-    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
+    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-Tolosane (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-Tolosane (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Villeneuve-Tolosane est une commune résidentielle du sud-ouest de Toulouse, en bordure de Cugnaux et Frouzins. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Zone pavillonnaire avec économie de proximité dynamique.",
+    "Villeneuve-Tolosane est une commune résidentielle du sud-ouest de Toulouse, en bordure de Cugnaux et Frouzins. Tissu PME artisanales, PME de services, commerces de quartier, professions libérales. Zone pavillonnaire avec économie de proximité dynamique.",
   ecosystemEn:
-    "Villeneuve-Tolosane est une commune résidentielle du sud-ouest de Toulouse, en bordure de Cugnaux et Frouzins. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Zone pavillonnaire avec économie de proximité dynamique.",
+    "Villeneuve-Tolosane est une commune résidentielle du sud-ouest de Toulouse, en bordure de Cugnaux et Frouzins. Tissu PME artisanales, PME de services, commerces de quartier, professions libérales. Zone pavillonnaire avec économie de proximité dynamique.",
   distancesFr:
     "Toulouse centre à 15 min (D15E). Gare Matabiau à 20 min. Aéroport Toulouse-Blagnac à 20 min. Cugnaux à 3 min. Frouzins à 5 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux PME artisanales, PME de services et professions libérales du sud-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux PME artisanales, PME de services et professions libérales du sud-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-Tolosane : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
       en: "Interventions IA sur site à Villeneuve-Tolosane : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémentation IA à Villeneuve-Tolosane : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour TPE-PME du sud-ouest Toulouse.",
-      en: "Implémentation IA à Villeneuve-Tolosane : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour TPE-PME du sud-ouest Toulouse.",
+      fr: "Implémentation IA à Villeneuve-Tolosane : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour PME et ETI du sud-ouest Toulouse.",
+      en: "Implémentation IA à Villeneuve-Tolosane : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour PME et ETI du sud-ouest Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villeneuve-Tolosane : sessions dirigeants TPE artisans et PME de services du sud-ouest toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Villeneuve-Tolosane : sessions dirigeants TPE artisans et PME de services du sud-ouest toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Villeneuve-Tolosane : sessions dirigeants PME artisanales et PME de services du sud-ouest toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Villeneuve-Tolosane : sessions dirigeants PME artisanales et PME de services du sud-ouest toulousain, dans vos locaux ou en visio.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Villeneuve-Tolosane ?",
-      a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME artisanales, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
       q: "Combien coûte un audit IA à Villeneuve-Tolosane  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Villeneuve-Tolosane ?",
@@ -65,7 +65,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Villeneuve-Tolosane ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villeneuve-Tolosane. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Villeneuve-Tolosane. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

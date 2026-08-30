@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COURTRY_COPY: VilleCopy = {
   pitchFr:
-    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu PME et ETI artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu PME et ETI artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courtry (77). Nous accompagnons PME et ETI : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courtry (77). Nous accompagnons PME et ETI : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
-    "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des TPE et PME : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",
+    "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des PME et ETI : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",
   ecosystemEn:
-    "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des TPE et PME : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",
+    "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des PME et ETI : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",
   distancesFr:
     "Meaux à 15 min. Aéroport Roissy-CDG à 25 min. Paris-Gare de l'Est à 40 min via N3/A104. Gare de Villeparisis-Mitry-le-Neuf (RER B) à 10 min. Marne-la-Vallée à 20 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const COURTRY_COPY: VilleCopy = {
       en: "Implémentation IA à Courtry : automatisation devis et facturation artisans, CRM professions libérales, gestion planning services à la personne, agents IA commerce de proximité.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Courtry : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants TPE/PME artisanat, commerce, services et professions libérales.",
-      en: "Coaching 1-to-1 à Courtry : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants TPE/PME artisanat, commerce, services et professions libérales.",
+      fr: "Coaching 1-to-1 à Courtry : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants PME et ETI artisanat, commerce, services et professions libérales.",
+      en: "Coaching 1-to-1 à Courtry : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants PME et ETI artisanat, commerce, services et professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const COURTRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Courtry  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Courtry, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services de proximité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Courtry, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services de proximité.",
     },
     {
       q: "Travaillez-vous avec les artisans et entreprises BTP ?",

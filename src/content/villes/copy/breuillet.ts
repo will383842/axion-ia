@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BREUILLET_COPY: VilleCopy = {
   pitchFr:
-    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de TPE artisans, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud-essonnien.",
+    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de PME artisanales, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud-essonnien.",
   pitchEn:
-    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de TPE artisans, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud-essonnien.",
+    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de PME artisanales, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud-essonnien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : PME du BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : PME du BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit sur place sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
-    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
+    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : PME du BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
   ecosystemEn:
-    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
+    "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : PME du BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
   distancesFr:
     "Gare de Breuillet - Bruyères-le-Châtel (RER C) à 5 min. Paris Austerlitz à 50 min RER C. Aéroport Paris-Orly à 30 min voiture. Dourdan à 10 min. Arpajon à 15 min. Axe N20 vers Étampes et Orléans.",
   distancesEn:
     "Gare de Breuillet - Bruyères-le-Châtel (RER C) à 5 min. Paris Austerlitz à 50 min RER C. Aéroport Paris-Orly à 30 min voiture. Dourdan à 10 min. Arpajon à 15 min. Axe N20 vers Étampes et Orléans.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité centre-bourg",
     "Professions libérales (santé, juridique)",
     "Agriculture & maraîchage vallée de la Renarde",
@@ -30,20 +30,20 @@ export const BREUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Breuillet : diagnostic adapté aux PME artisanales, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Breuillet : diagnostic adapté aux PME artisanales, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Breuillet : agents conversationnels client, automatisation devis BTP, gestion RDV professions libérales, traçabilité agricole, CRM augmentés pour TPE/PME du sud-essonnien.",
-      en: "Implémentation IA à Breuillet : agents conversationnels client, automatisation devis BTP, gestion RDV professions libérales, traçabilité agricole, CRM augmentés pour TPE/PME du sud-essonnien.",
+      fr: "Implémentation IA à Breuillet : agents conversationnels client, automatisation devis BTP, gestion RDV professions libérales, traçabilité agricole, CRM augmentés pour PME et ETI du sud-essonnien.",
+      en: "Implémentation IA à Breuillet : agents conversationnels client, automatisation devis BTP, gestion RDV professions libérales, traçabilité agricole, CRM augmentés pour PME et ETI du sud-essonnien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Breuillet : sessions dans votre commerce, cabinet, atelier, exploitation ou en visio. Artisans, commerçants, agriculteurs, professions libérales, gérants TPE/PME breuilletois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Breuillet : sessions dans votre commerce, cabinet, atelier, exploitation ou en visio. Artisans, commerçants, agriculteurs, professions libérales, gérants TPE/PME breuilletois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Breuillet : sessions dans votre commerce, cabinet, atelier, exploitation ou en visio. Artisans, commerçants, agriculteurs, professions libérales, gérants PME et ETI breuilletois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Breuillet : sessions dans votre commerce, cabinet, atelier, exploitation ou en visio. Artisans, commerçants, agriculteurs, professions libérales, gérants PME et ETI breuilletois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const BREUILLET_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Breuillet et tout le sud de l'Essonne (Dourdan, Arpajon, Saint-Chéron, Bruyères-le-Châtel, Ollainville). Nos consultants accèdent facilement à Breuillet via le RER C depuis Paris (50 min).",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans de Breuillet ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Breuillet sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME et artisans de Breuillet ?",
+      a: "Oui, nous accompagnons les PME du BTP à Breuillet sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les exploitants agricoles du sud Essonne ?",

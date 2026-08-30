@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const PEZENAS_COPY: VilleCopy = {
   pitchFr:
-    "Pézenas (34), ville d'art et d'histoire de l'Hérault, célèbre pour Molière et son patrimoine théâtral. Centre historique remarquable, brocante réputée, vignoble AOC Languedoc (Pézenas). Tissu TPE artisans d'art, PME viticoles, commerçants, hôtellerie-restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pézenas (34), ville d'art et d'histoire de l'Hérault, célèbre pour Molière et son patrimoine théâtral. Centre historique remarquable, brocante réputée, vignoble AOC Languedoc (Pézenas). Tissu PME artisanales d'art, PME viticoles, commerçants, hôtellerie-restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Pézenas (34), ville d'art et d'histoire de l'Hérault, célèbre pour Molière et son patrimoine théâtral. Centre historique remarquable, brocante réputée, vignoble AOC Languedoc (Pézenas). Tissu TPE artisans d'art, PME viticoles, commerçants, hôtellerie-restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pézenas (34), ville d'art et d'histoire de l'Hérault, célèbre pour Molière et son patrimoine théâtral. Centre historique remarquable, brocante réputée, vignoble AOC Languedoc (Pézenas). Tissu PME artisanales d'art, PME viticoles, commerçants, hôtellerie-restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pézenas (34). Nous accompagnons TPE artisans d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pézenas (34). Nous accompagnons PME artisanales d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pézenas (34). Nous accompagnons TPE artisans d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pézenas (34). Nous accompagnons PME artisanales d'art, PME viticoles AOC Pézenas, commerçants du centre historique, acteurs du tourisme culturel et hôtellerie-restauration.",
   ecosystemFr:
-    "Pézenas est une ville d'art et d'histoire, ancien siège des États du Languedoc, où Molière a séjourné et joué (1650-1657). Centre historique remarquable (hôtels particuliers, théâtre, brocante), vignoble AOC Languedoc-Pézenas réputé. Tissu TPE artisans d'art et métiers de bouche, PME viticoles, commerçants, hôtellerie-restauration, tourisme culturel.",
+    "Pézenas est une ville d'art et d'histoire, ancien siège des États du Languedoc, où Molière a séjourné et joué (1650-1657). Centre historique remarquable (hôtels particuliers, théâtre, brocante), vignoble AOC Languedoc-Pézenas réputé. Tissu PME artisanales d'art et métiers de bouche, PME viticoles, commerçants, hôtellerie-restauration, tourisme culturel.",
   ecosystemEn:
-    "Pézenas est une ville d'art et d'histoire, ancien siège des États du Languedoc, où Molière a séjourné et joué (1650-1657). Centre historique remarquable (hôtels particuliers, théâtre, brocante), vignoble AOC Languedoc-Pézenas réputé. Tissu TPE artisans d'art et métiers de bouche, PME viticoles, commerçants, hôtellerie-restauration, tourisme culturel.",
+    "Pézenas est une ville d'art et d'histoire, ancien siège des États du Languedoc, où Molière a séjourné et joué (1650-1657). Centre historique remarquable (hôtels particuliers, théâtre, brocante), vignoble AOC Languedoc-Pézenas réputé. Tissu PME artisanales d'art et métiers de bouche, PME viticoles, commerçants, hôtellerie-restauration, tourisme culturel.",
   distancesFr:
     "Béziers à 20 min par A75/N9. Montpellier à 50 min par A750/A75. Agde à 20 min. Gare TGV Agde à 20 min. Aéroport Béziers-Cap d'Agde à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const PEZENAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pézenas : diagnostic pour TPE artisans d'art, PME viticoles AOC Pézenas, commerçants centre historique et acteurs tourisme culturel. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pézenas : diagnostic pour TPE artisans d'art, PME viticoles AOC Pézenas, commerçants centre historique et acteurs tourisme culturel. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pézenas : diagnostic pour PME artisanales d'art, PME viticoles AOC Pézenas, commerçants centre historique et acteurs tourisme culturel. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pézenas : diagnostic pour PME artisanales d'art, PME viticoles AOC Pézenas, commerçants centre historique et acteurs tourisme culturel. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pézenas : ateliers adaptés atelier d'art, domaine viticole, commerce patrimoine ou hôtel. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const PEZENAS_COPY: VilleCopy = {
       en: "Implémentation IA à Pézenas : automatisation gestion vignoble, chatbot touristique multilingue patrimoine Molière, visites augmentées, optimisation commerces centre historique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pézenas : sessions sur site ou en visio pour artisans d'art, viticulteurs, commerçants et gérants TPE/PME du Piscénois.",
-      en: "Coaching 1-to-1 à Pézenas : sessions sur site ou en visio pour artisans d'art, viticulteurs, commerçants et gérants TPE/PME du Piscénois.",
+      fr: "Coaching 1-to-1 à Pézenas : sessions sur site ou en visio pour artisans d'art, viticulteurs, commerçants et gérants PME et ETI du Piscénois.",
+      en: "Coaching 1-to-1 à Pézenas : sessions sur site ou en visio pour artisans d'art, viticulteurs, commerçants et gérants PME et ETI du Piscénois.",
     },
   },
   faqGeolocalisee: [

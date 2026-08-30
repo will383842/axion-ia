@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUROUX_COPY: VilleCopy = {
   pitchFr:
-    "Châteauroux (36), préfecture de l'Indre au cœur du Berry, valorise son ancienne base de l'OTAN devenue un pôle logistique et un aéroport de fret reconnu (Châteauroux-Centre). Son tissu mêle logistique, agroalimentaire, industrie et un réseau dense de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME castelroussines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Châteauroux (36), préfecture de l'Indre au cœur du Berry, valorise son ancienne base de l'OTAN devenue un pôle logistique et un aéroport de fret reconnu (Châteauroux-Centre). Son tissu mêle logistique, agroalimentaire, industrie et un réseau dense de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI castelroussines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Châteauroux (36), préfecture de l'Indre au cœur du Berry, valorise son ancienne base de l'OTAN devenue un pôle logistique et un aéroport de fret reconnu (Châteauroux-Centre). Son tissu mêle logistique, agroalimentaire, industrie et un réseau dense de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME castelroussines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Châteauroux (36), préfecture de l'Indre au cœur du Berry, valorise son ancienne base de l'OTAN devenue un pôle logistique et un aéroport de fret reconnu (Châteauroux-Centre). Son tissu mêle logistique, agroalimentaire, industrie et un réseau dense de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI castelroussines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauroux (36, Indre). Nous accompagnons en priorité les TPE, puis les PME du Berry : acteurs de la logistique et du fret aérien autour de l'aéroport Châteauroux-Centre, agroalimentaire, sous-traitants industriels, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauroux (36, Indre). Nous accompagnons en priorité les PME, puis les PME du Berry : acteurs de la logistique et du fret aérien autour de l'aéroport Châteauroux-Centre, agroalimentaire, sous-traitants industriels, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauroux (36, Indre). Nous accompagnons en priorité les TPE, puis les PME du Berry : acteurs de la logistique et du fret aérien autour de l'aéroport Châteauroux-Centre, agroalimentaire, sous-traitants industriels, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauroux (36, Indre). Nous accompagnons en priorité les PME, puis les PME du Berry : acteurs de la logistique et du fret aérien autour de l'aéroport Châteauroux-Centre, agroalimentaire, sous-traitants industriels, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "logistique, fret & agroalimentaire",
   ecosystemFr:
-    "Châteauroux a transformé son ancienne base militaire de l'OTAN en un atout économique majeur : l'aéroport Châteauroux-Centre, dédié au fret, à la maintenance aéronautique et au stationnement long-courrier, structure une plateforme logistique de premier plan. Autour gravitent entrepôts, transport et messagerie, un agroalimentaire ancré dans le Berry, des sous-traitants industriels et un commerce de proximité. Ce tissu de TPE et PME cherche à fluidifier ses flux logistiques et administratifs pour gagner en compétitivité.",
+    "Châteauroux a transformé son ancienne base militaire de l'OTAN en un atout économique majeur : l'aéroport Châteauroux-Centre, dédié au fret, à la maintenance aéronautique et au stationnement long-courrier, structure une plateforme logistique de premier plan. Autour gravitent entrepôts, transport et messagerie, un agroalimentaire ancré dans le Berry, des sous-traitants industriels et un commerce de proximité. Ce tissu de PME et ETI cherche à fluidifier ses flux logistiques et administratifs pour gagner en compétitivité.",
   ecosystemEn:
-    "Châteauroux a transformé son ancienne base militaire de l'OTAN en un atout économique majeur : l'aéroport Châteauroux-Centre, dédié au fret, à la maintenance aéronautique et au stationnement long-courrier, structure une plateforme logistique de premier plan. Autour gravitent entrepôts, transport et messagerie, un agroalimentaire ancré dans le Berry, des sous-traitants industriels et un commerce de proximité. Ce tissu de TPE et PME cherche à fluidifier ses flux logistiques et administratifs pour gagner en compétitivité.",
+    "Châteauroux a transformé son ancienne base militaire de l'OTAN en un atout économique majeur : l'aéroport Châteauroux-Centre, dédié au fret, à la maintenance aéronautique et au stationnement long-courrier, structure une plateforme logistique de premier plan. Autour gravitent entrepôts, transport et messagerie, un agroalimentaire ancré dans le Berry, des sous-traitants industriels et un commerce de proximité. Ce tissu de PME et ETI cherche à fluidifier ses flux logistiques et administratifs pour gagner en compétitivité.",
   distancesFr:
     "Aéroport Châteauroux-Centre à 6 km du centre. Gare de Châteauroux avec liaisons vers Paris-Austerlitz en environ 2h. Limoges à 1h30, Tours à 1h30, Bourges à 1h par l'A20 et la N151.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CHATEAUROUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteauroux : diagnostic adapté aux TPE et PME du Berry — logistique, fret, agroalimentaire, commerces et services. Nous ciblons les automatisations à fort ROI.",
-      en: "Audit IA à Châteauroux : diagnostic adapté aux TPE et PME du Berry — logistique, fret, agroalimentaire, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      fr: "Audit IA à Châteauroux : diagnostic adapté aux PME et ETI du Berry — logistique, fret, agroalimentaire, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Châteauroux : diagnostic adapté aux PME et ETI du Berry — logistique, fret, agroalimentaire, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteauroux : formats courts pour automatiser planning, suivi de flux et tâches administratives logistiques. Vos équipes reprennent la main en autonomie.",
@@ -42,8 +42,8 @@ export const CHATEAUROUX_COPY: VilleCopy = {
       en: "Implémentation IA à Châteauroux : agents conversationnels, optimisation des flux d'entrepôt et classification documentaire pour la logistique et l'agroalimentaire. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Châteauroux : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME logistiques, agroalimentaires et commerçantes castelroussines.",
-      en: "Coaching un-à-un à Châteauroux : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME logistiques, agroalimentaires et commerçantes castelroussines.",
+      fr: "Coaching un-à-un à Châteauroux : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI logistiques, agroalimentaires et commerçantes castelroussines.",
+      en: "Coaching un-à-un à Châteauroux : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI logistiques, agroalimentaires et commerçantes castelroussines.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Châteauroux : plateformes et outils sur mesure pour acteurs logistiques, agroalimentaires et commerces du Berry, avec automatisations et SEO local intégrés.",
@@ -53,7 +53,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Châteauroux, le numérique se construit autour de l'ancienne base OTAN devenue plateforme logistique et aéronautique : l'aéroport Châteauroux-Centre « Marcel Dassault » (fret charter, 25 hectares de stockage pour une cinquantaine d'avions, pôle MRO Dale Aviation, Vallair, Satys, Egide), le parc d'Ozans labellisé site industriel clés en main France 2030 (Soprema Steel, DCB Logistics), Safran Seats à Issoudun et le BPO relation client d'Armatis. Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile, e-commerce multi-CMS, agents conversationnels — pour les TPE et PME logistiques, aéronautiques, agroalimentaires et de services du Berry, avec un hébergement en Union européenne conforme RGPD.",
+        hero: "À Châteauroux, le numérique se construit autour de l'ancienne base OTAN devenue plateforme logistique et aéronautique : l'aéroport Châteauroux-Centre « Marcel Dassault » (fret charter, 25 hectares de stockage pour une cinquantaine d'avions, pôle MRO Dale Aviation, Vallair, Satys, Egide), le parc d'Ozans labellisé site industriel clés en main France 2030 (Soprema Steel, DCB Logistics), Safran Seats à Issoudun et le BPO relation client d'Armatis. Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA — UX/UI, mobile, e-commerce multi-CMS, agents conversationnels — pour les PME et ETI logistiques, aéronautiques, agroalimentaires et de services du Berry, avec un hébergement en Union européenne conforme RGPD.",
         whyHere: [
           "Logistique et fret aérien comme socle : autour de l'aéroport Châteauroux-Centre et de la plateforme d'Ozans (Soprema Steel, DCB Logistics), nous bâtissons des portails de suivi d'expéditions, des espaces clients transporteurs et des tableaux de bord de flux d'entrepôt connectés à vos outils.",
           "Maintenance aéronautique et sous-traitance industrielle : pour les acteurs MRO du site (peinture, navigabilité, stockage long-courrier) et les sous-traitants de la filière Safran Seats Issoudun, nous développons des applications de gestion documentaire technique, de traçabilité et de planification d'atelier.",
@@ -88,12 +88,6 @@ export const CHATEAUROUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique de proximité",
-            detail:
-              "Pour artisans, commerçants et producteurs castelroussins du Berry : site vitrine mobile-first ou petite boutique e-commerce, prise de contact et devis automatisés, SEO local Châteauroux. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier augmentée",
@@ -175,12 +169,6 @@ export const CHATEAUROUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or local store",
-            detail:
-              "For Châteauroux craftspeople, merchants and Berry producers: mobile-first showcase site or small e-commerce store, automated contact and quotes, local SEO for Châteauroux. Quote within 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "Augmented business platform",
             detail:
@@ -230,7 +218,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteauroux et dans l'Indre ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Châteauroux et des communes voisines : Déols, Le Poinçonnet, Saint-Maur, Issoudun. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Châteauroux et des communes voisines : Déols, Le Poinçonnet, Saint-Maur, Issoudun. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec les acteurs de la logistique et du fret ?",
@@ -238,7 +226,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous l'agroalimentaire et les commerces locaux ?",
-      a: "Absolument — c'est notre priorité. Traçabilité, relation fournisseurs, devis et relances : nous adaptons les automatisations aux TPE et PME agroalimentaires et aux commerces de proximité du Berry.",
+      a: "Absolument — c'est notre priorité. Traçabilité, relation fournisseurs, devis et relances : nous adaptons les automatisations aux PME et ETI agroalimentaires et aux commerces de proximité du Berry.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

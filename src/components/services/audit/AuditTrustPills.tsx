@@ -3,7 +3,7 @@
  *
  * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis `src/app/[locale]/audit/page.tsx`
  * (l.218-234). 4 micro-promesses (Réponse 48 h, Confidentialité, Livrables,
- * audience TPE→Entreprises). Universel — pas de villeContext.
+ * audience PME → grands groupes). Universel — pas de villeContext.
  */
 
 import type { ReactNode } from "react";

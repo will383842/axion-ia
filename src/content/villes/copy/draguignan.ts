@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const DRAGUIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
+    "Axion-IA accompagne les PME et ETI de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
+    "Axion-IA accompagne les PME et ETI de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
   directAnswerFr:
-    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit sur place à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
+    "Axion-IA se déplace à Draguignan pour accompagner les PME et ETI de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les PME et ETI locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit sur place à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
   directAnswerEn:
-    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit sur place à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
-  seoHook: "TPE PME Dracénie : BTP, commerce, santé, tourisme",
+    "Axion-IA se déplace à Draguignan pour accompagner les PME et ETI de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les PME et ETI locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit sur place à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
+  seoHook: "PME PME Dracénie : BTP, commerce, santé, tourisme",
   ecosystemFr:
-    "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les TPE et PME locales évoluent dans un tissu où dominent les très petites structures de moins de 10 salariés.",
+    "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les PME et ETI locales évoluent dans un tissu où dominent les très PME de moins de 10 salariés.",
   ecosystemEn:
-    "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les TPE et PME locales évoluent dans un tissu où dominent les très petites structures de moins de 10 salariés.",
+    "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les PME et ETI locales évoluent dans un tissu où dominent les très PME de moins de 10 salariés.",
   distancesFr:
     "Gare TGV Les Arcs–Draguignan à environ 12 km (correspondance LGV Méditerranée). Fréjus à 30 km, golfe de Saint-Tropez à 35 km, Toulon à 86 km, Nice et son aéroport international à 89 km, Marseille à 141 km. Accès A8 La Provençale via Le Muy.",
   distancesEn:
@@ -31,20 +31,20 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
-      en: "Audit sur place sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
+      fr: "Audit sur place sur site à Draguignan pour cartographier les tâches automatisables des PME et ETI dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
+      en: "Audit sur place sur site à Draguignan pour cartographier les tâches automatisables des PME et ETI dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
     },
     interventions: {
       fr: "Intervention ponctuelle à Draguignan pour déployer un outil IA ciblé chez un artisan du BTP, un commerçant de la rue Cisson ou un professionnel de santé libéral du centre dracénois.",
       en: "Intervention ponctuelle à Draguignan pour déployer un outil IA ciblé chez un artisan du BTP, un commerçant de la rue Cisson ou un professionnel de santé libéral du centre dracénois.",
     },
     implementation: {
-      fr: "Implémentation code custom à Draguignan pour les TPE et PME de la Dracénie : agents IA métier intégrés aux logiciels existants, sans dépendance aux plateformes no-code.",
-      en: "Implémentation code custom à Draguignan pour les TPE et PME de la Dracénie : agents IA métier intégrés aux logiciels existants, sans dépendance aux plateformes no-code.",
+      fr: "Implémentation code custom à Draguignan pour les PME et ETI de la Dracénie : agents IA métier intégrés aux logiciels existants, sans dépendance aux plateformes no-code.",
+      en: "Implémentation code custom à Draguignan pour les PME et ETI de la Dracénie : agents IA métier intégrés aux logiciels existants, sans dépendance aux plateformes no-code.",
     },
     unAUn: {
-      fr: "Session un-à-un dirigeant à Draguignan pour TPE et PME — formation pratique aux usages IA adaptés au quotidien d'un patron dracénois.",
-      en: "Session un-à-un dirigeant à Draguignan pour TPE et PME — formation pratique aux usages IA adaptés au quotidien d'un patron dracénois.",
+      fr: "Session un-à-un dirigeant à Draguignan pour PME et ETI — formation pratique aux usages IA adaptés au quotidien d'un patron dracénois.",
+      en: "Session un-à-un dirigeant à Draguignan pour PME et ETI — formation pratique aux usages IA adaptés au quotidien d'un patron dracénois.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les commerçants du centre dracénois, artisans du BTP et domaines viticoles indépendants : site vitrine responsive ou boutique en ligne simple, prise de contact et réservation, optimisé mobile et référencement local Dracénie.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou métier sur mesure",
@@ -172,12 +166,6 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Draguignan town-centre shops, construction craftsmen and independent wine estates: responsive showcase site or simple online store, contact and booking, optimised for mobile and Dracénie local search.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom e-commerce or business platform",
             detail:
@@ -231,7 +219,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Draguignan ?",
-      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande. Pour les TPE et PME de la Dracénie, l'accès se fait via la gare TGV Les Arcs–Draguignan ou A8 sortie Le Muy.",
+      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande. Pour les PME et ETI de la Dracénie, l'accès se fait via la gare TGV Les Arcs–Draguignan ou A8 sortie Le Muy.",
     },
     {
       q: "Quelles communes proches de Draguignan couvrez-vous ?",
@@ -243,11 +231,11 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous prioritairement à Draguignan ?",
-      a: "Nos TPE et PME clientes en Dracénie se concentrent dans le BTP, le commerce de détail du centre-ville, la santé libérale et l'hébergement-restauration touristique du Var intérieur.",
+      a: "Nos PME et ETI clientes en Dracénie se concentrent dans le BTP, le commerce de détail du centre-ville, la santé libérale et l'hébergement-restauration touristique du Var intérieur.",
     },
     {
       q: "Pourquoi Axion-IA fait du code custom et pas du no-code à Draguignan ?",
-      a: "Nous développons des solutions IA en code custom pour garantir aux TPE et PME de Draguignan l'indépendance vis-à-vis des plateformes no-code (coûts récurrents, lock-in, limites techniques). Notre approche pérennise l'investissement local.",
+      a: "Nous développons des solutions IA en code custom pour garantir aux PME et ETI de Draguignan l'indépendance vis-à-vis des plateformes no-code (coûts récurrents, lock-in, limites techniques). Notre approche pérennise l'investissement local.",
     },
   ],
 };

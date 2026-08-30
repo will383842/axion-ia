@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de TPE artisans, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y travaille avec les organisations du territoire.",
+    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de PME artisanales, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de TPE artisans, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y travaille avec les organisations du territoire.",
+    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de PME artisanales, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peyrolles-en-Provence (13). Nous accompagnons PME artisanales, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peyrolles-en-Provence (13). Nous accompagnons PME artisanales, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture provençale",
   ecosystemFr:
-    "Peyrolles-en-Provence est positionnée dans la vallée de la Durance, au nord-est d'Aix-en-Provence, dotée d'un château Renaissance et d'un vieux village provençal. Tissu économique de TPE artisans (BTP, services à la personne, paysagistes), PME tertiaires, agriculture provençale (viticulture, oléiculture, maraîchage), commerces de proximité, professions libérales et tourisme patrimonial. Bassin d'emploi rattaché à Aix-en-Provence, Pertuis et Manosque.",
+    "Peyrolles-en-Provence est positionnée dans la vallée de la Durance, au nord-est d'Aix-en-Provence, dotée d'un château Renaissance et d'un vieux village provençal. Tissu économique de PME artisanales (BTP, services à la personne, paysagistes), PME tertiaires, agriculture provençale (viticulture, oléiculture, maraîchage), commerces de proximité, professions libérales et tourisme patrimonial. Bassin d'emploi rattaché à Aix-en-Provence, Pertuis et Manosque.",
   ecosystemEn:
-    "Peyrolles-en-Provence est positionnée dans la vallée de la Durance, au nord-est d'Aix-en-Provence, dotée d'un château Renaissance et d'un vieux village provençal. Tissu économique de TPE artisans (BTP, services à la personne, paysagistes), PME tertiaires, agriculture provençale (viticulture, oléiculture, maraîchage), commerces de proximité, professions libérales et tourisme patrimonial. Bassin d'emploi rattaché à Aix-en-Provence, Pertuis et Manosque.",
+    "Peyrolles-en-Provence est positionnée dans la vallée de la Durance, au nord-est d'Aix-en-Provence, dotée d'un château Renaissance et d'un vieux village provençal. Tissu économique de PME artisanales (BTP, services à la personne, paysagistes), PME tertiaires, agriculture provençale (viticulture, oléiculture, maraîchage), commerces de proximité, professions libérales et tourisme patrimonial. Bassin d'emploi rattaché à Aix-en-Provence, Pertuis et Manosque.",
   distancesFr:
     "Aix-en-Provence à 25 min. Pertuis à 10 min. Manosque à 30 min. Marseille à 50 min via A51. Cadarache (CEA, ITER) à 15 min. Aéroport Marseille-Provence à 45 min. Gare TGV Aix à 35 min.",
   distancesEn:
     "Aix-en-Provence à 25 min. Pertuis à 10 min. Manosque à 30 min. Marseille à 50 min via A51. Cadarache (CEA, ITER) à 15 min. Aéroport Marseille-Provence à 45 min. Gare TGV Aix à 35 min.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Agriculture provençale (vigne, olive, maraîchage)",
     "PME services & conseil",
     "Commerces de proximité",
@@ -30,20 +30,20 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux PME artisanales, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux PME artisanales, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
-      en: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
+      fr: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes PME et ETI, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
+      en: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes PME et ETI, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
     },
     implementation: {
-      fr: "Implémentation IA à Peyrolles-en-Provence : automatisation devis BTP, optimisation gestion agricole (vigne, olive, maraîchage), agents conversationnels SAV, content marketing patrimonial (château Renaissance), gestion administrative TPE. RGPD strict.",
-      en: "Implémentation IA à Peyrolles-en-Provence : automatisation devis BTP, optimisation gestion agricole (vigne, olive, maraîchage), agents conversationnels SAV, content marketing patrimonial (château Renaissance), gestion administrative TPE. RGPD strict.",
+      fr: "Implémentation IA à Peyrolles-en-Provence : automatisation devis BTP, optimisation gestion agricole (vigne, olive, maraîchage), agents conversationnels SAV, content marketing patrimonial (château Renaissance), gestion administrative PME. RGPD strict.",
+      en: "Implémentation IA à Peyrolles-en-Provence : automatisation devis BTP, optimisation gestion agricole (vigne, olive, maraîchage), agents conversationnels SAV, content marketing patrimonial (château Renaissance), gestion administrative PME. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Peyrolles-en-Provence : sessions pour dirigeants TPE, agriculteurs et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
-      en: "Coaching 1-to-1 à Peyrolles-en-Provence : sessions pour dirigeants TPE, agriculteurs et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      fr: "Coaching 1-to-1 à Peyrolles-en-Provence : sessions pour dirigeants de PME et d'ETI, agriculteurs et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      en: "Coaching 1-to-1 à Peyrolles-en-Provence : sessions pour dirigeants de PME et d'ETI, agriculteurs et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Peyrolles-en-Provence  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME services, agriculteurs et commerces peyrollais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME services, agriculteurs et commerces peyrollais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les agriculteurs provençaux (viticulture, oléiculture, maraîchage) ?",

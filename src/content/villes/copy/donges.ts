@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const DONGES_COPY: VilleCopy = {
   pitchFr:
-    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y mène ses missions auprès des organisations locales du bassin estuarien.",
+    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de PME artisanales, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y mène ses missions auprès des organisations locales du bassin estuarien.",
   pitchEn:
-    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y mène ses missions auprès des organisations locales du bassin estuarien.",
+    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de PME artisanales, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y mène ses missions auprès des organisations locales du bassin estuarien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Donges (44). Nous accompagnons les PME artisanales, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Donges (44). Nous accompagnons les PME artisanales, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "bassin estuarien",
   ecosystemFr:
-    "Donges est une commune de l'estuaire de la Loire, marquée par la présence de la raffinerie TotalEnergies (un des principaux sites pétrochimiques français). Tissu TPE artisans, PME sous-traitantes industrielles, commerces de proximité et services. Bassin d'emploi Saint-Nazaire/Montoir.",
+    "Donges est une commune de l'estuaire de la Loire, marquée par la présence de la raffinerie TotalEnergies (un des principaux sites pétrochimiques français). Tissu PME artisanales, PME sous-traitantes industrielles, commerces de proximité et services. Bassin d'emploi Saint-Nazaire/Montoir.",
   ecosystemEn:
-    "Donges est une commune de l'estuaire de la Loire, marquée par la présence de la raffinerie TotalEnergies (un des principaux sites pétrochimiques français). Tissu TPE artisans, PME sous-traitantes industrielles, commerces de proximité et services. Bassin d'emploi Saint-Nazaire/Montoir.",
+    "Donges est une commune de l'estuaire de la Loire, marquée par la présence de la raffinerie TotalEnergies (un des principaux sites pétrochimiques français). Tissu PME artisanales, PME sous-traitantes industrielles, commerces de proximité et services. Bassin d'emploi Saint-Nazaire/Montoir.",
   distancesFr:
     "Saint-Nazaire à 15 min. Montoir-de-Bretagne à 5 min. Nantes centre à 45 min par N171. Gare Donges (TER Saint-Nazaire-Nantes) desservie. Aéroport Nantes-Atlantique à 40 min.",
   distancesEn:
     "Saint-Nazaire à 15 min. Montoir-de-Bretagne à 5 min. Nantes centre à 45 min par N171. Gare Donges (TER Saint-Nazaire-Nantes) desservie. Aéroport Nantes-Atlantique à 40 min.",
   topSectorsNaf: [
     "Industrie pétrochimique & énergie",
-    "TPE artisanat & maintenance industrielle",
+    "PME de l'artisanat & maintenance industrielle",
     "PME sous-traitance industrielle",
     "Commerce de proximité",
     "Logistique & transport estuarien",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Donges : diagnostic adapté aux PME artisanales, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Donges : diagnostic adapté aux PME artisanales, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Donges : formats adaptés atelier, site industriel, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const DONGES_COPY: VilleCopy = {
       en: "Implémentation IA à Donges : automatisation maintenance prédictive, gestion qualité industrielle, agents conversationnels B2B, traçabilité et planification production PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Donges : sessions dans vos locaux (bureau, atelier, site) ou en visio. Dirigeants TPE/PME industrielles de l'estuaire souhaitant intégrer l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Donges : sessions dans vos locaux (bureau, atelier, site) ou en visio. Dirigeants TPE/PME industrielles de l'estuaire souhaitant intégrer l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Donges : sessions dans vos locaux (bureau, atelier, site) ou en visio. Dirigeants PME et ETI industrielles de l'estuaire souhaitant intégrer l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Donges : sessions dans vos locaux (bureau, atelier, site) ou en visio. Dirigeants PME et ETI industrielles de l'estuaire souhaitant intégrer l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const DONGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME sous-traitantes industrielles de Donges et du bassin nazairien sur leurs cas IA : automatisation qualité, maintenance prédictive, traçabilité, gestion documentaire technique. Conformité RGPD industrielle garantie.",
     },
     {
-      q: "Quels services pour les TPE artisans de Donges ?",
-      a: "Pour les TPE artisans de Donges, nous proposons audit IA Sur place ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés artisans et commerçants.",
+      q: "Quels services pour les PME artisanales de Donges ?",
+      a: "Pour les PME artisanales de Donges, nous proposons audit IA Sur place ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés artisans et commerçants.",
     },
     {
       q: "L'IA est-elle adaptée au secteur industriel estuarien ?",

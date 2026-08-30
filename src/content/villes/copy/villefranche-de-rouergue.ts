@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
   pitchFr:
-    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
+    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
+    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons PME artisanales, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Aveyron",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons PME artisanales, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit sur place sur mesure.",
+  seoHook: "PME & PME Aveyron",
   ecosystemFr:
     "Villefranche-de-Rouergue est une sous-préfecture de l'Aveyron, bastide royale du XIIIe siècle au patrimoine médiéval remarquable (place Notre-Dame, chartreuse Saint-Sauveur). Économie diversifiée : agroalimentaire aveyronnais (charcuterie, fromages, produits du terroir), artisanat d'art, commerce de centre-ville dynamique, professions libérales, tourisme patrimonial et marchés traditionnels réputés.",
   ecosystemEn:
@@ -26,12 +26,12 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
     "Commerce de centre-ville & marchés",
     "Tourisme patrimonial (bastide médiévale)",
     "Professions libérales & santé",
-    "TPE artisanat d'art & BTP",
+    "PME de l'artisanat d'art & BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefranche-de-Rouergue : diagnostic adapté aux TPE artisans, PME agroalimentaires aveyronnaises, commerçants bastide et professions libérales. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villefranche-de-Rouergue : diagnostic adapté aux TPE artisans, PME agroalimentaires aveyronnaises, commerçants bastide et professions libérales. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villefranche-de-Rouergue : diagnostic adapté aux PME artisanales, PME agroalimentaires aveyronnaises, commerçants bastide et professions libérales. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villefranche-de-Rouergue : diagnostic adapté aux PME artisanales, PME agroalimentaires aveyronnaises, commerçants bastide et professions libérales. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefranche-de-Rouergue : formats adaptés à l'atelier agroalimentaire, au commerce de centre bastide, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
       en: "Implémentation IA à Villefranche-de-Rouergue : traçabilité agroalimentaire, agents conversationnels tourisme patrimonial, automatisation gestion commerces, classification documents cabinets.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villefranche-de-Rouergue : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, commerçants bastide, professions libérales.",
-      en: "Coaching 1-to-1 à Villefranche-de-Rouergue : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, commerçants bastide, professions libérales.",
+      fr: "Coaching 1-to-1 à Villefranche-de-Rouergue : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires, commerçants bastide, professions libérales.",
+      en: "Coaching 1-to-1 à Villefranche-de-Rouergue : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires, commerçants bastide, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Villefranche-de-Rouergue  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME agroalimentaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME agroalimentaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial ?",
@@ -65,7 +65,7 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Villefranche-de-Rouergue ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villefranche-de-Rouergue. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Villefranche-de-Rouergue. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

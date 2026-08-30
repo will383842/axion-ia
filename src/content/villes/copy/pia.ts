@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const PIA_COPY: VilleCopy = {
   pitchFr:
-    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pia (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pia (66). Nous accompagnons tous types d'activités : PME artisanales, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pia (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pia (66). Nous accompagnons tous types d'activités : PME artisanales, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
   seoHook: "agriculture maraîchère & zones d'activités",
   ecosystemFr:
-    "Pia est une commune résidentielle en forte croissance au nord de Perpignan, dans la plaine de la Salanque. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, TPE artisanat, agriculture maraîchère (fruits, légumes), commerces de proximité, services.",
+    "Pia est une commune résidentielle en forte croissance au nord de Perpignan, dans la plaine de la Salanque. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME de l'artisanat, agriculture maraîchère (fruits, légumes), commerces de proximité, services.",
   ecosystemEn:
-    "Pia est une commune résidentielle en forte croissance au nord de Perpignan, dans la plaine de la Salanque. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, TPE artisanat, agriculture maraîchère (fruits, légumes), commerces de proximité, services.",
+    "Pia est une commune résidentielle en forte croissance au nord de Perpignan, dans la plaine de la Salanque. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME de l'artisanat, agriculture maraîchère (fruits, légumes), commerces de proximité, services.",
   distancesFr:
     "Perpignan centre à 10 min. Aéroport Perpignan-Rivesaltes à 8 min. Gare TGV Perpignan à 12 min. Saint-Laurent-de-la-Salanque à 10 min. Plages Canet/Le Barcarès à 20 min.",
   distancesEn:
     "Perpignan centre à 10 min. Aéroport Perpignan-Rivesaltes à 8 min. Gare TGV Perpignan à 12 min. Saint-Laurent-de-la-Salanque à 10 min. Plages Canet/Le Barcarès à 20 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture maraîchère Salanque",
     "PME zones d'activités",
     "Commerce de proximité",
@@ -30,8 +30,8 @@ export const PIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Pia : diagnostic adapté aux PME artisanales, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pia : diagnostic adapté aux PME artisanales, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pia : formats adaptés à l'atelier, exploitation maraîchère, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const PIA_COPY: VilleCopy = {
       en: "Implémentation IA à Pia : automatisation devis BTP, tri qualité fruits/légumes par vision, agents conversationnels B2B, CRM augmentés. Perpignan Méditerranée Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pia : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME, artisans, maraîchers, gérants TPE de la Salanque perpignanaise.",
-      en: "Coaching 1-to-1 à Pia : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME, artisans, maraîchers, gérants TPE de la Salanque perpignanaise.",
+      fr: "Coaching 1-to-1 à Pia : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME, artisans, maraîchers, gérants PME de la Salanque perpignanaise.",
+      en: "Coaching 1-to-1 à Pia : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME, artisans, maraîchers, gérants PME de la Salanque perpignanaise.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const PIA_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et maraîchers de la Salanque sur leurs cas IA : tri qualité fruits et légumes par vision, prédiction récoltes, traçabilité, vente directe e-commerce, automatisation facturation.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Pia sur leurs cas IA : automatisation devis, planification chantiers, gestion stocks matériaux, agents IA prise de rendez-vous, suivi clients.",
+      q: "Accompagnez-vous les PME du BTP ?",
+      a: "Oui, nous accompagnons les PME du BTP de Pia sur leurs cas IA : automatisation devis, planification chantiers, gestion stocks matériaux, agents IA prise de rendez-vous, suivi clients.",
     },
     {
       q: "Quels services pour les commerçants et PME de Pia ?",

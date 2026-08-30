@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Divatte-sur-Loire (44), commune nouvelle du vignoble nantais en Loire-Atlantique, née de la fusion de Barbechat et La Chapelle-Basse-Mer. Tissu TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais est.",
+    "Divatte-sur-Loire (44), commune nouvelle du vignoble nantais en Loire-Atlantique, née de la fusion de Barbechat et La Chapelle-Basse-Mer. Tissu PME viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais est.",
   pitchEn:
-    "Divatte-sur-Loire (44), commune nouvelle du vignoble nantais en Loire-Atlantique, née de la fusion de Barbechat et La Chapelle-Basse-Mer. Tissu TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais est.",
+    "Divatte-sur-Loire (44), commune nouvelle du vignoble nantais en Loire-Atlantique, née de la fusion de Barbechat et La Chapelle-Basse-Mer. Tissu PME viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : PME viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : PME viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
   seoHook: "viticulture maraîchage & agroalimentaire",
   ecosystemFr:
-    "Divatte-sur-Loire est une commune nouvelle du vignoble nantais est, en bords de Loire. Viticulture Muscadet, maraîchage, agroalimentaire. Proximité Nantes (20 km). Tissu TPE viticulteurs, maraîchers, artisans, commerces de proximité et professions libérales.",
+    "Divatte-sur-Loire est une commune nouvelle du vignoble nantais est, en bords de Loire. Viticulture Muscadet, maraîchage, agroalimentaire. Proximité Nantes (20 km). Tissu PME viticulteurs, maraîchers, artisans, commerces de proximité et professions libérales.",
   ecosystemEn:
-    "Divatte-sur-Loire est une commune nouvelle du vignoble nantais est, en bords de Loire. Viticulture Muscadet, maraîchage, agroalimentaire. Proximité Nantes (20 km). Tissu TPE viticulteurs, maraîchers, artisans, commerces de proximité et professions libérales.",
+    "Divatte-sur-Loire est une commune nouvelle du vignoble nantais est, en bords de Loire. Viticulture Muscadet, maraîchage, agroalimentaire. Proximité Nantes (20 km). Tissu PME viticulteurs, maraîchers, artisans, commerces de proximité et professions libérales.",
   distancesFr:
     "Nantes centre à 25 min. Gare Nantes TGV à 30 min. Vallet à 15 min. Clisson à 25 min. Aéroport Nantes-Atlantique à 35 min. Ancenis à 20 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     "Viticulture & maraîchage",
     "Agroalimentaire",
     "Commerce de proximité",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux PME viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux PME viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Divatte-sur-Loire : formats adaptés au domaine viticole, à l'exploitation maraîchère, au commerce ou au bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Divatte-sur-Loire : automatisation gestion parcellaire, traçabilité récoltes, agents conversationnels vente directe, extraction données commerciales. Vignoble nantais est.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Divatte-sur-Loire : sessions dans votre domaine, exploitation, commerce ou en visio. Dirigeants TPE/PME du vignoble nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Divatte-sur-Loire : sessions dans votre domaine, exploitation, commerce ou en visio. Dirigeants TPE/PME du vignoble nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Divatte-sur-Loire : sessions dans votre domaine, exploitation, commerce ou en visio. Dirigeants PME et ETI du vignoble nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Divatte-sur-Loire : sessions dans votre domaine, exploitation, commerce ou en visio. Dirigeants PME et ETI du vignoble nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les viticulteurs et maraîchers ?",
-      a: "Oui, nous accompagnons les TPE viticulteurs et maraîchers sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks, optimisation logistique récoltes, agents IA vente directe. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME viticulteurs et maraîchers sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks, optimisation logistique récoltes, agents IA vente directe. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME agroalimentaires ?",
@@ -61,7 +61,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Divatte-sur-Loire  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du vignoble nantais.",
     },
     {
       q: "Comment se déroule une intervention à Divatte-sur-Loire ?",

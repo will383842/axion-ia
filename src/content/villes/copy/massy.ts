@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MASSY_COPY: VilleCopy = {
   pitchFr:
-    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
+    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
   pitchEn:
-    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
+    "Massy, dans l'Essonne, est l'un des grands carrefours du sud francilien grâce à sa gare Massy TGV et son nœud RER B et C qui en font un hub d'affaires majeur. Le quartier Atlantis et la zone d'activités concentrent sièges sociaux, ESN, cabinets de conseil et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI tertiaires de ce bassin pour automatiser leurs processus et libérer du temps à forte valeur ajoutée.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les TPE puis les PME du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les PME puis les ETI du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les TPE puis les PME du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Massy (91, Essonne). Nous accompagnons en priorité les PME puis les ETI du hub tertiaire d'Atlantis et du pôle gare Massy TGV : ESN, cabinets de conseil, agences, commerces et services aux entreprises. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   seoHook: "tertiaire & hub gare Massy TGV",
   ecosystemFr:
-    "Massy doit son dynamisme à sa position de hub : la gare Massy TGV relie province et province sans passer par Paris, croisant les RER B et C. Le quartier Atlantis et le pôle Vilgénis concentrent sièges, ESN, cabinets de conseil et activités de services aux entreprises, à proximité du plateau de Saclay. Ce tissu dense de TPE et PME tertiaires, riche en tâches administratives répétitives, se prête particulièrement bien à l'automatisation et aux agents IA métier.",
+    "Massy doit son dynamisme à sa position de hub : la gare Massy TGV relie province et province sans passer par Paris, croisant les RER B et C. Le quartier Atlantis et le pôle Vilgénis concentrent sièges, ESN, cabinets de conseil et activités de services aux entreprises, à proximité du plateau de Saclay. Ce tissu dense de PME et ETI tertiaires, riche en tâches administratives répétitives, se prête particulièrement bien à l'automatisation et aux agents IA métier.",
   ecosystemEn:
-    "Massy doit son dynamisme à sa position de hub : la gare Massy TGV relie province et province sans passer par Paris, croisant les RER B et C. Le quartier Atlantis et le pôle Vilgénis concentrent sièges, ESN, cabinets de conseil et activités de services aux entreprises, à proximité du plateau de Saclay. Ce tissu dense de TPE et PME tertiaires, riche en tâches administratives répétitives, se prête particulièrement bien à l'automatisation et aux agents IA métier.",
+    "Massy doit son dynamisme à sa position de hub : la gare Massy TGV relie province et province sans passer par Paris, croisant les RER B et C. Le quartier Atlantis et le pôle Vilgénis concentrent sièges, ESN, cabinets de conseil et activités de services aux entreprises, à proximité du plateau de Saclay. Ce tissu dense de PME et ETI tertiaires, riche en tâches administratives répétitives, se prête particulièrement bien à l'automatisation et aux agents IA métier.",
   distancesFr:
     "La gare Massy TGV met Lyon, Bordeaux ou Lille à portée directe sans passer par Paris, tandis que les RER B et C desservent la capitale en une trentaine de minutes. L'aéroport Paris-Orly est à 10 km, le plateau de Saclay et l'École polytechnique à quelques minutes. Les A6 et A10 placent Massy au croisement des grands axes du sud francilien, facilitant les interventions sur tout l'ouest de l'Essonne.",
   distancesEn:
@@ -34,16 +34,16 @@ export const MASSY_COPY: VilleCopy = {
       en: "Audit IA à Massy : diagnostic des processus pour ESN, cabinets de conseil et PME tertiaires du pôle Atlantis. Nous identifions les automatisations à fort ROI et les priorisons.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Massy : automatisation des devis, propositions commerciales et relances pour les TPE et PME de services, avec montée en autonomie des équipes.",
-      en: "Interventions IA sur site à Massy : automatisation des devis, propositions commerciales et relances pour les TPE et PME de services, avec montée en autonomie des équipes.",
+      fr: "Interventions IA sur site à Massy : automatisation des devis, propositions commerciales et relances pour les PME et ETI de services, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Massy : automatisation des devis, propositions commerciales et relances pour les PME et ETI de services, avec montée en autonomie des équipes.",
     },
     implementation: {
       fr: "Implémentation IA à Massy : agents conversationnels B2B, classification de documents et automatisation des flux entre CRM et outils métier des entreprises tertiaires.",
       en: "Implémentation IA à Massy : agents conversationnels B2B, classification de documents et automatisation des flux entre CRM et outils métier des entreprises tertiaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Massy : sessions dans vos bureaux d'Atlantis ou en visio pour les dirigeants de TPE et PME tertiaires souhaitant piloter l'IA en autonomie.",
-      en: "Coaching 1-to-1 à Massy : sessions dans vos bureaux d'Atlantis ou en visio pour les dirigeants de TPE et PME tertiaires souhaitant piloter l'IA en autonomie.",
+      fr: "Coaching 1-to-1 à Massy : sessions dans vos bureaux d'Atlantis ou en visio pour les dirigeants de PME et d'ETI tertiaires souhaitant piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Massy : sessions dans vos bureaux d'Atlantis ou en visio pour les dirigeants de PME et d'ETI tertiaires souhaitant piloter l'IA en autonomie.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Massy : plateformes sur mesure avec IA intégrée pour ESN, cabinets et agences souhaitant qualifier leurs leads B2B du sud francilien.",
@@ -88,12 +88,6 @@ export const MASSY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site IA-native essentiel",
-            detail:
-              "Site vitrine ou e-commerce avec assistant IA et qualification de leads, pour indépendants, agences et petites ESN du bassin de Massy jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web + SaaS sur mesure",
@@ -175,12 +169,6 @@ export const MASSY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Essential AI-native site",
-            detail:
-              "Showcase or e-commerce site with AI assistant and lead qualification, for freelancers, agencies and small IT services firms in the Massy area up to about ten staff.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom website + SaaS platform",
             detail:
@@ -237,8 +225,8 @@ export const MASSY_COPY: VilleCopy = {
       a: "Oui. Le tertiaire d'Atlantis est notre cœur de cible : ESN, cabinets de conseil, agences. Nous automatisons devis, propositions commerciales et relances, et déployons des agents conversationnels connectés à vos outils.",
     },
     {
-      q: "Travaillez-vous avec les TPE et PME de Massy en priorité ?",
-      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Massy. Nous adaptons les formats aux structures de services agiles. Les ETI restent un public marginal de notre activité.",
+      q: "Travaillez-vous avec les PME et ETI de Massy en priorité ?",
+      a: "Oui. Les les PME puis les ETI sont notre public prioritaire à Massy. Nous adaptons les formats aux structures de services agiles. Les grands groupes complètent ce socle.",
     },
     {
       q: "Quels services pour les commerces et services de Massy ?",

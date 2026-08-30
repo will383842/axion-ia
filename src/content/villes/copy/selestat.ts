@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SELESTAT_COPY: VilleCopy = {
   pitchFr:
-    "Sélestat (67), sous-préfecture du Bas-Rhin de 19 589 habitants, ville d'art et d'histoire dotée de la Bibliothèque humaniste inscrite à l'UNESCO Mémoire du monde, ancrée dans la plaine d'Alsace au cœur du vignoble entre Strasbourg et Colmar. Tissu TPE/PME industrie diversifiée, viticulture, tourisme patrimonial, commerces de centre médiéval, artisans, services. Axion-IA y intervient pour tous types d'activités.",
+    "Sélestat (67), sous-préfecture du Bas-Rhin de 19 589 habitants, ville d'art et d'histoire dotée de la Bibliothèque humaniste inscrite à l'UNESCO Mémoire du monde, ancrée dans la plaine d'Alsace au cœur du vignoble entre Strasbourg et Colmar. Tissu PME et ETI industrie diversifiée, viticulture, tourisme patrimonial, commerces de centre médiéval, artisans, services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Sélestat (67), sous-préfecture du Bas-Rhin de 19 589 habitants, ville d'art et d'histoire dotée de la Bibliothèque humaniste inscrite à l'UNESCO Mémoire du monde, ancrée dans la plaine d'Alsace au cœur du vignoble entre Strasbourg et Colmar. Tissu TPE/PME industrie diversifiée, viticulture, tourisme patrimonial, commerces de centre médiéval, artisans, services. Axion-IA y intervient pour tous types d'activités.",
+    "Sélestat (67), sous-préfecture du Bas-Rhin de 19 589 habitants, ville d'art et d'histoire dotée de la Bibliothèque humaniste inscrite à l'UNESCO Mémoire du monde, ancrée dans la plaine d'Alsace au cœur du vignoble entre Strasbourg et Colmar. Tissu PME et ETI industrie diversifiée, viticulture, tourisme patrimonial, commerces de centre médiéval, artisans, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : TPE/PME industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : PME et ETI industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : TPE/PME industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sélestat (67). Nous accompagnons tous types d'activités : PME et ETI industrie diversifiée, viticulture, hôtellerie-restauration et tourisme patrimonial, artisans, commerces du centre médiéval, professions de services et acteurs de la sous-préfecture du Bas-Rhin.",
   ecosystemFr:
-    "Sélestat est sous-préfecture du Bas-Rhin, troisième ville d'Alsace pour la richesse patrimoniale médiévale, dotée de la Bibliothèque humaniste UNESCO et située sur la route des vins d'Alsace. Tissu TPE/PME industrie diversifiée, viticulture, tourisme patrimonial, hôtellerie-restauration, commerces de centre médiéval, artisans, services. Bassin de vie entre Strasbourg (30 km) et Colmar (20 km).",
+    "Sélestat est sous-préfecture du Bas-Rhin, troisième ville d'Alsace pour la richesse patrimoniale médiévale, dotée de la Bibliothèque humaniste UNESCO et située sur la route des vins d'Alsace. Tissu PME et ETI industrie diversifiée, viticulture, tourisme patrimonial, hôtellerie-restauration, commerces de centre médiéval, artisans, services. Bassin de vie entre Strasbourg (30 km) et Colmar (20 km).",
   ecosystemEn:
-    "Sélestat est sous-préfecture du Bas-Rhin, troisième ville d'Alsace pour la richesse patrimoniale médiévale, dotée de la Bibliothèque humaniste UNESCO et située sur la route des vins d'Alsace. Tissu TPE/PME industrie diversifiée, viticulture, tourisme patrimonial, hôtellerie-restauration, commerces de centre médiéval, artisans, services. Bassin de vie entre Strasbourg (30 km) et Colmar (20 km).",
+    "Sélestat est sous-préfecture du Bas-Rhin, troisième ville d'Alsace pour la richesse patrimoniale médiévale, dotée de la Bibliothèque humaniste UNESCO et située sur la route des vins d'Alsace. Tissu PME et ETI industrie diversifiée, viticulture, tourisme patrimonial, hôtellerie-restauration, commerces de centre médiéval, artisans, services. Bassin de vie entre Strasbourg (30 km) et Colmar (20 km).",
   distancesFr:
     "Strasbourg à 30 min. Colmar à 20 min. Mulhouse à 50 min. Aéroport Strasbourg-Entzheim à 25 min. Aéroport EuroAirport Bâle-Mulhouse à 1h. Autoroute A35 accès direct. Gare TER Sélestat sur ligne Strasbourg-Mulhouse. Château du Haut-Koenigsbourg à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SELESTAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Sélestat : diagnostic adapté aux PME et ETI industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Sélestat : diagnostic adapté aux PME et ETI industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sélestat : formats adaptés à l'atelier industriel, le domaine viticole, l'hôtel-restaurant, le commerce, l'agence, le cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const SELESTAT_COPY: VilleCopy = {
       en: "Implémentation IA à Sélestat : automatisation gestion viticole, traçabilité production, channel manager hôtelier, agents conversationnels bilingues FR/DE/EN pour tourisme, gestion commerciale, billetterie patrimoniale.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sélestat : sessions dans votre domaine, hôtel, restaurant, commerce, atelier, cabinet ou en visio. Vignerons, hôteliers, restaurateurs, commerçants, industriels, gérants TPE/PME du Centre-Alsace.",
-      en: "Coaching 1-to-1 à Sélestat : sessions dans votre domaine, hôtel, restaurant, commerce, atelier, cabinet ou en visio. Vignerons, hôteliers, restaurateurs, commerçants, industriels, gérants TPE/PME du Centre-Alsace.",
+      fr: "Coaching 1-to-1 à Sélestat : sessions dans votre domaine, hôtel, restaurant, commerce, atelier, cabinet ou en visio. Vignerons, hôteliers, restaurateurs, commerçants, industriels, gérants PME et ETI du Centre-Alsace.",
+      en: "Coaching 1-to-1 à Sélestat : sessions dans votre domaine, hôtel, restaurant, commerce, atelier, cabinet ou en visio. Vignerons, hôteliers, restaurateurs, commerçants, industriels, gérants PME et ETI du Centre-Alsace.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SELESTAT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Sélestat ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Sélestat ?",

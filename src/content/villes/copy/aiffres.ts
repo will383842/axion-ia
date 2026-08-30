@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const AIFFRES_COPY: VilleCopy = {
   pitchFr:
-    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
+    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu PME artisanales, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
   pitchEn:
-    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
+    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu PME artisanales, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   seoHook: "artisanat services & tertiaires bassin",
   ecosystemFr:
-    "Aiffres est une commune résidentielle au sud immédiat de Niort. Profite du dynamisme du bassin d'emploi niortais (capitale des mutuelles). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Accès rapide aux zones d'activités de l'agglomération niortaise.",
+    "Aiffres est une commune résidentielle au sud immédiat de Niort. Profite du dynamisme du bassin d'emploi niortais (capitale des mutuelles). Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Accès rapide aux zones d'activités de l'agglomération niortaise.",
   ecosystemEn:
-    "Aiffres est une commune résidentielle au sud immédiat de Niort. Profite du dynamisme du bassin d'emploi niortais (capitale des mutuelles). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Accès rapide aux zones d'activités de l'agglomération niortaise.",
+    "Aiffres est une commune résidentielle au sud immédiat de Niort. Profite du dynamisme du bassin d'emploi niortais (capitale des mutuelles). Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Accès rapide aux zones d'activités de l'agglomération niortaise.",
   distancesFr:
     "Niort centre à 5 min. Gare Niort à 10 min (TGV Paris-La Rochelle). La Rochelle à 1h. Poitiers à 1h10. Saint-Jean-d'Angély à 40 min. Aéroport Poitiers-Biard à 1h20.",
   distancesEn:
     "Niort centre à 5 min. Gare Niort à 10 min (TGV Paris-La Rochelle). La Rochelle à 1h. Poitiers à 1h10. Saint-Jean-d'Angély à 40 min. Aéroport Poitiers-Biard à 1h20.",
   topSectorsNaf: [
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "PME tertiaires bassin niortais",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const AIFFRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Aiffres : diagnostic adapté aux PME artisanales, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Aiffres : diagnostic adapté aux PME artisanales, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aiffres : formats adaptés au bureau, commerce, cabinet ou atelier. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const AIFFRES_COPY: VilleCopy = {
       en: "Implémentation IA à Aiffres : agents conversationnels B2B, automatisation workflow mutuelles/assurances, classification documents, extraction données. Agglomération niortaise sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aiffres : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE/PME, professions libérales, artisans et commerçants de l'agglomération niortaise souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Aiffres : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE/PME, professions libérales, artisans et commerçants de l'agglomération niortaise souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Aiffres : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants PME et ETI, professions libérales, artisans et commerçants de l'agglomération niortaise souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Aiffres : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants PME et ETI, professions libérales, artisans et commerçants de l'agglomération niortaise souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const AIFFRES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et prestataires du bassin niortais (mutuelles, assurances, services) sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, extraction données sinistres. Conformité RGPD assurances garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants d'Aiffres ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants d'Aiffres sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce d'Aiffres ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce d'Aiffres sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour les professions libérales ?",

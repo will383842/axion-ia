@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const BARR_COPY: VilleCopy = {
   pitchFr:
-    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu PME et ETI viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu PME et ETI viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barr (67). Nous accompagnons tous types d'activités : PME et ETI viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barr (67). Nous accompagnons tous types d'activités : PME et ETI viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
   ecosystemFr:
-    "Barr est une commune viticole emblématique de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile, marquée par les domaines viticoles, l'héritage des tanneries historiques et le tourisme œnologique. Tissu TPE/PME viticulture, tourisme, artisanat, commerces de proximité, restauration.",
+    "Barr est une commune viticole emblématique de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile, marquée par les domaines viticoles, l'héritage des tanneries historiques et le tourisme œnologique. Tissu PME et ETI viticulture, tourisme, artisanat, commerces de proximité, restauration.",
   ecosystemEn:
-    "Barr est une commune viticole emblématique de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile, marquée par les domaines viticoles, l'héritage des tanneries historiques et le tourisme œnologique. Tissu TPE/PME viticulture, tourisme, artisanat, commerces de proximité, restauration.",
+    "Barr est une commune viticole emblématique de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile, marquée par les domaines viticoles, l'héritage des tanneries historiques et le tourisme œnologique. Tissu PME et ETI viticulture, tourisme, artisanat, commerces de proximité, restauration.",
   distancesFr:
     "Strasbourg à 35 min. Sélestat à 20 min. Obernai à 15 min. Colmar à 40 min. Autoroute A35 accès à 10 min. Gare TGV de Strasbourg à 40 min. Aéroport Strasbourg-Entzheim à 30 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BARR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Barr : diagnostic adapté aux PME et ETI viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Barr : diagnostic adapté aux PME et ETI viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Barr : formats adaptés au domaine viticole, à l'hôtel-restaurant, au gîte, au commerce, à l'atelier d'artisan. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const BARR_COPY: VilleCopy = {
       en: "Implémentation IA à Barr : automatisation gestion viticole, réservation tourisme, agents conversationnels multilingues, gestion commerciale, traçabilité des cuvées, relation client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Barr : sessions dans votre domaine, hôtel-restaurant, commerce, atelier ou en visio. Vignerons, hôteliers, restaurateurs, artisans, commerçants, gérants TPE/PME du Piémont des Vosges.",
-      en: "Coaching 1-to-1 à Barr : sessions dans votre domaine, hôtel-restaurant, commerce, atelier ou en visio. Vignerons, hôteliers, restaurateurs, artisans, commerçants, gérants TPE/PME du Piémont des Vosges.",
+      fr: "Coaching 1-to-1 à Barr : sessions dans votre domaine, hôtel-restaurant, commerce, atelier ou en visio. Vignerons, hôteliers, restaurateurs, artisans, commerçants, gérants PME et ETI du Piémont des Vosges.",
+      en: "Coaching 1-to-1 à Barr : sessions dans votre domaine, hôtel-restaurant, commerce, atelier ou en visio. Vignerons, hôteliers, restaurateurs, artisans, commerçants, gérants PME et ETI du Piémont des Vosges.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const BARR_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Barr ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Barr ?",

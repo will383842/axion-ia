@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const DEVILLE_LES_ROUEN_COPY: VilleCopy = {
   pitchFr:
-    "Deville-les-Rouen (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 10 800 habitants. Ville residentielle et commercante au nord-ouest de Rouen, elle accueille des TPE de services, des PME tertiaires, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
+    "Deville-les-Rouen (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 10 800 habitants. Ville residentielle et commercante au nord-ouest de Rouen, elle accueille des PME de services, des PME tertiaires, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Deville-les-Rouen (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 10 800 habitants. Ville residentielle et commercante au nord-ouest de Rouen, elle accueille des TPE de services, des PME tertiaires, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
+    "Deville-les-Rouen (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 10 800 habitants. Ville residentielle et commercante au nord-ouest de Rouen, elle accueille des PME de services, des PME tertiaires, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "services, tertiaire & agglo Rouen",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Deville-les-Rouen (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Deville-les-Rouen (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Deville-les-Rouen (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Deville-les-Rouen (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo rouennaise : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Deville-les-Rouen est situee en rive droite de la Seine, au nord-ouest de Rouen. Partie integrante de la Metropole Rouen Normandie, elle dispose d'un tissu de commerces de proximite, TPE de services, artisanat, professions liberales et PME tertiaires. Tramway et acces A150.",
+    "Deville-les-Rouen est situee en rive droite de la Seine, au nord-ouest de Rouen. Partie integrante de la Metropole Rouen Normandie, elle dispose d'un tissu de commerces de proximite, PME de services, artisanat, professions liberales et PME tertiaires. Tramway et acces A150.",
   ecosystemEn:
-    "Deville-les-Rouen est situee en rive droite de la Seine, au nord-ouest de Rouen. Partie integrante de la Metropole Rouen Normandie, elle dispose d'un tissu de commerces de proximite, TPE de services, artisanat, professions liberales et PME tertiaires. Tramway et acces A150.",
+    "Deville-les-Rouen est situee en rive droite de la Seine, au nord-ouest de Rouen. Partie integrante de la Metropole Rouen Normandie, elle dispose d'un tissu de commerces de proximite, PME de services, artisanat, professions liberales et PME tertiaires. Tramway et acces A150.",
   distancesFr:
     "Tramway vers Rouen centre (10 min). Gare Rouen Rive-Droite a 10 min. A150 Rouen-Le Havre a 5 min. Paris Saint-Lazare a 1h20 via Rouen. Aeroport Rouen-Boos a 25 min.",
   distancesEn:
     "Tramway vers Rouen centre (10 min). Gare Rouen Rive-Droite a 10 min. A150 Rouen-Le Havre a 5 min. Paris Saint-Lazare a 1h20 via Rouen. Aeroport Rouen-Boos a 25 min.",
   topSectorsNaf: [
     "Commerce de proximite & detail",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "PME tertiaire & bureaux",
     "Professions liberales & sante",
     "Artisanat & renovation",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Deville-les-Rouen : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Deville-les-Rouen : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Deville-les-Rouen : diagnostic adapte aux PME de services, PME tertiaires et professions liberales de l'agglo rouennaise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Deville-les-Rouen : diagnostic adapte aux PME de services, PME tertiaires et professions liberales de l'agglo rouennaise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Deville-les-Rouen : formations adaptees aux commerces, cabinets, bureaux et PME tertiaires de la metropole rouennaise. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DEVILLE_LES_ROUEN_COPY: VilleCopy = {
       en: "Implementation IA a Deville-les-Rouen : automatisation administrative, agents conversationnels clients, CRM augmentes pour PME et commercants de l'agglo rouennaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Deville-les-Rouen : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de l'agglo rouennaise nord.",
-      en: "Coaching 1-to-1 a Deville-les-Rouen : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de l'agglo rouennaise nord.",
+      fr: "Coaching 1-to-1 a Deville-les-Rouen : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de l'agglo rouennaise nord.",
+      en: "Coaching 1-to-1 a Deville-les-Rouen : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de l'agglo rouennaise nord.",
     },
   },
   faqGeolocalisee: [

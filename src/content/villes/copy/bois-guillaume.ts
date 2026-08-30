@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_GUILLAUME_COPY: VilleCopy = {
   pitchFr:
-    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA collabore avec toutes les structures locales de l'agglo rouennaise nord.",
+    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu PME professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA collabore avec toutes les structures locales de l'agglo rouennaise nord.",
   pitchEn:
-    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA collabore avec toutes les structures locales de l'agglo rouennaise nord.",
+    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu PME professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA collabore avec toutes les structures locales de l'agglo rouennaise nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : PME professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : PME professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
   seoHook: "tertiaire, professions libérales & santé",
   ecosystemFr:
     "Bois-Guillaume est une commune résidentielle prisée au nord de Rouen, membre de la Métropole Rouen Normandie. Forte concentration de professions libérales, cabinets médicaux, PME tertiaires et de services, commerces de proximité.",
@@ -26,7 +26,7 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
     "PME tertiaires Métropole Rouen",
     "Services aux entreprises",
     "Commerce de proximité",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
   ],
   servicesContext: {
     audit: {
@@ -42,8 +42,8 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
       en: "Implémentation IA à Bois-Guillaume : automatisation workflow cabinet médical/libéral, agents conversationnels, classification documents, CRM intelligent. Agglo Rouen nord.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bois-Guillaume : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME tertiaires, professions libérales, commerçants, gérants TPE bois-guillaumais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Bois-Guillaume : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME tertiaires, professions libérales, commerçants, gérants TPE bois-guillaumais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Bois-Guillaume : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME tertiaires, professions libérales, commerçants, gérants PME bois-guillaumais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Bois-Guillaume : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME tertiaires, professions libérales, commerçants, gérants PME bois-guillaumais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Bois-Guillaume ?",
-      a: "L'audit sur place est tarifé selon vos enjeux pour les TPE et professions libérales. Pour les PME tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place est tarifé selon vos enjeux pour les PME et professions libérales. Pour les PME tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

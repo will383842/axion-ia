@@ -9,13 +9,13 @@ import type { VilleCopy } from "./types";
 
 export const EYSINES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
+    "Axion-IA accompagne les PME et ETI d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
+    "Axion-IA accompagne les PME et ETI d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "maraîchage & artisanat de proximité",
   ecosystemFr:
     "Eysines s'étend sur 12,01 km² au sein de Bordeaux Métropole et conserve une identité agricole forte : héritage maraîcher dit « potager de Bordeaux », avec environ vingt exploitations encore actives en pomme de terre et citrouille. Le tissu économique mêle commerces de proximité, construction, artisanat et services tertiaires. Le Domaine du Pinsan (50 hectares) accueille équipements sportifs et culturels intercommunaux, structurant la vie économique locale.",
@@ -47,8 +47,8 @@ export const EYSINES_COPY: VilleCopy = {
       en: "Implémentation IA sur site à Eysines à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Session 1-to-1 dirigeant TPE/PME à Eysines dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
-      en: "Session 1-to-1 dirigeant TPE/PME à Eysines dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      fr: "Session 1-to-1 dirigeants de PME et d'ETI à Eysines dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeants de PME et d'ETI à Eysines dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   services: {
@@ -89,12 +89,6 @@ export const EYSINES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, générateur de devis) sur le site existant d'un maraîcher de la jalle, d'un artisan ou d'un commerçant du marché de Migron, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -176,12 +170,6 @@ export const EYSINES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, générateur de devis) sur le site existant d'un maraîcher de la jalle, d'un artisan ou d'un commerçant du marché de Migron, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -235,7 +223,7 @@ export const EYSINES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Eysines ?",
-      a: "Pour les TPE et PME d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Bordeaux, Le Bouscat et Mérignac depuis Eysines ?",
@@ -251,7 +239,7 @@ export const EYSINES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Eysines ?",
-      a: "Oui, nos sessions 1-to-1 dirigeants à Eysines démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Eysines démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de PME ou ETI.",
     },
   ],
 };

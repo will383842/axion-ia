@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SISTERON_COPY: VilleCopy = {
   pitchFr:
-    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
+    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu PME artisanales, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
   pitchEn:
-    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
+    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu PME artisanales, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   seoHook: "tourisme hôtellerie & agriculture fruitière",
   ecosystemFr:
-    "Sisteron est sous-préfecture des Alpes-de-Haute-Provence (~7 850 hab), point stratégique entre Alpes et Provence sur la Durance. Citadelle classée, festival Les Nuits de la Citadelle, filière touristique estivale forte. Tissu TPE artisans BTP, PME hôtellerie/restauration, agriculteurs (fruitiers, olives), commerçants et services sous-préfectoraux.",
+    "Sisteron est sous-préfecture des Alpes-de-Haute-Provence (~7 850 hab), point stratégique entre Alpes et Provence sur la Durance. Citadelle classée, festival Les Nuits de la Citadelle, filière touristique estivale forte. Tissu PME du BTP, PME hôtellerie/restauration, agriculteurs (fruitiers, olives), commerçants et services sous-préfectoraux.",
   ecosystemEn:
-    "Sisteron est sous-préfecture des Alpes-de-Haute-Provence (~7 850 hab), point stratégique entre Alpes et Provence sur la Durance. Citadelle classée, festival Les Nuits de la Citadelle, filière touristique estivale forte. Tissu TPE artisans BTP, PME hôtellerie/restauration, agriculteurs (fruitiers, olives), commerçants et services sous-préfectoraux.",
+    "Sisteron est sous-préfecture des Alpes-de-Haute-Provence (~7 850 hab), point stratégique entre Alpes et Provence sur la Durance. Citadelle classée, festival Les Nuits de la Citadelle, filière touristique estivale forte. Tissu PME du BTP, PME hôtellerie/restauration, agriculteurs (fruitiers, olives), commerçants et services sous-préfectoraux.",
   distancesFr:
     "Gare Sisteron (TER Marseille-Briançon). Accès A51 vers Aix-en-Provence/Marseille (1h30). Gap à 50 min nord. Digne-les-Bains à 40 min sud. Aéroport Marseille-Provence à 1h45.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SISTERON_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme & hôtellerie (citadelle & festival)",
     "Agriculture fruitière & oléicole",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services sous-préfectoraux",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Sisteron : diagnostic adapté aux PME artisanales, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Sisteron : diagnostic adapté aux PME artisanales, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sisteron : formats adaptés aux hébergements touristiques, exploitations fruitières, ateliers artisanaux ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SISTERON_COPY: VilleCopy = {
       en: "Implémentation IA à Sisteron : agents conversationnels réservation hôtelière, classification photos citadelle/patrimoine, automatisation billetterie festival, optimisation gestion stocks agricoles.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sisteron : sessions dans votre hébergement, exploitation, atelier ou en visio. Dirigeants TPE/PME sisteronaises souhaitant intégrer l'IA dans leur activité locale.",
-      en: "Coaching 1-to-1 à Sisteron : sessions dans votre hébergement, exploitation, atelier ou en visio. Dirigeants TPE/PME sisteronaises souhaitant intégrer l'IA dans leur activité locale.",
+      fr: "Coaching 1-to-1 à Sisteron : sessions dans votre hébergement, exploitation, atelier ou en visio. Dirigeants PME et ETI sisteronaises souhaitant intégrer l'IA dans leur activité locale.",
+      en: "Coaching 1-to-1 à Sisteron : sessions dans votre hébergement, exploitation, atelier ou en visio. Dirigeants PME et ETI sisteronaises souhaitant intégrer l'IA dans leur activité locale.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SISTERON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Sisteron  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME sisteronaises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME artisanales, commerçants et PME sisteronaises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Sisteron ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y mène ses missions auprès des organisations locales du bassin brévinois.",
+    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu PME du commerce, PME touristiques et de services. Axion-IA y mène ses missions auprès des organisations locales du bassin brévinois.",
   pitchEn:
-    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y mène ses missions auprès des organisations locales du bassin brévinois.",
+    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu PME du commerce, PME touristiques et de services. Axion-IA y mène ses missions auprès des organisations locales du bassin brévinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons PME du commerce, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons PME du commerce, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & commerce détail",
   ecosystemFr:
     "Saint-Brevin-les-Pins (14 541 hab) est une commune littorale de la Côte de Jade, à l'embouchure de la Loire, reliée à Saint-Nazaire par le pont. Tourisme balnéaire familial, campings, commerces saisonniers, artisanat du bâtiment et professions libérales. Proximité Saint-Nazaire (15 min via pont), Pornic (20 min), Nantes (50 min). Attractivité résidentielle croissante.",
@@ -30,8 +30,8 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux TPE commerçants, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux TPE commerçants, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux PME du commerce, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux PME du commerce, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Brevin-les-Pins : formats adaptés aux campings, hôtels, commerces saisonniers et artisans du littoral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Brevin-les-Pins : gestion réservations camping augmentée, revenue management saisonnier, CRM clients tourisme, automatisation facturation et agents conversationnels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Brevin-les-Pins : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants campings, artisans et professions libérales du littoral Côte de Jade.",
-      en: "Coaching 1-to-1 à Saint-Brevin-les-Pins : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants campings, artisans et professions libérales du littoral Côte de Jade.",
+      fr: "Coaching 1-to-1 à Saint-Brevin-les-Pins : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants campings, artisans et professions libérales du littoral Côte de Jade.",
+      en: "Coaching 1-to-1 à Saint-Brevin-les-Pins : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants campings, artisans et professions libérales du littoral Côte de Jade.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Brevin  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Saint-Brevin-les-Pins. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Saint-Brevin-les-Pins. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les campings et hébergements touristiques ?",
@@ -65,7 +65,7 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Brevin ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Brevin-les-Pins. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Saint-Brevin-les-Pins. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

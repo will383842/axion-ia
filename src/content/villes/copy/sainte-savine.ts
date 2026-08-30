@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_SAVINE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. PME et ETI services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. PME et ETI services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Savine (10). Nous accompagnons PME et ETI : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Savine (10). Nous accompagnons PME et ETI : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   seoHook: "commerce centre-ville & santé professions",
   ecosystemFr:
-    "Sainte-Savine est une commune résidentielle et commerciale de l'agglo Troyes, dotée d'un tissu économique de proximité actif. TPE/PME diversifiées : commerce centre-ville, services, restauration, artisanat, professions libérales, santé, sous-traitance industrielle.",
+    "Sainte-Savine est une commune résidentielle et commerciale de l'agglo Troyes, dotée d'un tissu économique de proximité actif. PME et ETI diversifiées : commerce centre-ville, services, restauration, artisanat, professions libérales, santé, sous-traitance industrielle.",
   ecosystemEn:
-    "Sainte-Savine est une commune résidentielle et commerciale de l'agglo Troyes, dotée d'un tissu économique de proximité actif. TPE/PME diversifiées : commerce centre-ville, services, restauration, artisanat, professions libérales, santé, sous-traitance industrielle.",
+    "Sainte-Savine est une commune résidentielle et commerciale de l'agglo Troyes, dotée d'un tissu économique de proximité actif. PME et ETI diversifiées : commerce centre-ville, services, restauration, artisanat, professions libérales, santé, sous-traitance industrielle.",
   distancesFr:
     "Troyes centre à 5 min. Autoroute A5 accessible en 10 min. Paris-Est à 1 h 30 en TGV depuis Troyes. Reims à 1 h 15. Aéroport CDG à 1 h 45.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Savine : diagnostic adapté aux TPE artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sainte-Savine : diagnostic adapté aux TPE artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sainte-Savine : diagnostic adapté aux PME artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Savine : diagnostic adapté aux PME artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Savine : formats adaptés boutique, restaurant, cabinet libéral, bureau PME, atelier artisan. Équipes formées à l'autonomie sur les outils IA.",
@@ -42,8 +42,8 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
       en: "Implémentation IA à Sainte-Savine : automatisation caisse commerces, CRM client, gestion réservations restauration, rendez-vous santé et libéraux, devis artisans, suivi sous-traitance.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sainte-Savine : sessions dans vos locaux ou en visio. Dirigeants TPE/PME commerce et services, restaurateurs, artisans, professions libérales, responsables santé.",
-      en: "Coaching 1-to-1 à Sainte-Savine : sessions dans vos locaux ou en visio. Dirigeants TPE/PME commerce et services, restaurateurs, artisans, professions libérales, responsables santé.",
+      fr: "Coaching 1-to-1 à Sainte-Savine : sessions dans vos locaux ou en visio. Dirigeants PME et ETI commerce et services, restaurateurs, artisans, professions libérales, responsables santé.",
+      en: "Coaching 1-to-1 à Sainte-Savine : sessions dans vos locaux ou en visio. Dirigeants PME et ETI commerce et services, restaurateurs, artisans, professions libérales, responsables santé.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Savine  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME commerces de l'agglo Troyes.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME artisanales et PME commerces de l'agglo Troyes.",
     },
     {
       q: "Travaillez-vous avec les commerces et restaurateurs du centre-ville ?",
-      a: "Oui, automatisation caisse, CRM client, gestion réservations, fidélisation, communication locale, reporting ventes pour commerces et restaurateurs centre-ville TPE/PME.",
+      a: "Oui, automatisation caisse, CRM client, gestion réservations, fidélisation, communication locale, reporting ventes pour commerces et restaurateurs centre-ville PME et ETI.",
     },
     {
       q: "Accompagnez-vous les professions libérales et cabinets santé ?",
-      a: "Oui, gestion rendez-vous, automatisation comptes-rendus, CRM patient, facturation, reporting cabinet, télésecrétariat IA pour professions libérales et cabinets santé TPE/PME.",
+      a: "Oui, gestion rendez-vous, automatisation comptes-rendus, CRM patient, facturation, reporting cabinet, télésecrétariat IA pour professions libérales et cabinets santé PME et ETI.",
     },
     {
       q: "Comment accéder à Sainte-Savine depuis Paris ?",

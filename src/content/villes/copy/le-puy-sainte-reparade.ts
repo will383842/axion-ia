@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   pitchFr:
-    "Le Puy-Sainte-Réparade (13), commune viticole de la vallée de la Durance au nord d'Aix-en-Provence, conjugue domaines AOC Coteaux d'Aix prestigieux, agriculture, TPE artisans, PME tertiaires et professions libérales. Bassin résidentiel haut de gamme. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
+    "Le Puy-Sainte-Réparade (13), commune viticole de la vallée de la Durance au nord d'Aix-en-Provence, conjugue domaines AOC Coteaux d'Aix prestigieux, agriculture, PME artisanales, PME tertiaires et professions libérales. Bassin résidentiel haut de gamme. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
   pitchEn:
-    "Le Puy-Sainte-Réparade (13), commune viticole de la vallée de la Durance au nord d'Aix-en-Provence, conjugue domaines AOC Coteaux d'Aix prestigieux, agriculture, TPE artisans, PME tertiaires et professions libérales. Bassin résidentiel haut de gamme. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
+    "Le Puy-Sainte-Réparade (13), commune viticole de la vallée de la Durance au nord d'Aix-en-Provence, conjugue domaines AOC Coteaux d'Aix prestigieux, agriculture, PME artisanales, PME tertiaires et professions libérales. Bassin résidentiel haut de gamme. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons PME artisanales, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons PME artisanales, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "viticulture AOC & PME vallée Durance",
   ecosystemFr:
-    "Le Puy-Sainte-Réparade s'étend dans la vallée de la Durance au nord d'Aix-en-Provence. Économie locale dominée par les domaines viticoles AOC Coteaux d'Aix-en-Provence (dont des propriétés prestigieuses), l'agriculture, l'oléiculture, les TPE artisans, les PME tertiaires et les professions libérales. Cadre rural de qualité, attractif pour cadres et résidences haut de gamme.",
+    "Le Puy-Sainte-Réparade s'étend dans la vallée de la Durance au nord d'Aix-en-Provence. Économie locale dominée par les domaines viticoles AOC Coteaux d'Aix-en-Provence (dont des propriétés prestigieuses), l'agriculture, l'oléiculture, les PME artisanales, les PME tertiaires et les professions libérales. Cadre rural de qualité, attractif pour cadres et résidences haut de gamme.",
   ecosystemEn:
-    "Le Puy-Sainte-Réparade s'étend dans la vallée de la Durance au nord d'Aix-en-Provence. Économie locale dominée par les domaines viticoles AOC Coteaux d'Aix-en-Provence (dont des propriétés prestigieuses), l'agriculture, l'oléiculture, les TPE artisans, les PME tertiaires et les professions libérales. Cadre rural de qualité, attractif pour cadres et résidences haut de gamme.",
+    "Le Puy-Sainte-Réparade s'étend dans la vallée de la Durance au nord d'Aix-en-Provence. Économie locale dominée par les domaines viticoles AOC Coteaux d'Aix-en-Provence (dont des propriétés prestigieuses), l'agriculture, l'oléiculture, les PME artisanales, les PME tertiaires et les professions libérales. Cadre rural de qualité, attractif pour cadres et résidences haut de gamme.",
   distancesFr:
     "Aix-en-Provence à 20 min. Pertuis à 15 min. Manosque à 30 min. Gare TGV Aix-en-Provence à 30 min. Aéroport Marseille Provence à 40 min. Accès A51 vers Sisteron et Aix.",
   distancesEn:
@@ -24,26 +24,26 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Coteaux d'Aix",
     "Agriculture & oléiculture",
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "PME tertiaires & services",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, PME artisanales et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, PME artisanales et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Puy-Sainte-Réparade : ateliers pour domaines viticoles, cabinets libéraux, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
-      en: "Interventions IA sur site au Puy-Sainte-Réparade : ateliers pour domaines viticoles, cabinets libéraux, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
+      fr: "Interventions IA sur site au Puy-Sainte-Réparade : ateliers pour domaines viticoles, cabinets libéraux, PME artisanales et équipes PME tertiaires. Outils IA configurés métier réel.",
+      en: "Interventions IA sur site au Puy-Sainte-Réparade : ateliers pour domaines viticoles, cabinets libéraux, PME artisanales et équipes PME tertiaires. Outils IA configurés métier réel.",
     },
     implementation: {
       fr: "Implémentation IA au Puy-Sainte-Réparade : gestion parcellaire viticole prédictive, traçabilité vendanges, agents IA caveau et œnotourisme, CRM domaine, marketing premium. RGPD strict.",
       en: "Implémentation IA au Puy-Sainte-Réparade : gestion parcellaire viticole prédictive, traçabilité vendanges, agents IA caveau et œnotourisme, CRM domaine, marketing premium. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Puy-Sainte-Réparade : sessions pour vignerons, exploitants agricoles, dirigeants TPE/PME et professions libérales de la vallée de la Durance souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 au Puy-Sainte-Réparade : sessions pour vignerons, exploitants agricoles, dirigeants TPE/PME et professions libérales de la vallée de la Durance souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 au Puy-Sainte-Réparade : sessions pour vignerons, exploitants agricoles, dirigeants de PME et d'ETI et professions libérales de la vallée de la Durance souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 au Puy-Sainte-Réparade : sessions pour vignerons, exploitants agricoles, dirigeants de PME et d'ETI et professions libérales de la vallée de la Durance souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Puy-Sainte-Réparade ?",
-      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, TPE artisans, PME tertiaires et professions libérales locales. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, PME artisanales, PME tertiaires et professions libérales locales. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC du Puy-Sainte-Réparade ?",

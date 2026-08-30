@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const ALBI_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Albi, préfecture du Tarn, dans l'adoption concrète de l'intelligence artificielle. Notre cabinet national se déplace sur site pour auditer, former et déployer des outils sur mesure auprès des artisans, commerçants, cabinets de santé et acteurs touristiques de la cité épiscopale. L'École des Mines d'Albi-Carmaux, axée sur les énergies renouvelables et les véhicules propres, illustre la dynamique d'innovation locale. Nous travaillons aussi avec quelques ETI tarnaises selon les besoins, mais notre cœur de cible reste la PME albigeoise.",
+    "Axion-IA accompagne les PME et ETI d'Albi, préfecture du Tarn, dans l'adoption concrète de l'intelligence artificielle. Notre cabinet national se déplace sur site pour auditer, former et déployer des outils sur mesure auprès des artisans, commerçants, cabinets de santé et acteurs touristiques de la cité épiscopale. L'École des Mines d'Albi-Carmaux, axée sur les énergies renouvelables et les véhicules propres, illustre la dynamique d'innovation locale. Nous travaillons aussi avec quelques ETI tarnaises selon les besoins, mais notre cœur de cible reste la PME albigeoise.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Albi, préfecture du Tarn, dans l'adoption concrète de l'intelligence artificielle. Notre cabinet national se déplace sur site pour auditer, former et déployer des outils sur mesure auprès des artisans, commerçants, cabinets de santé et acteurs touristiques de la cité épiscopale. L'École des Mines d'Albi-Carmaux, axée sur les énergies renouvelables et les véhicules propres, illustre la dynamique d'innovation locale. Nous travaillons aussi avec quelques ETI tarnaises selon les besoins, mais notre cœur de cible reste la PME albigeoise.",
+    "Axion-IA accompagne les PME et ETI d'Albi, préfecture du Tarn, dans l'adoption concrète de l'intelligence artificielle. Notre cabinet national se déplace sur site pour auditer, former et déployer des outils sur mesure auprès des artisans, commerçants, cabinets de santé et acteurs touristiques de la cité épiscopale. L'École des Mines d'Albi-Carmaux, axée sur les énergies renouvelables et les véhicules propres, illustre la dynamique d'innovation locale. Nous travaillons aussi avec quelques ETI tarnaises selon les besoins, mais notre cœur de cible reste la PME albigeoise.",
   directAnswerFr:
-    "Axion-IA intervient à Albi auprès des TPE et PME tarnaises : commerce de détail du centre historique, artisanat de la verrerie et de la chapellerie, métallurgie locale, cabinets médicaux et hébergeurs touristiques liés au patrimoine UNESCO. Nous proposons audits IA, formations dirigeants, implémentations sur mesure et sites web augmentés, avec un code source propriétaire livré au client. Quelques ETI peuvent également solliciter nos services en complément. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA intervient à Albi auprès des PME et ETI tarnaises : commerce de détail du centre historique, artisanat de la verrerie et de la chapellerie, métallurgie locale, cabinets médicaux et hébergeurs touristiques liés au patrimoine UNESCO. Nous proposons audits IA, formations dirigeants, implémentations sur mesure et sites web augmentés, avec un code source propriétaire livré au client. Quelques ETI peuvent également solliciter nos services en complément. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA intervient à Albi auprès des TPE et PME tarnaises : commerce de détail du centre historique, artisanat de la verrerie et de la chapellerie, métallurgie locale, cabinets médicaux et hébergeurs touristiques liés au patrimoine UNESCO. Nous proposons audits IA, formations dirigeants, implémentations sur mesure et sites web augmentés, avec un code source propriétaire livré au client. Quelques ETI peuvent également solliciter nos services en complément. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA intervient à Albi auprès des PME et ETI tarnaises : commerce de détail du centre historique, artisanat de la verrerie et de la chapellerie, métallurgie locale, cabinets médicaux et hébergeurs touristiques liés au patrimoine UNESCO. Nous proposons audits IA, formations dirigeants, implémentations sur mesure et sites web augmentés, avec un code source propriétaire livré au client. Quelques ETI peuvent également solliciter nos services en complément. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "commerce détail & artisanat tarnais",
   ecosystemFr:
     "Le tissu économique albigeois repose sur le commerce du centre patrimonial, la verrerie historique, la chapellerie, la métallurgie et le tourisme lié à la cathédrale Sainte-Cécile classée UNESCO. L'École des Mines d'Albi-Carmaux structure la recherche locale autour des énergies propres et des carburants durables, alimentant un vivier de PME innovantes côté agglomération.",
@@ -37,16 +37,16 @@ export const ALBI_COPY: VilleCopy = {
       en: "Auditer un commerce, cabinet ou atelier d'Albi pour identifier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir sur site à Albi auprès des TPE et PME (verrerie, chapellerie, commerce, métallurgie) pour automatiser les tâches répétitives.",
-      en: "Intervenir sur site à Albi auprès des TPE et PME (verrerie, chapellerie, commerce, métallurgie) pour automatiser les tâches répétitives.",
+      fr: "Intervenir sur site à Albi auprès des PME et ETI (verrerie, chapellerie, commerce, métallurgie) pour automatiser les tâches répétitives.",
+      en: "Intervenir sur site à Albi auprès des PME et ETI (verrerie, chapellerie, commerce, métallurgie) pour automatiser les tâches répétitives.",
     },
     implementation: {
       fr: "Implémenter des outils IA en code source propriétaire à Albi, livrés au client final, sans dépendance plateforme tierce.",
       en: "Implémenter des outils IA en code source propriétaire à Albi, livrés au client final, sans dépendance plateforme tierce.",
     },
     unAUn: {
-      fr: "Accompagner en sessions individuelles les dirigeants de TPE/PME albigeoises pour une adoption IA progressive — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner en sessions individuelles les dirigeants de TPE/PME albigeoises pour une adoption IA progressive — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner en sessions individuelles les dirigeants de PME et ETI albigeoises pour une adoption IA progressive — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en sessions individuelles les dirigeants de PME et ETI albigeoises pour une adoption IA progressive — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -87,12 +87,6 @@ export const ALBI_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour artisans, commerçants du centre historique, boutiques pastel (Terre de Pastel, L'Artisan Pastellier) ou domaines de Gaillac : site mobile-first avec recherche IA, chatbot et boutique en ligne multi-CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou portail e-commerce avancé",
@@ -174,12 +168,6 @@ export const ALBI_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For craftspeople, historic-centre retailers, pastel shops (Terre de Pastel, L'Artisan Pastellier) or Gaillac estates: mobile-first site with AI search, chatbot and multi-CMS online store.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or advanced e-commerce portal",
             detail:
@@ -245,11 +233,11 @@ export const ALBI_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Albi ?",
-      a: "Nous accompagnons en priorité les TPE et PME du commerce, de l'artisanat (verrerie, chapellerie), de la métallurgie, du tourisme patrimonial et de la santé. Quelques ETI tarnaises font également appel à nos services.",
+      a: "Nous accompagnons en priorité les PME et ETI du commerce, de l'artisanat (verrerie, chapellerie), de la métallurgie, du tourisme patrimonial et de la santé. Quelques ETI tarnaises font également appel à nos services.",
     },
     {
       q: "Proposez-vous des formations IA pour les équipes albigeoises ?",
-      a: "Oui, nous animons à Albi des formations individuelles ou collectives en présentiel comme en visio, adaptées aux dirigeants et collaborateurs de TPE/PME.",
+      a: "Oui, nous animons à Albi des formations individuelles ou collectives en présentiel comme en visio, adaptées aux dirigeants et collaborateurs de PME et ETI.",
     },
   ],
 };

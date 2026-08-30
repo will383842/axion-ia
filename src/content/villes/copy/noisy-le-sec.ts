@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const NOISY_LE_SEC_COPY: VilleCopy = {
   pitchFr:
-    "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
+    "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de PME artisanales, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   pitchEn:
-    "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
+    "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de PME artisanales, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des PME et ETI de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
-  seoHook: "TPE & PME Est parisien",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des PME et ETI de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+  seoHook: "PME & PME Est parisien",
   ecosystemFr:
-    "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
+    "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle PME artisanales, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
   ecosystemEn:
-    "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
+    "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle PME artisanales, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
   distancesFr:
     "Paris à 5 km (20 min RER E ou A3). Bobigny limitrophe, Bondy à 2 km, Rosny-sous-Bois et Montreuil à 3 km, Romainville limitrophe. Aéroport Paris-CDG à 20 km via A3.",
   distancesEn:
@@ -32,20 +32,20 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Noisy-le-Sec : diagnostic adapté aux PME du BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noisy-le-Sec : diagnostic adapté aux PME du BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noisy-le-Sec : ateliers adaptés à la PME services, l'artisan BTP, le commerce de proximité ou la profession libérale. Vos équipes repartent autonomes.",
       en: "Interventions IA sur site à Noisy-le-Sec : ateliers adaptés à la PME services, l'artisan BTP, le commerce de proximité ou la profession libérale. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémentation IA à Noisy-le-Sec : agents conversationnels, automatisation administrative, classification documents, reporting et planning chantier pour TPE-PME de l'Est parisien.",
-      en: "Implémentation IA à Noisy-le-Sec : agents conversationnels, automatisation administrative, classification documents, reporting et planning chantier pour TPE-PME de l'Est parisien.",
+      fr: "Implémentation IA à Noisy-le-Sec : agents conversationnels, automatisation administrative, classification documents, reporting et planning chantier pour PME et ETI de l'Est parisien.",
+      en: "Implémentation IA à Noisy-le-Sec : agents conversationnels, automatisation administrative, classification documents, reporting et planning chantier pour PME et ETI de l'Est parisien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Noisy-le-Sec : sessions dirigeants TPE, gérants PME services, artisans BTP, commerçants et professionnels libéraux de Seine-Saint-Denis.",
-      en: "Coaching 1-to-1 à Noisy-le-Sec : sessions dirigeants TPE, gérants PME services, artisans BTP, commerçants et professionnels libéraux de Seine-Saint-Denis.",
+      fr: "Coaching 1-to-1 à Noisy-le-Sec : sessions dirigeants de PME et d'ETI, gérants PME services, artisans BTP, commerçants et professionnels libéraux de Seine-Saint-Denis.",
+      en: "Coaching 1-to-1 à Noisy-le-Sec : sessions dirigeants de PME et d'ETI, gérants PME services, artisans BTP, commerçants et professionnels libéraux de Seine-Saint-Denis.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour artisans BTP, commerçants du centre-ville, professions libérales et indépendants des marchés de Noisy-le-Sec: site vitrine ou boutique e-commerce simple (Shopify/WooCommerce) avec formulaire de devis ou click-and-collect, et un premier assistant IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -173,12 +167,6 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For BTP craftsmen, town-centre shops, professionals and market independents of Noisy-le-Sec: showcase site or simple e-commerce store (Shopify/WooCommerce) with quote form or click-and-collect, and a first AI assistant.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -232,7 +220,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Noisy-le-Sec ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME services ou BTP de Seine-Saint-Denis, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME services ou BTP de Seine-Saint-Denis, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Noisy-le-Sec ?",
@@ -244,7 +232,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Noisy-le-Sec ?",
-      a: "Nous accompagnons TPE artisans BTP, commerçants de proximité, PME services, professions libérales (santé, juridique, conseil) et acteurs de la logistique urbaine et ferroviaire héritée de l'histoire SNCF locale.",
+      a: "Nous accompagnons PME du BTP, commerçants de proximité, PME services, professions libérales (santé, juridique, conseil) et acteurs de la logistique urbaine et ferroviaire héritée de l'histoire SNCF locale.",
     },
   ],
 };

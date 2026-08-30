@@ -1,8 +1,8 @@
 /**
  * AuditAudience — « À qui s'adressent nos audits IA ? » : 3 cartes par taille
- * d'entreprise (TPE/artisans, PME, ETI/grandes). Server Component.
+ * d'entreprise (PME mono-site, PME, ETI/grands groupes). Server Component.
  *
- * Refonte 2026-05-31 (Will) — 3 cartes (TPE / PME / ETI & grandes) avec, pour
+ * Refonte 2026-05-31 (Will) — 3 cartes (sur place / PME / ETI & grands groupes) avec, pour
  * chacune : un visuel, le profil, ce que l'IA change, et des CTAs d'action.
  *
  * CTAs (Will 2026-07-07) — deux CTA uniquement partout, plus aucun
@@ -37,10 +37,10 @@ interface AudienceCard {
   readonly detailHref: string;
 }
 
-// Prix d'entrée audit sur place (TPE) — SSOT pricing.ts (audit-flash).
+// Prix d'entrée audit sur place — SSOT pricing.ts (audit-flash).
 // `formatTierPrice` (et non `formatAmount(priceFlat!)`) pour respecter le
 // `isFromPrice` du tier : Will 2026-07-17, les audits s'annoncent toujours en
-// « à partir de ». Sans ça, le TPE restait le seul niveau en prix ferme.
+// « à partir de ». Sans ça, l'audit sur place restait le seul niveau en prix ferme.
 const FLASH_PRICE = formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", {
   compact: true,
 });
@@ -68,15 +68,15 @@ const ETI_ENTRY_PRICE = formatAmount(
 
 const CARDS: ReadonlyArray<AudienceCard> = [
   {
-    segment: "TPE",
-    sizeFr: "TPE, artisans & commerçants",
-    sizeEn: "Small businesses, artisans & retailers",
+    segment: "Sur place",
+    sizeFr: "PME mono-site",
+    sizeEn: "Single-site SMEs",
     titleFr: "L'IA accessible, tout de suite",
     titleEn: "AI made accessible, right now",
     bodyFr:
-      "Vous portez l'entreprise au quotidien. On identifie 3 à 5 automatisations qui vous libèrent du temps dès la première semaine — devis, relances, administratif.",
+      "Vous voulez un premier diagnostic sans mobiliser toute l'entreprise. On identifie 3 à 5 automatisations qui libèrent du temps dès la première semaine — devis, relances, administratif.",
     bodyEn:
-      "You carry the business day to day. We pinpoint 3 to 5 automations that free up your time from week one — quotes, follow-ups, admin.",
+      "You want a first diagnosis without mobilising the whole company. We pinpoint 3 to 5 automations that free up time from week one — quotes, follow-ups, admin.",
     // Prix en tête, comme les cartes PME/ETI (« À partir de X · sur devis »).
     metaFr: `${FLASH_PRICE} · 1 journée sur place`,
     metaEn: `${FLASH_PRICE_EN} · 1 full day on site`,
@@ -98,8 +98,8 @@ const CARDS: ReadonlyArray<AudienceCard> = [
   },
   {
     segment: "ETI",
-    sizeFr: "ETI & grandes entreprises",
-    sizeEn: "Mid-caps & large enterprises",
+    sizeFr: "ETI & grands groupes",
+    sizeEn: "Mid-caps & large groups",
     titleFr: "Gouvernance et impact à grande échelle",
     titleEn: "Governance and impact at scale",
     bodyFr:

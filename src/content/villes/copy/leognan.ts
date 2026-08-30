@@ -9,9 +9,9 @@ export const LEOGNAN_COPY: VilleCopy = {
   pitchEn:
     "Léognan (33), commune viticole prestigieuse au sud de Bordeaux, abrite l'AOC Pessac-Léognan (grands crus classés) et un tissu économique diversifié : exploitations viticoles, PME agroalimentaires, artisanat, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du sud bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Léognan (33). Nous accompagnons PME et ETI du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Léognan (33). Nous accompagnons PME et ETI du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "aoc pessac-",
   ecosystemFr:
     "Léognan est au coeur de l'AOC Pessac-Léognan, l'une des appellations les plus prestigieuses de Bordeaux. Grands crus classés (Domaine de Chevalier, Château Carbonnieux, etc.), oenotourisme, PME agroalimentaires, tissu résidentiel et commercial en croissance. Accès A62 et sud Bordeaux.",
@@ -25,13 +25,13 @@ export const LEOGNAN_COPY: VilleCopy = {
     "Viticulture AOC Pessac-Léognan (grands crus)",
     "Oenotourisme & réceptif",
     "PME agroalimentaire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, TPE artisans et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, TPE artisans et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, PME artisanales et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, PME artisanales et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Léognan : ateliers adaptés aux chais, domaines viticoles et PME agroalimentaires. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LEOGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Léognan ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles de toute taille (TPE familiales à grands crus classés). Tarifs publics, ROI chiffré.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles de toute taille (PME familiales à grands crus classés). Tarifs publics, ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les grands crus de Pessac-Léognan ?",

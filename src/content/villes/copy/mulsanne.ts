@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MULSANNE_COPY: VilleCopy = {
   pitchFr:
-    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de PME artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de PME artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   seoHook: "industrie mécanique & logistique entreposage",
   ecosystemFr:
     "Mulsanne fait partie de Le Mans Métropole (Sarthe). La célèbre ligne droite des Hunaudières traverse la commune (circuit des 24 Heures). Zones d'activités sud Le Mans, industries mécaniques, logistique, artisanat et commerces. Le Mans centre à 12 min.",
@@ -30,20 +30,20 @@ export const MULSANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Mulsanne : diagnostic adapté aux PME artisanales, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mulsanne : diagnostic adapté aux PME artisanales, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, PME de l'artisanat et du commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, PME de l'artisanat et du commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Mulsanne : maintenance prédictive industrie, optimisation entrepôt logistique, contrôle qualité vision, automatisation gestion stocks. Adapté TPE/PME agglo Le Mans.",
-      en: "Implémentation IA à Mulsanne : maintenance prédictive industrie, optimisation entrepôt logistique, contrôle qualité vision, automatisation gestion stocks. Adapté TPE/PME agglo Le Mans.",
+      fr: "Implémentation IA à Mulsanne : maintenance prédictive industrie, optimisation entrepôt logistique, contrôle qualité vision, automatisation gestion stocks. Adapté PME et ETI agglo Le Mans.",
+      en: "Implémentation IA à Mulsanne : maintenance prédictive industrie, optimisation entrepôt logistique, contrôle qualité vision, automatisation gestion stocks. Adapté PME et ETI agglo Le Mans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mulsanne : sessions dans vos locaux industriels ou en visio. Dirigeants TPE/PME mécanique, logistique, artisanat et commerce agglo Le Mans.",
-      en: "Coaching 1-to-1 à Mulsanne : sessions dans vos locaux industriels ou en visio. Dirigeants TPE/PME mécanique, logistique, artisanat et commerce agglo Le Mans.",
+      fr: "Coaching 1-to-1 à Mulsanne : sessions dans vos locaux industriels ou en visio. Dirigeants PME et ETI mécanique, logistique, artisanat et commerce agglo Le Mans.",
+      en: "Coaching 1-to-1 à Mulsanne : sessions dans vos locaux industriels ou en visio. Dirigeants PME et ETI mécanique, logistique, artisanat et commerce agglo Le Mans.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const MULSANNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mulsanne  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Mulsanne ?",

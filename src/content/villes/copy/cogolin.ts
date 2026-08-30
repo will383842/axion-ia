@@ -3,18 +3,18 @@ import type { VilleCopy } from "./types";
 
 export const COGOLIN_COPY: VilleCopy = {
   pitchFr:
-    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA collabore avec toutes les structures locales du Golfe de Saint-Tropez.",
+    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille PME artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA collabore avec toutes les structures locales du Golfe de Saint-Tropez.",
   pitchEn:
-    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA collabore avec toutes les structures locales du Golfe de Saint-Tropez.",
+    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille PME artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA collabore avec toutes les structures locales du Golfe de Saint-Tropez.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cogolin (83). Nous accompagnons PME artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cogolin (83). Nous accompagnons PME artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "hôtellerie restauration & nautisme plaisance",
   ecosystemFr:
-    "Cogolin est une commune de l'aire du Golfe de Saint-Tropez, célèbre pour ses manufactures historiques de tapis et de pipes en bruyère. Tissu de TPE artisanales d'art, PME du nautisme (port des Marines de Cogolin), hôtellerie-restauration, commerces, professions libérales et viticulture (Côtes de Provence).",
+    "Cogolin est une commune de l'aire du Golfe de Saint-Tropez, célèbre pour ses manufactures historiques de tapis et de pipes en bruyère. Tissu de PME artisanales d'art, PME du nautisme (port des Marines de Cogolin), hôtellerie-restauration, commerces, professions libérales et viticulture (Côtes de Provence).",
   ecosystemEn:
-    "Cogolin est une commune de l'aire du Golfe de Saint-Tropez, célèbre pour ses manufactures historiques de tapis et de pipes en bruyère. Tissu de TPE artisanales d'art, PME du nautisme (port des Marines de Cogolin), hôtellerie-restauration, commerces, professions libérales et viticulture (Côtes de Provence).",
+    "Cogolin est une commune de l'aire du Golfe de Saint-Tropez, célèbre pour ses manufactures historiques de tapis et de pipes en bruyère. Tissu de PME artisanales d'art, PME du nautisme (port des Marines de Cogolin), hôtellerie-restauration, commerces, professions libérales et viticulture (Côtes de Provence).",
   distancesFr:
     "Saint-Tropez à 10 min. Sainte-Maxime à 15 min. Toulon à 1h A57. Gare TGV de Saint-Raphaël à 35 min (Paris 4h15). Aéroport Toulon-Hyères à 50 min. Nice à 1h30 A8.",
   distancesEn:
@@ -28,8 +28,8 @@ export const COGOLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Cogolin : diagnostic adapté aux PME artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cogolin : diagnostic adapté aux PME artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cogolin : formations pratiques adaptées artisanat, nautisme, hôtellerie, restauration et commerces. Équipes autonomes sur outils IA métier.",
@@ -40,8 +40,8 @@ export const COGOLIN_COPY: VilleCopy = {
       en: "Implémentation IA à Cogolin : automatisation réservations hôtellerie, agents IA conciergerie, CRM yacht, gestion stocks atelier, traduction multilingue. Golfe Saint-Tropez.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cogolin : sessions adaptées dirigeants TPE/PME, artisans d'art, hôteliers et gérants nautisme du Golfe de Saint-Tropez.",
-      en: "Coaching 1-to-1 à Cogolin : sessions adaptées dirigeants TPE/PME, artisans d'art, hôteliers et gérants nautisme du Golfe de Saint-Tropez.",
+      fr: "Coaching 1-to-1 à Cogolin : sessions adaptées dirigeants de PME et d'ETI, artisans d'art, hôteliers et gérants nautisme du Golfe de Saint-Tropez.",
+      en: "Coaching 1-to-1 à Cogolin : sessions adaptées dirigeants de PME et d'ETI, artisans d'art, hôteliers et gérants nautisme du Golfe de Saint-Tropez.",
     },
   },
   faqGeolocalisee: [
@@ -51,7 +51,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cogolin  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME nautisme. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME artisanales et PME nautisme. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie et le nautisme à Cogolin ?",
@@ -59,7 +59,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Cogolin ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, artisans d'art et hôteliers du Golfe de Saint-Tropez. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants de PME et d'ETI, artisans d'art et hôteliers du Golfe de Saint-Tropez. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
     },
     {
       q: "Quels délais pour une mission à Cogolin ?",

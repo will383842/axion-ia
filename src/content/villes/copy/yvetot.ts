@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const YVETOT_COPY: VilleCopy = {
   pitchFr:
-    "Yvetot (76), chef-lieu du pays de Caux en Seine-Maritime, reunit pres de 11 440 habitants. Ville de services et de commerce, dotee de son eglise moderne aux vitraux remarquables, elle concentre TPE de services, PME commerciales, professions liberales et activites agricoles. Axion-IA y intervient pour tous types d'activites.",
+    "Yvetot (76), chef-lieu du pays de Caux en Seine-Maritime, reunit pres de 11 440 habitants. Ville de services et de commerce, dotee de son eglise moderne aux vitraux remarquables, elle concentre PME de services, PME commerciales, professions liberales et activites agricoles. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Yvetot (76), chef-lieu du pays de Caux en Seine-Maritime, reunit pres de 11 440 habitants. Ville de services et de commerce, dotee de son eglise moderne aux vitraux remarquables, elle concentre TPE de services, PME commerciales, professions liberales et activites agricoles. Axion-IA y intervient pour tous types d'activites.",
+    "Yvetot (76), chef-lieu du pays de Caux en Seine-Maritime, reunit pres de 11 440 habitants. Ville de services et de commerce, dotee de son eglise moderne aux vitraux remarquables, elle concentre PME de services, PME commerciales, professions liberales et activites agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & pays de Caux",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Yvetot (76). Nous accompagnons les PME, ETI et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Yvetot (76). Nous accompagnons les PME, ETI et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Yvetot est le chef-lieu commercial du pays de Caux, entre Rouen et Le Havre. Centre de services pour un bassin rural dense : commerces, professions liberales, PME agroalimentaires, TPE de services et artisanat. Marche hebdomadaire important. Acces A29 et D6015.",
+    "Yvetot est le chef-lieu commercial du pays de Caux, entre Rouen et Le Havre. Centre de services pour un bassin rural dense : commerces, professions liberales, PME agroalimentaires, PME de services et artisanat. Marche hebdomadaire important. Acces A29 et D6015.",
   ecosystemEn:
-    "Yvetot est le chef-lieu commercial du pays de Caux, entre Rouen et Le Havre. Centre de services pour un bassin rural dense : commerces, professions liberales, PME agroalimentaires, TPE de services et artisanat. Marche hebdomadaire important. Acces A29 et D6015.",
+    "Yvetot est le chef-lieu commercial du pays de Caux, entre Rouen et Le Havre. Centre de services pour un bassin rural dense : commerces, professions liberales, PME agroalimentaires, PME de services et artisanat. Marche hebdomadaire important. Acces A29 et D6015.",
   distancesFr:
     "Gare d'Yvetot (TER Rouen 30 min, Le Havre 30 min). A29 Le Havre-Amiens a 10 min. Rouen a 35 min. Le Havre a 35 min. Paris Saint-Lazare a 1h45 via Rouen.",
   distancesEn:
@@ -24,14 +24,14 @@ export const YVETOT_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce de detail & grande distribution",
     "Professions liberales & sante",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Agroalimentaire & agriculture",
     "Artisanat BTP & renovation",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Yvetot : diagnostic adapte aux TPE de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Yvetot : diagnostic adapte aux TPE de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Yvetot : diagnostic adapte aux PME de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Yvetot : diagnostic adapte aux PME de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Yvetot : formations adaptees aux commerces, cabinets, exploitations agricoles et PME agroalimentaires du pays de Caux. Equipes autonomes.",
@@ -42,8 +42,8 @@ export const YVETOT_COPY: VilleCopy = {
       en: "Implementation IA a Yvetot : automatisation gestion stocks, agents conversationnels, tracabilite agroalimentaire, CRM augmentes pour commercants et PME du pays de Caux.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Yvetot : accompagnement personnalise dirigeants TPE, gerants PME, professions liberales et exploitants agricoles du pays de Caux.",
-      en: "Coaching 1-to-1 a Yvetot : accompagnement personnalise dirigeants TPE, gerants PME, professions liberales et exploitants agricoles du pays de Caux.",
+      fr: "Coaching 1-to-1 a Yvetot : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME, professions liberales et exploitants agricoles du pays de Caux.",
+      en: "Coaching 1-to-1 a Yvetot : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME, professions liberales et exploitants agricoles du pays de Caux.",
     },
   },
   faqGeolocalisee: [

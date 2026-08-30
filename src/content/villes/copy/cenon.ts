@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const CENON_COPY: VilleCopy = {
   pitchFr:
-    "Cenon (33), 26 834 habitants, commune de la rive droite de la Garonne intégrée à Bordeaux Métropole (28 communes). Voisine d'Artigues-près-Bordeaux, Floirac et Lormont, desservie par la gare TER Cenon et les lignes A et E du tramway TBM, elle réunit un tissu de TPE commerce de détail, restauration, artisanat BTP et services aux entreprises de l'aire bordelaise. Axion-IA accompagne ces dirigeants TPE/PME locaux.",
+    "Cenon (33), 26 834 habitants, commune de la rive droite de la Garonne intégrée à Bordeaux Métropole (28 communes). Voisine d'Artigues-près-Bordeaux, Floirac et Lormont, desservie par la gare TER Cenon et les lignes A et E du tramway TBM, elle réunit un tissu de PME du commerce, restauration, artisanat BTP et services aux entreprises de l'aire bordelaise. Axion-IA accompagne ces dirigeants de PME et d'ETI locaux.",
   pitchEn:
-    "Cenon (33), 26 834 habitants, commune de la rive droite de la Garonne intégrée à Bordeaux Métropole (28 communes). Voisine d'Artigues-près-Bordeaux, Floirac et Lormont, desservie par la gare TER Cenon et les lignes A et E du tramway TBM, elle réunit un tissu de TPE commerce de détail, restauration, artisanat BTP et services aux entreprises de l'aire bordelaise. Axion-IA accompagne ces dirigeants TPE/PME locaux.",
+    "Cenon (33), 26 834 habitants, commune de la rive droite de la Garonne intégrée à Bordeaux Métropole (28 communes). Voisine d'Artigues-près-Bordeaux, Floirac et Lormont, desservie par la gare TER Cenon et les lignes A et E du tramway TBM, elle réunit un tissu de PME du commerce, restauration, artisanat BTP et services aux entreprises de l'aire bordelaise. Axion-IA accompagne ces dirigeants de PME et d'ETI locaux.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Cenon (33) auprès des TPE/PME de la rive droite bordelaise et de Bordeaux Métropole. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs, services aux entreprises et PME tertiaires installés à Cenon, Lormont, Floirac et Artigues-près-Bordeaux. Audits, interventions et coaching 1-to-1 livrés sur site via la gare TER ou le tramway A/E, sans implantation locale.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Cenon (33) auprès des PME et ETI de la rive droite bordelaise et de Bordeaux Métropole. Nous accompagnons en priorité les PME du BTP, commerçants, restaurateurs, services aux entreprises et PME tertiaires installés à Cenon, Lormont, Floirac et Artigues-près-Bordeaux. Audits, interventions et coaching 1-to-1 livrés sur site via la gare TER ou le tramway A/E, sans implantation locale.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Cenon (33) auprès des TPE/PME de la rive droite bordelaise et de Bordeaux Métropole. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs, services aux entreprises et PME tertiaires installés à Cenon, Lormont, Floirac et Artigues-près-Bordeaux. Audits, interventions et coaching 1-to-1 livrés sur site via la gare TER ou le tramway A/E, sans implantation locale.",
-  seoHook: "TPE commerce & artisanat BTP rive droite Bordeaux",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Cenon (33) auprès des PME et ETI de la rive droite bordelaise et de Bordeaux Métropole. Nous accompagnons en priorité les PME du BTP, commerçants, restaurateurs, services aux entreprises et PME tertiaires installés à Cenon, Lormont, Floirac et Artigues-près-Bordeaux. Audits, interventions et coaching 1-to-1 livrés sur site via la gare TER ou le tramway A/E, sans implantation locale.",
+  seoHook: "PME du commerce & artisanat BTP rive droite Bordeaux",
   ecosystemFr:
-    "Cenon appartient à Bordeaux Métropole (28 communes) et occupe la rive droite de la Garonne, en bordure de Lormont, Floirac et Artigues-près-Bordeaux. Le tissu local est dominé par des TPE commerce de détail, restauration, artisans BTP, services de proximité et PME tertiaires gravitant autour du centre bordelais accessible en tramway A et E.",
+    "Cenon appartient à Bordeaux Métropole (28 communes) et occupe la rive droite de la Garonne, en bordure de Lormont, Floirac et Artigues-près-Bordeaux. Le tissu local est dominé par des PME du commerce, restauration, artisans BTP, services de proximité et PME tertiaires gravitant autour du centre bordelais accessible en tramway A et E.",
   ecosystemEn:
-    "Cenon appartient à Bordeaux Métropole (28 communes) et occupe la rive droite de la Garonne, en bordure de Lormont, Floirac et Artigues-près-Bordeaux. Le tissu local est dominé par des TPE commerce de détail, restauration, artisans BTP, services de proximité et PME tertiaires gravitant autour du centre bordelais accessible en tramway A et E.",
+    "Cenon appartient à Bordeaux Métropole (28 communes) et occupe la rive droite de la Garonne, en bordure de Lormont, Floirac et Artigues-près-Bordeaux. Le tissu local est dominé par des PME du commerce, restauration, artisans BTP, services de proximité et PME tertiaires gravitant autour du centre bordelais accessible en tramway A et E.",
   distancesFr:
     "Bordeaux centre à 10 min (tramway A). Gare Bordeaux-Saint-Jean à 15 min. Rocade A630 sorties 25 et 26 en limite communale. Aéroport Bordeaux-Mérignac à 25 min. Paris en TGV depuis Bordeaux-Saint-Jean : 2h.",
   distancesEn:
@@ -31,29 +31,29 @@ export const CENON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit sur place dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
-      en: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit sur place dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
+      fr: "Audit IA à Cenon : diagnostic 360° des processus métiers PME et ETI rive droite (devis, factures, relances, fiches produits, planning). Audit sur place dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
+      en: "Audit IA à Cenon : diagnostic 360° des processus métiers PME et ETI rive droite (devis, factures, relances, fiches produits, planning). Audit sur place dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour PME du commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour PME du commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès {{price:impl-poc|entry}}.",
       en: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants de PME et d'ETI des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants de PME et d'ETI des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de TPE — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de PME — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
         whyHere: [
           "Économie de proximité connectée au cœur bordelais : avec les tramways A et E, la gare TER Cenon et le Rocher de Palmer comme point de repère, vos clients arbitrent entre vous et les enseignes du centre. Un site rapide, mobile-first et une réservation directe en ligne, dopés par une recherche sémantique, deviennent décisifs pour capter une demande locale qui consulte d'abord sur smartphone.",
-          "Forte densité d'artisans BTP et de travaux spécialisés sur les Hauts de Garonne, entre Cenon, Lormont et Floirac : on greffe l'IA sur l'existant — génération de devis, suivi de chantier, relances clients, automatisations métier — via widget, API ou plugin sur votre CMS, sans imposer de refonte lourde ni d'abonnement à une TPE.",
+          "Forte densité d'artisans BTP et de travaux spécialisés sur les Hauts de Garonne, entre Cenon, Lormont et Floirac : on greffe l'IA sur l'existant — génération de devis, suivi de chantier, relances clients, automatisations métier — via widget, API ou plugin sur votre CMS, sans imposer de refonte lourde ni d'abonnement à une PME.",
           "Restauration et commerces de détail au pied des stations de tramway et autour du Parc Palmer : nos chatbots RAG multilingues et nos vitrines e-commerce multi-CMS sont calibrés pour la prise de commande, le clic-and-collect, le menu en ligne et la fidélisation d'une clientèle de quartier comme de passage venue assister à un concert au Rocher de Palmer.",
           "Tissu de services aux entreprises tertiaires fédéré par le Club d'Entreprises de Cenon (plus de 200 membres) et irrigué par la rocade A630 (sorties 25 et 26) : on construit des plateformes SaaS, portails clients et agents sur mesure, hébergés en UE et conformes RGPD, branchés sur vos outils métier (CRM, ERP, caisse) sans verrou propriétaire.",
         ],
@@ -86,12 +86,6 @@ export const CENON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, génération de devis, prise de commande) sur le site existant d'un commerce de détail, d'un restaurant des abords du Parc Palmer ou d'un artisan BTP cenonnais, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -120,8 +114,8 @@ export const CENON_COPY: VilleCopy = {
             a: "Oui. Pour la restauration et le commerce de détail de Cenon, autour des stations de tramway A et E et du Parc Palmer, on met en place clic-and-collect, réservation directe, menu en ligne et chatbot de prise de commande multilingue, intégrés à votre caisse ou votre outil existant, sans commission imposée par une marketplace. Idéal pour absorber les pics les soirs de concert au Rocher de Palmer.",
           },
           {
-            q: "Travaillez-vous avec les artisans BTP et les TPE des Hauts de Garonne ?",
-            a: "Oui. Pour les artisans BTP et travaux spécialisés de Cenon, Lormont et Floirac, on greffe l'IA sur l'existant sans refonte lourde : génération de devis, suivi de chantier, relances clients, traitement de documents et automatisations, livrés via widget, API ou plugin sur votre CMS. Format adapté TPE, code custom branché sur vos outils (agenda, ERP), sans no-code générique ni abonnement imposé.",
+            q: "Travaillez-vous avec les artisans BTP et les PME des Hauts de Garonne ?",
+            a: "Oui. Pour les artisans BTP et travaux spécialisés de Cenon, Lormont et Floirac, on greffe l'IA sur l'existant sans refonte lourde : génération de devis, suivi de chantier, relances clients, traitement de documents et automatisations, livrés via widget, API ou plugin sur votre CMS. Format adapté PME, code custom branché sur vos outils (agenda, ERP), sans no-code générique ni abonnement imposé.",
           },
           {
             q: "Pouvez-vous accompagner les acteurs tertiaires et les ICC du Rocher de Palmer ?",
@@ -136,10 +130,10 @@ export const CENON_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même pour un commerce ou un restaurant cenonnais en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni verrou propriétaire imposé. L'ensemble est transférable à tout prestataire de Bordeaux Métropole ou repris en interne par vos équipes, à tout moment et sans dépendance à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de TPE — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cenon des sites web, boutiques en ligne, applications et plateformes SaaS dopées à l'IA : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la rive droite de la Garonne, dans les Hauts de Garonne (Cenon, Lormont, Floirac), où un tissu dense de PME — commerce de détail, restauration, artisans BTP et services aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de Cenon, qui réunit plus de 200 sociétés au Rocher de Palmer, illustre ce dynamisme local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cenon, itérations à distance.",
         whyHere: [
           "Économie de proximité connectée au cœur bordelais : avec les tramways A et E, la gare TER Cenon et le Rocher de Palmer comme point de repère, vos clients arbitrent entre vous et les enseignes du centre. Un site rapide, mobile-first et une réservation directe en ligne, dopés par une recherche sémantique, deviennent décisifs pour capter une demande locale qui consulte d'abord sur smartphone.",
-          "Forte densité d'artisans BTP et de travaux spécialisés sur les Hauts de Garonne, entre Cenon, Lormont et Floirac : on greffe l'IA sur l'existant — génération de devis, suivi de chantier, relances clients, automatisations métier — via widget, API ou plugin sur votre CMS, sans imposer de refonte lourde ni d'abonnement à une TPE.",
+          "Forte densité d'artisans BTP et de travaux spécialisés sur les Hauts de Garonne, entre Cenon, Lormont et Floirac : on greffe l'IA sur l'existant — génération de devis, suivi de chantier, relances clients, automatisations métier — via widget, API ou plugin sur votre CMS, sans imposer de refonte lourde ni d'abonnement à une PME.",
           "Restauration et commerces de détail au pied des stations de tramway et autour du Parc Palmer : nos chatbots RAG multilingues et nos vitrines e-commerce multi-CMS sont calibrés pour la prise de commande, le clic-and-collect, le menu en ligne et la fidélisation d'une clientèle de quartier comme de passage venue assister à un concert au Rocher de Palmer.",
           "Tissu de services aux entreprises tertiaires fédéré par le Club d'Entreprises de Cenon (plus de 200 membres) et irrigué par la rocade A630 (sorties 25 et 26) : on construit des plateformes SaaS, portails clients et agents sur mesure, hébergés en UE et conformes RGPD, branchés sur vos outils métier (CRM, ERP, caisse) sans verrou propriétaire.",
         ],
@@ -172,12 +166,6 @@ export const CENON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, génération de devis, prise de commande) sur le site existant d'un commerce de détail, d'un restaurant des abords du Parc Palmer ou d'un artisan BTP cenonnais, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -206,8 +194,8 @@ export const CENON_COPY: VilleCopy = {
             a: "Oui. Pour la restauration et le commerce de détail de Cenon, autour des stations de tramway A et E et du Parc Palmer, on met en place clic-and-collect, réservation directe, menu en ligne et chatbot de prise de commande multilingue, intégrés à votre caisse ou votre outil existant, sans commission imposée par une marketplace. Idéal pour absorber les pics les soirs de concert au Rocher de Palmer.",
           },
           {
-            q: "Travaillez-vous avec les artisans BTP et les TPE des Hauts de Garonne ?",
-            a: "Oui. Pour les artisans BTP et travaux spécialisés de Cenon, Lormont et Floirac, on greffe l'IA sur l'existant sans refonte lourde : génération de devis, suivi de chantier, relances clients, traitement de documents et automatisations, livrés via widget, API ou plugin sur votre CMS. Format adapté TPE, code custom branché sur vos outils (agenda, ERP), sans no-code générique ni abonnement imposé.",
+            q: "Travaillez-vous avec les artisans BTP et les PME des Hauts de Garonne ?",
+            a: "Oui. Pour les artisans BTP et travaux spécialisés de Cenon, Lormont et Floirac, on greffe l'IA sur l'existant sans refonte lourde : génération de devis, suivi de chantier, relances clients, traitement de documents et automatisations, livrés via widget, API ou plugin sur votre CMS. Format adapté PME, code custom branché sur vos outils (agenda, ERP), sans no-code générique ni abonnement imposé.",
           },
           {
             q: "Pouvez-vous accompagner les acteurs tertiaires et les ICC du Rocher de Palmer ?",
@@ -235,7 +223,7 @@ export const CENON_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Cenon ?",
-      a: "TPE commerce de détail, restauration, artisans BTP et travaux spécialisés, services aux entreprises tertiaires, PME logistique et transports terrestres présents sur la rive droite bordelaise.",
+      a: "PME du commerce, restauration, artisans BTP et travaux spécialisés, services aux entreprises tertiaires, PME logistique et transports terrestres présents sur la rive droite bordelaise.",
     },
     {
       q: "Quel délai pour une intervention sur site à Cenon ?",
@@ -243,11 +231,11 @@ export const CENON_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Cenon ?",
-      a: "Hébergement UE, minimisation des données, DPA contractuel, logs anonymisés et passage en revue conformité RGPD/AI Act à chaque livraison auprès de nos clients TPE/PME cenonnais.",
+      a: "Hébergement UE, minimisation des données, DPA contractuel, logs anonymisés et passage en revue conformité RGPD/AI Act à chaque livraison auprès de nos clients PME et ETI cenonnais.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP et commerçants indépendants de Cenon ?",
-      a: "Oui, formats adaptés TPE : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Pas de no-code générique : code custom intégré à vos outils existants (caisse, ERP, agenda).",
+      a: "Oui, formats adaptés PME : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Pas de no-code générique : code custom intégré à vos outils existants (caisse, ERP, agenda).",
     },
   ],
 };

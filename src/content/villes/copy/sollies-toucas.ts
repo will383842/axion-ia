@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   pitchFr:
-    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de PME arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de PME arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Solliès-Toucas (83). Nous accompagnons PME arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Solliès-Toucas (83). Nous accompagnons PME arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
   seoHook: "arboriculture figue & maraîchage agriculture",
   ecosystemFr:
-    "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",
+    "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de PME artisanales, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",
   ecosystemEn:
-    "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",
+    "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de PME artisanales, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",
   distancesFr:
     "Toulon centre à 20 min par A57. La Valette-du-Var à 15 min. Hyères à 25 min. Gare TGV Toulon à 25 min. Aéroport Toulon-Hyères à 30 min. Marseille à 1 h par A57/A50.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
       en: "Implémentation IA à Solliès-Toucas : gestion parcellaire arboriculture, prévisions récoltes figues AOP, traçabilité, marketing IA vente directe, automatisation devis BTP. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Solliès-Toucas : sessions pour arboriculteurs AOP, maraîchers et gérants TPE/PME artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
-      en: "Coaching 1-to-1 à Solliès-Toucas : sessions pour arboriculteurs AOP, maraîchers et gérants TPE/PME artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
+      fr: "Coaching 1-to-1 à Solliès-Toucas : sessions pour arboriculteurs AOP, maraîchers et gérants PME et ETI artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
+      en: "Coaching 1-to-1 à Solliès-Toucas : sessions pour arboriculteurs AOP, maraîchers et gérants PME et ETI artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -64,8 +64,8 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
       a: "Oui, nous implémentons des solutions IA pour artisans BTP : automatisation devis, gestion chantiers, planification équipes, agents IA accueil client, marketing local géolocalisé, suivi facturation.",
     },
     {
-      q: "Comment l'IA peut-elle aider une TPE de Solliès-Toucas ?",
-      a: "L'IA aide les TPE locales : génération automatique de devis, agents IA pour répondre aux clients hors horaires, traduction multilingue, gestion stocks prédictive, marketing local géolocalisé et automatisation administrative.",
+      q: "Comment l'IA peut-elle aider une PME de Solliès-Toucas ?",
+      a: "L'IA aide les PME locales : génération automatique de devis, agents IA pour répondre aux clients hors horaires, traduction multilingue, gestion stocks prédictive, marketing local géolocalisé et automatisation administrative.",
     },
   ],
 };

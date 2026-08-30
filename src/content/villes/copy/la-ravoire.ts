@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_RAVOIRE_COPY: VilleCopy = {
   pitchFr:
-    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, PME de l'artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, PME de l'artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ravoire (73). Nous accompagnons PME et ETI du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ravoire (73). Nous accompagnons PME et ETI du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
   seoHook: "tertiaires services & immobilier résidentiel",
   ecosystemFr:
-    "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, TPE artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",
+    "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, PME de l'artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",
   ecosystemEn:
-    "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, TPE artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",
+    "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, PME de l'artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",
   distancesFr:
     "Chambéry centre à 5 min. Challes-les-Eaux à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30 par A43. Grenoble à 1h.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & services",
     "Professions libérales",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "Immobilier résidentiel",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, PME artisanales, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, PME artisanales, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ravoire : ateliers dans vos locaux, cabinet libéral, agence ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats demi-journée ou journée.",
@@ -42,8 +42,8 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
       en: "Implémentation IA à La Ravoire : automatisation gestion locative, agents conversationnels agence immobilière, classification dossiers cabinet, prédiction demande commerciale. Adapté tertiaire + immobilier savoyard.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Ravoire : sessions dans vos locaux ou en visio. Dirigeants PME services, professions libérales, agents immobilier, artisans, gérants TPE/PME du bassin chambérien.",
-      en: "Coaching 1-to-1 à La Ravoire : sessions dans vos locaux ou en visio. Dirigeants PME services, professions libérales, agents immobilier, artisans, gérants TPE/PME du bassin chambérien.",
+      fr: "Coaching 1-to-1 à La Ravoire : sessions dans vos locaux ou en visio. Dirigeants PME services, professions libérales, agents immobilier, artisans, gérants PME et ETI du bassin chambérien.",
+      en: "Coaching 1-to-1 à La Ravoire : sessions dans vos locaux ou en visio. Dirigeants PME services, professions libérales, agents immobilier, artisans, gérants PME et ETI du bassin chambérien.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs de l'immobilier résidentiel à La Ravoire : agents conversationnels prospects, automatisation gestion locative, estimation assistée IA, tri de candidatures, diffusion multicanale annonces.",
     },
     {
-      q: "Quels tarifs pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à La Ravoire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      q: "Quels tarifs pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce à La Ravoire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à La Ravoire ?",

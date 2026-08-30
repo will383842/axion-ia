@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const SETE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sète (45 337 habitants, Hérault), ville singulière enclavée entre la Méditerranée et l'étang de Thau, à 37 km de Montpellier. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu portuaire (pêche, conchyliculture, transports maritimes), le tourisme et la restauration, et les activités viticoles environnantes, dans une agglomération (Sète Agglopôle Méditerranée, 95 662 habitants) reliée à Marseillan par un lido de 12 km.",
+    "Axion-IA intervient à Sète (45 337 habitants, Hérault), ville singulière enclavée entre la Méditerranée et l'étang de Thau, à 37 km de Montpellier. Cabinet IA dédié aux PME et ETI francophones, nous concevons du code custom (pas de no-code) pour le tissu portuaire (pêche, conchyliculture, transports maritimes), le tourisme et la restauration, et les activités viticoles environnantes, dans une agglomération (Sète Agglopôle Méditerranée, 95 662 habitants) reliée à Marseillan par un lido de 12 km.",
   pitchEn:
-    "Axion-IA intervient à Sète (45 337 habitants, Hérault), ville singulière enclavée entre la Méditerranée et l'étang de Thau, à 37 km de Montpellier. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu portuaire (pêche, conchyliculture, transports maritimes), le tourisme et la restauration, et les activités viticoles environnantes, dans une agglomération (Sète Agglopôle Méditerranée, 95 662 habitants) reliée à Marseillan par un lido de 12 km.",
+    "Axion-IA intervient à Sète (45 337 habitants, Hérault), ville singulière enclavée entre la Méditerranée et l'étang de Thau, à 37 km de Montpellier. Cabinet IA dédié aux PME et ETI francophones, nous concevons du code custom (pas de no-code) pour le tissu portuaire (pêche, conchyliculture, transports maritimes), le tourisme et la restauration, et les activités viticoles environnantes, dans une agglomération (Sète Agglopôle Méditerranée, 95 662 habitants) reliée à Marseillan par un lido de 12 km.",
   directAnswerFr:
-    "À Sète, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché et sans no-code.",
+    "À Sète, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché et sans no-code.",
   directAnswerEn:
-    "À Sète, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché et sans no-code.",
+    "À Sète, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché et sans no-code.",
   seoHook: "port de Sète & conchyliculture de Thau",
   ecosystemFr:
-    "Le tissu économique sétois s'articule autour du port (commerce, pêche, plaisance), de la conchyliculture sur l'étang de Thau (huîtres et moules de Bouzigues), du tourisme balnéaire (lido de 12 km vers Marseillan), de la restauration de spécialités locales et de la viticulture. Sète Agglopôle Méditerranée fédère une unité urbaine de 95 662 habitants. Les communes membres incluent Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains. Cette diversité TPE/PME maritime, agricole et touristique constitue un terrain unique pour des solutions IA codées sur mesure.",
+    "Le tissu économique sétois s'articule autour du port (commerce, pêche, plaisance), de la conchyliculture sur l'étang de Thau (huîtres et moules de Bouzigues), du tourisme balnéaire (lido de 12 km vers Marseillan), de la restauration de spécialités locales et de la viticulture. Sète Agglopôle Méditerranée fédère une unité urbaine de 95 662 habitants. Les communes membres incluent Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains. Cette diversité PME et ETI maritime, agricole et touristique constitue un terrain unique pour des solutions IA codées sur mesure.",
   ecosystemEn:
-    "Le tissu économique sétois s'articule autour du port (commerce, pêche, plaisance), de la conchyliculture sur l'étang de Thau (huîtres et moules de Bouzigues), du tourisme balnéaire (lido de 12 km vers Marseillan), de la restauration de spécialités locales et de la viticulture. Sète Agglopôle Méditerranée fédère une unité urbaine de 95 662 habitants. Les communes membres incluent Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains. Cette diversité TPE/PME maritime, agricole et touristique constitue un terrain unique pour des solutions IA codées sur mesure.",
+    "Le tissu économique sétois s'articule autour du port (commerce, pêche, plaisance), de la conchyliculture sur l'étang de Thau (huîtres et moules de Bouzigues), du tourisme balnéaire (lido de 12 km vers Marseillan), de la restauration de spécialités locales et de la viticulture. Sète Agglopôle Méditerranée fédère une unité urbaine de 95 662 habitants. Les communes membres incluent Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains. Cette diversité PME et ETI maritime, agricole et touristique constitue un terrain unique pour des solutions IA codées sur mesure.",
   distancesFr:
     "Sète dispose de sa gare ferroviaire desservie par TGV, Intercités et TER Occitanie, avec un accès direct à l'autoroute A9. Montpellier est à 37 km. La ville est connectée à Marseillan par un lido de 12 km le long de la Méditerranée.",
   distancesEn:
@@ -31,20 +31,20 @@ export const SETE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA sur site à Sète dès {{price:audit-flash|flat}} : analyse des process chez les TPE/PME du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
-      en: "Audit sur place IA sur site à Sète dès {{price:audit-flash|flat}} : analyse des process chez les TPE/PME du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
+      fr: "Audit sur place IA sur site à Sète dès {{price:audit-flash|flat}} : analyse des process chez les PME et ETI du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
+      en: "Audit sur place IA sur site à Sète dès {{price:audit-flash|flat}} : analyse des process chez les PME et ETI du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
     },
     interventions: {
       fr: "Interventions IA à Sète dès {{price:intervention-4h|flat}} : automatisation des relances clients pour transitaires portuaires, outils de traçabilité pour conchyliculteurs de Bouzigues, gestion des réservations pour restaurateurs du front de mer.",
       en: "Interventions IA à Sète dès {{price:intervention-4h|flat}} : automatisation des relances clients pour transitaires portuaires, outils de traçabilité pour conchyliculteurs de Bouzigues, gestion des réservations pour restaurateurs du front de mer.",
     },
     implementation: {
-      fr: "Implémentation IA à Sète dès {{price:impl-poc|entry}} : intégration d'assistants métiers codés sur mesure chez les TPE/PME maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
-      en: "Implémentation IA à Sète dès {{price:impl-poc|entry}} : intégration d'assistants métiers codés sur mesure chez les TPE/PME maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
+      fr: "Implémentation IA à Sète dès {{price:impl-poc|entry}} : intégration d'assistants métiers codés sur mesure chez les PME et ETI maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
+      en: "Implémentation IA à Sète dès {{price:impl-poc|entry}} : intégration d'assistants métiers codés sur mesure chez les PME et ETI maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Sète dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
-      en: "Accompagnement 1-à-1 à Sète dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
+      fr: "Accompagnement 1-à-1 à Sète dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
+      en: "Accompagnement 1-à-1 à Sète dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const SETE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour ostréiculteurs de Thau, restaurateurs du lido, viticulteurs et commerces sétois : site mobile-first avec vente directe (huîtres, moules, vin), prise de commande et réservation dégustation, hébergement UE/RGPD.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -172,12 +166,6 @@ export const SETE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brochure site or essential e-commerce",
-            detail:
-              "For Thau oyster growers, lido restaurateurs, winemakers and Sète shops: mobile-first site with direct sales (oysters, mussels, wine), order intake and tasting booking, EU/GDPR hosting.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -243,7 +231,7 @@ export const SETE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux profitent le plus de l'IA à Sète ?",
-      a: "Les TPE et PME du port (pêche, transitaires, plaisance), les conchyliculteurs de l'étang de Thau (huîtres et moules de Bouzigues), les hôteliers-restaurateurs du lido et les viticulteurs environnants tirent un bénéfice direct des automatisations IA codées sur mesure.",
+      a: "Les PME et ETI du port (pêche, transitaires, plaisance), les conchyliculteurs de l'étang de Thau (huîtres et moules de Bouzigues), les hôteliers-restaurateurs du lido et les viticulteurs environnants tirent un bénéfice direct des automatisations IA codées sur mesure.",
     },
     {
       q: "Williams se déplace-t-il vraiment sur site à Sète ?",

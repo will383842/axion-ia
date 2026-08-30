@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DREUX_COPY: VilleCopy = {
   pitchFr:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   pitchEn:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "industrie & sous-traitance",
   ecosystemFr:
-    "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de TPE et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale dans notre portefeuille.",
+    "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de PME et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les PME, les grands groupes venant en complément.",
   ecosystemEn:
-    "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de TPE et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale dans notre portefeuille.",
+    "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de PME et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les PME, les grands groupes venant en complément.",
   distancesFr:
     "Dreux est reliée à Paris-Montparnasse en un peu plus d'une heure par le rail et bénéficie d'un accès rapide à l'Île-de-France via la N12. La gare de Dreux dessert directement la ligne N du Transilien, et l'aéroport de Paris-Orly est à environ 85 km. Cette position de porte d'entrée francilienne permet à Axion-IA d'intervenir sur site sans contrainte logistique.",
   distancesEn:
@@ -34,16 +34,16 @@ export const DREUX_COPY: VilleCopy = {
       en: "Audit IA à Dreux : une journée pour cartographier les tâches répétitives d'un atelier ou d'une PME industrielle — chiffrage, planification, suivi qualité — et prioriser ce qui mérite réellement d'être automatisé.",
     },
     interventions: {
-      fr: "Interventions à Dreux : nous traitons un irritant précis d'une TPE ou PME locale — devis, relances fournisseurs, reporting de production — avec une automatisation sobre, livrée vite et tenable.",
-      en: "Interventions à Dreux : nous traitons un irritant précis d'une TPE ou PME locale — devis, relances fournisseurs, reporting de production — avec une automatisation sobre, livrée vite et tenable.",
+      fr: "Interventions à Dreux : nous traitons un irritant précis d'une PME ou ETI locale — devis, relances fournisseurs, reporting de production — avec une automatisation sobre, livrée vite et tenable.",
+      en: "Interventions à Dreux : nous traitons un irritant précis d'une PME ou ETI locale — devis, relances fournisseurs, reporting de production — avec une automatisation sobre, livrée vite et tenable.",
     },
     implementation: {
       fr: "Implémentation à Dreux : nous connectons l'IA aux ERP et outils de production déjà en place dans les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
       en: "Implémentation à Dreux : nous connectons l'IA aux ERP et outils de production déjà en place dans les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Dreux : un dirigeant de PME ou ETI industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Dreux : un dirigeant de PME ou ETI industrielle, un expert IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Dreux : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
@@ -88,12 +88,6 @@ export const DREUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou marchand augmenté",
-            detail:
-              "Pour les artisans, commerces et indépendants drouais : site vitrine ou petite boutique e-commerce multi-CMS avec demande de devis assistée et chatbot d'accueil. Adapté aux structures des zones des Châtelets et du centre-ville.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
@@ -175,12 +169,6 @@ export const DREUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Augmented showcase or merchant site",
-            detail:
-              "For Dreux artisans, shops and freelancers: showcase site or small multi-CMS e-commerce store with assisted quote request and welcome chatbot. Suited to Châtelets-zone and town-center structures.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce platform or business portal",
             detail:
@@ -229,8 +217,8 @@ export const DREUX_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA accompagne-t-il les petites entreprises de Dreux ?",
-      a: "Oui. Notre priorité va aux TPE puis aux PME de Dreux : ateliers, sous-traitants industriels, commerces et sociétés de services. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
+      q: "Axion-IA accompagne-t-il les PME de Dreux ?",
+      a: "Oui. Notre priorité va aux PME puis aux PME de Dreux : ateliers, sous-traitants industriels, commerces et sociétés de services. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
       q: "L'IA est-elle utile aux PME industrielles de Dreux ?",

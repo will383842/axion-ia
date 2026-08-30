@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PENMARCH_COPY: VilleCopy = {
   pitchFr:
-    "Penmarch (29), commune emblématique du Pays Bigouden en Finistère sud, est connue pour son port de pêche de Saint-Guénolé, son phare d'Eckmühl et son littoral préservé. TPE et PME maritimes, mareyeurs, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Penmarch (29), commune emblématique du Pays Bigouden en Finistère sud, est connue pour son port de pêche de Saint-Guénolé, son phare d'Eckmühl et son littoral préservé. PME et ETI maritimes, mareyeurs, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Penmarch (29), commune emblématique du Pays Bigouden en Finistère sud, est connue pour son port de pêche de Saint-Guénolé, son phare d'Eckmühl et son littoral préservé. TPE et PME maritimes, mareyeurs, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Penmarch (29), commune emblématique du Pays Bigouden en Finistère sud, est connue pour son port de pêche de Saint-Guénolé, son phare d'Eckmühl et son littoral préservé. PME et ETI maritimes, mareyeurs, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Penmarch (29). Nous accompagnons TPE et PME : pêcheurs et mareyeurs du port de Saint-Guénolé, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Penmarch (29). Nous accompagnons PME et ETI : pêcheurs et mareyeurs du port de Saint-Guénolé, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Penmarch (29). Nous accompagnons TPE et PME : pêcheurs et mareyeurs du port de Saint-Guénolé, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Penmarch (29). Nous accompagnons PME et ETI : pêcheurs et mareyeurs du port de Saint-Guénolé, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Audit sur place sur mesure.",
   seoHook: "pêche mareyage & conserveries agroalimentaire",
   ecosystemFr:
-    "Penmarch est une commune du Pays Bigouden, en Finistère sud, célèbre pour son port de pêche de Saint-Guénolé (3e port français en tonnage débarqué historique) et le phare d'Eckmühl. Tissu TPE/PME : pêche et mareyage, conserveries, artisanat du bâtiment, commerces de bourg, hébergement et restauration touristique.",
+    "Penmarch est une commune du Pays Bigouden, en Finistère sud, célèbre pour son port de pêche de Saint-Guénolé (3e port français en tonnage débarqué historique) et le phare d'Eckmühl. Tissu PME et ETI : pêche et mareyage, conserveries, artisanat du bâtiment, commerces de bourg, hébergement et restauration touristique.",
   ecosystemEn:
-    "Penmarch est une commune du Pays Bigouden, en Finistère sud, célèbre pour son port de pêche de Saint-Guénolé (3e port français en tonnage débarqué historique) et le phare d'Eckmühl. Tissu TPE/PME : pêche et mareyage, conserveries, artisanat du bâtiment, commerces de bourg, hébergement et restauration touristique.",
+    "Penmarch est une commune du Pays Bigouden, en Finistère sud, célèbre pour son port de pêche de Saint-Guénolé (3e port français en tonnage débarqué historique) et le phare d'Eckmühl. Tissu PME et ETI : pêche et mareyage, conserveries, artisanat du bâtiment, commerces de bourg, hébergement et restauration touristique.",
   distancesFr:
     "Quimper à 30 min en voiture. Gare TGV Quimper accessible en 35 min. Aéroport Quimper-Cornouaille à 25 min. Plage de la Torche à 10 min. Pont-l'Abbé (sous-préfecture) à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const PENMARCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Penmarch : diagnostic adapté aux TPE pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Penmarch : diagnostic adapté aux TPE pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Penmarch : diagnostic adapté aux PME pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Penmarch : diagnostic adapté aux PME pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Penmarch : formats adaptés criée et atelier mareyage, ligne conserverie, chantier artisan, commerce ou restaurant. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const PENMARCH_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Penmarch  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE pêche, mareyeurs, conserveries et artisans du Pays Bigouden.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME pêche, mareyeurs, conserveries et artisans du Pays Bigouden.",
     },
     {
       q: "Travaillez-vous avec les pêcheurs et mareyeurs de Saint-Guénolé ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SAULVE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu PME et ETI industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu PME et ETI industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Saulve (59). Nous accompagnons PME et ETI du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Saulve (59). Nous accompagnons PME et ETI du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
   ecosystemFr:
-    "Saint-Saulve est une commune de l'agglomération de Valenciennes (Hainaut), à la jonction du bassin minier UNESCO et du pôle industriel reconverti du Valenciennois. L'économie locale bénéficie de la dynamique automobile (pôle de compétitivité i-Trans) et ferroviaire, de la logistique, du BTP et des services. Tissu TPE/PME diversifié, commerces de proximité, professions libérales.",
+    "Saint-Saulve est une commune de l'agglomération de Valenciennes (Hainaut), à la jonction du bassin minier UNESCO et du pôle industriel reconverti du Valenciennois. L'économie locale bénéficie de la dynamique automobile (pôle de compétitivité i-Trans) et ferroviaire, de la logistique, du BTP et des services. Tissu PME et ETI diversifié, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "Saint-Saulve est une commune de l'agglomération de Valenciennes (Hainaut), à la jonction du bassin minier UNESCO et du pôle industriel reconverti du Valenciennois. L'économie locale bénéficie de la dynamique automobile (pôle de compétitivité i-Trans) et ferroviaire, de la logistique, du BTP et des services. Tissu TPE/PME diversifié, commerces de proximité, professions libérales.",
+    "Saint-Saulve est une commune de l'agglomération de Valenciennes (Hainaut), à la jonction du bassin minier UNESCO et du pôle industriel reconverti du Valenciennois. L'économie locale bénéficie de la dynamique automobile (pôle de compétitivité i-Trans) et ferroviaire, de la logistique, du BTP et des services. Tissu PME et ETI diversifié, commerces de proximité, professions libérales.",
   distancesFr:
     "Valenciennes centre à 5 min. Douai à 30 min. Lille centre à 45 min. Maubeuge à 35 min. Gare SNCF Valenciennes à 10 min (TGV Paris 1 h 40). Autoroutes A2 et A23 à proximité. Aéroport Lille-Lesquin à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Saulve : diagnostic adapté aux PME et ETI sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Saulve : diagnostic adapté aux PME et ETI sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Saulve : formats adaptés à l'atelier automobile, l'entrepôt logistique, le chantier BTP ou le cabinet de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Saulve : contrôle qualité automobile, maintenance prédictive ferroviaire, optimisation flux logistiques, automatisation devis BTP, CRM augmenté prestataires B2B du Valenciennois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Saulve : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants TPE/PME du Valenciennois souhaitant maîtriser l'IA dans leur activité industrielle, logistique ou B2B.",
-      en: "Coaching 1-to-1 à Saint-Saulve : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants TPE/PME du Valenciennois souhaitant maîtriser l'IA dans leur activité industrielle, logistique ou B2B.",
+      fr: "Coaching 1-to-1 à Saint-Saulve : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants PME et ETI du Valenciennois souhaitant maîtriser l'IA dans leur activité industrielle, logistique ou B2B.",
+      en: "Coaching 1-to-1 à Saint-Saulve : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants PME et ETI du Valenciennois souhaitant maîtriser l'IA dans leur activité industrielle, logistique ou B2B.",
     },
   },
   faqGeolocalisee: [
@@ -52,12 +52,12 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Saulve et dans toute l'agglomération de Valenciennes (Anzin, Petite-Forêt, Marly, Bruay-sur-l'Escaut, Condé-sur-l'Escaut). Nos consultants accèdent via la gare TGV Valenciennes (10 min) ou les autoroutes A2 et A23.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME de la sous-traitance automobile ?",
-      a: "Oui, nous accompagnons les TPE et PME sous-traitantes automobile et ferroviaire de Saint-Saulve et du Valenciennois : contrôle qualité visuel, maintenance prédictive, automatisation workflow production, gestion fournisseurs et donneurs d'ordres, traçabilité pièces.",
+      q: "Accompagnez-vous les PME et ETI de la sous-traitance automobile ?",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitantes automobile et ferroviaire de Saint-Saulve et du Valenciennois : contrôle qualité visuel, maintenance prédictive, automatisation workflow production, gestion fournisseurs et donneurs d'ordres, traçabilité pièces.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Saulve  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du Valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour la logistique dans le Valenciennois ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ARPAJON_COPY: VilleCopy = {
   pitchFr:
-    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu PME du commerce centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu PME du commerce centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arpajon (91). Nous accompagnons PME et ETI : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arpajon (91). Nous accompagnons PME et ETI : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat métiers",
   ecosystemFr:
-    "Arpajon est une sous-préfecture historique de l'Essonne, centre du Hurepoix, connue pour sa foire aux haricots séculaire et son marché couvert animé. Tissu vivant TPE commerces de bouche et artisanat, PME tertiaires, professions libérales (avocats, notaires, médecins), restauration et services administratifs sous-préfecture.",
+    "Arpajon est une sous-préfecture historique de l'Essonne, centre du Hurepoix, connue pour sa foire aux haricots séculaire et son marché couvert animé. Tissu vivant PME du commerce de bouche et artisanat, PME tertiaires, professions libérales (avocats, notaires, médecins), restauration et services administratifs sous-préfecture.",
   ecosystemEn:
-    "Arpajon est une sous-préfecture historique de l'Essonne, centre du Hurepoix, connue pour sa foire aux haricots séculaire et son marché couvert animé. Tissu vivant TPE commerces de bouche et artisanat, PME tertiaires, professions libérales (avocats, notaires, médecins), restauration et services administratifs sous-préfecture.",
+    "Arpajon est une sous-préfecture historique de l'Essonne, centre du Hurepoix, connue pour sa foire aux haricots séculaire et son marché couvert animé. Tissu vivant PME du commerce de bouche et artisanat, PME tertiaires, professions libérales (avocats, notaires, médecins), restauration et services administratifs sous-préfecture.",
   distancesFr:
     "Gare RER C Arpajon. Paris centre à 35 min. Évry-Courcouronnes à 20 min. Aéroport Paris-Orly à 20 min. Massy-Palaiseau (TGV) à 15 min. N20 accès direct.",
   distancesEn:
@@ -42,8 +42,8 @@ export const ARPAJON_COPY: VilleCopy = {
       en: "Implémentation IA à Arpajon : CRM augmenté commerçants, automatisation gestion cabinet juridique/médical, outils réservation restauration, facturation PME services Hurepoix.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arpajon : sessions dans votre commerce, cabinet ou en visio. Dirigeants TPE/PME arpajonnais, professions libérales, artisans et restaurateurs.",
-      en: "Coaching 1-to-1 à Arpajon : sessions dans votre commerce, cabinet ou en visio. Dirigeants TPE/PME arpajonnais, professions libérales, artisans et restaurateurs.",
+      fr: "Coaching 1-to-1 à Arpajon : sessions dans votre commerce, cabinet ou en visio. Dirigeants PME et ETI arpajonnais, professions libérales, artisans et restaurateurs.",
+      en: "Coaching 1-to-1 à Arpajon : sessions dans votre commerce, cabinet ou en visio. Dirigeants PME et ETI arpajonnais, professions libérales, artisans et restaurateurs.",
     },
   },
   faqGeolocalisee: [

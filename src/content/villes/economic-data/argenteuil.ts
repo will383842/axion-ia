@@ -252,7 +252,7 @@ export const ARGENTEUIL_ECONOMIC_DATA: VilleEconomicData = {
   // + urbanisation), hors AOC. Champ honnêtement vide.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Annuaire EPV national consultable :
   // https://data.economie.gouv.fr/explore/dataset/entreprises-du-patrimoine-vivant-epv

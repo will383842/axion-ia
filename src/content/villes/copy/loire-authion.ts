@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LOIRE_AUTHION_COPY: VilleCopy = {
   pitchFr:
-    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, PME artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, PME artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, PME artisanales, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, PME artisanales, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit sur place accessible.",
   seoHook: "bassin horticole de",
   ecosystemFr:
     "Loire-Authion se situe dans le val d'Authion à l'est d'Angers, au cœur du premier bassin horticole de France. L'économie locale est dominée par l'horticulture et les pépinières (roses, plantes ornementales, semences), complétée par le maraîchage, l'arboriculture fruitière, l'artisanat BTP, les commerces et les services. Le pôle végétal angevin (Végépolys Valley) irrigue tout le territoire.",
@@ -30,8 +30,8 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, TPE artisans, maraîchers et commerçants du bassin angevin. Audit sur place {{price:audit-flash|flat}} pour les petites structures.",
-      en: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, TPE artisans, maraîchers et commerçants du bassin angevin. Audit sur place {{price:audit-flash|flat}} pour les petites structures.",
+      fr: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, PME artisanales, maraîchers et commerçants du bassin angevin. Audit sur place {{price:audit-flash|flat}} pour les PME.",
+      en: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, PME artisanales, maraîchers et commerçants du bassin angevin. Audit sur place {{price:audit-flash|flat}} pour les PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loire-Authion : formations pépiniéristes et horticulteurs, ateliers artisans, sessions maraîchers et commerçants. Autonomie IA de vos équipes terrain et gestion.",
@@ -42,8 +42,8 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
       en: "Implémentation IA à Loire-Authion : automatisation gestion de serre, prédiction croissance végétale, traçabilité lots horticoles, agents IA commerciaux B2B et digitalisation pépinières Végépolys.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Loire-Authion : sessions dans votre pépinière, exploitation ou commerce. Dirigeants horticoles, maraîchers, artisans et gérants TPE/PME du val d'Authion souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Loire-Authion : sessions dans votre pépinière, exploitation ou commerce. Dirigeants horticoles, maraîchers, artisans et gérants TPE/PME du val d'Authion souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Loire-Authion : sessions dans votre pépinière, exploitation ou commerce. Dirigeants horticoles, maraîchers, artisans et gérants PME et ETI du val d'Authion souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Loire-Authion : sessions dans votre pépinière, exploitation ou commerce. Dirigeants horticoles, maraîchers, artisans et gérants PME et ETI du val d'Authion souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME horticole ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME horticoles et pépinières, l'Audit Stratégique complet offre un diagnostic poussé : automatisation serre, prédiction, traçabilité, optimisation supply chain. ROI chiffré.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux PME. Pour les PME horticoles et pépinières, l'Audit Stratégique complet offre un diagnostic poussé : automatisation serre, prédiction, traçabilité, optimisation supply chain. ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les maraîchers et arboriculteurs de Loire-Authion ?",

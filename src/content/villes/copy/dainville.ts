@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Dainville (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 680 habitants. Situee a l'ouest d'Arras, son economie beneficie de la proximite de la prefecture : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Axion-IA y intervient pour tous types d'activites.",
+    "Dainville (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 680 habitants. Situee a l'ouest d'Arras, son economie beneficie de la proximite de la prefecture : PME tertiaires, PME de services, professions liberales, commerces et artisanat. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Dainville (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 680 habitants. Situee a l'ouest d'Arras, son economie beneficie de la proximite de la prefecture : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Axion-IA y intervient pour tous types d'activites.",
+    "Dainville (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 680 habitants. Situee a l'ouest d'Arras, son economie beneficie de la proximite de la prefecture : PME tertiaires, PME de services, professions liberales, commerces et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras, tertiaire & professions liberales",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dainville (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dainville (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Dainville jouxte Arras (3 km) a l'ouest. Tissu economique compose de PME tertiaires, TPE de services, professions liberales (avocats, comptables), commerces de proximite et artisanat. Commune residentielle prisee beneficiant des infrastructures de la CUA.",
+    "Dainville jouxte Arras (3 km) a l'ouest. Tissu economique compose de PME tertiaires, PME de services, professions liberales (avocats, comptables), commerces de proximite et artisanat. Commune residentielle prisee beneficiant des infrastructures de la CUA.",
   ecosystemEn:
-    "Dainville jouxte Arras (3 km) a l'ouest. Tissu economique compose de PME tertiaires, TPE de services, professions liberales (avocats, comptables), commerces de proximite et artisanat. Commune residentielle prisee beneficiant des infrastructures de la CUA.",
+    "Dainville jouxte Arras (3 km) a l'ouest. Tissu economique compose de PME tertiaires, PME de services, professions liberales (avocats, comptables), commerces de proximite et artisanat. Commune residentielle prisee beneficiant des infrastructures de la CUA.",
   distancesFr:
     "Gare d'Arras (TGV) a 8 min. Lille Europe a 45 min en TGV. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 50 min en TGV direct.",
   distancesEn:
@@ -24,14 +24,14 @@ export const DAINVILLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & conseil",
     "Professions liberales",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et PME de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et PME de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Dainville : formations adaptees aux bureaux tertiaires, cabinets liberaux, commerces et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DAINVILLE_COPY: VilleCopy = {
       en: "Implementation IA a Dainville : automatisation processus tertiaires, agents conversationnels cabinet, CRM augmentes pour PME de l'Arrageois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Dainville : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants TPE de l'agglomeration d'Arras.",
-      en: "Coaching 1-to-1 a Dainville : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants TPE de l'agglomeration d'Arras.",
+      fr: "Coaching 1-to-1 a Dainville : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants PME de l'agglomeration d'Arras.",
+      en: "Coaching 1-to-1 a Dainville : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants PME de l'agglomeration d'Arras.",
     },
   },
   faqGeolocalisee: [

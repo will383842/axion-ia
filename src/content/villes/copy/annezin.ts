@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ANNEZIN_COPY: VilleCopy = {
   pitchFr:
-    "Annezin (62), commune de l'agglomeration de Bethune dans le Pas-de-Calais, reunit pres de 5 830 habitants. Situee aux portes de Bethune, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Annezin (62), commune de l'agglomeration de Bethune dans le Pas-de-Calais, reunit pres de 5 830 habitants. Situee aux portes de Bethune, son economie repose sur les PME de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Annezin (62), commune de l'agglomeration de Bethune dans le Pas-de-Calais, reunit pres de 5 830 habitants. Situee aux portes de Bethune, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Annezin (62), commune de l'agglomeration de Bethune dans le Pas-de-Calais, reunit pres de 5 830 habitants. Situee aux portes de Bethune, son economie repose sur les PME de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Bethune, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Annezin (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Annezin (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Annezin jouxte Bethune (2 km), dans le bassin minier reconverti. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et activites tertiaires. Commune residentielle beneficiant du dynamisme bethunois.",
+    "Annezin jouxte Bethune (2 km), dans le bassin minier reconverti. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions de sante et activites tertiaires. Commune residentielle beneficiant du dynamisme bethunois.",
   ecosystemEn:
-    "Annezin jouxte Bethune (2 km), dans le bassin minier reconverti. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et activites tertiaires. Commune residentielle beneficiant du dynamisme bethunois.",
+    "Annezin jouxte Bethune (2 km), dans le bassin minier reconverti. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions de sante et activites tertiaires. Commune residentielle beneficiant du dynamisme bethunois.",
   distancesFr:
     "Gare de Bethune a 5 min. Lille Europe (TGV) a 50 min en TER. Aeroport Lille-Lesquin a 1h. Paris-Nord a 1h40 via TGV Lens. Autoroute A26 a 10 min.",
   distancesEn:
     "Gare de Bethune a 5 min. Lille Europe (TGV) a 50 min en TER. Aeroport Lille-Lesquin a 1h. Paris-Nord a 1h40 via TGV Lens. Autoroute A26 a 10 min.",
   topSectorsNaf: [
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP",
     "Professions de sante",
@@ -30,8 +30,8 @@ export const ANNEZIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Annezin : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Annezin : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Annezin : diagnostic adapte aux PME de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Annezin : diagnostic adapte aux PME de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Annezin : formations adaptees aux commerces, bureaux tertiaires, cabinets de sante et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const ANNEZIN_COPY: VilleCopy = {
       en: "Implementation IA a Annezin : automatisation administrative, agenda medical intelligent, agents conversationnels commerce, CRM augmentes pour PME du bethunois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Annezin : accompagnement personnalise dirigeants TPE, gerants PME et professionnels de sante de l'agglomeration bethunoise.",
-      en: "Coaching 1-to-1 a Annezin : accompagnement personnalise dirigeants TPE, gerants PME et professionnels de sante de l'agglomeration bethunoise.",
+      fr: "Coaching 1-to-1 a Annezin : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professionnels de sante de l'agglomeration bethunoise.",
+      en: "Coaching 1-to-1 a Annezin : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professionnels de sante de l'agglomeration bethunoise.",
     },
   },
   faqGeolocalisee: [

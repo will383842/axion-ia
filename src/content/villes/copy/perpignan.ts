@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -23,13 +23,13 @@ import type { VilleCopy } from "./types";
 
 export const PERPIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Perpignan regroupe 13 498 établissements actifs, le 1er centre européen de fruits et légumes (Saint-Charles International, 2,3 Md€ CA), le siège de Cémoi (n°1 chocolat France), le pôle EnR Tecnosud-DERBI et 9 AOP/AOC viticoles en moins de 30 km. Axion-IA y intervient sur site, des TPE catalanes aux ETI agroalimentaires et énergétiques de la Perpignan Méditerranée Métropole.",
+    "Perpignan regroupe 13 498 établissements actifs, le 1er centre européen de fruits et légumes (Saint-Charles International, 2,3 Md€ CA), le siège de Cémoi (n°1 chocolat France), le pôle EnR Tecnosud-DERBI et 9 AOP/AOC viticoles en moins de 30 km. Axion-IA y intervient sur site, des PME catalanes aux ETI agroalimentaires et énergétiques de la Perpignan Méditerranée Métropole.",
   pitchEn:
     "Perpignan hosts 13,498 active businesses, Europe's leading fruit and vegetable hub (Saint-Charles International, €2.3 Bn revenue), the HQ of Cémoi (France's no.1 chocolate maker), the Tecnosud-DERBI renewables cluster and 9 AOP/AOC wine appellations within 30 km. Axion-IA delivers on site, from Catalan micro-businesses to agri-food and energy mid-caps across Perpignan Méditerranée Métropole.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Perpignan : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, de la TPE négoce Saint-Charles à l'ETI agroalimentaire ou énergétique de Tecnosud.",
+      fr: "Audit IA opérationnel à Perpignan : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, de la PME négoce Saint-Charles à l'ETI agroalimentaire ou énergétique de Tecnosud.",
       en: "Operational AI audit in Perpignan: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Saint-Charles trading micro-businesses to agri-food or energy mid-caps at Tecnosud.",
     },
     interventions: {
@@ -41,7 +41,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
       en: "AI implementation in Perpignan: we deploy AI into your existing tools (CRM, ERP, TMS, logistics systems) with contractually-costed ROI. Your teams stay in control, no Axion-IA dependency.",
     },
     unAUn: {
-      fr: "Accompagnement individuel IA à Perpignan : programme 1-to-1 pour dirigeants et indépendants — de la TPE viticole à l'entrepreneur transfrontalier France-Espagne. Séances sur site ou à distance, à votre rythme.",
+      fr: "Accompagnement individuel IA à Perpignan : programme 1-to-1 pour dirigeants et indépendants — de la PME viticole à l'entrepreneur transfrontalier France-Espagne. Séances sur site ou à distance, à votre rythme.",
       en: "Individual AI coaching in Perpignan: 1-to-1 programme for executives and independents — from Roussillon wine estate owners to France-Spain cross-border entrepreneurs. On-site or remote sessions, at your pace.",
     },
     sitesWeb: {
@@ -51,7 +51,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perpignan (66) sur site — Saint-Charles, Tecnosud, Polygone Nord, centre-ville et communes de la Perpignan Méditerranée Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises perpignanaises (agroalimentaire, logistique, négoce, énergies renouvelables, viticulture, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perpignan (66) sur site — Saint-Charles, Tecnosud, Polygone Nord, centre-ville et communes de la Perpignan Méditerranée Métropole. Nous accompagnons les PME, ETI et grands groupes perpignanais (agroalimentaire, logistique, négoce, énergies renouvelables, viticulture, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Perpignan (66) on site — Saint-Charles, Tecnosud, Polygone Nord, city centre and communes across Perpignan Méditerranée Métropole. We support Perpignan micro-businesses, SMEs, mid-caps and large enterprises (agri-food, logistics, trading, renewables, viticulture, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -79,7 +79,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Perpignan ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Perpignan et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Perpignan et partout en France.",
     },
     {
       q: "Axion-IA peut-il accompagner des entreprises transfrontalières France-Espagne ?",
@@ -109,7 +109,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise perpignanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du négoce Saint-Charles aux ETI agroalimentaires d'Agrosud et aux directions transformation des groupes implantés dans la Métropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise perpignanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du négoce Saint-Charles aux ETI agroalimentaires d'Agrosud et aux directions transformation des groupes implantés dans la Métropole.",
         whyHere: [
           "Perpignan concentre un tissu B2B sectorisé unique en France : logistique et négoce fruits-légumes (Saint-Charles International, 1er centre européen), agroalimentaire (Cémoi, Conserves France), énergies renouvelables (Tecnosud, DERBI-CEMATER) et viticulture Roussillon — autant de verticales à fort potentiel d'automatisation IA.",
           "Nos consultants se déplacent sur l'ensemble de la Perpignan Méditerranée Métropole : Saint-Charles, Tecnosud, Polygone Nord, centre-ville, Agrosud, Saint-Estève, Cabestany, Rivesaltes et communes proches.",
@@ -146,12 +146,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et petits négoces perpignanais jusqu'à une dizaine de collaborateurs — Saint-Charles, Roussillon viticole, centre-ville.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -253,12 +247,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Perpignan freelancers, small traders and micro-firms up to about ten staff — Saint-Charles, Roussillon wine estates, city centre.",
-          },
-          {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
             detail:
@@ -325,7 +313,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Perpignan se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en entrepôt logistique, sur la plateforme Saint-Charles, en bureau ou sur le terrain.",
         whyHere: [
-          "Perpignan cumule des profils d'entreprises très variés, tous à fort besoin de montée en compétence IA : négociants fruits-légumes Saint-Charles, producteurs viticoles Roussillon, PME BTP Pyrénées-Orientales, TPE services Polygone Nord et équipes Tecnosud.",
+          "Perpignan cumule des profils d'entreprises très variés, tous à fort besoin de montée en compétence IA : négociants fruits-légumes Saint-Charles, producteurs viticoles Roussillon, PME BTP Pyrénées-Orientales, PME services Polygone Nord et équipes Tecnosud.",
           "Toutes les communes de la Perpignan Méditerranée Métropole couvertes en présentiel : centre-ville, Saint-Charles, Tecnosud, Agrosud, Polygone Nord, Saint-Estève, Cabestany, Bompas, Rivesaltes.",
           "Le format collectif (1 journée) est calibré pour les structures perpignanaises de quelques personnes à une centaine de collaborateurs — PME négoce, cabinets de conseil, agences, coopératives viticoles.",
           "Le format Conférence convient aux plénières d'entreprise perpignanaises — salles Parc des Expositions, espaces French Tech, plateaux Saint-Charles.",
@@ -360,12 +348,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, petits négoces et micro-entreprises perpignanaises jusqu'à une dizaine de collaborateurs — Saint-Charles, viticulteurs Roussillon, prestataires de services.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -466,12 +448,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Perpignan freelancers, small traders and micro-firms up to about ten staff — Saint-Charles, Roussillon wine estates, service providers.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -575,12 +551,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple — automatisation devis ou bons de livraison, comptes-rendus réunion, qualification prospects pour TPE et indépendants perpignanais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -616,7 +586,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Perpignan ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -680,12 +650,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case — quote or delivery note automation, meeting minutes, prospect qualification for Perpignan micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -753,7 +717,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
       fr: {
         hero: "Le programme 1-to-1 Axion-IA à Perpignan est un accompagnement individuel pour dirigeants et indépendants qui veulent monter en compétence sur l'IA à leur propre rythme. Séances sur site à Perpignan ou à distance, calibrées sur votre réalité métier — négociant Saint-Charles, vigneron Roussillon, entrepreneur transfrontalier France-Espagne, professionnel de santé ou consultant indépendant.",
         whyHere: [
-          "Perpignan abrite un tissu dense de dirigeants de TPE et d'indépendants — négoce, viticulture, BTP, services — qui ont besoin d'une montée en compétence IA personnalisée, pas d'une session collective générique.",
+          "Perpignan abrite un tissu dense de dirigeants de PME et d'ETI et d'indépendants — négoce, viticulture, BTP, services — qui ont besoin d'une montée en compétence IA personnalisée, pas d'une session collective générique.",
           "La dimension transfrontalière France-Espagne est prise en compte : nous travaillons les cas d'usage bilingues FR/ES et les contextes de business development Eurorégion Pyrénées-Méditerranée.",
           "Programme entièrement adapté à votre emploi du temps de dirigeant perpignanais : séances courtes, à votre bureau ou à distance, sans contrainte de groupe.",
           "Aucun prérequis technique : que vous partiez de zéro ou ayez déjà testé des outils IA, nous adaptons le niveau et les cas à votre point de départ réel.",
@@ -789,12 +753,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pack Démarrage",
-            detail:
-              "Pour indépendants et dirigeants de TPE perpignanaises souhaitant une première immersion pratique IA — négoce, artisans, prestataires de services.",
-          },
-          {
             sizeLabel: "PME",
             price: "Pack Montée en puissance",
             detail:
@@ -818,7 +776,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
             quote:
               "Le programme 1-to-1 m'a permis de passer de zéro à opérationnel sur l'IA en quelques séances. Les exemples étaient calés sur ma réalité de négoce transfrontalier — rien de générique.",
             role: "Dirigeant indépendant",
-            companyProfile: "TPE négoce fruits-légumes, Saint-Charles Perpignan",
+            companyProfile: "PME négoce fruits-légumes, Saint-Charles Perpignan",
           },
           {
             quote:
@@ -894,12 +852,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Starter pack",
-            detail:
-              "For Perpignan independents and micro-business executives wanting a first practical AI immersion — trading, artisans, service providers.",
-          },
           {
             sizeLabel: "SME",
             price: "Scale-up pack",
@@ -1001,12 +953,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1086,12 +1032,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

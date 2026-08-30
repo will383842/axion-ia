@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BELFORT_COPY: VilleCopy = {
   pitchFr:
-    "Belfort (90), ville-symbole du Lion de Bartholdi et capitale industrielle du nord Franche-Comté, vit au rythme des grandes turbines (Alstom, General Electric), de la sous-traitance mécanique et du technopôle Techn'Hom. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME du bassin, les ETI en complément.",
+    "Belfort (90), ville-symbole du Lion de Bartholdi et capitale industrielle du nord Franche-Comté, vit au rythme des grandes turbines (Alstom, General Electric), de la sous-traitance mécanique et du technopôle Techn'Hom. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI du bassin, les grands groupes en complément.",
   pitchEn:
-    "Belfort (90), ville-symbole du Lion de Bartholdi et capitale industrielle du nord Franche-Comté, vit au rythme des grandes turbines (Alstom, General Electric), de la sous-traitance mécanique et du technopôle Techn'Hom. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME du bassin, les ETI en complément.",
+    "Belfort (90), ville-symbole du Lion de Bartholdi et capitale industrielle du nord Franche-Comté, vit au rythme des grandes turbines (Alstom, General Electric), de la sous-traitance mécanique et du technopôle Techn'Hom. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI du bassin, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Belfort et dans tout le nord Franche-Comté. Nous accompagnons en priorité les TPE et PME industrielles du bassin — sous-traitants mécaniques et métalliers, bureaux d'études, fournisseurs de la filière énergie/transport, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Belfort et dans tout le nord Franche-Comté. Nous accompagnons en priorité les PME et ETI industrielles du bassin — sous-traitants mécaniques et métalliers, bureaux d'études, fournisseurs de la filière énergie/transport, commerces et services — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Belfort et dans tout le nord Franche-Comté. Nous accompagnons en priorité les TPE et PME industrielles du bassin — sous-traitants mécaniques et métalliers, bureaux d'études, fournisseurs de la filière énergie/transport, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Belfort et dans tout le nord Franche-Comté. Nous accompagnons en priorité les PME et ETI industrielles du bassin — sous-traitants mécaniques et métalliers, bureaux d'études, fournisseurs de la filière énergie/transport, commerces et services — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "turbines, mécanique & Techn'Hom",
   ecosystemFr:
-    "Belfort est un bassin industriel historique structuré autour des grandes turbines (Alstom, General Electric), de la mécanique de précision et du technopôle Techn'Hom. Autour des donneurs d'ordre gravite un réseau dense de TPE et PME sous-traitantes, complété par le commerce et les services.",
+    "Belfort est un bassin industriel historique structuré autour des grandes turbines (Alstom, General Electric), de la mécanique de précision et du technopôle Techn'Hom. Autour des donneurs d'ordre gravite un réseau dense de PME et ETI sous-traitantes, complété par le commerce et les services.",
   ecosystemEn:
-    "Belfort est un bassin industriel historique structuré autour des grandes turbines (Alstom, General Electric), de la mécanique de précision et du technopôle Techn'Hom. Autour des donneurs d'ordre gravite un réseau dense de TPE et PME sous-traitantes, complété par le commerce et les services.",
+    "Belfort est un bassin industriel historique structuré autour des grandes turbines (Alstom, General Electric), de la mécanique de précision et du technopôle Techn'Hom. Autour des donneurs d'ordre gravite un réseau dense de PME et ETI sous-traitantes, complété par le commerce et les services.",
   distancesFr:
     "Gare de Belfort en centre-ville ; gare TGV Belfort-Montbéliard à 10 km (Paris en 2h15). Montbéliard à 20 min, Mulhouse à 40 min, frontière suisse (Bâle) à 1h.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BELFORT_COPY: VilleCopy = {
       en: "Implémentation IA à Belfort : maintenance prédictive et contrôle qualité en atelier, automatisation des devis et de la documentation technique, agents de support pour les PME industrielles du Techn'Hom.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Belfort : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME industrielles — gérants d'atelier, responsables BE, patrons de sous-traitance du nord Franche-Comté.",
-      en: "Coaching un-à-un à Belfort : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME industrielles — gérants d'atelier, responsables BE, patrons de sous-traitance du nord Franche-Comté.",
+      fr: "Coaching un-à-un à Belfort : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI industrielles — gérants d'atelier, responsables BE, patrons de sous-traitance du nord Franche-Comté.",
+      en: "Coaching un-à-un à Belfort : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI industrielles — gérants d'atelier, responsables BE, patrons de sous-traitance du nord Franche-Comté.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Belfort : portails techniques et configurateurs avec IA intégrée pour les sous-traitants mécaniques et bureaux d'études — devis assisté, base documentaire interrogeable, espace client.",
@@ -88,12 +88,6 @@ export const BELFORT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine technique + IA légère",
-            detail:
-              "Pour les ateliers indépendants, métalliers et micro-sous-traitants du bassin de Belfort : site vitrine mobile-first présentant capacités d'usinage et certifications, avec formulaire de demande de devis assisté par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier + configurateur",
@@ -175,12 +169,6 @@ export const BELFORT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Technical showcase site + light AI",
-            detail:
-              "For independent workshops, metalworkers and micro-subcontractors of the Belfort basin: mobile-first showcase site presenting machining capabilities and certifications, with an AI-assisted quote request form.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform + configurator",
             detail:
@@ -230,7 +218,7 @@ export const BELFORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Belfort et dans le nord Franche-Comté ?",
-      a: "Oui, Axion-IA se déplace sur site à Belfort, Montbéliard et dans tout le bassin industriel. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Belfort, Montbéliard et dans tout le bassin industriel. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants mécaniques du bassin ?",
@@ -242,7 +230,7 @@ export const BELFORT_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être un grand groupe pour travailler avec Axion-IA à Belfort ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME sous-traitantes du bassin. Un Audit sur place permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les PME et ETI sous-traitantes du bassin. Un Audit sur place permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment garantissez-vous la confidentialité des plans et données techniques ?",

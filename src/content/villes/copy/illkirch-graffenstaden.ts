@@ -5,13 +5,13 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME d'Illkirch-Graffenstaden, troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants. Williams se déplace sur site auprès des entreprises du Parc d'Innovation, des artisans du sud strasbourgeois et des PME bas-rhinoises pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
+  "Axion-IA accompagne les PME et ETI d'Illkirch-Graffenstaden, troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants. Williams se déplace sur site auprès des entreprises du Parc d'Innovation, des artisans du sud strasbourgeois et des PME bas-rhinoises pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Illkirch-Graffenstaden pour les TPE et PME bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. Williams se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
+  "Axion-IA intervient à Illkirch-Graffenstaden pour les PME et ETI bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. Williams se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
 
 const ECOSYSTEM_FR =
-  "Illkirch-Graffenstaden est la troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants (Insee 2023, densité 1 255 hab/km²). L'économie locale repose sur le Parc d'Innovation d'Illkirch (biotech, IT, cluster Alsace BioValley), des employeurs industriels historiques comme Flender-Graffenstaden (mécanique) et un tissu de TPE-PME en R&D, ingénierie et services. La proximité de l'Université de Strasbourg, de l'École nationale supérieure de physique et de l'IUT Robert-Schuman alimente le bassin de talents.";
+  "Illkirch-Graffenstaden est la troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants (Insee 2023, densité 1 255 hab/km²). L'économie locale repose sur le Parc d'Innovation d'Illkirch (biotech, IT, cluster Alsace BioValley), des employeurs industriels historiques comme Flender-Graffenstaden (mécanique) et un tissu de PME et ETI en R&D, ingénierie et services. La proximité de l'Université de Strasbourg, de l'École nationale supérieure de physique et de l'IUT Robert-Schuman alimente le bassin de talents.";
 
 const VILLE_COPY: VilleCopy = {
   pitchFr: PITCH_FR,
@@ -35,8 +35,8 @@ const VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
-      en: "Audit sur place à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Illkirch-Graffenstaden pour PME et ETI du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Illkirch-Graffenstaden pour PME et ETI du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Formation collective à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès {{price:intervention-4h|flat}}.",
@@ -47,8 +47,8 @@ const VILLE_COPY: VilleCopy = {
       en: "Implémentation d'agents IA à Illkirch-Graffenstaden pour PME-ETI bas-rhinoises : tri automatique des emails clients multilingues, génération de comptes rendus R&D, intégration ERP-CRM existant. Tarifs publics, devis sur cadrage.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Illkirch-Graffenstaden pour dirigeants de TPE et PME du Parc d'Innovation ou de la sous-traitance industrielle : 4 sessions appliquées à votre métier. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-à-1 à Illkirch-Graffenstaden pour dirigeants de TPE et PME du Parc d'Innovation ou de la sous-traitance industrielle : 4 sessions appliquées à votre métier. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-à-1 à Illkirch-Graffenstaden pour dirigeants de PME et d'ETI du Parc d'Innovation ou de la sous-traitance industrielle : 4 sessions appliquées à votre métier. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-à-1 à Illkirch-Graffenstaden pour dirigeants de PME et d'ETI du Parc d'Innovation ou de la sous-traitance industrielle : 4 sessions appliquées à votre métier. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -90,12 +90,6 @@ const VILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel + IA",
-            detail:
-              "Pour les start-ups deep-tech issues de l'IGBMC/ESBS, artisans et commerces du sud strasbourgeois, professions libérales : site rapide, bilingue si besoin, avec chatbot RAG ou génération de contenu intégrée.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé + IA",
             detail:
@@ -125,7 +119,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un site ou un SaaS à Illkirch-Graffenstaden ?",
-            a: "Devis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine TPE le périmètre est rapide à chiffrer ; pour une plateforme SaaS IA-native d'ETI biotech ou industrielle, le devis détaille architecture, intégrations LIMS/ERP et couche IA.",
+            a: "Devis à partir de 24 à 48 h selon la complexité, après un premier échange de cadrage. Pour un site vitrine PME le périmètre est rapide à chiffrer ; pour une plateforme SaaS IA-native d'ETI biotech ou industrielle, le devis détaille architecture, intégrations LIMS/ERP et couche IA.",
           },
           {
             q: "Vos sites et plateformes sont-ils conformes au RGPD ?",
@@ -176,12 +170,6 @@ const VILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brochure site or essential e-commerce + AI",
-            detail:
-              "For deep-tech start-ups from IGBMC/ESBS, southern Strasbourg trades and shops, professionals: a fast, bilingual-if-needed site with an integrated RAG chatbot or content generation.",
-          },
-          {
             sizeLabel: "PME",
             price: "Business platform or advanced e-commerce + AI",
             detail:
@@ -211,7 +199,7 @@ const VILLE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote for a site or SaaS in Illkirch-Graffenstaden?",
-            a: "Quote from 24 to 48 hours depending on complexity, after an initial framing call. For a TPE brochure site the scope is quick to price; for an AI-native SaaS platform for a biotech or industrial mid-cap, the quote details architecture, LIMS/ERP integrations and the AI layer.",
+            a: "Quote from 24 to 48 hours depending on complexity, after an initial framing call. For a PME brochure site the scope is quick to price; for an AI-native SaaS platform for a biotech or industrial mid-cap, the quote details architecture, LIMS/ERP integrations and the AI layer.",
           },
           {
             q: "Are your sites and platforms GDPR-compliant?",
@@ -239,7 +227,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",
-      a: "Principalement les TPE-PME du Parc d'Innovation (biotech, IT, ingénierie), la sous-traitance mécanique du sud strasbourgeois, les artisans et commerces de la Krimmeri à Graffenstaden, les cabinets libéraux. Pas de spécialisation grands groupes.",
+      a: "Principalement les PME et ETI du Parc d'Innovation (biotech, IT, ingénierie), la sous-traitance mécanique du sud strasbourgeois, les artisans et commerces de la Krimmeri à Graffenstaden, les cabinets libéraux. Pas de spécialisation grands groupes.",
     },
     {
       q: "Quel délai pour démarrer une mission à Illkirch-Graffenstaden ?",

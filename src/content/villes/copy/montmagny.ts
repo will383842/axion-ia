@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MONTMAGNY_COPY: VilleCopy = {
   pitchFr:
-    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du sud Val-d'Oise.",
+    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu PME du BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du sud Val-d'Oise.",
   pitchEn:
-    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du sud Val-d'Oise.",
+    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu PME du BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du sud Val-d'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
-    "Montmagny est une commune résidentielle du sud du Val-d'Oise, bien connectée à Paris par le Transilien H (20 min Gare du Nord). Son tissu économique comprend TPE artisans BTP, commerces de proximité, PME de services, professions libérales et indépendants. Proximité directe avec Deuil-la-Barre, Groslay et Enghien-les-Bains.",
+    "Montmagny est une commune résidentielle du sud du Val-d'Oise, bien connectée à Paris par le Transilien H (20 min Gare du Nord). Son tissu économique comprend PME du BTP, commerces de proximité, PME de services, professions libérales et indépendants. Proximité directe avec Deuil-la-Barre, Groslay et Enghien-les-Bains.",
   ecosystemEn:
-    "Montmagny est une commune résidentielle du sud du Val-d'Oise, bien connectée à Paris par le Transilien H (20 min Gare du Nord). Son tissu économique comprend TPE artisans BTP, commerces de proximité, PME de services, professions libérales et indépendants. Proximité directe avec Deuil-la-Barre, Groslay et Enghien-les-Bains.",
+    "Montmagny est une commune résidentielle du sud du Val-d'Oise, bien connectée à Paris par le Transilien H (20 min Gare du Nord). Son tissu économique comprend PME du BTP, commerces de proximité, PME de services, professions libérales et indépendants. Proximité directe avec Deuil-la-Barre, Groslay et Enghien-les-Bains.",
   distancesFr:
     "Gare Montmagny–Groslay (Transilien H, 20 min Gare du Nord). A1 et A86 à proximité vers Paris (20 min). Roissy-CDG à 20 min. Enghien-les-Bains à 5 min. Saint-Denis à 10 min.",
   distancesEn:
     "Gare Montmagny–Groslay (Transilien H, 20 min Gare du Nord). A1 et A86 à proximité vers Paris (20 min). Roissy-CDG à 20 min. Enghien-les-Bains à 5 min. Saint-Denis à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de proximité & services",
     "PME tertiaires (conseil, gestion)",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const MONTMAGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montmagny : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montmagny : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montmagny : diagnostic adapté aux PME artisanales, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montmagny : diagnostic adapté aux PME artisanales, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montmagny : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const MONTMAGNY_COPY: VilleCopy = {
       en: "Implémentation IA à Montmagny : automatisation devis artisans, agents conversationnels pour commerces, gestion relation client PME, digitalisation cabinets libéraux. Sud Val-d'Oise et nord Paris.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montmagny : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME, commerçants, professions libérales et indépendants du sud Val-d'Oise.",
-      en: "Coaching 1-to-1 à Montmagny : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME, commerçants, professions libérales et indépendants du sud Val-d'Oise.",
+      fr: "Coaching 1-to-1 à Montmagny : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME, commerçants, professions libérales et indépendants du sud Val-d'Oise.",
+      en: "Coaching 1-to-1 à Montmagny : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME, commerçants, professions libérales et indépendants du sud Val-d'Oise.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const MONTMAGNY_COPY: VilleCopy = {
       a: "L'Audit sur place IA à Montmagny démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans à Montmagny ?",
-      a: "Oui, nous accompagnons les TPE artisans du bâtiment et de la rénovation à Montmagny sur leurs cas IA : automatisation devis, planification chantiers, gestion relation client, suivi facturation.",
+      q: "Travaillez-vous avec les PME artisanales à Montmagny ?",
+      a: "Oui, nous accompagnons les PME artisanales du bâtiment et de la rénovation à Montmagny sur leurs cas IA : automatisation devis, planification chantiers, gestion relation client, suivi facturation.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME du sud Val-d'Oise ?",
@@ -65,7 +65,7 @@ export const MONTMAGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching individuel IA à Montmagny ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Montmagny ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Montmagny ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
     },
   ],
 };

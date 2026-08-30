@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
+    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de PME et ETI tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
   pitchEn:
-    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
+    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de PME et ETI tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luxeuil-les-Bains (70). Nous accompagnons PME et ETI : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luxeuil-les-Bains (70). Nous accompagnons PME et ETI : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
   seoHook: "tourisme thermal & hôtellerie-restauration",
   ecosystemFr:
-    "Luxeuil-les-Bains est une station thermale historique de Haute-Saône, labellisée Ville d'Art et d'Histoire (abbaye fondée au VIe siècle). Base aérienne 116 (défense, emploi indirect). Tissu de TPE/PME tourisme thermal, hôtellerie-restauration, bien-être, artisanat local, commerces et professions libérales. Proximité Lure (15 min) et Belfort (40 min).",
+    "Luxeuil-les-Bains est une station thermale historique de Haute-Saône, labellisée Ville d'Art et d'Histoire (abbaye fondée au VIe siècle). Base aérienne 116 (défense, emploi indirect). Tissu de PME et ETI tourisme thermal, hôtellerie-restauration, bien-être, artisanat local, commerces et professions libérales. Proximité Lure (15 min) et Belfort (40 min).",
   ecosystemEn:
-    "Luxeuil-les-Bains est une station thermale historique de Haute-Saône, labellisée Ville d'Art et d'Histoire (abbaye fondée au VIe siècle). Base aérienne 116 (défense, emploi indirect). Tissu de TPE/PME tourisme thermal, hôtellerie-restauration, bien-être, artisanat local, commerces et professions libérales. Proximité Lure (15 min) et Belfort (40 min).",
+    "Luxeuil-les-Bains est une station thermale historique de Haute-Saône, labellisée Ville d'Art et d'Histoire (abbaye fondée au VIe siècle). Base aérienne 116 (défense, emploi indirect). Tissu de PME et ETI tourisme thermal, hôtellerie-restauration, bien-être, artisanat local, commerces et professions libérales. Proximité Lure (15 min) et Belfort (40 min).",
   distancesFr:
     "Gare de Luxeuil-les-Bains (TER vers Lure 15 min, Belfort 40 min). Gare TGV Belfort-Montbéliard à 50 min. Aéroport Bâle-Mulhouse à 1h30. Aéroport d'Épinal-Mirecourt à 1h. Lure à 15 min, Vesoul à 35 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux PME et ETI tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux PME et ETI tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luxeuil-les-Bains : formats adaptés à l'établissement thermal, hôtel, commerce, cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme / bien-être.",
@@ -42,8 +42,8 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Luxeuil-les-Bains : agents conversationnels réservation thermale, optimisation planning hôtelier, marketing tourisme automatisé, gestion avis clients, chatbots patrimoine abbaye.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Luxeuil-les-Bains : sessions dans votre établissement, commerce ou en visio. Dirigeants TPE/PME tourisme, hôteliers, commerçants et professions libérales du Pays de Luxeuil.",
-      en: "Coaching 1-to-1 à Luxeuil-les-Bains : sessions dans votre établissement, commerce ou en visio. Dirigeants TPE/PME tourisme, hôteliers, commerçants et professions libérales du Pays de Luxeuil.",
+      fr: "Coaching 1-to-1 à Luxeuil-les-Bains : sessions dans votre établissement, commerce ou en visio. Dirigeants PME et ETI tourisme, hôteliers, commerçants et professions libérales du Pays de Luxeuil.",
+      en: "Coaching 1-to-1 à Luxeuil-les-Bains : sessions dans votre établissement, commerce ou en visio. Dirigeants PME et ETI tourisme, hôteliers, commerçants et professions libérales du Pays de Luxeuil.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Luxeuil-les-Bains  ?",
-      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME tourisme, hôtellerie et commerce. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux PME et ETI tourisme, hôtellerie et commerce. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs de Luxeuil ?",

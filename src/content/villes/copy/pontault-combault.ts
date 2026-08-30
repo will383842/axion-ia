@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PONTAULT_COMBAULT_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les PME et ETI de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les PME et ETI de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "commerce & logistique de l'est francilien",
   ecosystemFr:
-    "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de TPE artisanales, de garages et de PME de services. Ce profil de petites structures à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
+    "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de PME artisanales, de garages et de PME de services. Ce profil de PME à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
   ecosystemEn:
-    "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de TPE artisanales, de garages et de PME de services. Ce profil de petites structures à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
+    "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de PME artisanales, de garages et de PME de services. Ce profil de PME à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
   distancesFr:
     "Pontault-Combault est desservie par le RER E (gare d'Émerainville-Pontault-Combault), qui relie le centre de Paris en une trentaine de minutes. L'A4 passe à proximité immédiate et place Marne-la-Vallée et Disneyland Paris à un quart d'heure. L'aéroport de Paris-Orly se trouve à environ 30 km, Roissy-Charles-de-Gaulle à environ 35 km. Cette desserte routière et ferroviaire facilite nos déplacements sur site, partout dans l'est francilien.",
   distancesEn:
@@ -42,8 +42,8 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
       en: "L'implémentation déploie à Pontault-Combault des assistants IA et workflows sur mesure pour les PME de commerce et de logistique, avec formation des équipes et conformité RGPD intégrée dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Pontault-Combault forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : choix d'outils, prompts métier, cadrage des cas d'usage, gouvernance des données.",
-      en: "L'accompagnement un-à-un à Pontault-Combault forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : choix d'outils, prompts métier, cadrage des cas d'usage, gouvernance des données.",
+      fr: "L'accompagnement un-à-un à Pontault-Combault forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : choix d'outils, prompts métier, cadrage des cas d'usage, gouvernance des données.",
+      en: "L'accompagnement un-à-un à Pontault-Combault forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : choix d'outils, prompts métier, cadrage des cas d'usage, gouvernance des données.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés dotent les commerces et PME de Pontault-Combault d'une plateforme rapide avec chatbot, prise de commande en ligne et contenu généré par IA, optimisée pour la recherche locale.",
@@ -57,7 +57,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
         whyHere: [
           "Pôle retail de l'est francilien : avec Costco (2e entrepôt France, ~10 000 m², ZAC des 4 Chênes), Carrefour Hypermarché, Castorama et Stokomani, Pontault-Combault concentre une demande forte de sites e-commerce, drive, click-and-collect et fidélisation que nous outillons par l'IA.",
           "Cluster négoce de carrelage importé unique : les showrooms de la ZAC du Pontillault (Grespania France et ses 650 m², Ceramica Fusaro, A. Giacomini) vendent du grès cérame venu d'Espagne — un cas d'usage e-commerce B2B précis (catalogues, nuanciers, configurateurs de pose, devis) sur lequel nous avons un vrai apport.",
-          "Tissu de TPE/PME logistiques et commerciales dense : l'Espace économique des Arpents/Pontillault rassemble près de 200 entreprises et 2 000 emplois (dont le pôle logistique des Arpents, 161 sociétés) — autant de back-offices à connecter à des plateformes commande + stock pilotées par IA.",
+          "Tissu de PME et ETI logistiques et commerciales dense : l'Espace économique des Arpents/Pontillault rassemble près de 200 entreprises et 2 000 emplois (dont le pôle logistique des Arpents, 161 sociétés) — autant de back-offices à connecter à des plateformes commande + stock pilotées par IA.",
           "Commerce de proximité et services majoritaires : le secteur commerce-transport-restauration pèse 27,5 % de l'emploi local et 513 créations d'entreprises rien qu'en 2024 ; ces dirigeants veulent un site rapide, mobile et trouvable en recherche locale, pas une usine à gaz.",
         ],
         methodology: [
@@ -89,12 +89,6 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les commerces de proximité, artisans et petits négoces de la commune : site rapide, mobile, fiche Google locale optimisée et prise de commande ou de rendez-vous en ligne.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme e-commerce augmentée IA",
             detail:
@@ -123,8 +117,8 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
             a: "Oui. Dans une commune où cohabitent Costco, Carrefour, Castorama et Stokomani, le retrait en magasin et le drive sont des attentes clés. Nous intégrons la disponibilité produit en temps réel, le panier, le paiement et la synchronisation avec votre caisse ou votre ERP, en multi-CMS selon votre outillage.",
           },
           {
-            q: "Travaillez-vous avec les TPE et artisans, ou seulement les grandes enseignes ?",
-            a: "En priorité les TPE puis les PME. Le secteur commerce-transport-restauration représente 27,5 % de l'emploi à Pontault-Combault et 513 créations d'entreprises en 2024 : nous livrons à ces structures un site vitrine ou e-commerce rapide, mobile et visible en recherche locale, sans surcouche inutile. Les ETI et grands distributeurs sont accompagnés en complément.",
+            q: "Travaillez-vous avec les PME et artisans, ou seulement les grandes enseignes ?",
+            a: "En priorité les PME puis les ETI. Le secteur commerce-transport-restauration représente 27,5 % de l'emploi à Pontault-Combault et 513 créations d'entreprises en 2024 : nous livrons à ces structures un site vitrine ou e-commerce rapide, mobile et visible en recherche locale, sans surcouche inutile. Les ETI et grands distributeurs sont accompagnés en complément.",
           },
           {
             q: "L'IA sert-elle vraiment sur un site de commerce, ou c'est un argument marketing ?",
@@ -174,12 +168,6 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site",
-            detail:
-              "For local shops, craftspeople and small distributors: a fast, mobile site, optimized local Google listing and online ordering or booking.",
-          },
           {
             sizeLabel: "SME",
             price: "AI-augmented e-commerce platform",
@@ -234,7 +222,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
     },
     {
       q: "Quelles entreprises accompagnez-vous à Pontault-Combault ?",
-      a: "En priorité les TPE puis les PME de Seine-et-Marne : commerces, négoces, prestataires logistiques, artisans du bâtiment et PME de services. Les ETI sont accompagnées en complément, avec une mission toujours adaptée à la taille de la structure.",
+      a: "En priorité les PME puis les ETI de Seine-et-Marne : commerces, négoces, prestataires logistiques, artisans du bâtiment et PME de services. Les grands groupes sont accompagnés en complément, avec une mission toujours adaptée à la taille de la structure.",
     },
     {
       q: "Aidez-vous les acteurs de la logistique à Pontault-Combault ?",

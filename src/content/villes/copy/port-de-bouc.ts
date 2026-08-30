@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PORT_DE_BOUC_COPY: VilleCopy = {
   pitchFr:
-    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. TPE sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de Fos-sur-Mer.",
+    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. PME sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de Fos-sur-Mer.",
   pitchEn:
-    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. TPE sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de Fos-sur-Mer.",
+    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. PME sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de Fos-sur-Mer.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-de-Bouc (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-de-Bouc (13). Nous accompagnons PME sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-de-Bouc (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-de-Bouc (13). Nous accompagnons PME sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit sur place sur mesure, sans engagement.",
   seoHook: "industrie portuaire & pétrochimie",
   ecosystemFr:
-    "Port-de-Bouc est une commune industrielle du golfe de Fos, au carrefour de la pétrochimie, de la logistique maritime et de la maintenance industrielle. Tissu dense de TPE sous-traitants, PME ingénierie, commerces de centre-ville et services portuaires. Proximité immédiate des plateformes Lavéra et Fos.",
+    "Port-de-Bouc est une commune industrielle du golfe de Fos, au carrefour de la pétrochimie, de la logistique maritime et de la maintenance industrielle. Tissu dense de PME sous-traitants, PME ingénierie, commerces de centre-ville et services portuaires. Proximité immédiate des plateformes Lavéra et Fos.",
   ecosystemEn:
-    "Port-de-Bouc est une commune industrielle du golfe de Fos, au carrefour de la pétrochimie, de la logistique maritime et de la maintenance industrielle. Tissu dense de TPE sous-traitants, PME ingénierie, commerces de centre-ville et services portuaires. Proximité immédiate des plateformes Lavéra et Fos.",
+    "Port-de-Bouc est une commune industrielle du golfe de Fos, au carrefour de la pétrochimie, de la logistique maritime et de la maintenance industrielle. Tissu dense de PME sous-traitants, PME ingénierie, commerces de centre-ville et services portuaires. Proximité immédiate des plateformes Lavéra et Fos.",
   distancesFr:
     "Marseille centre à 50 min. Gare Marseille-Saint-Charles à 55 min. Aéroport Marseille Provence à 30 min. Martigues à 10 min. Istres à 20 min. Fos-sur-Mer à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PORT_DE_BOUC_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie pétrochimique & maintenance",
     "Logistique maritime & portuaire",
-    "TPE sous-traitance industrielle",
+    "PME sous-traitance industrielle",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Port-de-Bouc : diagnostic adapté aux TPE sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Port-de-Bouc : diagnostic adapté aux TPE sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Port-de-Bouc : diagnostic adapté aux PME sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Port-de-Bouc : diagnostic adapté aux PME sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Port-de-Bouc : formats adaptés à l'industrie, la maintenance et la logistique portuaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const PORT_DE_BOUC_COPY: VilleCopy = {
       en: "Implémentation IA à Port-de-Bouc : automatisation reporting maintenance, agents conversationnels logistique, extraction données industrielles. Bassin de Fos.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Port-de-Bouc : sessions pour dirigeants TPE/PME industriels et managers de la zone Fos souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Port-de-Bouc : sessions pour dirigeants TPE/PME industriels et managers de la zone Fos souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Port-de-Bouc : sessions pour dirigeants de PME et d'ETI industriels et managers de la zone Fos souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Port-de-Bouc : sessions pour dirigeants de PME et d'ETI industriels et managers de la zone Fos souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const PORT_DE_BOUC_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les sous-traitants industriels de Port-de-Bouc ?",
-      a: "Oui, nous accompagnons les TPE et PME sous-traitants industriels de Port-de-Bouc sur leurs cas IA : automatisation reporting maintenance, planification interventions, extraction données techniques, conformité documentaire.",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitants industriels de Port-de-Bouc sur leurs cas IA : automatisation reporting maintenance, planification interventions, extraction données techniques, conformité documentaire.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique portuaire ?",

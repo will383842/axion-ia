@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTAUBAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Montauban, préfecture du Tarn-et-Garonne en Occitanie, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. La ville compte 62 945 habitants (2023) et se situe à 55 km de Toulouse, sur l'axe A20. Centre administratif, commercial et logistique du département, elle accueille la gare de Montauban-Ville-Bourbon (TGV, Intercités, TER) et le 17e Régiment du Génie parachutiste. Nous intervenons sur site pour auditer et déployer des solutions IA adaptées aux dirigeants locaux.",
+    "Axion-IA accompagne les PME et ETI de Montauban, préfecture du Tarn-et-Garonne en Occitanie, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. La ville compte 62 945 habitants (2023) et se situe à 55 km de Toulouse, sur l'axe A20. Centre administratif, commercial et logistique du département, elle accueille la gare de Montauban-Ville-Bourbon (TGV, Intercités, TER) et le 17e Régiment du Génie parachutiste. Nous intervenons sur site pour auditer et déployer des solutions IA adaptées aux dirigeants locaux.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Montauban, préfecture du Tarn-et-Garonne en Occitanie, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. La ville compte 62 945 habitants (2023) et se situe à 55 km de Toulouse, sur l'axe A20. Centre administratif, commercial et logistique du département, elle accueille la gare de Montauban-Ville-Bourbon (TGV, Intercités, TER) et le 17e Régiment du Génie parachutiste. Nous intervenons sur site pour auditer et déployer des solutions IA adaptées aux dirigeants locaux.",
+    "Axion-IA accompagne les PME et ETI de Montauban, préfecture du Tarn-et-Garonne en Occitanie, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. La ville compte 62 945 habitants (2023) et se situe à 55 km de Toulouse, sur l'axe A20. Centre administratif, commercial et logistique du département, elle accueille la gare de Montauban-Ville-Bourbon (TGV, Intercités, TER) et le 17e Régiment du Génie parachutiste. Nous intervenons sur site pour auditer et déployer des solutions IA adaptées aux dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
   seoHook: "commerce détail & logistique A20",
   ecosystemFr:
     "Montauban structure son économie autour de la zone commerciale Albasud (sud de la ville), du commerce de centre-ville, de la construction et des transports terrestres. La position sur l'A20 (axe Paris-Toulouse-Espagne) en fait un nœud logistique. La gare de Montauban-Ville-Bourbon génère environ 6 millions d'euros de recettes annuelles. La ville accueille également le 17e Régiment du Génie parachutiste. Communes limitrophes : Albias, Bressols, Saint-Nauphary, Lamothe-Capdeville, Villemade, parmi 14 au total. Bassin d'environ 62 945 habitants intra-muros.",
@@ -32,8 +32,8 @@ export const MONTAUBAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
-      en: "Audit sur place 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      fr: "Audit sur place 4h à Montauban pour PME et ETI tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      en: "Audit sur place 4h à Montauban pour PME et ETI tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Formation collective sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
@@ -44,8 +44,8 @@ export const MONTAUBAN_COPY: VilleCopy = {
       en: "Implémentation IA code-first à Montauban : intégration API métier, agents internes, automatisations pour PME du commerce Albasud, BTP, transport-logistique A20. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec dirigeants de TPE et PME montalbanaises pour cadrer la feuille de route IA : priorisation, ROI, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions un-à-un avec dirigeants de TPE et PME montalbanaises pour cadrer la feuille de route IA : priorisation, ROI, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions un-à-un avec dirigeants de PME et d'ETI montalbanaises pour cadrer la feuille de route IA : priorisation, ROI, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions un-à-un avec dirigeants de PME et d'ETI montalbanaises pour cadrer la feuille de route IA : priorisation, ROI, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const MONTAUBAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur le site existant d'un commerce de centre-ville, d'un artisan du BTP ou d'un primeur, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -173,12 +167,6 @@ export const MONTAUBAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) to the existing site of a town-centre shop, a construction trade or a produce wholesaler, in a few weeks, with no rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -244,11 +232,11 @@ export const MONTAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux de Montauban accompagnez-vous ?",
-      a: "TPE et PME du commerce de détail (centre-ville et zone Albasud), de la construction, du transport-logistique sur l'A20, de la restauration et des services. Le 17e RG et les administrations restent hors périmètre privé.",
+      a: "PME et ETI du commerce de détail (centre-ville et zone Albasud), de la construction, du transport-logistique sur l'A20, de la restauration et des services. Le 17e RG et les administrations restent hors périmètre privé.",
     },
     {
       q: "Pourquoi du code IA sur mesure plutôt qu'un outil no-code à Montauban ?",
-      a: "Le code custom Axion-IA s'intègre durablement à vos logiciels métier (ERP, TMS, comptabilité), reste votre propriété et évite la dépendance à un éditeur SaaS — pertinent pour les TPE et PME montalbanaises qui veulent capitaliser sur la durée.",
+      a: "Le code custom Axion-IA s'intègre durablement à vos logiciels métier (ERP, TMS, comptabilité), reste votre propriété et évite la dépendance à un éditeur SaaS — pertinent pour les PME et ETI montalbanaises qui veulent capitaliser sur la durée.",
     },
   ],
 };

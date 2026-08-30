@@ -336,7 +336,7 @@ export const BREST_ECONOMIC_DATA: VilleEconomicData = {
   // brestois. Champ structurellement non applicable.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : annuaire officiel ne fournit pas d'extraction par commune
   // confirmée pour Brest en mai 2026. Champ vide pour respecter zéro

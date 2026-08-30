@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const TOUL_COPY: VilleCopy = {
   pitchFr:
-    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local du Toulois.",
+    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu PME viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local du Toulois.",
   pitchEn:
-    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local du Toulois.",
+    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu PME viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local du Toulois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toul (54). Nous accompagnons tous types d'activités : PME viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toul (54). Nous accompagnons tous types d'activités : PME viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
   seoHook: "viticulture côtes & agroalimentaires",
   ecosystemFr:
-    "Toul est une cité épiscopale historique en Meurthe-et-Moselle, connue pour sa cathédrale gothique Saint-Étienne et le vignoble Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces de proximité et tourisme.",
+    "Toul est une cité épiscopale historique en Meurthe-et-Moselle, connue pour sa cathédrale gothique Saint-Étienne et le vignoble Côtes de Toul AOC. Tissu PME viticulteurs, PME agroalimentaires, artisans BTP, commerces de proximité et tourisme.",
   ecosystemEn:
-    "Toul est une cité épiscopale historique en Meurthe-et-Moselle, connue pour sa cathédrale gothique Saint-Étienne et le vignoble Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces de proximité et tourisme.",
+    "Toul est une cité épiscopale historique en Meurthe-et-Moselle, connue pour sa cathédrale gothique Saint-Étienne et le vignoble Côtes de Toul AOC. Tissu PME viticulteurs, PME agroalimentaires, artisans BTP, commerces de proximité et tourisme.",
   distancesFr:
     "Nancy à 25 min A31. Metz à 50 min. Paris à 2h30 TGV (via Nancy). Gare SNCF Toul (TER Nancy-Paris). Aéroport Metz-Nancy-Lorraine à 40 min.",
   distancesEn:
     "Nancy à 25 min A31. Metz à 50 min. Paris à 2h30 TGV (via Nancy). Gare SNCF Toul (TER Nancy-Paris). Aéroport Metz-Nancy-Lorraine à 40 min.",
   topSectorsNaf: [
-    "TPE viticulture Côtes de Toul AOC",
+    "PME viticulture Côtes de Toul AOC",
     "PME agroalimentaires",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité centre historique",
     "Tourisme patrimonial & culturel",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Toul : diagnostic adapté aux PME viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Toul : diagnostic adapté aux PME viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Toul : formats adaptés au domaine viticole, exploitation agroalimentaire, atelier artisan, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const TOUL_COPY: VilleCopy = {
       en: "Implémentation IA à Toul : classification photos parcelles viticoles, automatisation traçabilité AOC, agents conversationnels vente directe, prédiction récoltes. Tous secteurs Toulois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Toul : sessions dans votre domaine viticole, exploitation, commerce ou en visio. Viticulteurs, dirigeants PME, artisans, commerçants et gérants TPE/PME toulois.",
-      en: "Coaching 1-to-1 à Toul : sessions dans votre domaine viticole, exploitation, commerce ou en visio. Viticulteurs, dirigeants PME, artisans, commerçants et gérants TPE/PME toulois.",
+      fr: "Coaching 1-to-1 à Toul : sessions dans votre domaine viticole, exploitation, commerce ou en visio. Viticulteurs, dirigeants PME, artisans, commerçants et gérants PME et ETI toulois.",
+      en: "Coaching 1-to-1 à Toul : sessions dans votre domaine viticole, exploitation, commerce ou en visio. Viticulteurs, dirigeants PME, artisans, commerçants et gérants PME et ETI toulois.",
     },
   },
   faqGeolocalisee: [
@@ -53,14 +53,14 @@ export const TOUL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs Côtes de Toul ?",
-      a: "Oui, nous accompagnons les TPE viticulteurs AOC Côtes de Toul sur des cas IA concrets : classification photos parcelles, prédiction récoltes, automatisation traçabilité AOC, gestion stocks cave et agents conversationnels vente directe.",
+      a: "Oui, nous accompagnons les PME viticulteurs AOC Côtes de Toul sur des cas IA concrets : classification photos parcelles, prédiction récoltes, automatisation traçabilité AOC, gestion stocks cave et agents conversationnels vente directe.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du Toulois ?",
       a: "Oui, automatisation traçabilité, contrôle qualité par vision, optimisation logistique, classification documents réglementaires et prédiction demande.",
     },
     {
-      q: "Quels services pour les TPE et commerces de Toul ?",
+      q: "Quels services pour les PME et commerces de Toul ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {

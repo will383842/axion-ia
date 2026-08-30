@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHANTEPIE_COPY: VilleCopy = {
   pitchFr:
-    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud-est rennais.",
+    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de PME et ETI tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud-est rennais.",
   pitchEn:
-    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud-est rennais.",
+    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de PME et ETI tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud-est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantepie (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantepie (35). Nous accompagnons PME et ETI : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantepie (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chantepie (35). Nous accompagnons PME et ETI : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
   seoHook: "tertiaires services & bureaux d'études",
   ecosystemFr:
-    "Chantepie est une commune périurbaine au sud-est immédiat de Rennes, intégrée à Rennes Métropole. Forte croissance démographique, zones d'activités tertiaires (services B2B, bureaux d'études, informatique), TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales. Desserte métro ligne b (station Chantepie-Rosa Parks) et rocade sud de Rennes.",
+    "Chantepie est une commune périurbaine au sud-est immédiat de Rennes, intégrée à Rennes Métropole. Forte croissance démographique, zones d'activités tertiaires (services B2B, bureaux d'études, informatique), PME du BTP portées par la pression immobilière, commerces de proximité, professions libérales. Desserte métro ligne b (station Chantepie-Rosa Parks) et rocade sud de Rennes.",
   ecosystemEn:
-    "Chantepie est une commune périurbaine au sud-est immédiat de Rennes, intégrée à Rennes Métropole. Forte croissance démographique, zones d'activités tertiaires (services B2B, bureaux d'études, informatique), TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales. Desserte métro ligne b (station Chantepie-Rosa Parks) et rocade sud de Rennes.",
+    "Chantepie est une commune périurbaine au sud-est immédiat de Rennes, intégrée à Rennes Métropole. Forte croissance démographique, zones d'activités tertiaires (services B2B, bureaux d'études, informatique), PME du BTP portées par la pression immobilière, commerces de proximité, professions libérales. Desserte métro ligne b (station Chantepie-Rosa Parks) et rocade sud de Rennes.",
   distancesFr:
     "Rennes centre à 10 min. Métro ligne b station Chantepie-Rosa Parks. Gare de Rennes à 15 min (TGV Paris 1h25). Aéroport Rennes-Bretagne à 25 min. Rocade sud de Rennes. Janzé à 20 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CHANTEPIE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & services B2B",
     "Bureaux d'études & informatique",
-    "TPE artisanat BTP & construction",
+    "PME du BTP & construction",
     "Commerce de proximité",
     "Professions libérales (santé, conseil)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, PME du BTP et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, PME du BTP et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chantepie : formats adaptés au bureau tertiaire, plateau open-space, atelier artisan ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const CHANTEPIE_COPY: VilleCopy = {
       en: "Implémentation IA à Chantepie : automatisation workflow tertiaire, agents conversationnels B2B, outils IA bureaux d'études (CAO augmentée, analyse documentaire), CRM augmenté, gestion devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chantepie : sessions dans vos locaux, bureau ou en visio. Dirigeants TPE/PME sud-est rennais souhaitant maîtriser l'IA dans leur activité tertiaire, technique ou artisanale.",
-      en: "Coaching 1-to-1 à Chantepie : sessions dans vos locaux, bureau ou en visio. Dirigeants TPE/PME sud-est rennais souhaitant maîtriser l'IA dans leur activité tertiaire, technique ou artisanale.",
+      fr: "Coaching 1-to-1 à Chantepie : sessions dans vos locaux, bureau ou en visio. Dirigeants PME et ETI sud-est rennais souhaitant maîtriser l'IA dans leur activité tertiaire, technique ou artisanale.",
+      en: "Coaching 1-to-1 à Chantepie : sessions dans vos locaux, bureau ou en visio. Dirigeants PME et ETI sud-est rennais souhaitant maîtriser l'IA dans leur activité tertiaire, technique ou artisanale.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chantepie  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud-est rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, informatique, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du sud-est rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, informatique, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les entreprises informatiques du secteur ?",

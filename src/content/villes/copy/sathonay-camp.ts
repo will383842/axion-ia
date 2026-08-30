@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SATHONAY_CAMP_COPY: VilleCopy = {
   pitchFr:
-    "Sathonay-Camp (69), commune en banlieue nord de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Héritage d'un ancien camp militaire (reconversion urbaine). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
+    "Sathonay-Camp (69), commune en banlieue nord de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Héritage d'un ancien camp militaire (reconversion urbaine). Tissu PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
   pitchEn:
-    "Sathonay-Camp (69), commune en banlieue nord de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Héritage d'un ancien camp militaire (reconversion urbaine). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
+    "Sathonay-Camp (69), commune en banlieue nord de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Héritage d'un ancien camp militaire (reconversion urbaine). Tissu PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sathonay-Camp (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sathonay-Camp (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sathonay-Camp (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sathonay-Camp (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires nord",
   ecosystemFr:
-    "Sathonay-Camp est intégrée à la Métropole de Lyon, en banlieue nord. Héritage d'un ancien camp militaire (reconversion urbaine contemporaine). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Sathonay-Camp est intégrée à la Métropole de Lyon, en banlieue nord. Héritage d'un ancien camp militaire (reconversion urbaine contemporaine). Tissu péri-urbain : PME tertiaires, PME du BTP, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "Sathonay-Camp est intégrée à la Métropole de Lyon, en banlieue nord. Héritage d'un ancien camp militaire (reconversion urbaine contemporaine). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Sathonay-Camp est intégrée à la Métropole de Lyon, en banlieue nord. Héritage d'un ancien camp militaire (reconversion urbaine contemporaine). Tissu péri-urbain : PME tertiaires, PME du BTP, commerces de proximité, professions libérales.",
   distancesFr:
     "Lyon centre à 15 min. Aéroport Lyon-Saint-Exupéry à 30 min. Rillieux-la-Pape limitrophe à 5 min. Caluire-et-Cuire à 10 min. Fontaines-sur-Saône à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires nord lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sathonay-Camp : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
       en: "Implémentation IA à Sathonay-Camp : agents conversationnels B2B/patient, automatisation workflow, classification dossiers, CRM augmentés. Métropole Lyon nord.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sathonay-Camp : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME sathonards.",
-      en: "Coaching 1-to-1 à Sathonay-Camp : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME sathonards.",
+      fr: "Coaching 1-to-1 à Sathonay-Camp : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI sathonards.",
+      en: "Coaching 1-to-1 à Sathonay-Camp : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI sathonards.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires nord lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Sathonay-Camp, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Sathonay-Camp, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

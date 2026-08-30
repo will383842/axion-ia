@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de TPE restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de PME restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de TPE restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de PME restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons TPE restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons PME restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons TPE restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons PME restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & hôtellerie plein",
   ecosystemFr:
-    "Cavalaire-sur-Mer est une station balnéaire familiale du golfe de Saint-Tropez à l'identité plus accessible que sa célèbre voisine. Économie tirée par le tourisme estival (plages, port plaisance, plongée), la restauration, l'hôtellerie de plein air (campings haut de gamme), le nautisme et le commerce de proximité. Tissu de TPE/PME tourisme.",
+    "Cavalaire-sur-Mer est une station balnéaire familiale du golfe de Saint-Tropez à l'identité plus accessible que sa célèbre voisine. Économie tirée par le tourisme estival (plages, port plaisance, plongée), la restauration, l'hôtellerie de plein air (campings haut de gamme), le nautisme et le commerce de proximité. Tissu de PME et ETI tourisme.",
   ecosystemEn:
-    "Cavalaire-sur-Mer est une station balnéaire familiale du golfe de Saint-Tropez à l'identité plus accessible que sa célèbre voisine. Économie tirée par le tourisme estival (plages, port plaisance, plongée), la restauration, l'hôtellerie de plein air (campings haut de gamme), le nautisme et le commerce de proximité. Tissu de TPE/PME tourisme.",
+    "Cavalaire-sur-Mer est une station balnéaire familiale du golfe de Saint-Tropez à l'identité plus accessible que sa célèbre voisine. Économie tirée par le tourisme estival (plages, port plaisance, plongée), la restauration, l'hôtellerie de plein air (campings haut de gamme), le nautisme et le commerce de proximité. Tissu de PME et ETI tourisme.",
   distancesFr:
     "Saint-Tropez à 25 min. Le Lavandou à 30 min. Hyères à 50 min. Toulon à 1 h 10 par A57. Gare TGV Les Arcs-Draguignan à 50 min. Aéroport Toulon-Hyères à 55 min. Aéroport Nice à 1 h 30.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux PME restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux PME restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cavalaire-sur-Mer : ateliers pour restaurateurs, hôteliers de plein air, professionnels du nautisme et commerçants. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
       en: "Implémentation IA à Cavalaire-sur-Mer : yield management campings et hôtels, agents IA réservation multilingues, gestion port de plaisance, marketing IA saisonnier, automatisation check-in. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cavalaire-sur-Mer : sessions pour restaurateurs, gérants de campings, professionnels du nautisme et dirigeants TPE/PME du tourisme du golfe de Saint-Tropez.",
-      en: "Coaching 1-to-1 à Cavalaire-sur-Mer : sessions pour restaurateurs, gérants de campings, professionnels du nautisme et dirigeants TPE/PME du tourisme du golfe de Saint-Tropez.",
+      fr: "Coaching 1-to-1 à Cavalaire-sur-Mer : sessions pour restaurateurs, gérants de campings, professionnels du nautisme et dirigeants de PME et d'ETI du tourisme du golfe de Saint-Tropez.",
+      en: "Coaching 1-to-1 à Cavalaire-sur-Mer : sessions pour restaurateurs, gérants de campings, professionnels du nautisme et dirigeants de PME et d'ETI du tourisme du golfe de Saint-Tropez.",
     },
   },
   faqGeolocalisee: [

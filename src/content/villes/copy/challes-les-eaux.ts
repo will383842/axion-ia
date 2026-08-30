@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHALLES_LES_EAUX_COPY: VilleCopy = {
   pitchFr:
-    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, TPE commerces, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, PME du commerce, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, TPE commerces, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, PME du commerce, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challes-les-Eaux (73). Nous accompagnons TPE et PME : établissements thermaux et de bien-être, hôteliers de cure, professionnels de santé, commerçants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challes-les-Eaux (73). Nous accompagnons PME et ETI : établissements thermaux et de bien-être, hôteliers de cure, professionnels de santé, commerçants et prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challes-les-Eaux (73). Nous accompagnons TPE et PME : établissements thermaux et de bien-être, hôteliers de cure, professionnels de santé, commerçants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challes-les-Eaux (73). Nous accompagnons PME et ETI : établissements thermaux et de bien-être, hôteliers de cure, professionnels de santé, commerçants et prestataires de services.",
   seoHook: "thermalisme bien-être & hôtellerie cure",
   ecosystemFr:
-    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu TPE commerces de proximité actif, prestataires de services tournés vers le bassin de Chambéry. Proximité immédiate de La Ravoire et accès rapide à l'aéroport Chambéry-Savoie.",
+    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu PME du commerce actif, prestataires de services tournés vers le bassin de Chambéry. Proximité immédiate de La Ravoire et accès rapide à l'aéroport Chambéry-Savoie.",
   ecosystemEn:
-    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu TPE commerces de proximité actif, prestataires de services tournés vers le bassin de Chambéry. Proximité immédiate de La Ravoire et accès rapide à l'aéroport Chambéry-Savoie.",
+    "Challes-les-Eaux est une station thermale historique de l'agglomération chambérienne, connue pour ses eaux sulfurées naturelles. L'économie locale s'articule autour du thermalisme et du bien-être, de l'hôtellerie de cure, des professions de santé et paramédicales. Tissu PME du commerce actif, prestataires de services tournés vers le bassin de Chambéry. Proximité immédiate de La Ravoire et accès rapide à l'aéroport Chambéry-Savoie.",
   distancesFr:
     "Chambéry centre à 10 min voiture. La Ravoire à 5 min. Aéroport Chambéry-Savoie à 15 min. Lyon à 1h30.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
     "Thermalisme & bien-être",
     "Hôtellerie de cure",
     "Professions de santé",
-    "TPE commerces de proximité",
+    "PME du commerce",
     "Services & prestataires",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, PME du commerce et prestataires de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, PME du commerce et prestataires de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Challes-les-Eaux : formats adaptés aux centres thermaux, hôtels de cure, cabinets de santé ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel de cure à Challes-les-Eaux ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE hôtelière à Challes-les-Eaux. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (10 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une PME hôtelière à Challes-les-Eaux. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (10 min).",
     },
     {
       q: "Comment se déroule une mission IA à Challes-les-Eaux ?",

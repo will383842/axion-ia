@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const ELVEN_COPY: VilleCopy = {
   pitchFr:
-    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, PME de l'artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, PME de l'artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elven (56). Nous accompagnons PME et ETI : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elven (56). Nous accompagnons PME et ETI : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit sur place sur mesure.",
   seoHook: "agriculture bretonne & commerces proximité",
   ecosystemFr:
-    "Elven, commune du Morbihan à 17 km au nord-est de Vannes, est labellisée Village étape et fait partie du parc naturel régional du golfe du Morbihan. Tissu agricole, TPE artisanat, commerces de proximité, tourisme patrimonial autour des tours d'Elven.",
+    "Elven, commune du Morbihan à 17 km au nord-est de Vannes, est labellisée Village étape et fait partie du parc naturel régional du golfe du Morbihan. Tissu agricole, PME de l'artisanat, commerces de proximité, tourisme patrimonial autour des tours d'Elven.",
   ecosystemEn:
-    "Elven, commune du Morbihan à 17 km au nord-est de Vannes, est labellisée Village étape et fait partie du parc naturel régional du golfe du Morbihan. Tissu agricole, TPE artisanat, commerces de proximité, tourisme patrimonial autour des tours d'Elven.",
+    "Elven, commune du Morbihan à 17 km au nord-est de Vannes, est labellisée Village étape et fait partie du parc naturel régional du golfe du Morbihan. Tissu agricole, PME de l'artisanat, commerces de proximité, tourisme patrimonial autour des tours d'Elven.",
   distancesFr:
     "Vannes à 20 min. Rennes à 1h. Lorient à 1h. Aéroport Nantes-Atlantique à 1h45, gare TGV Vannes à 20 min.",
   distancesEn:
     "Vannes à 20 min. Rennes à 1h. Lorient à 1h. Aéroport Nantes-Atlantique à 1h45, gare TGV Vannes à 20 min.",
   topSectorsNaf: [
     "Agriculture bretonne",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerces de proximité",
     "Tourisme patrimonial (tours d'Elven)",
     "Acteurs parc naturel régional du golfe du Morbihan",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, PME artisanales, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, PME artisanales, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elven : formats adaptés exploitation agricole, atelier artisan, commerce, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const ELVEN_COPY: VilleCopy = {
       en: "Implémentation IA à Elven : automatisation gestion exploitation agricole, CRM artisans et commerces, billetterie et expérience visiteur tours d'Elven, parcours Village étape.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Elven : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME elvinois, gérants tourisme patrimonial.",
-      en: "Coaching 1-to-1 à Elven : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME elvinois, gérants tourisme patrimonial.",
+      fr: "Coaching 1-to-1 à Elven : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI elvinois, gérants tourisme patrimonial.",
+      en: "Coaching 1-to-1 à Elven : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI elvinois, gérants tourisme patrimonial.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const ELVEN_COPY: VilleCopy = {
       a: "Oui, billetterie automatisée, optimisation parcours visiteur, CRM hébergement, analyse avis touristes, communication multilingue pour le patrimoine médiéval.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

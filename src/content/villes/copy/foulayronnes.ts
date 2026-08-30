@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const FOULAYRONNES_COPY: VilleCopy = {
   pitchFr:
-    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de TPE artisans et commerçants, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de PME de l'artisanat et du commerce, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de TPE artisans et commerçants, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de PME de l'artisanat et du commerce, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Foulayronnes (47). Nous accompagnons TPE et PME de l'agglomération agenaise nord : artisans, commerçants, entreprises zones d'activité, professions libérales et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Foulayronnes (47). Nous accompagnons PME et ETI de l'agglomération agenaise nord : artisans, commerçants, entreprises zones d'activité, professions libérales et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Foulayronnes (47). Nous accompagnons TPE et PME de l'agglomération agenaise nord : artisans, commerçants, entreprises zones d'activité, professions libérales et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Foulayronnes (47). Nous accompagnons PME et ETI de l'agglomération agenaise nord : artisans, commerçants, entreprises zones d'activité, professions libérales et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
-    "Foulayronnes est la première couronne nord de l'agglomération d'Agen, commune résidentielle en croissance démographique. Son économie s'appuie sur des zones d'activité accueillant TPE et PME, le commerce de proximité, l'artisanat BTP, les professions libérales et les services de santé. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 7 min), Bon-Encontre et Le Passage.",
+    "Foulayronnes est la première couronne nord de l'agglomération d'Agen, commune résidentielle en croissance démographique. Son économie s'appuie sur des zones d'activité accueillant PME et ETI, le commerce de proximité, l'artisanat BTP, les professions libérales et les services de santé. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 7 min), Bon-Encontre et Le Passage.",
   ecosystemEn:
-    "Foulayronnes est la première couronne nord de l'agglomération d'Agen, commune résidentielle en croissance démographique. Son économie s'appuie sur des zones d'activité accueillant TPE et PME, le commerce de proximité, l'artisanat BTP, les professions libérales et les services de santé. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 7 min), Bon-Encontre et Le Passage.",
+    "Foulayronnes est la première couronne nord de l'agglomération d'Agen, commune résidentielle en croissance démographique. Son économie s'appuie sur des zones d'activité accueillant PME et ETI, le commerce de proximité, l'artisanat BTP, les professions libérales et les services de santé. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 7 min), Bon-Encontre et Le Passage.",
   distancesFr:
     "Agen à 7 min. Bordeaux à 1h20 via A62. Toulouse à 1h20 via A62. Gare SNCF Agen (TGV Paris-Agen) à 10 min. Aéroport Agen-La Garenne à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const FOULAYRONNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Foulayronnes : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Foulayronnes : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Foulayronnes : diagnostic adapté aux PME et ETI artisans, commerçants, professions libérales et services de l'agglomération agenaise nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Foulayronnes : diagnostic adapté aux PME et ETI artisans, commerçants, professions libérales et services de l'agglomération agenaise nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Foulayronnes : formats adaptés à l'atelier, au commerce, au cabinet ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const FOULAYRONNES_COPY: VilleCopy = {
       en: "Implémentation IA à Foulayronnes : automatisation devis et facturation artisans, CRM clients, gestion planning, OCR comptabilité, optimisation stocks et approvisionnement.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Foulayronnes : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE/PME de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Foulayronnes : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE/PME de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Foulayronnes : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Foulayronnes : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI de l'agglomération agenaise souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FOULAYRONNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Foulayronnes  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Foulayronnes : artisans BTP, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Foulayronnes : artisans BTP, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les artisans BTP de Foulayronnes ?",

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const THEIX_NOYALO_COPY: VilleCopy = {
   pitchFr:
-    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération vannetaise.",
+    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. PME de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération vannetaise.",
   pitchEn:
-    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération vannetaise.",
+    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. PME de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération vannetaise.",
   seoHook: "services, artisanat & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : PME de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : PME de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Theix-Noyalo est une commune nouvelle née de la fusion de Theix et Noyalo en 2019, située dans l'agglomération de Vannes à proximité immédiate du Golfe du Morbihan. L'économie locale repose sur les zones d'activités artisanales et commerciales, les services aux entreprises, l'agriculture périurbaine et les professions libérales. La commune bénéficie de la dynamique économique vannetaise tout en conservant un cadre semi-rural attractif.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const THEIX_NOYALO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Theix-Noyalo : diagnostic adapté aux TPE de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Theix-Noyalo : diagnostic adapté aux TPE de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Theix-Noyalo : diagnostic adapté aux PME de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Theix-Noyalo : diagnostic adapté aux PME de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Theix-Noyalo : formations pratiques pour équipes PME, artisans, exploitants agricoles et professionnels de santé de l'agglomération vannetaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Theix-Noyalo : formations pratiques pour équipes PME, artisans, exploitants agricoles et professionnels de santé de l'agglomération vannetaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Theix-Noyalo : automatisation devis artisans, CRM augmenté professions libérales, gestion stocks et planning, agents conversationnels service client. Adapté au tissu TPE/PME agglomération vannetaise.",
-      en: "Implémentation IA à Theix-Noyalo : automatisation devis artisans, CRM augmenté professions libérales, gestion stocks et planning, agents conversationnels service client. Adapté au tissu TPE/PME agglomération vannetaise.",
+      fr: "Implémentation IA à Theix-Noyalo : automatisation devis artisans, CRM augmenté professions libérales, gestion stocks et planning, agents conversationnels service client. Adapté au tissu PME et ETI agglomération vannetaise.",
+      en: "Implémentation IA à Theix-Noyalo : automatisation devis artisans, CRM augmenté professions libérales, gestion stocks et planning, agents conversationnels service client. Adapté au tissu PME et ETI agglomération vannetaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Theix-Noyalo : sessions individuelles pour dirigeants TPE/PME, artisans, agriculteurs et professions libérales de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Theix-Noyalo : sessions individuelles pour dirigeants TPE/PME, artisans, agriculteurs et professions libérales de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Theix-Noyalo : sessions individuelles pour dirigeants de PME et d'ETI, artisans, agriculteurs et professions libérales de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Theix-Noyalo : sessions individuelles pour dirigeants de PME et d'ETI, artisans, agriculteurs et professions libérales de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const THEIX_NOYALO_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Theix-Noyalo  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME de Theix-Noyalo, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI de Theix-Noyalo, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et professions libérales à Theix-Noyalo ?",

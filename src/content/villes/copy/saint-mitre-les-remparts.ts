@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y travaille avec les organisations du territoire.",
+    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de PME artisanales, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y travaille avec les organisations du territoire.",
+    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de PME artisanales, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons PME artisanales, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Bouches-du-Rhône",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons PME artisanales, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit sur place sur mesure.",
+  seoHook: "PME & PME Bouches-du-Rhône",
   ecosystemFr:
     "Saint-Mitre-les-Remparts est un village fortifié médiéval entre l'étang de Berre et l'étang d'Engrenier. Proximité de la ZIP de Fos-sur-Mer (industries lourdes, pétrochimie). Économie locale : agriculture (maraîchage, oliveraies), artisanat, tourisme patrimonial et résidentiel de cadres travaillant sur Fos-Istres-Martigues.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industries & pétrochimie (ZIP Fos)",
     "Agriculture & maraîchage",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de proximité",
     "Tourisme patrimonial",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour TPE artisans, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour TPE artisans, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour PME artisanales, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour PME artisanales, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Mitre-les-Remparts : ateliers pratiques pour artisans, commerçants et équipes PME industrielles. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Mitre-les-Remparts : maintenance prédictive industrielle, traçabilité agricole, automatisation gestion commerciale, agents conversationnels tourisme. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Mitre-les-Remparts : sessions pour artisans, exploitants agricoles et dirigeants TPE/PME du bassin Fos-Berre souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Mitre-les-Remparts : sessions pour artisans, exploitants agricoles et dirigeants TPE/PME du bassin Fos-Berre souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Mitre-les-Remparts : sessions pour artisans, exploitants agricoles et dirigeants de PME et d'ETI du bassin Fos-Berre souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Mitre-les-Remparts : sessions pour artisans, exploitants agricoles et dirigeants de PME et d'ETI du bassin Fos-Berre souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Mitre-les-Remparts  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME saint-mitréennes. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, commerçants et PME saint-mitréennes. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les entreprises de la ZIP de Fos-sur-Mer ?",

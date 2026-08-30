@@ -346,7 +346,7 @@ export const CAEN_ECONOMIC_DATA: VilleEconomicData = {
   // marginale et hors AOC. Champ structurellement non applicable.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Pas de liste vérifiée individuellement d'entreprises EPV labellisées
   // à Caen (annuaire data.economie.gouv.fr non extrait par commune en V1).

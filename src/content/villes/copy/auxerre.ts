@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const AUXERRE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
+    "Axion-IA accompagne les PME et ETI d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
+    "Axion-IA accompagne les PME et ETI d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
   directAnswerFr:
-    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès {{price:audit-flash|flat}}.",
+    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès {{price:audit-flash|flat}}.",
+    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès {{price:audit-flash|flat}}.",
   seoHook: "commerce, viticulture & administration publique",
   ecosystemFr:
     "Auxerre est le principal bassin d'emploi de l'Yonne, structuré autour de la préfecture, du commerce de détail, du tourisme patrimonial et de la viticulture (Chablisien à proximité). Desservie par la gare d'Auxerre-Saint-Gervais (ligne Paris-Bercy/Dijon) et par l'autoroute A6 (sorties 19 et 20), la ville bénéficie de l'aéroport régional d'Auxerre-Branches. Le centre historique attire les visiteurs autour de la cathédrale Saint-Étienne, de l'abbaye Saint-Germain et de la tour de l'Horloge.",
@@ -33,8 +33,8 @@ export const AUXERRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit sur place 4 h).",
-      en: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit sur place 4 h).",
+      fr: "Audit IA à Auxerre pour PME et ETI locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit sur place 4 h).",
+      en: "Audit IA à Auxerre pour PME et ETI locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit sur place 4 h).",
     },
     interventions: {
       fr: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -45,8 +45,8 @@ export const AUXERRE_COPY: VilleCopy = {
       en: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-to-1 à Auxerre pour dirigeants de PME et d'ETI — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Auxerre pour dirigeants de PME et d'ETI — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -87,12 +87,6 @@ export const AUXERRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou petite boutique IA",
-            detail:
-              "Pour commerces du centre d'Auxerre, artisans, domaines viticoles familiaux du Chablisien (Irancy, Saint-Bris) : site vitrine ou boutique en ligne mobile-first avec recherche assistée et fiches produit générées par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -174,12 +168,6 @@ export const AUXERRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or small AI store",
-            detail:
-              "For downtown Auxerre shops, artisans and family wine estates of the Chablisien (Irancy, Saint-Bris): mobile-first showcase site or online store with assisted search and AI-generated product sheets.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce platform or business SaaS",
             detail:
@@ -237,7 +225,7 @@ export const AUXERRE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs auxerrois Axion-IA accompagne-t-il ?",
-      a: "Nous accompagnons en priorité les TPE et PME d'Auxerre dans le commerce de détail, l'administration publique, la viticulture (Chablisien), le tourisme patrimonial et l'industrie alimentaire, secteurs dominants du bassin d'emploi de l'Yonne.",
+      a: "Nous accompagnons en priorité les PME et ETI d'Auxerre dans le commerce de détail, l'administration publique, la viticulture (Chablisien), le tourisme patrimonial et l'industrie alimentaire, secteurs dominants du bassin d'emploi de l'Yonne.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Auxerre ?",

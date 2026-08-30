@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const THIAIS_COPY: VilleCopy = {
   pitchFr:
-    "Thiais (94), commune du Val-de-Marne au sud de Paris, occupe une position logistique stratégique : voisine du Marché d'Intérêt National de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. La ville abrite le centre commercial Belle Épine et un dense tissu d'entreprises de logistique, distribution, commerce et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de ce bassin pour intégrer concrètement l'intelligence artificielle.",
+    "Thiais (94), commune du Val-de-Marne au sud de Paris, occupe une position logistique stratégique : voisine du Marché d'Intérêt National de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. La ville abrite le centre commercial Belle Épine et un dense tissu d'entreprises de logistique, distribution, commerce et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de ce bassin pour intégrer concrètement l'intelligence artificielle.",
   pitchEn:
-    "Thiais (94), commune du Val-de-Marne au sud de Paris, occupe une position logistique stratégique : voisine du Marché d'Intérêt National de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. La ville abrite le centre commercial Belle Épine et un dense tissu d'entreprises de logistique, distribution, commerce et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de ce bassin pour intégrer concrètement l'intelligence artificielle.",
+    "Thiais (94), commune du Val-de-Marne au sud de Paris, occupe une position logistique stratégique : voisine du Marché d'Intérêt National de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. La ville abrite le centre commercial Belle Épine et un dense tissu d'entreprises de logistique, distribution, commerce et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de ce bassin pour intégrer concrètement l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiais, au sud de Paris dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : acteurs de la logistique et de la distribution liés au MIN de Rungis voisin, commerces et enseignes autour de Belle Épine, transporteurs proches d'Orly, artisans et services aux entreprises. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et logistiques, et l'accompagnement individuel des dirigeants, avec des tarifs publics et des livrables concrets.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiais, au sud de Paris dans le Val-de-Marne. Nous accompagnons en priorité les PME puis les ETI : acteurs de la logistique et de la distribution liés au MIN de Rungis voisin, commerces et enseignes autour de Belle Épine, transporteurs proches d'Orly, artisans et services aux entreprises. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et logistiques, et l'accompagnement individuel des dirigeants, avec des tarifs publics et des livrables concrets.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiais, au sud de Paris dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : acteurs de la logistique et de la distribution liés au MIN de Rungis voisin, commerces et enseignes autour de Belle Épine, transporteurs proches d'Orly, artisans et services aux entreprises. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et logistiques, et l'accompagnement individuel des dirigeants, avec des tarifs publics et des livrables concrets.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiais, au sud de Paris dans le Val-de-Marne. Nous accompagnons en priorité les PME puis les ETI : acteurs de la logistique et de la distribution liés au MIN de Rungis voisin, commerces et enseignes autour de Belle Épine, transporteurs proches d'Orly, artisans et services aux entreprises. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et logistiques, et l'accompagnement individuel des dirigeants, avec des tarifs publics et des livrables concrets.",
   seoHook: "logistique Rungis & commerce",
   ecosystemFr:
     "Thiais doit son dynamisme à sa position au cœur d'un nœud logistique majeur : la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly génère un écosystème dense de logistique, transport, distribution et import-export. Le centre commercial Belle Épine en fait aussi un pôle commercial important du sud parisien. Autour gravitent des PME de services, des artisans et des commerces, pour lesquels l'IA peut optimiser la gestion des flux, des stocks et de la relation client.",
@@ -42,8 +42,8 @@ export const THIAIS_COPY: VilleCopy = {
       en: "Implémentation IA à Thiais : automatisation du suivi de commandes et de stocks, optimisation des tournées, classification documentaire et agents conversationnels pour la relation client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Thiais : sessions sur site ou en visio pour dirigeants de TPE/PME logistiques, commerçants et gérants souhaitant piloter l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Thiais : sessions sur site ou en visio pour dirigeants de TPE/PME logistiques, commerçants et gérants souhaitant piloter l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Thiais : sessions sur site ou en visio pour dirigeants de PME et ETI logistiques, commerçants et gérants souhaitant piloter l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Thiais : sessions sur site ou en visio pour dirigeants de PME et ETI logistiques, commerçants et gérants souhaitant piloter l'IA au quotidien.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Thiais : plateformes pour PME logistiques et commerces, avec suivi de commandes intelligent, devis automatisés et recherche IA intégrée.",
@@ -88,12 +88,6 @@ export const THIAIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, devis automatisé) sur un site existant en quelques semaines, sans refonte — idéal pour artisans et commerçants du secteur Belle Épine.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -175,12 +169,6 @@ export const THIAIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, automated quote) to an existing site in a few weeks, no rebuild — ideal for craftspeople and retailers around the Belle Épine hub.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -230,7 +218,7 @@ export const THIAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thiais et dans le sud du Val-de-Marne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thiais, Rungis, Orly, Chevilly-Larue et tout le sud parisien. Nos consultants se déplacent depuis Paris pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Thiais, Rungis, Orly, Chevilly-Larue et tout le sud parisien. Nos consultants se déplacent depuis Paris pour les missions sur site.",
     },
     {
       q: "Travaillez-vous avec les acteurs logistiques liés à Rungis ?",
@@ -241,7 +229,7 @@ export const THIAIS_COPY: VilleCopy = {
       a: "Oui, nous déployons des agents conversationnels, de l'automatisation de la relation client et des outils de gestion pour les commerces et enseignes du secteur.",
     },
     {
-      q: "Quels services proposez-vous aux TPE et artisans de Thiais ?",
+      q: "Quels services proposez-vous aux PME et artisans de Thiais ?",
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et sans devis opaque.",
     },
     {

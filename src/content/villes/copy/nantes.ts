@@ -6,7 +6,7 @@
 //     forfait trajet sont TOUJOURS en sus pour les interventions.
 //   - Durée minimale = 1 journée. Aucune demi-journée.
 //   - Aucun prix hardcodé : libellés seulement, tarifs via pricing.ts.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data locale anti-doorway HCU 2024.
 //   - Pas de heroSchema, pas de unAUn (hors scope demande initiale).
 //
@@ -27,7 +27,7 @@ import type { VilleCopy } from "./types";
 
 export const NANTES_COPY: VilleCopy = {
   pitchFr:
-    "Nantes rassemble un tissu industriel et numérique unique : aéronautique Airbus, chantiers navals, agroalimentaire LU et Petit Navire, Atlanpole Biotherapies, quartier de la création Île de Nantes et French Tech Nantes capitale. Axion-IA y intervient sur site pour les TPE, PME, ETI et grandes entreprises du Grand Ouest.",
+    "Nantes rassemble un tissu industriel et numérique unique : aéronautique Airbus, chantiers navals, agroalimentaire LU et Petit Navire, Atlanpole Biotherapies, quartier de la création Île de Nantes et French Tech Nantes capitale. Axion-IA y intervient sur site pour les PME, ETI et grands groupes du Grand Ouest.",
   pitchEn:
     "Nantes brings together a unique industrial and digital fabric: Airbus aeronautics, shipyards, LU and Petit Navire agri-food, Atlanpole Biotherapies, Île de Nantes creative district and French Tech Nantes capital. Axion-IA delivers on site for micro-businesses, SMEs, mid-caps and large enterprises across the Greater West.",
 
@@ -55,7 +55,7 @@ export const NANTES_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nantes (44) sur site dans les entreprises de la métropole et du Grand Ouest. Nous accompagnons les TPE, PME, ETI et grandes entreprises nantaises — industrie (Airbus, aéronautique, naval), agroalimentaire (LU, conserveries), numérique (French Tech, Île de Nantes), biotech (Atlanpole) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nantes (44) sur site dans les entreprises de la métropole et du Grand Ouest. Nous accompagnons les PME, ETI et grands groupes nantais — industrie (Airbus, aéronautique, naval), agroalimentaire (LU, conserveries), numérique (French Tech, Île de Nantes), biotech (Atlanpole) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Nantes (44) on site across the metropolitan area and Greater West. We support Nantes micro-businesses, SMEs, mid-caps and large enterprises — industry (Airbus, aeronautics, shipyards), agri-food (LU, canneries), digital (French Tech, Île de Nantes), biotech (Atlanpole) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -89,7 +89,7 @@ export const NANTES_COPY: VilleCopy = {
     // ──────────────────────────────────────────────────────────
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Nantes cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles, des TPE indépendantes nantaises aux grandes entreprises industrielles de la métropole. Résultat : un livrable PDF actionnable remis en présentiel, sans jargon, sans lock-in.",
+        hero: "L'audit IA Axion-IA à Nantes cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles, des PME indépendantes nantaises aux grandes entreprises industrielles de la métropole. Résultat : un livrable PDF actionnable remis en présentiel, sans jargon, sans lock-in.",
         whyHere: [
           "Nantes est un pôle stratégique pour Axion-IA : industrie aéronautique et navale, agroalimentaire, numérique French Tech et biotech concentrent des cas IA à fort potentiel de ROI.",
           "Tissu B2B nantais sur-représenté dans nos références : ETI industrielles (aéronautique, composites, naval), PME agroalimentaires, scale-ups French Tech, cabinets de conseil Euronantes.",
@@ -126,12 +126,6 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets nantais jusqu'à une dizaine de collaborateurs — artisans, commerces, agences.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -232,12 +226,6 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Nantes freelancers, micro-firms and practices up to about ten staff — craftspeople, retailers, agencies.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -345,12 +333,6 @@ export const NANTES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, cabinets, agences numériques et artisans nantais jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -450,12 +432,6 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Nantes freelancers, firms, digital agencies and craftspeople up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -563,12 +539,6 @@ export const NANTES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads) — pour TPE nantaises, cabinets et agences.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -604,7 +574,7 @@ export const NANTES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nantes ?",
-            a: "Cela dépend de l'ampleur. Un POC TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -668,12 +638,6 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) — for Nantes micro-firms, practices and agencies.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -778,12 +742,6 @@ export const NANTES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Entrée coaching 1-to-1 — dirigeant, indépendant ou expert TPE du numérique, de l'agro ou de l'artisanat nantais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -823,7 +781,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Combien de séances faut-il pour être autonome sur l'IA à Nantes ?",
-            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant TPE numérique atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations PLM ou des workflows qualité aura un programme plus étendu. Le plan est cadré à la première séance.",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant PME numérique atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations PLM ou des workflows qualité aura un programme plus étendu. Le plan est cadré à la première séance.",
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux nantais ?",
@@ -883,12 +841,6 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
-            detail:
-              "Entry-level 1-to-1 coaching — executive, freelancer or expert in a Nantes digital, agri-food or craft micro-business.",
-          },
           {
             sizeLabel: "SME",
             price: "On quote",
@@ -990,12 +942,6 @@ export const NANTES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1076,12 +1022,6 @@ export const NANTES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1134,7 +1074,7 @@ export const NANTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nantes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre nantais. Aucun supplément géographique : le tarif est identique à celui pratiqué partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre nantais. Aucun supplément géographique : le tarif est identique à celui pratiqué partout en France.",
     },
     {
       q: "Avez-vous des cas clients dans la région nantaise ?",

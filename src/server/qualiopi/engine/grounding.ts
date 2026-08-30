@@ -18,7 +18,7 @@
 import { STACK_CATEGORIES, STACK_TOOLS } from "@/content/stack-ia";
 
 const POSTURE = [
-  "CONTEXTE AXION-IA (organisme de formation à l'IA pour TPE/PME françaises) :",
+  "CONTEXTE AXION-IA (organisme de formation à l'IA pour PME/ETI françaises) :",
   "- Posture : pragmatique et terrain — on part des tâches réelles du quotidien professionnel, pas de la théorie ni du battage médiatique.",
   "- Objectif de chaque formation : une montée en compétence immédiatement applicable, avec des livrables concrets réutilisables au poste de travail.",
   "- Les exemples et exercices DOIVENT s'appuyer sur des situations de travail réalistes et, quand c'est pertinent, sur les outils réellement enseignés ci-dessous.",

@@ -28,14 +28,14 @@ interface Props {
   rows: ReadonlyArray<MixRow>;
 }
 
-// Clés « SIZE:ORG » : SIZE ∈ enum CompanySize (TPE/PME/ETI/GRANDE_ENTREPRISE),
+// Clés « SIZE:ORG » : SIZE ∈ enum CompanySize (TPE/PME/ETI/GRANDE_ENTREPRISE ;
+// TPE reste qualifiable mais n'est plus cible — repositionnement 2026-08-29),
 // ORG ∈ enum OrganisationType (schema.prisma). Toute valeur hors enum ferait
 // échouer en silence l'insert du job au sampling orchestrateur (cf. régression C1
 // 2026-06-21). Le placeholder ci-dessous n'utilise QUE des valeurs valides.
 const DEFAULT_MIX = `{
-  "TPE:entreprise_privee": 20,
-  "PME:entreprise_privee": 35,
-  "ETI:entreprise_privee": 15,
+  "PME:entreprise_privee": 45,
+  "ETI:entreprise_privee": 25,
   "GRANDE_ENTREPRISE:entreprise_privee": 10,
   "PME:etablissement_public": 5,
   "ETI:etablissement_public": 5,
@@ -101,7 +101,7 @@ export function AudienceMixV2({ rows }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Mix audiences"
-        description="Matrice taille INSEE (TPE/PME/ETI/GE) × type d'organisation. Clés JSON au format SIZE:ORG_TYPE."
+        description="Matrice taille INSEE (PME/ETI/GE) × type d'organisation. Clés JSON au format SIZE:ORG_TYPE."
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

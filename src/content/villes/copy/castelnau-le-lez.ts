@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   pitchFr:
-    "Castelnau-le-Lez (26 058 habitants en 2023, Hérault) est la deuxième commune la plus peuplée de la métropole de Montpellier, séparée de cette dernière par la rivière du Lez. Axion-IA accompagne les TPE et PME locales — commerces, cabinets de services, studios — dans l'intégration concrète de l'IA opérationnelle. Notre approche code custom, sans no-code, s'adapte au tissu de 3 319 établissements recensés fin 2019, dominé par les services spécialisés et le commerce.",
+    "Castelnau-le-Lez (26 058 habitants en 2023, Hérault) est la deuxième commune la plus peuplée de la métropole de Montpellier, séparée de cette dernière par la rivière du Lez. Axion-IA accompagne les PME et ETI locales — commerces, cabinets de services, studios — dans l'intégration concrète de l'IA opérationnelle. Notre approche code custom, sans no-code, s'adapte au tissu de 3 319 établissements recensés fin 2019, dominé par les services spécialisés et le commerce.",
   pitchEn:
-    "Castelnau-le-Lez (26 058 habitants en 2023, Hérault) est la deuxième commune la plus peuplée de la métropole de Montpellier, séparée de cette dernière par la rivière du Lez. Axion-IA accompagne les TPE et PME locales — commerces, cabinets de services, studios — dans l'intégration concrète de l'IA opérationnelle. Notre approche code custom, sans no-code, s'adapte au tissu de 3 319 établissements recensés fin 2019, dominé par les services spécialisés et le commerce.",
+    "Castelnau-le-Lez (26 058 habitants en 2023, Hérault) est la deuxième commune la plus peuplée de la métropole de Montpellier, séparée de cette dernière par la rivière du Lez. Axion-IA accompagne les PME et ETI locales — commerces, cabinets de services, studios — dans l'intégration concrète de l'IA opérationnelle. Notre approche code custom, sans no-code, s'adapte au tissu de 3 319 établissements recensés fin 2019, dominé par les services spécialisés et le commerce.",
   directAnswerFr:
-    "Axion-IA intervient à Castelnau-le-Lez (Hérault, 26 058 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. La commune accueille le studio Ubisoft Montpellier, ainsi que des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, mais notre cœur de cible reste les petites structures du tissu local : commerces, cabinets, artisans. La ligne 2 du tramway de Montpellier (8 stations sur la commune depuis décembre 2006) facilite nos déplacements sur site depuis la gare Saint-Roch.",
+    "Axion-IA intervient à Castelnau-le-Lez (Hérault, 26 058 habitants) pour accompagner principalement les PME et ETI locales dans l'adoption d'une IA opérationnelle réellement utile. La commune accueille le studio Ubisoft Montpellier, ainsi que des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, mais notre cœur de cible reste les PME du tissu local : commerces, cabinets, artisans. La ligne 2 du tramway de Montpellier (8 stations sur la commune depuis décembre 2006) facilite nos déplacements sur site depuis la gare Saint-Roch.",
   directAnswerEn:
-    "Axion-IA intervient à Castelnau-le-Lez (Hérault, 26 058 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. La commune accueille le studio Ubisoft Montpellier, ainsi que des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, mais notre cœur de cible reste les petites structures du tissu local : commerces, cabinets, artisans. La ligne 2 du tramway de Montpellier (8 stations sur la commune depuis décembre 2006) facilite nos déplacements sur site depuis la gare Saint-Roch.",
+    "Axion-IA intervient à Castelnau-le-Lez (Hérault, 26 058 habitants) pour accompagner principalement les PME et ETI locales dans l'adoption d'une IA opérationnelle réellement utile. La commune accueille le studio Ubisoft Montpellier, ainsi que des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, mais notre cœur de cible reste les PME du tissu local : commerces, cabinets, artisans. La ligne 2 du tramway de Montpellier (8 stations sur la commune depuis décembre 2006) facilite nos déplacements sur site depuis la gare Saint-Roch.",
   seoHook: "services spécialisés & commerce détail",
   ecosystemFr:
-    "Le tissu économique de Castelnau-le-Lez s'articule autour de 3 319 établissements (fin 2019), dominé par les services spécialisés et activités administratives (23,6 %) et le commerce-hôtellerie-restauration (21,4 %). Le secteur Eurêka concentre des activités tertiaires, santé et technologie. La commune est aussi connue pour la présence du studio Ubisoft Montpellier (jeu vidéo). Les TPE et PME locales — commerces de proximité avenue de l'Europe, cabinets libéraux, artisans, petites agences — constituent l'essentiel de notre clientèle cible à Castelnau-le-Lez.",
+    "Le tissu économique de Castelnau-le-Lez s'articule autour de 3 319 établissements (fin 2019), dominé par les services spécialisés et activités administratives (23,6 %) et le commerce-hôtellerie-restauration (21,4 %). Le secteur Eurêka concentre des activités tertiaires, santé et technologie. La commune est aussi connue pour la présence du studio Ubisoft Montpellier (jeu vidéo). Les PME et ETI locales — commerces de proximité avenue de l'Europe, cabinets libéraux, artisans, petites agences — constituent l'essentiel de notre clientèle cible à Castelnau-le-Lez.",
   ecosystemEn:
-    "Le tissu économique de Castelnau-le-Lez s'articule autour de 3 319 établissements (fin 2019), dominé par les services spécialisés et activités administratives (23,6 %) et le commerce-hôtellerie-restauration (21,4 %). Le secteur Eurêka concentre des activités tertiaires, santé et technologie. La commune est aussi connue pour la présence du studio Ubisoft Montpellier (jeu vidéo). Les TPE et PME locales — commerces de proximité avenue de l'Europe, cabinets libéraux, artisans, petites agences — constituent l'essentiel de notre clientèle cible à Castelnau-le-Lez.",
+    "Le tissu économique de Castelnau-le-Lez s'articule autour de 3 319 établissements (fin 2019), dominé par les services spécialisés et activités administratives (23,6 %) et le commerce-hôtellerie-restauration (21,4 %). Le secteur Eurêka concentre des activités tertiaires, santé et technologie. La commune est aussi connue pour la présence du studio Ubisoft Montpellier (jeu vidéo). Les PME et ETI locales — commerces de proximité avenue de l'Europe, cabinets libéraux, artisans, petites agences — constituent l'essentiel de notre clientèle cible à Castelnau-le-Lez.",
   distancesFr:
     "Castelnau-le-Lez est desservie par 8 stations de la ligne 2 du tramway de Montpellier. La gare de Montpellier Saint-Roch est à environ 5 km, et l'aéroport Montpellier-Méditerranée à environ 10 km.",
   distancesEn:
@@ -32,20 +32,20 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit sur place 4h dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castelnau-le-Lez pour PME et ETI : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelnau-le-Lez pour PME et ETI : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux PME et ETI locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux PME et ETI locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour TPE et PME du commerce, des services ou de la santé — dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour TPE et PME du commerce, des services ou de la santé — dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour PME et ETI du commerce, des services ou de la santé — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour PME et ETI du commerce, des services ou de la santé — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Castelnau-le-Lez : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-to-1 à Castelnau-le-Lez : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-to-1 à Castelnau-le-Lez : sessions individuelles pour dirigeants de PME et d'ETI souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Castelnau-le-Lez : sessions individuelles pour dirigeants de PME et d'ETI souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce de l'avenue de l'Europe, d'un artisan ou d'un cabinet libéral du secteur Eurêka, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce de l'avenue de l'Europe, d'un artisan ou d'un cabinet libéral du secteur Eurêka, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -228,7 +216,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Castelnau-le-Lez ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour le format d'une journée et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour le format d'une journée et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les PME et ETI locales bénéficient de la même grille tarifaire que partout en France.",
     },
     {
       q: "Quels délais pour une intervention IA à Castelnau-le-Lez ?",
@@ -240,7 +228,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Castelnau-le-Lez ?",
-      a: "Nous accompagnons en priorité les TPE et PME des services spécialisés (23,6 % des établissements locaux), du commerce de détail et de l'hôtellerie-restauration (21,4 %), ainsi que les acteurs du numérique présents dans le secteur Eurêka. Les ETI sont accompagnées plus marginalement.",
+      a: "Nous accompagnons en priorité les PME et ETI des services spécialisés (23,6 % des établissements locaux), du commerce de détail et de l'hôtellerie-restauration (21,4 %), ainsi que les acteurs du numérique présents dans le secteur Eurêka. Les grands groupes complètent ce socle.",
     },
     {
       q: "Comment Axion-IA respecte-t-il le RGPD à Castelnau-le-Lez ?",
