@@ -704,6 +704,13 @@ jobs:
           # ⚠️ La valeur DOIT correspondre exactement au fichier servi
           # `/public/3a5c32d22b04f1430690cc33eaec6be9.txt` (sinon IndexNow 403/422).
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          # Voie directe Bing (SubmitUrlBatch) : elle ne passe PAS par
+          # api.indexnow.org, donc elle n'est pas concernee par le 403
+          # `UserForbiddedToAccessSite` que Microsoft renvoie a ce domaine
+          # depuis 2026-08. Sans cette cle ici, `submitUrlsToBing` rendait
+          # `configured: false` et ne soumettait rien — en silence, car
+          # l'avertissement est supprime quand NODE_ENV=production.
+          BING_WMT_API_KEY: ${{ secrets.BING_WMT_API_KEY }}
           NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
         run: |
           set -uo pipefail
