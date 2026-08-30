@@ -6,12 +6,12 @@ import type { VilleCopy } from "./types";
 
 export const LE_CREUSOT_COPY: VilleCopy = {
   pitchFr:
-    "Le Creusot (71200, Saône-et-Loire), 20 509 habitants, est un pôle industriel historique de Bourgogne-Franche-Comté forgé par la dynastie Schneider de 1837 à 1960. Membre de la Communauté urbaine Le Creusot Montceau-lès-Mines (CUCM), la ville concentre encore aujourd'hui ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici en priorité les TPE et PME sous-traitantes de ces grands donneurs d'ordre — mécanique de précision, métallurgie, maintenance industrielle — ainsi que les ETI du Technoparc.",
+    "Le Creusot (71200, Saône-et-Loire), 20 509 habitants, est un pôle industriel historique de Bourgogne-Franche-Comté forgé par la dynastie Schneider de 1837 à 1960. Membre de la Communauté urbaine Le Creusot Montceau-lès-Mines (CUCM), la ville concentre encore aujourd'hui ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici en priorité les PME et ETI sous-traitantes de ces grands donneurs d'ordre — mécanique de précision, métallurgie, maintenance industrielle — ainsi que les ETI du Technoparc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Creusot (71200, CUCM). Nous accompagnons en priorité les TPE et PME sous-traitantes des grands donneurs d'ordre locaux (ArcelorMittal Industeel, Framatome, Alstom, Safran, General Electric) — mécanique, métallurgie, maintenance industrielle — puis les ETI du Technoparc. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Creusot (71200, CUCM). Nous accompagnons en priorité les PME et ETI sous-traitantes des grands donneurs d'ordre locaux (ArcelorMittal Industeel, Framatome, Alstom, Safran, General Electric) — mécanique, métallurgie, maintenance industrielle — puis les ETI du Technoparc. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
   seoHook: "sous-traitance industrielle & maintenance prédictive",
   ecosystemFr:
-    "Le Creusot constitue le cœur industriel de la CUCM, structuré autour de cinq donneurs d'ordre majeurs : ArcelorMittal Industeel (aciers spéciaux), Framatome (composants nucléaires), Alstom (bogies TGV et métros), Safran/Snecma (disques moteurs aéronautiques) et General Electric (compresseurs, turbines). Le Technoparc accueille TPE et PME sous-traitantes en mécanique de précision, métallurgie, automatisme et maintenance industrielle. L'héritage Schneider (jusqu'à 20 000 ouvriers durant la Première Guerre mondiale) imprègne encore le tissu local : forges, fonderies, ateliers mécaniques. Communes voisines : Marmagne, Saint-Sernin-du-Bois, Saint-Firmin, Le Breuil, Montcenis, Torcy.",
+    "Le Creusot constitue le cœur industriel de la CUCM, structuré autour de cinq donneurs d'ordre majeurs : ArcelorMittal Industeel (aciers spéciaux), Framatome (composants nucléaires), Alstom (bogies TGV et métros), Safran/Snecma (disques moteurs aéronautiques) et General Electric (compresseurs, turbines). Le Technoparc accueille PME et ETI sous-traitantes en mécanique de précision, métallurgie, automatisme et maintenance industrielle. L'héritage Schneider (jusqu'à 20 000 ouvriers durant la Première Guerre mondiale) imprègne encore le tissu local : forges, fonderies, ateliers mécaniques. Communes voisines : Marmagne, Saint-Sernin-du-Bois, Saint-Firmin, Le Breuil, Montcenis, Torcy.",
   distancesFr:
     "Gare TGV Le Creusot-Montceau-Montchanin à 10 km (Paris 1h20, Lyon 40 min). Gare du Creusot (TER) en centre-ville. A6 accessible via la RN 80 en 25 min. Lyon Part-Dieu à 1h30 en voiture, Dijon à 1h. Le Breuil à 5 min, Montcenis à 5 min, Torcy à 8 min, Montceau-les-Mines à 20 min.",
   topSectorsNaf: [
@@ -24,8 +24,8 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Creusot : diagnostic pour TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Cas d'usage typiques : maintenance prédictive, contrôle qualité visuel, optimisation OF, traçabilité documentaire ISO 9001/EN 9100. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Creusot : diagnostic pour TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Cas d'usage typiques : maintenance prédictive, contrôle qualité visuel, optimisation OF, traçabilité documentaire ISO 9001/EN 9100. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Creusot : diagnostic pour PME et ETI sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Cas d'usage typiques : maintenance prédictive, contrôle qualité visuel, optimisation OF, traçabilité documentaire ISO 9001/EN 9100. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Creusot : diagnostic pour PME et ETI sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Cas d'usage typiques : maintenance prédictive, contrôle qualité visuel, optimisation OF, traçabilité documentaire ISO 9001/EN 9100. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Déplacement depuis la gare TGV Le Creusot-Montceau-Montchanin (10 km) ou via A6.",
@@ -36,8 +36,8 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       en: "Implémentation IA au Creusot : maintenance prédictive sur lignes Framatome/Alstom, contrôle qualité visuel par vision, classification documents techniques aéronautiques Safran, agents IA réponse appels d'offres. Code custom industriel, compatible exigences nucléaires/ferroviaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Creusot : sessions sur site ou en visio pour dirigeants TPE/PME sous-traitantes industrielles, chefs d'atelier, responsables qualité ou méthodes du Technoparc et de la CUCM.",
-      en: "Coaching 1-to-1 au Creusot : sessions sur site ou en visio pour dirigeants TPE/PME sous-traitantes industrielles, chefs d'atelier, responsables qualité ou méthodes du Technoparc et de la CUCM.",
+      fr: "Coaching 1-to-1 au Creusot : sessions sur site ou en visio pour dirigeants de PME et d'ETI sous-traitantes industrielles, chefs d'atelier, responsables qualité ou méthodes du Technoparc et de la CUCM.",
+      en: "Coaching 1-to-1 au Creusot : sessions sur site ou en visio pour dirigeants de PME et d'ETI sous-traitantes industrielles, chefs d'atelier, responsables qualité ou méthodes du Technoparc et de la CUCM.",
     },
   },
   services: {
@@ -45,7 +45,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
         whyHere: [
-          "Tissu de TPE/PME sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
+          "Tissu de PME et ETI sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
           "Donneurs d'ordre exigeants — Framatome en composants nucléaires, Alstom sur les bogies TGV, Safran sur les disques moteurs aéronautiques — imposant ISO 9001 et EN 9100 : nos applications gèrent la traçabilité documentaire, la classification de plans et de comptes-rendus techniques par recherche sémantique, et la consolidation des dossiers de fabrication.",
           "Filière maintenance ferroviaire structurée par le Mecateamcluster (une centaine d'entreprises fédérées depuis 2010 avec la CUCM) et bureaux d'études du Technoparc : on conçoit des sites vitrines et e-commerce mobile-first qui valorisent un savoir-faire d'usinage, de soudage et de maintenance auprès de donneurs d'ordre nationaux.",
           "Écosystème en mutation énergétique — implantation de la start-up Jimmy (chaleur décarbonée, générateurs thermiques) sur Coriolis, vivier de talents de l'IUT du Creusot et de son BUT Génie mécanique et productique : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, vos plans, nomenclatures et données clients restent maîtrisés.",
@@ -78,12 +78,6 @@ export const LE_CREUSOT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot, recherche sémantique sur documents techniques, automatisation de devis) sur le site ou l'extranet existant d'un atelier mécanique, d'un soudeur ou d'un artisan de la CUCM, sans refonte ni changement d'outil.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -131,7 +125,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA conçoit et augmente au Creusot des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails fournisseurs, configurateurs techniques, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur industriel de la Communauté urbaine Le Creusot Montceau (CUCM), où la sous-traitance de précision gravite autour d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric, où l'Espace Coriolis aligne 90 hectares d'activité au pied de la gare TGV, et où le Technoparc héberge bureaux d'études et ateliers mécaniques. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel au Creusot, itérations à distance.",
         whyHere: [
-          "Tissu de TPE/PME sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
+          "Tissu de PME et ETI sous-traitantes de la mécanique de précision et de la métallurgie, héritières des forges Schneider et des aciers spéciaux d'ArcelorMittal Industeel : on greffe l'IA sur l'existant (extranet, ERP, GMAO) pour des portails fournisseurs, des configurateurs de pièces usinées et des moteurs de réponse aux appels d'offres, sans refonte coûteuse.",
           "Donneurs d'ordre exigeants — Framatome en composants nucléaires, Alstom sur les bogies TGV, Safran sur les disques moteurs aéronautiques — imposant ISO 9001 et EN 9100 : nos applications gèrent la traçabilité documentaire, la classification de plans et de comptes-rendus techniques par recherche sémantique, et la consolidation des dossiers de fabrication.",
           "Filière maintenance ferroviaire structurée par le Mecateamcluster (une centaine d'entreprises fédérées depuis 2010 avec la CUCM) et bureaux d'études du Technoparc : on conçoit des sites vitrines et e-commerce mobile-first qui valorisent un savoir-faire d'usinage, de soudage et de maintenance auprès de donneurs d'ordre nationaux.",
           "Écosystème en mutation énergétique — implantation de la start-up Jimmy (chaleur décarbonée, générateurs thermiques) sur Coriolis, vivier de talents de l'IUT du Creusot et de son BUT Génie mécanique et productique : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, vos plans, nomenclatures et données clients restent maîtrisés.",
@@ -164,12 +158,6 @@ export const LE_CREUSOT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot, recherche sémantique sur documents techniques, automatisation de devis) sur le site ou l'extranet existant d'un atelier mécanique, d'un soudeur ou d'un artisan de la CUCM, sans refonte ni changement d'outil.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -236,7 +224,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous au Creusot ?",
-      a: "Nous accompagnons en priorité les TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric : mécanique de précision, métallurgie, contrôle qualité, maintenance industrielle. Cas typiques : maintenance prédictive, vision contrôle qualité, automatisation devis et réponse appels d'offres.",
+      a: "Nous accompagnons en priorité les PME et ETI sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric : mécanique de précision, métallurgie, contrôle qualité, maintenance industrielle. Cas typiques : maintenance prédictive, vision contrôle qualité, automatisation devis et réponse appels d'offres.",
     },
     {
       q: "Vous déplacez-vous sur site au Creusot ?",
@@ -245,11 +233,11 @@ export const LE_CREUSOT_COPY: VilleCopy = {
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
   pitchEn:
-    "Le Creusot (71200, Saône-et-Loire), 20 509 habitants, est un pôle industriel historique de Bourgogne-Franche-Comté forgé par la dynastie Schneider de 1837 à 1960. Membre de la Communauté urbaine Le Creusot Montceau-lès-Mines (CUCM), la ville concentre encore aujourd'hui ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici en priorité les TPE et PME sous-traitantes de ces grands donneurs d'ordre — mécanique de précision, métallurgie, maintenance industrielle — ainsi que les ETI du Technoparc.",
+    "Le Creusot (71200, Saône-et-Loire), 20 509 habitants, est un pôle industriel historique de Bourgogne-Franche-Comté forgé par la dynastie Schneider de 1837 à 1960. Membre de la Communauté urbaine Le Creusot Montceau-lès-Mines (CUCM), la ville concentre encore aujourd'hui ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne ici en priorité les PME et ETI sous-traitantes de ces grands donneurs d'ordre — mécanique de précision, métallurgie, maintenance industrielle — ainsi que les ETI du Technoparc.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Creusot (71200, CUCM). Nous accompagnons en priorité les TPE et PME sous-traitantes des grands donneurs d'ordre locaux (ArcelorMittal Industeel, Framatome, Alstom, Safran, General Electric) — mécanique, métallurgie, maintenance industrielle — puis les ETI du Technoparc. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Creusot (71200, CUCM). Nous accompagnons en priorité les PME et ETI sous-traitantes des grands donneurs d'ordre locaux (ArcelorMittal Industeel, Framatome, Alstom, Safran, General Electric) — mécanique, métallurgie, maintenance industrielle — puis les ETI du Technoparc. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
   ecosystemEn:
-    "Le Creusot constitue le cœur industriel de la CUCM, structuré autour de cinq donneurs d'ordre majeurs : ArcelorMittal Industeel (aciers spéciaux), Framatome (composants nucléaires), Alstom (bogies TGV et métros), Safran/Snecma (disques moteurs aéronautiques) et General Electric (compresseurs, turbines). Le Technoparc accueille TPE et PME sous-traitantes en mécanique de précision, métallurgie, automatisme et maintenance industrielle. L'héritage Schneider (jusqu'à 20 000 ouvriers durant la Première Guerre mondiale) imprègne encore le tissu local : forges, fonderies, ateliers mécaniques. Communes voisines : Marmagne, Saint-Sernin-du-Bois, Saint-Firmin, Le Breuil, Montcenis, Torcy.",
+    "Le Creusot constitue le cœur industriel de la CUCM, structuré autour de cinq donneurs d'ordre majeurs : ArcelorMittal Industeel (aciers spéciaux), Framatome (composants nucléaires), Alstom (bogies TGV et métros), Safran/Snecma (disques moteurs aéronautiques) et General Electric (compresseurs, turbines). Le Technoparc accueille PME et ETI sous-traitantes en mécanique de précision, métallurgie, automatisme et maintenance industrielle. L'héritage Schneider (jusqu'à 20 000 ouvriers durant la Première Guerre mondiale) imprègne encore le tissu local : forges, fonderies, ateliers mécaniques. Communes voisines : Marmagne, Saint-Sernin-du-Bois, Saint-Firmin, Le Breuil, Montcenis, Torcy.",
   distancesEn:
     "Gare TGV Le Creusot-Montceau-Montchanin à 10 km (Paris 1h20, Lyon 40 min). Gare du Creusot (TER) en centre-ville. A6 accessible via la RN 80 en 25 min. Lyon Part-Dieu à 1h30 en voiture, Dijon à 1h. Le Breuil à 5 min, Montcenis à 5 min, Torcy à 8 min, Montceau-les-Mines à 20 min.",
 };

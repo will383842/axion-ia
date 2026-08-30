@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MALEMORT_COPY: VilleCopy = {
   pitchFr:
-    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu TPE/PME grande distribution, commerces, services, logistique et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu PME et ETI grande distribution, commerces, services, logistique et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu TPE/PME grande distribution, commerces, services, logistique et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu PME et ETI grande distribution, commerces, services, logistique et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malemort (19). Nous accompagnons TPE/PME du commerce, de la grande distribution, de la logistique, des services et de l'artisanat de l'agglo briviste. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malemort (19). Nous accompagnons PME et ETI du commerce, de la grande distribution, de la logistique, des services et de l'artisanat de l'agglo briviste. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malemort (19). Nous accompagnons TPE/PME du commerce, de la grande distribution, de la logistique, des services et de l'artisanat de l'agglo briviste. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Malemort (19). Nous accompagnons PME et ETI du commerce, de la grande distribution, de la logistique, des services et de l'artisanat de l'agglo briviste. Audit sur place sur mesure.",
   ecosystemFr:
     "Malemort est une commune dynamique de l'agglomération de Brive-la-Gaillarde, au carrefour des autoroutes A20 (Paris–Toulouse) et A89 (Bordeaux–Lyon). Zone commerciale majeure (enseignes nationales), logistique, artisanat BTP, services aux entreprises et professions libérales. Proximité immédiate du bassin d'emploi briviste.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MALEMORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Malemort : diagnostic adapté aux TPE/PME du commerce, de la logistique et des services de l'agglo briviste. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Malemort : diagnostic adapté aux TPE/PME du commerce, de la logistique et des services de l'agglo briviste. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Malemort : diagnostic adapté aux PME et ETI du commerce, de la logistique et des services de l'agglo briviste. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Malemort : diagnostic adapté aux PME et ETI du commerce, de la logistique et des services de l'agglo briviste. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Malemort : formations pratiques adaptées au commerce, à la logistique et aux services de l'agglomération Brive.",
@@ -42,8 +42,8 @@ export const MALEMORT_COPY: VilleCopy = {
       en: "Implémentation IA à Malemort : automatisation gestion stocks grande distribution, optimisation flux logistiques, agents IA service client, outils métier commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Malemort : sessions adaptées dirigeants TPE/PME, gérants de commerces et responsables logistique de l'agglo briviste.",
-      en: "Coaching 1-to-1 à Malemort : sessions adaptées dirigeants TPE/PME, gérants de commerces et responsables logistique de l'agglo briviste.",
+      fr: "Coaching 1-to-1 à Malemort : sessions adaptées dirigeants de PME et d'ETI, gérants de commerces et responsables logistique de l'agglo briviste.",
+      en: "Coaching 1-to-1 à Malemort : sessions adaptées dirigeants de PME et d'ETI, gérants de commerces et responsables logistique de l'agglo briviste.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MALEMORT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Malemort  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du commerce et de la logistique malemortoise. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI du commerce et de la logistique malemortoise. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les commerces de la zone de Malemort ?",

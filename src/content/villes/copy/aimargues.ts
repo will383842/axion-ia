@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AIMARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Aimargues (30), commune gardoise de la Petite Camargue entre Vaunage et littoral. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses camarguaises, manade). Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue gardoise.",
+    "Aimargues (30), commune gardoise de la Petite Camargue entre Vaunage et littoral. Tissu PME et ETI viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses camarguaises, manade). Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue gardoise.",
   pitchEn:
-    "Aimargues (30), commune gardoise de la Petite Camargue entre Vaunage et littoral. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses camarguaises, manade). Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue gardoise.",
+    "Aimargues (30), commune gardoise de la Petite Camargue entre Vaunage et littoral. Tissu PME et ETI viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses camarguaises, manade). Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue gardoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit sur place sur mesure.",
   seoHook: "viticulture & agriculture petite",
   ecosystemFr:
     "Aimargues (~5 700 hab) est un bourg de la Petite Camargue gardoise, entre Nîmes et le littoral. Viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses, manades). Gare SNCF Aimargues-Le Cailar sur la ligne Nîmes-Montpellier.",
@@ -30,8 +30,8 @@ export const AIMARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aimargues : diagnostic adapté aux PME et ETI viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aimargues : diagnostic adapté aux PME et ETI viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aimargues : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans Petite Camargue.",
@@ -42,8 +42,8 @@ export const AIMARGUES_COPY: VilleCopy = {
       en: "Implémentation IA à Aimargues : prédiction vendanges, automatisation traçabilité agricole, agents conversationnels commerce, gestion événements camarguais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aimargues : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Petite Camargue.",
-      en: "Coaching 1-to-1 à Aimargues : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Petite Camargue.",
+      fr: "Coaching 1-to-1 à Aimargues : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Petite Camargue.",
+      en: "Coaching 1-to-1 à Aimargues : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Petite Camargue.",
     },
   },
   faqGeolocalisee: [

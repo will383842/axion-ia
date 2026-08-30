@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BESSANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Bessancourt (95), commune résidentielle du Val-d'Oise en lisière de la forêt de Montmorency, abrite un tissu de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bessancourt (95), commune résidentielle du Val-d'Oise en lisière de la forêt de Montmorency, abrite un tissu de PME artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Bessancourt (95), commune résidentielle du Val-d'Oise en lisière de la forêt de Montmorency, abrite un tissu de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bessancourt (95), commune résidentielle du Val-d'Oise en lisière de la forêt de Montmorency, abrite un tissu de PME artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : PME artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : PME artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
   seoHook: "artisanat paysagisme & commerce proximité",
   ecosystemFr:
-    "Bessancourt est une commune résidentielle du Val-d'Oise, en lisière de la forêt de Montmorency, entre Taverny et Frépillon. Tissu économique de TPE artisanales BTP et paysagistes, PME de services aux entreprises, commerces de proximité, professions libérales de santé et prestataires tertiaires connectés au bassin Cergy-Pontoise.",
+    "Bessancourt est une commune résidentielle du Val-d'Oise, en lisière de la forêt de Montmorency, entre Taverny et Frépillon. Tissu économique de PME du BTP et paysagistes, PME de services aux entreprises, commerces de proximité, professions libérales de santé et prestataires tertiaires connectés au bassin Cergy-Pontoise.",
   ecosystemEn:
-    "Bessancourt est une commune résidentielle du Val-d'Oise, en lisière de la forêt de Montmorency, entre Taverny et Frépillon. Tissu économique de TPE artisanales BTP et paysagistes, PME de services aux entreprises, commerces de proximité, professions libérales de santé et prestataires tertiaires connectés au bassin Cergy-Pontoise.",
+    "Bessancourt est une commune résidentielle du Val-d'Oise, en lisière de la forêt de Montmorency, entre Taverny et Frépillon. Tissu économique de PME du BTP et paysagistes, PME de services aux entreprises, commerces de proximité, professions libérales de santé et prestataires tertiaires connectés au bassin Cergy-Pontoise.",
   distancesFr:
     "Gare de Bessancourt (Transilien H) à 5 min à pied. Paris Gare du Nord à 35 min en train. Taverny à 5 min. Cergy-Pontoise à 15 min en voiture. Aéroport Paris-Charles de Gaulle à 35 min. Accès A15 à proximité.",
   distancesEn:
     "Gare de Bessancourt (Transilien H) à 5 min à pied. Paris Gare du Nord à 35 min en train. Taverny à 5 min. Cergy-Pontoise à 15 min en voiture. Aéroport Paris-Charles de Gaulle à 35 min. Accès A15 à proximité.",
   topSectorsNaf: [
-    "TPE artisanat BTP & paysagisme",
+    "PME du BTP & paysagisme",
     "Commerce de proximité & distribution",
     "Services aux entreprises & conseil",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const BESSANCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bessancourt : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Bessancourt : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Bessancourt : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Bessancourt : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bessancourt : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const BESSANCOURT_COPY: VilleCopy = {
       en: "Implémentation IA à Bessancourt : automatisation gestion commerciale, agents conversationnels, classification documentaire, outils IA métier. Tous secteurs vallée de Montmorency et ouest Val-d'Oise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bessancourt : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Bessancourt : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Bessancourt : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Bessancourt : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const BESSANCOURT_COPY: VilleCopy = {
       a: "L'audit sur place IA à Bessancourt démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans à Bessancourt ?",
-      a: "Oui, nous accompagnons les TPE artisanales et commerçantes de Bessancourt sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
+      q: "Accompagnez-vous les PME et artisans à Bessancourt ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Bessancourt sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
     },
     {
       q: "Quels formats de formation IA proposez-vous à Bessancourt ?",

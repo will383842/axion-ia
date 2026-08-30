@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GAN_COPY: VilleCopy = {
   pitchFr:
-    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), TPE viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y travaille avec les organisations du territoire du vignoble jurançonnais et de l'agglomération paloise.",
+    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), PME viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y travaille avec les organisations du territoire du vignoble jurançonnais et de l'agglomération paloise.",
   pitchEn:
-    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), TPE viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y travaille avec les organisations du territoire du vignoble jurançonnais et de l'agglomération paloise.",
+    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), PME viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y travaille avec les organisations du territoire du vignoble jurançonnais et de l'agglomération paloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gan (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit sur place dès {{price:audit-flash|flat}}, conformité RGPD et code souverain garantis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gan (64). Nous accompagnons PME viticoles, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit sur place dès {{price:audit-flash|flat}}, conformité RGPD et code souverain garantis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gan (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit sur place dès {{price:audit-flash|flat}}, conformité RGPD et code souverain garantis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gan (64). Nous accompagnons PME viticoles, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit sur place dès {{price:audit-flash|flat}}, conformité RGPD et code souverain garantis.",
   seoHook: "viticulture jurançon & agroalimentaire cave",
   ecosystemFr:
-    "Gan est une commune de 5 676 habitants, cœur du vignoble AOC Jurançon, au sud de Pau. Cave coopérative de Gan-Jurançon (1re cave de l'appellation), TPE viticoles (domaines familiaux), artisans, PME agroalimentaires, commerces de bourg. Bassin d'emploi commun avec Pau.",
+    "Gan est une commune de 5 676 habitants, cœur du vignoble AOC Jurançon, au sud de Pau. Cave coopérative de Gan-Jurançon (1re cave de l'appellation), PME viticoles (domaines familiaux), artisans, PME agroalimentaires, commerces de bourg. Bassin d'emploi commun avec Pau.",
   ecosystemEn:
-    "Gan est une commune de 5 676 habitants, cœur du vignoble AOC Jurançon, au sud de Pau. Cave coopérative de Gan-Jurançon (1re cave de l'appellation), TPE viticoles (domaines familiaux), artisans, PME agroalimentaires, commerces de bourg. Bassin d'emploi commun avec Pau.",
+    "Gan est une commune de 5 676 habitants, cœur du vignoble AOC Jurançon, au sud de Pau. Cave coopérative de Gan-Jurançon (1re cave de l'appellation), PME viticoles (domaines familiaux), artisans, PME agroalimentaires, commerces de bourg. Bassin d'emploi commun avec Pau.",
   distancesFr:
     "Pau centre à 10 min voiture. Gare de Pau (TGV Paris 4h20 direct) à 10 min. Jurançon à 5 min. Aéroport Pau-Pyrénées à 20 min. Accès A64 (Bayonne-Toulouse). Vignoble jurançonnais sur les coteaux du gave.",
   distancesEn:
@@ -24,7 +24,7 @@ export const GAN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Jurançon",
     "Agroalimentaire & cave coopérative",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de bourg",
     "Services de proximité",
   ],

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, regroupe Bourgneuf-en-Retz et plusieurs communes entre Pornic et Machecoul. Tissu de TPE artisanales, commerçants, exploitations agricoles et ostréicoles, PME touristiques littorales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
+    "Villeneuve-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, regroupe Bourgneuf-en-Retz et plusieurs communes entre Pornic et Machecoul. Tissu de PME artisanales, commerçants, exploitations agricoles et ostréicoles, PME touristiques littorales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
   pitchEn:
-    "Villeneuve-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, regroupe Bourgneuf-en-Retz et plusieurs communes entre Pornic et Machecoul. Tissu de TPE artisanales, commerçants, exploitations agricoles et ostréicoles, PME touristiques littorales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
+    "Villeneuve-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, regroupe Bourgneuf-en-Retz et plusieurs communes entre Pornic et Machecoul. Tissu de PME artisanales, commerçants, exploitations agricoles et ostréicoles, PME touristiques littorales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, PME de l'artisanat et du commerce, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, PME de l'artisanat et du commerce, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
   seoHook: "pays de retz",
   ecosystemFr:
     "Villeneuve-en-Retz est une commune nouvelle de plus de 5 100 habitants dans le Pays de Retz, née de la fusion de Bourgneuf-en-Retz, Fresnay-en-Retz et Chéméré. L'économie locale repose sur l'ostréiculture (baie de Bourgneuf), l'agriculture (maraîchage, élevage), le tourisme littoral saisonnier, l'artisanat BTP et les commerces de proximité.",
@@ -30,8 +30,8 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, PME artisanales, commerçants et PME touristiques du Pays de Retz. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, PME artisanales, commerçants et PME touristiques du Pays de Retz. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-en-Retz : formations ostréiculteurs, artisans, commerçants et hébergeurs touristiques du littoral. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
       en: "Implémentation IA à Villeneuve-en-Retz : traçabilité lots ostréicoles, automatisation réservations touristiques, agents IA multilingues, gestion saisonnalité et digitalisation PME Pays de Retz.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villeneuve-en-Retz : sessions sur votre exploitation, commerce ou gîte. Ostréiculteurs, artisans, gérants TPE/PME du Pays de Retz souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Villeneuve-en-Retz : sessions sur votre exploitation, commerce ou gîte. Ostréiculteurs, artisans, gérants TPE/PME du Pays de Retz souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Villeneuve-en-Retz : sessions sur votre exploitation, commerce ou gîte. Ostréiculteurs, artisans, gérants PME et ETI du Pays de Retz souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Villeneuve-en-Retz : sessions sur votre exploitation, commerce ou gîte. Ostréiculteurs, artisans, gérants PME et ETI du Pays de Retz souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
       a: "Absolument. Pour les ostréiculteurs de Villeneuve-en-Retz et de la baie de Bourgneuf, l'IA optimise la traçabilité des lots, la prédiction de croissance, la gestion des stocks, la commercialisation directe et l'automatisation administrative sanitaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE touristique du Pays de Retz ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE touristiques et hébergeurs saisonniers. Il identifie les opportunités IA : automatisation réservations, communication multilingue, yield management, optimisation référencement local.",
+      q: "Quel est le tarif d'un audit IA pour une PME touristique du Pays de Retz ?",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux PME touristiques et hébergeurs saisonniers. Il identifie les opportunités IA : automatisation réservations, communication multilingue, yield management, optimisation référencement local.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Villeneuve-en-Retz ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Villeneuve-en-Retz sur des cas IA concrets : automatisation devis, gestion planning, communication digitale, agents IA prise de rendez-vous et optimisation stocks.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Villeneuve-en-Retz sur des cas IA concrets : automatisation devis, gestion planning, communication digitale, agents IA prise de rendez-vous et optimisation stocks.",
     },
     {
       q: "Comment vos consultants accèdent-ils à Villeneuve-en-Retz ?",

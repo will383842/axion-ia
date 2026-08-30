@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CROIX_COPY: VilleCopy = {
   pitchFr:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Croix, commune résidentielle chic de la métropole lilloise, aux portes de Roubaix. Sur ce territoire historiquement lié au textile et à la distribution, nous aidons commerces, artisans, professions libérales et petites sociétés de services à passer d'une vague envie d'IA à des automatisations concrètes : devis, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale dans notre approche.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Croix, commune résidentielle chic de la métropole lilloise, aux portes de Roubaix. Sur ce territoire historiquement lié au textile et à la distribution, nous aidons commerces, artisans, professions libérales et petites sociétés de services à passer d'une vague envie d'IA à des automatisations concrètes : devis, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   pitchEn:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Croix, commune résidentielle chic de la métropole lilloise, aux portes de Roubaix. Sur ce territoire historiquement lié au textile et à la distribution, nous aidons commerces, artisans, professions libérales et petites sociétés de services à passer d'une vague envie d'IA à des automatisations concrètes : devis, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale dans notre approche.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Croix, commune résidentielle chic de la métropole lilloise, aux portes de Roubaix. Sur ce territoire historiquement lié au textile et à la distribution, nous aidons commerces, artisans, professions libérales et petites sociétés de services à passer d'une vague envie d'IA à des automatisations concrètes : devis, relances, suivi client. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Croix, dans le Nord, au sein de la Métropole Européenne de Lille. Proche de Roubaix et de son écosystème de distribution et de e-commerce, Croix réunit commerces, professions libérales et petites sociétés de services. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, relances, gestion des commandes. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Croix, dans le Nord, au sein de la Métropole Européenne de Lille. Proche de Roubaix et de son écosystème de distribution et de e-commerce, Croix réunit commerces, professions libérales et petites sociétés de services. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, relances, gestion des commandes. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Croix, dans le Nord, au sein de la Métropole Européenne de Lille. Proche de Roubaix et de son écosystème de distribution et de e-commerce, Croix réunit commerces, professions libérales et petites sociétés de services. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, relances, gestion des commandes. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Croix, dans le Nord, au sein de la Métropole Européenne de Lille. Proche de Roubaix et de son écosystème de distribution et de e-commerce, Croix réunit commerces, professions libérales et petites sociétés de services. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, relances, gestion des commandes. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "commerce & distribution",
   ecosystemFr:
-    "Croix est une commune résidentielle aisée du Nord, intégrée à la Métropole Européenne de Lille et limitrophe de Roubaix, berceau du commerce textile et terre d'origine de grandes dynasties de la distribution. Son tissu local mêle commerces de proximité, professions libérales, artisans et petites sociétés de services, dans le sillage d'un bassin roubaisien fortement tourné vers le e-commerce et la vente à distance. Ce terrain de TPE et de PME se prête bien aux automatisations ciblées — gestion des commandes, relances, suivi client — qu'Axion-IA priorise, l'ETI restant marginale.",
+    "Croix est une commune résidentielle aisée du Nord, intégrée à la Métropole Européenne de Lille et limitrophe de Roubaix, berceau du commerce textile et terre d'origine de grandes dynasties de la distribution. Son tissu local mêle commerces de proximité, professions libérales, artisans et petites sociétés de services, dans le sillage d'un bassin roubaisien fortement tourné vers le e-commerce et la vente à distance. Ce terrain de PME et de PME se prête bien aux automatisations ciblées — gestion des commandes, relances, suivi client — qu'Axion-IA priorise, les grands groupes venant en complément.",
   ecosystemEn:
-    "Croix est une commune résidentielle aisée du Nord, intégrée à la Métropole Européenne de Lille et limitrophe de Roubaix, berceau du commerce textile et terre d'origine de grandes dynasties de la distribution. Son tissu local mêle commerces de proximité, professions libérales, artisans et petites sociétés de services, dans le sillage d'un bassin roubaisien fortement tourné vers le e-commerce et la vente à distance. Ce terrain de TPE et de PME se prête bien aux automatisations ciblées — gestion des commandes, relances, suivi client — qu'Axion-IA priorise, l'ETI restant marginale.",
+    "Croix est une commune résidentielle aisée du Nord, intégrée à la Métropole Européenne de Lille et limitrophe de Roubaix, berceau du commerce textile et terre d'origine de grandes dynasties de la distribution. Son tissu local mêle commerces de proximité, professions libérales, artisans et petites sociétés de services, dans le sillage d'un bassin roubaisien fortement tourné vers le e-commerce et la vente à distance. Ce terrain de PME et de PME se prête bien aux automatisations ciblées — gestion des commandes, relances, suivi client — qu'Axion-IA priorise, les grands groupes venant en complément.",
   distancesFr:
     "Croix est reliée au tramway Mongy entre Lille et Roubaix et bénéficie d'un accès rapide à l'autoroute A22. Lille-Flandres et la gare TGV Lille-Europe sont à une vingtaine de minutes, l'aéroport de Lille-Lesquin à environ 20 km. Cette desserte au cœur de la métropole permet à Axion-IA d'intervenir sur site à Croix sans contrainte logistique.",
   distancesEn:
@@ -34,16 +34,16 @@ export const CROIX_COPY: VilleCopy = {
       en: "Audit IA à Croix : une journée pour cartographier les tâches répétitives d'un commerce ou d'une petite société de services proche de Roubaix — saisie de commandes, relances, suivi client — et prioriser ce qui mérite d'être automatisé.",
     },
     interventions: {
-      fr: "Interventions à Croix : nous traitons un irritant précis d'une TPE ou PME locale — relances clients, gestion de commandes e-commerce, devis — avec une automatisation sobre, livrée vite et facile à maintenir.",
-      en: "Interventions à Croix : nous traitons un irritant précis d'une TPE ou PME locale — relances clients, gestion de commandes e-commerce, devis — avec une automatisation sobre, livrée vite et facile à maintenir.",
+      fr: "Interventions à Croix : nous traitons un irritant précis d'une PME ou ETI locale — relances clients, gestion de commandes e-commerce, devis — avec une automatisation sobre, livrée vite et facile à maintenir.",
+      en: "Interventions à Croix : nous traitons un irritant précis d'une PME ou ETI locale — relances clients, gestion de commandes e-commerce, devis — avec une automatisation sobre, livrée vite et facile à maintenir.",
     },
     implementation: {
       fr: "Implémentation à Croix : nous intégrons l'IA aux outils déjà utilisés par les commerces et services locaux — caisse, CRM, plateformes de vente à distance — pour un déploiement documenté, sans dépendance imposée.",
       en: "Implémentation à Croix : nous intégrons l'IA aux outils déjà utilisés par les commerces et services locaux — caisse, CRM, plateformes de vente à distance — pour un déploiement documenté, sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Croix : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages réellement utiles de l'IA dans le commerce et les services, et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Croix : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages réellement utiles de l'IA dans le commerce et les services, et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Croix : un dirigeant de PME ou ETI, un expert IA senior, pour comprendre les usages réellement utiles de l'IA dans le commerce et les services, et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Croix : un dirigeant de PME ou ETI, un expert IA senior, pour comprendre les usages réellement utiles de l'IA dans le commerce et les services, et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Croix : pour les commerces et e-commerçants du bassin roubaisien, nous construisons des sites et boutiques dopés à l'IA — recommandations, qualification de contacts, contenus assistés — orientés conversion.",
@@ -53,7 +53,7 @@ export const CROIX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle TPE du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle PME du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
         whyHere: [
           "Voisinage immédiat de Roubaix, capitale historique de la vente à distance, et terre d'origine d'Exotec (robotique de préparation de commandes e-commerce) : on construit des boutiques en ligne sur mesure (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts orientées conversion, branchées sur vos flux logistiques et votre stock.",
           "Tissu dense de commerces de proximité, d'artisans et de professions libérales dans une commune résidentielle aisée, abords du parc Barbieux et centre-ville : on greffe l'IA sur l'existant (widget, plugin WordPress, API) — relances, devis, suivi client, prise de rendez-vous — sans refonte coûteuse ni dépendance imposée, avec une UX/UI mobile-first soignée.",
@@ -88,12 +88,6 @@ export const CROIX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, relances automatisées, prise de rendez-vous) sur le site d'un commerce, d'un artisan ou d'une profession libérale de Croix, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const CROIX_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente une boutique ou un site existant, même en pleine saison commerciale. Web Vitals (LCP, INP, CLS), accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout est transférable à un prestataire local de la métropole lilloise ou repris en interne, documentation et transfert de compétences inclus.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle TPE du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Croix des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Croix, commune résidentielle chic de la Métropole Européenne de Lille adossée à Roubaix, berceau du commerce textile et terre des grandes dynasties de la distribution, a aussi vu naître Exotec, première licorne industrielle française de la robotique logistique e-commerce. Le tissu local mêle PME du commerce, professions libérales, sociétés de services et entreprises de la zone d'activités de la Gare, à deux pas du bassin e-commerce roubaisien. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Croix, itérations à distance.",
         whyHere: [
           "Voisinage immédiat de Roubaix, capitale historique de la vente à distance, et terre d'origine d'Exotec (robotique de préparation de commandes e-commerce) : on construit des boutiques en ligne sur mesure (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts orientées conversion, branchées sur vos flux logistiques et votre stock.",
           "Tissu dense de commerces de proximité, d'artisans et de professions libérales dans une commune résidentielle aisée, abords du parc Barbieux et centre-ville : on greffe l'IA sur l'existant (widget, plugin WordPress, API) — relances, devis, suivi client, prise de rendez-vous — sans refonte coûteuse ni dépendance imposée, avec une UX/UI mobile-first soignée.",
@@ -174,12 +168,6 @@ export const CROIX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, relances automatisées, prise de rendez-vous) sur le site d'un commerce, d'un artisan ou d'une profession libérale de Croix, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -229,8 +217,8 @@ export const CROIX_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA accompagne-t-il les petites entreprises de Croix ?",
-      a: "Oui. Notre priorité va aux TPE puis aux PME de Croix : commerces, e-commerçants, professions libérales et petites sociétés de services. Nous accompagnons les ETI plus à la marge. L'objectif reste d'apporter des automatisations utiles, sans complexité inutile.",
+      q: "Axion-IA accompagne-t-il les PME de Croix ?",
+      a: "Oui. Notre priorité va aux PME puis aux PME de Croix : commerces, e-commerçants, professions libérales et petites sociétés de services. Nous accompagnons les ETI plus à la marge. L'objectif reste d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
       q: "En quoi la proximité de Roubaix profite-t-elle aux projets IA à Croix ?",

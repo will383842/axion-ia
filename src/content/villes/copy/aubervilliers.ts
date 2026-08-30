@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const AUBERVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant TPE commerçants et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
+    "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant PME du commerce et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   pitchEn:
-    "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant TPE commerçants et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
+    "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant PME du commerce et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubervilliers (93). Nous accompagnons en priorité les PME du commerce, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubervilliers (93). Nous accompagnons en priorité les PME du commerce, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   seoHook: "commerce de gros, logistique & tertiaire Plaine Saint-Denis",
   ecosystemFr:
     "Aubervilliers s'appuie sur des zones d'activités structurantes : le Parc du Millénaire (bureaux), la ZAC Canal Porte d'Aubervilliers (commerces et bureaux), les EMGP (studios télévision et industries créatives) et le Campus Condorcet (enseignement supérieur et recherche). Héritière d'une longue histoire industrielle (verrerie Saint-Gobain dès 1866, manufacture d'allumettes, parfumerie L.T. Piver, aéroplanes Henry Potez), la ville concentre aujourd'hui commerce de gros, logistique, BTP et services tertiaires.",
@@ -31,8 +31,8 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Aubervilliers : diagnostic pour PME du commerce et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Aubervilliers : diagnostic pour PME du commerce et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubervilliers : ateliers adaptés au commerce de gros, à la logistique canal Saint-Denis, aux artisans BTP et aux services tertiaires. Vos équipes repartent autonomes sur outils IA métier.",
@@ -43,8 +43,8 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Aubervilliers : code custom pour automatiser flux logistiques, gestion catalogue grossistes, classification documents BTP, agents IA service client tertiaire. Pas de no-code, livrables sur mesure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubervilliers : sessions sur site (Parc du Millénaire, ZAC Canal, EMGP) ou en visio pour dirigeants TPE, PME et gérants. Format court, terrain.",
-      en: "Coaching 1-to-1 à Aubervilliers : sessions sur site (Parc du Millénaire, ZAC Canal, EMGP) ou en visio pour dirigeants TPE, PME et gérants. Format court, terrain.",
+      fr: "Coaching 1-to-1 à Aubervilliers : sessions sur site (Parc du Millénaire, ZAC Canal, EMGP) ou en visio pour dirigeants PME, ETI et gérants. Format court, terrain.",
+      en: "Coaching 1-to-1 à Aubervilliers : sessions sur site (Parc du Millénaire, ZAC Canal, EMGP) ou en visio pour dirigeants PME, ETI et gérants. Format court, terrain.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot catalogue, recherche visuelle, génération de fiches) sur la boutique existante d'un grossiste ou détaillant du district textile, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
@@ -172,12 +166,6 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (catalogue chatbot, visual search, sheet generation) onto the existing store of a wholesaler or retailer in the textile district, within a few weeks, without a rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / store",
             detail:
@@ -239,7 +227,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants et grossistes d'Aubervilliers ?",
-      a: "Oui, les TPE commerçants et grossistes sont notre cible prioritaire. Cas typiques : automatisation catalogue, gestion stocks, agents IA réponse client, classification factures, prédiction réassort.",
+      a: "Oui, les PME du commerce et grossistes sont notre cible prioritaire. Cas typiques : automatisation catalogue, gestion stocks, agents IA réponse client, classification factures, prédiction réassort.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Aubervilliers ?",

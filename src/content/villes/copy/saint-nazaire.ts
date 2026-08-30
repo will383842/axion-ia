@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_NAZAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Nazaire : sous-traitants des Chantiers de l'Atlantique et d'Airbus, PME de la filière naval-aéronautique, commerces et services de l'estuaire. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Nazaire : sous-traitants des Chantiers de l'Atlantique et d'Airbus, PME de la filière naval-aéronautique, commerces et services de l'estuaire. On déploie des automatisations utiles, pas des effets d'annonce.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Nazaire : sous-traitants des Chantiers de l'Atlantique et d'Airbus, PME de la filière naval-aéronautique, commerces et services de l'estuaire. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Nazaire : sous-traitants des Chantiers de l'Atlantique et d'Airbus, PME de la filière naval-aéronautique, commerces et services de l'estuaire. On déploie des automatisations utiles, pas des effets d'annonce.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Nazaire, en Loire-Atlantique, pour les TPE et PME de la ville-usine : sous-traitants des Chantiers de l'Atlantique (paquebots géants) et d'Airbus (assemblage des ailes et tronçons A320), PME de la filière naval-aéronautique et des énergies marines, commerces et services du port industriel de l'estuaire de la Loire. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, reporting qualité, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Nazaire, en Loire-Atlantique, pour les PME et ETI de la ville-usine : sous-traitants des Chantiers de l'Atlantique (paquebots géants) et d'Airbus (assemblage des ailes et tronçons A320), PME de la filière naval-aéronautique et des énergies marines, commerces et services du port industriel de l'estuaire de la Loire. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, reporting qualité, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Nazaire, en Loire-Atlantique, pour les TPE et PME de la ville-usine : sous-traitants des Chantiers de l'Atlantique (paquebots géants) et d'Airbus (assemblage des ailes et tronçons A320), PME de la filière naval-aéronautique et des énergies marines, commerces et services du port industriel de l'estuaire de la Loire. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, reporting qualité, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Nazaire, en Loire-Atlantique, pour les PME et ETI de la ville-usine : sous-traitants des Chantiers de l'Atlantique (paquebots géants) et d'Airbus (assemblage des ailes et tronçons A320), PME de la filière naval-aéronautique et des énergies marines, commerces et services du port industriel de l'estuaire de la Loire. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, reporting qualité, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "naval, aéronautique & sous-traitance",
   ecosystemFr:
-    "Saint-Nazaire est l'une des grandes villes industrielles de France, portée par les Chantiers de l'Atlantique, qui y construisent les plus grands paquebots du monde, et par Airbus, qui y assemble des ailes et tronçons de fuselage pour la famille A320. Autour de ces donneurs d'ordre gravite un réseau dense de sous-traitants et de PME de la filière naval-aéronautique, complété par les énergies marines, le port industriel de l'estuaire et un tissu de commerces et services. Ces petites structures, soumises aux exigences qualité de la filière, gagnent beaucoup à automatiser leur administratif avec l'IA.",
+    "Saint-Nazaire est l'une des grandes villes industrielles de France, portée par les Chantiers de l'Atlantique, qui y construisent les plus grands paquebots du monde, et par Airbus, qui y assemble des ailes et tronçons de fuselage pour la famille A320. Autour de ces donneurs d'ordre gravite un réseau dense de sous-traitants et de PME de la filière naval-aéronautique, complété par les énergies marines, le port industriel de l'estuaire et un tissu de commerces et services. Ces PME, soumises aux exigences qualité de la filière, gagnent beaucoup à automatiser leur administratif avec l'IA.",
   ecosystemEn:
-    "Saint-Nazaire est l'une des grandes villes industrielles de France, portée par les Chantiers de l'Atlantique, qui y construisent les plus grands paquebots du monde, et par Airbus, qui y assemble des ailes et tronçons de fuselage pour la famille A320. Autour de ces donneurs d'ordre gravite un réseau dense de sous-traitants et de PME de la filière naval-aéronautique, complété par les énergies marines, le port industriel de l'estuaire et un tissu de commerces et services. Ces petites structures, soumises aux exigences qualité de la filière, gagnent beaucoup à automatiser leur administratif avec l'IA.",
+    "Saint-Nazaire est l'une des grandes villes industrielles de France, portée par les Chantiers de l'Atlantique, qui y construisent les plus grands paquebots du monde, et par Airbus, qui y assemble des ailes et tronçons de fuselage pour la famille A320. Autour de ces donneurs d'ordre gravite un réseau dense de sous-traitants et de PME de la filière naval-aéronautique, complété par les énergies marines, le port industriel de l'estuaire et un tissu de commerces et services. Ces PME, soumises aux exigences qualité de la filière, gagnent beaucoup à automatiser leur administratif avec l'IA.",
   distancesFr:
     "Saint-Nazaire dispose d'une gare TGV en centre-ville reliant Paris-Montparnasse en environ 3h via Nantes. La N171 et la N165 desservent directement la ville vers Nantes, à une cinquantaine de kilomètres, et son aéroport de Nantes-Atlantique, à environ 60 km. Le port industriel de l'estuaire de la Loire structure l'accès aux sites des grands donneurs d'ordre. Cette desserte rend nos déplacements sur site fluides dans toute la presqu'île et l'agglomération nazairienne.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
       en: "L'implémentation déploie à Saint-Nazaire des assistants IA et workflows sur mesure adaptés aux exigences de la sous-traitance naval-aéronautique, avec formation des équipes et conformité RGPD dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Saint-Nazaire forme le dirigeant de TPE ou PME à piloter l'IA : cas d'usage métier de la filière industrielle, choix d'outils, prompts efficaces et gouvernance des données techniques.",
-      en: "L'accompagnement un-à-un à Saint-Nazaire forme le dirigeant de TPE ou PME à piloter l'IA : cas d'usage métier de la filière industrielle, choix d'outils, prompts efficaces et gouvernance des données techniques.",
+      fr: "L'accompagnement un-à-un à Saint-Nazaire forme le dirigeant de PME ou ETI à piloter l'IA : cas d'usage métier de la filière industrielle, choix d'outils, prompts efficaces et gouvernance des données techniques.",
+      en: "L'accompagnement un-à-un à Saint-Nazaire forme le dirigeant de PME ou ETI à piloter l'IA : cas d'usage métier de la filière industrielle, choix d'outils, prompts efficaces et gouvernance des données techniques.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés équipent les PME industrielles et de services de Saint-Nazaire d'une plateforme rapide avec chatbot, demande de devis et contenu IA, pensée pour la recherche B2B et la filière naval-aéro.",
@@ -88,12 +88,6 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour artisans, commerces et petits sous-traitants nazairiens : site rapide, optimisé mobile et recherche locale, formulaire de devis et chatbot de premier niveau, prêt à convaincre un donneur d'ordre de la filière naval-aéro.",
-          },
           {
             price: "Plateforme métier ou e-commerce B2B",
             sizeLabel: "PME",
@@ -175,12 +169,6 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Augmented brochure site",
-            detail:
-              "For Saint-Nazaire craftspeople, retailers and small subcontractors: fast site, mobile- and local-search-optimised, quote form and first-level chatbot, ready to convince a naval-aero prime contractor.",
-          },
-          {
             price: "Business platform or B2B e-commerce",
             sizeLabel: "PME",
             detail:
@@ -238,7 +226,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
-      a: "En priorité les TPE puis les PME de l'agglomération nazairienne : sous-traitants naval et aéronautique, énergies marines, commerces et services. Les ETI sont accompagnées en complément, chaque mission étant ajustée à la taille de la structure.",
+      a: "En priorité les PME puis les ETI de l'agglomération nazairienne : sous-traitants naval et aéronautique, énergies marines, commerces et services. Les grands groupes sont accompagnés en complément, chaque mission étant ajustée à la taille de la structure.",
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Nazaire ?",

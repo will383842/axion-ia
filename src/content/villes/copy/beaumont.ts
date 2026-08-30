@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BEAUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
+    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, PME de l'artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
+    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, PME de l'artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaumont (63). Nous accompagnons PME et ETI : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaumont (63). Nous accompagnons PME et ETI : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
   seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
-    "Beaumont est une commune résidentielle prisée au sud de Clermont-Ferrand, intégrée à Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales (santé, juridique, conseil), commerces de proximité, TPE artisanat, immobilier résidentiel dynamique.",
+    "Beaumont est une commune résidentielle prisée au sud de Clermont-Ferrand, intégrée à Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales (santé, juridique, conseil), commerces de proximité, PME de l'artisanat, immobilier résidentiel dynamique.",
   ecosystemEn:
-    "Beaumont est une commune résidentielle prisée au sud de Clermont-Ferrand, intégrée à Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales (santé, juridique, conseil), commerces de proximité, TPE artisanat, immobilier résidentiel dynamique.",
+    "Beaumont est une commune résidentielle prisée au sud de Clermont-Ferrand, intégrée à Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales (santé, juridique, conseil), commerces de proximité, PME de l'artisanat, immobilier résidentiel dynamique.",
   distancesFr:
     "Clermont-Ferrand centre à 10 min. Ceyrat à 5 min. Romagnat à 5 min. Aéroport Clermont-Ferrand Auvergne à 30 min.",
   distancesEn:
@@ -25,7 +25,7 @@ export const BEAUMONT_COPY: VilleCopy = {
     "PME tertiaires / services",
     "Professions libérales (santé, juridique)",
     "Commerces de proximité",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Immobilier résidentiel",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const BEAUMONT_COPY: VilleCopy = {
       en: "Implémentation IA à Beaumont : automatisation secrétariat médical, gestion dossiers juridiques, CRM augmentés PME, outils prise de rendez-vous, estimations immobilières IA.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beaumont : sessions dans votre cabinet, bureau ou en visio. Professions libérales, gérants TPE/PME, commerçants, artisans, agents immobiliers beaumontois.",
-      en: "Coaching 1-to-1 à Beaumont : sessions dans votre cabinet, bureau ou en visio. Professions libérales, gérants TPE/PME, commerçants, artisans, agents immobiliers beaumontois.",
+      fr: "Coaching 1-to-1 à Beaumont : sessions dans votre cabinet, bureau ou en visio. Professions libérales, gérants PME et ETI, commerçants, artisans, agents immobiliers beaumontois.",
+      en: "Coaching 1-to-1 à Beaumont : sessions dans votre cabinet, bureau ou en visio. Professions libérales, gérants PME et ETI, commerçants, artisans, agents immobiliers beaumontois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const BEAUMONT_COPY: VilleCopy = {
       a: "Oui, estimations immobilières IA, génération annonces automatisée, matching acquéreurs, gestion leads, automatisation relances.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

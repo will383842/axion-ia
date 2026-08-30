@@ -660,9 +660,9 @@ export default async function RegionPage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* Section « Nous accompagnons toutes les tailles » personnalisée à la
+      {/* Section « Nous accompagnons les PME, ETI et grands groupes » personnalisée à la
           région (Will 2026-05-26). H2 régionalisé + paragraphe `audienceLocalFr`
-          hand-crafted par région (cf. regions.ts). 4 cards TPE/PME/ETI/Grandes
+          hand-crafted par région (cf. regions.ts). 3 cards PME/ETI/grands groupes + 1 cas concret régional
           réutilisées de la home via les clés i18n `audience{N}{Title,Lead,Detail}`. */}
       <RegionAudienceSection region={region} isFr={isFr} />
 
@@ -773,7 +773,7 @@ export default async function RegionPage({ params }: Props) {
         titleEm={isFr ? "Parlons-en." : "Let's talk."}
         description={
           isFr
-            ? `PME, ETI, grand groupe ou TPE — en ${region.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous.`
+            ? `PME, ETI ou grand groupe — en ${region.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous.`
             : `Micro-business, SMB, mid-market or large enterprise — in ${region.nameFr} as anywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours.`
         }
         cta={

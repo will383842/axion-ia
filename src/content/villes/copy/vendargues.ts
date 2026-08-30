@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const VENDARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu TPE commerçants, PME services et distribution, artisans BTP, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu PME du commerce, PME services et distribution, artisans BTP, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu TPE commerçants, PME services et distribution, artisans BTP, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu PME du commerce, PME services et distribution, artisans BTP, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendargues (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendargues (34). Nous accompagnons PME du commerce, PME de distribution et services, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendargues (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendargues (34). Nous accompagnons PME du commerce, PME de distribution et services, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   ecosystemFr:
-    "Vendargues est une commune dynamique de l'est de Montpellier avec d'importantes zones d'activités commerciales (enseigne nationale, distribution). Accès direct A9/A709, forte attractivité économique. Tissu TPE commerçants, PME distribution et services, artisans BTP, professions libérales.",
+    "Vendargues est une commune dynamique de l'est de Montpellier avec d'importantes zones d'activités commerciales (enseigne nationale, distribution). Accès direct A9/A709, forte attractivité économique. Tissu PME du commerce, PME distribution et services, artisans BTP, professions libérales.",
   ecosystemEn:
-    "Vendargues est une commune dynamique de l'est de Montpellier avec d'importantes zones d'activités commerciales (enseigne nationale, distribution). Accès direct A9/A709, forte attractivité économique. Tissu TPE commerçants, PME distribution et services, artisans BTP, professions libérales.",
+    "Vendargues est une commune dynamique de l'est de Montpellier avec d'importantes zones d'activités commerciales (enseigne nationale, distribution). Accès direct A9/A709, forte attractivité économique. Tissu PME du commerce, PME distribution et services, artisans BTP, professions libérales.",
   distancesFr:
     "Montpellier centre à 12 min. Le Crès à 3 min. Castries à 5 min. Gare TGV Montpellier Sud de France à 15 min. Aéroport Montpellier-Méditerranée à 15 min. Accès A9/A709.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VENDARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vendargues : diagnostic pour PME distribution, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vendargues : diagnostic pour PME distribution, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vendargues : diagnostic pour PME distribution, PME du commerce, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vendargues : diagnostic pour PME distribution, PME du commerce, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vendargues : ateliers adaptés enseigne commerciale, PME distribution, cabinet libéral ou artisan. Équipes autonomes sur outils IA métier.",
@@ -56,8 +56,8 @@ export const VENDARGUES_COPY: VilleCopy = {
       a: "Oui, nous réalisons des audits IA adaptés aux enseignes commerciales et PME de distribution : optimisation stocks, automatisation commandes, chatbot client, prédiction ventes. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
-      q: "Quels services pour les TPE et artisans ?",
-      a: "Pour les TPE et artisans à Vendargues, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion planning.",
+      q: "Quels services pour les PME et artisans ?",
+      a: "Pour les PME et artisans à Vendargues, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion planning.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

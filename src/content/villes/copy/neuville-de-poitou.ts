@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   pitchFr:
-    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
+    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu PME artisanales, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
   pitchEn:
-    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
+    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu PME artisanales, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   seoHook: "commerce proximité & artisanat services",
   ecosystemFr:
-    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
+    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu PME artisanales, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu TPE artisans, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
+    "Neuville-de-Poitou (5 513 hab) est le bourg-centre historique du nord de la Vienne, intégré à Grand Poitiers. Pôle de commerces et services pour les communes rurales environnantes. Proximité Futuroscope (10 min), axe A10. Tissu PME artisanales, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   distancesFr:
     "Poitiers centre à 15 min. Futuroscope à 10 min. Gare TGV Futuroscope à 10 min (TGV Paris 1h30). Aéroport Poitiers-Biard à 20 min. Châtellerault à 30 min. Axe A10 Paris-Bordeaux à 10 min.",
   distancesEn:
     "Poitiers centre à 15 min. Futuroscope à 10 min. Gare TGV Futuroscope à 10 min (TGV Paris 1h30). Aéroport Poitiers-Biard à 20 min. Châtellerault à 30 min. Axe A10 Paris-Bordeaux à 10 min.",
   topSectorsNaf: [
     "Commerce de proximité & grande distribution",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "Agriculture céréalière",
     "Professions libérales & santé",
     "PME tertiaires Grand Poitiers",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux PME artisanales, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux PME artisanales, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neuville-de-Poitou : formats adaptés au cabinet, commerce, exploitation agricole ou bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
       en: "Implémentation IA à Neuville-de-Poitou : automatisation secrétariat médical, CRM augmenté, classification documents, agents conversationnels, gestion planning. Tous secteurs Grand Poitiers nord.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Neuville-de-Poitou : sessions dans votre cabinet, commerce, exploitation ou en visio. Dirigeants TPE/PME, professions libérales, commerçants souhaitant intégrer l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Neuville-de-Poitou : sessions dans votre cabinet, commerce, exploitation ou en visio. Dirigeants TPE/PME, professions libérales, commerçants souhaitant intégrer l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Neuville-de-Poitou : sessions dans votre cabinet, commerce, exploitation ou en visio. Dirigeants PME et ETI, professions libérales, commerçants souhaitant intégrer l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Neuville-de-Poitou : sessions dans votre cabinet, commerce, exploitation ou en visio. Dirigeants PME et ETI, professions libérales, commerçants souhaitant intégrer l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Neuville-de-Poitou et tout le nord Poitou (Mirebeau, Vouillé, Jaunay-Marigny, Saint-Martin-la-Pallu). Nos consultants sont basés à Poitiers (15 min) et couvrent tout Grand Poitiers.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Neuville-de-Poitou ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Neuville-de-Poitou. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Neuville-de-Poitou ?",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Neuville-de-Poitou. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales du nord Vienne ?",

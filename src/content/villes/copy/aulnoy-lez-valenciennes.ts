@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
   pitchFr:
-    "Aulnoy-lez-Valenciennes (59), commune de l'agglomeration valenciennoise, reunit pres de 7 080 habitants. Elle accueille l'Universite Polytechnique Hauts-de-France (UPHF), moteur d'innovation locale. Tissu economique de TPE artisans, PME tertiaires, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
+    "Aulnoy-lez-Valenciennes (59), commune de l'agglomeration valenciennoise, reunit pres de 7 080 habitants. Elle accueille l'Universite Polytechnique Hauts-de-France (UPHF), moteur d'innovation locale. Tissu economique de PME artisanales, PME tertiaires, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Aulnoy-lez-Valenciennes (59), commune de l'agglomeration valenciennoise, reunit pres de 7 080 habitants. Elle accueille l'Universite Polytechnique Hauts-de-France (UPHF), moteur d'innovation locale. Tissu economique de TPE artisans, PME tertiaires, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
+    "Aulnoy-lez-Valenciennes (59), commune de l'agglomeration valenciennoise, reunit pres de 7 080 habitants. Elle accueille l'Universite Polytechnique Hauts-de-France (UPHF), moteur d'innovation locale. Tissu economique de PME artisanales, PME tertiaires, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "universite UPHF, tertiaire & innovation",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les PME, ETI et grands groupes du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les PME, ETI et grands groupes du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Aulnoy-lez-Valenciennes heberge le campus principal de l'UPHF (Universite Polytechnique Hauts-de-France), pole d'enseignement superieur et de recherche (ingenierie, numerique, transports). Ce voisinage universitaire nourrit un ecosysteme de startups, PME tertiaires, commerces etudiants et services aux entreprises du Valenciennois.",
   ecosystemEn:
@@ -25,13 +25,13 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
     "Enseignement superieur & recherche",
     "PME tertiaires & services",
     "Startups numerique / deeptech",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et TPE du Valenciennois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et TPE du Valenciennois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et PME du Valenciennois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et PME du Valenciennois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Aulnoy-lez-Valenciennes : formations adaptees au bureau tertiaire, a la startup tech ou au commerce. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
       en: "Implementation IA a Aulnoy-lez-Valenciennes : agents conversationnels, automatisation workflow, CRM augmentes, outils IA sur mesure pour PME tertiaires et startups UPHF.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Aulnoy-lez-Valenciennes : sessions dans votre bureau, coworking UPHF ou commerce. Dirigeants PME, fondateurs startups, gerants TPE du Valenciennois.",
-      en: "Coaching 1-to-1 a Aulnoy-lez-Valenciennes : sessions dans votre bureau, coworking UPHF ou commerce. Dirigeants PME, fondateurs startups, gerants TPE du Valenciennois.",
+      fr: "Coaching 1-to-1 a Aulnoy-lez-Valenciennes : sessions dans votre bureau, coworking UPHF ou commerce. Dirigeants PME, fondateurs startups, gerants PME du Valenciennois.",
+      en: "Coaching 1-to-1 a Aulnoy-lez-Valenciennes : sessions dans votre bureau, coworking UPHF ou commerce. Dirigeants PME, fondateurs startups, gerants PME du Valenciennois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les startups et spin-offs de l'Universite Polytechnique Hauts-de-France sur leurs cas IA : prototypage, agents conversationnels, automatisation, integration outils IA dans leur produit. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Accompagnez-vous les TPE et commercants a Aulnoy ?",
-      a: "Oui, nous accompagnons les TPE artisans et commercants du Valenciennois : automatisation devis, agents IA prise de RDV, outils IA accessibles sans competence technique prealable. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et commercants a Aulnoy ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce du Valenciennois : automatisation devis, agents IA prise de RDV, outils IA accessibles sans competence technique prealable. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Aulnoy-lez-Valenciennes ?",

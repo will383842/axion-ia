@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BERRE_L_ETANG_COPY: VilleCopy = {
   pitchFr:
-    "Berre-l'Étang (13), commune industrielle sur les rives de l'étang de Berre dans les Bouches-du-Rhône, s'inscrit dans le bassin pétrochimique et logistique de l'ouest marseillais. TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg. Axion-IA y travaille avec les organisations du territoire du pourtour de l'étang de Berre.",
+    "Berre-l'Étang (13), commune industrielle sur les rives de l'étang de Berre dans les Bouches-du-Rhône, s'inscrit dans le bassin pétrochimique et logistique de l'ouest marseillais. PME sous-traitants industriels, PME maintenance et chimie, commerces de bourg. Axion-IA y travaille avec les organisations du territoire du pourtour de l'étang de Berre.",
   pitchEn:
-    "Berre-l'Étang (13), commune industrielle sur les rives de l'étang de Berre dans les Bouches-du-Rhône, s'inscrit dans le bassin pétrochimique et logistique de l'ouest marseillais. TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg. Axion-IA y travaille avec les organisations du territoire du pourtour de l'étang de Berre.",
+    "Berre-l'Étang (13), commune industrielle sur les rives de l'étang de Berre dans les Bouches-du-Rhône, s'inscrit dans le bassin pétrochimique et logistique de l'ouest marseillais. PME sous-traitants industriels, PME maintenance et chimie, commerces de bourg. Axion-IA y travaille avec les organisations du territoire du pourtour de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berre-l'Étang (13). Nous accompagnons PME sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berre-l'Étang (13). Nous accompagnons PME sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   seoHook: "pétrochimie, industrie & étang de Berre",
   ecosystemFr:
-    "Berre-l'Étang est une commune industrielle sur le pourtour de l'étang de Berre, dans le bassin pétrochimique ouest-marseillais. Tissu TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg et services aux entreprises. Proximité directe de la raffinerie et des zones logistiques.",
+    "Berre-l'Étang est une commune industrielle sur le pourtour de l'étang de Berre, dans le bassin pétrochimique ouest-marseillais. Tissu PME sous-traitants industriels, PME maintenance et chimie, commerces de bourg et services aux entreprises. Proximité directe de la raffinerie et des zones logistiques.",
   ecosystemEn:
-    "Berre-l'Étang est une commune industrielle sur le pourtour de l'étang de Berre, dans le bassin pétrochimique ouest-marseillais. Tissu TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg et services aux entreprises. Proximité directe de la raffinerie et des zones logistiques.",
+    "Berre-l'Étang est une commune industrielle sur le pourtour de l'étang de Berre, dans le bassin pétrochimique ouest-marseillais. Tissu PME sous-traitants industriels, PME maintenance et chimie, commerces de bourg et services aux entreprises. Proximité directe de la raffinerie et des zones logistiques.",
   distancesFr:
     "Martigues à 15 min. Salon-de-Provence à 20 min. Aéroport Marseille Provence à 10 min. Vitrolles à 10 min. Marseille centre à 40 min. Aix-en-Provence à 30 min. Rognac à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
     "Pétrochimie & chimie industrielle",
     "Maintenance industrielle",
     "Logistique & transport",
-    "TPE sous-traitance industrielle",
+    "PME sous-traitance industrielle",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Berre-l'Étang : diagnostic adapté aux PME sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Berre-l'Étang : diagnostic adapté aux PME sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Berre-l'Étang : formats adaptés au site industriel, à l'atelier maintenance et au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
       en: "Implémentation IA à Berre-l'Étang : automatisation reporting maintenance, conformité ICPE, agents IA traçabilité chimique, extraction données industrielles.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Berre-l'Étang : sessions pour dirigeants TPE/PME industriels et responsables maintenance souhaitant maîtriser l'IA appliquée à leur site.",
-      en: "Coaching 1-to-1 à Berre-l'Étang : sessions pour dirigeants TPE/PME industriels et responsables maintenance souhaitant maîtriser l'IA appliquée à leur site.",
+      fr: "Coaching 1-to-1 à Berre-l'Étang : sessions pour dirigeants de PME et d'ETI industriels et responsables maintenance souhaitant maîtriser l'IA appliquée à leur site.",
+      en: "Coaching 1-to-1 à Berre-l'Étang : sessions pour dirigeants de PME et d'ETI industriels et responsables maintenance souhaitant maîtriser l'IA appliquée à leur site.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Berre-l'Étang ?",
-      a: "Oui, nous accompagnons les TPE et PME sous-traitants industriels du bassin de Berre : automatisation reporting maintenance, planification interventions, conformité documentaire ICPE, extraction données techniques.",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitants industriels du bassin de Berre : automatisation reporting maintenance, planification interventions, conformité documentaire ICPE, extraction données techniques.",
     },
     {
       q: "L'IA est-elle adaptée à l'industrie chimique de Berre-l'Étang ?",

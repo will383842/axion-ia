@@ -8,7 +8,7 @@
 //   - Mention systématique « frais de logement, repas et forfait trajet en sus »
 //     sur les formats interventions.
 //   - Aucun prix en dur (source de vérité = pricing.ts).
-//   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric + ~5 % data unique anti-doorway HCU 2024.
 //   - PAS heroSchema, PAS unAUn.
 //
@@ -28,7 +28,7 @@ import type { VilleCopy } from "./types";
 
 export const RENNES_COPY: VilleCopy = {
   pitchFr:
-    "Rennes concentre 8 400 établissements actifs, le premier pôle public IA de France hors Île-de-France (IRISA + Inria, 1 400 chercheurs), la French Tech Rennes Saint-Malo et une industrie de transformation en plein virage (Stellantis → Safran, agroalimentaire). Axion-IA y intervient sur site, des TPE du centre historique aux ETI high-tech de Rennes Atalante.",
+    "Rennes concentre 8 400 établissements actifs, le premier pôle public IA de France hors Île-de-France (IRISA + Inria, 1 400 chercheurs), la French Tech Rennes Saint-Malo et une industrie de transformation en plein virage (Stellantis → Safran, agroalimentaire). Axion-IA y intervient sur site, des PME du centre historique aux ETI high-tech de Rennes Atalante.",
   pitchEn:
     "Rennes hosts 8,400 active businesses, France's top public AI hub outside Île-de-France (IRISA + Inria, 1,400 researchers), the French Tech Rennes Saint-Malo label, and an industry undergoing deep transformation (Stellantis → Safran, agri-food). Axion-IA delivers on site, from Rennes city-centre micro-businesses to Rennes Atalante high-tech mid-caps.",
 
@@ -56,7 +56,7 @@ export const RENNES_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rennes (35) sur site — technopole Atalante Beaulieu, ZAC ViaSilva, centre historique, zone La Janais. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin rennais (numérique, agroalimentaire, industrie, banque) ainsi que les scale-ups de la French Tech Rennes Saint-Malo sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rennes (35) sur site — technopole Atalante Beaulieu, ZAC ViaSilva, centre historique, zone La Janais. Nous accompagnons les PME, ETI et grands groupes du bassin rennais (numérique, agroalimentaire, industrie, banque) ainsi que les scale-ups de la French Tech Rennes Saint-Malo sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Rennes (35) on site — Atalante Beaulieu technopole, ZAC ViaSilva, historic city centre, La Janais zone. We support micro-businesses, SMEs, mid-caps and large enterprises in the Rennes basin (digital, agri-food, industry, banking) along with French Tech Rennes Saint-Malo scale-ups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -88,10 +88,10 @@ export const RENNES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Rennes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI du numérique installées sur Rennes Atalante Beaulieu. Nos consultants interviennent directement dans vos locaux — centre historique, technopoles, zones La Janais et ViaSilva.",
+        hero: "L'audit IA Axion-IA à Rennes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre-ville aux ETI du numérique installées sur Rennes Atalante Beaulieu. Nos consultants interviennent directement dans vos locaux — centre historique, technopoles, zones La Janais et ViaSilva.",
         whyHere: [
           "Rennes est notre pôle d'ancrage breton : nous y intervenons régulièrement pour les structures du numérique (Atalante), de l'agroalimentaire (Valorial, CFIA), de l'industrie (Stellantis, Safran) et des services tertiaires (banque, conseil, santé).",
-          "Tissu économique rennais dense et contrasté : TPE du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
+          "Tissu économique rennais dense et contrasté : PME du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
           "Présence forte de l'écosystème French Tech Rennes Saint-Malo : scale-ups deep-tech et IA nées de l'IRISA et de l'Inria, souvent en phase de passage du POC à la production.",
           "Restitutions toujours en présentiel à Rennes : ateliers d'idéation dans vos locaux, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
           "Aucun devis opaque : tarifs publics affichés, vous savez exactement ce que vous engagez avant de signer. Même grille tarifaire qu'à Paris ou Lyon.",
@@ -125,12 +125,6 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Audit sur place",
-            detail:
-              "Pour indépendants, micro-entreprises et cabinets rennais ou bas-bretons du centre-ville jusqu'à quelques collaborateurs.",
-          },
           {
             sizeLabel: "PME (10-249 collab)",
             price: "Audit Ciblé ou Stratégique PME",
@@ -194,7 +188,7 @@ export const RENNES_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire rennais ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
+        hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
         whyHere: [
           "Rennes is our Brittany anchor hub: we intervene regularly for digital (Atalante), agri-food (Valorial, CFIA), industrial (Stellantis, Safran) and business services (banking, consulting, health) organizations.",
           "Dense and varied Rennes economic fabric: city-centre micro-businesses, growing SMEs at ViaSilva, digital mid-caps at Atalante Beaulieu, major GE sites such as Canon CRF and Orange Innovation in Cesson-Sévigné.",
@@ -231,12 +225,6 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Sur place audit",
-            detail:
-              "For freelancers, micro-firms and Rennes or Brittany city-centre practices up to a few staff.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "Targeted or SME Strategic audit",
@@ -341,12 +329,6 @@ export const RENNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, cabinets, micro-structures numériques ou agro rennaises jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME (10-249 collab)",
             price: "Formation collective ou Équipes",
             detail:
@@ -446,12 +428,6 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Group format",
-            detail:
-              "Ideal freelancers, firms, digital or agri-food micro-structures in Rennes up to about ten staff.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "Group or Teams format",
@@ -556,12 +532,6 @@ export const RENNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus de réunion, génération de fiches produits) pour une micro-structure rennaise.",
-          },
-          {
             sizeLabel: "PME (10-249 collab)",
             price: "Mission PME",
             detail:
@@ -597,7 +567,7 @@ export const RENNES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Rennes ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -661,12 +631,6 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, meeting minutes, product sheet generation) for a Rennes micro-structure.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "SME mission",
@@ -771,12 +735,6 @@ export const RENNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Entrée coaching 1-to-1 — indépendant, développeur, consultant ou dirigeant TPE du numérique ou de l'agro rennais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -876,12 +834,6 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
-            detail:
-              "Entry-level 1-to-1 coaching — freelancer, developer, consultant or Rennes digital or agri-food micro-business executive.",
-          },
           {
             sizeLabel: "SME",
             price: "On quote",
@@ -983,12 +935,6 @@ export const RENNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1069,12 +1015,6 @@ export const RENNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1124,7 +1064,7 @@ export const RENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rennes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Rennes qu'à Paris ou Lyon.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Rennes qu'à Paris ou Lyon.",
     },
     {
       q: "Avez-vous de l'expérience dans l'écosystème numérique de Rennes Atalante ?",

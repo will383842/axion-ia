@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const REMIREMONT_COPY: VilleCopy = {
   pitchFr:
-    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de PME et ETI administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de PME et ETI administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Remiremont (88). Nous accompagnons PME et ETI : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Remiremont (88). Nous accompagnons PME et ETI : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place sur mesure.",
   seoHook: "massif vosgien",
   ecosystemFr:
     "Remiremont est une sous-préfecture des Vosges située au confluent de la Moselle et de la Moselotte, au pied du massif vosgien sud. La ville historique abbatiale conserve son abbaye, sa basilique Saint-Pierre et ses célèbres arcades commerçantes du centre-ville. L'économie locale repose sur l'administration sous-préfectorale, le commerce de centre-ville (arcades), l'hôtellerie-restauration, le tourisme patrimonial et thermal (Plombières-les-Bains à proximité), l'artisanat textile, les professions libérales et les services aux entreprises.",
@@ -34,16 +34,16 @@ export const REMIREMONT_COPY: VilleCopy = {
       en: "Audit IA à Remiremont : diagnostic adapté aux commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Remiremont : automatisation CRM commerce de centre-ville, réservations hôtelières, gestion cabinets libéraux, e-commerce textile, agents conversationnels et automatisations administratives pour PME sud-vosgiennes.",
       en: "Implémentation IA à Remiremont : automatisation CRM commerce de centre-ville, réservations hôtelières, gestion cabinets libéraux, e-commerce textile, agents conversationnels et automatisations administratives pour PME sud-vosgiennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Remiremont : sessions dans votre commerce, hôtel, cabinet, atelier ou en visio. Dirigeants TPE/PME, artisans et professions libérales du sud-vosgien souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Remiremont : sessions dans votre commerce, hôtel, cabinet, atelier ou en visio. Dirigeants TPE/PME, artisans et professions libérales du sud-vosgien souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Remiremont : sessions dans votre commerce, hôtel, cabinet, atelier ou en visio. Dirigeants PME et ETI, artisans et professions libérales du sud-vosgien souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Remiremont : sessions dans votre commerce, hôtel, cabinet, atelier ou en visio. Dirigeants PME et ETI, artisans et professions libérales du sud-vosgien souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const REMIREMONT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Remiremont  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Remiremont et du sud-vosgien, il identifie les cas d'usage IA à fort ROI pour votre commerce, hôtel, cabinet ou activité de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Remiremont et du sud-vosgien, il identifie les cas d'usage IA à fort ROI pour votre commerce, hôtel, cabinet ou activité de services.",
     },
     {
       q: "Accompagnez-vous les commerçants des arcades de Remiremont ?",

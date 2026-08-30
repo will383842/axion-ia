@@ -153,7 +153,7 @@ const LE_SECOND: Livre = {
     datePublished: null,
   },
 
-  categories: ["Management et leadership", "PME et TPE", "Efficacité professionnelle"],
+  categories: ["Management et leadership", "PME et ETI", "Efficacité professionnelle"],
 };
 
 export const LIVRES: readonly Livre[] = [LE_SECOND];

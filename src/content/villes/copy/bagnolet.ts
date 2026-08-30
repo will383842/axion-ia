@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BAGNOLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Bagnolet, commune de Seine-Saint-Denis aux portes est de Paris, reliée par la ligne 3 et le périphérique (porte de Bagnolet). Services aux entreprises, industries créatives, commerce, BTP et logistique urbaine : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Bagnolet, commune de Seine-Saint-Denis aux portes est de Paris, reliée par la ligne 3 et le périphérique (porte de Bagnolet). Services aux entreprises, industries créatives, commerce, BTP et logistique urbaine : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Bagnolet, commune de Seine-Saint-Denis aux portes est de Paris, reliée par la ligne 3 et le périphérique (porte de Bagnolet). Services aux entreprises, industries créatives, commerce, BTP et logistique urbaine : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Bagnolet, commune de Seine-Saint-Denis aux portes est de Paris, reliée par la ligne 3 et le périphérique (porte de Bagnolet). Services aux entreprises, industries créatives, commerce, BTP et logistique urbaine : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagnolet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain de l'est parisien : services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagnolet auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tissu urbain de l'est parisien : services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagnolet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain de l'est parisien : services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagnolet auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tissu urbain de l'est parisien : services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "créatif & tertiaire est parisien",
   ecosystemFr:
-    "Bagnolet, en Seine-Saint-Denis aux portes est de Paris, est une commune urbaine dense raccordée par la ligne 3 (Gallieni) et la porte de Bagnolet. Autour du pôle d'échanges et des zones d'activités, le tissu de TPE et PME mêle services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine, dans un secteur en pleine recomposition aux côtés de Montreuil et Pantin.",
+    "Bagnolet, en Seine-Saint-Denis aux portes est de Paris, est une commune urbaine dense raccordée par la ligne 3 (Gallieni) et la porte de Bagnolet. Autour du pôle d'échanges et des zones d'activités, le tissu de PME et ETI mêle services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine, dans un secteur en pleine recomposition aux côtés de Montreuil et Pantin.",
   ecosystemEn:
-    "Bagnolet, en Seine-Saint-Denis aux portes est de Paris, est une commune urbaine dense raccordée par la ligne 3 (Gallieni) et la porte de Bagnolet. Autour du pôle d'échanges et des zones d'activités, le tissu de TPE et PME mêle services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine, dans un secteur en pleine recomposition aux côtés de Montreuil et Pantin.",
+    "Bagnolet, en Seine-Saint-Denis aux portes est de Paris, est une commune urbaine dense raccordée par la ligne 3 (Gallieni) et la porte de Bagnolet. Autour du pôle d'échanges et des zones d'activités, le tissu de PME et ETI mêle services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine, dans un secteur en pleine recomposition aux côtés de Montreuil et Pantin.",
   distancesFr:
     "Bagnolet est desservie par la ligne 3 (Gallieni) et la porte de Bagnolet sur le périphérique. La gare de Lyon est à environ 5 km et l'aéroport Paris-Charles de Gaulle à environ 20 km.",
   distancesEn:
@@ -38,12 +38,12 @@ export const BAGNOLET_COPY: VilleCopy = {
       en: "Interventions IA sur site à Bagnolet : formats adaptés au studio créatif, à l'agence, au commerce ou à l'entrepôt urbain. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Bagnolet : génération et traitement de contenu créatif, copilotes métiers, optimisation des tournées de logistique urbaine, agents conversationnels de support et automatisation administrative des TPE et PME.",
-      en: "Implémentation IA à Bagnolet : génération et traitement de contenu créatif, copilotes métiers, optimisation des tournées de logistique urbaine, agents conversationnels de support et automatisation administrative des TPE et PME.",
+      fr: "Implémentation IA à Bagnolet : génération et traitement de contenu créatif, copilotes métiers, optimisation des tournées de logistique urbaine, agents conversationnels de support et automatisation administrative des PME et ETI.",
+      en: "Implémentation IA à Bagnolet : génération et traitement de contenu créatif, copilotes métiers, optimisation des tournées de logistique urbaine, agents conversationnels de support et automatisation administrative des PME et ETI.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bagnolet pour dirigeants de TPE et PME créatives, de services, de commerce ou de logistique : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à Bagnolet pour dirigeants de TPE et PME créatives, de services, de commerce ou de logistique : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à Bagnolet pour dirigeants de PME et d'ETI créatives, de services, de commerce ou de logistique : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Bagnolet pour dirigeants de PME et d'ETI créatives, de services, de commerce ou de logistique : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bagnolet : portfolios et plateformes créatives, espaces clients et outils IA sur mesure pour les industries créatives, les services et le commerce de l'est parisien.",
@@ -53,7 +53,7 @@ export const BAGNOLET_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Bagnolet (93170) tient la porte est de Paris : terminus de la ligne 3 à Gallieni, échangeur du périphérique et nouveau quartier d'affaires en formation le long de l'avenue Gallieni, autour de la Tour Gallièni (77 m, près de 2 000 postes) et du coworking Morning Gallieni. La ville mêle une filière image, son et spectacle structurée par le Campus Fonderie de l'Image et le CFPTS/CFA SVA, un pôle commercial et hôtelier (Bel Est, Auchan, premier pôle hôtelier de l'est parisien) et un tissu dense de TPE et PME. Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA, pensés pour ces métiers créatifs, tertiaires et commerçants — code sur mesure, hébergement UE conforme au RGPD, zéro dépendance à un éditeur.",
+        hero: "Bagnolet (93170) tient la porte est de Paris : terminus de la ligne 3 à Gallieni, échangeur du périphérique et nouveau quartier d'affaires en formation le long de l'avenue Gallieni, autour de la Tour Gallièni (77 m, près de 2 000 postes) et du coworking Morning Gallieni. La ville mêle une filière image, son et spectacle structurée par le Campus Fonderie de l'Image et le CFPTS/CFA SVA, un pôle commercial et hôtelier (Bel Est, Auchan, premier pôle hôtelier de l'est parisien) et un tissu dense de PME et ETI. Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA, pensés pour ces métiers créatifs, tertiaires et commerçants — code sur mesure, hébergement UE conforme au RGPD, zéro dépendance à un éditeur.",
         whyHere: [
           "Filière image, son et spectacle : studios de post-production, agences de communication visuelle et acteurs de l'audiovisuel formés au Campus Fonderie de l'Image et au CFPTS/CFA SVA ont besoin de portfolios performants, de plateformes de diffusion vidéo et d'outils IA de tri, de transcription et de génération de visuels — c'est notre cœur de cible bagnoletais.",
           "Pôle Gallieni en pleine recomposition tertiaire : avec la Tour Gallièni, les projets de bureaux de l'avenue Gallieni (immeuble ~50 000 m² au 108, projet Novaxia 27 000 m², projet LIVE) et le coworking Morning Gallieni, les jeunes structures et scale-ups qui s'y installent réclament des sites corporate rapides et des SaaS métiers IA-native.",
@@ -88,12 +88,6 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou portfolio augmenté",
-            detail:
-              "Pour indépendants, micro-studios image/son, artisans et commerçants de Bagnolet : site rapide, portfolio vidéo ou vitrine produit, formulaire intelligent et chatbot de premier niveau.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou métier sur mesure",
@@ -175,12 +169,6 @@ export const BAGNOLET_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or augmented portfolio",
-            detail:
-              "For freelancers, micro image/sound studios, craftspeople and retailers in Bagnolet: fast site, video portfolio or product showcase, smart form and first-level chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or custom business platform",
             detail:
@@ -230,7 +218,7 @@ export const BAGNOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagnolet ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un studio créatif ou une agence bagnoletaise ?",

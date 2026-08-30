@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Valence (26), préfecture de la Drôme, est un carrefour stratégique de la vallée du Rhône, à mi-chemin entre Lyon et la Provence, desservi par la gare TGV et l'autoroute A7. Surnommée la porte du Midi, elle conjugue une économie agroalimentaire et viticole nourrie par le terroir drômois, une tradition électronique et industrielle avec des acteurs comme Crouzet, et un tertiaire dynamique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de la Drôme dans une adoption pragmatique de l'intelligence artificielle.",
+    "Valence (26), préfecture de la Drôme, est un carrefour stratégique de la vallée du Rhône, à mi-chemin entre Lyon et la Provence, desservi par la gare TGV et l'autoroute A7. Surnommée la porte du Midi, elle conjugue une économie agroalimentaire et viticole nourrie par le terroir drômois, une tradition électronique et industrielle avec des acteurs comme Crouzet, et un tertiaire dynamique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de la Drôme dans une adoption pragmatique de l'intelligence artificielle.",
   pitchEn:
-    "Valence (26), préfecture de la Drôme, est un carrefour stratégique de la vallée du Rhône, à mi-chemin entre Lyon et la Provence, desservi par la gare TGV et l'autoroute A7. Surnommée la porte du Midi, elle conjugue une économie agroalimentaire et viticole nourrie par le terroir drômois, une tradition électronique et industrielle avec des acteurs comme Crouzet, et un tertiaire dynamique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de la Drôme dans une adoption pragmatique de l'intelligence artificielle.",
+    "Valence (26), préfecture de la Drôme, est un carrefour stratégique de la vallée du Rhône, à mi-chemin entre Lyon et la Provence, desservi par la gare TGV et l'autoroute A7. Surnommée la porte du Midi, elle conjugue une économie agroalimentaire et viticole nourrie par le terroir drômois, une tradition électronique et industrielle avec des acteurs comme Crouzet, et un tertiaire dynamique. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de la Drôme dans une adoption pragmatique de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence et dans la Drôme. Nous accompagnons en priorité les TPE puis les PME : transformateurs agroalimentaires et acteurs du terroir et du vignoble drômois, PME d'électronique et d'industrie dans la lignée de Crouzet, logistique de la vallée du Rhône, commerces, artisans et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence et dans la Drôme. Nous accompagnons en priorité les PME puis les ETI : transformateurs agroalimentaires et acteurs du terroir et du vignoble drômois, PME d'électronique et d'industrie dans la lignée de Crouzet, logistique de la vallée du Rhône, commerces, artisans et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence et dans la Drôme. Nous accompagnons en priorité les TPE puis les PME : transformateurs agroalimentaires et acteurs du terroir et du vignoble drômois, PME d'électronique et d'industrie dans la lignée de Crouzet, logistique de la vallée du Rhône, commerces, artisans et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence et dans la Drôme. Nous accompagnons en priorité les PME puis les ETI : transformateurs agroalimentaires et acteurs du terroir et du vignoble drômois, PME d'électronique et d'industrie dans la lignée de Crouzet, logistique de la vallée du Rhône, commerces, artisans et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
   seoHook: "vallée du Rhône, agro & électronique",
   ecosystemFr:
-    "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de TPE et PME, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
+    "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de PME et ETI, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
   ecosystemEn:
-    "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de TPE et PME, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
+    "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de PME et ETI, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
   distancesFr:
     "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Grenoble à 1h, Marseille à 1h30 et Avignon à 1h. Nos consultants se déplacent depuis Lyon et Grenoble.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VALENCE_COPY: VilleCopy = {
       en: "Implémentation IA à Valence : automatisation de la planification de production, traçabilité agroalimentaire assistée, classification documentaire et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valence : sessions sur site ou en visio pour dirigeants de TPE/PME, producteurs, industriels, commerçants et artisans souhaitant piloter l'IA.",
-      en: "Coaching 1-to-1 à Valence : sessions sur site ou en visio pour dirigeants de TPE/PME, producteurs, industriels, commerçants et artisans souhaitant piloter l'IA.",
+      fr: "Coaching 1-to-1 à Valence : sessions sur site ou en visio pour dirigeants de PME et ETI, producteurs, industriels, commerçants et artisans souhaitant piloter l'IA.",
+      en: "Coaching 1-to-1 à Valence : sessions sur site ou en visio pour dirigeants de PME et ETI, producteurs, industriels, commerçants et artisans souhaitant piloter l'IA.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Valence : plateformes pour producteurs agroalimentaires, PME industrielles et commerces, avec recherche IA, devis automatisés et fiches produits assistées.",
@@ -88,12 +88,6 @@ export const VALENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-boutique augmenté",
-            detail:
-              "Pour artisans, producteurs en vente directe et commerces valentinois (Plateau des Couleures, centre-ville) : site mobile-first, e-commerce multi-CMS, fiches produits assistées par IA et chatbot de premier niveau.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -175,12 +169,6 @@ export const VALENCE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase or e-shop",
-            detail:
-              "For Valence craftspeople, direct-sale producers and shops (Plateau des Couleures, town centre): mobile-first site, multi-CMS e-commerce, AI-assisted product sheets and a first-level chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or advanced e-commerce",
             detail:
@@ -230,7 +218,7 @@ export const VALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valence et dans la Drôme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Valence, Romans-sur-Isère, Montélimar et tout le département. Nos consultants se déplacent depuis Lyon et Grenoble pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Valence, Romans-sur-Isère, Montélimar et tout le département. Nos consultants se déplacent depuis Lyon et Grenoble pour les missions sur site.",
     },
     {
       q: "Travaillez-vous avec l'agroalimentaire et la viticulture drômoise ?",
@@ -241,7 +229,7 @@ export const VALENCE_COPY: VilleCopy = {
       a: "Oui, dans la lignée de Crouzet et du savoir-faire local : planification de production, contrôle qualité assisté, gestion documentaire et automatisation administrative.",
     },
     {
-      q: "Quels services proposez-vous aux TPE et commerces valentinois ?",
+      q: "Quels services proposez-vous aux PME et commerces valentinois ?",
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {

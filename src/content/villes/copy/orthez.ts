@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ORTHEZ_COPY: VilleCopy = {
   pitchFr:
-    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
+    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de PME artisanales, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
   pitchEn:
-    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
+    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de PME artisanales, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orthez (64). Nous accompagnons PME, ETI et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orthez (64). Nous accompagnons PME, ETI et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & commerce centre-ville",
   ecosystemFr:
-    "Orthez est sous-préfecture du Béarn sur le gave de Pau, 10 881 habitants. Ancien fief de Gaston Fébus, ville historique avec un tissu de PME agroalimentaires (filière maïs, élevage, salaisons), TPE artisans, commerces de centre-ville, services de santé (centre hospitalier) et proximité du bassin industriel de Lacq.",
+    "Orthez est sous-préfecture du Béarn sur le gave de Pau, 10 881 habitants. Ancien fief de Gaston Fébus, ville historique avec un tissu de PME agroalimentaires (filière maïs, élevage, salaisons), PME artisanales, commerces de centre-ville, services de santé (centre hospitalier) et proximité du bassin industriel de Lacq.",
   ecosystemEn:
-    "Orthez est sous-préfecture du Béarn sur le gave de Pau, 10 881 habitants. Ancien fief de Gaston Fébus, ville historique avec un tissu de PME agroalimentaires (filière maïs, élevage, salaisons), TPE artisans, commerces de centre-ville, services de santé (centre hospitalier) et proximité du bassin industriel de Lacq.",
+    "Orthez est sous-préfecture du Béarn sur le gave de Pau, 10 881 habitants. Ancien fief de Gaston Fébus, ville historique avec un tissu de PME agroalimentaires (filière maïs, élevage, salaisons), PME artisanales, commerces de centre-ville, services de santé (centre hospitalier) et proximité du bassin industriel de Lacq.",
   distancesFr:
     "Gare d'Orthez (TER Pau-Bayonne, 30 min Pau, 45 min Bayonne). Pau centre à 40 min voiture. Bayonne à 55 min. Aéroport Pau-Pyrénées à 35 min. Accès A64 (Bayonne-Toulouse). Bassin de Lacq à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const ORTHEZ_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire (maïs, élevage, salaisons)",
     "Commerce de centre-ville",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Santé & services médico-sociaux",
     "Industrie chimie (proximité Lacq)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, PME artisanales, commerçants et professionnels de santé du Béarn des Gaves. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, PME artisanales, commerçants et professionnels de santé du Béarn des Gaves. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orthez : formation et déploiement outils IA dans vos exploitations, ateliers, commerces ou établissements de santé. Équipes autonomes sur outils configurés métier.",
@@ -42,8 +42,8 @@ export const ORTHEZ_COPY: VilleCopy = {
       en: "Implémentation IA à Orthez : traçabilité agroalimentaire (filière maïs, élevage), automatisation gestion stocks commerce, optimisation planning santé, agents IA accueil et suivi patient.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Orthez : sessions dans vos locaux ou en visio. Dirigeants TPE/PME agroalimentaires, artisans, commerçants et professionnels de santé du Béarn des Gaves.",
-      en: "Coaching 1-to-1 à Orthez : sessions dans vos locaux ou en visio. Dirigeants TPE/PME agroalimentaires, artisans, commerçants et professionnels de santé du Béarn des Gaves.",
+      fr: "Coaching 1-to-1 à Orthez : sessions dans vos locaux ou en visio. Dirigeants PME et ETI agroalimentaires, artisans, commerçants et professionnels de santé du Béarn des Gaves.",
+      en: "Coaching 1-to-1 à Orthez : sessions dans vos locaux ou en visio. Dirigeants PME et ETI agroalimentaires, artisans, commerçants et professionnels de santé du Béarn des Gaves.",
     },
   },
   faqGeolocalisee: [

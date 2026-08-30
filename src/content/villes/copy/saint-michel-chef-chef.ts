@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la Côte de Jade.",
+    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu PME de l'artisanat et du commerce, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la Côte de Jade.",
   pitchEn:
-    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la Côte de Jade.",
+    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu PME de l'artisanat et du commerce, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la Côte de Jade.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
   seoHook: "tourisme balnéaire & restauration hébergement",
   ecosystemFr:
-    "Saint-Michel-Chef-Chef est une station balnéaire de la Côte de Jade, entre Pornic et Saint-Brevin. Plage de Tharon, campings, résidences secondaires. Tissu TPE commerçants, PME tourisme et hébergement, restauration, artisans et professions libérales. Forte saisonnalité estivale.",
+    "Saint-Michel-Chef-Chef est une station balnéaire de la Côte de Jade, entre Pornic et Saint-Brevin. Plage de Tharon, campings, résidences secondaires. Tissu PME du commerce, PME tourisme et hébergement, restauration, artisans et professions libérales. Forte saisonnalité estivale.",
   ecosystemEn:
-    "Saint-Michel-Chef-Chef est une station balnéaire de la Côte de Jade, entre Pornic et Saint-Brevin. Plage de Tharon, campings, résidences secondaires. Tissu TPE commerçants, PME tourisme et hébergement, restauration, artisans et professions libérales. Forte saisonnalité estivale.",
+    "Saint-Michel-Chef-Chef est une station balnéaire de la Côte de Jade, entre Pornic et Saint-Brevin. Plage de Tharon, campings, résidences secondaires. Tissu PME du commerce, PME tourisme et hébergement, restauration, artisans et professions libérales. Forte saisonnalité estivale.",
   distancesFr:
     "Pornic à 10 min. Saint-Brevin-les-Pins à 15 min. Nantes centre à 50 min. Gare Nantes TGV à 55 min. Aéroport Nantes-Atlantique à 40 min. Saint-Nazaire à 30 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme balnéaire & campings",
     "Restauration & hébergement",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "Professions libérales",
     "Services de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux TPE commerçants, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux TPE commerçants, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux PME du commerce, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux PME du commerce, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Michel-Chef-Chef : formats adaptés au camping, à l'hôtel, au restaurant, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Michel-Chef-Chef : chatbot réservation camping, automatisation planning restauration, agents IA relation client tourisme, extraction données commerciales. Côte de Jade.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Michel-Chef-Chef : sessions dans votre camping, hôtel, commerce ou en visio. Dirigeants TPE/PME de la Côte de Jade souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Michel-Chef-Chef : sessions dans votre camping, hôtel, commerce ou en visio. Dirigeants TPE/PME de la Côte de Jade souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Michel-Chef-Chef : sessions dans votre camping, hôtel, commerce ou en visio. Dirigeants PME et ETI de la Côte de Jade souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Michel-Chef-Chef : sessions dans votre camping, hôtel, commerce ou en visio. Dirigeants PME et ETI de la Côte de Jade souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Michel-Chef-Chef  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de la Côte de Jade.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI de la Côte de Jade.",
     },
     {
       q: "Intervenez-vous en haute saison touristique ?",

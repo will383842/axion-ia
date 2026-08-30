@@ -34,7 +34,7 @@ export const META_LENGTH = {
  * Insiste sur le PLANCHER (50 car) autant que sur le plafond (60 car) — c'est le
  * plancher qui manquait et produisait des titres à 33-45 car.
  */
-export const META_TITLE_RULE = `"metaTitle" : OBLIGATOIREMENT entre ${META_LENGTH.metaTitle.min} et ${META_LENGTH.metaTitle.max} caractères (compte les espaces). NE JAMAIS descendre sous ${META_LENGTH.metaTitle.min} caractères : si trop court, ajoute une précision utile (bénéfice, secteur, « pour TPE/PME »…), JAMAIS de remplissage creux. Mot-clé principal au tout début. NE PAS dépasser ${META_LENGTH.metaTitle.max} caractères.`;
+export const META_TITLE_RULE = `"metaTitle" : OBLIGATOIREMENT entre ${META_LENGTH.metaTitle.min} et ${META_LENGTH.metaTitle.max} caractères (compte les espaces). NE JAMAIS descendre sous ${META_LENGTH.metaTitle.min} caractères : si trop court, ajoute une précision utile (bénéfice, secteur, « pour PME/ETI »…), JAMAIS de remplissage creux. Mot-clé principal au tout début. NE PAS dépasser ${META_LENGTH.metaTitle.max} caractères.`;
 
 /**
  * Bloc de directive metaDescription prêt à interpoler. Plancher 140 car explicite.

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const GAUCHY_COPY: VilleCopy = {
   pitchFr:
-    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu PME et ETI industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu PME et ETI industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : PME et ETI industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : PME et ETI industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
   ecosystemFr:
-    "Gauchy est une commune de l'agglomération de Saint-Quentin, pôle industriel et logistique structurant avec des zones d'activités majeures (Le Royeux, Bois de la Chocque). Tissu TPE/PME industrie, logistique, sous-traitance, BTP, commerces, services aux entreprises et professions de services axonaises.",
+    "Gauchy est une commune de l'agglomération de Saint-Quentin, pôle industriel et logistique structurant avec des zones d'activités majeures (Le Royeux, Bois de la Chocque). Tissu PME et ETI industrie, logistique, sous-traitance, BTP, commerces, services aux entreprises et professions de services axonaises.",
   ecosystemEn:
-    "Gauchy est une commune de l'agglomération de Saint-Quentin, pôle industriel et logistique structurant avec des zones d'activités majeures (Le Royeux, Bois de la Chocque). Tissu TPE/PME industrie, logistique, sous-traitance, BTP, commerces, services aux entreprises et professions de services axonaises.",
+    "Gauchy est une commune de l'agglomération de Saint-Quentin, pôle industriel et logistique structurant avec des zones d'activités majeures (Le Royeux, Bois de la Chocque). Tissu PME et ETI industrie, logistique, sous-traitance, BTP, commerces, services aux entreprises et professions de services axonaises.",
   distancesFr:
     "Saint-Quentin centre à 5 min. Laon à 45 min. Cambrai à 35 min. Reims à 1h. Paris à 1h30 via TGV depuis Saint-Quentin. Gare TGV Saint-Quentin à 5 min. Autoroutes A26 et A29 accès direct.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GAUCHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Gauchy : diagnostic adapté aux PME et ETI industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Gauchy : diagnostic adapté aux PME et ETI industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gauchy : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, boutique ou bureau. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const GAUCHY_COPY: VilleCopy = {
       en: "Implémentation IA à Gauchy : contrôle qualité production, optimisation tournées logistiques, traçabilité sous-traitance, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs et donneurs d'ordres.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gauchy : sessions dans votre atelier, entrepôt, chantier, boutique ou en visio. Industriels, logisticiens, sous-traitants, artisans BTP, commerçants et gérants TPE/PME gauchois.",
-      en: "Coaching 1-to-1 à Gauchy : sessions dans votre atelier, entrepôt, chantier, boutique ou en visio. Industriels, logisticiens, sous-traitants, artisans BTP, commerçants et gérants TPE/PME gauchois.",
+      fr: "Coaching 1-to-1 à Gauchy : sessions dans votre atelier, entrepôt, chantier, boutique ou en visio. Industriels, logisticiens, sous-traitants, artisans BTP, commerçants et gérants PME et ETI gauchois.",
+      en: "Coaching 1-to-1 à Gauchy : sessions dans votre atelier, entrepôt, chantier, boutique ou en visio. Industriels, logisticiens, sous-traitants, artisans BTP, commerçants et gérants PME et ETI gauchois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const GAUCHY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles, logistiques et sous-traitants implantés dans les zones d'activités de Gauchy : optimisation tournées, contrôle qualité, traçabilité, gestion entrepôts, automatisation workflow.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles, logistiques et sous-traitants implantés dans les zones d'activités de Gauchy : optimisation tournées, contrôle qualité, traçabilité, gestion entrepôts, automatisation workflow.",
     },
     {
       q: "Accompagnez-vous les services aux entreprises et BTP ?",
@@ -61,7 +61,7 @@ export const GAUCHY_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Gauchy ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Gauchy ?",

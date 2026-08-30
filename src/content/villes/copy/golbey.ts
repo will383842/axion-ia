@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GOLBEY_COPY: VilleCopy = {
   pitchFr:
-    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
+    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de PME et ETI industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
+    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de PME et ETI industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Golbey (88). Nous accompagnons PME et ETI : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Golbey (88). Nous accompagnons PME et ETI : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
   seoHook: "bassin industriel",
   ecosystemFr:
     "Golbey est une commune de l'agglomération d'Épinal située au nord de la préfecture, au bord de la Moselle. La papeterie (site Norske Skog, l'un des plus grands d'Europe pour le papier journal) et les zones d'activités étendues structurent le bassin industriel. L'économie locale repose sur l'industrie papier-carton, la sous-traitance industrielle, la logistique-transport, le commerce, l'artisanat BTP et les services aux entreprises.",
@@ -34,16 +34,16 @@ export const GOLBEY_COPY: VilleCopy = {
       en: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Golbey : automatisation maintenance prédictive papeterie, optimisation production papier-carton, gestion stocks et tournées logistiques, agents conversationnels et automatisations administratives pour PME industrielles.",
       en: "Implémentation IA à Golbey : automatisation maintenance prédictive papeterie, optimisation production papier-carton, gestion stocks et tournées logistiques, agents conversationnels et automatisations administratives pour PME industrielles.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Golbey : sessions dans votre usine, atelier, bureau ou en visio. Dirigeants TPE/PME et responsables industriels de l'agglomération d'Épinal souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Golbey : sessions dans votre usine, atelier, bureau ou en visio. Dirigeants TPE/PME et responsables industriels de l'agglomération d'Épinal souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Golbey : sessions dans votre usine, atelier, bureau ou en visio. Dirigeants PME et ETI et responsables industriels de l'agglomération d'Épinal souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Golbey : sessions dans votre usine, atelier, bureau ou en visio. Dirigeants PME et ETI et responsables industriels de l'agglomération d'Épinal souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const GOLBEY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Golbey  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
     },
     {
       q: "Accompagnez-vous les industriels papier-carton de Golbey ?",

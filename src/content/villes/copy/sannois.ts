@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const SANNOIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Sannois, commune du Val-d'Oise située à 15 km au nord-ouest de Paris. Avec près de 27 000 habitants sur 4,78 km² et une densité supérieure à 5 600 hab/km², la ville s'inscrit dans l'agglomération Val Parisis et bénéficie des autoroutes A15 et A115 et de la ligne J.",
+    "Axion-IA accompagne les PME et ETI de Sannois, commune du Val-d'Oise située à 15 km au nord-ouest de Paris. Avec près de 27 000 habitants sur 4,78 km² et une densité supérieure à 5 600 hab/km², la ville s'inscrit dans l'agglomération Val Parisis et bénéficie des autoroutes A15 et A115 et de la ligne J.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Sannois, commune du Val-d'Oise située à 15 km au nord-ouest de Paris. Avec près de 27 000 habitants sur 4,78 km² et une densité supérieure à 5 600 hab/km², la ville s'inscrit dans l'agglomération Val Parisis et bénéficie des autoroutes A15 et A115 et de la ligne J.",
+    "Axion-IA accompagne les PME et ETI de Sannois, commune du Val-d'Oise située à 15 km au nord-ouest de Paris. Avec près de 27 000 habitants sur 4,78 km² et une densité supérieure à 5 600 hab/km², la ville s'inscrit dans l'agglomération Val Parisis et bénéficie des autoroutes A15 et A115 et de la ligne J.",
   directAnswerFr:
-    "À Sannois, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à {{price:intervention-4h|flat}} avec un code custom et un retour sur investissement mesurable.",
+    "À Sannois, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à {{price:intervention-4h|flat}} avec un code custom et un retour sur investissement mesurable.",
   directAnswerEn:
-    "À Sannois, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à {{price:intervention-4h|flat}} avec un code custom et un retour sur investissement mesurable.",
+    "À Sannois, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à {{price:intervention-4h|flat}} avec un code custom et un retour sur investissement mesurable.",
   seoHook: "tertiaire Val Parisis & services aux entreprises",
   ecosystemFr:
-    "Sannois forme un grand centre urbain du Val-d'Oise intégré à l'aire d'attraction de Paris et à l'agglomération Val Parisis. La commune accueille un tissu dense de commerces, services et professions tertiaires, avec un revenu médian (24 250 € en 2022) supérieur à la moyenne départementale, signe d'un environnement favorable aux TPE et PME.",
+    "Sannois forme un grand centre urbain du Val-d'Oise intégré à l'aire d'attraction de Paris et à l'agglomération Val Parisis. La commune accueille un tissu dense de commerces, services et professions tertiaires, avec un revenu médian (24 250 € en 2022) supérieur à la moyenne départementale, signe d'un environnement favorable aux PME et ETI.",
   ecosystemEn:
-    "Sannois forme un grand centre urbain du Val-d'Oise intégré à l'aire d'attraction de Paris et à l'agglomération Val Parisis. La commune accueille un tissu dense de commerces, services et professions tertiaires, avec un revenu médian (24 250 € en 2022) supérieur à la moyenne départementale, signe d'un environnement favorable aux TPE et PME.",
+    "Sannois forme un grand centre urbain du Val-d'Oise intégré à l'aire d'attraction de Paris et à l'agglomération Val Parisis. La commune accueille un tissu dense de commerces, services et professions tertiaires, avec un revenu médian (24 250 € en 2022) supérieur à la moyenne départementale, signe d'un environnement favorable aux PME et ETI.",
   distancesFr:
     "Sannois est à 15 km au nord-ouest de Paris. Gare de Sannois sur la ligne J du Transilien. Autoroutes A15 et A115. Aéroport de Paris-Charles de Gaulle à 30 km.",
   distancesEn:
@@ -32,29 +32,29 @@ export const SANNOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Sannois pour une TPE ou PME tertiaire de l'agglomération Val Parisis — identifier les processus manuels coûteux et prioriser les automatisations à fort impact.",
-      en: "Réaliser un audit IA à Sannois pour une TPE ou PME tertiaire de l'agglomération Val Parisis — identifier les processus manuels coûteux et prioriser les automatisations à fort impact.",
+      fr: "Réaliser un audit IA à Sannois pour une PME ou ETI tertiaire de l'agglomération Val Parisis — identifier les processus manuels coûteux et prioriser les automatisations à fort impact.",
+      en: "Réaliser un audit IA à Sannois pour une PME ou ETI tertiaire de l'agglomération Val Parisis — identifier les processus manuels coûteux et prioriser les automatisations à fort impact.",
     },
     interventions: {
-      fr: "Intervenir à Sannois et dans les communes voisines (Argenteuil, Saint-Gratien, Ermont, Franconville) pour automatiser tâches administratives et améliorer l'efficacité des équipes TPE-PME.",
-      en: "Intervenir à Sannois et dans les communes voisines (Argenteuil, Saint-Gratien, Ermont, Franconville) pour automatiser tâches administratives et améliorer l'efficacité des équipes TPE-PME.",
+      fr: "Intervenir à Sannois et dans les communes voisines (Argenteuil, Saint-Gratien, Ermont, Franconville) pour automatiser tâches administratives et améliorer l'efficacité des équipes PME et ETI.",
+      en: "Intervenir à Sannois et dans les communes voisines (Argenteuil, Saint-Gratien, Ermont, Franconville) pour automatiser tâches administratives et améliorer l'efficacité des équipes PME et ETI.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure à Sannois, code custom intégré aux outils existants, avec une adoption fluide auprès des équipes des TPE et PME locales.",
-      en: "Implémenter des solutions IA sur mesure à Sannois, code custom intégré aux outils existants, avec une adoption fluide auprès des équipes des TPE et PME locales.",
+      fr: "Implémenter des solutions IA sur mesure à Sannois, code custom intégré aux outils existants, avec une adoption fluide auprès des équipes des PME et ETI locales.",
+      en: "Implémenter des solutions IA sur mesure à Sannois, code custom intégré aux outils existants, avec une adoption fluide auprès des équipes des PME et ETI locales.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Sannois avec des sessions ciblées pour clarifier les bénéfices concrets de l'IA et bâtir une feuille de route.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Sannois avec des sessions ciblées pour clarifier les bénéfices concrets de l'IA et bâtir une feuille de route.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Sannois avec des sessions ciblées pour clarifier les bénéfices concrets de l'IA et bâtir une feuille de route.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Sannois avec des sessions ciblées pour clarifier les bénéfices concrets de l'IA et bâtir une feuille de route.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Sannois, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : une commune de ~27 000 habitants au tissu massivement micro-entrepreneurial (1 948 entreprises recensées, dont plus de 70 % en commerce et services et 419 TPE de 1 à 9 salariés), mais dotée d'un vrai point de gravité numérique avec Le Tremplin Val Parisis — l'ancienne Pépinière de Sannois, structure digitale de 700 m² implantée face à la gare, animée par le réseau Wacano et sa communauté de 350+ entreprises. Nous outillons aussi bien les commerçants du marché de la place du Général Leclerc que les jeunes pousses incubées en accélérateur Digital, Levée de fonds ou International. Code custom, UX/UI soignée, mobile-first, e-commerce multi-CMS, hébergement UE conforme RGPD, zéro lock-in éditeur.",
+        hero: "À Sannois, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : une commune de ~27 000 habitants au tissu massivement micro-entrepreneurial (1 948 entreprises recensées, dont plus de 70 % en commerce et services et 419 PME de 1 à 9 salariés), mais dotée d'un vrai point de gravité numérique avec Le Tremplin Val Parisis — l'ancienne Pépinière de Sannois, structure digitale de 700 m² implantée face à la gare, animée par le réseau Wacano et sa communauté de 350+ entreprises. Nous outillons aussi bien les commerçants du marché de la place du Général Leclerc que les jeunes pousses incubées en accélérateur Digital, Levée de fonds ou International. Code custom, UX/UI soignée, mobile-first, e-commerce multi-CMS, hébergement UE conforme RGPD, zéro lock-in éditeur.",
         whyHere: [
           "Le Tremplin Val Parisis (ex-Pépinière de Sannois), incubateur digital de 700 m² face à la gare géré par Wacano, concentre des jeunes pousses tech, santé et environnement : elles ont besoin de plateformes SaaS IA-native (chatbot RAG, search sémantique, agents) construites vite et bien pour leurs accélérateurs Levée de fonds et International.",
-          "Le tissu de Sannois est massivement composé de TPE de commerce et services (419 entreprises de 1 à 9 salariés, plus de 70 % en commerce-services) : pour ces indépendants et commerçants, un site vitrine ou e-commerce rapide, mobile-first et bien référencé localement pèse plus qu'un grand projet — nous le couplons à de l'IA utile (FAQ générée, prise de RDV, devis assistés).",
+          "Le tissu de Sannois est massivement composé de PME de commerce et services (419 entreprises de 1 à 9 salariés, plus de 70 % en commerce-services) : pour ces indépendants et commerçants, un site vitrine ou e-commerce rapide, mobile-first et bien référencé localement pèse plus qu'un grand projet — nous le couplons à de l'IA utile (FAQ générée, prise de RDV, devis assistés).",
           "Les commerçants et artisans du marché de la place du Général Leclerc (mercredi et samedi) et de l'opération Marché des saveurs forment un terrain idéal pour des boutiques en ligne click-and-collect et des vitrines géolocalisées qui captent la recherche de proximité du Val Parisis.",
           "Le patrimoine local — Moulin du Mont Trouillet de 1759 (classé Monument Historique depuis 1975) et son vignoble de 2 049 pieds peint jadis par Utrillo — nourrit des acteurs tourisme, loisirs et viticoles pour qui nous bâtissons billetterie, réservation de visites et sites éditoriaux augmentés par l'IA.",
         ],
@@ -67,7 +67,7 @@ export const SANNOIS_COPY: VilleCopy = {
           {
             step: "Architecture & maquettes UX/UI",
             detail:
-              "Conception de l'arborescence, des parcours mobile-first et des maquettes. Pour une TPE de Sannois, priorité à la conversion locale et à la rapidité ; pour une jeune pousse Wacano, à une base SaaS extensible prête pour la phase Levée de fonds ou International.",
+              "Conception de l'arborescence, des parcours mobile-first et des maquettes. Pour une PME de Sannois, priorité à la conversion locale et à la rapidité ; pour une jeune pousse Wacano, à une base SaaS extensible prête pour la phase Levée de fonds ou International.",
           },
           {
             step: "Développement & intégration IA",
@@ -86,12 +86,6 @@ export const SANNOIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les indépendants, commerçants et artisans de Sannois (les 419 TPE de 1 à 9 salariés, le marché de la place du Général Leclerc) : vitrine mobile-first ou boutique click-and-collect, référencement local et briques IA simples (FAQ, prise de contact assistée).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -173,12 +167,6 @@ export const SANNOIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Vitrine site or essential e-commerce",
-            detail:
-              "For Sannois independents, shopkeepers and artisans (the 419 very small firms of 1 to 9 staff, the Place du Général Leclerc market): mobile-first vitrine or click-and-collect shop, local SEO and simple AI blocks (FAQ, assisted contact).",
-          },
-          {
             sizeLabel: "PME",
             price: "Business platform or advanced e-commerce",
             detail:
@@ -243,12 +231,12 @@ export const SANNOIS_COPY: VilleCopy = {
       a: "Toutes nos interventions à Sannois respectent strictement le RGPD : code custom hébergé en Europe, traitements documentés et registre fourni au client.",
     },
     {
-      q: "Axion-IA travaille-t-elle avec les TPE tertiaires et commerciales de Sannois ?",
-      a: "Oui, le commerce de détail, les services administratifs et la restauration locale sont des terrains prioritaires. Nous automatisons devis, planning, facturation et reportings pour les TPE et PME locales.",
+      q: "Axion-IA travaille-t-elle avec les PME tertiaires et commerciales de Sannois ?",
+      a: "Oui, le commerce de détail, les services administratifs et la restauration locale sont des terrains prioritaires. Nous automatisons devis, planning, facturation et reportings pour les PME et ETI locales.",
     },
     {
       q: "Axion-IA propose-t-elle des formations IA à Sannois ?",
-      a: "Oui, des sessions un-à-un pour dirigeants de TPE et PME de Sannois, à partir de {{price:intervention-dirigeants|flat}}, pour comprendre et intégrer concrètement les bénéfices de l'IA.",
+      a: "Oui, des sessions un-à-un pour dirigeants de PME et d'ETI de Sannois, à partir de {{price:intervention-dirigeants|flat}}, pour comprendre et intégrer concrètement les bénéfices de l'IA.",
     },
   ],
 };

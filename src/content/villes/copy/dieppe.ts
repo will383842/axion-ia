@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DIEPPE_COPY: VilleCopy = {
   pitchFr:
-    "À Dieppe, sur la côte d'Albâtre, Axion-IA accompagne les TPE et PME du tourisme, de la pêche, de l'industrie et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à mieux gérer leur saisonnalité, sans complexité technique ni jargon inutile.",
+    "À Dieppe, sur la côte d'Albâtre, Axion-IA accompagne les PME et ETI du tourisme, de la pêche, de l'industrie et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à mieux gérer leur saisonnalité, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "À Dieppe, sur la côte d'Albâtre, Axion-IA accompagne les TPE et PME du tourisme, de la pêche, de l'industrie et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à mieux gérer leur saisonnalité, sans complexité technique ni jargon inutile.",
+    "À Dieppe, sur la côte d'Albâtre, Axion-IA accompagne les PME et ETI du tourisme, de la pêche, de l'industrie et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à mieux gérer leur saisonnalité, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Dieppe pour accompagner les TPE et PME locales. Entre le port de pêche et de plaisance, la liaison ferry vers Newhaven, l'usine Alpine-Renault et l'activité touristique de la côte d'Albâtre, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic sur site, sans dépendance technologique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Dieppe pour accompagner les PME et ETI locales. Entre le port de pêche et de plaisance, la liaison ferry vers Newhaven, l'usine Alpine-Renault et l'activité touristique de la côte d'Albâtre, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic sur site, sans dépendance technologique imposée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Dieppe pour accompagner les TPE et PME locales. Entre le port de pêche et de plaisance, la liaison ferry vers Newhaven, l'usine Alpine-Renault et l'activité touristique de la côte d'Albâtre, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic sur site, sans dépendance technologique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Dieppe pour accompagner les PME et ETI locales. Entre le port de pêche et de plaisance, la liaison ferry vers Newhaven, l'usine Alpine-Renault et l'activité touristique de la côte d'Albâtre, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic sur site, sans dépendance technologique imposée.",
   seoHook: "tourisme, port & industrie auto",
   ecosystemFr:
-    "Dieppe combine une économie maritime ancienne — port de pêche, de commerce et de plaisance, liaison transmanche vers Newhaven — et un tissu industriel marqué par l'usine Alpine-Renault qui assemble les voitures de sport de la marque. Le tourisme balnéaire de la côte d'Albâtre rythme l'activité de l'hôtellerie, de la restauration et du commerce, avec une forte saisonnalité. Ce mélange de TPE et PME, souvent confrontées aux pics estivaux et à une gestion administrative lourde, trouve dans Axion-IA un partenaire concret pour automatiser et fluidifier ses opérations.",
+    "Dieppe combine une économie maritime ancienne — port de pêche, de commerce et de plaisance, liaison transmanche vers Newhaven — et un tissu industriel marqué par l'usine Alpine-Renault qui assemble les voitures de sport de la marque. Le tourisme balnéaire de la côte d'Albâtre rythme l'activité de l'hôtellerie, de la restauration et du commerce, avec une forte saisonnalité. Ce mélange de PME et ETI, souvent confrontées aux pics estivaux et à une gestion administrative lourde, trouve dans Axion-IA un partenaire concret pour automatiser et fluidifier ses opérations.",
   ecosystemEn:
-    "Dieppe combine une économie maritime ancienne — port de pêche, de commerce et de plaisance, liaison transmanche vers Newhaven — et un tissu industriel marqué par l'usine Alpine-Renault qui assemble les voitures de sport de la marque. Le tourisme balnéaire de la côte d'Albâtre rythme l'activité de l'hôtellerie, de la restauration et du commerce, avec une forte saisonnalité. Ce mélange de TPE et PME, souvent confrontées aux pics estivaux et à une gestion administrative lourde, trouve dans Axion-IA un partenaire concret pour automatiser et fluidifier ses opérations.",
+    "Dieppe combine une économie maritime ancienne — port de pêche, de commerce et de plaisance, liaison transmanche vers Newhaven — et un tissu industriel marqué par l'usine Alpine-Renault qui assemble les voitures de sport de la marque. Le tourisme balnéaire de la côte d'Albâtre rythme l'activité de l'hôtellerie, de la restauration et du commerce, avec une forte saisonnalité. Ce mélange de PME et ETI, souvent confrontées aux pics estivaux et à une gestion administrative lourde, trouve dans Axion-IA un partenaire concret pour automatiser et fluidifier ses opérations.",
   distancesFr:
     "Dieppe est reliée à Rouen, préfecture de la Seine-Maritime, en environ 1 heure par la route et par le train. Paris se situe à environ 2 heures via Rouen, et l'aéroport de Rouen-Vallée de Seine est à une heure de route. Le port assure la liaison ferry transmanche vers Newhaven, en Angleterre, en environ 4 heures. Cette position côtière facilite les déplacements de nos consultants vers les entreprises du littoral et de l'arrière-pays cauchois.",
   distancesEn:
@@ -30,8 +30,8 @@ export const DIEPPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Un audit IA à Dieppe analyse vos processus sur site, en tenant compte de la saisonnalité touristique et des contraintes propres aux activités portuaires et commerciales, pour repérer les automatisations à plus fort ROI pour une TPE ou une PME.",
-      en: "Un audit IA à Dieppe analyse vos processus sur site, en tenant compte de la saisonnalité touristique et des contraintes propres aux activités portuaires et commerciales, pour repérer les automatisations à plus fort ROI pour une TPE ou une PME.",
+      fr: "Un audit IA à Dieppe analyse vos processus sur site, en tenant compte de la saisonnalité touristique et des contraintes propres aux activités portuaires et commerciales, pour repérer les automatisations à plus fort ROI pour une PME ou une PME.",
+      en: "Un audit IA à Dieppe analyse vos processus sur site, en tenant compte de la saisonnalité touristique et des contraintes propres aux activités portuaires et commerciales, pour repérer les automatisations à plus fort ROI pour une PME ou une PME.",
     },
     interventions: {
       fr: "Nos interventions à Dieppe automatisent les tâches répétitives des PME locales : gestion des réservations saisonnières, relances clients, suivi des commandes et traitement administratif, sans bouleverser vos outils actuels.",
@@ -42,8 +42,8 @@ export const DIEPPE_COPY: VilleCopy = {
       en: "L'implémentation à Dieppe déploie des solutions IA durables pour le tourisme, le commerce et l'industrie locale, avec une attention forte à la conformité RGPD et à la fiabilité en période de pic d'activité.",
     },
     unAUn: {
-      fr: "Nos sessions un-à-un à Dieppe forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas pratiques issus du tourisme, du commerce ou de l'artisanat local.",
-      en: "Nos sessions un-à-un à Dieppe forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas pratiques issus du tourisme, du commerce ou de l'artisanat local.",
+      fr: "Nos sessions un-à-un à Dieppe forment les dirigeants de PME et d'ETI à intégrer l'IA dans leur quotidien, avec des cas pratiques issus du tourisme, du commerce ou de l'artisanat local.",
+      en: "Nos sessions un-à-un à Dieppe forment les dirigeants de PME et d'ETI à intégrer l'IA dans leur quotidien, avec des cas pratiques issus du tourisme, du commerce ou de l'artisanat local.",
     },
     sitesWeb: {
       fr: "Pour les entreprises de Dieppe, nous concevons des sites web et plateformes augmentés par l'IA : réservation en ligne pour l'hôtellerie, devis automatisés et assistants qui qualifient les demandes des visiteurs et clients.",
@@ -88,12 +88,6 @@ export const DIEPPE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour les commerces, restaurants, hôtels et artisans de Dieppe et de la côte d'Albâtre : site mobile-first, réservation ou boutique e-commerce (produits de la mer, séjours), assistant IA qui qualifie les demandes des visiteurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou portail B2B sur mesure",
@@ -175,12 +169,6 @@ export const DIEPPE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or essential e-commerce site",
-            detail:
-              "For Dieppe and Côte d'Albâtre shops, restaurants, hotels and craftspeople: mobile-first site, booking or e-commerce store (seafood, stays), AI assistant qualifying visitor requests.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom business platform or B2B portal",
             detail:
@@ -234,7 +222,7 @@ export const DIEPPE_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Dieppe ?",
-      a: "Nous accompagnons en priorité les TPE et PME : tourisme, hôtellerie, commerce, pêche, industrie et artisanat. Les ETI restent un cas marginal. Notre approche convient aux structures qui veulent un résultat concret et rapide.",
+      a: "Nous accompagnons en priorité les PME et ETI : tourisme, hôtellerie, commerce, pêche, industrie et artisanat. Les grands groupes complètent ce socle. Notre approche convient aux structures qui veulent un résultat concret et rapide.",
     },
     {
       q: "Comment l'IA aide-t-elle face à la saisonnalité touristique de Dieppe ?",

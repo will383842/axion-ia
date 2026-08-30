@@ -183,8 +183,8 @@ export default async function CaseStudiesListing({ params }: Props) {
           <HeroBadge className="mb-8 sm:mb-10">
             <span aria-hidden="true" className="bg-sage inline-block h-1.5 w-1.5 rounded-full" />
             {isFr
-              ? "Cas réels · de l'artisan au grand groupe"
-              : "Real cases · from artisans to large groups"}
+              ? "Cas réels · de la PME au grand groupe"
+              : "Real cases · from SMEs to large groups"}
           </HeroBadge>
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — eyebrow + titre + description */}
@@ -200,8 +200,8 @@ export default async function CaseStudiesListing({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles, toutes les régions, tous les budgets — résultats chiffrés et témoignages anonymisés."
-                  : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets — numerical results and anonymised testimonials."}
+                  ? "Industrie, juridique, retail, banque, artisanat. PME, ETI et grands groupes, toutes les régions, tous les budgets — résultats chiffrés et témoignages anonymisés."
+                  : "Industry, legal, retail, banking, trades. SMEs, mid-caps and large groups, all regions, all budgets — numerical results and anonymised testimonials."}
               </p>
               {/* Pills réassurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
@@ -269,8 +269,8 @@ export default async function CaseStudiesListing({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode Axion-IA s'applique à toutes les tailles, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour vérifier.`
-              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the Axion-IA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the group format ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to validate.`}
+              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — PME industrielle, ETI retail, grand compte bancaire — parce que la méthode Axion-IA s'adapte à chaque échelle, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour vérifier.`
+              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — industrial SME, retail mid-cap, large banking account — because the Axion-IA method adapts to each scale, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the group format ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to validate.`}
           </p>
         </Container>
       </Section>
@@ -287,7 +287,7 @@ export default async function CaseStudiesListing({ params }: Props) {
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "PME, ETI, grand groupe, TPE. Chacune a sa logique : volume, gouvernance, vélocité décision."
+                    ? "PME, ETI, grand groupe. Chacune a sa logique : volume, gouvernance, vélocité décision."
                     : "Small, SME, mid-cap, large account. Each has its logic: volume, governance, decision velocity."}
                 </CardDescription>
               </CardHeader>

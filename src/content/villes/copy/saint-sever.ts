@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SEVER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, PME artisanales, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, PME artisanales, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sever (40). Nous accompagnons PME et ETI de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sever (40). Nous accompagnons PME et ETI de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
   seoHook: "Chalosse, agroalimentaire & patrimoine UNESCO",
   ecosystemFr:
-    "Saint-Sever, surnommée « Cap de Gascogne » (Caput Vasconiae) depuis le Moyen Âge, est la cité historique des Landes. Son abbatiale romane est inscrite au patrimoine mondial UNESCO au titre des chemins de Saint-Jacques-de-Compostelle. Chef-lieu du canton Chalosse-Tursan, siège de la communauté de communes et de l'office de tourisme communautaire. Économie portée par l'agriculture (bœuf de Chalosse IGP, foie gras, maïs), l'agroalimentaire, le tourisme patrimonial, TPE artisans et commerces.",
+    "Saint-Sever, surnommée « Cap de Gascogne » (Caput Vasconiae) depuis le Moyen Âge, est la cité historique des Landes. Son abbatiale romane est inscrite au patrimoine mondial UNESCO au titre des chemins de Saint-Jacques-de-Compostelle. Chef-lieu du canton Chalosse-Tursan, siège de la communauté de communes et de l'office de tourisme communautaire. Économie portée par l'agriculture (bœuf de Chalosse IGP, foie gras, maïs), l'agroalimentaire, le tourisme patrimonial, PME de l'artisanat et du commerce.",
   ecosystemEn:
-    "Saint-Sever, surnommée « Cap de Gascogne » (Caput Vasconiae) depuis le Moyen Âge, est la cité historique des Landes. Son abbatiale romane est inscrite au patrimoine mondial UNESCO au titre des chemins de Saint-Jacques-de-Compostelle. Chef-lieu du canton Chalosse-Tursan, siège de la communauté de communes et de l'office de tourisme communautaire. Économie portée par l'agriculture (bœuf de Chalosse IGP, foie gras, maïs), l'agroalimentaire, le tourisme patrimonial, TPE artisans et commerces.",
+    "Saint-Sever, surnommée « Cap de Gascogne » (Caput Vasconiae) depuis le Moyen Âge, est la cité historique des Landes. Son abbatiale romane est inscrite au patrimoine mondial UNESCO au titre des chemins de Saint-Jacques-de-Compostelle. Chef-lieu du canton Chalosse-Tursan, siège de la communauté de communes et de l'office de tourisme communautaire. Économie portée par l'agriculture (bœuf de Chalosse IGP, foie gras, maïs), l'agroalimentaire, le tourisme patrimonial, PME de l'artisanat et du commerce.",
   distancesFr:
     "Mont-de-Marsan à 20 min par D933. Dax à 40 min. Pau à 1h par D933. Bordeaux à 1h30 par A65. Aire-sur-l'Adour à 20 min. Orthez à 35 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_SEVER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Sever : diagnostic adapté aux PME et ETI agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Sever : diagnostic adapté aux PME et ETI agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Sever : formations adaptées aux ateliers agroalimentaires, exploitations d'élevage, sites touristiques patrimoine et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SAINT_SEVER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans saint-séverins ?",
-      a: "Pour les TPE commerçants et artisans à Saint-Sever, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis/factures, gestion stocks, agents IA communication clients.",
+      a: "Pour les PME du commerce et artisans à Saint-Sever, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis/factures, gestion stocks, agents IA communication clients.",
     },
     {
       q: "Comment se déroule une mission à Saint-Sever ?",

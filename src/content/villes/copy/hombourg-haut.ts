@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const HOMBOURG_HAUT_COPY: VilleCopy = {
   pitchFr:
-    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu PME et ETI commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu PME et ETI commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : PME et ETI commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : PME et ETI commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   ecosystemFr:
-    "Hombourg-Haut est une commune mosellane du Bassin houiller, connue pour sa basilique gothique et son patrimoine médiéval. Tissu TPE/PME commerce, services, BTP, artisanat, tourisme patrimonial. Dynamique transfrontalière vers la Sarre via Freyming-Merlebach.",
+    "Hombourg-Haut est une commune mosellane du Bassin houiller, connue pour sa basilique gothique et son patrimoine médiéval. Tissu PME et ETI commerce, services, BTP, artisanat, tourisme patrimonial. Dynamique transfrontalière vers la Sarre via Freyming-Merlebach.",
   ecosystemEn:
-    "Hombourg-Haut est une commune mosellane du Bassin houiller, connue pour sa basilique gothique et son patrimoine médiéval. Tissu TPE/PME commerce, services, BTP, artisanat, tourisme patrimonial. Dynamique transfrontalière vers la Sarre via Freyming-Merlebach.",
+    "Hombourg-Haut est une commune mosellane du Bassin houiller, connue pour sa basilique gothique et son patrimoine médiéval. Tissu PME et ETI commerce, services, BTP, artisanat, tourisme patrimonial. Dynamique transfrontalière vers la Sarre via Freyming-Merlebach.",
   distancesFr:
     "Freyming-Merlebach à 5 min. Saint-Avold à 10 min. Forbach à 15 min. Sarrebruck (Allemagne) à 30 min. Metz à 50 min. Gare SNCF Hombourg-Haut (ligne Saint-Avold–Forbach). Autoroute A4 accès proche. Aéroport Sarrebruck-Ensheim à 35 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Hombourg-Haut : diagnostic adapté aux PME et ETI commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hombourg-Haut : diagnostic adapté aux PME et ETI commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hombourg-Haut : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
       en: "Implémentation IA à Hombourg-Haut : automatisation gestion transfrontalière, agents conversationnels multilingues, optimisation logistique, valorisation patrimoine touristique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hombourg-Haut : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants TPE/PME, entrepreneurs frontaliers du Bassin houiller.",
-      en: "Coaching 1-to-1 à Hombourg-Haut : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants TPE/PME, entrepreneurs frontaliers du Bassin houiller.",
+      fr: "Coaching 1-to-1 à Hombourg-Haut : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants PME et ETI, entrepreneurs frontaliers du Bassin houiller.",
+      en: "Coaching 1-to-1 à Hombourg-Haut : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants PME et ETI, entrepreneurs frontaliers du Bassin houiller.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Hombourg-Haut ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et du patrimoine ?",
-      a: "Oui, nous accompagnons les TPE/PME tourisme et patrimoine de Hombourg-Haut (hébergeurs, restaurateurs, guides, associations) pour intégrer l'IA : réservation en ligne, chatbots visiteurs, gestion avis.",
+      a: "Oui, nous accompagnons les PME et ETI tourisme et patrimoine de Hombourg-Haut (hébergeurs, restaurateurs, guides, associations) pour intégrer l'IA : réservation en ligne, chatbots visiteurs, gestion avis.",
     },
     {
       q: "Comment se passe une mission à Hombourg-Haut ?",

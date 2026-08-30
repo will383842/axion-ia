@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const GROSLAY_COPY: VilleCopy = {
   pitchFr:
-    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA couvre les activités professionnelles du bassin.",
+    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de PME artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA couvre les activités professionnelles du bassin.",
+    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de PME artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Groslay (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé, indépendants et prestataires de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Groslay (95). Nous accompagnons tous types d'activités : PME artisanales, PME de services et conseil, commerçants, professions libérales de santé, indépendants et prestataires de la vallée de Montmorency.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Groslay (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé, indépendants et prestataires de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Groslay (95). Nous accompagnons tous types d'activités : PME artisanales, PME de services et conseil, commerçants, professions libérales de santé, indépendants et prestataires de la vallée de Montmorency.",
   seoHook: "artisanat maintenance & commerce proximité",
   ecosystemFr:
-    "Groslay est une commune résidentielle de la vallée de Montmorency, entre Montmorency et Sarcelles. Tissu économique de TPE artisanales BTP, commerces de centre-bourg, PME de services aux entreprises, professions libérales de santé et prestataires tertiaires desservant le bassin d'emploi nord-parisien.",
+    "Groslay est une commune résidentielle de la vallée de Montmorency, entre Montmorency et Sarcelles. Tissu économique de PME du BTP, commerces de centre-bourg, PME de services aux entreprises, professions libérales de santé et prestataires tertiaires desservant le bassin d'emploi nord-parisien.",
   ecosystemEn:
-    "Groslay est une commune résidentielle de la vallée de Montmorency, entre Montmorency et Sarcelles. Tissu économique de TPE artisanales BTP, commerces de centre-bourg, PME de services aux entreprises, professions libérales de santé et prestataires tertiaires desservant le bassin d'emploi nord-parisien.",
+    "Groslay est une commune résidentielle de la vallée de Montmorency, entre Montmorency et Sarcelles. Tissu économique de PME du BTP, commerces de centre-bourg, PME de services aux entreprises, professions libérales de santé et prestataires tertiaires desservant le bassin d'emploi nord-parisien.",
   distancesFr:
     "Gare de Groslay (Transilien H) à 5 min à pied. Paris Gare du Nord à 25 min en train. Sarcelles à 5 min. Montmorency à 5 min. Aéroport Paris-Charles de Gaulle à 20 min en voiture. Accès A1 et A15 à proximité.",
   distancesEn:
     "Gare de Groslay (Transilien H) à 5 min à pied. Paris Gare du Nord à 25 min en train. Sarcelles à 5 min. Montmorency à 5 min. Aéroport Paris-Charles de Gaulle à 20 min en voiture. Accès A1 et A15 à proximité.",
   topSectorsNaf: [
-    "TPE artisanat BTP & maintenance",
+    "PME du BTP & maintenance",
     "Commerce de proximité & distribution",
     "Services aux entreprises & conseil",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const GROSLAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Groslay : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Groslay : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Groslay : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Groslay : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Groslay : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const GROSLAY_COPY: VilleCopy = {
       en: "Implémentation IA à Groslay : automatisation gestion commerciale, agents conversationnels, classification documentaire, outils IA métier. Tous secteurs vallée de Montmorency et nord Val-d'Oise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Groslay : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Groslay : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Groslay : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Groslay : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const GROSLAY_COPY: VilleCopy = {
       a: "L'audit sur place IA à Groslay démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans à Groslay ?",
-      a: "Oui, nous accompagnons les TPE artisanales et commerçantes de Groslay sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning et stocks, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
+      q: "Accompagnez-vous les PME et artisans à Groslay ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Groslay sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning et stocks, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
     },
     {
       q: "Quels formats de formation IA proposez-vous à Groslay ?",

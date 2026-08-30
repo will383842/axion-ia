@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LESCAR_COPY: VilleCopy = {
   pitchFr:
-    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA collabore avec toutes les structures locales de l'agglomération paloise.",
+    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, PME artisanales, PME services et commerces de périphérie urbaine. Axion-IA collabore avec toutes les structures locales de l'agglomération paloise.",
   pitchEn:
-    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA collabore avec toutes les structures locales de l'agglomération paloise.",
+    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, PME artisanales, PME services et commerces de périphérie urbaine. Axion-IA collabore avec toutes les structures locales de l'agglomération paloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lescar (64). Nous accompagnons PME, ETI et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lescar (64). Nous accompagnons PME, ETI et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit sur place sur mesure.",
   seoHook: "commerce grande & restauration",
   ecosystemFr:
-    "Lescar est une commune de l'agglomération paloise, 9 455 habitants, ancienne cité épiscopale (cathédrale Notre-Dame, XIIe siècle). Zones commerciales dynamiques (Lescar-Soleil, retail), TPE artisans BTP, PME services aux entreprises, restauration et commerces de proximité. Bassin d'emploi commun avec Pau.",
+    "Lescar est une commune de l'agglomération paloise, 9 455 habitants, ancienne cité épiscopale (cathédrale Notre-Dame, XIIe siècle). Zones commerciales dynamiques (Lescar-Soleil, retail), PME du BTP, PME services aux entreprises, restauration et commerces de proximité. Bassin d'emploi commun avec Pau.",
   ecosystemEn:
-    "Lescar est une commune de l'agglomération paloise, 9 455 habitants, ancienne cité épiscopale (cathédrale Notre-Dame, XIIe siècle). Zones commerciales dynamiques (Lescar-Soleil, retail), TPE artisans BTP, PME services aux entreprises, restauration et commerces de proximité. Bassin d'emploi commun avec Pau.",
+    "Lescar est une commune de l'agglomération paloise, 9 455 habitants, ancienne cité épiscopale (cathédrale Notre-Dame, XIIe siècle). Zones commerciales dynamiques (Lescar-Soleil, retail), PME du BTP, PME services aux entreprises, restauration et commerces de proximité. Bassin d'emploi commun avec Pau.",
   distancesFr:
     "Gare de Pau à 10 min voiture (TGV Paris 4h20 direct). Aéroport Pau-Pyrénées à 10 min. Accès A64 (Bayonne-Toulouse). Centre-ville Pau à 7 km. Zone commerciale Lescar-Soleil accessible directement.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LESCAR_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & grande distribution (Lescar-Soleil)",
     "Services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Restauration",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, PME artisanales et restaurateurs de l'agglomération paloise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, PME artisanales et restaurateurs de l'agglomération paloise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lescar : déploiement outils IA dans vos surfaces commerciales, bureaux ou ateliers. Automatisation gestion stocks, prévisions ventes, planning équipes.",
@@ -42,8 +42,8 @@ export const LESCAR_COPY: VilleCopy = {
       en: "Implémentation IA à Lescar : optimisation flux clients zone commerciale, prévision demande retail, chatbot SAV, automatisation comptabilité PME, agents IA accueil et fidélisation.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lescar : sessions dans vos locaux commerciaux ou en visio. Gérants de magasins, dirigeants TPE/PME et restaurateurs de l'agglomération paloise.",
-      en: "Coaching 1-to-1 à Lescar : sessions dans vos locaux commerciaux ou en visio. Gérants de magasins, dirigeants TPE/PME et restaurateurs de l'agglomération paloise.",
+      fr: "Coaching 1-to-1 à Lescar : sessions dans vos locaux commerciaux ou en visio. Gérants de magasins, dirigeants de PME et d'ETI et restaurateurs de l'agglomération paloise.",
+      en: "Coaching 1-to-1 à Lescar : sessions dans vos locaux commerciaux ou en visio. Gérants de magasins, dirigeants de PME et d'ETI et restaurateurs de l'agglomération paloise.",
     },
   },
   faqGeolocalisee: [

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ORNEX_COPY: VilleCopy = {
   pitchFr:
-    "Ornex, dans l'Ain, est une commune du pays de Gex en plein essor, posée à quelques minutes de la frontière suisse, de Genève et du CERN. Portée par une économie frontalière dynamique et une démographie en forte croissance, elle concentre PME tertiaires, TPE artisanales du BTP, commerces de proximité et services aux entreprises tournés vers le bassin genevois. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME gessiennes pour automatiser leurs processus avec un ROI mesurable.",
+    "Ornex, dans l'Ain, est une commune du pays de Gex en plein essor, posée à quelques minutes de la frontière suisse, de Genève et du CERN. Portée par une économie frontalière dynamique et une démographie en forte croissance, elle concentre PME tertiaires, PME artisanales du BTP, commerces de proximité et services aux entreprises tournés vers le bassin genevois. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI gessiennes pour automatiser leurs processus avec un ROI mesurable.",
   pitchEn:
-    "Ornex, dans l'Ain, est une commune du pays de Gex en plein essor, posée à quelques minutes de la frontière suisse, de Genève et du CERN. Portée par une économie frontalière dynamique et une démographie en forte croissance, elle concentre PME tertiaires, TPE artisanales du BTP, commerces de proximité et services aux entreprises tournés vers le bassin genevois. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME gessiennes pour automatiser leurs processus avec un ROI mesurable.",
+    "Ornex, dans l'Ain, est une commune du pays de Gex en plein essor, posée à quelques minutes de la frontière suisse, de Genève et du CERN. Portée par une économie frontalière dynamique et une démographie en forte croissance, elle concentre PME tertiaires, PME artisanales du BTP, commerces de proximité et services aux entreprises tournés vers le bassin genevois. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI gessiennes pour automatiser leurs processus avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ornex (01, Ain). Nous accompagnons en priorité les TPE puis les PME du pays de Gex et de l'économie frontalière de Genève : services aux entreprises, artisans du BTP, commerces de proximité et tertiaires transfrontaliers. Audit des processus, automatisation des devis et relances, agents conversationnels multilingues, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ornex (01, Ain). Nous accompagnons en priorité les PME puis les ETI du pays de Gex et de l'économie frontalière de Genève : services aux entreprises, artisans du BTP, commerces de proximité et tertiaires transfrontaliers. Audit des processus, automatisation des devis et relances, agents conversationnels multilingues, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ornex (01, Ain). Nous accompagnons en priorité les TPE puis les PME du pays de Gex et de l'économie frontalière de Genève : services aux entreprises, artisans du BTP, commerces de proximité et tertiaires transfrontaliers. Audit des processus, automatisation des devis et relances, agents conversationnels multilingues, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ornex (01, Ain). Nous accompagnons en priorité les PME puis les ETI du pays de Gex et de l'économie frontalière de Genève : services aux entreprises, artisans du BTP, commerces de proximité et tertiaires transfrontaliers. Audit des processus, automatisation des devis et relances, agents conversationnels multilingues, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   seoHook: "économie frontalière & tertiaire Gex",
   ecosystemFr:
-    "Ornex appartient au pays de Gex, territoire frontalier en pleine expansion qui vit à l'heure de Genève, de son bassin d'emploi et du CERN tout proche. La forte croissance démographique alimente le BTP, l'artisanat, les commerces de proximité et un tertiaire de services tourné vers la Suisse voisine. Ces TPE et PME gessiennes, souvent multilingues et confrontées à des flux administratifs transfrontaliers, trouvent dans l'automatisation IA et les agents conversationnels FR/EN/DE un levier concret de productivité et de qualité de service.",
+    "Ornex appartient au pays de Gex, territoire frontalier en pleine expansion qui vit à l'heure de Genève, de son bassin d'emploi et du CERN tout proche. La forte croissance démographique alimente le BTP, l'artisanat, les commerces de proximité et un tertiaire de services tourné vers la Suisse voisine. Ces PME et ETI gessiennes, souvent multilingues et confrontées à des flux administratifs transfrontaliers, trouvent dans l'automatisation IA et les agents conversationnels FR/EN/DE un levier concret de productivité et de qualité de service.",
   ecosystemEn:
-    "Ornex appartient au pays de Gex, territoire frontalier en pleine expansion qui vit à l'heure de Genève, de son bassin d'emploi et du CERN tout proche. La forte croissance démographique alimente le BTP, l'artisanat, les commerces de proximité et un tertiaire de services tourné vers la Suisse voisine. Ces TPE et PME gessiennes, souvent multilingues et confrontées à des flux administratifs transfrontaliers, trouvent dans l'automatisation IA et les agents conversationnels FR/EN/DE un levier concret de productivité et de qualité de service.",
+    "Ornex appartient au pays de Gex, territoire frontalier en pleine expansion qui vit à l'heure de Genève, de son bassin d'emploi et du CERN tout proche. La forte croissance démographique alimente le BTP, l'artisanat, les commerces de proximité et un tertiaire de services tourné vers la Suisse voisine. Ces PME et ETI gessiennes, souvent multilingues et confrontées à des flux administratifs transfrontaliers, trouvent dans l'automatisation IA et les agents conversationnels FR/EN/DE un levier concret de productivité et de qualité de service.",
   distancesFr:
     "Ornex est à quelques minutes de la frontière suisse : le centre de Genève est à un quart d'heure, l'aéroport de Genève-Cointrin à 15 minutes, Ferney-Voltaire et le CERN à 5 minutes, Gex à 5 minutes également. Lyon et sa gare TGV sont à environ une heure trente par l'autoroute. Cette position frontalière unique facilite nos interventions sur tout le pays de Gex, de Saint-Genis-Pouilly à Divonne-les-Bains.",
   distancesEn:
@@ -30,20 +30,20 @@ export const ORNEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ornex : diagnostic des processus pour PME tertiaires du pays de Gex, frontaliers de Genève et TPE artisans. Nous chiffrons les automatisations à fort ROI, y compris multilingues.",
-      en: "Audit IA à Ornex : diagnostic des processus pour PME tertiaires du pays de Gex, frontaliers de Genève et TPE artisans. Nous chiffrons les automatisations à fort ROI, y compris multilingues.",
+      fr: "Audit IA à Ornex : diagnostic des processus pour PME tertiaires du pays de Gex, frontaliers de Genève et PME artisanales. Nous chiffrons les automatisations à fort ROI, y compris multilingues.",
+      en: "Audit IA à Ornex : diagnostic des processus pour PME tertiaires du pays de Gex, frontaliers de Genève et PME artisanales. Nous chiffrons les automatisations à fort ROI, y compris multilingues.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ornex : automatisation des devis, relances et flux administratifs transfrontaliers pour les TPE et PME gessiennes, avec montée en autonomie des équipes.",
-      en: "Interventions IA sur site à Ornex : automatisation des devis, relances et flux administratifs transfrontaliers pour les TPE et PME gessiennes, avec montée en autonomie des équipes.",
+      fr: "Interventions IA sur site à Ornex : automatisation des devis, relances et flux administratifs transfrontaliers pour les PME et ETI gessiennes, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Ornex : automatisation des devis, relances et flux administratifs transfrontaliers pour les PME et ETI gessiennes, avec montée en autonomie des équipes.",
     },
     implementation: {
       fr: "Implémentation IA à Ornex : agents conversationnels multilingues FR/EN/DE, automatisation des workflows transfrontaliers et classification de documents pour le bassin franco-genevois.",
       en: "Implémentation IA à Ornex : agents conversationnels multilingues FR/EN/DE, automatisation des workflows transfrontaliers et classification de documents pour le bassin franco-genevois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ornex : sessions dans votre bureau, commerce ou en visio pour les dirigeants frontaliers, tertiaires et artisans de TPE et PME du pays de Gex.",
-      en: "Coaching 1-to-1 à Ornex : sessions dans votre bureau, commerce ou en visio pour les dirigeants frontaliers, tertiaires et artisans de TPE et PME du pays de Gex.",
+      fr: "Coaching 1-to-1 à Ornex : sessions dans votre bureau, commerce ou en visio pour les dirigeants frontaliers, tertiaires et artisans de PME et ETI du pays de Gex.",
+      en: "Coaching 1-to-1 à Ornex : sessions dans votre bureau, commerce ou en visio pour les dirigeants frontaliers, tertiaires et artisans de PME et ETI du pays de Gex.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Ornex : plateformes multilingues sur mesure avec IA intégrée pour services, commerces et artisans souhaitant capter la clientèle franco-genevoise.",
@@ -64,8 +64,8 @@ export const ORNEX_COPY: VilleCopy = {
       a: "Oui. Services aux entreprises, professions libérales et tertiaires transfrontaliers sont un public clé. Nous automatisons devis, relances et flux administratifs, et déployons des agents B2B connectés à vos outils métier.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces d'Ornex ?",
-      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Les TPE puis les PME sont prioritaires ; les ETI restent marginales pour nous.",
+      q: "Quels services pour les PME de l'artisanat et du commerce d'Ornex ?",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Les les PME puis les ETI sont prioritaires ; les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",

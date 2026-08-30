@@ -4,7 +4,7 @@
  * maîtrise toute la chaîne IA, de bout en bout »).
  *
  * Refonte 2026-05-31 (Will) — 8 projets diversifiés, NON cliquables, qui
- * défilent. Couvre TPE / PME / ETI. Aucun nom de société ou de marque : secteur
+ * défilent. Couvre PME / ETI / grands groupes. Aucun nom de société ou de marque : secteur
  * + résultat mesurable uniquement (anti-invention).
  *
  * v2 (Will 2026-05-31) — header au style standard du site (eyebrow terracotta +
@@ -22,7 +22,7 @@ import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { Container } from "@/components/layout/Container";
 
-type Segment = "TPE" | "PME" | "ETI";
+type Segment = "PME" | "ETI";
 
 interface Realisation {
   readonly segment: Segment;
@@ -42,16 +42,15 @@ interface Realisation {
 }
 
 const SEGMENT_LABEL: Record<Segment, { fr: string; en: string }> = {
-  TPE: { fr: "TPE", en: "Small business" },
   PME: { fr: "PME", en: "SME" },
   ETI: { fr: "ETI & grands comptes", en: "Mid-cap & key accounts" },
 };
 
-// 8 réalisations diversifiées — TPE / PME / ETI, secteurs variés. Images = banque
+// 8 réalisations diversifiées — PME / ETI / grands groupes, secteurs variés. Images = banque
 // Axion-IA existante (public/images), choisies pour coller au cas d'usage.
 const REALISATIONS: ReadonlyArray<Realisation> = [
   {
-    segment: "TPE",
+    segment: "PME",
     sectorFr: "Artisan du bâtiment",
     sectorEn: "Construction craftsman",
     titleFr: "Devis générés automatiquement",
@@ -65,7 +64,7 @@ const REALISATIONS: ReadonlyArray<Realisation> = [
     imageAltEn: "AI quote generated and sent automatically within seconds",
   },
   {
-    segment: "TPE",
+    segment: "PME",
     sectorFr: "Cabinet d'expertise comptable",
     sectorEn: "Accounting firm",
     titleFr: "Saisie comptable assistée par IA",
@@ -80,7 +79,7 @@ const REALISATIONS: ReadonlyArray<Realisation> = [
     imageAltEn: "Invoices captured and validated automatically by AI in accounting",
   },
   {
-    segment: "TPE",
+    segment: "PME",
     sectorFr: "Restaurant & hôtellerie",
     sectorEn: "Restaurant & hospitality",
     titleFr: "Réponses aux avis & réservations",
@@ -238,7 +237,7 @@ export function AuditRealisations({ isFr }: { isFr: boolean }): ReactNode {
               className="text-terracotta mx-2 italic"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "pour toutes les tailles d'entreprise" : "for companies of every size"}
+              {isFr ? "pour les PME, ETI et grands groupes" : "for SMEs, mid-caps and large groups"}
             </span>
           </h2>
           <p className="text-fg-soft max-w-2xl text-lg leading-relaxed sm:text-xl">

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
   pitchFr:
-    "Clermont-l'Hérault (34), sous-préfecture de l'Hérault, porte du lac du Salagou et du Lodévois-Larzac. Vignoble AOC Languedoc (Terrasses du Larzac), tourisme nature, commerces de centre-ville. Tissu TPE commerçants, PME viticoles, artisans, professions libérales, services publics. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Clermont-l'Hérault (34), sous-préfecture de l'Hérault, porte du lac du Salagou et du Lodévois-Larzac. Vignoble AOC Languedoc (Terrasses du Larzac), tourisme nature, commerces de centre-ville. Tissu PME du commerce, PME viticoles, artisans, professions libérales, services publics. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Clermont-l'Hérault (34), sous-préfecture de l'Hérault, porte du lac du Salagou et du Lodévois-Larzac. Vignoble AOC Languedoc (Terrasses du Larzac), tourisme nature, commerces de centre-ville. Tissu TPE commerçants, PME viticoles, artisans, professions libérales, services publics. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Clermont-l'Hérault (34), sous-préfecture de l'Hérault, porte du lac du Salagou et du Lodévois-Larzac. Vignoble AOC Languedoc (Terrasses du Larzac), tourisme nature, commerces de centre-ville. Tissu PME du commerce, PME viticoles, artisans, professions libérales, services publics. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clermont-l'Hérault (34). Nous accompagnons TPE commerçants de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clermont-l'Hérault (34). Nous accompagnons PME du commerce de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clermont-l'Hérault (34). Nous accompagnons TPE commerçants de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clermont-l'Hérault (34). Nous accompagnons PME du commerce de centre-ville, PME viticoles Terrasses du Larzac, artisans, professions libérales, acteurs du tourisme nature (lac du Salagou) et services publics de la sous-préfecture.",
   ecosystemFr:
-    "Clermont-l'Hérault est une sous-préfecture de l'Hérault, carrefour entre Montpellier, Béziers et Lodève. Porte d'entrée du lac du Salagou (tourisme nature, sports outdoor) et du Lodévois-Larzac. Vignoble AOC Terrasses du Larzac réputé. Centre-ville commerçant dynamique, marché hebdomadaire. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services publics.",
+    "Clermont-l'Hérault est une sous-préfecture de l'Hérault, carrefour entre Montpellier, Béziers et Lodève. Porte d'entrée du lac du Salagou (tourisme nature, sports outdoor) et du Lodévois-Larzac. Vignoble AOC Terrasses du Larzac réputé. Centre-ville commerçant dynamique, marché hebdomadaire. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales, services publics.",
   ecosystemEn:
-    "Clermont-l'Hérault est une sous-préfecture de l'Hérault, carrefour entre Montpellier, Béziers et Lodève. Porte d'entrée du lac du Salagou (tourisme nature, sports outdoor) et du Lodévois-Larzac. Vignoble AOC Terrasses du Larzac réputé. Centre-ville commerçant dynamique, marché hebdomadaire. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services publics.",
+    "Clermont-l'Hérault est une sous-préfecture de l'Hérault, carrefour entre Montpellier, Béziers et Lodève. Porte d'entrée du lac du Salagou (tourisme nature, sports outdoor) et du Lodévois-Larzac. Vignoble AOC Terrasses du Larzac réputé. Centre-ville commerçant dynamique, marché hebdomadaire. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales, services publics.",
   distancesFr:
     "Montpellier à 45 min par A75. Lodève à 20 min. Béziers à 45 min par A75. Lac du Salagou à 10 min. Gare SNCF de Clermont-l'Hérault (TER Montpellier-Bédarieux).",
   distancesEn:
@@ -30,8 +30,8 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clermont-l'Hérault : diagnostic pour TPE commerçants, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Clermont-l'Hérault : diagnostic pour TPE commerçants, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Clermont-l'Hérault : diagnostic pour PME du commerce, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Clermont-l'Hérault : diagnostic pour PME du commerce, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clermont-l'Hérault : ateliers adaptés domaine viticole, commerce, hôtel ou cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
       en: "Implémentation IA à Clermont-l'Hérault : automatisation gestion vignoble, chatbot touristique Salagou multilingue, classification dossiers services publics, optimisation commerces centre-ville.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Clermont-l'Hérault : sessions sur site ou en visio pour viticulteurs, commerçants, artisans, gérants TPE/PME du Clermontais et Lodévois.",
-      en: "Coaching 1-to-1 à Clermont-l'Hérault : sessions sur site ou en visio pour viticulteurs, commerçants, artisans, gérants TPE/PME du Clermontais et Lodévois.",
+      fr: "Coaching 1-to-1 à Clermont-l'Hérault : sessions sur site ou en visio pour viticulteurs, commerçants, artisans, gérants PME et ETI du Clermontais et Lodévois.",
+      en: "Coaching 1-to-1 à Clermont-l'Hérault : sessions sur site ou en visio pour viticulteurs, commerçants, artisans, gérants PME et ETI du Clermontais et Lodévois.",
     },
   },
   faqGeolocalisee: [

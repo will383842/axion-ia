@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu PME artisanales, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu PME artisanales, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournan-en-Brie (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournan-en-Brie (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce centre-bourg",
   ecosystemFr:
-    "Tournan-en-Brie est un bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce pour les communes alentour. Son tissu économique associe TPE artisans, PME de services, commerces de centre-bourg et professions libérales. Proximité avec Gretz-Armainvilliers, Ozoir-la-Ferrière, Pontault-Combault et Fontenay-Trésigny.",
+    "Tournan-en-Brie est un bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce pour les communes alentour. Son tissu économique associe PME artisanales, PME de services, commerces de centre-bourg et professions libérales. Proximité avec Gretz-Armainvilliers, Ozoir-la-Ferrière, Pontault-Combault et Fontenay-Trésigny.",
   ecosystemEn:
-    "Tournan-en-Brie est un bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce pour les communes alentour. Son tissu économique associe TPE artisans, PME de services, commerces de centre-bourg et professions libérales. Proximité avec Gretz-Armainvilliers, Ozoir-la-Ferrière, Pontault-Combault et Fontenay-Trésigny.",
+    "Tournan-en-Brie est un bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce pour les communes alentour. Son tissu économique associe PME artisanales, PME de services, commerces de centre-bourg et professions libérales. Proximité avec Gretz-Armainvilliers, Ozoir-la-Ferrière, Pontault-Combault et Fontenay-Trésigny.",
   distancesFr:
     "Gare de Tournan sur Transilien P (terminus). Paris Gare de l'Est à 50 min. Gretz-Armainvilliers à 10 min. Ozoir-la-Ferrière à 15 min. A4 à 15 min. Aéroport Orly à 50 min.",
   distancesEn:
     "Gare de Tournan sur Transilien P (terminus). Paris Gare de l'Est à 50 min. Gretz-Armainvilliers à 10 min. Ozoir-la-Ferrière à 15 min. A4 à 15 min. Aéroport Orly à 50 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de centre-bourg",
     "Services aux entreprises",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tournan-en-Brie : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de la Brie est francilienne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tournan-en-Brie : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de la Brie est francilienne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tournan-en-Brie : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la Brie est francilienne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tournan-en-Brie : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la Brie est francilienne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tournan-en-Brie : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
       en: "Implémentation IA à Tournan-en-Brie : automatisation devis artisans, gestion relation client PME, facturation automatisée, digitalisation cabinets professions libérales, gestion stocks commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tournan-en-Brie : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME services, professions libérales, commerçants de la Brie.",
-      en: "Coaching 1-to-1 à Tournan-en-Brie : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME services, professions libérales, commerçants de la Brie.",
+      fr: "Coaching 1-to-1 à Tournan-en-Brie : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME services, professions libérales, commerçants de la Brie.",
+      en: "Coaching 1-to-1 à Tournan-en-Brie : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME services, professions libérales, commerçants de la Brie.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
       a: "L'Audit sur place IA à Tournan-en-Brie démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans à Tournan-en-Brie ?",
-      a: "Oui, nous accompagnons les TPE artisans du bâtiment et de la rénovation à Tournan-en-Brie : automatisation devis, planification chantiers, gestion relation client, suivi facturation par IA.",
+      q: "Accompagnez-vous les PME artisanales à Tournan-en-Brie ?",
+      a: "Oui, nous accompagnons les PME artisanales du bâtiment et de la rénovation à Tournan-en-Brie : automatisation devis, planification chantiers, gestion relation client, suivi facturation par IA.",
     },
     {
       q: "Proposez-vous des formations IA pour les commerçants de Tournan ?",
@@ -65,7 +65,7 @@ export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching IA individuel à Tournan-en-Brie ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Tournan-en-Brie ou en visio. Sessions de 2h à la demi-journée pour dirigeants TPE, gérants PME ou professions libérales. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Tournan-en-Brie ou en visio. Sessions de 2h à la demi-journée pour dirigeants de PME et d'ETI, gérants PME ou professions libérales. Prise en main d'outils IA concrets.",
     },
   ],
 };

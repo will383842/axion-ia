@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const DARNETAL_COPY: VilleCopy = {
   pitchFr:
-    "Darnetal (76), commune de la vallee du Robec dans l'agglomeration rouennaise, reunit pres de 9 570 habitants. Ancienne ville industrielle reconvertie, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
+    "Darnetal (76), commune de la vallee du Robec dans l'agglomeration rouennaise, reunit pres de 9 570 habitants. Ancienne ville industrielle reconvertie, elle accueille des PME de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Darnetal (76), commune de la vallee du Robec dans l'agglomeration rouennaise, reunit pres de 9 570 habitants. Ancienne ville industrielle reconvertie, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
+    "Darnetal (76), commune de la vallee du Robec dans l'agglomeration rouennaise, reunit pres de 9 570 habitants. Ancienne ville industrielle reconvertie, elle accueille des PME de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "services, tertiaire & vallee Robec",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Darnetal (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Darnetal (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Darnetal est situee dans la vallee du Robec, a l'est de Rouen. Ancienne cite industrielle (teinturerie, textile) reconvertie, la ville fait partie de la Metropole Rouen Normandie. Tissu de TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Acces metro Rouen.",
+    "Darnetal est situee dans la vallee du Robec, a l'est de Rouen. Ancienne cite industrielle (teinturerie, textile) reconvertie, la ville fait partie de la Metropole Rouen Normandie. Tissu de PME de services, PME tertiaires, commerces, professions liberales et artisanat. Acces metro Rouen.",
   ecosystemEn:
-    "Darnetal est situee dans la vallee du Robec, a l'est de Rouen. Ancienne cite industrielle (teinturerie, textile) reconvertie, la ville fait partie de la Metropole Rouen Normandie. Tissu de TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Acces metro Rouen.",
+    "Darnetal est situee dans la vallee du Robec, a l'est de Rouen. Ancienne cite industrielle (teinturerie, textile) reconvertie, la ville fait partie de la Metropole Rouen Normandie. Tissu de PME de services, PME tertiaires, commerces, professions liberales et artisanat. Acces metro Rouen.",
   distancesFr:
     "Metro Rouen a 5 min. Rouen centre a 10 min. Gare Rouen Rive-Droite a 15 min. A28 Rouen-Amiens a 10 min. Paris Saint-Lazare a 1h25 via Rouen. Aeroport Rouen-Boos a 15 min.",
   distancesEn:
     "Metro Rouen a 5 min. Rouen centre a 10 min. Gare Rouen Rive-Droite a 15 min. A28 Rouen-Amiens a 10 min. Paris Saint-Lazare a 1h25 via Rouen. Aeroport Rouen-Boos a 15 min.",
   topSectorsNaf: [
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite & detail",
     "PME tertiaire & bureaux",
     "Professions liberales & sante",
@@ -30,8 +30,8 @@ export const DARNETAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Darnetal : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Darnetal : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Darnetal : diagnostic adapte aux PME de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Darnetal : diagnostic adapte aux PME de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Darnetal : formations adaptees aux commerces, cabinets, bureaux tertiaires et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DARNETAL_COPY: VilleCopy = {
       en: "Implementation IA a Darnetal : automatisation administrative, agents conversationnels clients, CRM augmentes pour PME tertiaires et commercants de l'agglo rouennaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Darnetal : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de la vallee du Robec.",
-      en: "Coaching 1-to-1 a Darnetal : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de la vallee du Robec.",
+      fr: "Coaching 1-to-1 a Darnetal : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de la vallee du Robec.",
+      en: "Coaching 1-to-1 a Darnetal : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de la vallee du Robec.",
     },
   },
   faqGeolocalisee: [

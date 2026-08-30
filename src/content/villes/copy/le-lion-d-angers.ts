@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_LION_D_ANGERS_COPY: VilleCopy = {
   pitchFr:
-    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de TPE artisans, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de PME artisanales, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de TPE artisans, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de PME artisanales, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : PME artisanales, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : PME artisanales, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
   seoHook: "filière équine & agriculture polyculture",
   ecosystemFr:
     "Le Lion-d'Angers est un bourg situé aux bords de l'Oudon, célèbre pour le Mondial du Lion (championnat du monde de concours complet jeunes chevaux). Filière équine dynamique, agriculture (polyculture-élevage), artisanat, commerces de bourg, tourisme équestre et patrimonial (château du Plessis-Macé à proximité).",
@@ -30,8 +30,8 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Lion-d'Angers : diagnostic adapté aux PME artisanales, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Lion-d'Angers : diagnostic adapté aux PME artisanales, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
       en: "Implémentation IA au Lion-d'Angers : gestion élevage équin, traçabilité troupeau, agents conversationnels tourisme équestre, automatisation devis artisans et planning événementiel.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Lion-d'Angers : sessions dans votre exploitation, centre équestre, commerce ou en visio. Dirigeants TPE/PME filière équine, agriculteurs, artisans, gérants.",
-      en: "Coaching 1-to-1 au Lion-d'Angers : sessions dans votre exploitation, centre équestre, commerce ou en visio. Dirigeants TPE/PME filière équine, agriculteurs, artisans, gérants.",
+      fr: "Coaching 1-to-1 au Lion-d'Angers : sessions dans votre exploitation, centre équestre, commerce ou en visio. Dirigeants PME et ETI filière équine, agriculteurs, artisans, gérants.",
+      en: "Coaching 1-to-1 au Lion-d'Angers : sessions dans votre exploitation, centre équestre, commerce ou en visio. Dirigeants PME et ETI filière équine, agriculteurs, artisans, gérants.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les centres équestres, éleveurs, prestataires événementiels et acteurs du tourisme équestre du Lion-d'Angers sur leurs cas IA : gestion élevage, planning événements, réservation en ligne, suivi sanitaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE au Lion-d'Angers ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et acteurs de la filière équine. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME au Lion-d'Angers ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agricoles et acteurs de la filière équine. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous du coaching IA individuel pour les dirigeants ?",
-      a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME du Lion-d'Angers. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants de PME et d'ETI du Lion-d'Angers. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Comment se passe une mission IA depuis Angers ?",

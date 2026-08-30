@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const MAISONS_ALFORT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Maisons-Alfort, sixième ville du Val-de-Marne avec 56 799 habitants, située à 3 km au sud-est de Paris en bord de Marne. Notre cabinet intervient sur site auprès des cabinets vétérinaires, laboratoires, commerces, professions libérales et PME tertiaires implantés autour de la ligne 8 du métro et du RER D, pour automatiser leurs processus métier en code source.",
+    "Axion-IA accompagne les PME et ETI de Maisons-Alfort, sixième ville du Val-de-Marne avec 56 799 habitants, située à 3 km au sud-est de Paris en bord de Marne. Notre cabinet intervient sur site auprès des cabinets vétérinaires, laboratoires, commerces, professions libérales et PME tertiaires implantés autour de la ligne 8 du métro et du RER D, pour automatiser leurs processus métier en code source.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Maisons-Alfort, sixième ville du Val-de-Marne avec 56 799 habitants, située à 3 km au sud-est de Paris en bord de Marne. Notre cabinet intervient sur site auprès des cabinets vétérinaires, laboratoires, commerces, professions libérales et PME tertiaires implantés autour de la ligne 8 du métro et du RER D, pour automatiser leurs processus métier en code source.",
+    "Axion-IA accompagne les PME et ETI de Maisons-Alfort, sixième ville du Val-de-Marne avec 56 799 habitants, située à 3 km au sud-est de Paris en bord de Marne. Notre cabinet intervient sur site auprès des cabinets vétérinaires, laboratoires, commerces, professions libérales et PME tertiaires implantés autour de la ligne 8 du métro et du RER D, pour automatiser leurs processus métier en code source.",
   directAnswerFr:
-    "Axion-IA se déplace à Maisons-Alfort (Val-de-Marne, 56 799 habitants) pour auditer et automatiser les processus des TPE et PME. La commune accueille l'École Nationale Vétérinaire d'Alfort (ENVA, fondée en 1765, 12 hectares) et plusieurs structures pharmaceutiques et biotechnologiques, qui structurent un écosystème santé animale et sciences du vivant. Nos solutions reposent sur du code source sur-mesure, respectent le RGPD et excluent les outils no-code.",
+    "Axion-IA se déplace à Maisons-Alfort (Val-de-Marne, 56 799 habitants) pour auditer et automatiser les processus des PME et ETI. La commune accueille l'École Nationale Vétérinaire d'Alfort (ENVA, fondée en 1765, 12 hectares) et plusieurs structures pharmaceutiques et biotechnologiques, qui structurent un écosystème santé animale et sciences du vivant. Nos solutions reposent sur du code source sur-mesure, respectent le RGPD et excluent les outils no-code.",
   directAnswerEn:
-    "Axion-IA se déplace à Maisons-Alfort (Val-de-Marne, 56 799 habitants) pour auditer et automatiser les processus des TPE et PME. La commune accueille l'École Nationale Vétérinaire d'Alfort (ENVA, fondée en 1765, 12 hectares) et plusieurs structures pharmaceutiques et biotechnologiques, qui structurent un écosystème santé animale et sciences du vivant. Nos solutions reposent sur du code source sur-mesure, respectent le RGPD et excluent les outils no-code.",
+    "Axion-IA se déplace à Maisons-Alfort (Val-de-Marne, 56 799 habitants) pour auditer et automatiser les processus des PME et ETI. La commune accueille l'École Nationale Vétérinaire d'Alfort (ENVA, fondée en 1765, 12 hectares) et plusieurs structures pharmaceutiques et biotechnologiques, qui structurent un écosystème santé animale et sciences du vivant. Nos solutions reposent sur du code source sur-mesure, respectent le RGPD et excluent les outils no-code.",
   seoHook: "santé animale, sciences du vivant & PME tertiaires",
   ecosystemFr:
     "Maisons-Alfort est structurée par l'École Nationale Vétérinaire d'Alfort et un tissu de laboratoires, cabinets vétérinaires et PME pharmaceutiques et biotechnologiques. Le tissu local complète ce noyau scientifique avec un commerce de proximité dynamique, des professions libérales (santé, droit, expertise comptable) et des PME tertiaires. La commune fait partie de l'EPT Paris-Est-Marne et Bois et de la Métropole du Grand Paris depuis 2016.",
@@ -36,16 +36,16 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des PME et ETI locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des PME et ETI locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
       en: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de PME, ETI et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de PME, ETI et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou prise de RDV",
-            detail:
-              "Pour cabinets et cliniques vétérinaires de la ligne 8, professions de santé libérales et commerces de Charentonneau ou du secteur Vert-de-Maisons : site vitrine ou de réservation, responsive mobile, SEO local Maisons-Alfort.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou plateforme métier",
@@ -173,12 +167,6 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Storefront or booking site",
-            detail:
-              "For veterinary practices and clinics on line 8, healthcare professionals and shops in Charentonneau or the Vert-de-Maisons sector: storefront or booking site, mobile-responsive, local Maisons-Alfort SEO.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or business platform",
             detail:
@@ -244,11 +232,11 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il à Maisons-Alfort ?",
-      a: "Nous accompagnons les TPE et PME de la santé animale et humaine, des laboratoires de recherche, des professions libérales, du commerce de détail et des services aux entreprises présentes à Maisons-Alfort.",
+      a: "Nous accompagnons les PME et ETI de la santé animale et humaine, des laboratoires de recherche, des professions libérales, du commerce de détail et des services aux entreprises présentes à Maisons-Alfort.",
     },
     {
       q: "Proposez-vous des formations IA sur site à Maisons-Alfort ?",
-      a: "Oui, nous animons des ateliers en présentiel à Maisons-Alfort (demi-journée ou journée complète) pour les équipes des TPE et PME, et des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, nous animons des ateliers en présentiel à Maisons-Alfort (demi-journée ou journée complète) pour les équipes des PME et ETI, et des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

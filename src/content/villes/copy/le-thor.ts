@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const LE_THOR_COPY: VilleCopy = {
   pitchFr:
-    "Le Thor (84), commune de la vallée de la Sorgue dans l'agglomération avignonnaise, conjugue agriculture maraîchère (raisin de table, melon), tissu artisanal et fonction résidentielle. TPE artisans et maraîchers, PME agroalimentaires et négoces, commerces de proximité, professions libérales et tourisme rural. Axion-IA y intervient pour tous types d'activités.",
+    "Le Thor (84), commune de la vallée de la Sorgue dans l'agglomération avignonnaise, conjugue agriculture maraîchère (raisin de table, melon), tissu artisanal et fonction résidentielle. PME artisanales et maraîchers, PME agroalimentaires et négoces, commerces de proximité, professions libérales et tourisme rural. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Le Thor (84), commune de la vallée de la Sorgue dans l'agglomération avignonnaise, conjugue agriculture maraîchère (raisin de table, melon), tissu artisanal et fonction résidentielle. TPE artisans et maraîchers, PME agroalimentaires et négoces, commerces de proximité, professions libérales et tourisme rural. Axion-IA y intervient pour tous types d'activités.",
+    "Le Thor (84), commune de la vallée de la Sorgue dans l'agglomération avignonnaise, conjugue agriculture maraîchère (raisin de table, melon), tissu artisanal et fonction résidentielle. PME artisanales et maraîchers, PME agroalimentaires et négoces, commerces de proximité, professions libérales et tourisme rural. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Thor (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, négoces, commerces et professions libérales de la vallée de la Sorgue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Thor (84). Nous accompagnons PME artisanales, maraîchers, PME agroalimentaires, négoces, commerces et professions libérales de la vallée de la Sorgue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Thor (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, négoces, commerces et professions libérales de la vallée de la Sorgue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Thor (84). Nous accompagnons PME artisanales, maraîchers, PME agroalimentaires, négoces, commerces et professions libérales de la vallée de la Sorgue. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
-    "Le Thor est positionnée en vallée de la Sorgue, entre Avignon et L'Isle-sur-la-Sorgue, dans l'agglomération du Grand Avignon. Son économie repose sur l'agriculture maraîchère (raisin de table, melon, fraise), les TPE artisans (BTP, services), les PME agroalimentaires et négoces, le tourisme rural (Thouzon), les professions libérales et commerces de proximité.",
+    "Le Thor est positionnée en vallée de la Sorgue, entre Avignon et L'Isle-sur-la-Sorgue, dans l'agglomération du Grand Avignon. Son économie repose sur l'agriculture maraîchère (raisin de table, melon, fraise), les PME artisanales (BTP, services), les PME agroalimentaires et négoces, le tourisme rural (Thouzon), les professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Le Thor est positionnée en vallée de la Sorgue, entre Avignon et L'Isle-sur-la-Sorgue, dans l'agglomération du Grand Avignon. Son économie repose sur l'agriculture maraîchère (raisin de table, melon, fraise), les TPE artisans (BTP, services), les PME agroalimentaires et négoces, le tourisme rural (Thouzon), les professions libérales et commerces de proximité.",
+    "Le Thor est positionnée en vallée de la Sorgue, entre Avignon et L'Isle-sur-la-Sorgue, dans l'agglomération du Grand Avignon. Son économie repose sur l'agriculture maraîchère (raisin de table, melon, fraise), les PME artisanales (BTP, services), les PME agroalimentaires et négoces, le tourisme rural (Thouzon), les professions libérales et commerces de proximité.",
   distancesFr:
     "Avignon à 20 min. L'Isle-sur-la-Sorgue à 10 min. Châteauneuf-de-Gadagne à 10 min. Cavaillon à 20 min. Gare TGV Avignon à 25 min. Aéroport Avignon-Provence à 25 min. Marseille à 1h10 via A7. Accès N100.",
   distancesEn:
     "Avignon à 20 min. L'Isle-sur-la-Sorgue à 10 min. Châteauneuf-de-Gadagne à 10 min. Cavaillon à 20 min. Gare TGV Avignon à 25 min. Aéroport Avignon-Provence à 25 min. Marseille à 1h10 via A7. Accès N100.",
   topSectorsNaf: [
     "Agriculture maraîchère & raisin de table",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME agroalimentaire & négoce",
     "Tourisme rural & loisirs (Thouzon)",
     "Commerces & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Thor : diagnostic adapté aux PME artisanales, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Thor : diagnostic adapté aux PME artisanales, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Thor : ateliers pour équipes TPE/PME agricoles, transformateurs, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
-      en: "Interventions IA sur site au Thor : ateliers pour équipes TPE/PME agricoles, transformateurs, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      fr: "Interventions IA sur site au Thor : ateliers pour équipes PME et ETI agricoles, transformateurs, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      en: "Interventions IA sur site au Thor : ateliers pour équipes PME et ETI agricoles, transformateurs, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
     },
     implementation: {
       fr: "Implémentation IA au Thor : prévision de récoltes, traçabilité parcellaire raisin de table, optimisation logistique négoces, automatisation devis BTP, agents conversationnels commerces, content marketing rural. RGPD strict.",
       en: "Implémentation IA au Thor : prévision de récoltes, traçabilité parcellaire raisin de table, optimisation logistique négoces, automatisation devis BTP, agents conversationnels commerces, content marketing rural. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Thor : sessions pour dirigeants TPE agricoles, gérants PME négoces, artisans et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
-      en: "Coaching 1-to-1 au Thor : sessions pour dirigeants TPE agricoles, gérants PME négoces, artisans et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      fr: "Coaching 1-to-1 au Thor : sessions pour dirigeants PME agricoles, gérants PME négoces, artisans et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      en: "Coaching 1-to-1 au Thor : sessions pour dirigeants PME agricoles, gérants PME négoces, artisans et commerçants souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LE_THOR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Thor ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, maraîchers, PME agroalimentaires et commerces thorois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, maraîchers, PME agroalimentaires et commerces thorois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les producteurs de raisin de table et maraîchers ?",

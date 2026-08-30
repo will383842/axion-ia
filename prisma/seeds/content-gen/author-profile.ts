@@ -18,7 +18,7 @@ const MANON_BIO_MD = `**Manon** est la plume éditoriale d'Axion-IA — persona 
 
 Son portrait visuel est une illustration générée par IA. Tous les contenus tier-1 sont validés par notre relecture humaine avant publication.
 
-Manon écrit sur l'intelligence artificielle opérationnelle, l'audit IA en entreprise, la transformation digitale TPE / PME / ETI, l'implémentation IA custom, l'AEO et le SEO 2026, l'automatisation des processus métiers, la méthodologie Axion-IA, et la conduite du changement IA.
+Manon écrit sur l'intelligence artificielle opérationnelle, l'audit IA en entreprise, la transformation digitale PME / ETI / grands groupes, l'implémentation IA custom, l'AEO et le SEO 2026, l'automatisation des processus métiers, la méthodologie Axion-IA, et la conduite du changement IA.
 
 Sa signature couvre quatre formats : landings villes, articles blog, comparatifs outils, guides piliers, FAQ standalone et Q/R post-process.`;
 
@@ -49,7 +49,7 @@ export async function seedAuthorProfile(
       knowsAbout: [
         "Intelligence artificielle opérationnelle",
         "Audit IA en entreprise",
-        "Transformation digitale TPE PME ETI",
+        "Transformation digitale PME ETI grands groupes",
         "Implémentation IA custom",
         "AEO et SEO 2026",
         "Automatisation des processus métiers",

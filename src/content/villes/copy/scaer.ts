@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const SCAER_COPY: VilleCopy = {
   pitchFr:
-    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants du centre Finistère.",
+    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. PME agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants du centre Finistère.",
   pitchEn:
-    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants du centre Finistère.",
+    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. PME agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants du centre Finistère.",
   seoHook: "agroalimentaire, forêt & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Scaër (29). Nous accompagnons tous types d'activités : PME agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Scaër (29). Nous accompagnons tous types d'activités : PME agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Scaër est une commune étendue du centre Finistère, adossée à l'un des plus grands massifs forestiers de Bretagne. L'économie locale repose sur l'agroalimentaire (volaille, produits laitiers), l'agriculture, la filière bois, l'artisanat BTP et le commerce de proximité. Le bourg joue un rôle de pôle de services pour les communes rurales environnantes du Poher et de la Cornouaille intérieure.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const SCAER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Scaër : diagnostic adapté aux PME agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Scaër : diagnostic adapté aux PME agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Scaër : formations pratiques pour équipes agroalimentaires, exploitants agricoles et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Scaër : formations pratiques pour équipes agroalimentaires, exploitants agricoles et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Scaër : traçabilité production agroalimentaire, agents conversationnels accueil client, automatisation devis artisans, gestion stocks et planning. Adapté au tissu TPE/PME centre Finistère.",
-      en: "Implémentation IA à Scaër : traçabilité production agroalimentaire, agents conversationnels accueil client, automatisation devis artisans, gestion stocks et planning. Adapté au tissu TPE/PME centre Finistère.",
+      fr: "Implémentation IA à Scaër : traçabilité production agroalimentaire, agents conversationnels accueil client, automatisation devis artisans, gestion stocks et planning. Adapté au tissu PME et ETI centre Finistère.",
+      en: "Implémentation IA à Scaër : traçabilité production agroalimentaire, agents conversationnels accueil client, automatisation devis artisans, gestion stocks et planning. Adapté au tissu PME et ETI centre Finistère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Scaër : sessions individuelles pour dirigeants TPE/PME, agriculteurs, artisans et commerçants du centre Finistère souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Scaër : sessions individuelles pour dirigeants TPE/PME, agriculteurs, artisans et commerçants du centre Finistère souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Scaër : sessions individuelles pour dirigeants de PME et d'ETI, agriculteurs, artisans et commerçants du centre Finistère souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Scaër : sessions individuelles pour dirigeants de PME et d'ETI, agriculteurs, artisans et commerçants du centre Finistère souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SCAER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Scaër  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME scaëroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI scaëroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les agriculteurs et artisans de Scaër ?",

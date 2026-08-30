@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const OTHIS_COPY: VilleCopy = {
   pitchFr:
-    "Othis (77), commune résidentielle du nord Seine-et-Marne aux portes de Roissy-CDG, accueille des TPE artisanales, PME de services logistiques et transport, commerçants de proximité, professions libérales et prestataires liés au hub aéroportuaire. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Othis (77), commune résidentielle du nord Seine-et-Marne aux portes de Roissy-CDG, accueille des PME artisanales, PME de services logistiques et transport, commerçants de proximité, professions libérales et prestataires liés au hub aéroportuaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Othis (77), commune résidentielle du nord Seine-et-Marne aux portes de Roissy-CDG, accueille des TPE artisanales, PME de services logistiques et transport, commerçants de proximité, professions libérales et prestataires liés au hub aéroportuaire. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Othis (77), commune résidentielle du nord Seine-et-Marne aux portes de Roissy-CDG, accueille des PME artisanales, PME de services logistiques et transport, commerçants de proximité, professions libérales et prestataires liés au hub aéroportuaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Othis (77). Nous accompagnons TPE et PME : prestataires logistiques Roissy, TPE artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Othis (77). Nous accompagnons PME et ETI : prestataires logistiques Roissy, PME artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Othis (77). Nous accompagnons TPE et PME : prestataires logistiques Roissy, TPE artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Othis (77). Nous accompagnons PME et ETI : prestataires logistiques Roissy, PME artisanales, PME de services, commerçants de proximité et professions libérales du nord Seine-et-Marne.",
   seoHook: "transport logistique & artisanat rénovation",
   ecosystemFr:
-    "Othis se situe dans le nord de la Seine-et-Marne, à proximité immédiate de l'aéroport Roissy-Charles de Gaulle. Commune résidentielle limitrophe de Dammartin-en-Goële et Moussy-le-Neuf. Tissu économique marqué par la logistique aéroportuaire, les TPE artisanales BTP, les PME de transport et services, les commerces de bourg et les professions libérales. Accès direct N2 et A1 vers Paris et Roissy.",
+    "Othis se situe dans le nord de la Seine-et-Marne, à proximité immédiate de l'aéroport Roissy-Charles de Gaulle. Commune résidentielle limitrophe de Dammartin-en-Goële et Moussy-le-Neuf. Tissu économique marqué par la logistique aéroportuaire, les PME du BTP, les PME de transport et services, les commerces de bourg et les professions libérales. Accès direct N2 et A1 vers Paris et Roissy.",
   ecosystemEn:
-    "Othis se situe dans le nord de la Seine-et-Marne, à proximité immédiate de l'aéroport Roissy-Charles de Gaulle. Commune résidentielle limitrophe de Dammartin-en-Goële et Moussy-le-Neuf. Tissu économique marqué par la logistique aéroportuaire, les TPE artisanales BTP, les PME de transport et services, les commerces de bourg et les professions libérales. Accès direct N2 et A1 vers Paris et Roissy.",
+    "Othis se situe dans le nord de la Seine-et-Marne, à proximité immédiate de l'aéroport Roissy-Charles de Gaulle. Commune résidentielle limitrophe de Dammartin-en-Goële et Moussy-le-Neuf. Tissu économique marqué par la logistique aéroportuaire, les PME du BTP, les PME de transport et services, les commerces de bourg et les professions libérales. Accès direct N2 et A1 vers Paris et Roissy.",
   distancesFr:
     "Aéroport Paris-Charles de Gaulle à 15 min. Gare RER B Aéroport CDG à 20 min en voiture. Paris Gare du Nord à 45 min. Dammartin-en-Goële à 5 min. A1 à 10 min, N2 à 5 min. Aéroport Paris-Orly à 50 min.",
   distancesEn:
     "Aéroport Paris-Charles de Gaulle à 15 min. Gare RER B Aéroport CDG à 20 min en voiture. Paris Gare du Nord à 45 min. Dammartin-en-Goële à 5 min. A1 à 10 min, N2 à 5 min. Aéroport Paris-Orly à 50 min.",
   topSectorsNaf: [
     "Transport & logistique aéroportuaire (hub Roissy-CDG)",
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de proximité & services à la personne",
     "PME services aux entreprises",
     "Professions libérales (santé, juridique)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Othis : diagnostic adapté aux TPE artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Othis : diagnostic adapté aux TPE artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Othis : diagnostic adapté aux PME artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Othis : diagnostic adapté aux PME artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Othis : formats adaptés à la PME logistique, au transporteur, à l'artisan ou au commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const OTHIS_COPY: VilleCopy = {
       en: "Implémentation IA à Othis : optimisation tournées transport, automatisation tracking colis, agents conversationnels, gestion planning artisans, classification documents comptables.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Othis : sessions dans vos locaux ou en visio. Gérants TPE/PME, responsables logistique Roissy, artisans, professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Othis : sessions dans vos locaux ou en visio. Gérants TPE/PME, responsables logistique Roissy, artisans, professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Othis : sessions dans vos locaux ou en visio. Gérants PME et ETI, responsables logistique Roissy, artisans, professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Othis : sessions dans vos locaux ou en visio. Gérants PME et ETI, responsables logistique Roissy, artisans, professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const OTHIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME logistiques du bassin Roissy ?",
-      a: "Oui, nous accompagnons les TPE et PME de transport et logistique du bassin Roissy-CDG (Othis, Dammartin, Moussy) sur des cas IA concrets : optimisation tournées, automatisation tracking, agents IA dispatch, planification équipes. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et ETI de transport et logistique du bassin Roissy-CDG (Othis, Dammartin, Moussy) sur des cas IA concrets : optimisation tournées, automatisation tracking, agents IA dispatch, planification équipes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Othis  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne et du bassin Roissy, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du nord Seine-et-Marne et du bassin Roissy, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP à Othis ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP d'Othis (maçons, plombiers, couvreurs, peintres) sur leurs cas IA pratiques : automatisation devis chantier, agents IA rendez-vous, gestion planning équipes, suivi chantier photo.",
+      a: "Oui, nous accompagnons les PME du BTP d'Othis (maçons, plombiers, couvreurs, peintres) sur leurs cas IA pratiques : automatisation devis chantier, agents IA rendez-vous, gestion planning équipes, suivi chantier photo.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Othis ?",

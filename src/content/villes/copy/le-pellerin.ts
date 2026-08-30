@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_PELLERIN_COPY: VilleCopy = {
   pitchFr:
-    "Le Pellerin (44), commune de l'estuaire de la Loire au sud-ouest de Nantes, fait partie de Nantes Métropole. Tissu de TPE artisanales, commerces de proximité, PME logistiques portuaires, exploitations agricoles maraîchères et viticoles. Axion-IA y intervient pour tous types d'activités de l'estuaire nantais.",
+    "Le Pellerin (44), commune de l'estuaire de la Loire au sud-ouest de Nantes, fait partie de Nantes Métropole. Tissu de PME artisanales, commerces de proximité, PME logistiques portuaires, exploitations agricoles maraîchères et viticoles. Axion-IA y intervient pour tous types d'activités de l'estuaire nantais.",
   pitchEn:
-    "Le Pellerin (44), commune de l'estuaire de la Loire au sud-ouest de Nantes, fait partie de Nantes Métropole. Tissu de TPE artisanales, commerces de proximité, PME logistiques portuaires, exploitations agricoles maraîchères et viticoles. Axion-IA y intervient pour tous types d'activités de l'estuaire nantais.",
+    "Le Pellerin (44), commune de l'estuaire de la Loire au sud-ouest de Nantes, fait partie de Nantes Métropole. Tissu de PME artisanales, commerces de proximité, PME logistiques portuaires, exploitations agricoles maraîchères et viticoles. Axion-IA y intervient pour tous types d'activités de l'estuaire nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
   seoHook: "proche nantes",
   ecosystemFr:
     "Le Pellerin est une commune de plus de 5 300 habitants sur la rive sud de l'estuaire de la Loire, membre de Nantes Métropole. L'économie locale mêle agriculture (maraîchage, viticulture muscadet), activités portuaires et logistiques liées à l'estuaire, artisanat BTP et commerces de proximité. Le bac de Loire relie la commune à Couëron et au nord de l'agglomération.",
@@ -30,8 +30,8 @@ export const LE_PELLERIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, PME artisanales, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, PME artisanales, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pellerin : formations pratiques pour exploitants viticoles, artisans, commerçants et opérateurs logistiques de l'estuaire. Autonomie IA de vos équipes.",
@@ -42,8 +42,8 @@ export const LE_PELLERIN_COPY: VilleCopy = {
       en: "Implémentation IA au Pellerin : automatisation traçabilité viticole, optimisation logistique portuaire, agents IA devis artisans, digitalisation commerces et services Nantes Métropole sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Pellerin : sessions sur votre exploitation, atelier ou commerce. Dirigeants viticoles, artisans, gérants TPE/PME de l'estuaire nantais souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 au Pellerin : sessions sur votre exploitation, atelier ou commerce. Dirigeants viticoles, artisans, gérants TPE/PME de l'estuaire nantais souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 au Pellerin : sessions sur votre exploitation, atelier ou commerce. Dirigeants viticoles, artisans, gérants PME et ETI de l'estuaire nantais souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 au Pellerin : sessions sur votre exploitation, atelier ou commerce. Dirigeants viticoles, artisans, gérants PME et ETI de l'estuaire nantais souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LE_PELLERIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants du Pellerin ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du Pellerin sur des cas IA concrets : automatisation devis, planification chantiers, gestion stocks, communication locale et agents IA de prise de rendez-vous.",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce du Pellerin sur des cas IA concrets : automatisation devis, planification chantiers, gestion stocks, communication locale et agents IA de prise de rendez-vous.",
     },
     {
       q: "Comment accédez-vous au Pellerin pour vos interventions ?",

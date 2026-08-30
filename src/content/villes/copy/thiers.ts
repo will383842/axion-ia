@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const THIERS_COPY: VilleCopy = {
   pitchFr:
-    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA accompagne tout le tissu professionnel local.",
+    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, PME artisanales couteliers, tourisme industriel, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA accompagne tout le tissu professionnel local.",
+    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, PME artisanales couteliers, tourisme industriel, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiers (63). Nous accompagnons PME et ETI : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thiers (63). Nous accompagnons PME et ETI : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
   seoHook: "coutellerie couteaux & métallurgie fine",
   ecosystemFr:
-    "Thiers est la capitale mondiale de la coutellerie, sous-préfecture du Puy-de-Dôme. Plus de 100 entreprises coutelières, métallurgie fine, TPE artisans couteliers, tourisme industriel (vallée des usines classée), commerces centre-ville historique.",
+    "Thiers est la capitale mondiale de la coutellerie, sous-préfecture du Puy-de-Dôme. Plus de 100 entreprises coutelières, métallurgie fine, PME artisanales couteliers, tourisme industriel (vallée des usines classée), commerces centre-ville historique.",
   ecosystemEn:
-    "Thiers est la capitale mondiale de la coutellerie, sous-préfecture du Puy-de-Dôme. Plus de 100 entreprises coutelières, métallurgie fine, TPE artisans couteliers, tourisme industriel (vallée des usines classée), commerces centre-ville historique.",
+    "Thiers est la capitale mondiale de la coutellerie, sous-préfecture du Puy-de-Dôme. Plus de 100 entreprises coutelières, métallurgie fine, PME artisanales couteliers, tourisme industriel (vallée des usines classée), commerces centre-ville historique.",
   distancesFr:
     "Clermont-Ferrand à 45 min. Lyon à 2h. Vichy à 40 min. Aéroport Clermont-Ferrand Auvergne à 55 min.",
   distancesEn:
@@ -24,7 +24,7 @@ export const THIERS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Coutellerie / couteaux",
     "Métallurgie fine",
-    "TPE artisans couteliers",
+    "PME artisanales couteliers",
     "Tourisme industriel (vallée des usines)",
     "Commerce centre-ville",
   ],
@@ -60,7 +60,7 @@ export const THIERS_COPY: VilleCopy = {
       a: "Oui, site e-commerce IA, gestion commandes automatisée, devis personnalisés, fidélisation clients, présence en ligne optimisée.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BEUVRAGES_COPY: VilleCopy = {
   pitchFr:
-    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : PME du BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : PME du BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
   seoHook: "industrielles & logistique",
   ecosystemFr:
-    "Beuvrages est intégrée à l'agglomération de Valenciennes (Valenciennes Métropole). Tissu péri-urbain du bassin valenciennois : TPE artisanat BTP, PME industrielles (sous-traitance automobile, métallurgie, logistique), commerces de proximité, professions libérales, services aux ménages, héritage du bassin minier reconverti.",
+    "Beuvrages est intégrée à l'agglomération de Valenciennes (Valenciennes Métropole). Tissu péri-urbain du bassin valenciennois : PME du BTP, PME industrielles (sous-traitance automobile, métallurgie, logistique), commerces de proximité, professions libérales, services aux ménages, héritage du bassin minier reconverti.",
   ecosystemEn:
-    "Beuvrages est intégrée à l'agglomération de Valenciennes (Valenciennes Métropole). Tissu péri-urbain du bassin valenciennois : TPE artisanat BTP, PME industrielles (sous-traitance automobile, métallurgie, logistique), commerces de proximité, professions libérales, services aux ménages, héritage du bassin minier reconverti.",
+    "Beuvrages est intégrée à l'agglomération de Valenciennes (Valenciennes Métropole). Tissu péri-urbain du bassin valenciennois : PME du BTP, PME industrielles (sous-traitance automobile, métallurgie, logistique), commerces de proximité, professions libérales, services aux ménages, héritage du bassin minier reconverti.",
   distancesFr:
     "Valenciennes centre à 10 min. Anzin limitrophe à 5 min. Saint-Saulve à 10 min. Frontière belge à 20 min. Lille à 45 min. Aéroport Lille-Lesquin à 55 min.",
   distancesEn:
     "Valenciennes centre à 10 min. Anzin limitrophe à 5 min. Saint-Saulve à 10 min. Frontière belge à 20 min. Lille à 45 min. Aéroport Lille-Lesquin à 55 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME industrielles (auto, métallurgie)",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const BEUVRAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Beuvrages : diagnostic adapté aux PME du BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Beuvrages : diagnostic adapté aux PME du BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beuvrages : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BEUVRAGES_COPY: VilleCopy = {
       en: "Implémentation IA à Beuvrages : agents conversationnels B2B, automatisation devis BTP, classification dossiers industriels, CRM augmentés. Agglo Valenciennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beuvrages : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles, professions libérales, commerçants beuvrageois.",
-      en: "Coaching 1-to-1 à Beuvrages : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles, professions libérales, commerçants beuvrageois.",
+      fr: "Coaching 1-to-1 à Beuvrages : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles, professions libérales, commerçants beuvrageois.",
+      en: "Coaching 1-to-1 à Beuvrages : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles, professions libérales, commerçants beuvrageois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const BEUVRAGES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Beuvrages et tout le Valenciennois (Anzin limitrophe, Valenciennes, Saint-Saulve, Bruay-sur-l'Escaut). Consultants depuis Lille (45 min).",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP beuvrageois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Beuvrages sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      q: "Accompagnez-vous les PME du BTP beuvrageois ?",
+      a: "Oui, nous accompagnons les PME du BTP à Beuvrages sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bassin valenciennois ?",

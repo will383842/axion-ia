@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de L'Isle-sur-la-Sorgue, capitale des antiquités et de la brocante, troisième place européenne du genre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser gestion de catalogue, devis et relation client au service des antiquaires, hébergeurs et commerçants de Provence.",
+    "Axion-IA accompagne les PME et ETI de L'Isle-sur-la-Sorgue, capitale des antiquités et de la brocante, troisième place européenne du genre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser gestion de catalogue, devis et relation client au service des antiquaires, hébergeurs et commerçants de Provence.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de L'Isle-sur-la-Sorgue, capitale des antiquités et de la brocante, troisième place européenne du genre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser gestion de catalogue, devis et relation client au service des antiquaires, hébergeurs et commerçants de Provence.",
+    "Axion-IA accompagne les PME et ETI de L'Isle-sur-la-Sorgue, capitale des antiquités et de la brocante, troisième place européenne du genre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser gestion de catalogue, devis et relation client au service des antiquaires, hébergeurs et commerçants de Provence.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de L'Isle-sur-la-Sorgue à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire vauclusien célèbre pour ses antiquaires, sa brocante de rang européen, son marché flottant sur la Sorgue et son tourisme provençal, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce tissu d'artisans et de commerçants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de L'Isle-sur-la-Sorgue à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire vauclusien célèbre pour ses antiquaires, sa brocante de rang européen, son marché flottant sur la Sorgue et son tourisme provençal, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de L'Isle-sur-la-Sorgue à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire vauclusien célèbre pour ses antiquaires, sa brocante de rang européen, son marché flottant sur la Sorgue et son tourisme provençal, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce tissu d'artisans et de commerçants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de L'Isle-sur-la-Sorgue à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire vauclusien célèbre pour ses antiquaires, sa brocante de rang européen, son marché flottant sur la Sorgue et son tourisme provençal, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   seoHook: "antiquités-brocante & tourisme",
   ecosystemFr:
-    "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de TPE de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces TPE d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
+    "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de PME de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces PME d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
   ecosystemEn:
-    "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de TPE de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces TPE d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
+    "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de PME de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces PME d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
   distancesFr:
     "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km, ce qui facilite nos déplacements sur site dans tout le Comtat Venaissin.",
   distancesEn:
@@ -42,8 +42,8 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME touristiques et marchandes de L'Isle-sur-la-Sorgue : catalogue intelligent, suivi client, vente en ligne.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de L'Isle-sur-la-Sorgue pour piloter sereinement leur transition vers l'IA, au rythme des foires et des saisons.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de L'Isle-sur-la-Sorgue pour piloter sereinement leur transition vers l'IA, au rythme des foires et des saisons.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de L'Isle-sur-la-Sorgue pour piloter sereinement leur transition vers l'IA, au rythme des foires et des saisons.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de L'Isle-sur-la-Sorgue pour piloter sereinement leur transition vers l'IA, au rythme des foires et des saisons.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les antiquaires et hébergeurs de L'Isle-sur-la-Sorgue : galerie en ligne, fiches produits enrichies, assistant client multilingue.",
@@ -53,11 +53,11 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de TPE de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de PME de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
         whyHere: [
           "Capitale des antiquités-brocante, troisième place d'Europe avec près de 250 boutiques permanentes réparties dans le Village des Antiquaires de la Gare, le Village Aux Antiquaires de l'Isle et le Passage du Pont : ce stock unique de pièces, photographié et décrit à la main, gagne à passer en galerie en ligne avec fiches enrichies par l'IA, estimation assistée et recherche sémantique pour qu'un acheteur étranger retrouve « commode Louis XV marqueterie » sans connaître le vocabulaire exact.",
           "Clientèle internationale drainée par les deux foires de Pâques et du 15 août, plus de 100 000 visiteurs au Parc Gautier et le long de l'avenue des Quatre Otages : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour répondre aux collectionneurs et touristes hors saison comme pendant les pics, et pour capter les demandes de réservation et de devis avant même l'ouverture des stands.",
-          "Tissu 100 % TPE et PME — galeristes, hôtels et maisons d'hôtes de charme le long de la Sorgue, restaurants, commerces de détail du centre ancien : on greffe l'IA sur l'existant (widget, plugin WordPress ou PrestaShop, API Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce mobile-first de mobilier et d'art de Provence, avec panier, paiement et logistique d'expédition d'objets fragiles.",
+          "Tissu 100 % PME et ETI — galeristes, hôtels et maisons d'hôtes de charme le long de la Sorgue, restaurants, commerces de détail du centre ancien : on greffe l'IA sur l'existant (widget, plugin WordPress ou PrestaShop, API Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce mobile-first de mobilier et d'art de Provence, avec panier, paiement et logistique d'expédition d'objets fragiles.",
           "Saisonnalité forte et marché de niche piloté par le bouche-à-oreille et le digital, depuis la gare TGV d'Avignon à 20 km jusqu'aux acheteurs parisiens et internationaux : un site rapide, bien référencé, conforme aux Web Vitals et lisible sur mobile devient le premier point de contact, avec recherche sémantique et assistant de visite qui orientent l'acheteur vers la bonne pièce ou le bon antiquaire du Quai de la Gare.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique d'objets, assistant de fiches produits — sur le site existant d'un antiquaire du Quai de la Gare, d'une maison d'hôtes de charme ou d'un commerce du centre, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe, à partir de 24-48 h selon la complexité : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même la veille d'une grande foire de Pâques ou du 15 août. Web Vitals, accessibilité et conformité RGPD / AI Act contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure, hébergement UE possible : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du Vaucluse ou du Comtat Venaissin, ou reprise en interne par vos équipes — vous n'êtes jamais captif.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de TPE de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à L'Isle-sur-la-Sorgue des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, galeries d'objets enrichies, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale provençale des antiquités et de la brocante, troisième place européenne du genre, où le tissu est fait de PME de marchands d'art, de galeristes des villages d'antiquaires de la Gare et de l'Isle, d'hébergeurs de charme et de commerçants rythmés par les deux grandes foires internationales de Pâques et du 15 août qui drainent plus de 100 000 visiteurs au Parc Gautier et avenue des Quatre Otages. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à L'Isle-sur-la-Sorgue, itérations à distance.",
         whyHere: [
           "Capitale des antiquités-brocante, troisième place d'Europe avec près de 250 boutiques permanentes réparties dans le Village des Antiquaires de la Gare, le Village Aux Antiquaires de l'Isle et le Passage du Pont : ce stock unique de pièces, photographié et décrit à la main, gagne à passer en galerie en ligne avec fiches enrichies par l'IA, estimation assistée et recherche sémantique pour qu'un acheteur étranger retrouve « commode Louis XV marqueterie » sans connaître le vocabulaire exact.",
           "Clientèle internationale drainée par les deux foires de Pâques et du 15 août, plus de 100 000 visiteurs au Parc Gautier et le long de l'avenue des Quatre Otages : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour répondre aux collectionneurs et touristes hors saison comme pendant les pics, et pour capter les demandes de réservation et de devis avant même l'ouverture des stands.",
-          "Tissu 100 % TPE et PME — galeristes, hôtels et maisons d'hôtes de charme le long de la Sorgue, restaurants, commerces de détail du centre ancien : on greffe l'IA sur l'existant (widget, plugin WordPress ou PrestaShop, API Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce mobile-first de mobilier et d'art de Provence, avec panier, paiement et logistique d'expédition d'objets fragiles.",
+          "Tissu 100 % PME et ETI — galeristes, hôtels et maisons d'hôtes de charme le long de la Sorgue, restaurants, commerces de détail du centre ancien : on greffe l'IA sur l'existant (widget, plugin WordPress ou PrestaShop, API Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce mobile-first de mobilier et d'art de Provence, avec panier, paiement et logistique d'expédition d'objets fragiles.",
           "Saisonnalité forte et marché de niche piloté par le bouche-à-oreille et le digital, depuis la gare TGV d'Avignon à 20 km jusqu'aux acheteurs parisiens et internationaux : un site rapide, bien référencé, conforme aux Web Vitals et lisible sur mobile devient le premier point de contact, avec recherche sémantique et assistant de visite qui orientent l'acheteur vers la bonne pièce ou le bon antiquaire du Quai de la Gare.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique d'objets, assistant de fiches produits — sur le site existant d'un antiquaire du Quai de la Gare, d'une maison d'hôtes de charme ou d'un commerce du centre, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -238,7 +226,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME du Vaucluse. Les antiquaires, hôtels et commerces de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI du Vaucluse. Les antiquaires, hôtels et commerces de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de L'Isle-sur-la-Sorgue ?",

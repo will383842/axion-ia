@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MERVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu PME exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu PME exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (59). Nous accompagnons tous types d'activités : PME exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (59). Nous accompagnons tous types d'activités : PME exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
   seoHook: "agriculture & agroalimentaire transformation",
   ecosystemFr:
-    "Merville est positionnée en Flandre française sur les bords de la Lys, entre Béthune (15 min sud) et Hazebrouck (15 min nord). Pôle agricole de la plaine de la Lys structuré autour du maraîchage, élevage et grandes cultures, avec aérodrome Merville-Calonne. Tissu TPE/PME exploitations agricoles, agroalimentaire, commerces de proximité, artisans BTP, services. Accès A25 vers Lille (35 min), proche Belgique frontalière.",
+    "Merville est positionnée en Flandre française sur les bords de la Lys, entre Béthune (15 min sud) et Hazebrouck (15 min nord). Pôle agricole de la plaine de la Lys structuré autour du maraîchage, élevage et grandes cultures, avec aérodrome Merville-Calonne. Tissu PME et ETI exploitations agricoles, agroalimentaire, commerces de proximité, artisans BTP, services. Accès A25 vers Lille (35 min), proche Belgique frontalière.",
   ecosystemEn:
-    "Merville est positionnée en Flandre française sur les bords de la Lys, entre Béthune (15 min sud) et Hazebrouck (15 min nord). Pôle agricole de la plaine de la Lys structuré autour du maraîchage, élevage et grandes cultures, avec aérodrome Merville-Calonne. Tissu TPE/PME exploitations agricoles, agroalimentaire, commerces de proximité, artisans BTP, services. Accès A25 vers Lille (35 min), proche Belgique frontalière.",
+    "Merville est positionnée en Flandre française sur les bords de la Lys, entre Béthune (15 min sud) et Hazebrouck (15 min nord). Pôle agricole de la plaine de la Lys structuré autour du maraîchage, élevage et grandes cultures, avec aérodrome Merville-Calonne. Tissu PME et ETI exploitations agricoles, agroalimentaire, commerces de proximité, artisans BTP, services. Accès A25 vers Lille (35 min), proche Belgique frontalière.",
   distancesFr:
     "Béthune à 15 min, Hazebrouck à 15 min, Armentières à 20 min, Lille à 35 min A25, Dunkerque à 50 min, aéroport Lille-Lesquin à 45 min, frontière belge à 30 min. Axe A25 vers Lille / Dunkerque.",
   distancesEn:
@@ -24,14 +24,14 @@ export const MERVILLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture (maraîchage, élevage, cultures plaine de la Lys)",
     "Agroalimentaire et transformation",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises Flandre",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Merville : diagnostic adapté aux PME exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Merville : diagnostic adapté aux PME exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Merville : formats adaptés à l'exploitation agricole, l'unité agroalimentaire, le commerce, l'atelier artisan. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -42,8 +42,8 @@ export const MERVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Merville : agriculture de précision, prédiction rendements maraîchers, classification qualité produits agroalimentaire, automatisation devis BTP, agents IA service client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Merville : sessions dans votre exploitation, unité agroalimentaire, commerce, atelier ou en visio. Exploitants agricoles, gérants PME agro, commerçants, artisans, dirigeants TPE/PME flamands.",
-      en: "Coaching 1-to-1 à Merville : sessions dans votre exploitation, unité agroalimentaire, commerce, atelier ou en visio. Exploitants agricoles, gérants PME agro, commerçants, artisans, dirigeants TPE/PME flamands.",
+      fr: "Coaching 1-to-1 à Merville : sessions dans votre exploitation, unité agroalimentaire, commerce, atelier ou en visio. Exploitants agricoles, gérants PME agro, commerçants, artisans, dirigeants de PME et d'ETI flamands.",
+      en: "Coaching 1-to-1 à Merville : sessions dans votre exploitation, unité agroalimentaire, commerce, atelier ou en visio. Exploitants agricoles, gérants PME agro, commerçants, artisans, dirigeants de PME et d'ETI flamands.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const MERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles flamandes ?",
-      a: "Oui, nous accompagnons les TPE exploitations agricoles de Merville sur leurs cas IA : agriculture de précision, prédiction rendements maraîchers/grandes cultures, classification photos parcelles, optimisation phytosanitaires, gestion troupeaux laitiers.",
+      a: "Oui, nous accompagnons les PME exploitations agricoles de Merville sur leurs cas IA : agriculture de précision, prédiction rendements maraîchers/grandes cultures, classification photos parcelles, optimisation phytosanitaires, gestion troupeaux laitiers.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaire de la plaine de la Lys ?",
       a: "Oui, nous accompagnons les PME agroalimentaires mervilloises (transformation maraîchère, produits laitiers, distribution courte) sur leurs cas IA : contrôle qualité par vision, prédiction demande, traçabilité, optimisation chaîne du froid, automatisation documentaire.",
     },
     {
-      q: "Quels services pour les TPE artisans mervillois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Merville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks, marketing local.",
+      q: "Quels services pour les PME artisanales mervillois ?",
+      a: "Pour les PME du BTP et du commerce à Merville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Béthune ?",

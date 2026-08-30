@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const CASTRIES_COPY: VilleCopy = {
   pitchFr:
-    "Castries (34160), commune de 6 883 habitants (2023) située à 11,8 km à l'est de Montpellier, intégrée à Montpellier Méditerranée Métropole. La ville est connue pour son château classé Monument Historique (légué à l'Académie française en 1985) et son aqueduc dessiné par Pierre-Paul Riquet, ingénieur du canal du Midi. Le tissu économique combine carrières de calcaire, agriculture, commerces et services, structuré autour de la RD 610 (ancienne nationale 110) qui relie Montpellier à Alès. Axion-IA accompagne TPE professions libérales, PME de services, artisans et commerces de proximité de la commune et des communes limitrophes (Vendargues, Sussargues, Saint-Geniès-des-Mourgues, Baillargues, Teyran).",
+    "Castries (34160), commune de 6 883 habitants (2023) située à 11,8 km à l'est de Montpellier, intégrée à Montpellier Méditerranée Métropole. La ville est connue pour son château classé Monument Historique (légué à l'Académie française en 1985) et son aqueduc dessiné par Pierre-Paul Riquet, ingénieur du canal du Midi. Le tissu économique combine carrières de calcaire, agriculture, commerces et services, structuré autour de la RD 610 (ancienne nationale 110) qui relie Montpellier à Alès. Axion-IA accompagne PME professions libérales, PME de services, artisans et commerces de proximité de la commune et des communes limitrophes (Vendargues, Sussargues, Saint-Geniès-des-Mourgues, Baillargues, Teyran).",
   pitchEn:
-    "Castries (34160), commune de 6 883 habitants (2023) située à 11,8 km à l'est de Montpellier, intégrée à Montpellier Méditerranée Métropole. La ville est connue pour son château classé Monument Historique (légué à l'Académie française en 1985) et son aqueduc dessiné par Pierre-Paul Riquet, ingénieur du canal du Midi. Le tissu économique combine carrières de calcaire, agriculture, commerces et services, structuré autour de la RD 610 (ancienne nationale 110) qui relie Montpellier à Alès. Axion-IA accompagne TPE professions libérales, PME de services, artisans et commerces de proximité de la commune et des communes limitrophes (Vendargues, Sussargues, Saint-Geniès-des-Mourgues, Baillargues, Teyran).",
+    "Castries (34160), commune de 6 883 habitants (2023) située à 11,8 km à l'est de Montpellier, intégrée à Montpellier Méditerranée Métropole. La ville est connue pour son château classé Monument Historique (légué à l'Académie française en 1985) et son aqueduc dessiné par Pierre-Paul Riquet, ingénieur du canal du Midi. Le tissu économique combine carrières de calcaire, agriculture, commerces et services, structuré autour de la RD 610 (ancienne nationale 110) qui relie Montpellier à Alès. Axion-IA accompagne PME professions libérales, PME de services, artisans et commerces de proximité de la commune et des communes limitrophes (Vendargues, Sussargues, Saint-Geniès-des-Mourgues, Baillargues, Teyran).",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castries (34160) et dans toute la Métropole de Montpellier. Nous accompagnons en priorité les TPE (cabinets libéraux santé/droit/conseil, artisans BTP, commerces) et PME de services de l'est montpelliérain, ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sur site sous 5 jours ouvrés depuis Montpellier (15 min via RD 610 ou A9). Conformité RGPD documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castries (34160) et dans toute la Métropole de Montpellier. Nous accompagnons en priorité les PME (cabinets libéraux santé/droit/conseil, artisans BTP, commerces) et PME de services de l'est montpelliérain, ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sur site sous 5 jours ouvrés depuis Montpellier (15 min via RD 610 ou A9). Conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castries (34160) et dans toute la Métropole de Montpellier. Nous accompagnons en priorité les TPE (cabinets libéraux santé/droit/conseil, artisans BTP, commerces) et PME de services de l'est montpelliérain, ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sur site sous 5 jours ouvrés depuis Montpellier (15 min via RD 610 ou A9). Conformité RGPD documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castries (34160) et dans toute la Métropole de Montpellier. Nous accompagnons en priorité les PME (cabinets libéraux santé/droit/conseil, artisans BTP, commerces) et PME de services de l'est montpelliérain, ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sur site sous 5 jours ouvrés depuis Montpellier (15 min via RD 610 ou A9). Conformité RGPD documentée.",
   ecosystemFr:
     "Castries (6 883 habitants en 2023, +11,4 % depuis 2017) appartient à Montpellier Méditerranée Métropole. Le tissu local mélange carrières de calcaire historiques, terres agricoles (vignobles, oliveraies), commerces de proximité, cabinets libéraux (santé, conseil) et PME de services. Le château classé Monument Historique et son aqueduc Riquet attirent un tourisme patrimonial mesuré. Neuf communes limitrophes structurent le bassin local : Baillargues, Guzargues, Montaud, Saint-Brès, Saint-Drézéry, Saint-Geniès-des-Mourgues, Sussargues, Teyran et Vendargues. La RD 610 supporte 13 000 à 15 000 véhicules/jour entre Montpellier et Alès, axe pour le commerce et les artisans BTP.",
   ecosystemEn:
@@ -32,20 +32,20 @@ export const CASTRIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castries : diagnostic pour TPE (cabinets libéraux, artisans, commerces RD 610) et PME services de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, livrables ROI chiffré sous 7 jours.",
-      en: "Audit IA à Castries : diagnostic pour TPE (cabinets libéraux, artisans, commerces RD 610) et PME services de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, livrables ROI chiffré sous 7 jours.",
+      fr: "Audit IA à Castries : diagnostic pour PME (cabinets libéraux, artisans, commerces RD 610) et PME services de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, livrables ROI chiffré sous 7 jours.",
+      en: "Audit IA à Castries : diagnostic pour PME (cabinets libéraux, artisans, commerces RD 610) et PME services de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, livrables ROI chiffré sous 7 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Castries : ateliers adaptés TPE/PME (cabinet libéral, commerce, artisan BTP). Vos équipes repartent autonomes sur outils IA métier. Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Castries : ateliers adaptés TPE/PME (cabinet libéral, commerce, artisan BTP). Vos équipes repartent autonomes sur outils IA métier. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Castries : ateliers adaptés PME et ETI (cabinet libéral, commerce, artisan BTP). Vos équipes repartent autonomes sur outils IA métier. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Castries : ateliers adaptés PME et ETI (cabinet libéral, commerce, artisan BTP). Vos équipes repartent autonomes sur outils IA métier. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Castries en code custom : automatisation prise de RDV cabinet, chatbot client, classification dossiers, gestion devis artisan, suivi commande commerce.",
       en: "Implémentation IA à Castries en code custom : automatisation prise de RDV cabinet, chatbot client, classification dossiers, gestion devis artisan, suivi commande commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Castries : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants commerce de l'est montpelliérain. Dès {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Castries : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants commerce de l'est montpelliérain. Dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Castries : sessions sur site ou en visio pour professions libérales, dirigeants de PME et d'ETI, artisans et gérants commerce de l'est montpelliérain. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Castries : sessions sur site ou en visio pour professions libérales, dirigeants de PME et d'ETI, artisans et gérants commerce de l'est montpelliérain. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -59,7 +59,7 @@ export const CASTRIES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Castries ?",
-      a: "Déplacement de nos consultants sous 5 jours ouvrés après validation de la mission. Pour les TPE et artisans pressés (devis urgent, panne d'outil), nous proposons un créneau d'audit visio sous 48 h.",
+      a: "Déplacement de nos consultants sous 5 jours ouvrés après validation de la mission. Pour les PME et artisans pressés (devis urgent, panne d'outil), nous proposons un créneau d'audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD pour les données traitées à Castries ?",

@@ -4,7 +4,7 @@
  * Recadrage Will 2026-05-18 :
  *   - V1 matin : mesure de la copy rédigée (mauvais critère, repivoté).
  *   - V2 après-midi : mesure du fond (data INSEE + secteurs + pôles + distances + KB).
- *   - V3 soir : extension à TPE/PME/ETI/GE après exemple concurrent Romans.
+ *   - V3 soir : extension à PME/ETI/GE après exemple concurrent Romans.
  *     Ajout marques historiques, IGP/AOP, salons, patrimoine, bassin,
  *     vignobles, EPV, zones activités, écoles, R&D, grands groupes.
  *
@@ -432,7 +432,7 @@ export async function computeCityCoverage(slug: PilotCitySlug): Promise<CityCove
     },
     {
       id: "tissu_entreprises",
-      label: "Tissu entreprises (TPE→GE)",
+      label: "Tissu entreprises (PME→GE)",
       criteria: tissuFinal,
       scorePct: dimensionScore(tissuFinal),
     },

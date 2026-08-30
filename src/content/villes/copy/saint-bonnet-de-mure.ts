@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local de l'est lyonnais.",
+    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces. Axion-IA accompagne tout le tissu professionnel local de l'est lyonnais.",
   pitchEn:
-    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local de l'est lyonnais.",
+    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces. Axion-IA accompagne tout le tissu professionnel local de l'est lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, PME du BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, PME du BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
   seoHook: "logistiques aire & tertiaires zones",
   ecosystemFr:
-    "Saint-Bonnet-de-Mure est positionnée en banlieue est de Lyon, entre la Métropole et l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",
+    "Saint-Bonnet-de-Mure est positionnée en banlieue est de Lyon, entre la Métropole et l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces, agriculture résiduelle.",
   ecosystemEn:
-    "Saint-Bonnet-de-Mure est positionnée en banlieue est de Lyon, entre la Métropole et l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",
+    "Saint-Bonnet-de-Mure est positionnée en banlieue est de Lyon, entre la Métropole et l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces, agriculture résiduelle.",
   distancesFr:
     "Lyon centre à 25 min. Aéroport Lyon-Saint-Exupéry à 10 min. Genas à 10 min. Chassieu à 10 min. Mions à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME logistiques aire Saint-Exupéry",
     "PME tertiaires zones d'activités",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Agriculture résiduelle",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Bonnet-de-Mure : formats adaptés à l'entrepôt logistique, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Bonnet-de-Mure : optimisation supply chain Saint-Exupéry, agents conversationnels B2B, automatisation workflow, classification documents.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Bonnet-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants TPE/PME saint-bonnetiers.",
-      en: "Coaching 1-to-1 à Saint-Bonnet-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants TPE/PME saint-bonnetiers.",
+      fr: "Coaching 1-to-1 à Saint-Bonnet-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants PME et ETI saint-bonnetiers.",
+      en: "Coaching 1-to-1 à Saint-Bonnet-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants PME et ETI saint-bonnetiers.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires est lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Bonnet-de-Mure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Saint-Bonnet-de-Mure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   pitchFr:
-    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
+    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu PME de l'artisanat et du commerce, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
   pitchEn:
-    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
+    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu PME de l'artisanat et du commerce, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
   seoHook: "pays de retz",
   ecosystemFr:
-    "Chaumes-en-Retz est une commune nouvelle du Pays de Retz, née de la fusion d'Arthon-en-Retz et Chéméré. Proximité Côte de Jade et Pornic. Tissu TPE artisans, exploitations agricoles, commerces de proximité, PME tourisme littoral, services et professions libérales.",
+    "Chaumes-en-Retz est une commune nouvelle du Pays de Retz, née de la fusion d'Arthon-en-Retz et Chéméré. Proximité Côte de Jade et Pornic. Tissu PME artisanales, exploitations agricoles, commerces de proximité, PME tourisme littoral, services et professions libérales.",
   ecosystemEn:
-    "Chaumes-en-Retz est une commune nouvelle du Pays de Retz, née de la fusion d'Arthon-en-Retz et Chéméré. Proximité Côte de Jade et Pornic. Tissu TPE artisans, exploitations agricoles, commerces de proximité, PME tourisme littoral, services et professions libérales.",
+    "Chaumes-en-Retz est une commune nouvelle du Pays de Retz, née de la fusion d'Arthon-en-Retz et Chéméré. Proximité Côte de Jade et Pornic. Tissu PME artisanales, exploitations agricoles, commerces de proximité, PME tourisme littoral, services et professions libérales.",
   distancesFr:
     "Nantes centre à 40 min. Pornic à 15 min. Saint-Nazaire à 45 min. Gare Nantes TGV à 45 min. Aéroport Nantes-Atlantique à 35 min.",
   distancesEn:
     "Nantes centre à 40 min. Pornic à 15 min. Saint-Nazaire à 45 min. Gare Nantes TGV à 45 min. Aéroport Nantes-Atlantique à 35 min.",
   topSectorsNaf: [
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "Agriculture & exploitations",
     "Tourisme littoral Côte de Jade",
     "Commerce de proximité",
@@ -30,8 +30,8 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux PME artisanales, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux PME artisanales, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chaumes-en-Retz : formats adaptés à l'exploitation agricole, au commerce, au bureau ou à l'hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
       en: "Implémentation IA à Chaumes-en-Retz : automatisation gestion exploitation, agents conversationnels tourisme Côte de Jade, optimisation stocks, extraction données commerciales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chaumes-en-Retz : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants TPE/PME du Pays de Retz souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Chaumes-en-Retz : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants TPE/PME du Pays de Retz souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Chaumes-en-Retz : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants PME et ETI du Pays de Retz souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Chaumes-en-Retz : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants PME et ETI du Pays de Retz souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Chaumes-en-Retz  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du Pays de Retz.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du Pays de Retz.",
     },
     {
       q: "Comment se déroule une intervention sur site à Chaumes-en-Retz ?",

@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const VALLAURIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
+    "Axion-IA accompagne les PME et ETI de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
+    "Axion-IA accompagne les PME et ETI de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
   directAnswerFr:
-    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. Williams se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les PME et ETI locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. Williams se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. Williams se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les PME et ETI locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. Williams se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   seoHook: "céramique d'art, tourisme & services",
   ecosystemFr:
     "Vallauris, 29 259 habitants en 2023 dans les Alpes-Maritimes, présente une économie tertiaire dominante structurée autour de l'artisanat céramique (héritage Picasso, Musée national Picasso, biennale de céramique), du tourisme côtier à Golfe-Juan, de l'hôtellerie-restauration, et des services liés à la proximité du pôle technologique de Sophia Antipolis. La commune est limitrophe d'Antibes, Mougins, Valbonne, Le Cannet et Cannes, ce qui en fait un carrefour économique de la Côte d'Azur.",
@@ -33,16 +33,16 @@ export const VALLAURIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
-      en: "Audit sur place IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
+      fr: "Audit sur place IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus PME et ETI (atelier céramique, hôtel, agence immobilière, commerce touristique).",
+      en: "Audit sur place IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus PME et ETI (atelier céramique, hôtel, agence immobilière, commerce touristique).",
     },
     interventions: {
       fr: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
       en: "Formation collective à Vallauris dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
     },
     implementation: {
-      fr: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
-      en: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
+      fr: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les PME et ETI des Alpes-Maritimes.",
+      en: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les PME et ETI des Alpes-Maritimes.",
     },
     unAUn: {
       fr: "Accompagnement un-à-un dirigeant à Vallauris dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre artisanat, commerce ou service.",
@@ -87,12 +87,6 @@ export const VALLAURIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, fiche produit générée) sur le site existant d'un atelier de céramique, d'un commerce de Golfe-Juan ou d'un artisan, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -174,12 +168,6 @@ export const VALLAURIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, generated product sheet) onto the existing site of a ceramics workshop, a Golfe-Juan shop or a craftsperson, in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -248,7 +236,7 @@ export const VALLAURIS_COPY: VilleCopy = {
       a: "Toutes nos solutions sont développées en code custom avec hébergement Europe et chiffrement. La conformité RGPD est intégrée dès l'audit : registre des traitements, minimisation, droit à l'effacement.",
     },
     {
-      q: "Faites-vous du no-code pour les TPE de Vallauris ?",
+      q: "Faites-vous du no-code pour les PME de Vallauris ?",
       a: "Non. Axion-IA développe exclusivement en code custom (TypeScript, Python, API natives). Cette approche évite les dépendances plateforme et garantit la pérennité et la conformité RGPD des automatisations, particulièrement importantes pour les commerces touristiques saisonniers.",
     },
   ],

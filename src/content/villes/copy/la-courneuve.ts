@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_COURNEUVE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de La Courneuve, ville de Seine-Saint-Denis en pleine reconversion industrielle portée par le Grand Paris et bordée par le parc Georges-Valbon, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser logistique, devis et gestion administrative au profit du tissu productif et de services local.",
+    "Axion-IA accompagne les PME et ETI de La Courneuve, ville de Seine-Saint-Denis en pleine reconversion industrielle portée par le Grand Paris et bordée par le parc Georges-Valbon, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser logistique, devis et gestion administrative au profit du tissu productif et de services local.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de La Courneuve, ville de Seine-Saint-Denis en pleine reconversion industrielle portée par le Grand Paris et bordée par le parc Georges-Valbon, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser logistique, devis et gestion administrative au profit du tissu productif et de services local.",
+    "Axion-IA accompagne les PME et ETI de La Courneuve, ville de Seine-Saint-Denis en pleine reconversion industrielle portée par le Grand Paris et bordée par le parc Georges-Valbon, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser logistique, devis et gestion administrative au profit du tissu productif et de services local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de La Courneuve à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire de Seine-Saint-Denis en mutation, porté par les chantiers du Grand Paris et marqué par un tissu industriel, logistique et de négoce en reconversion, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales dans notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de La Courneuve à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire de Seine-Saint-Denis en mutation, porté par les chantiers du Grand Paris et marqué par un tissu industriel, logistique et de négoce en reconversion, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de La Courneuve à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire de Seine-Saint-Denis en mutation, porté par les chantiers du Grand Paris et marqué par un tissu industriel, logistique et de négoce en reconversion, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales dans notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de La Courneuve à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire de Seine-Saint-Denis en mutation, porté par les chantiers du Grand Paris et marqué par un tissu industriel, logistique et de négoce en reconversion, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux PME puis aux PME, les grands groupes complètent ce socle.",
   seoHook: "industrie Grand Paris & logistique",
   ecosystemFr:
-    "La Courneuve connaît une profonde reconversion : ses anciennes zones industrielles laissent place à de nouveaux quartiers d'activités portés par le Grand Paris et l'arrivée de nouvelles lignes de transport. Le tissu économique mêle négoce et commerce de gros, logistique et entreposage, artisanat du bâtiment et services aux entreprises, à proximité du vaste parc Georges-Valbon. Ces TPE et PME productives gagnent à automatiser gestion des commandes, planning logistique, devis et suivi administratif. Axion-IA cible en priorité ces TPE de négoce, de logistique et d'artisanat, puis les PME de services du territoire.",
+    "La Courneuve connaît une profonde reconversion : ses anciennes zones industrielles laissent place à de nouveaux quartiers d'activités portés par le Grand Paris et l'arrivée de nouvelles lignes de transport. Le tissu économique mêle négoce et commerce de gros, logistique et entreposage, artisanat du bâtiment et services aux entreprises, à proximité du vaste parc Georges-Valbon. Ces PME et ETI productives gagnent à automatiser gestion des commandes, planning logistique, devis et suivi administratif. Axion-IA cible en priorité ces PME de négoce, de logistique et d'artisanat, puis les PME de services du territoire.",
   ecosystemEn:
-    "La Courneuve connaît une profonde reconversion : ses anciennes zones industrielles laissent place à de nouveaux quartiers d'activités portés par le Grand Paris et l'arrivée de nouvelles lignes de transport. Le tissu économique mêle négoce et commerce de gros, logistique et entreposage, artisanat du bâtiment et services aux entreprises, à proximité du vaste parc Georges-Valbon. Ces TPE et PME productives gagnent à automatiser gestion des commandes, planning logistique, devis et suivi administratif. Axion-IA cible en priorité ces TPE de négoce, de logistique et d'artisanat, puis les PME de services du territoire.",
+    "La Courneuve connaît une profonde reconversion : ses anciennes zones industrielles laissent place à de nouveaux quartiers d'activités portés par le Grand Paris et l'arrivée de nouvelles lignes de transport. Le tissu économique mêle négoce et commerce de gros, logistique et entreposage, artisanat du bâtiment et services aux entreprises, à proximité du vaste parc Georges-Valbon. Ces PME et ETI productives gagnent à automatiser gestion des commandes, planning logistique, devis et suivi administratif. Axion-IA cible en priorité ces PME de négoce, de logistique et d'artisanat, puis les PME de services du territoire.",
   distancesFr:
     "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche, ce qui rend nos déplacements sur site rapides dans le nord francilien et le Grand Paris.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE de négoce ou de logistique de La Courneuve pour repérer les automatisations à fort impact : gestion des commandes, planning, devis, suivi administratif.",
-      en: "Auditer une TPE de négoce ou de logistique de La Courneuve pour repérer les automatisations à fort impact : gestion des commandes, planning, devis, suivi administratif.",
+      fr: "Auditer une PME de négoce ou de logistique de La Courneuve pour repérer les automatisations à fort impact : gestion des commandes, planning, devis, suivi administratif.",
+      en: "Auditer une PME de négoce ou de logistique de La Courneuve pour repérer les automatisations à fort impact : gestion des commandes, planning, devis, suivi administratif.",
     },
     interventions: {
       fr: "Intervenir sur site à La Courneuve pour automatiser devis, relances et gestion logistique des entreprises productives, sans bouleverser vos outils existants.",
@@ -42,8 +42,8 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME de logistique et de négoce de La Courneuve : suivi des flux, gestion des stocks, reporting et intégration ERP.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de La Courneuve pour piloter leur transition vers l'IA dans le contexte de mutation du Grand Paris.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de La Courneuve pour piloter leur transition vers l'IA dans le contexte de mutation du Grand Paris.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de La Courneuve pour piloter leur transition vers l'IA dans le contexte de mutation du Grand Paris.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de La Courneuve pour piloter leur transition vers l'IA dans le contexte de mutation du Grand Paris.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les acteurs du négoce et de la logistique de La Courneuve : catalogue en ligne, devis automatisé, suivi de commande.",
@@ -88,12 +88,6 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine + IA essentielle",
-            detail:
-              "Pour les garages de l'avenue Jean Mermoz, artisans du bâtiment et indépendants de La Courneuve : site mobile rapide, prise de rendez-vous ou demande de devis en ligne, chatbot de qualification. Hébergement UE conforme RGPD.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce / portail métier augmenté",
@@ -175,12 +169,6 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site + essential AI",
-            detail:
-              "For the garages of avenue Jean Mermoz, building craftspeople and freelancers in La Courneuve: fast mobile site, online booking or quote request, qualification chatbot. EU hosting, GDPR-compliant.",
-          },
-          {
             sizeLabel: "PME",
             price: "Augmented e-commerce / trade portal",
             detail:
@@ -233,12 +221,12 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
       a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos entrepôts, ateliers ou bureaux à La Courneuve et dans le Grand Paris, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
-      q: "Quels gains l'IA apporte-t-elle à une TPE de logistique de La Courneuve ?",
-      a: "L'IA automatise la gestion des commandes, le planning de tournées, les devis et le suivi administratif. Une TPE logistique y gagne en fiabilité et réduit ses tâches répétitives sans recruter.",
+      q: "Quels gains l'IA apporte-t-elle à une PME de logistique de La Courneuve ?",
+      a: "L'IA automatise la gestion des commandes, le planning de tournées, les devis et le suivi administratif. Une PME logistique y gagne en fiabilité et réduit ses tâches répétitives sans recruter.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à La Courneuve ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME de Seine-Saint-Denis. Les entreprises de quelques salariés sont notre cœur de cible, les ETI restant marginales dans notre clientèle.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI de Seine-Saint-Denis. Les entreprises de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se déroule un audit IA à La Courneuve ?",

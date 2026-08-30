@@ -44,8 +44,8 @@ export const TOURCOING_COPY: VilleCopy = {
       en: "Nous déployons des outils IA sur mesure à Tourcoing — automatisation de relances, génération de devis, RAG (Retrieval-Augmented Generation) documentaire — intégrables aux SI existants des PME du Parc de la Marlière. Voir /implementations.",
     },
     unAUn: {
-      fr: "Accompagnement individuel dirigeant à Tourcoing : 4 séances de travail ciblées pour structurer une feuille de route IA réaliste, sans DSI interne. Particulièrement adapté aux TPE du commerce et du textile. Détail sur /un-a-un.",
-      en: "Accompagnement individuel dirigeant à Tourcoing : 4 séances de travail ciblées pour structurer une feuille de route IA réaliste, sans DSI interne. Particulièrement adapté aux TPE du commerce et du textile. Détail sur /un-a-un.",
+      fr: "Accompagnement individuel dirigeant à Tourcoing : 4 séances de travail ciblées pour structurer une feuille de route IA réaliste, sans DSI interne. Particulièrement adapté aux PME du commerce et du textile. Détail sur /un-a-un.",
+      en: "Accompagnement individuel dirigeant à Tourcoing : 4 séances de travail ciblées pour structurer une feuille de route IA réaliste, sans DSI interne. Particulièrement adapté aux PME du commerce et du textile. Détail sur /un-a-un.",
     },
   },
   services: {
@@ -88,12 +88,6 @@ export const TOURCOING_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures",
-            detail:
-              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 15 personnes, pour poser des automatisations concrètes sans y passer la journée.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps (1 journée)",
@@ -180,12 +174,6 @@ export const TOURCOING_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures",
-            detail:
-              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 15 personnes, pour poser des automatisations concrètes sans y passer la journée.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps (1 journée)",
@@ -273,12 +261,6 @@ export const TOURCOING_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou petite boutique",
-            detail:
-              "Pour artisans, commerçants et indépendants tourquennois du centre-ville : site vitrine performant ou boutique e-commerce d'entrée avec quelques dizaines de références, briques IA simples (chatbot, recherche).",
-          },
-          {
             price: "Boutique e-commerce ou SaaS métier",
             sizeLabel: "PME",
             detail:
@@ -359,12 +341,6 @@ export const TOURCOING_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or small store",
-            detail:
-              "For Tourcoing city-centre artisans, retailers and freelancers: high-performance showcase site or entry-level e-commerce store with a few dozen items, simple AI building blocks (chatbot, search).",
-          },
-          {
             price: "E-commerce store or business SaaS",
             sizeLabel: "SME",
             detail:
@@ -433,8 +409,8 @@ export const TOURCOING_COPY: VilleCopy = {
       a: "Oui. Axion-IA travaille exclusivement avec des solutions hébergées en Europe ou déployables on-premise. Aucune donnée client n'est transmise à des modèles tiers sans accord explicite. Pour les ETI multi-sites du bassin Lille-Tourcoing-Roubaix, nous documentons systématiquement les flux de données dans le cadre de la gouvernance IA.",
     },
     {
-      q: "L'accompagnement 1-to-1 dirigeant est-il adapté à un artisan ou TPE de Tourcoing ?",
-      a: "C'est précisément le format pensé pour les dirigeants sans équipe IT. À partir de {{price:intervention-dirigeants|flat}}, 4 séances individuelles permettent de définir un premier outil IA rentable — relance client automatisée, génération de devis, tri de mails — sans passer par un audit complet. Adapté aux TPE du commerce de détail ou de l'artisanat tourquennois.",
+      q: "L'accompagnement 1-to-1 dirigeant est-il adapté à un artisan ou PME de Tourcoing ?",
+      a: "C'est précisément le format pensé pour les dirigeants sans équipe IT. À partir de {{price:intervention-dirigeants|flat}}, 4 séances individuelles permettent de définir un premier outil IA rentable — relance client automatisée, génération de devis, tri de mails — sans passer par un audit complet. Adapté aux PME du commerce de détail ou de l'artisanat tourquennois.",
     },
   ],
 };

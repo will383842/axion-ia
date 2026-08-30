@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const POISY_COPY: VilleCopy = {
   pitchFr:
-    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, PME de l'artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, PME de l'artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poisy (74). Nous accompagnons PME et ETI : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poisy (74). Nous accompagnons PME et ETI : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
   seoHook: "agriculture formation & tertiaires bassin",
   ecosystemFr:
-    "Poisy est une commune résidentielle de l'ouest d'Annecy, connue pour le campus ISETA (lycée agricole et technologique, formation agroalimentaire). Tissu agriculture/formation, PME tertiaires bassin annécien, TPE artisanat, commerces, professions libérales (cabinets, indépendants).",
+    "Poisy est une commune résidentielle de l'ouest d'Annecy, connue pour le campus ISETA (lycée agricole et technologique, formation agroalimentaire). Tissu agriculture/formation, PME tertiaires bassin annécien, PME de l'artisanat, commerces, professions libérales (cabinets, indépendants).",
   ecosystemEn:
-    "Poisy est une commune résidentielle de l'ouest d'Annecy, connue pour le campus ISETA (lycée agricole et technologique, formation agroalimentaire). Tissu agriculture/formation, PME tertiaires bassin annécien, TPE artisanat, commerces, professions libérales (cabinets, indépendants).",
+    "Poisy est une commune résidentielle de l'ouest d'Annecy, connue pour le campus ISETA (lycée agricole et technologique, formation agroalimentaire). Tissu agriculture/formation, PME tertiaires bassin annécien, PME de l'artisanat, commerces, professions libérales (cabinets, indépendants).",
   distancesFr: "Annecy à 10 min. Rumilly à 15 min. Aéroport Genève-Cointrin à 45 min. Lyon à 1h40.",
   distancesEn: "Annecy à 10 min. Rumilly à 15 min. Aéroport Genève-Cointrin à 45 min. Lyon à 1h40.",
   topSectorsNaf: [
     "Agriculture & formation agricole (ISETA)",
     "PME tertiaires bassin annécien",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerces de proximité",
     "Professions libérales",
   ],
@@ -40,8 +40,8 @@ export const POISY_COPY: VilleCopy = {
       en: "Implémentation IA à Poisy : automatisation gestion agricole et traçabilité, workflows PME tertiaires, optimisation planning cabinets libéraux, gestion stocks commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Poisy : sessions dans vos locaux ouest Annecy ou en visio. Exploitants agricoles, dirigeants PME, professions libérales, gérants TPE poisiliens.",
-      en: "Coaching 1-to-1 à Poisy : sessions dans vos locaux ouest Annecy ou en visio. Exploitants agricoles, dirigeants PME, professions libérales, gérants TPE poisiliens.",
+      fr: "Coaching 1-to-1 à Poisy : sessions dans vos locaux ouest Annecy ou en visio. Exploitants agricoles, dirigeants PME, professions libérales, gérants PME poisiliens.",
+      en: "Coaching 1-to-1 à Poisy : sessions dans vos locaux ouest Annecy ou en visio. Exploitants agricoles, dirigeants PME, professions libérales, gérants PME poisiliens.",
     },
   },
   faqGeolocalisee: [
@@ -51,7 +51,7 @@ export const POISY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Poisy  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du bassin annécien.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux PME et ETI du bassin annécien.",
     },
     {
       q: "Accompagnez-vous les acteurs agricoles et agroalimentaires ?",

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const MIGENNES_COPY: VilleCopy = {
   pitchFr:
-    "Migennes (89), nœud ferroviaire majeur de l'Yonne au confluent de l'Yonne et de l'Armançon, est un pôle logistique et industriel du nord bourguignon. Tissu de TPE/PME logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Migennes (89), nœud ferroviaire majeur de l'Yonne au confluent de l'Yonne et de l'Armançon, est un pôle logistique et industriel du nord bourguignon. Tissu de PME et ETI logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Migennes (89), nœud ferroviaire majeur de l'Yonne au confluent de l'Yonne et de l'Armançon, est un pôle logistique et industriel du nord bourguignon. Tissu de TPE/PME logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Migennes (89), nœud ferroviaire majeur de l'Yonne au confluent de l'Yonne et de l'Armançon, est un pôle logistique et industriel du nord bourguignon. Tissu de PME et ETI logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migennes (89). Nous accompagnons TPE et PME : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migennes (89). Nous accompagnons PME et ETI : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migennes (89). Nous accompagnons TPE et PME : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Yonne",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migennes (89). Nous accompagnons PME et ETI : opérateurs logistique et transport, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place sur mesure.",
+  seoHook: "PME & PME Yonne",
   ecosystemFr:
     "Migennes est un nœud ferroviaire historique de l'Yonne, au confluent de l'Yonne et de l'Armançon. La gare de triage et les ateliers SNCF ont structuré l'économie locale. Aujourd'hui, le tissu repose sur la logistique ferroviaire et routière, la sous-traitance industrielle, le commerce de proximité, l'artisanat BTP et les services. Proximité de Joigny (10 min) et d'Auxerre (20 min).",
   ecosystemEn:
@@ -34,16 +34,16 @@ export const MIGENNES_COPY: VilleCopy = {
       en: "Audit IA à Migennes : diagnostic adapté aux opérateurs logistique, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la PME artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la PME artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Migennes : optimisation flux logistique ferroviaire, maintenance prédictive industrielle, gestion stocks commerce, automatisation devis BTP, agents conversationnels services.",
       en: "Implémentation IA à Migennes : optimisation flux logistique ferroviaire, maintenance prédictive industrielle, gestion stocks commerce, automatisation devis BTP, agents conversationnels services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Migennes : sessions dans vos locaux logistique, industriels, commerciaux ou en visio. Dirigeants TPE/PME du nœud ferroviaire de l'Yonne souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Migennes : sessions dans vos locaux logistique, industriels, commerciaux ou en visio. Dirigeants TPE/PME du nœud ferroviaire de l'Yonne souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Migennes : sessions dans vos locaux logistique, industriels, commerciaux ou en visio. Dirigeants PME et ETI du nœud ferroviaire de l'Yonne souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Migennes : sessions dans vos locaux logistique, industriels, commerciaux ou en visio. Dirigeants PME et ETI du nœud ferroviaire de l'Yonne souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MIGENNES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Migennes  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Migennes et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre activité logistique, industrielle ou commerciale.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Migennes et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre activité logistique, industrielle ou commerciale.",
     },
     {
       q: "Accompagnez-vous les opérateurs logistique de Migennes ?",

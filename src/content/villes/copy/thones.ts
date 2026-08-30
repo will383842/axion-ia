@@ -9,9 +9,9 @@ export const THONES_COPY: VilleCopy = {
   pitchEn:
     "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y travaille avec les organisations du territoire du massif des Aravis.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thônes (74). Nous accompagnons PME et ETI : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thônes (74). Nous accompagnons PME et ETI : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   seoHook: "agroalimentaire fromager & tourisme montagne",
   ecosystemFr:
     "Thônes est le coeur économique et culturel du massif des Aravis. L'agroalimentaire fromager domine : production, affinage et vente de Reblochon AOP, filière laitière alpine structurante. Le tourisme de montagne irrigue le bourg (porte d'entrée vers La Clusaz à 15 min et Le Grand-Bornand à 15 min). Commerces de centre-bourg, artisanat montagnard et hôtellerie-restauration complètent un écosystème ancré dans l'identité alpine savoyarde.",
@@ -25,7 +25,7 @@ export const THONES_COPY: VilleCopy = {
     "Agroalimentaire fromager (Reblochon AOP)",
     "Tourisme montagne Aravis",
     "Commerce de bourg montagnard",
-    "TPE artisanat local",
+    "PME de l'artisanat local",
     "Hôtellerie-restauration",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const THONES_COPY: VilleCopy = {
       en: "Implémentation IA à Thônes : traçabilité AOP automatisée, contrôle qualité visuel affinage, agents conversationnels vente fromage en ligne, chatbot réservation montagne, CRM augmenté commerces de bourg.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Thônes : sessions dans votre fromagerie, hôtel, commerce ou en visio. Dirigeants TPE/PME des Aravis souhaitant maîtriser l'IA dans leur activité fromage, tourisme ou artisanat montagne.",
-      en: "Coaching 1-to-1 à Thônes : sessions dans votre fromagerie, hôtel, commerce ou en visio. Dirigeants TPE/PME des Aravis souhaitant maîtriser l'IA dans leur activité fromage, tourisme ou artisanat montagne.",
+      fr: "Coaching 1-to-1 à Thônes : sessions dans votre fromagerie, hôtel, commerce ou en visio. Dirigeants PME et ETI des Aravis souhaitant maîtriser l'IA dans leur activité fromage, tourisme ou artisanat montagne.",
+      en: "Coaching 1-to-1 à Thônes : sessions dans votre fromagerie, hôtel, commerce ou en visio. Dirigeants PME et ETI des Aravis souhaitant maîtriser l'IA dans leur activité fromage, tourisme ou artisanat montagne.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const THONES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Thônes  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des Aravis, il identifie les cas d'usage IA à fort ROI pour votre activité (fromagerie, tourisme, commerce, hôtellerie, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI des Aravis, il identifie les cas d'usage IA à fort ROI pour votre activité (fromagerie, tourisme, commerce, hôtellerie, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour le tourisme de montagne à Thônes ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LEMPDES_COPY: VilleCopy = {
   pitchFr:
-    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, PME de l'artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, PME de l'artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lempdes (63). Nous accompagnons PME et ETI : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lempdes (63). Nous accompagnons PME et ETI : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   seoHook: "logistique aéroportuaire & zones d'activités",
   ecosystemFr:
-    "Lempdes bénéficie d'une localisation stratégique à l'est de Clermont-Ferrand, à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. La commune concentre des zones d'activités importantes avec logistique aéroportuaire, PME industrielles, sociétés tertiaires et bureaux. Tissu TPE artisanat actif, commerces de proximité. Accès rapide Pont-du-Château et Cournon-d'Auvergne.",
+    "Lempdes bénéficie d'une localisation stratégique à l'est de Clermont-Ferrand, à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. La commune concentre des zones d'activités importantes avec logistique aéroportuaire, PME industrielles, sociétés tertiaires et bureaux. Tissu PME de l'artisanat actif, commerces de proximité. Accès rapide Pont-du-Château et Cournon-d'Auvergne.",
   ecosystemEn:
-    "Lempdes bénéficie d'une localisation stratégique à l'est de Clermont-Ferrand, à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. La commune concentre des zones d'activités importantes avec logistique aéroportuaire, PME industrielles, sociétés tertiaires et bureaux. Tissu TPE artisanat actif, commerces de proximité. Accès rapide Pont-du-Château et Cournon-d'Auvergne.",
+    "Lempdes bénéficie d'une localisation stratégique à l'est de Clermont-Ferrand, à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. La commune concentre des zones d'activités importantes avec logistique aéroportuaire, PME industrielles, sociétés tertiaires et bureaux. Tissu PME de l'artisanat actif, commerces de proximité. Accès rapide Pont-du-Château et Cournon-d'Auvergne.",
   distancesFr:
     "Clermont-Ferrand centre à 10 min voiture. Pont-du-Château à 5 min. Cournon-d'Auvergne à 10 min. Aéroport Clermont-Ferrand Auvergne à 10 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const LEMPDES_COPY: VilleCopy = {
     "Logistique aéroportuaire & transport",
     "Zones d'activités industrielles",
     "PME tertiaires & services",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, PME de l'artisanat et du commerce de l'est clermontois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, PME de l'artisanat et du commerce de l'est clermontois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lempdes : formats adaptés aux entrepôts logistiques, bureaux tertiaires, ateliers industriels ou commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const LEMPDES_COPY: VilleCopy = {
       en: "Implémentation IA à Lempdes : optimisation chaîne logistique aéroportuaire, prédiction maintenance industrielle, automatisation back-office PME tertiaires, agents IA gestion fret et expéditions.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lempdes : sessions dans vos locaux zone d'activités ou en visio. Dirigeants logistique, responsables PME industrielles, gérants TPE, indépendants est clermontois.",
-      en: "Coaching 1-to-1 à Lempdes : sessions dans vos locaux zone d'activités ou en visio. Dirigeants logistique, responsables PME industrielles, gérants TPE, indépendants est clermontois.",
+      fr: "Coaching 1-to-1 à Lempdes : sessions dans vos locaux zone d'activités ou en visio. Dirigeants logistique, responsables PME industrielles, gérants PME, indépendants est clermontois.",
+      en: "Coaching 1-to-1 à Lempdes : sessions dans vos locaux zone d'activités ou en visio. Dirigeants logistique, responsables PME industrielles, gérants PME, indépendants est clermontois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LEMPDES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles des zones d'activités de Lempdes sur leurs cas IA : prédiction maintenance équipements, contrôle qualité vision, optimisation production, classification documents techniques, automatisation reporting.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces de Lempdes ?",
-      a: "Pour les TPE artisans et commerçants à Lempdes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      q: "Quels services pour les PME de l'artisanat et du commerce de Lempdes ?",
+      a: "Pour les PME de l'artisanat et du commerce à Lempdes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const QUEVEN_COPY: VilleCopy = {
   pitchFr:
-    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
+    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. PME de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
   pitchEn:
-    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
+    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. PME de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
   seoHook: "technologie, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quéven (56). Nous accompagnons tous types d'activités : PME de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quéven (56). Nous accompagnons tous types d'activités : PME de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Quéven est une commune résidentielle dynamique de l'agglomération lorientaise, avec un tissu économique diversifié. L'économie locale bénéficie du pôle naval et défense de Lorient, des zones d'activités intercommunales, de PME technologiques et de services. L'artisanat BTP, le commerce de proximité et les professions libérales complètent le tissu entrepreneurial. La qualité de vie résidentielle attire cadres et indépendants.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const QUEVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Quéven : diagnostic adapté aux PME de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quéven : diagnostic adapté aux PME de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quéven : formations pratiques pour équipes PME technologiques, sous-traitants industriels, artisans et professionnels de santé. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Quéven : formations pratiques pour équipes PME technologiques, sous-traitants industriels, artisans et professionnels de santé. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Quéven : automatisation processus PME, agents conversationnels service client, CRM augmenté, gestion documentaire et reporting IA. Adapté au tissu TPE/PME agglomération lorientaise.",
-      en: "Implémentation IA à Quéven : automatisation processus PME, agents conversationnels service client, CRM augmenté, gestion documentaire et reporting IA. Adapté au tissu TPE/PME agglomération lorientaise.",
+      fr: "Implémentation IA à Quéven : automatisation processus PME, agents conversationnels service client, CRM augmenté, gestion documentaire et reporting IA. Adapté au tissu PME et ETI agglomération lorientaise.",
+      en: "Implémentation IA à Quéven : automatisation processus PME, agents conversationnels service client, CRM augmenté, gestion documentaire et reporting IA. Adapté au tissu PME et ETI agglomération lorientaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Quéven : sessions individuelles pour dirigeants TPE/PME, cadres, artisans et professions libérales de l'agglomération lorientaise souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Quéven : sessions individuelles pour dirigeants TPE/PME, cadres, artisans et professions libérales de l'agglomération lorientaise souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Quéven : sessions individuelles pour dirigeants de PME et d'ETI, cadres, artisans et professions libérales de l'agglomération lorientaise souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Quéven : sessions individuelles pour dirigeants de PME et d'ETI, cadres, artisans et professions libérales de l'agglomération lorientaise souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const QUEVEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Quéven  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quévenoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI quévenoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et professions libérales à Quéven ?",

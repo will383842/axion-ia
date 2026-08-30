@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. PME et ETI tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. PME et ETI tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons PME et ETI : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons PME et ETI : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   seoHook: "tertiaires & commerce zone",
   ecosystemFr:
-    "Saint-Julien-les-Villas est une commune résidentielle de l'agglomération Troyes Champagne Métropole (Aube). Tissu TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique troyen.",
+    "Saint-Julien-les-Villas est une commune résidentielle de l'agglomération Troyes Champagne Métropole (Aube). Tissu PME et ETI tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique troyen.",
   ecosystemEn:
-    "Saint-Julien-les-Villas est une commune résidentielle de l'agglomération Troyes Champagne Métropole (Aube). Tissu TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique troyen.",
+    "Saint-Julien-les-Villas est une commune résidentielle de l'agglomération Troyes Champagne Métropole (Aube). Tissu PME et ETI tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique troyen.",
   distancesFr:
     "Troyes centre à 5 min. Gare Troyes à 10 min. Reims à 1 h 20. Paris-Est à 1 h 30 (TER + TGV). Autoroute A5 accessible en 5 min.",
   distancesEn:
     "Troyes centre à 5 min. Gare Troyes à 10 min. Reims à 1 h 20. Paris-Est à 1 h 30 (TER + TGV). Autoroute A5 accessible en 5 min.",
   topSectorsNaf: [
-    "TPE/PME tertiaires (agglo Troyes)",
+    "PME et ETI tertiaires (agglo Troyes)",
     "Commerce de zone et de proximité",
     "Services aux entreprises",
     "Artisanat BTP",
@@ -30,8 +30,8 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux TPE/PME tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux TPE/PME tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux PME et ETI tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux PME et ETI tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Julien-les-Villas : formats adaptés au bureau tertiaire, commerce de zone, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Julien-les-Villas : automatisation workflow tertiaire, CRM augmenté, agents conversationnels retail, devis intelligents BTP, gestion documentaire professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Julien-les-Villas : sessions dans vos bureaux, commerce, atelier ou en visio. Dirigeants TPE/PME, commerçants, artisans, professions libérales de l'agglo troyenne.",
-      en: "Coaching 1-to-1 à Saint-Julien-les-Villas : sessions dans vos bureaux, commerce, atelier ou en visio. Dirigeants TPE/PME, commerçants, artisans, professions libérales de l'agglo troyenne.",
+      fr: "Coaching 1-to-1 à Saint-Julien-les-Villas : sessions dans vos bureaux, commerce, atelier ou en visio. Dirigeants PME et ETI, commerçants, artisans, professions libérales de l'agglo troyenne.",
+      en: "Coaching 1-to-1 à Saint-Julien-les-Villas : sessions dans vos bureaux, commerce, atelier ou en visio. Dirigeants PME et ETI, commerçants, artisans, professions libérales de l'agglo troyenne.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Julien-les-Villas  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants et artisans de l'agglomération troyenne.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME et ETI tertiaires, commerçants et artisans de l'agglomération troyenne.",
     },
     {
       q: "Accompagnez-vous les commerces de zone et de proximité ?",
-      a: "Oui, agents conversationnels, automatisation gestion stocks, programmes fidélité augmentés, CRM commerçant, devis intelligents pour TPE retail et services.",
+      a: "Oui, agents conversationnels, automatisation gestion stocks, programmes fidélité augmentés, CRM commerçant, devis intelligents pour PME retail et services.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP et professions libérales ?",

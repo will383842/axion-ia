@@ -7,7 +7,7 @@
 //   - Mention systématique « frais de logement, repas et forfait trajet en sus »
 //     sur les formats interventions.
 //   - Aucun prix hardcodé : tous les tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles d'entreprise INSEE : TPE / PME / ETI / GE.
+//   - Tailles d'entreprise INSEE : PME/ETI/GE.
 //   - Pas de mention métier-type, pas de heroSchema, pas de unAUn.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //
@@ -28,7 +28,7 @@ import type { VilleCopy } from "./types";
 
 export const STRASBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Strasbourg abrite les institutions européennes (Parlement, Conseil de l'Europe, CEDH), un pôle biotech de rang mondial (Alsace BioValley, Parc d'Innovation d'Illkirch) et un tissu transfrontalier unique France-Allemagne-Suisse. Axion-IA y intervient sur site auprès des TPE, PME, ETI et grandes organisations strasbourgeoises.",
+    "Strasbourg abrite les institutions européennes (Parlement, Conseil de l'Europe, CEDH), un pôle biotech de rang mondial (Alsace BioValley, Parc d'Innovation d'Illkirch) et un tissu transfrontalier unique France-Allemagne-Suisse. Axion-IA y intervient sur site auprès des PME, ETI et grands groupes et grandes organisations strasbourgeoises.",
   pitchEn:
     "Strasbourg hosts Europe's key institutions (European Parliament, Council of Europe, ECHR), a world-class biotech cluster (Alsace BioValley, Illkirch Innovation Park) and a unique France-Germany-Switzerland cross-border ecosystem. Axion-IA delivers on site to Strasbourg micro-businesses, SMEs, mid-caps and large organisations.",
 
@@ -56,7 +56,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Strasbourg (67) sur site, de la Presqu'île européenne au Parc d'Innovation d'Illkirch en passant par le Quartier Wacken-Europe. Nous accompagnons les TPE, PME, ETI et grandes organisations strasbourgeoises — institutions européennes, biotech Alsace BioValley, groupes industriels (Hager, Schmidt, Kronenbourg), médias (ARTE) et Crédit Mutuel — sur leurs cas IA opérationnels. Diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Strasbourg (67) sur site, de la Presqu'île européenne au Parc d'Innovation d'Illkirch en passant par le Quartier Wacken-Europe. Nous accompagnons les PME, ETI et grands groupes et grandes organisations strasbourgeoises — institutions européennes, biotech Alsace BioValley, groupes industriels (Hager, Schmidt, Kronenbourg), médias (ARTE) et Crédit Mutuel — sur leurs cas IA opérationnels. Diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Strasbourg (67) on site, from the European Peninsula to the Illkirch Innovation Park and the Wacken-Europe Business District. We support Strasbourg micro-businesses, SMEs, mid-caps and large organisations — European institutions, Alsace BioValley biotech, industrial groups (Hager, Schmidt, Kronenbourg), media (ARTE) and Crédit Mutuel — on their operational AI use cases. Costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -87,7 +87,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous à Strasbourg et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE strasbourgeoises aux institutions européennes du Wacken et aux groupes industriels de l'Eurométropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous à Strasbourg et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME strasbourgeoises aux institutions européennes du Wacken et aux groupes industriels de l'Eurométropole.",
         whyHere: [
           "Strasbourg est une place atypique : tissu institutionnel dense (Parlement européen, Conseil de l'Europe, CEDH, INSP ex-ENA) coexistant avec un secteur privé B2B très actif — chaque type d'organisation a ses cas IA propres que nous maîtrisons.",
           "Pôle biotech-santé de rang mondial : Alsace BioValley, Parc d'Innovation d'Illkirch (PII), IGBMC, Eli Lilly, IRCAD — secteur R&D intense où l'IA accélère la gestion documentaire, l'analyse de données cliniques et la veille réglementaire.",
@@ -124,12 +124,6 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et petites structures strasbourgeoises jusqu'à une dizaine de collaborateurs — cabinets, agences, startups deeptech en amorçage.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -193,7 +187,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande — point particulièrement important pour les organisations strasbourgeoises opérant dans un cadre juridique européen. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Strasbourg organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Strasbourg micro-businesses to European institutions at Wacken and Eurométropole industrial groups.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Strasbourg organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Strasbourg micro-businesses to European institutions at Wacken and Eurométropole industrial groups.",
         whyHere: [
           "Strasbourg is an atypical location: dense institutional fabric (European Parliament, Council of Europe, ECHR, INSP ex-ENA) coexisting with a very active private B2B sector — each organisation type has its own AI cases, which we master.",
           "World-class biotech-health cluster: Alsace BioValley, Illkirch Innovation Park (PII), IGBMC, Eli Lilly, IRCAD — an R&D-intense sector where AI accelerates document management, clinical data analysis and regulatory watch.",
@@ -230,12 +224,6 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Strasbourg freelancers, micro-firms and small structures up to about ten staff — firms, agencies, early-stage deeptech startups.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -340,12 +328,6 @@ export const STRASBOURG_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour les indépendants, cabinets et startups strasbourgeoises jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -445,11 +427,6 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail: "Ideal for Strasbourg freelancers, firms and startups up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -554,12 +531,6 @@ export const STRASBOURG_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture factures, veille automatisée, qualification leads) pour les TPE et startups deeptech du bassin strasbourgeois.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -595,7 +566,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Strasbourg ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Pouvez-vous gérer la conformité RGPD et DSGVO pour une structure transfrontalière ?",
@@ -659,12 +630,6 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, automated watch, lead qualification) for Strasbourg basin micro-businesses and deeptech startups.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -768,12 +733,6 @@ export const STRASBOURG_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "à partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Pour indépendants, gérants de TPE et professions libérales strasbourgeoises. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires.",
-          },
-          {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
@@ -873,12 +832,6 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
-            detail:
-              "For Strasbourg freelancers, micro-business managers and independent professionals. Short programme of 2-3 sessions on your priority use cases.",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme — on quote",
@@ -980,12 +933,6 @@ export const STRASBOURG_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1066,12 +1013,6 @@ export const STRASBOURG_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1121,7 +1062,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Strasbourg ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique à Paris.",
     },
     {
       q: "Intervenez-vous pour les institutions européennes à Strasbourg ?",

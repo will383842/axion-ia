@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const EVIAN_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Évian-les-Bains (74), station thermale et lacustre de Haute-Savoie sur les rives du lac Léman, est mondialement connue pour ses eaux minérales. Tissu thermalisme et eau minérale, tourisme lacustre prestige, hôtellerie de luxe, TPE commerces, événementiel (golf, congrès). Axion-IA y intervient pour tous types d'activités.",
+    "Évian-les-Bains (74), station thermale et lacustre de Haute-Savoie sur les rives du lac Léman, est mondialement connue pour ses eaux minérales. Tissu thermalisme et eau minérale, tourisme lacustre prestige, hôtellerie de luxe, PME du commerce, événementiel (golf, congrès). Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Évian-les-Bains (74), station thermale et lacustre de Haute-Savoie sur les rives du lac Léman, est mondialement connue pour ses eaux minérales. Tissu thermalisme et eau minérale, tourisme lacustre prestige, hôtellerie de luxe, TPE commerces, événementiel (golf, congrès). Axion-IA y intervient pour tous types d'activités.",
+    "Évian-les-Bains (74), station thermale et lacustre de Haute-Savoie sur les rives du lac Léman, est mondialement connue pour ses eaux minérales. Tissu thermalisme et eau minérale, tourisme lacustre prestige, hôtellerie de luxe, PME du commerce, événementiel (golf, congrès). Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évian-les-Bains (74). Nous accompagnons TPE et PME : acteurs thermalisme et eau minérale, hôteliers de luxe lac Léman, commerçants, organisateurs événementiel (golf, congrès), prestataires tourisme prestige.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évian-les-Bains (74). Nous accompagnons PME et ETI : acteurs thermalisme et eau minérale, hôteliers de luxe lac Léman, commerçants, organisateurs événementiel (golf, congrès), prestataires tourisme prestige.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évian-les-Bains (74). Nous accompagnons TPE et PME : acteurs thermalisme et eau minérale, hôteliers de luxe lac Léman, commerçants, organisateurs événementiel (golf, congrès), prestataires tourisme prestige.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évian-les-Bains (74). Nous accompagnons PME et ETI : acteurs thermalisme et eau minérale, hôteliers de luxe lac Léman, commerçants, organisateurs événementiel (golf, congrès), prestataires tourisme prestige.",
   seoHook: "thermalisme eau & tourisme lacustre",
   ecosystemFr:
-    "Évian-les-Bains est une station thermale et lacustre prestigieuse sur le lac Léman, mondialement connue pour ses eaux minérales. Tissu thermalisme (thermes, cures), hôtellerie de luxe (Royal, Ermitage), tourisme lacustre prestige, événementiel haut de gamme (golf, congrès), TPE commerces.",
+    "Évian-les-Bains est une station thermale et lacustre prestigieuse sur le lac Léman, mondialement connue pour ses eaux minérales. Tissu thermalisme (thermes, cures), hôtellerie de luxe (Royal, Ermitage), tourisme lacustre prestige, événementiel haut de gamme (golf, congrès), PME du commerce.",
   ecosystemEn:
-    "Évian-les-Bains est une station thermale et lacustre prestigieuse sur le lac Léman, mondialement connue pour ses eaux minérales. Tissu thermalisme (thermes, cures), hôtellerie de luxe (Royal, Ermitage), tourisme lacustre prestige, événementiel haut de gamme (golf, congrès), TPE commerces.",
+    "Évian-les-Bains est une station thermale et lacustre prestigieuse sur le lac Léman, mondialement connue pour ses eaux minérales. Tissu thermalisme (thermes, cures), hôtellerie de luxe (Royal, Ermitage), tourisme lacustre prestige, événementiel haut de gamme (golf, congrès), PME du commerce.",
   distancesFr:
     "Thonon-les-Bains à 10 min. Genève à 45 min (route ou bateau CGN). Annecy à 1h15. Aéroport Genève-Cointrin à 1h.",
   distancesEn:
@@ -25,7 +25,7 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
     "Thermalisme & eau minérale",
     "Tourisme lacustre prestige",
     "Hôtellerie de luxe lac Léman",
-    "TPE commerces",
+    "PME du commerce",
     "Événementiel golf & congrès",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Évian-les-Bains : agents conversationnels multilingues pour clientèle internationale, automatisation réservations thermes/hôtels, classification feedback prestige, gestion événementiel.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Évian-les-Bains : sessions dans votre hôtel, thermes ou bureau lac Léman. Hôteliers de luxe, directeurs thermes, gérants TPE/PME évianais, organisateurs événementiel.",
-      en: "Coaching 1-to-1 à Évian-les-Bains : sessions dans votre hôtel, thermes ou bureau lac Léman. Hôteliers de luxe, directeurs thermes, gérants TPE/PME évianais, organisateurs événementiel.",
+      fr: "Coaching 1-to-1 à Évian-les-Bains : sessions dans votre hôtel, thermes ou bureau lac Léman. Hôteliers de luxe, directeurs thermes, gérants PME et ETI évianais, organisateurs événementiel.",
+      en: "Coaching 1-to-1 à Évian-les-Bains : sessions dans votre hôtel, thermes ou bureau lac Léman. Hôteliers de luxe, directeurs thermes, gérants PME et ETI évianais, organisateurs événementiel.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Évian-les-Bains  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du tourisme et de l'hôtellerie.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux PME et ETI du tourisme et de l'hôtellerie.",
     },
     {
       q: "Accompagnez-vous les hôteliers de luxe et acteurs thermalisme ?",

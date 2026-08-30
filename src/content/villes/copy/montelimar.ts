@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTELIMAR_COPY: VilleCopy = {
   pitchFr:
-    "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu TPE commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
+    "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu PME du commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
   pitchEn:
-    "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu TPE commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
+    "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu PME du commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montélimar (26). Nous accompagnons PME du commerce et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montélimar (26). Nous accompagnons PME du commerce et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "agroalimentaire nougat & commerce détail",
   ecosystemFr:
-    "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu TPE commerces, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
+    "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu PME du commerce, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
   ecosystemEn:
-    "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu TPE commerces, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
+    "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu PME du commerce, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
   distancesFr:
     "Valence à 43 km (nord, A7). Gare SNCF Montélimar (TER + accès TGV Valence). Autoroute A7 sorties Montélimar-Nord et Sud. Aérodrome Montélimar-Ancône. Communes voisines : Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Espeluche, Montboucher-sur-Jabron, Le Teil, Rochemaure.",
   distancesEn:
@@ -30,31 +30,31 @@ export const MONTELIMAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montélimar : diagnostic adapté aux PME du commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montélimar : diagnostic adapté aux PME du commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montélimar : formats adaptés à l'agroalimentaire, au commerce, à la logistique et aux services. Vos équipes repartent autonomes sur les outils IA métier.",
       en: "Interventions IA sur site à Montélimar : formats adaptés à l'agroalimentaire, au commerce, à la logistique et aux services. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Montélimar : traçabilité agroalimentaire, gestion stocks et production nougat, CRM tourisme, automatisation facturation logistique, agents conversationnels clients pour TPE et PME montiliennes.",
-      en: "Implémentation IA à Montélimar : traçabilité agroalimentaire, gestion stocks et production nougat, CRM tourisme, automatisation facturation logistique, agents conversationnels clients pour TPE et PME montiliennes.",
+      fr: "Implémentation IA à Montélimar : traçabilité agroalimentaire, gestion stocks et production nougat, CRM tourisme, automatisation facturation logistique, agents conversationnels clients pour PME et ETI montiliennes.",
+      en: "Implémentation IA à Montélimar : traçabilité agroalimentaire, gestion stocks et production nougat, CRM tourisme, automatisation facturation logistique, agents conversationnels clients pour PME et ETI montiliennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montélimar : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et logistiques, professions libérales souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Montélimar : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et logistiques, professions libérales souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Montélimar : sessions dans vos locaux ou en visio. Dirigeants PME du commerce et artisans, gérants PME agroalimentaires et logistiques, professions libérales souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Montélimar : sessions dans vos locaux ou en visio. Dirigeants PME du commerce et artisans, gérants PME agroalimentaires et logistiques, professions libérales souhaitant intégrer l'IA.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Montélimar (26), porte de la Provence, Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA pour les acteurs réels du sud-drômois : les maisons nougatières IGP (Arnaud Soubeyran, Chabert & Guillot, Diane de Poytiers) dont la dénomination « Nougat de Montélimar » est enregistrée en IGP européenne depuis le 26 novembre 2024, le cartonnage de luxe d'Autajon, les opérateurs logistiques de la vallée du Rhône (Groupe Charles André à la ZI de Gournier, STIM) et les TPE-PME des onze parcs d'activités de l'agglomération. Boutiques e-commerce, portails B2B, espaces clients : code sur mesure, multi-CMS, UX/UI mobile-first et IA embarquée, hébergés en Union européenne et conformes RGPD.",
+        hero: "À Montélimar (26), porte de la Provence, Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA pour les acteurs réels du sud-drômois : les maisons nougatières IGP (Arnaud Soubeyran, Chabert & Guillot, Diane de Poytiers) dont la dénomination « Nougat de Montélimar » est enregistrée en IGP européenne depuis le 26 novembre 2024, le cartonnage de luxe d'Autajon, les opérateurs logistiques de la vallée du Rhône (Groupe Charles André à la ZI de Gournier, STIM) et les PME et ETI des onze parcs d'activités de l'agglomération. Boutiques e-commerce, portails B2B, espaces clients : code sur mesure, multi-CMS, UX/UI mobile-first et IA embarquée, hébergés en Union européenne et conformes RGPD.",
         whyHere: [
           "Filière nougat IGP : depuis l'enregistrement de l'IGP « Nougat de Montélimar » (26 novembre 2024), les maisons confiseuses comme Arnaud Soubeyran (1837) ou Chabert & Guillot (1848) ont besoin de boutiques e-commerce qui valorisent la mention IGP, gèrent les saisons (Noël, été A7) et tracent le cahier des charges (≥30 % d'amandes, miel, blanc d'œuf) — nous construisons ces vitrines marchandes.",
           "Cartonnage de luxe : Autajon, site phare du groupe pour le luxe à Montélimar (~350 salariés, parfum, cosmétique, spiritueux, maroquinerie), illustre un besoin local de plateformes B2B — configurateurs d'emballages, portails devis, espaces clients donneurs d'ordres — que nous savons développer avec recherche sémantique et agents IA.",
           "Pôle logistique vallée du Rhône : Montélimar est le 5e pôle logistique du couloir rhodanien (Groupe Charles André à la ZI de Gournier, STIM, axe A7 sorties Nord/Sud). Nous outillons les transporteurs avec des portails de suivi, de l'EDI documentaire et des assistants IA de saisie pour le fret, y compris matières dangereuses et énergie.",
-          "Tissu dense des parcs d'activités : ZAC Nord (35 Ha), Portes de Provence, Léonards, Fortuneau réunissent des TPE-PME (719 créations en 2024 sur l'agglomération). Pour le commerce de centre-ville, l'artisanat et les services, nous livrons des sites vitrines et e-commerce rapides, avec chatbot de qualification et prise de rendez-vous.",
+          "Tissu dense des parcs d'activités : ZAC Nord (35 Ha), Portes de Provence, Léonards, Fortuneau réunissent des PME et ETI (719 créations en 2024 sur l'agglomération). Pour le commerce de centre-ville, l'artisanat et les services, nous livrons des sites vitrines et e-commerce rapides, avec chatbot de qualification et prise de rendez-vous.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique e-commerce essentielle",
-            detail:
-              "Pour artisans nougatiers, commerçants du centre-ville et indépendants des parcs d'activités : vitrine ou boutique en ligne avec paiement, fiche IGP et chatbot de qualification.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail B2B",
@@ -124,7 +118,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
           {
             q: "Le site est-il optimisé pour le mobile et conforme RGPD ?",
-            a: "Oui. Tous nos sites sont conçus mobile-first et testés sur smartphone. Les données sont hébergées en Union européenne, le traitement est minimisé et documenté, avec clauses adaptées aux TPE et PME drômoises. Nous couvrons aussi bien le e-commerce multi-CMS que les plateformes SaaS sur mesure.",
+            a: "Oui. Tous nos sites sont conçus mobile-first et testés sur smartphone. Les données sont hébergées en Union européenne, le traitement est minimisé et documenté, avec clauses adaptées aux PME et ETI drômoises. Nous couvrons aussi bien le e-commerce multi-CMS que les plateformes SaaS sur mesure.",
           },
           {
             q: "Quel délai pour un devis et restons-nous propriétaires de la plateforme ?",
@@ -170,12 +164,6 @@ export const MONTELIMAR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce store",
-            detail:
-              "For artisan nougat makers, town-centre retailers and freelancers in the business parks: showcase or online store with payment, IGP product sheet and qualification chatbot.",
-          },
           {
             sizeLabel: "SME",
             price: "E-commerce platform or B2B portal",
@@ -229,12 +217,12 @@ export const MONTELIMAR_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Montélimar et dans les communes voisines (Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Le Teil, Rochemaure). Déplacement depuis Valence (43 min A7) ou Lyon (1h30).",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE nougatière à Montélimar ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME montiliennes. Diagnostic complet des processus, cartographie IA (production, traçabilité, commerce, logistique) et plan d'action ROI chiffré.",
+      q: "Quel est le tarif d'un audit IA pour une PME nougatière à Montélimar ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI montiliennes. Diagnostic complet des processus, cartographie IA (production, traçabilité, commerce, logistique) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous la filière agroalimentaire et nougatière de Montélimar ?",
-      a: "Oui, nous accompagnons TPE artisans nougatiers et PME agroalimentaires sur leurs projets IA : traçabilité, gestion stocks et production, prévision demande, CRM B2B et boutique, automatisation facturation.",
+      a: "Oui, nous accompagnons PME artisanales nougatiers et PME agroalimentaires sur leurs projets IA : traçabilité, gestion stocks et production, prévision demande, CRM B2B et boutique, automatisation facturation.",
     },
     {
       q: "Quel délai pour une intervention IA à Montélimar ?",
@@ -242,7 +230,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Montélimar ?",
-      a: "Nos interventions à Montélimar respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux TPE et PME drômoises.",
+      a: "Nos interventions à Montélimar respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux PME et ETI drômoises.",
     },
   ],
 };

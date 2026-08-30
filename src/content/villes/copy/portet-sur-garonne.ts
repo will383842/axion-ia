@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
   pitchFr:
-    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de Toulouse.",
+    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu PME artisanales, PME commerciales et logistiques, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de Toulouse.",
   pitchEn:
-    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de Toulouse.",
+    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu PME artisanales, PME commerciales et logistiques, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Portet-sur-Garonne (31). Nous accompagnons PME artisanales, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Portet-sur-Garonne (31). Nous accompagnons PME artisanales, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "commerce détail & logistique entreposage",
   ecosystemFr:
-    "Portet-sur-Garonne est un pôle commercial majeur du sud de Toulouse, au confluent de la Garonne et de l'Ariège. Grande zone commerciale (Portet Commerce), PME de distribution et logistique, TPE artisans, professions libérales. Axe A64 et proximité Muret.",
+    "Portet-sur-Garonne est un pôle commercial majeur du sud de Toulouse, au confluent de la Garonne et de l'Ariège. Grande zone commerciale (Portet Commerce), PME de distribution et logistique, PME artisanales, professions libérales. Axe A64 et proximité Muret.",
   ecosystemEn:
-    "Portet-sur-Garonne est un pôle commercial majeur du sud de Toulouse, au confluent de la Garonne et de l'Ariège. Grande zone commerciale (Portet Commerce), PME de distribution et logistique, TPE artisans, professions libérales. Axe A64 et proximité Muret.",
+    "Portet-sur-Garonne est un pôle commercial majeur du sud de Toulouse, au confluent de la Garonne et de l'Ariège. Grande zone commerciale (Portet Commerce), PME de distribution et logistique, PME artisanales, professions libérales. Axe A64 et proximité Muret.",
   distancesFr:
     "Toulouse centre à 15 min (A64). Gare Matabiau à 20 min. Aéroport Toulouse-Blagnac à 25 min. Muret à 8 min. Roques à 5 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, TPE artisans et entreprises logistiques du pôle sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, TPE artisans et entreprises logistiques du pôle sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, PME artisanales et entreprises logistiques du pôle sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, PME artisanales et entreprises logistiques du pôle sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Portet-sur-Garonne : formats adaptés au commerce, à la logistique, à l'artisan. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Portet-sur-Garonne : automatisation gestion stocks, optimisation logistique, agents conversationnels clients, classification documents pour PME commerciales du sud Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Portet-sur-Garonne : sessions dirigeants TPE et PME commerciales du sud toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Portet-sur-Garonne : sessions dirigeants TPE et PME commerciales du sud toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Portet-sur-Garonne : sessions dirigeants PME et ETI commerciales du sud toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Portet-sur-Garonne : sessions dirigeants PME et ETI commerciales du sud toulousain, dans vos locaux ou en visio.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Portet-sur-Garonne ?",
-      a: "Nous accompagnons tous types d'activités : PME commerciales, logistique, TPE artisans, professions libérales, restauration. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME commerciales, logistique, PME artisanales, professions libérales, restauration. Aucun secteur exclu.",
     },
     {
       q: "Combien coûte un audit IA à Portet-sur-Garonne  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME commerciales, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider un commerce à Portet-sur-Garonne ?",

@@ -15,12 +15,11 @@ export async function seedAudienceMixProfiles(prisma: PrismaClient): Promise<num
       slug: "mixte-equilibre",
       name: "Mixte équilibré",
       description:
-        "Profil défaut V1 — PME et TPE entreprise privée dominantes + écoles/universités/mairies/CSE équilibrés (§ 25 auto-pilot).",
+        "Profil défaut V1 — PME et ETI entreprise privée dominantes + écoles/universités/mairies/CSE équilibrés (§ 25 auto-pilot).",
       isDefault: true,
       mix: {
         "PME:entreprise_privee": 40,
-        "TPE:entreprise_privee": 20,
-        "ETI:entreprise_privee": 15,
+        "ETI:entreprise_privee": 35,
         "PME:ecole": 5,
         "GRANDE_ENTREPRISE:universite": 5,
         "PME:mairie": 5,
@@ -32,13 +31,12 @@ export async function seedAudienceMixProfiles(prisma: PrismaClient): Promise<num
       slug: "tertiaire-urbain",
       name: "Tertiaire urbain",
       description:
-        "Concentration entreprises privées (TPE/PME/ETI) — secteurs services et tertiaires en zones urbaines.",
+        "Concentration entreprises privées (PME/ETI/grands groupes) — secteurs services et tertiaires en zones urbaines.",
       isDefault: false,
       mix: {
         "PME:entreprise_privee": 50,
-        "TPE:entreprise_privee": 25,
-        "ETI:entreprise_privee": 20,
-        "GRANDE_ENTREPRISE:entreprise_privee": 5,
+        "ETI:entreprise_privee": 35,
+        "GRANDE_ENTREPRISE:entreprise_privee": 15,
       },
     },
     {

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
   pitchFr:
-    "Morières-lès-Avignon (84), commune périurbaine du sud-est d'Avignon, conjugue cadre de vie résidentiel, zones d'activités locales et fonction de banlieue du Grand Avignon. TPE artisans BTP et services, PME commerciales, professions libérales (santé, conseil), commerces de proximité et agriculture maraîchère résiduelle. Axion-IA y intervient pour tous types d'activités.",
+    "Morières-lès-Avignon (84), commune périurbaine du sud-est d'Avignon, conjugue cadre de vie résidentiel, zones d'activités locales et fonction de banlieue du Grand Avignon. PME du BTP et services, PME commerciales, professions libérales (santé, conseil), commerces de proximité et agriculture maraîchère résiduelle. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Morières-lès-Avignon (84), commune périurbaine du sud-est d'Avignon, conjugue cadre de vie résidentiel, zones d'activités locales et fonction de banlieue du Grand Avignon. TPE artisans BTP et services, PME commerciales, professions libérales (santé, conseil), commerces de proximité et agriculture maraîchère résiduelle. Axion-IA y intervient pour tous types d'activités.",
+    "Morières-lès-Avignon (84), commune périurbaine du sud-est d'Avignon, conjugue cadre de vie résidentiel, zones d'activités locales et fonction de banlieue du Grand Avignon. PME du BTP et services, PME commerciales, professions libérales (santé, conseil), commerces de proximité et agriculture maraîchère résiduelle. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morières-lès-Avignon (84). Nous accompagnons PME artisanales, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morières-lès-Avignon (84). Nous accompagnons PME artisanales, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit sur place sur mesure.",
   seoHook: "artisanat & commerces négoces",
   ecosystemFr:
-    "Morières-lès-Avignon est positionnée au sud-est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les TPE artisans (BTP, services à la personne), les PME commerciales et négoces, les professions libérales (médecins, kinés, avocats), les commerces de proximité, ainsi que des exploitations maraîchères résiduelles. Bassin d'emploi connecté à Avignon TGV.",
+    "Morières-lès-Avignon est positionnée au sud-est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les PME artisanales (BTP, services à la personne), les PME commerciales et négoces, les professions libérales (médecins, kinés, avocats), les commerces de proximité, ainsi que des exploitations maraîchères résiduelles. Bassin d'emploi connecté à Avignon TGV.",
   ecosystemEn:
-    "Morières-lès-Avignon est positionnée au sud-est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les TPE artisans (BTP, services à la personne), les PME commerciales et négoces, les professions libérales (médecins, kinés, avocats), les commerces de proximité, ainsi que des exploitations maraîchères résiduelles. Bassin d'emploi connecté à Avignon TGV.",
+    "Morières-lès-Avignon est positionnée au sud-est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les PME artisanales (BTP, services à la personne), les PME commerciales et négoces, les professions libérales (médecins, kinés, avocats), les commerces de proximité, ainsi que des exploitations maraîchères résiduelles. Bassin d'emploi connecté à Avignon TGV.",
   distancesFr:
     "Avignon centre à 10 min. Gare TGV Avignon à 15 min. Saint-Saturnin-lès-Avignon à 5 min. Châteauneuf-de-Gadagne à 10 min. Aéroport Avignon-Provence à 15 min. Marseille à 1h via A7. Accès D900 et A7.",
   distancesEn:
     "Avignon centre à 10 min. Gare TGV Avignon à 15 min. Saint-Saturnin-lès-Avignon à 5 min. Châteauneuf-de-Gadagne à 10 min. Aéroport Avignon-Provence à 15 min. Marseille à 1h via A7. Accès D900 et A7.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME commerces & négoces",
     "Professions libérales (santé, droit)",
     "Commerces de proximité",
@@ -30,20 +30,20 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux TPE artisans, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux TPE artisans, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux PME artisanales, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux PME artisanales, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Morières-lès-Avignon : ateliers pour équipes TPE/PME, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
-      en: "Interventions IA sur site à Morières-lès-Avignon : ateliers pour équipes TPE/PME, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      fr: "Interventions IA sur site à Morières-lès-Avignon : ateliers pour équipes PME et ETI, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      en: "Interventions IA sur site à Morières-lès-Avignon : ateliers pour équipes PME et ETI, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
     },
     implementation: {
-      fr: "Implémentation IA à Morières-lès-Avignon : automatisation devis BTP, gestion patients cabinets libéraux, agents conversationnels SAV commerces, optimisation comptabilité TPE, content marketing local. RGPD strict.",
-      en: "Implémentation IA à Morières-lès-Avignon : automatisation devis BTP, gestion patients cabinets libéraux, agents conversationnels SAV commerces, optimisation comptabilité TPE, content marketing local. RGPD strict.",
+      fr: "Implémentation IA à Morières-lès-Avignon : automatisation devis BTP, gestion patients cabinets libéraux, agents conversationnels SAV commerces, optimisation comptabilité PME, content marketing local. RGPD strict.",
+      en: "Implémentation IA à Morières-lès-Avignon : automatisation devis BTP, gestion patients cabinets libéraux, agents conversationnels SAV commerces, optimisation comptabilité PME, content marketing local. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Morières-lès-Avignon : sessions pour dirigeants TPE, professions libérales et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
-      en: "Coaching 1-to-1 à Morières-lès-Avignon : sessions pour dirigeants TPE, professions libérales et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      fr: "Coaching 1-to-1 à Morières-lès-Avignon : sessions pour dirigeants de PME et d'ETI, professions libérales et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      en: "Coaching 1-to-1 à Morières-lès-Avignon : sessions pour dirigeants de PME et d'ETI, professions libérales et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Morières-lès-Avignon  : quel budget prévoir ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME commerciales, professions libérales et commerces moriérois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME commerciales, professions libérales et commerces moriérois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales (santé, droit, conseil) ?",

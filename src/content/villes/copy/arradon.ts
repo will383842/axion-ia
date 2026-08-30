@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const ARRADON_COPY: VilleCopy = {
   pitchFr:
-    "Arradon (56), commune résidentielle de prestige sur le golfe du Morbihan, allie cadre naturel exceptionnel et dynamisme économique. Tissu TPE artisans (nautisme, services à la personne), PME conseil et services, professions libérales, commerces, hébergements haut de gamme et activités nautiques. Axion-IA y intervient pour tous types d'activités.",
+    "Arradon (56), commune résidentielle de prestige sur le golfe du Morbihan, allie cadre naturel exceptionnel et dynamisme économique. Tissu PME artisanales (nautisme, services à la personne), PME conseil et services, professions libérales, commerces, hébergements haut de gamme et activités nautiques. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Arradon (56), commune résidentielle de prestige sur le golfe du Morbihan, allie cadre naturel exceptionnel et dynamisme économique. Tissu TPE artisans (nautisme, services à la personne), PME conseil et services, professions libérales, commerces, hébergements haut de gamme et activités nautiques. Axion-IA y intervient pour tous types d'activités.",
+    "Arradon (56), commune résidentielle de prestige sur le golfe du Morbihan, allie cadre naturel exceptionnel et dynamisme économique. Tissu PME artisanales (nautisme, services à la personne), PME conseil et services, professions libérales, commerces, hébergements haut de gamme et activités nautiques. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, TPE artisans nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, PME artisanales nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, TPE artisans nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arradon (56). Nous accompagnons tous types d'activités : PME de conseil et services du golfe du Morbihan, professions libérales, PME artisanales nautisme, hébergeurs haut de gamme, commerçants, indépendants et entreprises résidentielles du bassin vannetais.",
   ecosystemFr:
-    "Arradon est une commune résidentielle de prestige nichée sur la rive nord du golfe du Morbihan (Petite Mer intérieure). Connue pour ses sentiers côtiers GR 34, ses plages et son port, elle attire professions libérales, cadres et retraités aisés. Tissu PME conseil/services, TPE artisans nautiques, hébergements de charme, restauration et commerces de qualité. Proximité directe de Vannes (5 min).",
+    "Arradon est une commune résidentielle de prestige nichée sur la rive nord du golfe du Morbihan (Petite Mer intérieure). Connue pour ses sentiers côtiers GR 34, ses plages et son port, elle attire professions libérales, cadres et retraités aisés. Tissu PME conseil/services, PME artisanales nautiques, hébergements de charme, restauration et commerces de qualité. Proximité directe de Vannes (5 min).",
   ecosystemEn:
-    "Arradon est une commune résidentielle de prestige nichée sur la rive nord du golfe du Morbihan (Petite Mer intérieure). Connue pour ses sentiers côtiers GR 34, ses plages et son port, elle attire professions libérales, cadres et retraités aisés. Tissu PME conseil/services, TPE artisans nautiques, hébergements de charme, restauration et commerces de qualité. Proximité directe de Vannes (5 min).",
+    "Arradon est une commune résidentielle de prestige nichée sur la rive nord du golfe du Morbihan (Petite Mer intérieure). Connue pour ses sentiers côtiers GR 34, ses plages et son port, elle attire professions libérales, cadres et retraités aisés. Tissu PME conseil/services, PME artisanales nautiques, hébergements de charme, restauration et commerces de qualité. Proximité directe de Vannes (5 min).",
   distancesFr:
     "Vannes centre à 5 min voiture. Gare de Vannes (TGV Paris 2h30). Aéroport Lorient Bretagne Sud à 50 min. Île-aux-Moines en navette depuis le port. Auray à 20 min. Presqu'île de Rhuys à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const ARRADON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, PME artisanales nautiques et hébergeurs du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, PME artisanales nautiques et hébergeurs du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arradon : formats adaptés au cabinet de conseil, étude libérale, atelier nautique ou hébergement de charme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const ARRADON_COPY: VilleCopy = {
       en: "Implémentation IA à Arradon : automatisation gestion clientèle haut de gamme, agents conversationnels réservation nautique, classification documents cabinets, optimisation planning libéral. Adapté conseil + tourisme premium golfe.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arradon : sessions dans votre cabinet, étude, entreprise ou en visio. Consultants, professions libérales, artisans nautiques, gérants TPE/PME arradonaises souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Arradon : sessions dans votre cabinet, étude, entreprise ou en visio. Consultants, professions libérales, artisans nautiques, gérants TPE/PME arradonaises souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Arradon : sessions dans votre cabinet, étude, entreprise ou en visio. Consultants, professions libérales, artisans nautiques, gérants PME et ETI arradonaises souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Arradon : sessions dans votre cabinet, étude, entreprise ou en visio. Consultants, professions libérales, artisans nautiques, gérants PME et ETI arradonaises souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const ARRADON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales (avocats, médecins, architectes, experts-comptables) et PME de conseil installées à Arradon sur leurs cas IA : automatisation documents, classification dossiers, agents conversationnels clients, optimisation planning.",
     },
     {
-      q: "Quels services pour les TPE artisans nautiques du golfe ?",
-      a: "Pour les TPE artisans nautiques et commerçants d'Arradon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis réparation, agents IA réservation, gestion stocks, planning saison.",
+      q: "Quels services pour les PME artisanales nautiques du golfe ?",
+      a: "Pour les PME artisanales nautiques et commerçants d'Arradon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis réparation, agents IA réservation, gestion stocks, planning saison.",
     },
     {
       q: "Travaillez-vous avec les hébergeurs haut de gamme du golfe du Morbihan ?",

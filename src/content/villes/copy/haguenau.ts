@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const HAGUENAU_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Haguenau, deuxième ville du Bas-Rhin et quatrième d'Alsace avec 36 391 habitants (aire urbaine de 61 637). Sous-préfecture intégrée à la Communauté d'agglomération de Haguenau et à la Collectivité européenne d'Alsace, la ville s'étend sur 18 259 hectares — la commune la plus vaste d'Alsace — au cœur d'un tissu industriel et tertiaire dense. Notre cabinet IA opérationnelle se déplace sur site pour automatiser les processus métier (devis, ordres de fabrication, OCR, relances), avec un focus marqué TPE-PME et un complément ETI.",
+    "Axion-IA accompagne les PME et ETI de Haguenau, deuxième ville du Bas-Rhin et quatrième d'Alsace avec 36 391 habitants (aire urbaine de 61 637). Sous-préfecture intégrée à la Communauté d'agglomération de Haguenau et à la Collectivité européenne d'Alsace, la ville s'étend sur 18 259 hectares — la commune la plus vaste d'Alsace — au cœur d'un tissu industriel et tertiaire dense. Notre cabinet IA opérationnelle se déplace sur site pour automatiser les processus métier (devis, ordres de fabrication, OCR, relances), avec un focus marqué PME et ETI et un complément grands groupes.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Haguenau, deuxième ville du Bas-Rhin et quatrième d'Alsace avec 36 391 habitants (aire urbaine de 61 637). Sous-préfecture intégrée à la Communauté d'agglomération de Haguenau et à la Collectivité européenne d'Alsace, la ville s'étend sur 18 259 hectares — la commune la plus vaste d'Alsace — au cœur d'un tissu industriel et tertiaire dense. Notre cabinet IA opérationnelle se déplace sur site pour automatiser les processus métier (devis, ordres de fabrication, OCR, relances), avec un focus marqué TPE-PME et un complément ETI.",
+    "Axion-IA accompagne les PME et ETI de Haguenau, deuxième ville du Bas-Rhin et quatrième d'Alsace avec 36 391 habitants (aire urbaine de 61 637). Sous-préfecture intégrée à la Communauté d'agglomération de Haguenau et à la Collectivité européenne d'Alsace, la ville s'étend sur 18 259 hectares — la commune la plus vaste d'Alsace — au cœur d'un tissu industriel et tertiaire dense. Notre cabinet IA opérationnelle se déplace sur site pour automatiser les processus métier (devis, ordres de fabrication, OCR, relances), avec un focus marqué PME et ETI et un complément grands groupes.",
   directAnswerFr:
-    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. Williams se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
+    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les PME, ETI et grands groupes industriels et tertiaires de l'agglomération. Williams se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
   directAnswerEn:
-    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. Williams se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
+    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les PME, ETI et grands groupes industriels et tertiaires de l'agglomération. Williams se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
   seoHook: "industrie & tertiaire alsacien",
   ecosystemFr:
     "Haguenau combine un pôle industriel historique (fabrication de produits métalliques, plasturgie, agroalimentaire, équipementiers) et un tissu tertiaire de centre-ville (commerce, services administratifs, santé). La forêt de Haguenau (13 800 hectares au sein d'un massif de 20 000 ha) et la rivière Moder structurent le territoire. La ville dessert plusieurs zones d'activités et son éco-quartier Thurot, sous-préfecture du Bas-Rhin et siège de l'agglomération.",
@@ -32,8 +32,8 @@ export const HAGUENAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h à Haguenau pour TPE-PME industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
-      en: "Audit sur place 4h à Haguenau pour TPE-PME industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
+      fr: "Audit sur place 4h à Haguenau pour PME et ETI industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
+      en: "Audit sur place 4h à Haguenau pour PME et ETI industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
     },
     interventions: {
       fr: "Intervention sur site à Haguenau dès {{price:intervention-4h|flat}} : prototype OCR factures, automatisation ordres de fabrication, devis ou suivi qualité pour ateliers et bureaux d'études.",
@@ -44,8 +44,8 @@ export const HAGUENAU_COPY: VilleCopy = {
       en: "Implémentation complète à Haguenau à partir de {{price:impl-poc|entry}} : code custom (Python, Node, n8n self-host) intégré à votre ERP/CRM existant, tests recette et formation interne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 dirigeant à Haguenau dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME alsacien, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
-      en: "Coaching 1-to-1 dirigeant à Haguenau dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME alsacien, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      fr: "Coaching 1-to-1 dirigeant à Haguenau dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant PME et ETI alsacien, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      en: "Coaching 1-to-1 dirigeant à Haguenau dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant PME et ETI alsacien, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou petite boutique en ligne",
-            detail:
-              "Pour les artisans-potiers de Soufflenheim et Betschdorf, commerçants du centre-ville et indépendants du Pays de Haguenau : site rapide, fiches produit, e-commerce ou prise de contact, optimisé mobile.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou portail métier",
@@ -173,12 +167,6 @@ export const HAGUENAU_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brochure site or small online shop",
-            detail:
-              "For the potter-artisans of Soufflenheim and Betschdorf, town-centre merchants and independents of the Haguenau area: fast site, product pages, e-commerce or contact capture, mobile-optimised.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce site or business portal",
             detail:
@@ -240,7 +228,7 @@ export const HAGUENAU_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs haguenoviens Axion-IA accompagne-t-il en priorité ?",
-      a: "Nos cas d'usage les plus fréquents à Haguenau concernent les TPE-PME industrielles (métallurgie, plasturgie, agroalimentaire), les ETI équipementières, le commerce de gros, le commerce de détail centre-ville et le secteur santé/action sociale.",
+      a: "Nos cas d'usage les plus fréquents à Haguenau concernent les PME et ETI industrielles (métallurgie, plasturgie, agroalimentaire), les ETI équipementières, le commerce de gros, le commerce de détail centre-ville et le secteur santé/action sociale.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Haguenau ?",

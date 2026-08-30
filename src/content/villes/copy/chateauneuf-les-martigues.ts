@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
   pitchFr:
-    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. PME artisanales, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. PME artisanales, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons PME artisanales, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Bouches-du-Rhône",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons PME artisanales, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit sur place sur mesure.",
+  seoHook: "PME & PME Bouches-du-Rhône",
   ecosystemFr:
-    "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de TPE artisans et commerces de proximité.",
+    "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de PME de l'artisanat et du commerce.",
   ecosystemEn:
-    "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de TPE artisans et commerces de proximité.",
+    "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de PME de l'artisanat et du commerce.",
   distancesFr:
     "Martigues à 10 min. Marignane à 10 min. Aéroport Marseille-Provence à 15 min. Marseille centre à 35 min via A55. Aix-en-Provence à 30 min. Vitrolles à 15 min. Accès direct A55.",
   distancesEn:
@@ -24,26 +24,26 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Pétrochimie & raffinage",
     "Sous-traitance aéronautique",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Logistique & transport",
     "PME industrielles & commerce",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, TPE artisans et commerces du pourtour de l'étang de Berre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, TPE artisans et commerces du pourtour de l'étang de Berre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, PME de l'artisanat et du commerce du pourtour de l'étang de Berre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, PME de l'artisanat et du commerce du pourtour de l'étang de Berre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châteauneuf-les-Martigues : ateliers pour équipes industrielles, sous-traitants aéro, TPE artisans et PME logistiques. Outils IA configurés métier réel.",
-      en: "Interventions IA sur site à Châteauneuf-les-Martigues : ateliers pour équipes industrielles, sous-traitants aéro, TPE artisans et PME logistiques. Outils IA configurés métier réel.",
+      fr: "Interventions IA sur site à Châteauneuf-les-Martigues : ateliers pour équipes industrielles, sous-traitants aéro, PME artisanales et PME logistiques. Outils IA configurés métier réel.",
+      en: "Interventions IA sur site à Châteauneuf-les-Martigues : ateliers pour équipes industrielles, sous-traitants aéro, PME artisanales et PME logistiques. Outils IA configurés métier réel.",
     },
     implementation: {
       fr: "Implémentation IA à Châteauneuf-les-Martigues : maintenance prédictive industrielle, optimisation supply chain, contrôle qualité aéronautique, automatisation devis BTP, agents conversationnels SAV. RGPD strict.",
       en: "Implémentation IA à Châteauneuf-les-Martigues : maintenance prédictive industrielle, optimisation supply chain, contrôle qualité aéronautique, automatisation devis BTP, agents conversationnels SAV. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châteauneuf-les-Martigues : sessions pour dirigeants TPE/PME industrielles, sous-traitants aéronautiques et artisans souhaitant maîtriser l'IA opérationnelle.",
-      en: "Coaching 1-to-1 à Châteauneuf-les-Martigues : sessions pour dirigeants TPE/PME industrielles, sous-traitants aéronautiques et artisans souhaitant maîtriser l'IA opérationnelle.",
+      fr: "Coaching 1-to-1 à Châteauneuf-les-Martigues : sessions pour dirigeants de PME et d'ETI industrielles, sous-traitants aéronautiques et artisans souhaitant maîtriser l'IA opérationnelle.",
+      en: "Coaching 1-to-1 à Châteauneuf-les-Martigues : sessions pour dirigeants de PME et d'ETI industrielles, sous-traitants aéronautiques et artisans souhaitant maîtriser l'IA opérationnelle.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Châteauneuf-les-Martigues  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME industrielles et sous-traitants aéronautiques châteauneuvais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME industrielles et sous-traitants aéronautiques châteauneuvais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les sous-traitants aéronautiques de la zone Marignane ?",

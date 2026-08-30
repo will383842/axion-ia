@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de PME et ETI industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de PME et ETI industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons PME et ETI : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons PME et ETI : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit sur place sur mesure.",
   seoHook: "métallurgie mécanique & commerce centre-ville",
   ecosystemFr:
-    "Cosne-Cours-sur-Loire est la sous-préfecture nord de la Nièvre, positionnée en bords de Loire à la croisée de la Bourgogne et du Berry. Héritière des forges historiques, la ville conserve un tissu TPE/PME métallurgie et mécanique de précision, complété par le commerce de centre-ville, l'artisanat BTP, les professions libérales, les services agricoles et la viticulture (Pouilly-sur-Loire, Sancerre voisin).",
+    "Cosne-Cours-sur-Loire est la sous-préfecture nord de la Nièvre, positionnée en bords de Loire à la croisée de la Bourgogne et du Berry. Héritière des forges historiques, la ville conserve un tissu PME et ETI métallurgie et mécanique de précision, complété par le commerce de centre-ville, l'artisanat BTP, les professions libérales, les services agricoles et la viticulture (Pouilly-sur-Loire, Sancerre voisin).",
   ecosystemEn:
-    "Cosne-Cours-sur-Loire est la sous-préfecture nord de la Nièvre, positionnée en bords de Loire à la croisée de la Bourgogne et du Berry. Héritière des forges historiques, la ville conserve un tissu TPE/PME métallurgie et mécanique de précision, complété par le commerce de centre-ville, l'artisanat BTP, les professions libérales, les services agricoles et la viticulture (Pouilly-sur-Loire, Sancerre voisin).",
+    "Cosne-Cours-sur-Loire est la sous-préfecture nord de la Nièvre, positionnée en bords de Loire à la croisée de la Bourgogne et du Berry. Héritière des forges historiques, la ville conserve un tissu PME et ETI métallurgie et mécanique de précision, complété par le commerce de centre-ville, l'artisanat BTP, les professions libérales, les services agricoles et la viticulture (Pouilly-sur-Loire, Sancerre voisin).",
   distancesFr:
     "Nevers à 50 min, Bourges à 50 min, Auxerre à 1 h 10, Paris à 2 h via A77. Gare SNCF Cosne-sur-Loire (TER Bourgogne-Franche-Comté, ligne Paris-Nevers). Sancerre à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux PME industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux PME industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cosne-Cours-sur-Loire : formats adaptés à l'atelier industriel, au commerce, au cabinet ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Cosne-Cours-sur-Loire : maintenance prédictive métallurgie, CRM augmenté commerce, automatisation devis BTP, gestion parcellaire et traçabilité viticole, outils IA professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cosne-Cours-sur-Loire : sessions dans vos locaux industriels, commerce, cabinet ou exploitation, ou en visio. Dirigeants TPE/PME nivernais souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Cosne-Cours-sur-Loire : sessions dans vos locaux industriels, commerce, cabinet ou exploitation, ou en visio. Dirigeants TPE/PME nivernais souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Cosne-Cours-sur-Loire : sessions dans vos locaux industriels, commerce, cabinet ou exploitation, ou en visio. Dirigeants PME et ETI nivernais souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Cosne-Cours-sur-Loire : sessions dans vos locaux industriels, commerce, cabinet ou exploitation, ou en visio. Dirigeants PME et ETI nivernais souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les industriels et artisans de Cosne-Cours-sur-Loire ?",
-      a: "Oui, nous accompagnons les TPE et PME industrielles (métallurgie, mécanique) et les artisans BTP de Cosne-Cours-sur-Loire : maintenance prédictive, automatisation qualité, gestion chantiers, devis IA. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles (métallurgie, mécanique) et les artisans BTP de Cosne-Cours-sur-Loire : maintenance prédictive, automatisation qualité, gestion chantiers, devis IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Cosne-Cours-sur-Loire  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Val de Loire nivernais, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du Val de Loire nivernais, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs et agriculteurs du secteur ?",

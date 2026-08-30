@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const HOUDAIN_COPY: VilleCopy = {
   pitchFr:
-    "Houdain (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 950 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
+    "Houdain (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 950 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Houdain (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 950 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
+    "Houdain (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 950 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Houdain (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Houdain (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Houdain est situee dans le bassin minier entre Bethune (8 km) et Bruay-la-Buissiere (5 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-ville, professions de sante et petites industries. Proximite du pole hospitalier bethunois.",
+    "Houdain est situee dans le bassin minier entre Bethune (8 km) et Bruay-la-Buissiere (5 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-ville, professions de sante et petites industries. Proximite du pole hospitalier bethunois.",
   ecosystemEn:
-    "Houdain est situee dans le bassin minier entre Bethune (8 km) et Bruay-la-Buissiere (5 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-ville, professions de sante et petites industries. Proximite du pole hospitalier bethunois.",
+    "Houdain est situee dans le bassin minier entre Bethune (8 km) et Bruay-la-Buissiere (5 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-ville, professions de sante et petites industries. Proximite du pole hospitalier bethunois.",
   distancesFr:
     "Gare de Houdain (TER Bethune-Saint-Pol). Bethune a 10 min. Lille Europe (TGV) a 1h en TER. Aeroport Lille-Lesquin a 1h15. Paris-Nord a 1h50 via TGV Lens.",
   distancesEn:
     "Gare de Houdain (TER Bethune-Saint-Pol). Bethune a 10 min. Lille Europe (TGV) a 1h en TER. Aeroport Lille-Lesquin a 1h15. Paris-Nord a 1h50 via TGV Lens.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services aux entreprises",
     "Professions de sante",
@@ -30,8 +30,8 @@ export const HOUDAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Houdain : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Houdain : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Houdain : diagnostic adapte aux PME artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Houdain : diagnostic adapte aux PME artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Houdain : formations adaptees aux ateliers artisanaux, aux commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
@@ -52,8 +52,8 @@ export const HOUDAIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient a Houdain et dans tout le bassin minier (Bethune, Bruay-la-Buissiere, Divion, Barlin). Consultants depuis Lille (1h TER) ou Paris (TGV via Lens 1h50).",
     },
     {
-      q: "Quels services IA pour les TPE artisanales de Houdain ?",
-      a: "Pour les TPE artisanales du bassin minier, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, suivi chantiers numerique. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Quels services IA pour les PME artisanales de Houdain ?",
+      a: "Pour les PME artisanales du bassin minier, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, suivi chantiers numerique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Houdain ?",

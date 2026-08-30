@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CLAMART_COPY: VilleCopy = {
   pitchFr:
-    "Clamart (92), commune résidentielle du sud des Hauts-de-Seine aux portes de Paris, conjugue cadre de vie soigné et tissu économique tertiaire dense, dopé par la proximité du CEA et un pôle santé important (hôpitaux, cliniques, professions médicales). Son tissu mêle PME de services, TPE et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME clamartoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Clamart (92), commune résidentielle du sud des Hauts-de-Seine aux portes de Paris, conjugue cadre de vie soigné et tissu économique tertiaire dense, dopé par la proximité du CEA et un pôle santé important (hôpitaux, cliniques, professions médicales). Son tissu mêle PME de services, PME et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI clamartoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Clamart (92), commune résidentielle du sud des Hauts-de-Seine aux portes de Paris, conjugue cadre de vie soigné et tissu économique tertiaire dense, dopé par la proximité du CEA et un pôle santé important (hôpitaux, cliniques, professions médicales). Son tissu mêle PME de services, TPE et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME clamartoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Clamart (92), commune résidentielle du sud des Hauts-de-Seine aux portes de Paris, conjugue cadre de vie soigné et tissu économique tertiaire dense, dopé par la proximité du CEA et un pôle santé important (hôpitaux, cliniques, professions médicales). Son tissu mêle PME de services, PME et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI clamartoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clamart (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME du sud parisien : professions de santé et acteurs médicaux, PME tertiaires et de conseil, prestataires de services, artisans et commerces de proximité. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clamart (92, Hauts-de-Seine). Nous accompagnons en priorité les PME, puis les PME du sud parisien : professions de santé et acteurs médicaux, PME tertiaires et de conseil, prestataires de services, artisans et commerces de proximité. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clamart (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME du sud parisien : professions de santé et acteurs médicaux, PME tertiaires et de conseil, prestataires de services, artisans et commerces de proximité. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clamart (92, Hauts-de-Seine). Nous accompagnons en priorité les PME, puis les PME du sud parisien : professions de santé et acteurs médicaux, PME tertiaires et de conseil, prestataires de services, artisans et commerces de proximité. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "santé & tertiaire sud Paris",
   ecosystemFr:
-    "Clamart est une commune résidentielle prisée du sud des Hauts-de-Seine, dont l'économie s'appuie sur un solide pôle santé (hôpital, cliniques, cabinets médicaux et paramédicaux) et un tertiaire de services renforcé par la proximité du CEA et des grands centres de recherche du plateau de Saclay. Le tissu local rassemble PME de conseil et de services, TPE indépendantes, professions libérales et commerces de proximité, dans un bassin sud-parisien dense, très bien relié au cœur de la capitale.",
+    "Clamart est une commune résidentielle prisée du sud des Hauts-de-Seine, dont l'économie s'appuie sur un solide pôle santé (hôpital, cliniques, cabinets médicaux et paramédicaux) et un tertiaire de services renforcé par la proximité du CEA et des grands centres de recherche du plateau de Saclay. Le tissu local rassemble PME de conseil et de services, PME indépendantes, professions libérales et commerces de proximité, dans un bassin sud-parisien dense, très bien relié au cœur de la capitale.",
   ecosystemEn:
-    "Clamart est une commune résidentielle prisée du sud des Hauts-de-Seine, dont l'économie s'appuie sur un solide pôle santé (hôpital, cliniques, cabinets médicaux et paramédicaux) et un tertiaire de services renforcé par la proximité du CEA et des grands centres de recherche du plateau de Saclay. Le tissu local rassemble PME de conseil et de services, TPE indépendantes, professions libérales et commerces de proximité, dans un bassin sud-parisien dense, très bien relié au cœur de la capitale.",
+    "Clamart est une commune résidentielle prisée du sud des Hauts-de-Seine, dont l'économie s'appuie sur un solide pôle santé (hôpital, cliniques, cabinets médicaux et paramédicaux) et un tertiaire de services renforcé par la proximité du CEA et des grands centres de recherche du plateau de Saclay. Le tissu local rassemble PME de conseil et de services, PME indépendantes, professions libérales et commerces de proximité, dans un bassin sud-parisien dense, très bien relié au cœur de la capitale.",
   distancesFr:
     "Paris-Montparnasse à environ 15 min par le Transilien. Aéroport de Paris-Orly à 20 min. La Défense à 25 min, Issy-les-Moulineaux et Meudon à proximité immédiate, plateau de Saclay à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CLAMART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clamart : diagnostic adapté aux TPE et PME — professions de santé, cabinets de conseil, services et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
-      en: "Audit IA à Clamart : diagnostic adapté aux TPE et PME — professions de santé, cabinets de conseil, services et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      fr: "Audit IA à Clamart : diagnostic adapté aux PME et ETI — professions de santé, cabinets de conseil, services et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      en: "Audit IA à Clamart : diagnostic adapté aux PME et ETI — professions de santé, cabinets de conseil, services et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clamart : formats courts pour automatiser prise de rendez-vous, devis, relances et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
@@ -42,8 +42,8 @@ export const CLAMART_COPY: VilleCopy = {
       en: "Implémentation IA à Clamart : agents conversationnels, automatisation de la relation patient/client et classification documentaire pour la santé et le tertiaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Clamart : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de santé, de conseil et de commerce clamartoises.",
-      en: "Coaching un-à-un à Clamart : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de santé, de conseil et de commerce clamartoises.",
+      fr: "Coaching un-à-un à Clamart : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de santé, de conseil et de commerce clamartoises.",
+      en: "Coaching un-à-un à Clamart : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de santé, de conseil et de commerce clamartoises.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Clamart : plateformes et outils sur mesure pour professionnels de santé, cabinets de conseil et commerces du sud parisien, avec automatisations et SEO local.",
@@ -53,12 +53,12 @@ export const CLAMART_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Clamart (92) ne se résume pas à une banlieue résidentielle du sud des Hauts-de-Seine : son tissu économique se concentre sur le parc d'affaires Noveos (à cheval sur Clamart et Antony), où le Club des entreprises réunit depuis 2013 MBDA, Renault, Coca-Cola Entreprise, Optic 2000 et MicroPort CRM, aux côtés de Schlumberger, Mondelez et Lafarge. À cela s'ajoute un pôle santé de premier plan avec l'Hôpital Antoine-Béclère (AP-HP, 411 lits) et un dense tissu de TPE-PME de services (~3 500 entreprises, dont 95 % de moins de 10 salariés). Axion-IA conçoit à Clamart des sites web et plateformes SaaS augmentés par l'IA — défense et industrie de Noveos, dispositifs médicaux (MicroPort CRM, Audioptic), santé hospitalière, agroalimentaire et services du sud parisien.",
+        hero: "Clamart (92) ne se résume pas à une banlieue résidentielle du sud des Hauts-de-Seine : son tissu économique se concentre sur le parc d'affaires Noveos (à cheval sur Clamart et Antony), où le Club des entreprises réunit depuis 2013 MBDA, Renault, Coca-Cola Entreprise, Optic 2000 et MicroPort CRM, aux côtés de Schlumberger, Mondelez et Lafarge. À cela s'ajoute un pôle santé de premier plan avec l'Hôpital Antoine-Béclère (AP-HP, 411 lits) et un dense tissu de PME et ETI de services (~3 500 entreprises, dont 95 % de moins de 10 salariés). Axion-IA conçoit à Clamart des sites web et plateformes SaaS augmentés par l'IA — défense et industrie de Noveos, dispositifs médicaux (MicroPort CRM, Audioptic), santé hospitalière, agroalimentaire et services du sud parisien.",
         whyHere: [
           "Le parc Noveos est notre point d'ancrage clamartois : nous concevons des plateformes web et SaaS IA-native pour les grands comptes de son Club d'entreprises (MBDA, Renault, Coca-Cola Entreprise, Optic 2000, MicroPort CRM) comme pour leurs PME sous-traitantes et prestataires.",
           "Forte composante dispositifs médicaux et optique réglementés (MicroPort CRM en rythmologie cardiaque, Optic 2000, Audioptic) : nous bâtissons des sites et back-offices intégrant traçabilité documentaire, hébergement UE conforme RGPD et données de santé manipulées avec prudence.",
           "Pôle santé hospitalier autour de l'Hôpital Antoine-Béclère (AP-HP) et des cabinets médicaux et paramédicaux clamartois : portails patients, prise de rendez-vous automatisée et recherche documentaire, dans le respect strict du secret médical.",
-          "Tissu dense de TPE de services, commerces et artisanat (821 entreprises artisanales, ~1 436 emplois) très bien relié par le tramway T6 et la future gare Grand Paris Express Ligne 15 à Fort d'Issy-Vanves-Clamart : sites vitrines et e-commerce multi-CMS avec SEO local et automatisations sur mesure.",
+          "Tissu dense de PME de services, commerces et artisanat (821 entreprises artisanales, ~1 436 emplois) très bien relié par le tramway T6 et la future gare Grand Paris Express Ligne 15 à Fort d'Issy-Vanves-Clamart : sites vitrines et e-commerce multi-CMS avec SEO local et automatisations sur mesure.",
         ],
         methodology: [
           {
@@ -89,12 +89,6 @@ export const CLAMART_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour indépendants, commerces, artisans (parmi les 821 entreprises artisanales clamartoises) et professions libérales de santé du centre-ville et autour d'Antoine-Béclère : site vitrine ou boutique e-commerce avec prise de rendez-vous, devis et FAQ assistés par IA.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
             detail:
@@ -124,7 +118,7 @@ export const CLAMART_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce et de l'UX/UI mobile pour les commerces de Clamart ?",
-            a: "Oui, c'est un cœur de métier. Pour les TPE, commerces et artisans clamartois (la ville compte 821 entreprises artisanales et environ 1 436 emplois dans l'artisanat), nous réalisons des sites vitrines et boutiques e-commerce multi-CMS, en UX/UI mobile-first, avec SEO local Clamart et automatisations IA (devis, FAQ, relances).",
+            a: "Oui, c'est un cœur de métier. Pour les PME, commerces et artisans clamartois (la ville compte 821 entreprises artisanales et environ 1 436 emplois dans l'artisanat), nous réalisons des sites vitrines et boutiques e-commerce multi-CMS, en UX/UI mobile-first, avec SEO local Clamart et automatisations IA (devis, FAQ, relances).",
           },
           {
             q: "Où sont hébergées les données et le code de mon site ?",
@@ -175,12 +169,6 @@ export const CLAMART_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For freelancers, shops, craftspeople (among Clamart's 821 craft firms) and healthcare professions in the town centre and around Antoine-Béclère: showcase site or e-commerce store with AI-assisted booking, quotes and FAQ.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -230,14 +218,14 @@ export const CLAMART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clamart et dans les Hauts-de-Seine ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Clamart et des communes voisines : Issy-les-Moulineaux, Meudon, Châtillon, Fontenay-aux-Roses. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Clamart et des communes voisines : Issy-les-Moulineaux, Meudon, Châtillon, Fontenay-aux-Roses. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec les professions de santé et les cabinets médicaux ?",
       a: "Oui. Clamart dispose d'un fort pôle santé. Nous automatisons la prise de rendez-vous, la relation patient et la gestion documentaire des cabinets médicaux et paramédicaux, dans le strict respect du RGPD et du secret médical.",
     },
     {
-      q: "Accompagnez-vous les TPE de services et les commerces ?",
+      q: "Accompagnez-vous les PME de services et les commerces ?",
       a: "Absolument — c'est notre priorité. Devis, relances, relation client et planning : nous adaptons les automatisations aux petites équipes de conseil, de services et aux commerces de proximité clamartois.",
     },
     {

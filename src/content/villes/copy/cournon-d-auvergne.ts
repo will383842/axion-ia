@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   pitchFr:
-    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, PME du BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, PME du BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, PME du BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, PME du BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "tertiaires clermont & zones d'activités",
   ecosystemFr:
-    "Cournon-d'Auvergne est en banlieue sud de Clermont-Ferrand, Clermont Auvergne Métropole. Zones d'activités majeures, zénith d'Auvergne. PME tertiaires/industrielles, TPE artisanat BTP, commerces.",
+    "Cournon-d'Auvergne est en banlieue sud de Clermont-Ferrand, Clermont Auvergne Métropole. Zones d'activités majeures, zénith d'Auvergne. PME tertiaires/industrielles, PME du BTP, commerces.",
   ecosystemEn:
-    "Cournon-d'Auvergne est en banlieue sud de Clermont-Ferrand, Clermont Auvergne Métropole. Zones d'activités majeures, zénith d'Auvergne. PME tertiaires/industrielles, TPE artisanat BTP, commerces.",
+    "Cournon-d'Auvergne est en banlieue sud de Clermont-Ferrand, Clermont Auvergne Métropole. Zones d'activités majeures, zénith d'Auvergne. PME tertiaires/industrielles, PME du BTP, commerces.",
   distancesFr:
     "Clermont-Ferrand centre à 10 min. Aéroport Clermont-Auvergne à 25 min. Lyon à 1h45. Issoire à 25 min. Vichy à 45 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     "PME tertiaires Clermont Auvergne Métropole",
     "Zones d'activités & événementiel (zénith)",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cournon-d'Auvergne : formats adaptés au bureau, atelier, zone d'activités, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
       en: "Implémentation IA à Cournon-d'Auvergne : agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents. Clermont Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cournon-d'Auvergne : sessions dans votre bureau, atelier, commerce ou en visio. Tertiaires, industriels, artisans, gérants TPE/PME cournonais.",
-      en: "Coaching 1-to-1 à Cournon-d'Auvergne : sessions dans votre bureau, atelier, commerce ou en visio. Tertiaires, industriels, artisans, gérants TPE/PME cournonais.",
+      fr: "Coaching 1-to-1 à Cournon-d'Auvergne : sessions dans votre bureau, atelier, commerce ou en visio. Tertiaires, industriels, artisans, gérants PME et ETI cournonais.",
+      en: "Coaching 1-to-1 à Cournon-d'Auvergne : sessions dans votre bureau, atelier, commerce ou en visio. Tertiaires, industriels, artisans, gérants PME et ETI cournonais.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

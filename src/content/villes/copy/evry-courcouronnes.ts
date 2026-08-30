@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const EVRY_COURCOURONNES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Évry-Courcouronnes, préfecture de l'Essonne née de la fusion de 2019. La ville abrite Arianespace, le cluster biotech Genopole et l'Université d'Évry-Val-d'Essonne, dans un bassin de 30 km au sud-est de Paris desservi par le RER D et le tramway T12.",
+    "Axion-IA accompagne les PME et ETI d'Évry-Courcouronnes, préfecture de l'Essonne née de la fusion de 2019. La ville abrite Arianespace, le cluster biotech Genopole et l'Université d'Évry-Val-d'Essonne, dans un bassin de 30 km au sud-est de Paris desservi par le RER D et le tramway T12.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Évry-Courcouronnes, préfecture de l'Essonne née de la fusion de 2019. La ville abrite Arianespace, le cluster biotech Genopole et l'Université d'Évry-Val-d'Essonne, dans un bassin de 30 km au sud-est de Paris desservi par le RER D et le tramway T12.",
+    "Axion-IA accompagne les PME et ETI d'Évry-Courcouronnes, préfecture de l'Essonne née de la fusion de 2019. La ville abrite Arianespace, le cluster biotech Genopole et l'Université d'Évry-Val-d'Essonne, dans un bassin de 30 km au sud-est de Paris desservi par le RER D et le tramway T12.",
   directAnswerFr:
-    "À Évry-Courcouronnes, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès {{price:intervention-4h|flat}}, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
+    "À Évry-Courcouronnes, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès {{price:intervention-4h|flat}}, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
   directAnswerEn:
-    "À Évry-Courcouronnes, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès {{price:intervention-4h|flat}}, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
+    "À Évry-Courcouronnes, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès {{price:intervention-4h|flat}}, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
   seoHook: "biotech Genopole & services aux entreprises",
   ecosystemFr:
     "Évry-Courcouronnes structure son économie autour du cluster biotech Genopole, du siège d'Arianespace et d'un écosystème académique dense : Université d'Évry-Val-d'Essonne, Télécom SudParis et ENSIIE. Trois gares RER, trois stations T12 et l'autoroute A6 desservent un bassin d'emploi élargi vers Corbeil-Essonnes, Ris-Orangis et Bondoufle.",
@@ -32,20 +32,20 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Évry-Courcouronnes pour une TPE ou PME du tertiaire, du Genopole ou des zones d'activités partagées avec Corbeil-Essonnes — repérer les automatisations à fort impact.",
-      en: "Réaliser un audit IA à Évry-Courcouronnes pour une TPE ou PME du tertiaire, du Genopole ou des zones d'activités partagées avec Corbeil-Essonnes — repérer les automatisations à fort impact.",
+      fr: "Réaliser un audit IA à Évry-Courcouronnes pour une PME ou ETI du tertiaire, du Genopole ou des zones d'activités partagées avec Corbeil-Essonnes — repérer les automatisations à fort impact.",
+      en: "Réaliser un audit IA à Évry-Courcouronnes pour une PME ou ETI du tertiaire, du Genopole ou des zones d'activités partagées avec Corbeil-Essonnes — repérer les automatisations à fort impact.",
     },
     interventions: {
-      fr: "Intervenir à Évry-Courcouronnes et dans les communes voisines (Ris-Orangis, Bondoufle, Lisses, Corbeil-Essonnes) pour automatiser saisies, devis et reportings des TPE et PME locales.",
-      en: "Intervenir à Évry-Courcouronnes et dans les communes voisines (Ris-Orangis, Bondoufle, Lisses, Corbeil-Essonnes) pour automatiser saisies, devis et reportings des TPE et PME locales.",
+      fr: "Intervenir à Évry-Courcouronnes et dans les communes voisines (Ris-Orangis, Bondoufle, Lisses, Corbeil-Essonnes) pour automatiser saisies, devis et reportings des PME et ETI locales.",
+      en: "Intervenir à Évry-Courcouronnes et dans les communes voisines (Ris-Orangis, Bondoufle, Lisses, Corbeil-Essonnes) pour automatiser saisies, devis et reportings des PME et ETI locales.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure à Évry-Courcouronnes, code custom intégré aux outils métiers, en mobilisant les compétences formées à Télécom SudParis et à l'ENSIIE.",
       en: "Implémenter des solutions IA sur mesure à Évry-Courcouronnes, code custom intégré aux outils métiers, en mobilisant les compétences formées à Télécom SudParis et à l'ENSIIE.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME d'Évry-Courcouronnes pour cadrer une trajectoire IA pragmatique au sein de l'écosystème Genopole et préfecture.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME d'Évry-Courcouronnes pour cadrer une trajectoire IA pragmatique au sein de l'écosystème Genopole et préfecture.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI d'Évry-Courcouronnes pour cadrer une trajectoire IA pragmatique au sein de l'écosystème Genopole et préfecture.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI d'Évry-Courcouronnes pour cadrer une trajectoire IA pragmatique au sein de l'écosystème Genopole et préfecture.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
         whyHere: [
           "Genopole place la « génomique numérique » au cœur de sa stratégie 2030 : nous y construisons des plateformes SaaS biotech à fort enjeu réglementaire — portails essais cliniques, traçabilité d'échantillons, gestion documentaire qualité reliée au séquençage du CNRGH — là où un site vitrine générique ne suffit pas.",
           "Le tissu de startups du campus (Emerit Science et son assistant IA « Charlie », bYoRNA, CGenetix, endogene.bio, Echoliv, Alt Biotech) a besoin de produits web scalables : nous livrons des interfaces SaaS IA-native, design UX/UI compris, prêtes à présenter à un investisseur ou à un partenaire pharma.",
-          "Le commerce local est structuré par Le Spot (ex-Évry 2), 225 boutiques et environ 2 500 emplois en pleine extension : nous outillons les enseignes et TPE du retail essonnien en e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) augmenté d'IA — recommandation produit, recherche conversationnelle, support automatisé.",
+          "Le commerce local est structuré par Le Spot (ex-Évry 2), 225 boutiques et environ 2 500 emplois en pleine extension : nous outillons les enseignes et PME du retail essonnien en e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) augmenté d'IA — recommandation produit, recherche conversationnelle, support automatisé.",
           "Le vivier d'ingénieurs ENSIIE, Télécom SudParis et IMT-BS, à deux pas de l'Université d'Évry Paris-Saclay, irrigue un écosystème numérique exigeant : nous parlons le même langage technique que vos équipes et leur laissons une stack maîtrisable en interne, sans dépendance Axion-IA.",
         ],
         methodology: [
@@ -87,12 +87,6 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour indépendants, commerces de Le Spot, cabinets et jeunes startups Genopole : site rapide, mobile-first, avec un module IA ciblé (chatbot, recherche, support) et e-commerce multi-CMS si besoin.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme SaaS ou e-commerce augmenté",
             detail:
@@ -118,7 +112,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous de l'e-commerce pour les commerces de Le Spot (ex-Évry 2) ?",
-            a: "Oui. L'hyper-lieu Le Spot regroupe 225 boutiques et environ 2 500 emplois ; nous accompagnons les enseignes et TPE du retail essonnien en e-commerce multi-CMS — Shopify, WooCommerce, PrestaShop — augmenté d'IA : recommandation produit, recherche conversationnelle, support client automatisé et synchronisation catalogue, le tout pensé mobile-first.",
+            a: "Oui. L'hyper-lieu Le Spot regroupe 225 boutiques et environ 2 500 emplois ; nous accompagnons les enseignes et PME du retail essonnien en e-commerce multi-CMS — Shopify, WooCommerce, PrestaShop — augmenté d'IA : recommandation produit, recherche conversationnelle, support client automatisé et synchronisation catalogue, le tout pensé mobile-first.",
           },
           {
             q: "Proposez-vous le design UX/UI et le mobile, ou seulement le développement ?",
@@ -172,12 +166,6 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brochure site or essential e-commerce",
-            detail:
-              "For freelancers, Le Spot retailers, firms and young Genopole startups: fast, mobile-first site with a targeted AI module (chatbot, search, support) and multi-CMS e-commerce if needed.",
-          },
           {
             sizeLabel: "PME",
             price: "SaaS platform or augmented e-commerce",
@@ -243,12 +231,12 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
       a: "Toutes nos interventions à Évry-Courcouronnes respectent strictement le RGPD : code custom hébergé en Europe, traitements documentés et registre fourni au client.",
     },
     {
-      q: "Axion-IA travaille-t-elle avec les TPE du Genopole et de la santé à Évry-Courcouronnes ?",
-      a: "Oui, le cluster biotech Genopole et la filière santé sont des terrains prioritaires. Nous automatisons gestion documentaire, suivi qualité et reportings réglementaires pour les TPE et PME du secteur.",
+      q: "Axion-IA travaille-t-elle avec les PME du Genopole et de la santé à Évry-Courcouronnes ?",
+      a: "Oui, le cluster biotech Genopole et la filière santé sont des terrains prioritaires. Nous automatisons gestion documentaire, suivi qualité et reportings réglementaires pour les PME et ETI du secteur.",
     },
     {
       q: "Proposez-vous des formations IA pour les dirigeants à Évry-Courcouronnes ?",
-      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME d'Évry-Courcouronnes, à partir de {{price:intervention-dirigeants|flat}}, pour bâtir une feuille de route IA opérationnelle.",
+      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de PME et d'ETI d'Évry-Courcouronnes, à partir de {{price:intervention-dirigeants|flat}}, pour bâtir une feuille de route IA opérationnelle.",
     },
   ],
 };

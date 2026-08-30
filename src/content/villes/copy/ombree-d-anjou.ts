@@ -9,9 +9,9 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Ombrée d'Anjou (49), commune nouvelle de l'Anjou bleu, regroupe un vaste territoire rural de près de 9 000 habitants entre Segréen et Haut-Anjou. Axion-IA couvre les activités professionnelles du bassin : agriculture, artisanat, commerces, PME industrielles et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les PME, ETI et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les PME, ETI et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Ombrée d'Anjou est issue de la fusion de 7 communes déléguées dans l'Anjou bleu, territoire rural marqué par l'agriculture (polyculture-élevage, production laitière), l'artisanat du bâtiment, les PME agroalimentaires et les commerces de bourg. Ancienne activité ardoisière et minière (Pouancé).",
@@ -30,8 +30,8 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, PME artisanales et PME industrielles de l'Anjou bleu. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, PME artisanales et PME industrielles de l'Anjou bleu. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ombrée d'Anjou : formations pour équipes agricoles, artisanales et commerciales. Ateliers pratiques adaptés au contexte rural de l'Anjou bleu.",
@@ -42,8 +42,8 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
       en: "Implémentation IA à Ombrée d'Anjou : automatisation traçabilité laitière, gestion troupeaux, devis artisans BTP, CRM commerces ruraux. Solutions adaptées Anjou bleu.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Ombrée d'Anjou : sessions pour dirigeants TPE/PME, exploitants laitiers et commerçants de l'Anjou bleu souhaitant intégrer l'IA.",
-      en: "Coaching IA 1-to-1 à Ombrée d'Anjou : sessions pour dirigeants TPE/PME, exploitants laitiers et commerçants de l'Anjou bleu souhaitant intégrer l'IA.",
+      fr: "Coaching IA 1-to-1 à Ombrée d'Anjou : sessions pour dirigeants de PME et d'ETI, exploitants laitiers et commerçants de l'Anjou bleu souhaitant intégrer l'IA.",
+      en: "Coaching IA 1-to-1 à Ombrée d'Anjou : sessions pour dirigeants de PME et d'ETI, exploitants laitiers et commerçants de l'Anjou bleu souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
   pitchFr:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Villeneuve-la-Garenne, commune des bords de Seine au nord des Hauts-de-Seine. Sur ce territoire mêlant grand pôle commercial Qwartz, zones d'activités et logistique, nous aidons commerces, artisans, sociétés de services et petites entreprises de distribution à transformer une envie d'IA en automatisations concrètes : devis, relances, gestion des commandes. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Villeneuve-la-Garenne, commune des bords de Seine au nord des Hauts-de-Seine. Sur ce territoire mêlant grand pôle commercial Qwartz, zones d'activités et logistique, nous aidons commerces, artisans, sociétés de services et PME de distribution à transformer une envie d'IA en automatisations concrètes : devis, relances, gestion des commandes. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   pitchEn:
-    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Villeneuve-la-Garenne, commune des bords de Seine au nord des Hauts-de-Seine. Sur ce territoire mêlant grand pôle commercial Qwartz, zones d'activités et logistique, nous aidons commerces, artisans, sociétés de services et petites entreprises de distribution à transformer une envie d'IA en automatisations concrètes : devis, relances, gestion des commandes. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
+    "Architectes IA seniors, Axion-IA accompagne les PME et ETI de Villeneuve-la-Garenne, commune des bords de Seine au nord des Hauts-de-Seine. Sur ce territoire mêlant grand pôle commercial Qwartz, zones d'activités et logistique, nous aidons commerces, artisans, sociétés de services et PME de distribution à transformer une envie d'IA en automatisations concrètes : devis, relances, gestion des commandes. Un dirigeant, un interlocuteur senior, des décisions tenables — les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Villeneuve-la-Garenne, dans les Hauts-de-Seine, en bord de Seine. Autour du centre commercial Qwartz et des zones d'activités locales — commerce, logistique, services — nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : gestion des commandes, relances, devis, suivi client. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   seoHook: "commerce & logistique",
   ecosystemFr:
-    "Villeneuve-la-Garenne s'étire le long de la Seine, à l'extrémité nord des Hauts-de-Seine, autour de son grand pôle commercial Qwartz et de zones d'activités tournées vers le commerce, l'artisanat et la logistique fluviale et routière. Ce tissu local de TPE et de PME — boutiques, prestataires de services, petites entreprises de distribution — affronte au quotidien des tâches répétitives de gestion de commandes, de relances et de devis. Ces irritants se prêtent bien à des automatisations ciblées et rentables, qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale.",
+    "Villeneuve-la-Garenne s'étire le long de la Seine, à l'extrémité nord des Hauts-de-Seine, autour de son grand pôle commercial Qwartz et de zones d'activités tournées vers le commerce, l'artisanat et la logistique fluviale et routière. Ce tissu local de PME et de PME — boutiques, prestataires de services, PME de distribution — affronte au quotidien des tâches répétitives de gestion de commandes, de relances et de devis. Ces irritants se prêtent bien à des automatisations ciblées et rentables, qu'Axion-IA priorise pour les PME, les grands groupes venant en complément.",
   ecosystemEn:
-    "Villeneuve-la-Garenne s'étire le long de la Seine, à l'extrémité nord des Hauts-de-Seine, autour de son grand pôle commercial Qwartz et de zones d'activités tournées vers le commerce, l'artisanat et la logistique fluviale et routière. Ce tissu local de TPE et de PME — boutiques, prestataires de services, petites entreprises de distribution — affronte au quotidien des tâches répétitives de gestion de commandes, de relances et de devis. Ces irritants se prêtent bien à des automatisations ciblées et rentables, qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale.",
+    "Villeneuve-la-Garenne s'étire le long de la Seine, à l'extrémité nord des Hauts-de-Seine, autour de son grand pôle commercial Qwartz et de zones d'activités tournées vers le commerce, l'artisanat et la logistique fluviale et routière. Ce tissu local de PME et de PME — boutiques, prestataires de services, PME de distribution — affronte au quotidien des tâches répétitives de gestion de commandes, de relances et de devis. Ces irritants se prêtent bien à des automatisations ciblées et rentables, qu'Axion-IA priorise pour les PME, les grands groupes venant en complément.",
   distancesFr:
     "Villeneuve-la-Garenne est reliée à Paris par le tramway T1 et le RER C à proximité, ainsi que par l'A86 qui ceinture la commune. La gare de Paris-Nord est à une dizaine de kilomètres et l'aéroport de Paris-Charles-de-Gaulle à environ 25 km. Cette desserte francilienne permet à Axion-IA d'intervenir sur site à Villeneuve-la-Garenne sans logistique lourde.",
   distancesEn:
@@ -34,16 +34,16 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
       en: "Audit IA à Villeneuve-la-Garenne : une journée pour cartographier les tâches répétitives d'un commerce ou d'une PME de distribution proche du Qwartz — gestion de commandes, relances, devis — et prioriser ce qui mérite d'être automatisé.",
     },
     interventions: {
-      fr: "Interventions à Villeneuve-la-Garenne : nous traitons un irritant précis d'une TPE ou PME locale — relances clients, suivi de commandes, planification logistique — avec une automatisation sobre, livrée vite et tenable.",
-      en: "Interventions à Villeneuve-la-Garenne : nous traitons un irritant précis d'une TPE ou PME locale — relances clients, suivi de commandes, planification logistique — avec une automatisation sobre, livrée vite et tenable.",
+      fr: "Interventions à Villeneuve-la-Garenne : nous traitons un irritant précis d'une PME ou ETI locale — relances clients, suivi de commandes, planification logistique — avec une automatisation sobre, livrée vite et tenable.",
+      en: "Interventions à Villeneuve-la-Garenne : nous traitons un irritant précis d'une PME ou ETI locale — relances clients, suivi de commandes, planification logistique — avec une automatisation sobre, livrée vite et tenable.",
     },
     implementation: {
       fr: "Implémentation à Villeneuve-la-Garenne : nous intégrons l'IA aux outils déjà utilisés par les commerces et logisticiens locaux — caisse, CRM, gestion de stock — pour un déploiement documenté, sans dépendance imposée.",
       en: "Implémentation à Villeneuve-la-Garenne : nous intégrons l'IA aux outils déjà utilisés par les commerces et logisticiens locaux — caisse, CRM, gestion de stock — pour un déploiement documenté, sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
-      en: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de TPE ou PME, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
+      fr: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de PME ou ETI, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Villeneuve-la-Garenne : un dirigeant de PME ou ETI, un expert IA senior, pour comprendre les usages utiles de l'IA dans le commerce et la logistique et décider des priorités sans jargon.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Villeneuve-la-Garenne : pour les commerces et distributeurs locaux, nous bâtissons des sites et boutiques dopés à l'IA — recommandations, qualification de contacts, contenus assistés — orientés conversion.",
@@ -53,11 +53,11 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de TPE et PME du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de PME et ETI du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
         whyHere: [
           "Pôle commercial Qwartz et commerce de détail dominant : nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts pour capter la clientèle de la zone de chalandise francilienne. Les enseignes et boutiques rayonnant autour du Qwartz et des bords de Seine y gagnent un canal en ligne aligné sur le flux physique du centre commercial.",
           "Plaine industrielle des Chanteraines et zone industrielle du Val de Seine : sur ces vastes emprises d'entrepôts, de locaux d'activités et de bureaux, on greffe des agents de suivi de commandes, de planification et de relances sur vos outils existants (gestion de stock, caisse, ERP) sans refonte lourde. La logistique fluviale et routière des bords de Seine y impose des sites et portails rapides, fiables et connectés au SI.",
-          "Tissu majoritairement TPE/PME — boutiques, prestataires de services, artisans du bâtiment, distributeurs des parcs d'activités Reniers, Étoile et Bongarde : on ajoute une brique IA ciblée (chatbot multilingue, recherche sémantique, devis assisté) plutôt qu'une plateforme surdimensionnée hors budget. La pépinière d'entreprises locale héberge aussi de jeunes structures qui ont besoin d'un premier site solide et évolutif.",
+          "Tissu majoritairement PME et ETI — boutiques, prestataires de services, artisans du bâtiment, distributeurs des parcs d'activités Reniers, Étoile et Bongarde : on ajoute une brique IA ciblée (chatbot multilingue, recherche sémantique, devis assisté) plutôt qu'une plateforme surdimensionnée hors budget. La pépinière d'entreprises locale héberge aussi de jeunes structures qui ont besoin d'un premier site solide et évolutif.",
           "Desserte A86, tramway T1 et RER C à proximité de Paris, parc départemental des Chanteraines en bordure : audience mobile et locale forte, d'où des sites mobile-first aux Web Vitals stricts (LCP, INP, CLS) conçus pour convertir aussi bien le trafic de proximité que celui de la zone commerciale. Les commerces et loisirs liés au parc et aux berges captent une fréquentation qui mérite un parcours en ligne irréprochable sur smartphone.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, suivi de commandes, devis assisté) sur le site existant d'un commerce, artisan du bâtiment ou prestataire local proche du Qwartz, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de surprise à la facturation. Mise en ligne sans downtime quand on augmente un site existant. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. À tout moment, le projet est transférable à un prestataire francilien de votre choix ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de TPE et PME du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Villeneuve-la-Garenne des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune des bords de Seine au nord des Hauts-de-Seine, où le grand pôle commercial Qwartz, la vaste plaine industrielle des Chanteraines, la zone industrielle du Val de Seine et la logistique fluviale et routière structurent un tissu dense de PME et ETI du commerce, de la distribution et des services. Avec ses parcs d'activités (Reniers, Étoile, Bongarde) et sa pépinière d'entreprises, le territoire concentre des besoins web concrets. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Villeneuve-la-Garenne, itérations à distance.",
         whyHere: [
           "Pôle commercial Qwartz et commerce de détail dominant : nous construisons des vitrines e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) avec recommandations produits, recherche sémantique et qualification de contacts pour capter la clientèle de la zone de chalandise francilienne. Les enseignes et boutiques rayonnant autour du Qwartz et des bords de Seine y gagnent un canal en ligne aligné sur le flux physique du centre commercial.",
           "Plaine industrielle des Chanteraines et zone industrielle du Val de Seine : sur ces vastes emprises d'entrepôts, de locaux d'activités et de bureaux, on greffe des agents de suivi de commandes, de planification et de relances sur vos outils existants (gestion de stock, caisse, ERP) sans refonte lourde. La logistique fluviale et routière des bords de Seine y impose des sites et portails rapides, fiables et connectés au SI.",
-          "Tissu majoritairement TPE/PME — boutiques, prestataires de services, artisans du bâtiment, distributeurs des parcs d'activités Reniers, Étoile et Bongarde : on ajoute une brique IA ciblée (chatbot multilingue, recherche sémantique, devis assisté) plutôt qu'une plateforme surdimensionnée hors budget. La pépinière d'entreprises locale héberge aussi de jeunes structures qui ont besoin d'un premier site solide et évolutif.",
+          "Tissu majoritairement PME et ETI — boutiques, prestataires de services, artisans du bâtiment, distributeurs des parcs d'activités Reniers, Étoile et Bongarde : on ajoute une brique IA ciblée (chatbot multilingue, recherche sémantique, devis assisté) plutôt qu'une plateforme surdimensionnée hors budget. La pépinière d'entreprises locale héberge aussi de jeunes structures qui ont besoin d'un premier site solide et évolutif.",
           "Desserte A86, tramway T1 et RER C à proximité de Paris, parc départemental des Chanteraines en bordure : audience mobile et locale forte, d'où des sites mobile-first aux Web Vitals stricts (LCP, INP, CLS) conçus pour convertir aussi bien le trafic de proximité que celui de la zone commerciale. Les commerces et loisirs liés au parc et aux berges captent une fréquentation qui mérite un parcours en ligne irréprochable sur smartphone.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, suivi de commandes, devis assisté) sur le site existant d'un commerce, artisan du bâtiment ou prestataire local proche du Qwartz, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -229,8 +217,8 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA accompagne-t-il les petites entreprises de Villeneuve-la-Garenne ?",
-      a: "Oui. Notre priorité va aux TPE puis aux PME de Villeneuve-la-Garenne : commerces, prestataires de services, artisans et petites entreprises de distribution. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
+      q: "Axion-IA accompagne-t-il les PME de Villeneuve-la-Garenne ?",
+      a: "Oui. Notre priorité va aux PME puis aux PME de Villeneuve-la-Garenne : commerces, prestataires de services, artisans et PME de distribution. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
       q: "Le pôle commercial Qwartz change-t-il les besoins en IA ?",

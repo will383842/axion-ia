@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-Drôme.",
+    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), PME du BTP, agriculture vallée, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-Drôme.",
   pitchEn:
-    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-Drôme.",
+    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), PME du BTP, agriculture vallée, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-Drôme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, PME du BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, PME du BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "logistique axe & industrielles nord-drôme",
   ecosystemFr:
-    "Saint-Rambert-d'Albon est positionnée en nord-Drôme, à mi-chemin entre Lyon et Valence sur l'axe A7 (péage majeur) et la ligne ferroviaire Lyon-Marseille. Tissu PME industrielles et plateformes logistiques (transit nord-sud), agriculture vallée du Rhône (vergers, viticulture périphérique), TPE artisanat BTP, commerces de proximité.",
+    "Saint-Rambert-d'Albon est positionnée en nord-Drôme, à mi-chemin entre Lyon et Valence sur l'axe A7 (péage majeur) et la ligne ferroviaire Lyon-Marseille. Tissu PME industrielles et plateformes logistiques (transit nord-sud), agriculture vallée du Rhône (vergers, viticulture périphérique), PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Saint-Rambert-d'Albon est positionnée en nord-Drôme, à mi-chemin entre Lyon et Valence sur l'axe A7 (péage majeur) et la ligne ferroviaire Lyon-Marseille. Tissu PME industrielles et plateformes logistiques (transit nord-sud), agriculture vallée du Rhône (vergers, viticulture périphérique), TPE artisanat BTP, commerces de proximité.",
+    "Saint-Rambert-d'Albon est positionnée en nord-Drôme, à mi-chemin entre Lyon et Valence sur l'axe A7 (péage majeur) et la ligne ferroviaire Lyon-Marseille. Tissu PME industrielles et plateformes logistiques (transit nord-sud), agriculture vallée du Rhône (vergers, viticulture périphérique), PME du BTP, commerces de proximité.",
   distancesFr:
     "Gare Saint-Rambert-d'Albon (TER Lyon-Avignon). Aéroport Lyon-Saint-Exupéry à 50 min. Lyon centre à 50 min A7. Valence à 30 min. Vienne à 30 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
     "Logistique axe A7 / ferroviaire",
     "PME industrielles nord-Drôme",
     "Agriculture vallée Rhône",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rambert-d'Albon : formats adaptés à l'entrepôt logistique, atelier industriel, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Rambert-d'Albon : optimisation supply chain A7+ferroviaire, prédiction maintenance industrielle, classification photos cultures, automatisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Rambert-d'Albon : sessions dans votre entrepôt, atelier, exploitation ou en visio. Dirigeants logistique, industriels, agriculteurs, artisans, gérants TPE/PME rambertois.",
-      en: "Coaching 1-to-1 à Saint-Rambert-d'Albon : sessions dans votre entrepôt, atelier, exploitation ou en visio. Dirigeants logistique, industriels, agriculteurs, artisans, gérants TPE/PME rambertois.",
+      fr: "Coaching 1-to-1 à Saint-Rambert-d'Albon : sessions dans votre entrepôt, atelier, exploitation ou en visio. Dirigeants logistique, industriels, agriculteurs, artisans, gérants PME et ETI rambertois.",
+      en: "Coaching 1-to-1 à Saint-Rambert-d'Albon : sessions dans votre entrepôt, atelier, exploitation ou en visio. Dirigeants logistique, industriels, agriculteurs, artisans, gérants PME et ETI rambertois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles nord-Drôme sur leurs cas IA : prédiction maintenance, contrôle qualité par vision, optimisation production, classification documents techniques.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Rambert-d'Albon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Saint-Rambert-d'Albon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_COPY: VilleCopy = {
   pitchFr:
-    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : TPE et PME du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglo valenciennoise.",
+    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : PME et ETI du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglo valenciennoise.",
   pitchEn:
-    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : TPE et PME du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglo valenciennoise.",
+    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : PME et ETI du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglo valenciennoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly (59). Nous accompagnons TPE et PME : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly (59). Nous accompagnons PME et ETI : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly (59). Nous accompagnons TPE et PME : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marly (59). Nous accompagnons PME et ETI : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
   seoHook: "commerce grande & services aux",
   ecosystemFr:
-    "Marly est une commune résidentielle et commerciale au sud de Valenciennes, disposant d'une zone commerciale importante (Place Verte) qui rayonne sur tout le Valenciennois. L'économie locale combine TPE et PME du commerce et de la grande distribution, services aux entreprises (cabinets conseil, comptabilité, intérim), professions libérales (santé, juridique), artisanat, et sous-traitance industrielle bénéficiant de la proximité de la filière automobile valenciannoise. Commune dynamique en développement avec de nouveaux quartiers résidentiels attirant cadres et indépendants.",
+    "Marly est une commune résidentielle et commerciale au sud de Valenciennes, disposant d'une zone commerciale importante (Place Verte) qui rayonne sur tout le Valenciennois. L'économie locale combine PME et ETI du commerce et de la grande distribution, services aux entreprises (cabinets conseil, comptabilité, intérim), professions libérales (santé, juridique), artisanat, et sous-traitance industrielle bénéficiant de la proximité de la filière automobile valenciannoise. Commune dynamique en développement avec de nouveaux quartiers résidentiels attirant cadres et indépendants.",
   ecosystemEn:
-    "Marly est une commune résidentielle et commerciale au sud de Valenciennes, disposant d'une zone commerciale importante (Place Verte) qui rayonne sur tout le Valenciennois. L'économie locale combine TPE et PME du commerce et de la grande distribution, services aux entreprises (cabinets conseil, comptabilité, intérim), professions libérales (santé, juridique), artisanat, et sous-traitance industrielle bénéficiant de la proximité de la filière automobile valenciannoise. Commune dynamique en développement avec de nouveaux quartiers résidentiels attirant cadres et indépendants.",
+    "Marly est une commune résidentielle et commerciale au sud de Valenciennes, disposant d'une zone commerciale importante (Place Verte) qui rayonne sur tout le Valenciennois. L'économie locale combine PME et ETI du commerce et de la grande distribution, services aux entreprises (cabinets conseil, comptabilité, intérim), professions libérales (santé, juridique), artisanat, et sous-traitance industrielle bénéficiant de la proximité de la filière automobile valenciannoise. Commune dynamique en développement avec de nouveaux quartiers résidentiels attirant cadres et indépendants.",
   distancesFr:
     "Valenciennes centre à 5 min, autoroute A2 Bruxelles-Paris accès 10 min, gare TGV Valenciennes à 10 min, Cambrai à 30 min, Lille à 50 min. Desserte tramway Transvilles ligne 1.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MARLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Marly : diagnostic adapté aux PME et ETI du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Marly : diagnostic adapté aux PME et ETI du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marly : formats adaptés à l'enseigne commerciale, au cabinet libéral, au prestataire de services ou à l'artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const MARLY_COPY: VilleCopy = {
       en: "Implémentation IA à Marly : automatisation gestion stocks commerce et grande distribution, agents IA prise de rendez-vous cabinets libéraux, CRM augmenté prestataires B2B, copilotes comptables, chatbots accueil zone commerciale.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marly : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants TPE/PME du sud valenciennois souhaitant maîtriser l'IA dans leur activité quotidienne.",
-      en: "Coaching 1-to-1 à Marly : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants TPE/PME du sud valenciennois souhaitant maîtriser l'IA dans leur activité quotidienne.",
+      fr: "Coaching 1-to-1 à Marly : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants PME et ETI du sud valenciennois souhaitant maîtriser l'IA dans leur activité quotidienne.",
+      en: "Coaching 1-to-1 à Marly : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants PME et ETI du sud valenciennois souhaitant maîtriser l'IA dans leur activité quotidienne.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const MARLY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces de la zone commerciale de Marly ?",
-      a: "Oui, nous accompagnons les TPE, PME et enseignes de la zone commerciale de Marly (Place Verte) sur leurs cas IA spécifiques : automatisation gestion stocks et réapprovisionnement, prévision ventes et affluence, agents conversationnels service client, génération contenus marketing personnalisés, optimisation plannings équipes vente.",
+      a: "Oui, nous accompagnons les PME, ETI et enseignes de la zone commerciale de Marly (Place Verte) sur leurs cas IA spécifiques : automatisation gestion stocks et réapprovisionnement, prévision ventes et affluence, agents conversationnels service client, génération contenus marketing personnalisés, optimisation plannings équipes vente.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Marly  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, services, professions libérales, artisanat, industrie). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du sud valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, services, professions libérales, artisanat, industrie). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les professions libérales à Marly ?",

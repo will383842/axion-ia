@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COLOMIERS_COPY: VilleCopy = {
   pitchFr:
-    "Colomiers (31), deuxième ville de la banlieue ouest de Toulouse en Haute-Garonne, est un haut lieu de la sous-traitance aéronautique, en bordure immédiate des sites Airbus. Son tissu mêle PME aéro, services techniques, TPE artisanales du BTP, commerces et professions libérales. Axion-IA accompagne en priorité les TPE puis les PME columérines.",
+    "Colomiers (31), deuxième ville de la banlieue ouest de Toulouse en Haute-Garonne, est un haut lieu de la sous-traitance aéronautique, en bordure immédiate des sites Airbus. Son tissu mêle PME aéro, services techniques, PME artisanales du BTP, commerces et professions libérales. Axion-IA accompagne en priorité les PME puis les ETI columérines.",
   pitchEn:
-    "Colomiers (31), deuxième ville de la banlieue ouest de Toulouse en Haute-Garonne, est un haut lieu de la sous-traitance aéronautique, en bordure immédiate des sites Airbus. Son tissu mêle PME aéro, services techniques, TPE artisanales du BTP, commerces et professions libérales. Axion-IA accompagne en priorité les TPE puis les PME columérines.",
+    "Colomiers (31), deuxième ville de la banlieue ouest de Toulouse en Haute-Garonne, est un haut lieu de la sous-traitance aéronautique, en bordure immédiate des sites Airbus. Son tissu mêle PME aéro, services techniques, PME artisanales du BTP, commerces et professions libérales. Axion-IA accompagne en priorité les PME puis les ETI columérines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Colomiers (31) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique fournissant Airbus, bureaux d'études et services techniques, artisans du BTP, commerces et professions libérales de l'ouest toulousain. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Colomiers (31) auprès des PME en priorité, puis des PME : sous-traitance aéronautique fournissant Airbus, bureaux d'études et services techniques, artisans du BTP, commerces et professions libérales de l'ouest toulousain. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Colomiers (31) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique fournissant Airbus, bureaux d'études et services techniques, artisans du BTP, commerces et professions libérales de l'ouest toulousain. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Colomiers (31) auprès des PME en priorité, puis des PME : sous-traitance aéronautique fournissant Airbus, bureaux d'études et services techniques, artisans du BTP, commerces et professions libérales de l'ouest toulousain. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   seoHook: "sous-traitance aéro & airbus",
   ecosystemFr:
-    "Colomiers est l'une des principales communes de l'ouest toulousain, en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch. Son tissu est dominé par la sous-traitance aéronautique : usinage, mécanique de précision, bureaux d'études, services techniques et informatique embarquée. S'y ajoutent des TPE artisanales du bâtiment, des commerces de proximité et de nombreuses professions libérales.",
+    "Colomiers est l'une des principales communes de l'ouest toulousain, en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch. Son tissu est dominé par la sous-traitance aéronautique : usinage, mécanique de précision, bureaux d'études, services techniques et informatique embarquée. S'y ajoutent des PME artisanales du bâtiment, des commerces de proximité et de nombreuses professions libérales.",
   ecosystemEn:
-    "Colomiers est l'une des principales communes de l'ouest toulousain, en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch. Son tissu est dominé par la sous-traitance aéronautique : usinage, mécanique de précision, bureaux d'études, services techniques et informatique embarquée. S'y ajoutent des TPE artisanales du bâtiment, des commerces de proximité et de nombreuses professions libérales.",
+    "Colomiers est l'une des principales communes de l'ouest toulousain, en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch. Son tissu est dominé par la sous-traitance aéronautique : usinage, mécanique de précision, bureaux d'études, services techniques et informatique embarquée. S'y ajoutent des PME artisanales du bâtiment, des commerces de proximité et de nombreuses professions libérales.",
   distancesFr:
     "Toulouse centre à 15 min. Aéroport Toulouse-Blagnac à 10 min. Sites Airbus à 5 min. Gare TGV Toulouse-Matabiau à 20 min. Gare Colomiers TER directe.",
   distancesEn:
@@ -30,8 +30,8 @@ export const COLOMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Colomiers : diagnostic pour PME de sous-traitance aéro, bureaux d'études et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
-      en: "Audit IA à Colomiers : diagnostic pour PME de sous-traitance aéro, bureaux d'études et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      fr: "Audit IA à Colomiers : diagnostic pour PME de sous-traitance aéro, bureaux d'études et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Colomiers : diagnostic pour PME de sous-traitance aéro, bureaux d'études et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Colomiers : formats adaptés à l'atelier d'usinage, au bureau d'études, au commerce ou au cabinet. Vos équipes prennent ensuite la main en autonomie.",
@@ -42,8 +42,8 @@ export const COLOMIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Colomiers : contrôle qualité par vision pour la mécanique de précision, traçabilité documentaire, prédiction de maintenance, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Colomiers : sessions dans votre atelier, bureau d'études, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME columérines.",
-      en: "Coaching 1-to-1 à Colomiers : sessions dans votre atelier, bureau d'études, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME columérines.",
+      fr: "Coaching 1-to-1 à Colomiers : sessions dans votre atelier, bureau d'études, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME columérines.",
+      en: "Coaching 1-to-1 à Colomiers : sessions dans votre atelier, bureau d'études, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME columérines.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Colomiers : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, catalogues techniques et configurateurs connectés à vos process.",
@@ -53,12 +53,12 @@ export const COLOMIERS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Colomiers (31), 2e ville de l'ouest toulousain en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu très typé : sous-traitance aéronautique de rang 1 (Safran Nacelles, Safran Cabin France, Goodrich Aerospace, Daher) répartie sur le Parc Aéronautique et la ZAC des Ramassiers, services numériques de grande échelle (Sopra Steria, site « Les Ailes de l'Europe »), logistique (Carrefour Supply Chain, Daher) à la ZI En Jacca, plus des centaines de TPE et commerces du Perget et du centre-ville. Portails fournisseurs, configurateurs de pièces, catalogues techniques, recherche sémantique RAG — code sur mesure, hébergement Europe RGPD, zéro lock-in éditeur.",
+        hero: "À Colomiers (31), 2e ville de l'ouest toulousain en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu très typé : sous-traitance aéronautique de rang 1 (Safran Nacelles, Safran Cabin France, Goodrich Aerospace, Daher) répartie sur le Parc Aéronautique et la ZAC des Ramassiers, services numériques de grande échelle (Sopra Steria, site « Les Ailes de l'Europe »), logistique (Carrefour Supply Chain, Daher) à la ZI En Jacca, plus des centaines de PME et commerces du Perget et du centre-ville. Portails fournisseurs, configurateurs de pièces, catalogues techniques, recherche sémantique RAG — code sur mesure, hébergement Europe RGPD, zéro lock-in éditeur.",
         whyHere: [
           "Colomiers est un nœud de la chaîne fournisseurs Airbus : les industriels du Parc Aéronautique et de la ZAC des Ramassiers (Safran Nacelles, Safran Cabin France, Daher, Goodrich) ont besoin de portails clients/fournisseurs, de configurateurs de pièces et de traçabilité documentaire EN 9100 — des plateformes métier, pas des sites vitrines.",
           "La présence de Sopra Steria (« Les Ailes de l'Europe », ZAC des Ramassiers ; ~4 200 collaborateurs sur le bassin toulousain) crée un écosystème de prestataires et d'éditeurs numériques columérins pour lesquels nous construisons des SaaS internes, des copilotes et des agents RAG branchés sur leurs référentiels.",
           "La ZI En Jacca concentre logistique et BTP (Carrefour Supply Chain, Razel-Bec, ~595 entreprises référencées) : nous y déployons des portails de suivi de flux, devis en ligne et tableaux de bord opérationnels connectés aux ERP et WMS existants.",
-          "Le centre-ville, la zone du Perget et le Centre Commercial Plein Centre regroupent ~300 commerces et de nombreuses TPE artisanales : sites e-commerce multi-CMS, prise de rendez-vous et chatbots de qualification commercialement utiles, livrés vite et tenables sans équipe technique interne.",
+          "Le centre-ville, la zone du Perget et le Centre Commercial Plein Centre regroupent ~300 commerces et de nombreuses PME artisanales : sites e-commerce multi-CMS, prise de rendez-vous et chatbots de qualification commercialement utiles, livrés vite et tenables sans équipe technique interne.",
         ],
         methodology: [
           {
@@ -89,12 +89,6 @@ export const COLOMIERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-augmenté",
-            detail:
-              "Pour les artisans, commerces du Perget/centre-ville et indépendants columérins : site mobile-first multi-CMS, prise de rendez-vous, chatbot de qualification, fiches produit assistées par IA.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
             detail:
@@ -123,7 +117,7 @@ export const COLOMIERS_COPY: VilleCopy = {
             a: "Oui. Nos SaaS se branchent sur vos ERP, PLM, WMS et CRM en place — y compris les outils logistiques des acteurs d'En Jacca (Carrefour Supply Chain, Daher). On valide les intégrations au cadrage sur site à Colomiers, puis on recette sur vos données réelles avant mise en ligne.",
           },
           {
-            q: "Faites-vous de l'e-commerce et des sites vitrines pour les commerces et TPE columérins ?",
+            q: "Faites-vous de l'e-commerce et des sites vitrines pour les commerces et PME columérins ?",
             a: "Oui. Pour les ~300 commerces du centre-ville, du Perget et du Centre Commercial Plein Centre, ainsi que les artisans, nous livrons des sites e-commerce multi-CMS, prise de rendez-vous, fiches produit générées par IA et chatbots de qualification — mobile-first et administrables sans équipe technique.",
           },
           {
@@ -174,12 +168,6 @@ export const COLOMIERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented brochure or e-commerce site",
-            detail:
-              "For Colomiers craftspeople, Perget/town-centre shops and freelancers: mobile-first multi-CMS site, booking, qualification chatbot, AI-assisted product sheets.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom business platform",
@@ -237,8 +225,8 @@ export const COLOMIERS_COPY: VilleCopy = {
       a: "Oui, contrôle qualité par vision, traçabilité documentaire, prédiction de maintenance et automatisation des flux pour les PME d'usinage et de mécanique de précision.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans et commerces de Colomiers ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      q: "Travaillez-vous avec les PME de l'artisanat et du commerce de Colomiers ?",
+      a: "Oui, les PME sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour les bureaux d'études et l'informatique embarquée ?",

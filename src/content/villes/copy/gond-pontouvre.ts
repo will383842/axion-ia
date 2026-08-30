@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GOND_PONTOUVRE_COPY: VilleCopy = {
   pitchFr:
-    "Gond-Pontouvre (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle résidentiel et commercial du GrandAngoulême. Tissu de TPE artisans, PME commerciales et tertiaires, zones d'activités, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
+    "Gond-Pontouvre (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle résidentiel et commercial du GrandAngoulême. Tissu de PME artisanales, PME commerciales et tertiaires, zones d'activités, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   pitchEn:
-    "Gond-Pontouvre (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle résidentiel et commercial du GrandAngoulême. Tissu de TPE artisans, PME commerciales et tertiaires, zones d'activités, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
+    "Gond-Pontouvre (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle résidentiel et commercial du GrandAngoulême. Tissu de PME artisanales, PME commerciales et tertiaires, zones d'activités, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : PME artisanales, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : PME artisanales, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
   seoHook: "commerce zones & services aux",
   ecosystemFr:
-    "Gond-Pontouvre est une commune résidentielle et commerciale du nord de l'agglomération GrandAngoulême. Zones d'activités économiques, PME commerciales et tertiaires, TPE artisans BTP, commerces de proximité, services à la personne. Accès direct à l'axe Angoulême-Limoges.",
+    "Gond-Pontouvre est une commune résidentielle et commerciale du nord de l'agglomération GrandAngoulême. Zones d'activités économiques, PME commerciales et tertiaires, PME du BTP, commerces de proximité, services à la personne. Accès direct à l'axe Angoulême-Limoges.",
   ecosystemEn:
-    "Gond-Pontouvre est une commune résidentielle et commerciale du nord de l'agglomération GrandAngoulême. Zones d'activités économiques, PME commerciales et tertiaires, TPE artisans BTP, commerces de proximité, services à la personne. Accès direct à l'axe Angoulême-Limoges.",
+    "Gond-Pontouvre est une commune résidentielle et commerciale du nord de l'agglomération GrandAngoulême. Zones d'activités économiques, PME commerciales et tertiaires, PME du BTP, commerces de proximité, services à la personne. Accès direct à l'axe Angoulême-Limoges.",
   distancesFr:
     "Gond-Pontouvre est à 5 min d'Angoulême centre (nord). Gare TGV d'Angoulême à 10 min (Paris Montparnasse 2h05, Bordeaux 55 min). Aéroport Angoulême-Cognac à 20 min. Axe N141 Angoulême-Limoges.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & zones d'activités",
     "Services aux entreprises & tertiaire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Services à la personne",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gond-Pontouvre : diagnostic adapté aux PME commerciales, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême nord. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gond-Pontouvre : diagnostic adapté aux PME commerciales, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême nord. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gond-Pontouvre : diagnostic adapté aux PME commerciales, PME artisanales, prestataires de services et commerces de l'agglomération GrandAngoulême nord. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gond-Pontouvre : diagnostic adapté aux PME commerciales, PME artisanales, prestataires de services et commerces de l'agglomération GrandAngoulême nord. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gond-Pontouvre : formats adaptés au bureau, au commerce, à l'atelier ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
       en: "Implémentation IA à Gond-Pontouvre : automatisation gestion commerciale, agents conversationnels accueil client, classification documents, optimisation planification services et marketing IA.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gond-Pontouvre : sessions dans vos locaux ou en visio. Dirigeants TPE/PME commerciales, artisans, commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Gond-Pontouvre : sessions dans vos locaux ou en visio. Dirigeants TPE/PME commerciales, artisans, commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Gond-Pontouvre : sessions dans vos locaux ou en visio. Dirigeants PME et ETI commerciales, artisans, commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Gond-Pontouvre : sessions dans vos locaux ou en visio. Dirigeants PME et ETI commerciales, artisans, commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
       a: "Nous accompagnons les commerces et zones d'activités de Gond-Pontouvre : agents conversationnels accueil client, automatisation gestion stocks, marketing IA personnalisé, analyse prédictive fréquentation et optimisation merchandising.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans à Gond-Pontouvre ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Gond-Pontouvre : automatisation devis et facturation, gestion planning chantiers, agents IA relation client et optimisation gestion stocks.",
+      q: "Accompagnez-vous les PME artisanales à Gond-Pontouvre ?",
+      a: "Oui, nous accompagnons les PME du BTP, commerçants et indépendants de Gond-Pontouvre : automatisation devis et facturation, gestion planning chantiers, agents IA relation client et optimisation gestion stocks.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Gond-Pontouvre ?",

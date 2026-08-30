@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEAUVOISIN_COPY: VilleCopy = {
   pitchFr:
-    "Beauvoisin (30), commune gardoise entre Vaunage et Petite Camargue, au carrefour agricole et résidentiel. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités entre Vaunage et Camargue.",
+    "Beauvoisin (30), commune gardoise entre Vaunage et Petite Camargue, au carrefour agricole et résidentiel. Tissu PME et ETI viticulture, agriculture, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités entre Vaunage et Camargue.",
   pitchEn:
-    "Beauvoisin (30), commune gardoise entre Vaunage et Petite Camargue, au carrefour agricole et résidentiel. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités entre Vaunage et Camargue.",
+    "Beauvoisin (30), commune gardoise entre Vaunage et Petite Camargue, au carrefour agricole et résidentiel. Tissu PME et ETI viticulture, agriculture, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités entre Vaunage et Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit sur place sur mesure.",
   seoHook: "viticulture & agriculture méditerranéenne",
   ecosystemFr:
     "Beauvoisin (~6 100 hab) est une commune entre Vaunage et Petite Camargue, à 20 min de Nîmes. Viticulture, agriculture méditerranéenne, commerces de proximité, artisanat BTP et services aux entreprises. Cadre de vie attractif entre garrigue et plaine camarguaise.",
@@ -30,8 +30,8 @@ export const BEAUVOISIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beauvoisin : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans entre Vaunage et Camargue. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Beauvoisin : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans entre Vaunage et Camargue. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Beauvoisin : diagnostic adapté aux PME et ETI viticoles, agriculteurs, commerçants et artisans entre Vaunage et Camargue. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Beauvoisin : diagnostic adapté aux PME et ETI viticoles, agriculteurs, commerçants et artisans entre Vaunage et Camargue. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beauvoisin : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans entre Vaunage et Camargue.",
@@ -42,8 +42,8 @@ export const BEAUVOISIN_COPY: VilleCopy = {
       en: "Implémentation IA à Beauvoisin : prédiction vendanges, automatisation traçabilité agricole, agents conversationnels commerce, optimisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beauvoisin : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Vaunage / Camargue.",
-      en: "Coaching 1-to-1 à Beauvoisin : sessions dirigeants TPE/PME viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Vaunage / Camargue.",
+      fr: "Coaching 1-to-1 à Beauvoisin : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Vaunage / Camargue.",
+      en: "Coaching 1-to-1 à Beauvoisin : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, commerçants et artisans souhaitant intégrer l'IA Vaunage / Camargue.",
     },
   },
   faqGeolocalisee: [

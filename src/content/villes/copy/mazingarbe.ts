@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MAZINGARBE_COPY: VilleCopy = {
   pitchFr:
-    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
+    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille PME artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
   pitchEn:
-    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
+    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille PME artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazingarbe (62). Nous accompagnons PME artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazingarbe (62). Nous accompagnons PME artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mazingarbe est une commune du bassin minier entre Lens et Béthune, avec un passé industriel chimique (ancienne usine de produits chimiques). Économie reconvertie vers le commerce, l'artisanat BTP, les services aux particuliers et les professions libérales.",
@@ -23,27 +23,27 @@ export const MAZINGARBE_COPY: VilleCopy = {
     "Lens à 10 min. Béthune à 10 min. Nœux-les-Mines à 5 min. Lille à 40 min A26. Gare de Lens (TER vers Lille). Aéroport Lille-Lesquin à 35 min.",
   topSectorsNaf: [
     "Commerce de détail & proximité",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Services aux particuliers",
     "Professions libérales & santé",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazingarbe : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mazingarbe : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mazingarbe : diagnostic adapté aux PME artisanales, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazingarbe : diagnostic adapté aux PME artisanales, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazingarbe : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Mazingarbe : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Mazingarbe : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié TPE.",
-      en: "Implémentation IA à Mazingarbe : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié TPE.",
+      fr: "Implémentation IA à Mazingarbe : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié PME.",
+      en: "Implémentation IA à Mazingarbe : automatisation gestion commerciale, agents conversationnels, classification documents comptables, CRM simplifié PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mazingarbe : sessions adaptées dirigeants TPE, artisans et gérants de commerces du bassin minier béthuno-lensois.",
-      en: "Coaching 1-to-1 à Mazingarbe : sessions adaptées dirigeants TPE, artisans et gérants de commerces du bassin minier béthuno-lensois.",
+      fr: "Coaching 1-to-1 à Mazingarbe : sessions adaptées dirigeants de PME et d'ETI, artisans et gérants de commerces du bassin minier béthuno-lensois.",
+      en: "Coaching 1-to-1 à Mazingarbe : sessions adaptées dirigeants de PME et d'ETI, artisans et gérants de commerces du bassin minier béthuno-lensois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MAZINGARBE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mazingarbe  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans de Mazingarbe ?",
@@ -61,7 +61,7 @@ export const MAZINGARBE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA à Mazingarbe ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants de PME et d'ETI du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Mazingarbe ?",

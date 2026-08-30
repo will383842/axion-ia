@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const WERVICQ_SUD_COPY: VilleCopy = {
   pitchFr:
-    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu PME artisanales, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu PME artisanales, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wervicq-Sud (59). Nous accompagnons PME artisanales, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wervicq-Sud (59). Nous accompagnons PME artisanales, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
   ecosystemFr:
-    "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu TPE artisans, PME services, commerces et professions libérales.",
+    "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu PME artisanales, PME services, commerces et professions libérales.",
   ecosystemEn:
-    "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu TPE artisans, PME services, commerces et professions libérales.",
+    "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu PME artisanales, PME services, commerces et professions libérales.",
   distancesFr:
     "Comines à 5 min. Halluin à 10 min. Lille centre à 30 min via A22. Aéroport Lille-Lesquin à 35 min. Ypres (Belgique) à 25 min. Courtrai (Belgique) à 30 min.",
   distancesEn:
     "Comines à 5 min. Halluin à 10 min. Lille centre à 30 min via A22. Aéroport Lille-Lesquin à 35 min. Ypres (Belgique) à 25 min. Courtrai (Belgique) à 30 min.",
   seoHook: "transfrontalier, textile & services Lys",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "PME services aux entreprises",
     "Logistique & transport transfrontalier",
     "Commerce de proximité & services",
@@ -30,20 +30,20 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Wervicq-Sud : diagnostic adapté aux PME artisanales, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Wervicq-Sud : diagnostic adapté aux PME artisanales, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wervicq-Sud : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à Wervicq-Sud : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Wervicq-Sud : automatisation flux transfrontaliers, agents IA service client bilingue FR/NL, classification documents douaniers, prédiction commandes. Adapté TPE/PME vallée de la Lys.",
-      en: "Implémentation IA à Wervicq-Sud : automatisation flux transfrontaliers, agents IA service client bilingue FR/NL, classification documents douaniers, prédiction commandes. Adapté TPE/PME vallée de la Lys.",
+      fr: "Implémentation IA à Wervicq-Sud : automatisation flux transfrontaliers, agents IA service client bilingue FR/NL, classification documents douaniers, prédiction commandes. Adapté PME et ETI vallée de la Lys.",
+      en: "Implémentation IA à Wervicq-Sud : automatisation flux transfrontaliers, agents IA service client bilingue FR/NL, classification documents douaniers, prédiction commandes. Adapté PME et ETI vallée de la Lys.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Wervicq-Sud : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, artisans, commerçants, professions libérales et acteurs transfrontaliers vallée de la Lys.",
-      en: "Coaching 1-to-1 à Wervicq-Sud : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, artisans, commerçants, professions libérales et acteurs transfrontaliers vallée de la Lys.",
+      fr: "Coaching 1-to-1 à Wervicq-Sud : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, artisans, commerçants, professions libérales et acteurs transfrontaliers vallée de la Lys.",
+      en: "Coaching 1-to-1 à Wervicq-Sud : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, artisans, commerçants, professions libérales et acteurs transfrontaliers vallée de la Lys.",
     },
   },
   faqGeolocalisee: [
@@ -65,7 +65,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Wervicq-Sud ?",
-      a: "Nous accompagnons tous types d'activités à Wervicq-Sud : TPE artisanat BTP, PME services aux entreprises, logistique transfrontalière, commerces de proximité, professions libérales et santé. Aucune restriction sectorielle.",
+      a: "Nous accompagnons tous types d'activités à Wervicq-Sud : PME du BTP, PME services aux entreprises, logistique transfrontalière, commerces de proximité, professions libérales et santé. Aucune restriction sectorielle.",
     },
   ],
 };

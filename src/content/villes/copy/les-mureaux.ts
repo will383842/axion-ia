@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LES_MUREAUX_COPY: VilleCopy = {
   pitchFr:
-    "Les Mureaux (78), ville des Yvelines en bord de Seine, est un haut lieu du spatial français : ArianeGroup y assemble les étages des fusées Ariane. Autour de ce pôle aéronautique et spatial gravite un dense réseau de TPE et PME — sous-traitants mécaniques, usineurs, fournisseurs de produits métalliques, prestataires techniques et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME muriautines, l'ETI restant marginale, pour fiabiliser un quotidien industriel exigeant.",
+    "Les Mureaux (78), ville des Yvelines en bord de Seine, est un haut lieu du spatial français : ArianeGroup y assemble les étages des fusées Ariane. Autour de ce pôle aéronautique et spatial gravite un dense réseau de PME et ETI — sous-traitants mécaniques, usineurs, fournisseurs de produits métalliques, prestataires techniques et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI muriautines, les grands groupes venant en complément, pour fiabiliser un quotidien industriel exigeant.",
   pitchEn:
-    "Les Mureaux (78), ville des Yvelines en bord de Seine, est un haut lieu du spatial français : ArianeGroup y assemble les étages des fusées Ariane. Autour de ce pôle aéronautique et spatial gravite un dense réseau de TPE et PME — sous-traitants mécaniques, usineurs, fournisseurs de produits métalliques, prestataires techniques et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME muriautines, l'ETI restant marginale, pour fiabiliser un quotidien industriel exigeant.",
+    "Les Mureaux (78), ville des Yvelines en bord de Seine, est un haut lieu du spatial français : ArianeGroup y assemble les étages des fusées Ariane. Autour de ce pôle aéronautique et spatial gravite un dense réseau de PME et ETI — sous-traitants mécaniques, usineurs, fournisseurs de produits métalliques, prestataires techniques et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI muriautines, les grands groupes venant en complément, pour fiabiliser un quotidien industriel exigeant.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les TPE — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les PME — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les TPE — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les PME — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
   seoHook: "aéronautique-spatial & sous-traitance",
   ecosystemFr:
-    "Les Mureaux structurent leur économie autour du site ArianeGroup, où s'assemblent les étages des lanceurs Ariane, faisant de la ville un point névralgique du spatial européen. Cette présence irrigue un réseau dense de TPE et PME : usinage de précision, fabrication de produits métalliques, mécanique, prestataires d'ingénierie et services techniques, complété par les commerces et l'artisanat du bord de Seine. Cet écosystème industriel génère des tâches répétitives — contrôle qualité, documentation technique, devis, suivi de production — que l'IA fiabilise. Axion-IA y privilégie les TPE et PME, où l'automatisation d'un atelier change concrètement le quotidien.",
+    "Les Mureaux structurent leur économie autour du site ArianeGroup, où s'assemblent les étages des lanceurs Ariane, faisant de la ville un point névralgique du spatial européen. Cette présence irrigue un réseau dense de PME et ETI : usinage de précision, fabrication de produits métalliques, mécanique, prestataires d'ingénierie et services techniques, complété par les commerces et l'artisanat du bord de Seine. Cet écosystème industriel génère des tâches répétitives — contrôle qualité, documentation technique, devis, suivi de production — que l'IA fiabilise. Axion-IA y privilégie les PME et ETI, où l'automatisation d'un atelier change concrètement le quotidien.",
   ecosystemEn:
-    "Les Mureaux structurent leur économie autour du site ArianeGroup, où s'assemblent les étages des lanceurs Ariane, faisant de la ville un point névralgique du spatial européen. Cette présence irrigue un réseau dense de TPE et PME : usinage de précision, fabrication de produits métalliques, mécanique, prestataires d'ingénierie et services techniques, complété par les commerces et l'artisanat du bord de Seine. Cet écosystème industriel génère des tâches répétitives — contrôle qualité, documentation technique, devis, suivi de production — que l'IA fiabilise. Axion-IA y privilégie les TPE et PME, où l'automatisation d'un atelier change concrètement le quotidien.",
+    "Les Mureaux structurent leur économie autour du site ArianeGroup, où s'assemblent les étages des lanceurs Ariane, faisant de la ville un point névralgique du spatial européen. Cette présence irrigue un réseau dense de PME et ETI : usinage de précision, fabrication de produits métalliques, mécanique, prestataires d'ingénierie et services techniques, complété par les commerces et l'artisanat du bord de Seine. Cet écosystème industriel génère des tâches répétitives — contrôle qualité, documentation technique, devis, suivi de production — que l'IA fiabilise. Axion-IA y privilégie les PME et ETI, où l'automatisation d'un atelier change concrètement le quotidien.",
   distancesFr:
     "Gare des Mureaux (ligne J) à ~40 min de Paris-Saint-Lazare. Paris-Saint-Lazare à 38 km, aéroport de Paris-Charles-de-Gaulle à 55 km, Cergy à 25 km, Mantes-la-Jolie à 20 km. Nos consultants rejoignent Les Mureaux et la vallée de Seine depuis Paris.",
   distancesEn:
@@ -42,8 +42,8 @@ export const LES_MUREAUX_COPY: VilleCopy = {
       en: "Implémentation IA aux Mureaux : contrôle qualité par vision, traitement de documentation technique, automatisation des devis et de la planification, prédiction de maintenance pour ateliers d'usinage. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Mureaux : sessions dans votre atelier, bureau d'études ou en visio. Pour dirigeants de TPE/PME industrielles, artisans et prestataires techniques souhaitant piloter l'IA eux-mêmes.",
-      en: "Coaching 1-to-1 aux Mureaux : sessions dans votre atelier, bureau d'études ou en visio. Pour dirigeants de TPE/PME industrielles, artisans et prestataires techniques souhaitant piloter l'IA eux-mêmes.",
+      fr: "Coaching 1-to-1 aux Mureaux : sessions dans votre atelier, bureau d'études ou en visio. Pour dirigeants de PME et ETI industrielles, artisans et prestataires techniques souhaitant piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 aux Mureaux : sessions dans votre atelier, bureau d'études ou en visio. Pour dirigeants de PME et ETI industrielles, artisans et prestataires techniques souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA aux Mureaux : portails B2B industriels avec devis automatisés et catalogues techniques, sites vitrines pour artisans et commerces, dotés d'assistants intelligents et de contenus optimisés.",
@@ -88,12 +88,6 @@ export const LES_MUREAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte — pour artisans, commerces et sous-traitants indépendants de la vallée de Seine.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -174,12 +168,6 @@ export const LES_MUREAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild — for craftspeople, shops and independent subcontractors of the Seine valley.",
-          },
           {
             sizeLabel: "PME",
             price: "Bespoke site / app",

@@ -4,7 +4,7 @@
 //   - Aucun délai concret chiffré (pas de « 5-10 jours », « 48h », etc.).
 //   - Durée minimale = 1 journée (pas de demi-journée).
 //   - Aucun prix en dur : les tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles d'entreprise INSEE : TPE / PME / ETI / GE.
+//   - Tailles d'entreprise INSEE : PME/ETI/GE.
 //   - ~95 % Axion-IA-centric, ~5 % data locale anti-doorway HCU 2024.
 //   - PAS heroSchema, PAS unAUn.
 //
@@ -24,13 +24,13 @@ import type { VilleCopy } from "./types";
 
 export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Aix-en-Provence concentre 24 000 établissements actifs, un écosystème deeptech (CEA Cadarache, ITER, Airbus Helicopters à Marignane, STMicroelectronics Rousset), quatre pôles de compétitivité et trois technopôles. Axion-IA y intervient sur site, des TPE du Cours Mirabeau aux ETI industrielles du bassin Aix-Marseille.",
+    "Aix-en-Provence concentre 24 000 établissements actifs, un écosystème deeptech (CEA Cadarache, ITER, Airbus Helicopters à Marignane, STMicroelectronics Rousset), quatre pôles de compétitivité et trois technopôles. Axion-IA y intervient sur site, des PME du Cours Mirabeau aux ETI industrielles du bassin Aix-Marseille.",
   pitchEn:
     "Aix-en-Provence hosts 24,000 active businesses, a deep-tech ecosystem (CEA Cadarache, ITER, Airbus Helicopters at Marignane, STMicroelectronics Rousset), four competitiveness clusters and three technopoles. Axion-IA intervenes on site, from micro-businesses on the Cours Mirabeau to industrial mid-caps across the Aix-Marseille basin.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Aix-en-Provence : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI calibrés pour les TPE aixoises, les PME industrielles du bassin et les grands groupes de l'aérospatial.",
+      fr: "Audit IA opérationnel à Aix-en-Provence : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI calibrés pour les PME aixoises, les PME industrielles du bassin et les grands groupes de l'aérospatial.",
       en: "Operational AI audit in Aix-en-Provence: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Aix micro-businesses, basin industrial SMEs and large aerospace groups.",
     },
     interventions: {
@@ -52,7 +52,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aix-en-Provence (13001) et dans le bassin Aix-Marseille sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises aixoises — activités scientifiques et techniques, industrie aérospatiale, énergie, enseignement, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aix-en-Provence (13001) et dans le bassin Aix-Marseille sur site. Nous accompagnons les PME, ETI et grands groupes aixois — activités scientifiques et techniques, industrie aérospatiale, énergie, enseignement, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Aix-en-Provence (13001) and across the Aix-Marseille basin on site. We support micro-businesses, SMEs, mid-caps and large enterprises in Aix — scientific and technical activities, aerospace industry, energy, education, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -80,11 +80,11 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure aixoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes du Cours Mirabeau aux ETI industrielles du bassin (aérospatial, énergie, industrie, conseil). Restitution toujours en présentiel dans vos locaux, plan d'action remis en main propre.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure aixoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME indépendantes du Cours Mirabeau aux ETI industrielles du bassin (aérospatial, énergie, industrie, conseil). Restitution toujours en présentiel dans vos locaux, plan d'action remis en main propre.",
         whyHere: [
           "Aix-en-Provence est un pôle d'intervention prioritaire pour Axion-IA dans le quart sud-est : tissu dense d'activités scientifiques et techniques (6 242 établissements), PME industrielles bassin Marignane-Rousset, cabinets conseil et ingénierie en forte croissance.",
           "Proximité de clusters à forte intensité R&D (CEA Cadarache, ITER, Capenergies, Pôle SAFE) où les équipes d'ingénieurs ont les cas d'usage IA les plus complexes et les plus rentables.",
-          "Tissu de TPE et PME de services (conseil, juridique, formation, santé) bien représenté dans nos audits régionaux : Technopôle Arbois, Les Milles, centre-ville aixois.",
+          "Tissu de PME et ETI de services (conseil, juridique, formation, santé) bien représenté dans nos audits régionaux : Technopôle Arbois, Les Milles, centre-ville aixois.",
           "Restitutions toujours en présentiel dans vos locaux à Aix ou dans le bassin (Marignane, Vitrolles, Rousset, Bouc-Bel-Air) : atelier d'idéation, lecture du livrable avec votre comité de direction.",
           "Tarifs publics affichés, aucun devis opaque. Vous connaissez le prix avant de signer.",
           "Votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit : aucun lock-in Axion-IA.",
@@ -117,12 +117,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets aixois jusqu'à une dizaine de collaborateurs (conseil, juridique, santé, artisans du numérique).",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -186,7 +180,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Aix-en-Provence company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Aix micro-businesses to industrial mid-caps and large-group sites in the Aix-Marseille basin (aerospace, energy, microelectronics, B2B services). Read-out always in person at your premises, action plan handed over face to face.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Aix-en-Provence company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from independent Aix micro-businesses to industrial mid-caps and large-group sites in the Aix-Marseille basin (aerospace, energy, microelectronics, B2B services). Read-out always in person at your premises, action plan handed over face to face.",
         whyHere: [
           "Aix-en-Provence is a priority engagement hub for Axion-IA in the south-east: dense scientific and technical activity fabric (6,242 establishments), industrial SMEs in the Marignane-Rousset basin, consulting and engineering firms in strong growth.",
           "Proximity to high R&D-intensity clusters (CEA Cadarache, ITER, Capenergies, Pôle SAFE) where engineering teams have the most complex and highest-ROI AI use cases.",
@@ -223,12 +217,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Aix freelancers, micro-firms and practices up to about ten staff (consulting, legal, health, digital crafts).",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -333,12 +321,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour les indépendants, cabinets, agences et petites structures aixoises jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -439,11 +421,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail: "Ideal for Aix freelancers, firms and agencies up to about ten staff.",
-          },
-          {
             sizeLabel: "SME",
             price: "Group or Teams format",
             detail:
@@ -515,7 +492,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           "Itérations à distance ensuite avec un point régulier en visio et une visite périodique pour démos d'avancement avec votre comité de direction.",
           "Recette finale toujours en présentiel : passation de pouvoir, formation des ambassadeurs IA internes sur leur poste, documentation runbook remise.",
           "Formation incluse pour vos collaborateurs clés : ils deviennent les référents IA internes, autonomes après la fin de mission.",
-          "Cas typiques du bassin : PME aérospatial (lecture de documents techniques, rapports de maintenance), cabinets d'ingénierie Arbois (qualification d'appels d'offres), sociétés de conseil (synthèses de réunions, qualification leads), TPE de services (emails, devis, factures).",
+          "Cas typiques du bassin : PME aérospatial (lecture de documents techniques, rapports de maintenance), cabinets d'ingénierie Arbois (qualification d'appels d'offres), sociétés de conseil (synthèses de réunions, qualification leads), PME de services (emails, devis, factures).",
         ],
         methodology: [
           {
@@ -545,12 +522,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture de factures, comptes-rendus de réunion, qualification de leads) pour les TPE aixoises.",
-          },
           {
             sizeLabel: "PME",
             price: "Mission PME",
@@ -587,7 +558,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA dans le bassin Aix-Marseille ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-sites sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-sites sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -651,12 +622,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) for Aix micro-businesses.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -723,7 +688,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Aix-en-Provence accompagne individuellement les dirigeants et cadres dirigeants des PME industrielles, ETI aérospatiales et cabinets de conseil du bassin Aix-Marseille. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est construit autour de votre réalité métier — technopôle Arbois, Les Milles, Marignane, Rousset. Vous accélérez votre montée en compétence IA sans perdre de temps sur du théorique non applicable.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Aix-en-Provence accompagne individuellement les dirigeants et cadres dirigeants des PME industrielles, ETI aérospatiales et cabinets de conseil du bassin Aix-Marseille. À partir de {{price:intervention-dirigeants|flat}} pour les PME, chaque programme est construit autour de votre réalité métier — technopôle Arbois, Les Milles, Marignane, Rousset. Vous accélérez votre montée en compétence IA sans perdre de temps sur du théorique non applicable.",
         whyHere: [
           "Le bassin Aix-Marseille concentre des dirigeants d'ETI aérospatiales, énergétiques et industrielles avec des agendas très contraints : le coaching 1-to-1 s'adapte à leurs plages disponibles, y compris en visio depuis leur bureau ou en présentiel dans leurs locaux.",
           "Les cabinets d'ingénierie et sociétés de conseil du Technopôle Arbois et de Les Milles ont des cas d'usage IA très précis (qualification d'appels d'offres, rédaction de rapports techniques) — le coaching individuel cible exactement leurs enjeux réels.",
@@ -760,12 +725,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Programme d'entrée pour les indépendants, gérants de TPE et fondateurs de startups de la French Tech Aix-Marseille souhaitant intégrer l'IA dans leur activité quotidienne.",
-          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -866,12 +825,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry programme for freelancers, micro-business owners and French Tech Aix-Marseille startup founders wishing to integrate AI into their daily work.",
-          },
           {
             sizeLabel: "SME",
             price: "On quote",
@@ -974,12 +927,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1060,12 +1007,6 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1115,7 +1056,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Aix-en-Provence ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Aix-en-Provence et dans le bassin (Marignane, Vitrolles, Rousset).",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Aix-en-Provence et dans le bassin (Marignane, Vitrolles, Rousset).",
     },
     {
       q: "Axion-IA intervient-il dans les entreprises aérospatiales et industrielles du bassin Aix-Marseille ?",

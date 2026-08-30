@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
+    "Axion-IA accompagne les PME et ETI d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
+    "Axion-IA accompagne les PME et ETI d'Hérouville-Saint-Clair, deuxième ville du Calvados et pôle tertiaire de l'agglomération caennaise. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser tâches administratives, relances et gestion de dossiers au profit des services, commerces et structures de santé du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI d'Hérouville-Saint-Clair à intégrer l'intelligence artificielle dans leur quotidien. Ville tertiaire et de santé en lien direct avec Caen, Hérouville concentre des activités de services, de commerce et un pôle médical où l'IA allège la charge administrative. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   seoHook: "tertiaire & santé caennaise",
   ecosystemFr:
-    "Hérouville-Saint-Clair forme avec Caen un bassin d'emploi tourné vers le tertiaire, les services aux entreprises et la santé. La ville accueille des zones d'activités, un tissu de commerces et un secteur médico-social dense, à proximité immédiate de l'Université de Caen Normandie et du CHU. Cet environnement génère beaucoup de tâches administratives, de prise de rendez-vous et de gestion de dossiers, terrains idéaux pour l'IA. Axion-IA cible en priorité les TPE de services et de soins, puis les PME du commerce et du tertiaire local.",
+    "Hérouville-Saint-Clair forme avec Caen un bassin d'emploi tourné vers le tertiaire, les services aux entreprises et la santé. La ville accueille des zones d'activités, un tissu de commerces et un secteur médico-social dense, à proximité immédiate de l'Université de Caen Normandie et du CHU. Cet environnement génère beaucoup de tâches administratives, de prise de rendez-vous et de gestion de dossiers, terrains idéaux pour l'IA. Axion-IA cible en priorité les PME de services et de soins, puis les PME du commerce et du tertiaire local.",
   ecosystemEn:
-    "Hérouville-Saint-Clair forme avec Caen un bassin d'emploi tourné vers le tertiaire, les services aux entreprises et la santé. La ville accueille des zones d'activités, un tissu de commerces et un secteur médico-social dense, à proximité immédiate de l'Université de Caen Normandie et du CHU. Cet environnement génère beaucoup de tâches administratives, de prise de rendez-vous et de gestion de dossiers, terrains idéaux pour l'IA. Axion-IA cible en priorité les TPE de services et de soins, puis les PME du commerce et du tertiaire local.",
+    "Hérouville-Saint-Clair forme avec Caen un bassin d'emploi tourné vers le tertiaire, les services aux entreprises et la santé. La ville accueille des zones d'activités, un tissu de commerces et un secteur médico-social dense, à proximité immédiate de l'Université de Caen Normandie et du CHU. Cet environnement génère beaucoup de tâches administratives, de prise de rendez-vous et de gestion de dossiers, terrains idéaux pour l'IA. Axion-IA cible en priorité les PME de services et de soins, puis les PME du commerce et du tertiaire local.",
   distancesFr:
     "Hérouville-Saint-Clair jouxte Caen, dont la gare est à environ 5 km et reliée à Paris-Saint-Lazare en moins de deux heures. L'aéroport de Caen-Carpiquet est à 15 km et le port de Ouistreham à 12 km, ce qui permet à notre cabinet de se déplacer aisément sur site dans toute l'agglomération caennaise.",
   distancesEn:
@@ -30,8 +30,8 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE de services ou une structure de santé d'Hérouville-Saint-Clair pour cibler les automatisations utiles : prise de rendez-vous, gestion de dossiers, relances.",
-      en: "Auditer une TPE de services ou une structure de santé d'Hérouville-Saint-Clair pour cibler les automatisations utiles : prise de rendez-vous, gestion de dossiers, relances.",
+      fr: "Auditer une PME de services ou une structure de santé d'Hérouville-Saint-Clair pour cibler les automatisations utiles : prise de rendez-vous, gestion de dossiers, relances.",
+      en: "Auditer une PME de services ou une structure de santé d'Hérouville-Saint-Clair pour cibler les automatisations utiles : prise de rendez-vous, gestion de dossiers, relances.",
     },
     interventions: {
       fr: "Intervenir sur site à Hérouville-Saint-Clair pour automatiser les tâches administratives des commerces et cabinets, et libérer du temps pour vos équipes.",
@@ -42,8 +42,8 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME tertiaires d'Hérouville-Saint-Clair : suivi client, reporting, intégration à vos logiciels métiers.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME d'Hérouville-Saint-Clair pour piloter leur adoption de l'IA en confiance et sans précipitation.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME d'Hérouville-Saint-Clair pour piloter leur adoption de l'IA en confiance et sans précipitation.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI d'Hérouville-Saint-Clair pour piloter leur adoption de l'IA en confiance et sans précipitation.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI d'Hérouville-Saint-Clair pour piloter leur adoption de l'IA en confiance et sans précipitation.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les services et cabinets d'Hérouville-Saint-Clair : prise de rendez-vous en ligne, assistant client, contenus automatisés.",
@@ -58,7 +58,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           "Pôle santé et médico-social dense, adossé au CHU de Caen et à l'Université de Caen Normandie tout proches : on construit des portails de prise de rendez-vous, des espaces patients, des plateformes de coordination de soins et des assistants conformes RGPD, avec une vigilance forte sur les données de santé hébergées en UE et un parcours mobile-first pensé pour des usagers de tous âges.",
           "Écosystème numérique et cyber structuré autour du campus EffiScience et du pôle TES, dans la continuité du parc d'activités CITIS (plus de 400 entreprises, filière ingénierie et high-tech) : terrain idéal pour des plateformes SaaS IA-native, des agents métiers, de la recherche sémantique et des portails clients branchés sur vos systèmes existants (CRM, ERP, SI interne).",
           "Centres de relation client et back-offices tertiaires nombreux dans l'agglomération caennaise : nos chatbots RAG multilingues, notre qualification automatique et nos automatisations déchargent les équipes des relances, du tri de demandes et de la gestion de dossiers répétitive, sans remplacer la relation humaine mais en lui rendant du temps utile.",
-          "Tissu de TPE de services, de commerces du Grand Parc, de grands employeurs comme Legallais (quincaillerie professionnelle dont le siège et l'e-commerce sont à Hérouville) et de structures de l'économie sociale et solidaire : on greffe une brique IA (widget, plugin, API) sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, ou on livre une vitrine e-commerce sur mesure, sans budget de grand groupe.",
+          "Tissu de PME de services, de commerces du Grand Parc, de grands employeurs comme Legallais (quincaillerie professionnelle dont le siège et l'e-commerce sont à Hérouville) et de structures de l'économie sociale et solidaire : on greffe une brique IA (widget, plugin, API) sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, ou on livre une vitrine e-commerce sur mesure, sans budget de grand groupe.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (prise de rendez-vous, chatbot multilingue, recherche sémantique) sur le site existant d'un cabinet de santé, d'un commerce du Grand Parc ou d'une association hérouvillaise, en quelques semaines et sans refonte. Idéal pour un artisan de la cité artisanale ou une TPE de services.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -144,7 +138,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           "Pôle santé et médico-social dense, adossé au CHU de Caen et à l'Université de Caen Normandie tout proches : on construit des portails de prise de rendez-vous, des espaces patients, des plateformes de coordination de soins et des assistants conformes RGPD, avec une vigilance forte sur les données de santé hébergées en UE et un parcours mobile-first pensé pour des usagers de tous âges.",
           "Écosystème numérique et cyber structuré autour du campus EffiScience et du pôle TES, dans la continuité du parc d'activités CITIS (plus de 400 entreprises, filière ingénierie et high-tech) : terrain idéal pour des plateformes SaaS IA-native, des agents métiers, de la recherche sémantique et des portails clients branchés sur vos systèmes existants (CRM, ERP, SI interne).",
           "Centres de relation client et back-offices tertiaires nombreux dans l'agglomération caennaise : nos chatbots RAG multilingues, notre qualification automatique et nos automatisations déchargent les équipes des relances, du tri de demandes et de la gestion de dossiers répétitive, sans remplacer la relation humaine mais en lui rendant du temps utile.",
-          "Tissu de TPE de services, de commerces du Grand Parc, de grands employeurs comme Legallais (quincaillerie professionnelle dont le siège et l'e-commerce sont à Hérouville) et de structures de l'économie sociale et solidaire : on greffe une brique IA (widget, plugin, API) sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, ou on livre une vitrine e-commerce sur mesure, sans budget de grand groupe.",
+          "Tissu de PME de services, de commerces du Grand Parc, de grands employeurs comme Legallais (quincaillerie professionnelle dont le siège et l'e-commerce sont à Hérouville) et de structures de l'économie sociale et solidaire : on greffe une brique IA (widget, plugin, API) sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, ou on livre une vitrine e-commerce sur mesure, sans budget de grand groupe.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (prise de rendez-vous, chatbot multilingue, recherche sémantique) sur le site existant d'un cabinet de santé, d'un commerce du Grand Parc ou d'une association hérouvillaise, en quelques semaines et sans refonte. Idéal pour un artisan de la cité artisanale ou une TPE de services.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,12 +221,12 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
       a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à Hérouville-Saint-Clair et dans l'agglomération caennaise, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
-      q: "Quels gains l'IA apporte-t-elle à une TPE de services à Hérouville-Saint-Clair ?",
-      a: "L'IA automatise la prise de rendez-vous, les relances, la rédaction de courriers et la gestion de dossiers. Une TPE de services y gagne plusieurs heures par semaine sans recruter.",
+      q: "Quels gains l'IA apporte-t-elle à une PME de services à Hérouville-Saint-Clair ?",
+      a: "L'IA automatise la prise de rendez-vous, les relances, la rédaction de courriers et la gestion de dossiers. Une PME de services y gagne plusieurs heures par semaine sans recruter.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME d'Hérouville-Saint-Clair. Les structures de quelques salariés sont notre cœur de cible, les ETI restant marginales sur ce territoire.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI d'Hérouville-Saint-Clair. Les structures de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se déroule un audit IA à Hérouville-Saint-Clair ?",

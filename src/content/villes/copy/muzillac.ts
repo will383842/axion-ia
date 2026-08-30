@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MUZILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Muzillac (56), commune du littoral morbihannais entre Vannes et La Roche-Bernard, est un carrefour entre marais d'Arzal, estuaire de la Vilaine et océan. TPE artisans, PME tertiaires, commerces de proximité, ostréiculture, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
+    "Muzillac (56), commune du littoral morbihannais entre Vannes et La Roche-Bernard, est un carrefour entre marais d'Arzal, estuaire de la Vilaine et océan. PME artisanales, PME tertiaires, commerces de proximité, ostréiculture, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Muzillac (56), commune du littoral morbihannais entre Vannes et La Roche-Bernard, est un carrefour entre marais d'Arzal, estuaire de la Vilaine et océan. TPE artisans, PME tertiaires, commerces de proximité, ostréiculture, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
+    "Muzillac (56), commune du littoral morbihannais entre Vannes et La Roche-Bernard, est un carrefour entre marais d'Arzal, estuaire de la Vilaine et océan. PME artisanales, PME tertiaires, commerces de proximité, ostréiculture, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Muzillac (56). Nous accompagnons PME artisanales, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Muzillac (56). Nous accompagnons PME artisanales, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
   seoHook: "tourisme littoral & ostréiculture pêche",
   ecosystemFr:
-    "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de TPE artisans (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",
+    "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de PME artisanales (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",
   ecosystemEn:
-    "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de TPE artisans (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",
+    "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de PME artisanales (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",
   distancesFr:
     "Vannes centre à 25 min. La Roche-Bernard à 15 min. Nantes à 1h15. Gare SNCF Questembert à 20 min. Barrage d'Arzal à 5 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const MUZILLAC_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme littoral & nautique",
     "Ostréiculture & pêche",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME tertiaires & services",
     "Commerces de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Muzillac : diagnostic adapté aux PME artisanales, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Muzillac : diagnostic adapté aux PME artisanales, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Muzillac : formats adaptés aux professionnels du tourisme, ostréiculteurs, commerçants, artisans. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MUZILLAC_COPY: VilleCopy = {
       en: "Implémentation IA à Muzillac : automatisation réservations tourisme littoral, gestion saisonnalité ostréicole, agents conversationnels multilingue, classification avis clients.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Muzillac : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, ostréiculteurs, hôteliers, commerçants du littoral morbihannais.",
-      en: "Coaching 1-to-1 à Muzillac : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, ostréiculteurs, hôteliers, commerçants du littoral morbihannais.",
+      fr: "Coaching 1-to-1 à Muzillac : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, ostréiculteurs, hôteliers, commerçants du littoral morbihannais.",
+      en: "Coaching 1-to-1 à Muzillac : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, ostréiculteurs, hôteliers, commerçants du littoral morbihannais.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const MUZILLAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les ostréiculteurs et professionnels de la pêche sur leurs cas IA : gestion saisonnalité, traçabilité produits, automatisation commandes, classification qualité, agents conversationnels vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans à Muzillac ?",
-      a: "Pour les TPE artisans (BTP, métiers de bouche) à Muzillac : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
+      q: "Quels services pour les PME artisanales à Muzillac ?",
+      a: "Pour les PME artisanales (BTP, métiers de bouche) à Muzillac : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
     },
     {
       q: "Accompagnez-vous le secteur tourisme littoral ?",

@@ -6,7 +6,7 @@
 //   - Aucun délai chiffré, aucun frais déplacement intégrés,
 //     aucun prix en dur, durée min 1 journée.
 //   - "frais de logement, repas et forfait trajet en sus" pour interventions.
-//   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024.
 //   - PAS heroSchema, PAS unAUn (non demandés).
 //
@@ -46,7 +46,7 @@ export const GRENOBLE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenoble (38) sur site, couvrant la ville et le bassin grenoblois (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). Nous accompagnons les TPE tech et les spin-offs CEA/CNRS, les PME industrielles et de services, les ETI deep-tech (Soitec, Poma, Petzl et leurs sous-traitants) ainsi que les grands groupes (STMicroelectronics, Schneider Electric, Atos) sur leurs chantiers IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action béton. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenoble (38) sur site, couvrant la ville et le bassin grenoblois (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). Nous accompagnons les PME tech et les spin-offs CEA/CNRS, les PME industrielles et de services, les ETI deep-tech (Soitec, Poma, Petzl et leurs sous-traitants) ainsi que les grands groupes (STMicroelectronics, Schneider Electric, Atos) sur leurs chantiers IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action béton. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Grenoble (38) on site, covering the city and the Grenoble basin (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). We support deep-tech micro-businesses and CEA/CNRS spin-offs, industrial and services SMEs, deep-tech mid-caps (Soitec, Poma, Petzl and their supply chains) plus large groups (STMicroelectronics, Schneider Electric, Atos) on their operational AI initiatives — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -77,7 +77,7 @@ export const GRENOBLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Grenoble cartographie précisément ce qui peut être automatisé dans vos processus — qu'il s'agisse de R&D documentaire chez une spin-off CEA-Leti, de planification de production chez un équipementier industriel ou de qualification de leads chez un éditeur logiciel d'Inovallée — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI s'adaptent à toutes les tailles, des TPE deeptech aux directions IA des grands groupes grenoblois.",
+        hero: "L'audit IA Axion-IA à Grenoble cartographie précisément ce qui peut être automatisé dans vos processus — qu'il s'agisse de R&D documentaire chez une spin-off CEA-Leti, de planification de production chez un équipementier industriel ou de qualification de leads chez un éditeur logiciel d'Inovallée — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI s'adaptent à toute l'échelle, des PME deeptech aux directions IA des grands groupes grenoblois.",
         whyHere: [
           "Grenoble est le premier pôle deeptech de province en France : nos audits y adressent des cas d'usage uniques à forte densité R&D (automatisation de la veille brevets, traitement de rapports d'analyse, génération de documentation technique).",
           "Tissu industriel sur-représenté chez nos clients grenoblois : sous-traitants semi-conducteurs (bassin Crolles), fournisseurs Schneider Electric, startups Minalogic, PME électronique et mécatronique.",
@@ -114,12 +114,6 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux spin-offs, start-ups Minalogic et indépendants du bassin grenoblois jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME (10-249 collab)",
             price: "Audit Ciblé ou Stratégique PME",
@@ -183,7 +177,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from deep-tech micro-businesses to large industrial group AI leadership.",
+        hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from deep-tech micro-businesses to large industrial group AI leadership.",
         whyHere: [
           "Grenoble is France's leading provincial deep-tech hub: our audits address unique high-R&D-density use cases (patent intelligence automation, analysis report processing, technical documentation generation).",
           "Industrial fabric over-represented in our Grenoble cases: semiconductor sub-contractors (Crolles basin), Schneider Electric suppliers, Minalogic start-ups, electronics and mechatronics SMEs.",
@@ -220,12 +214,6 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Sur place audit",
-            detail:
-              "Suited to spin-offs, Minalogic start-ups and independents in the Grenoble basin up to about ten staff.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "Targeted or SME Strategic audit",
@@ -329,12 +317,6 @@ export const GRENOBLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Formation collective",
-            detail:
-              "Idéal pour les spin-offs, start-ups Minalogic et cabinets d'ingénierie grenoblois jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME (10-249 collab)",
             price: "Formation collective ou Équipes",
             detail:
@@ -434,12 +416,6 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Group format",
-            detail:
-              "Ideal for Grenoble spin-offs, Minalogic start-ups and engineering practices up to about ten staff.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "Group or Teams format",
@@ -543,12 +519,6 @@ export const GRENOBLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (traitement de rapports, qualification de leads, génération de documentation) pour spin-offs et start-ups grenobloises.",
-          },
-          {
             sizeLabel: "PME (10-249 collab)",
             price: "Mission PME",
             detail:
@@ -648,12 +618,6 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (report processing, lead qualification, documentation generation) for Grenoble spin-offs and start-ups.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "SME mission",
@@ -758,12 +722,6 @@ export const GRENOBLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Coaching individuel entrée pour spin-offs, start-ups Minalogic et indépendants du bassin grenoblois — une journée, un consultant dédié.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -859,12 +817,6 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry individual coaching for Grenoble basin spin-offs, Minalogic start-ups and independents — one day, one dedicated consultant.",
-          },
           {
             sizeLabel: "SME",
             price: "On request",
@@ -966,12 +918,6 @@ export const GRENOBLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1052,12 +998,6 @@ export const GRENOBLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1107,7 +1047,7 @@ export const GRENOBLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA à Grenoble avec Axion-IA ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Les tarifs sont publics et affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Grenoble et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Les tarifs sont publics et affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Grenoble et partout en France.",
     },
     {
       q: "Axion-IA travaille-t-il avec les entreprises de Minalogic et de la French Tech in the Alps ?",

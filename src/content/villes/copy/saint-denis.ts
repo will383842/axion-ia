@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //   - EN locale désactivée (proxy 301 FR) → pitchEn / en: = miroir FR pur.
@@ -26,7 +26,7 @@ import type { VilleCopy, VilleServiceCopyLocale } from "./types";
 
 // === AUDIT ===
 const AUDIT_FR: VilleServiceCopyLocale = {
-  hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation dyonisienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine Saint-Denis aux grandes directions logistiques et BTP de l'intercommunalité Plaine Commune.",
+  hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation dyonisienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des structures ESS et studios audiovisuels de la Plaine Saint-Denis aux grandes directions logistiques et BTP de l'intercommunalité Plaine Commune.",
   whyHere: [
     "Saint-Denis concentre un tissu B2B en reconversion rapide — Plaine Saint-Denis, hub Pleyel Grand Paris Express, Stade de France — avec des secteurs (logistique, audiovisuel, BTP, ESS) où l'IA opérationnelle délivre un ROI mesurable dès les premières semaines.",
     "La Plaine Saint-Denis représente l'un des plus grands chantiers de reconversion d'Île-de-France : studios de tournage, sociétés de production, prestataires techniques, ESS en croissance — tous secteurs pour lesquels nous avons des cas d'usage déployés.",
@@ -63,12 +63,6 @@ const AUDIT_FR: VilleServiceCopyLocale = {
     },
   ],
   pricing: [
-    {
-      sizeLabel: "TPE",
-      price: "Audit sur place",
-      detail:
-        "Adapté aux structures ESS, studios indépendants, artisans et TPE de services dyonisiens jusqu'à une dizaine de collaborateurs.",
-    },
     {
       sizeLabel: "PME",
       price: "Audit Ciblé ou Stratégique PME",
@@ -172,12 +166,6 @@ const INTERVENTIONS_FR: VilleServiceCopyLocale = {
   ],
   pricing: [
     {
-      sizeLabel: "TPE",
-      price: "Formation collective",
-      detail:
-        "Idéal pour indépendants, studios créatifs et petites structures dyonisiennes jusqu'à une dizaine de collaborateurs — ESS, agences, artisans.",
-    },
-    {
       sizeLabel: "PME",
       price: "Format collectif ou Équipes",
       detail:
@@ -280,12 +268,6 @@ const IMPLEMENTATION_FR: VilleServiceCopyLocale = {
   ],
   pricing: [
     {
-      sizeLabel: "TPE",
-      price: "Pilote IA",
-      detail:
-        "Implémentation d'un cas d'usage simple — automatisation bons de livraison, scripts, comptes-rendus pour TPE et indépendants dyonisiens.",
-    },
-    {
       sizeLabel: "PME",
       price: "Mission PME",
       detail:
@@ -321,7 +303,7 @@ const IMPLEMENTATION_FR: VilleServiceCopyLocale = {
   faq: [
     {
       q: "Combien de temps dure une implémentation Axion-IA à Saint-Denis ?",
-      a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois. Le SOW signé en cadrage fixe le calendrier précis.",
+      a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois. Le SOW signé en cadrage fixe le calendrier précis.",
     },
     {
       q: "Le tarif est-il fixe ou au temps passé ?",
@@ -388,12 +370,6 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
   ],
   pricing: [
     {
-      sizeLabel: "TPE",
-      price: "Accompagnement individuel — tarif entrée",
-      detail:
-        "Pour indépendants, micro-entrepreneurs, artisans et dirigeants de TPE dyonisiennes. Une à plusieurs journées selon le programme choisi.",
-    },
-    {
       sizeLabel: "PME",
       price: "Accompagnement dirigeant/manager",
       detail:
@@ -417,7 +393,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
       quote:
         "J'avais besoin d'un accompagnement sur mesure, pas d'une formation collective. En deux sessions, j'ai configuré l'IA sur mes vrais bons de livraison et mes emails fournisseurs. Gain de temps immédiat sur l'administratif logistique.",
       role: "Gérant",
-      companyProfile: "TPE logistique, Plaine Saint-Denis",
+      companyProfile: "PME logistique, Plaine Saint-Denis",
     },
     {
       quote:
@@ -445,7 +421,7 @@ const UN_A_UN_FR: VilleServiceCopyLocale = {
     },
     {
       q: "L'accompagnement individuel est-il adapté aux structures ESS et associations ?",
-      a: "Oui. Les structures ESS, associations et coopératives dyonisiennes bénéficient d'un accompagnement ajusté à leurs enjeux : gestion de dossiers, reporting d'impact, communication, recherche de financements. Le tarif d'entrée est accessible aux petites structures.",
+      a: "Oui. Les structures ESS, associations et coopératives dyonisiennes bénéficient d'un accompagnement ajusté à leurs enjeux : gestion de dossiers, reporting d'impact, communication, recherche de financements. Le tarif d'entrée est accessible aux PME.",
     },
     {
       q: "Que se passe-t-il si je ne vois pas de résultat concret après la première séance ?",
@@ -494,12 +470,6 @@ const SITESWEB_FR: VilleServiceCopyLocale = {
   ],
   pricing: [
     {
-      sizeLabel: "TPE",
-      price: "Brique IA greffée",
-      detail:
-        "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-    },
-    {
       sizeLabel: "PME",
       price: "Site / application sur mesure",
       detail:
@@ -547,16 +517,16 @@ const SITESWEB_FR: VilleServiceCopyLocale = {
 // === EXPORT ===
 export const SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Denis (93) abrite le Stade de France, le hub Grand Paris Express Pleyel (lignes 15/16/17) et la Plaine Saint-Denis — 200 ha de reconversion industrielle en cluster audiovisuel, logistique et tech. Axion-IA intervient sur site dans cette ville de 149 000 habitants, des TPE de l'ESS aux grandes directions logistiques et créatives de l'intercommunalité Plaine Commune.",
+    "Saint-Denis (93) abrite le Stade de France, le hub Grand Paris Express Pleyel (lignes 15/16/17) et la Plaine Saint-Denis — 200 ha de reconversion industrielle en cluster audiovisuel, logistique et tech. Axion-IA intervient sur site dans cette ville de 149 000 habitants, des PME de l'ESS aux grandes directions logistiques et créatives de l'intercommunalité Plaine Commune.",
   // EN locale désactivée (proxy 301 → FR) — miroir FR
   pitchEn:
-    "Saint-Denis (93) abrite le Stade de France, le hub Grand Paris Express Pleyel (lignes 15/16/17) et la Plaine Saint-Denis — 200 ha de reconversion industrielle en cluster audiovisuel, logistique et tech. Axion-IA intervient sur site dans cette ville de 149 000 habitants, des TPE de l'ESS aux grandes directions logistiques et créatives de l'intercommunalité Plaine Commune.",
+    "Saint-Denis (93) abrite le Stade de France, le hub Grand Paris Express Pleyel (lignes 15/16/17) et la Plaine Saint-Denis — 200 ha de reconversion industrielle en cluster audiovisuel, logistique et tech. Axion-IA intervient sur site dans cette ville de 149 000 habitants, des PME de l'ESS aux grandes directions logistiques et créatives de l'intercommunalité Plaine Commune.",
 
   seoHook: "logistique, transport & audiovisuel, médias",
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
-      en: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
+      fr: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
+      en: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
     },
     interventions: {
       fr: "Interventions IA à Saint-Denis : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel — en entrepôt, en studio, sur chantier Grand Paris ou en bureau.",
@@ -571,13 +541,13 @@ export const SAINT_DENIS_COPY: VilleCopy = {
       en: "Coaching IA individuel 1-to-1 à Saint-Denis : accompagnement dirigeant ou manager sur vos cas d'usage réels — logistique, audiovisuel, BTP, ESS, services publics. Sessions sur site dans la Plaine ou à distance, rythme ajusté à votre agenda.",
     },
     sitesWeb: {
-      fr: "Plateformes web et SaaS IA sur mesure pour TPE/PME dyonisiennes — site vitrine pour studios audiovisuels et acteurs ESS de la Plaine Saint-Denis, espace client interactif pour prestataires logistiques et BTP, dashboard métier connecté à votre WMS/ERP ou outil de gestion chantier. Architectes seniors, design system Axion-IA, hébergement européen.",
-      en: "Plateformes web et SaaS IA sur mesure pour TPE/PME dyonisiennes — site vitrine pour studios audiovisuels et acteurs ESS de la Plaine Saint-Denis, espace client interactif pour prestataires logistiques et BTP, dashboard métier connecté à votre WMS/ERP ou outil de gestion chantier. Architectes seniors, design system Axion-IA, hébergement européen.",
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI dyonisiennes — site vitrine pour studios audiovisuels et acteurs ESS de la Plaine Saint-Denis, espace client interactif pour prestataires logistiques et BTP, dashboard métier connecté à votre WMS/ERP ou outil de gestion chantier. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Plateformes web et SaaS IA sur mesure pour PME et ETI dyonisiennes — site vitrine pour studios audiovisuels et acteurs ESS de la Plaine Saint-Denis, espace client interactif pour prestataires logistiques et BTP, dashboard métier connecté à votre WMS/ERP ou outil de gestion chantier. Architectes seniors, design system Axion-IA, hébergement européen.",
     },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis (93) sur site — Plaine Saint-Denis, Stade de France, centre-ville et communes Plaine Commune limitrophes (Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte). Nous accompagnons TPE, PME, ETI et grandes entreprises dyonisiennes (logistique, audiovisuel, BTP Grand Paris, services publics, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis (93) sur site — Plaine Saint-Denis, Stade de France, centre-ville et communes Plaine Commune limitrophes (Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte). Nous accompagnons PME, ETI et grands groupes dyonisiens (logistique, audiovisuel, BTP Grand Paris, services publics, ESS) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
 
   topSectorsNaf: [
     "Logistique, Transport & Distribution",
@@ -597,7 +567,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Saint-Denis ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou sur des chantiers Grand Paris ?",

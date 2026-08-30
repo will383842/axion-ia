@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const VAUCRESSON_COPY: VilleCopy = {
   pitchFr:
-    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de PME indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de PME indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : PME indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : PME indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
-    "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, TPE de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",
+    "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, PME de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",
   ecosystemEn:
-    "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, TPE de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",
+    "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, PME de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",
   distancesFr:
     "Gare de Vaucresson (Transilien L, 25 min Paris-Saint-Lazare). La Défense à 10 min en voiture. Gare de Versailles-Chantiers à 15 min. Aéroport Paris-Orly à 30 min. A13 et N13 en accès direct.",
   distancesEn:
     "Gare de Vaucresson (Transilien L, 25 min Paris-Saint-Lazare). La Défense à 10 min en voiture. Gare de Versailles-Chantiers à 15 min. Aéroport Paris-Orly à 30 min. A13 et N13 en accès direct.",
   topSectorsNaf: [
     "Professions libérales & expertise",
-    "TPE conseil & services",
+    "PME conseil & services",
     "PME tertiaires ouest-parisien",
     "Immobilier & gestion de patrimoine",
     "Commerce de proximité & artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Vaucresson : diagnostic adapté aux PME indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Vaucresson : diagnostic adapté aux PME indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaucresson : formations pratiques dans votre cabinet, bureau ou local professionnel. Équipes formées sur outils IA configurés métier, autonomes dès la fin de journée.",
@@ -42,8 +42,8 @@ export const VAUCRESSON_COPY: VilleCopy = {
       en: "Implémentation IA à Vaucresson : agents conversationnels, automatisation administrative, classification documents, CRM augmentés. Adapté aux cabinets spécialisés, professions libérales et PME du secteur Rueil-Versailles.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vaucresson : sessions dans votre cabinet, bureau ou en visio. Dirigeants TPE/PME, consultants indépendants et professions libérales souhaitant intégrer l'IA dans leur pratique quotidienne.",
-      en: "Coaching 1-to-1 à Vaucresson : sessions dans votre cabinet, bureau ou en visio. Dirigeants TPE/PME, consultants indépendants et professions libérales souhaitant intégrer l'IA dans leur pratique quotidienne.",
+      fr: "Coaching 1-to-1 à Vaucresson : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME et ETI, consultants indépendants et professions libérales souhaitant intégrer l'IA dans leur pratique quotidienne.",
+      en: "Coaching 1-to-1 à Vaucresson : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME et ETI, consultants indépendants et professions libérales souhaitant intégrer l'IA dans leur pratique quotidienne.",
     },
   },
   faqGeolocalisee: [

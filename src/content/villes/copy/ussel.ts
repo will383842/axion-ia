@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const USSEL_COPY: VilleCopy = {
   pitchFr:
-    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
+    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu PME et ETI commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
+    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu PME et ETI commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ussel (19). Nous accompagnons PME et ETI du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ussel (19). Nous accompagnons PME et ETI du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit sur place sur mesure.",
   ecosystemFr:
     "Ussel, sous-préfecture de la Corrèze, est la porte d'entrée du plateau de Millevaches (PNR). Économie locale : commerce et artisanat de proximité, filière bois-forêt (scieries, exploitation forestière), services de santé (hôpital, maisons médicales), BTP montagne et tourisme nature (randonnée, lac de Séchemailles).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const USSEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ussel : diagnostic adapté aux TPE/PME du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ussel : diagnostic adapté aux TPE/PME du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ussel : diagnostic adapté aux PME et ETI du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ussel : diagnostic adapté aux PME et ETI du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ussel : formations pratiques pour commerçants, artisans bois, professionnels de santé et gérants du tourisme nature.",
@@ -42,8 +42,8 @@ export const USSEL_COPY: VilleCopy = {
       en: "Implémentation IA à Ussel : gestion stock bois-forêt, optimisation plannings santé, automatisation administrative, outils IA accueil tourisme nature Millevaches.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ussel : sessions adaptées dirigeants TPE/PME, exploitants forestiers, professionnels de santé et gérants d'hébergements haute Corrèze.",
-      en: "Coaching 1-to-1 à Ussel : sessions adaptées dirigeants TPE/PME, exploitants forestiers, professionnels de santé et gérants d'hébergements haute Corrèze.",
+      fr: "Coaching 1-to-1 à Ussel : sessions adaptées dirigeants de PME et d'ETI, exploitants forestiers, professionnels de santé et gérants d'hébergements haute Corrèze.",
+      en: "Coaching 1-to-1 à Ussel : sessions adaptées dirigeants de PME et d'ETI, exploitants forestiers, professionnels de santé et gérants d'hébergements haute Corrèze.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const USSEL_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ussel  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la haute Corrèze. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI de la haute Corrèze. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider la filière bois autour d'Ussel ?",
@@ -65,7 +65,7 @@ export const USSEL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel à Ussel ?",
-      a: "Oui, coaching 1-to-1 adapté aux dirigeants de TPE/PME usselois. Sur site dans votre bureau ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, coaching 1-to-1 adapté aux dirigeants de PME et ETI usselois. Sur site dans votre bureau ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

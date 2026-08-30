@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GIVORS_COPY: VilleCopy = {
   pitchFr:
-    "À Givors, dans le sud lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique, de la construction et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
+    "À Givors, dans le sud lyonnais, Axion-IA accompagne les PME et ETI de l'industrie, de la logistique, de la construction et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "À Givors, dans le sud lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique, de la construction et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
+    "À Givors, dans le sud lyonnais, Axion-IA accompagne les PME et ETI de l'industrie, de la logistique, de la construction et du commerce. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Givors pour accompagner les TPE et PME locales. Au confluent du Rhône et du Gier, marquée par sa tradition verrière et son tissu industriel, la ville constitue une porte d'entrée logistique du sud lyonnais. Auprès des PME industrielles, des prestataires logistiques, des artisans et des commerces, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Givors pour accompagner les PME et ETI locales. Au confluent du Rhône et du Gier, marquée par sa tradition verrière et son tissu industriel, la ville constitue une porte d'entrée logistique du sud lyonnais. Auprès des PME industrielles, des prestataires logistiques, des artisans et des commerces, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Givors pour accompagner les TPE et PME locales. Au confluent du Rhône et du Gier, marquée par sa tradition verrière et son tissu industriel, la ville constitue une porte d'entrée logistique du sud lyonnais. Auprès des PME industrielles, des prestataires logistiques, des artisans et des commerces, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Givors pour accompagner les PME et ETI locales. Au confluent du Rhône et du Gier, marquée par sa tradition verrière et son tissu industriel, la ville constitue une porte d'entrée logistique du sud lyonnais. Auprès des PME industrielles, des prestataires logistiques, des artisans et des commerces, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   seoHook: "industrie, verre & logistique",
   ecosystemFr:
-    "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de TPE et PME, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
+    "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de PME et ETI, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
   ecosystemEn:
-    "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de TPE et PME, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
+    "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de PME et ETI, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
   distancesFr:
     "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Cette desserte sur l'axe rhodanien facilite les déplacements de nos consultants vers les zones d'activités de Givors, Grigny et de la vallée du Gier.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GIVORS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Un audit IA à Givors analyse vos processus sur site, en tenant compte des contraintes industrielles et logistiques du sud lyonnais, pour identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
-      en: "Un audit IA à Givors analyse vos processus sur site, en tenant compte des contraintes industrielles et logistiques du sud lyonnais, pour identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
+      fr: "Un audit IA à Givors analyse vos processus sur site, en tenant compte des contraintes industrielles et logistiques du sud lyonnais, pour identifier les automatisations à plus fort ROI pour une PME ou une PME.",
+      en: "Un audit IA à Givors analyse vos processus sur site, en tenant compte des contraintes industrielles et logistiques du sud lyonnais, pour identifier les automatisations à plus fort ROI pour une PME ou une PME.",
     },
     interventions: {
       fr: "Nos interventions à Givors automatisent les tâches répétitives des PME industrielles et logistiques : suivi de production, gestion des stocks, relances fournisseurs et traitement administratif, sans bouleverser vos outils existants.",
@@ -42,8 +42,8 @@ export const GIVORS_COPY: VilleCopy = {
       en: "L'implémentation à Givors déploie des solutions IA durables pour l'industrie, la logistique et la construction, avec une attention forte à la traçabilité, à la fiabilité opérationnelle et à la conformité RGPD.",
     },
     unAUn: {
-      fr: "Nos sessions un-à-un à Givors forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la logistique ou du bâtiment local.",
-      en: "Nos sessions un-à-un à Givors forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la logistique ou du bâtiment local.",
+      fr: "Nos sessions un-à-un à Givors forment les dirigeants de PME et d'ETI à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la logistique ou du bâtiment local.",
+      en: "Nos sessions un-à-un à Givors forment les dirigeants de PME et d'ETI à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la logistique ou du bâtiment local.",
     },
     sitesWeb: {
       fr: "Pour les entreprises de Givors, nous concevons des sites web et plateformes augmentés par l'IA : portails de commande pour clients professionnels, devis logistiques automatisés et assistants qualifiant les demandes B2B entrantes.",
@@ -57,7 +57,7 @@ export const GIVORS_COPY: VilleCopy = {
         whyHere: [
           "Tissu industriel et verrier de tradition : héritière de la Verrerie de Givors et adossée à la filière verre-emballage de la vallée du Rhône, la ville concentre des PME manufacturières. Pour elles, on construit des portails clients, des configurateurs de produits techniques et des catalogues en ligne reliés à votre ERP, avec devis automatisés, fiches matière et suivi de commande en temps réel.",
           "Carrefour logistique de la vallée du Rhône : positionnée sur l'A47 (Lyon–Saint-Étienne), desservie par la gare de Givors-Ville et bordée par le port fluvial sur le Rhône, Givors est un point de passage clé. Nos plateformes orchestrent prise de commande B2B, devis transport, suivi d'expédition et qualification des demandes entrantes par agents IA, pour les prestataires d'entreposage et de transport routier.",
-          "Dense réseau de TPE du commerce, de l'artisanat et du bâtiment : du centre-ville aux zones d'activités des Vernes et de Grigny, on greffe l'IA sur l'existant (widget, plugin, API) ou on livre une vitrine e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) sans refonte coûteuse, mobile-first et calibrée pour des structures aux ressources limitées.",
+          "Dense réseau de PME du commerce, de l'artisanat et du bâtiment : du centre-ville aux zones d'activités des Vernes et de Grigny, on greffe l'IA sur l'existant (widget, plugin, API) ou on livre une vitrine e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) sans refonte coûteuse, mobile-first et calibrée pour des structures aux ressources limitées.",
           "Proximité de la Vallée de la Chimie et exigence de conformité : à la charnière de Grigny et du couloir chimique du sud lyonnais, les enjeux de traçabilité et de données sensibles sont forts. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de production, de stock et clients restent maîtrisées, sans dépendance à un prestataire unique.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const GIVORS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, qualification de demandes) sur le site existant d'un artisan, d'un commerce du centre-ville ou d'une petite entreprise du bâtiment, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const GIVORS_COPY: VilleCopy = {
         whyHere: [
           "Tissu industriel et verrier de tradition : héritière de la Verrerie de Givors et adossée à la filière verre-emballage de la vallée du Rhône, la ville concentre des PME manufacturières. Pour elles, on construit des portails clients, des configurateurs de produits techniques et des catalogues en ligne reliés à votre ERP, avec devis automatisés, fiches matière et suivi de commande en temps réel.",
           "Carrefour logistique de la vallée du Rhône : positionnée sur l'A47 (Lyon–Saint-Étienne), desservie par la gare de Givors-Ville et bordée par le port fluvial sur le Rhône, Givors est un point de passage clé. Nos plateformes orchestrent prise de commande B2B, devis transport, suivi d'expédition et qualification des demandes entrantes par agents IA, pour les prestataires d'entreposage et de transport routier.",
-          "Dense réseau de TPE du commerce, de l'artisanat et du bâtiment : du centre-ville aux zones d'activités des Vernes et de Grigny, on greffe l'IA sur l'existant (widget, plugin, API) ou on livre une vitrine e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) sans refonte coûteuse, mobile-first et calibrée pour des structures aux ressources limitées.",
+          "Dense réseau de PME du commerce, de l'artisanat et du bâtiment : du centre-ville aux zones d'activités des Vernes et de Grigny, on greffe l'IA sur l'existant (widget, plugin, API) ou on livre une vitrine e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) sans refonte coûteuse, mobile-first et calibrée pour des structures aux ressources limitées.",
           "Proximité de la Vallée de la Chimie et exigence de conformité : à la charnière de Grigny et du couloir chimique du sud lyonnais, les enjeux de traçabilité et de données sensibles sont forts. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de production, de stock et clients restent maîtrisées, sans dépendance à un prestataire unique.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const GIVORS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, qualification de demandes) sur le site existant d'un artisan, d'un commerce du centre-ville ou d'une petite entreprise du bâtiment, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -234,7 +222,7 @@ export const GIVORS_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Givors ?",
-      a: "Nous accompagnons en priorité les TPE et PME : industrie manufacturière, logistique, transport, construction et commerce. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées qui veulent un retour rapide.",
+      a: "Nous accompagnons en priorité les PME et ETI : industrie manufacturière, logistique, transport, construction et commerce. Les grands groupes complètent ce socle. Notre approche est calibrée pour des structures aux ressources limitées qui veulent un retour rapide.",
     },
     {
       q: "Par quoi commence une mission IA à Givors ?",

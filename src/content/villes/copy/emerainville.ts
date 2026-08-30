@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const EMERAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. PME et ETI logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. PME et ETI logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons PME et ETI : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Émerainville (77). Nous accompagnons PME et ETI : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
-    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
+    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des PME et ETI diversifiées.",
   ecosystemEn:
-    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
+    "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des PME et ETI diversifiées.",
   distancesFr:
     "Gare RER A Émerainville-Pontault-Combault à proximité. Paris-Gare de Lyon à 35 min RER. A4 accès direct. Roissy-CDG à 40 min. Marne-la-Vallée-Chessy à 15 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const EMERAINVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Émerainville : optimisation flux logistique, automatisation gestion stocks, CRM prestataires, agents conversationnels commerce et facturation artisans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Émerainville : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants TPE/PME logistique, services, commerce et artisanat.",
-      en: "Coaching 1-to-1 à Émerainville : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants TPE/PME logistique, services, commerce et artisanat.",
+      fr: "Coaching 1-to-1 à Émerainville : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants PME et ETI logistique, services, commerce et artisanat.",
+      en: "Coaching 1-to-1 à Émerainville : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants PME et ETI logistique, services, commerce et artisanat.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const EMERAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Émerainville  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
     },
     {
       q: "Travaillez-vous avec les entreprises logistique et transport ?",
       a: "Oui, nous accompagnons les PME logistique et transport : optimisation des flux et tournées, automatisation gestion stocks et inventaires, prédiction demande, traçabilité et classification documents.",
     },
     {
-      q: "Accompagnez-vous les artisans et TPE d'Émerainville ?",
-      a: "Oui, nous accompagnons TPE et artisans BTP : automatisation devis et facturation, gestion planning chantiers, agents IA prise de rendez-vous, suivi client.",
+      q: "Accompagnez-vous les artisans et PME d'Émerainville ?",
+      a: "Oui, nous accompagnons PME et artisans BTP : automatisation devis et facturation, gestion planning chantiers, agents IA prise de rendez-vous, suivi client.",
     },
     {
       q: "Proposez-vous des formations IA à Émerainville ?",

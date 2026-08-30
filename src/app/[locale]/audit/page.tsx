@@ -91,7 +91,7 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? "L'audit IA en entreprise rigoureux, complet et minutieux — la référence française. 4 niveaux selon la taille (TPE, PME, ETI, grande entreprise). Cartographie détaillée, ROI chiffré, feuille de route actionnable. Partout en France."
+      ? "L'audit IA en entreprise rigoureux, complet et minutieux — la référence française. 4 niveaux selon la taille (PME, ETI, grande entreprise). Cartographie détaillée, ROI chiffré, feuille de route actionnable. Partout en France."
       : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. 4 levels by company size (small business, SME, mid-cap, large enterprise). Detailed mapping, quantified ROI, actionable roadmap. Across France.",
     serviceType: "AI audit",
   });
@@ -117,7 +117,7 @@ export default async function AuditHub({ params }: Props) {
       {
         name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
         text: isFr
-          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Audit sur place (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent à partir de 24-48 h ouvrées selon la complexité."
+          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Audit sur place (1 jour), Ciblé, Stratégique PME ou Stratégique ETI. Devis transparent à partir de 24-48 h ouvrées selon la complexité."
           : "We recommend the optimal AI audit tier based on your size: On-site audit (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote from 24-48 business hours depending on complexity.",
       },
       {
@@ -207,7 +207,7 @@ export default async function AuditHub({ params }: Props) {
           avant la section audience (Will 2026-05-31). */}
       <AuditBenefits isFr={isFr} />
 
-      {/* À QUI ÇA S'ADRESSE — cards par taille (TPE/artisans, PME, ETI, grande
+      {/* À QUI ÇA S'ADRESSE — cards par taille (PME, ETI, grande
           entreprise). */}
       <AuditAudience isFr={isFr} />
 
@@ -216,7 +216,7 @@ export default async function AuditHub({ params }: Props) {
           architectes seniors, de l'audit au cadrage des agents (Will 2026-05-31). */}
       <AuditWhyChooseUs isFr={isFr} />
 
-      {/* RÉALISATIONS — 8 projets diversifiés (TPE/PME/ETI) en marquee défilant,
+      {/* RÉALISATIONS — 8 projets diversifiés (PME/ETI/grands groupes) en marquee défilant,
           non cliquables, juste après le pitch « toute la chaîne IA » (Will
           2026-05-31). Aucun nom de société/marque : secteur + résultat mesurable. */}
       <AuditRealisations isFr={isFr} />

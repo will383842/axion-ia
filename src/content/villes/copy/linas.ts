@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const LINAS_COPY: VilleCopy = {
   pitchFr:
-    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, PME de l'artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, PME de l'artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linas (91). Nous accompagnons PME et ETI : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linas (91). Nous accompagnons PME et ETI : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
   seoHook: "zone d'activités & services",
   ecosystemFr:
-    "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, TPE artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
+    "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, PME de l'artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
   ecosystemEn:
-    "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, TPE artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
+    "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, PME de l'artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
   distancesFr:
     "Paris centre à 35 min. Montlhéry à 3 min. Longjumeau à 8 min. Évry-Courcouronnes à 20 min. Aéroport Orly à 20 min.",
   distancesEn:
     "Paris centre à 35 min. Montlhéry à 3 min. Longjumeau à 8 min. Évry-Courcouronnes à 20 min. Aéroport Orly à 20 min.",
   topSectorsNaf: [
     "Zone d'activités économiques",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "PME services",
     "Logistique locale",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, PME de l'artisanat, commerces de proximité, PME services, prestataires logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, PME de l'artisanat, commerces de proximité, PME services, prestataires logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Linas : formats adaptés entrepôt zone d'activités, atelier artisan, commerce, siège PME, bureau tertiaire Hurepoix. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const LINAS_COPY: VilleCopy = {
       en: "Implémentation IA à Linas : automatisation gestion stocks et flux logistiques, CRM augmenté PME, facturation artisans, optimisation planning zone d'activités.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Linas : sessions dans vos locaux zone d'activités, atelier, commerce ou en visio. Dirigeants TPE/PME, artisans, prestataires du Hurepoix.",
-      en: "Coaching 1-to-1 à Linas : sessions dans vos locaux zone d'activités, atelier, commerce ou en visio. Dirigeants TPE/PME, artisans, prestataires du Hurepoix.",
+      fr: "Coaching 1-to-1 à Linas : sessions dans vos locaux zone d'activités, atelier, commerce ou en visio. Dirigeants PME et ETI, artisans, prestataires du Hurepoix.",
+      en: "Coaching 1-to-1 à Linas : sessions dans vos locaux zone d'activités, atelier, commerce ou en visio. Dirigeants PME et ETI, artisans, prestataires du Hurepoix.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LINAS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises de zone d'activités ?",
-      a: "Oui, automatisation gestion stocks, optimisation flux logistiques, CRM augmenté, facturation automatisée. Solutions adaptées aux PME et TPE en zone d'activités.",
+      a: "Oui, automatisation gestion stocks, optimisation flux logistiques, CRM augmenté, facturation automatisée. Solutions adaptées aux PME et ETI en zone d'activités.",
     },
     {
       q: "Quels services pour les artisans et commerces ?",

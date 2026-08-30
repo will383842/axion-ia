@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-André-de-Sangonis (34), commune de la vallée de l'Hérault, entre vignoble AOC Languedoc et garrigue. Accès A750, forte croissance résidentielle. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-André-de-Sangonis (34), commune de la vallée de l'Hérault, entre vignoble AOC Languedoc et garrigue. Accès A750, forte croissance résidentielle. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales, services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Saint-André-de-Sangonis (34), commune de la vallée de l'Hérault, entre vignoble AOC Languedoc et garrigue. Accès A750, forte croissance résidentielle. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-André-de-Sangonis (34), commune de la vallée de l'Hérault, entre vignoble AOC Languedoc et garrigue. Accès A750, forte croissance résidentielle. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons PME du commerce, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-André-de-Sangonis (34). Nous accompagnons PME du commerce, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de la vallée de l'Hérault.",
   ecosystemFr:
-    "Saint-André-de-Sangonis est une commune de la vallée de l'Hérault en forte croissance résidentielle, entre Gignac et Clermont-l'Hérault. Vignoble AOC Languedoc, accès A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services.",
+    "Saint-André-de-Sangonis est une commune de la vallée de l'Hérault en forte croissance résidentielle, entre Gignac et Clermont-l'Hérault. Vignoble AOC Languedoc, accès A750. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales, services.",
   ecosystemEn:
-    "Saint-André-de-Sangonis est une commune de la vallée de l'Hérault en forte croissance résidentielle, entre Gignac et Clermont-l'Hérault. Vignoble AOC Languedoc, accès A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, services.",
+    "Saint-André-de-Sangonis est une commune de la vallée de l'Hérault en forte croissance résidentielle, entre Gignac et Clermont-l'Hérault. Vignoble AOC Languedoc, accès A750. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales, services.",
   distancesFr:
     "Montpellier à 35 min par A750. Gignac à 5 min. Clermont-l'Hérault à 15 min. Lodève à 30 min. A750 accès direct.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, PME du commerce, artisans BTP et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, PME du commerce, artisans BTP et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-de-Sangonis : ateliers adaptés domaine viticole, atelier artisan, commerce ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-André-de-Sangonis : automatisation gestion vignoble, devis artisans BTP, chatbot client, classification documents vallée Hérault.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-André-de-Sangonis : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants TPE/PME de la vallée de l'Hérault.",
-      en: "Coaching 1-to-1 à Saint-André-de-Sangonis : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants TPE/PME de la vallée de l'Hérault.",
+      fr: "Coaching 1-to-1 à Saint-André-de-Sangonis : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants PME et ETI de la vallée de l'Hérault.",
+      en: "Coaching 1-to-1 à Saint-André-de-Sangonis : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants PME et ETI de la vallée de l'Hérault.",
     },
   },
   faqGeolocalisee: [

@@ -15,7 +15,7 @@
 //   - Mention systématique « frais de logement, repas et forfait trajet en sus »
 //     sur les formats interventions.
 //   - Aucun prix hardcodé (vient de pricing.ts).
-//   - Tailles INSEE : TPE / PME / ETI / GE — pas de métier-type.
+//   - Tailles INSEE : PME/ETI/GE — pas de métier-type.
 //   - ~95 % Axion-IA-centric + ~5 % data locale anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn.
 
@@ -23,13 +23,13 @@ import type { VilleCopy } from "./types";
 
 export const TOURS_COPY: VilleCopy = {
   pitchFr:
-    "Tours concentre un tissu industriel de premier rang (STMicroelectronics, SKF, Michelin Joué-lès-Tours), le pôle Smart Electricity S2E2 et 30 000 étudiants (Université François-Rabelais, Polytech). Axion-IA intervient sur site auprès des TPE tourangelles comme des ETI industrielles et tertiaires de Tours Métropole.",
+    "Tours concentre un tissu industriel de premier rang (STMicroelectronics, SKF, Michelin Joué-lès-Tours), le pôle Smart Electricity S2E2 et 30 000 étudiants (Université François-Rabelais, Polytech). Axion-IA intervient sur site auprès des PME tourangelles comme des ETI industrielles et tertiaires de Tours Métropole.",
   pitchEn:
     "Tours combines a top-tier industrial fabric (STMicroelectronics, SKF, Michelin Joué-lès-Tours), the S2E2 Smart Electricity pole and 30,000 students (Université François-Rabelais, Polytech). Axion-IA delivers on site, from local micro-businesses to mid-cap industrial and tertiary firms across Tours Métropole.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Tours : nous identifions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille — TPE du commerce tourangeau aux ETI industrielles du bassin.",
+      fr: "Audit IA opérationnel à Tours : nous identifions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille — PME du commerce tourangeau aux ETI industrielles du bassin.",
       en: "Operational AI audit in Tours: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from local micro-businesses to industrial mid-caps across the Tours basin.",
     },
     interventions: {
@@ -51,7 +51,7 @@ export const TOURS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tours (37) sur site auprès des entreprises de Tours Métropole. Nous accompagnons TPE, PME, ETI et grandes entreprises tourangelles — secteurs industrie (STMicro, SKF, Michelin, Hutchinson), tertiaire (conseil, santé, commerce), énergie (pôle S2E2), agroalimentaire et viticulture Val de Loire — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tours (37) sur site auprès des entreprises de Tours Métropole. Nous accompagnons PME, ETI et grands groupes tourangeaux — secteurs industrie (STMicro, SKF, Michelin, Hutchinson), tertiaire (conseil, santé, commerce), énergie (pôle S2E2), agroalimentaire et viticulture Val de Loire — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Tours (37) on site across Tours Métropole businesses. We support micro-businesses, SMEs, mid-caps and large enterprises in Tours — industry (STMicro, SKF, Michelin, Hutchinson), services, energy (S2E2 pole), agrifood and Val de Loire wine — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. No tech lock-in, your teams stay in control.",
 
@@ -79,13 +79,13 @@ export const TOURS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Tours cartographie précisément ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles — de la TPE du commerce tourangeau à l'ETI industrielle du bassin (industrie, énergie, agroalimentaire, services) — avec restitution en présentiel dans vos locaux et plan d'action actionnable remis en main propre.",
+        hero: "L'audit IA Axion-IA à Tours cartographie précisément ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toute l'échelle — de la PME du commerce tourangeau à l'ETI industrielle du bassin (industrie, énergie, agroalimentaire, services) — avec restitution en présentiel dans vos locaux et plan d'action actionnable remis en main propre.",
         whyHere: [
           "Tours est un bassin industriel et tertiaire diversifié avec des ETI et GE de premier plan (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson) dont les process industriels, bureautiques et RH sont fortement automatisables.",
           "Le pôle S2E2 (Smart Electricity, siège Tours) génère un tissu de PME et ETI spécialisées en réseaux intelligents et efficacité énergétique — terrain fertile pour des cas IA sur la maintenance prédictive, l'optimisation énergétique et la documentation technique.",
           "L'Université de Tours (Rabelais), Polytech et l'ESCEM alimentent un vivier de PME tech et de startups (Mame, Village by CA, French Tech Loire Valley) habitués aux innovations mais parfois en retard sur les déploiements IA opérationnels.",
           "Nos consultants se déplacent sur site dans tout Tours Métropole (Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours, Saint-Cyr-sur-Loire, Saint-Avertin) — restitution toujours en présentiel.",
-          "Tarifs publics affichés : aucun devis opaque, vous savez exactement ce que vous payez avant de signer, que vous soyez une TPE du Vieux-Tours ou une ETI industrielle du parc Granges-Galand.",
+          "Tarifs publics affichés : aucun devis opaque, vous savez exactement ce que vous payez avant de signer, que vous soyez une PME du Vieux-Tours ou une ETI industrielle du parc Granges-Galand.",
           "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit — aucun lock-in Axion-IA.",
         ],
         methodology: [
@@ -116,12 +116,6 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et commerces tourangeaux jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -185,7 +179,7 @@ export const TOURS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Tours precisely maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers cover every size — from local micro-businesses to industrial mid-caps across the Tours basin (industry, energy, agrifood, services) — with an in-person read-out at your premises and a concrete action plan handed over face to face.",
+        hero: "Axion-IA's AI audit in Tours precisely maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers cover the full range — from local micro-businesses to industrial mid-caps across the Tours basin (industry, energy, agrifood, services) — with an in-person read-out at your premises and a concrete action plan handed over face to face.",
         whyHere: [
           "Tours is a diversified industrial and services basin with major ETIs and large groups (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson) whose industrial, office and HR processes are highly automatable.",
           "The S2E2 Smart Electricity pole (HQ Tours) generates a cluster of SMEs and mid-caps specialised in smart grids and energy efficiency — fertile ground for AI use cases on predictive maintenance, energy optimisation and technical documentation.",
@@ -222,12 +216,6 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Tours freelancers, micro-firms and local businesses up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -331,12 +319,6 @@ export const TOURS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, artisans, commerces et cabinets tourangeaux jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -436,12 +418,6 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Tours freelancers, craftspeople, local businesses and practices up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -545,12 +521,6 @@ export const TOURS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads) — adapté aux PME et startups tourangelles cherchant un premier déploiement rapide.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -650,12 +620,6 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) — suited to Tours SMEs and startups seeking a first fast deployment.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -759,12 +723,6 @@ export const TOURS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "à partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Pour indépendants, artisans et dirigeants de TPE tourangelles. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires (facturation, comptes-rendus, qualification leads).",
-          },
-          {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
@@ -864,12 +822,6 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
-            detail:
-              "For Tours freelancers, tradespeople and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases (invoicing, meeting minutes, lead qualification).",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme — on quote",
@@ -971,12 +923,6 @@ export const TOURS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1057,12 +1003,6 @@ export const TOURS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1112,7 +1052,7 @@ export const TOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Tours ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre industriel ou tertiaire. Aucun supplément géographique : le tarif est le même à Tours qu'ailleurs en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre industriel ou tertiaire. Aucun supplément géographique : le tarif est le même à Tours qu'ailleurs en France.",
     },
     {
       q: "Avez-vous des références dans les secteurs industriels de Tours (semi-conducteurs, énergie, automobile) ?",

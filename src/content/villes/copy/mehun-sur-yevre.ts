@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   pitchFr:
-    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu PME de l'artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu PME de l'artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : TPE artisans porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : PME artisanales porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : TPE artisans porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : PME artisanales porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
   seoHook: "artisanat porcelaine & industrielles berry",
   ecosystemFr:
-    "Mehun-sur-Yèvre est une commune du Berry (Cher) au patrimoine remarquable : château de Charles VII (ruines classées MH), tradition porcelainière séculaire. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services tertiaires le long de l'Yèvre.",
+    "Mehun-sur-Yèvre est une commune du Berry (Cher) au patrimoine remarquable : château de Charles VII (ruines classées MH), tradition porcelainière séculaire. Tissu PME de l'artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services tertiaires le long de l'Yèvre.",
   ecosystemEn:
-    "Mehun-sur-Yèvre est une commune du Berry (Cher) au patrimoine remarquable : château de Charles VII (ruines classées MH), tradition porcelainière séculaire. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services tertiaires le long de l'Yèvre.",
+    "Mehun-sur-Yèvre est une commune du Berry (Cher) au patrimoine remarquable : château de Charles VII (ruines classées MH), tradition porcelainière séculaire. Tissu PME de l'artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services tertiaires le long de l'Yèvre.",
   distancesFr:
     "Bourges à 15 min. Vierzon à 20 min. Gare Bourges à 20 min. Orléans à 1h30. Paris à 2h30 via A71.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux PME artisanales porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux PME artisanales porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mehun-sur-Yèvre : formats adaptés à l'atelier porcelaine, PME industrielle, commerce, bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
       en: "Implémentation IA à Mehun-sur-Yèvre : classification visuelle défauts porcelaine, automatisation gestion stocks artisanat, agents conversationnels tourisme château Charles VII, CRM augmenté PME Berry.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mehun-sur-Yèvre : sessions dans votre atelier, bureau, commerce ou en visio. Artisans porcelaine, gérants TPE/PME, commerçants, acteurs tourisme Berry.",
-      en: "Coaching 1-to-1 à Mehun-sur-Yèvre : sessions dans votre atelier, bureau, commerce ou en visio. Artisans porcelaine, gérants TPE/PME, commerçants, acteurs tourisme Berry.",
+      fr: "Coaching 1-to-1 à Mehun-sur-Yèvre : sessions dans votre atelier, bureau, commerce ou en visio. Artisans porcelaine, gérants PME et ETI, commerçants, acteurs tourisme Berry.",
+      en: "Coaching 1-to-1 à Mehun-sur-Yèvre : sessions dans votre atelier, bureau, commerce ou en visio. Artisans porcelaine, gérants PME et ETI, commerçants, acteurs tourisme Berry.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans porcelaine et céramique ?",
-      a: "Oui, nous accompagnons les TPE artisanat porcelaine/céramique : classification visuelle défauts, gestion stocks IA, catalogue numérique, vente en ligne augmentée.",
+      a: "Oui, nous accompagnons les PME de l'artisanat porcelaine/céramique : classification visuelle défauts, gestion stocks IA, catalogue numérique, vente en ligne augmentée.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du Berry ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation workflow, CRM augmenté, classification documents, optimisation chaîne logistique.",
     },
     {
-      q: "Quels services pour les TPE et commerces de proximité ?",
-      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+      q: "Quels services pour les PME et commerces de proximité ?",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux PME.",
     },
     {
       q: "Comment se passe une mission depuis Bourges ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_RICAMARIE_COPY: VilleCopy = {
   pitchFr:
-    "La Ricamarie (42), commune en banlieue sud immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin houiller stéphanois). Tissu PME industrielles diversifiées (reconversion), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "La Ricamarie (42), commune en banlieue sud immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin houiller stéphanois). Tissu PME industrielles diversifiées (reconversion), PME du BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "La Ricamarie (42), commune en banlieue sud immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin houiller stéphanois). Tissu PME industrielles diversifiées (reconversion), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "La Ricamarie (42), commune en banlieue sud immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin houiller stéphanois). Tissu PME industrielles diversifiées (reconversion), PME du BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ricamarie (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier reconverti), PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   seoHook: "industrielles diversifiées & héritage minier",
   ecosystemFr:
-    "La Ricamarie est intégrée à Saint-Étienne Métropole, en banlieue sud immédiate de Saint-Étienne. Héritage minier important (ancien bassin houiller stéphanois historique, mémoire ouvrière). Reconversion contemporaine vers tissu PME industrielles diversifiées, tertiaires, TPE artisanat BTP, commerces.",
+    "La Ricamarie est intégrée à Saint-Étienne Métropole, en banlieue sud immédiate de Saint-Étienne. Héritage minier important (ancien bassin houiller stéphanois historique, mémoire ouvrière). Reconversion contemporaine vers tissu PME industrielles diversifiées, tertiaires, PME du BTP, commerces.",
   ecosystemEn:
-    "La Ricamarie est intégrée à Saint-Étienne Métropole, en banlieue sud immédiate de Saint-Étienne. Héritage minier important (ancien bassin houiller stéphanois historique, mémoire ouvrière). Reconversion contemporaine vers tissu PME industrielles diversifiées, tertiaires, TPE artisanat BTP, commerces.",
+    "La Ricamarie est intégrée à Saint-Étienne Métropole, en banlieue sud immédiate de Saint-Étienne. Héritage minier important (ancien bassin houiller stéphanois historique, mémoire ouvrière). Reconversion contemporaine vers tissu PME industrielles diversifiées, tertiaires, PME du BTP, commerces.",
   distancesFr:
     "Saint-Étienne centre à 10 min. Aéroport Saint-Étienne-Bouthéon à 20 min. Lyon centre à 1h. Le Chambon-Feugerolles à 10 min. Firminy à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles diversifiées (reconversion minière)",
     "Héritage minier (mémoire ouvrière)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, PME artisanales, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, PME artisanales, commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ricamarie : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
       en: "Implémentation IA à La Ricamarie : prédiction maintenance industrielle, agents conversationnels B2B, automatisation workflow, classification documents. Saint-Étienne Métropole sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Ricamarie : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants TPE/PME ricamandois.",
-      en: "Coaching 1-to-1 à La Ricamarie : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants TPE/PME ricamandois.",
+      fr: "Coaching 1-to-1 à La Ricamarie : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants PME et ETI ricamandois.",
+      en: "Coaching 1-to-1 à La Ricamarie : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants PME et ETI ricamandois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles diversifiées de Saint-Étienne Métropole sud sur leurs cas IA : prédiction maintenance, contrôle qualité par vision, optimisation production, classification documents techniques.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à La Ricamarie sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce à La Ricamarie sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Quels services pour les indépendants ricamandois ?",

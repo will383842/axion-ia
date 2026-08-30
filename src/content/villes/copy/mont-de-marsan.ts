@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const MONT_DE_MARSAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Mont-de-Marsan, préfecture des Landes (31 592 habitants), dans l'adoption d'outils d'intelligence artificielle codés sur mesure. Située au confluent de la Midouze, du Midou et de la Douze, la ville héberge la base aérienne 118, la préfecture des Landes ainsi qu'un tissu économique tourné vers le commerce, l'agriculture, l'agroalimentaire et l'administration. Notre cabinet code en custom, sans no-code, pour les dirigeants montois.",
+    "Axion-IA accompagne les PME et ETI de Mont-de-Marsan, préfecture des Landes (31 592 habitants), dans l'adoption d'outils d'intelligence artificielle codés sur mesure. Située au confluent de la Midouze, du Midou et de la Douze, la ville héberge la base aérienne 118, la préfecture des Landes ainsi qu'un tissu économique tourné vers le commerce, l'agriculture, l'agroalimentaire et l'administration. Notre cabinet code en custom, sans no-code, pour les dirigeants montois.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Mont-de-Marsan, préfecture des Landes (31 592 habitants), dans l'adoption d'outils d'intelligence artificielle codés sur mesure. Située au confluent de la Midouze, du Midou et de la Douze, la ville héberge la base aérienne 118, la préfecture des Landes ainsi qu'un tissu économique tourné vers le commerce, l'agriculture, l'agroalimentaire et l'administration. Notre cabinet code en custom, sans no-code, pour les dirigeants montois.",
+    "Axion-IA accompagne les PME et ETI de Mont-de-Marsan, préfecture des Landes (31 592 habitants), dans l'adoption d'outils d'intelligence artificielle codés sur mesure. Située au confluent de la Midouze, du Midou et de la Douze, la ville héberge la base aérienne 118, la préfecture des Landes ainsi qu'un tissu économique tourné vers le commerce, l'agriculture, l'agroalimentaire et l'administration. Notre cabinet code en custom, sans no-code, pour les dirigeants montois.",
   directAnswerFr:
-    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
+    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
+    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   seoHook: "administration, commerce & agroalimentaire",
   ecosystemFr:
-    "Mont-de-Marsan, préfecture des Landes, est un pôle administratif et économique du sud de la Nouvelle-Aquitaine. La ville héberge la base aérienne 118 (un des principaux employeurs locaux), les services préfectoraux et un tissu de TPE/PME tournées vers le commerce, l'agroalimentaire, les activités liées à la forêt landaise (pin maritime, filière bois) et l'agriculture. Desservie par la gare de Mont-de-Marsan (TER vers Bordeaux et Dax) et par l'autoroute A65, elle est fondée historiquement au confluent du Midou et de la Douze.",
+    "Mont-de-Marsan, préfecture des Landes, est un pôle administratif et économique du sud de la Nouvelle-Aquitaine. La ville héberge la base aérienne 118 (un des principaux employeurs locaux), les services préfectoraux et un tissu de PME et ETI tournées vers le commerce, l'agroalimentaire, les activités liées à la forêt landaise (pin maritime, filière bois) et l'agriculture. Desservie par la gare de Mont-de-Marsan (TER vers Bordeaux et Dax) et par l'autoroute A65, elle est fondée historiquement au confluent du Midou et de la Douze.",
   ecosystemEn:
-    "Mont-de-Marsan, préfecture des Landes, est un pôle administratif et économique du sud de la Nouvelle-Aquitaine. La ville héberge la base aérienne 118 (un des principaux employeurs locaux), les services préfectoraux et un tissu de TPE/PME tournées vers le commerce, l'agroalimentaire, les activités liées à la forêt landaise (pin maritime, filière bois) et l'agriculture. Desservie par la gare de Mont-de-Marsan (TER vers Bordeaux et Dax) et par l'autoroute A65, elle est fondée historiquement au confluent du Midou et de la Douze.",
+    "Mont-de-Marsan, préfecture des Landes, est un pôle administratif et économique du sud de la Nouvelle-Aquitaine. La ville héberge la base aérienne 118 (un des principaux employeurs locaux), les services préfectoraux et un tissu de PME et ETI tournées vers le commerce, l'agroalimentaire, les activités liées à la forêt landaise (pin maritime, filière bois) et l'agriculture. Desservie par la gare de Mont-de-Marsan (TER vers Bordeaux et Dax) et par l'autoroute A65, elle est fondée historiquement au confluent du Midou et de la Douze.",
   distancesFr:
     "Mont-de-Marsan est à 130 km au sud de Bordeaux, 50 km de Dax, 80 km de Pau et à environ 700 km de Paris. La gare de Mont-de-Marsan dessert Bordeaux et Dax-Bayonne en TER. L'autoroute A65 (Pau-Langon) la relie aux grands axes nationaux. Communes limitrophes : Saint-Pierre-du-Mont, Saint-Avit, Bretagne-de-Marsan, Campet-et-Lamolère, Mazerolles et Uchacq-et-Parentis.",
   distancesEn:
@@ -33,16 +33,16 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mont-de-Marsan pour PME et ETI locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mont-de-Marsan pour PME et ETI locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
       en: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Mont-de-Marsan pour PME et ETI de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Mont-de-Marsan pour PME et ETI de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Accompagnement 1-to-1 à Mont-de-Marsan pour dirigeants montois — stratégie IA et formation pratique, dès {{price:intervention-dirigeants|flat}}.",
@@ -56,7 +56,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
         whyHere: [
           "Un territoire à culture cyber unique en France : ESIOC et centre cyberprotection du CEAM sur la BA 118, Centre de ressources en Cybersécurité de l'Agglo, Mars@Hack, École Supérieure du Numérique des Landes et IUT Réseaux & Télécoms. Nos plateformes IA y sont conçues avec un niveau d'exigence sécurité/souveraineté des données aligné sur cette sensibilité locale.",
           "Un pôle agroalimentaire canard gras et coopératif (Maïsadour et ses 160+ sites Sud-Ouest, Delpeyrat dont les effectifs quasi doublent en fin d'année) qui appelle des SaaS taillés pour la saisonnalité, la traçabilité produit et la vente directe — du back-office au e-commerce de terroir.",
-          "Un tissu dense de TPE/PME de commerce, transport, hébergement-restauration et services (510 créations d'entreprises en 2025, ~27 247 emplois sur l'Agglo hors défense) implantées à Atlantisud (Saint-Pierre-du-Mont) ou à la Z.A. du Conte, qui ont besoin de sites vitrine et e-commerce performants, pas de maquettes génériques.",
+          "Un tissu dense de PME et ETI de commerce, transport, hébergement-restauration et services (510 créations d'entreprises en 2025, ~27 247 emplois sur l'Agglo hors défense) implantées à Atlantisud (Saint-Pierre-du-Mont) ou à la Z.A. du Conte, qui ont besoin de sites vitrine et e-commerce performants, pas de maquettes génériques.",
           "Une saisonnalité événementielle massive avec les Fêtes de la Madeleine (650 000 à 750 000 visiteurs en juillet, arènes du Plumaçon) : commerçants, hébergeurs et acteurs touristiques montois ont besoin de plateformes capables d'absorber les pics de trafic et de réservation, là où un site standard sature.",
         ],
         methodology: [
@@ -87,12 +87,6 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA essentiel",
-            detail:
-              "Pour indépendants, commerçants du centre-ville montois, producteurs de terroir et artisans : site vitrine ou boutique en ligne avec briques IA simples (chatbot FAQ, génération de fiches), pensé pour la vente directe et le SEO local Landes.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web/e-commerce IA sur mesure",
@@ -174,12 +168,6 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Essential AI showcase or e-commerce site",
-            detail:
-              "For freelancers, Mont-de-Marsan town-centre retailers, terroir producers and artisans: showcase site or online shop with simple AI features (FAQ chatbot, sheet generation), built for direct sales and Landes local SEO.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom AI web/e-commerce platform",
             detail:
@@ -237,7 +225,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs montois Axion-IA accompagne-t-il ?",
-      a: "Nous accompagnons en priorité les TPE et PME de Mont-de-Marsan dans le commerce, l'agroalimentaire, la filière bois (pin maritime), les services et l'administration, secteurs structurants du tissu landais.",
+      a: "Nous accompagnons en priorité les PME et ETI de Mont-de-Marsan dans le commerce, l'agroalimentaire, la filière bois (pin maritime), les services et l'administration, secteurs structurants du tissu landais.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Mont-de-Marsan ?",

@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -22,7 +22,7 @@ import type { VilleCopy } from "./types";
 
 export const ROUEN_COPY: VilleCopy = {
   pitchFr:
-    "Rouen regroupe 12 648 établissements actifs, 1er port céréalier européen (HAROPA Seine), un tissu industriel dense (Renault Cléon, Safran Nacelles, Janssen-Cilag, Lubrizol) et un pôle numérique normand en pleine expansion (INSA, ESIGELEC, NEOMA, French Tech Normandie). Axion-IA y intervient sur site, des TPE rouennaises aux ETI industrielles de la Métropole Seine.",
+    "Rouen regroupe 12 648 établissements actifs, 1er port céréalier européen (HAROPA Seine), un tissu industriel dense (Renault Cléon, Safran Nacelles, Janssen-Cilag, Lubrizol) et un pôle numérique normand en pleine expansion (INSA, ESIGELEC, NEOMA, French Tech Normandie). Axion-IA y intervient sur site, des PME rouennaises aux ETI industrielles de la Métropole Seine.",
   pitchEn:
     "Rouen hosts 12,648 active businesses, Europe's leading cereal port (HAROPA Seine), a dense industrial fabric (Renault Cléon, Safran Nacelles, Janssen-Cilag, Lubrizol) and a growing Normandy digital hub (INSA, ESIGELEC, NEOMA, French Tech Normandie). Axion-IA delivers on site, from Rouen micro-businesses to large industrial mid-caps across the Seine Métropole.",
 
@@ -50,7 +50,7 @@ export const ROUEN_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rouen (76) sur site — Technopôle du Madrillet, Plateau de la Vatine, quais de Seine, communes de la Métropole Rouen Normandie. Nous accompagnons les TPE, PME, ETI et grandes entreprises rouennaises (industrie, chimie, logistique, pharma, assurance, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rouen (76) sur site — Technopôle du Madrillet, Plateau de la Vatine, quais de Seine, communes de la Métropole Rouen Normandie. Nous accompagnons les PME, ETI et grands groupes rouennais (industrie, chimie, logistique, pharma, assurance, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Rouen (76) on site — Technopôle du Madrillet, Plateau de la Vatine, Seine quays, Métropole Rouen Normandie communes. We support Rouen micro-businesses, SMEs, mid-caps and large enterprises (industry, chemicals, logistics, pharma, insurance, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -78,7 +78,7 @@ export const ROUEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rouen ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Rouen et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Rouen et partout en France.",
     },
     {
       q: "Avez-vous des références clients dans la Métropole Rouen Normandie ?",
@@ -106,7 +106,7 @@ export const ROUEN_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise rouennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre historique aux ETI industrielles du Madrillet et aux sièges du Plateau de la Vatine.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise rouennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre historique aux ETI industrielles du Madrillet et aux sièges du Plateau de la Vatine.",
         whyHere: [
           "Rouen concentre des secteurs fortement demandeurs d'IA opérationnelle : logistique portuaire (HAROPA, Nov@log), industrie chimique et automobile (Renault Cléon, Safran Nacelles, Lubrizol), pharmaceutique (Janssen-Cilag), assurance (Matmut) et numérique (Madrillet, Vatine).",
           "Tissu B2B sectorisé sur-représenté chez nos clients rouennais : PME industrielles Petit-Quevilly, ETI logistiques axe Seine, cabinets conseil Vatine, startups deep-tech Madrillet et éditeurs numériques.",
@@ -143,12 +143,6 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets rouennais jusqu'à une dizaine de collaborateurs — centre historique, Rive Droite, Bois-Guillaume.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -212,7 +206,7 @@ export const ROUEN_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",
         whyHere: [
           "Rouen concentrates sectors with strong operational AI demand: port logistics (HAROPA, Nov@log), chemical and automotive industry (Renault Cléon, Safran Nacelles, Lubrizol), pharma (Janssen-Cilag), insurance (Matmut) and digital (Madrillet, Vatine).",
           "Rouen B2B fabric over-represented in our cases: industrial SMEs in Petit-Quevilly, logistics mid-caps on the Seine axis, consulting firms at Vatine, deep-tech startups at Madrillet and digital publishers.",
@@ -249,12 +243,6 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Rouen freelancers, micro-firms and practices up to about ten staff — historic centre, Rive Droite, Bois-Guillaume.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -358,12 +346,6 @@ export const ROUEN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, cabinets et petites agences rouennaises jusqu'à une dizaine de collaborateurs — centre historique, Rive Droite, Bois-Guillaume.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -463,12 +445,6 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Rouen freelancers, practices and small agencies up to about ten staff — historic centre, Rive Droite, Bois-Guillaume.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -572,12 +548,6 @@ export const ROUEN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants rouennais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -613,7 +583,7 @@ export const ROUEN_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Rouen ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -677,12 +647,6 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Rouen micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -786,12 +750,6 @@ export const ROUEN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Séance découverte",
-            detail:
-              "Une session d'initiation pour identifier vos cas d'usage prioritaires et tester les premiers outils sur vos données — idéal pour les indépendants et dirigeants TPE rouennais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Parcours manager",
             detail:
@@ -891,12 +849,6 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Discovery session",
-            detail:
-              "An introductory session to identify your priority use cases and test the first tools on your data — ideal for Rouen freelancers and micro-business owners.",
-          },
           {
             sizeLabel: "SME",
             price: "Manager track",
@@ -998,12 +950,6 @@ export const ROUEN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1083,12 +1029,6 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

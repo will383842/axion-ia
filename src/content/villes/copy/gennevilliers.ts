@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const GENNEVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Gennevilliers (50 979 habitants, Hauts-de-Seine), commune située à 2,1 km au nord-ouest de Paris. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, transporteurs et industriels installés autour du port de Gennevilliers — premier port fluvial d'Île-de-France et premier employeur portuaire de la commune.",
+    "Axion-IA accompagne les PME et ETI de Gennevilliers (50 979 habitants, Hauts-de-Seine), commune située à 2,1 km au nord-ouest de Paris. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, transporteurs et industriels installés autour du port de Gennevilliers — premier port fluvial d'Île-de-France et premier employeur portuaire de la commune.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Gennevilliers (50 979 habitants, Hauts-de-Seine), commune située à 2,1 km au nord-ouest de Paris. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, transporteurs et industriels installés autour du port de Gennevilliers — premier port fluvial d'Île-de-France et premier employeur portuaire de la commune.",
+    "Axion-IA accompagne les PME et ETI de Gennevilliers (50 979 habitants, Hauts-de-Seine), commune située à 2,1 km au nord-ouest de Paris. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, transporteurs et industriels installés autour du port de Gennevilliers — premier port fluvial d'Île-de-France et premier employeur portuaire de la commune.",
   directAnswerFr:
-    "Axion-IA se déplace à Gennevilliers (92230) pour auditer et automatiser les flux des TPE et PME locales : transport, négoce, BTP, industrie. La commune concentre 8 000 emplois directs autour du port fluvial (51 ha de voies d'eau, 220 ha de zone industrielle, 272 ha de zone portuaire) et bénéficie d'une desserte exceptionnelle : RER C, métro 13 (Gabriel Péri, Les Agnettes, Les Courtilles), tramway T1, autoroutes A15 et A86. Audit sur place dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
+    "Axion-IA se déplace à Gennevilliers (92230) pour auditer et automatiser les flux des PME et ETI locales : transport, négoce, BTP, industrie. La commune concentre 8 000 emplois directs autour du port fluvial (51 ha de voies d'eau, 220 ha de zone industrielle, 272 ha de zone portuaire) et bénéficie d'une desserte exceptionnelle : RER C, métro 13 (Gabriel Péri, Les Agnettes, Les Courtilles), tramway T1, autoroutes A15 et A86. Audit sur place dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Gennevilliers (92230) pour auditer et automatiser les flux des TPE et PME locales : transport, négoce, BTP, industrie. La commune concentre 8 000 emplois directs autour du port fluvial (51 ha de voies d'eau, 220 ha de zone industrielle, 272 ha de zone portuaire) et bénéficie d'une desserte exceptionnelle : RER C, métro 13 (Gabriel Péri, Les Agnettes, Les Courtilles), tramway T1, autoroutes A15 et A86. Audit sur place dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
+    "Axion-IA se déplace à Gennevilliers (92230) pour auditer et automatiser les flux des PME et ETI locales : transport, négoce, BTP, industrie. La commune concentre 8 000 emplois directs autour du port fluvial (51 ha de voies d'eau, 220 ha de zone industrielle, 272 ha de zone portuaire) et bénéficie d'une desserte exceptionnelle : RER C, métro 13 (Gabriel Péri, Les Agnettes, Les Courtilles), tramway T1, autoroutes A15 et A86. Audit sur place dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
   seoHook: "logistique fluviale, négoce & industrie",
   ecosystemFr:
-    "Gennevilliers est structurée autour du port industriel de Gennevilliers (premier port intérieur d'Île-de-France) qui accueille transporteurs, négociants en matériaux, recycleurs et logisticiens. L'héritage industriel — Gnome et Rhône, Chausson, Chenard et Walcker, Carbone Lorraine, Aciéries Delachaux — a laissé un tissu dense de PME mécaniques, métallurgiques et de sous-traitance. La proximité immédiate de Paris et l'accès direct aux autoroutes A15/A86 en font un nœud logistique stratégique pour les TPE du nord francilien.",
+    "Gennevilliers est structurée autour du port industriel de Gennevilliers (premier port intérieur d'Île-de-France) qui accueille transporteurs, négociants en matériaux, recycleurs et logisticiens. L'héritage industriel — Gnome et Rhône, Chausson, Chenard et Walcker, Carbone Lorraine, Aciéries Delachaux — a laissé un tissu dense de PME mécaniques, métallurgiques et de sous-traitance. La proximité immédiate de Paris et l'accès direct aux autoroutes A15/A86 en font un nœud logistique stratégique pour les PME du nord francilien.",
   ecosystemEn:
-    "Gennevilliers est structurée autour du port industriel de Gennevilliers (premier port intérieur d'Île-de-France) qui accueille transporteurs, négociants en matériaux, recycleurs et logisticiens. L'héritage industriel — Gnome et Rhône, Chausson, Chenard et Walcker, Carbone Lorraine, Aciéries Delachaux — a laissé un tissu dense de PME mécaniques, métallurgiques et de sous-traitance. La proximité immédiate de Paris et l'accès direct aux autoroutes A15/A86 en font un nœud logistique stratégique pour les TPE du nord francilien.",
+    "Gennevilliers est structurée autour du port industriel de Gennevilliers (premier port intérieur d'Île-de-France) qui accueille transporteurs, négociants en matériaux, recycleurs et logisticiens. L'héritage industriel — Gnome et Rhône, Chausson, Chenard et Walcker, Carbone Lorraine, Aciéries Delachaux — a laissé un tissu dense de PME mécaniques, métallurgiques et de sous-traitance. La proximité immédiate de Paris et l'accès direct aux autoroutes A15/A86 en font un nœud logistique stratégique pour les PME du nord francilien.",
   distancesFr:
     "Gennevilliers est limitrophe d'Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Épinay-sur-Seine, Saint-Ouen, L'Île-Saint-Denis et Argenteuil. Le centre de Paris est à 2,1 km, la gare Saint-Lazare accessible en 15 min via le RER C et l'aéroport Paris-CDG à 25 km par l'A86.",
   distancesEn:
@@ -31,8 +31,8 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gennevilliers pour les TPE/PME du port fluvial, les transporteurs et négociants de matériaux — cartographie des automatisations à {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gennevilliers pour les TPE/PME du port fluvial, les transporteurs et négociants de matériaux — cartographie des automatisations à {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gennevilliers pour les PME et ETI du port fluvial, les transporteurs et négociants de matériaux — cartographie des automatisations à {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gennevilliers pour les PME et ETI du port fluvial, les transporteurs et négociants de matériaux — cartographie des automatisations à {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions à Gennevilliers pour automatiser bons de livraison, suivi de flotte et facturation des PME logistiques et BTP — dès {{price:intervention-4h|flat}}.",
@@ -43,8 +43,8 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
       en: "Implémentation de solutions IA codées sur mesure à Gennevilliers (pas de no-code) pour les PME mécaniques, métallurgiques et de négoce — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Gennevilliers pour dirigeants de TPE/PME : roadmap IA, priorités opérationnelles, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions 1-to-1 à Gennevilliers pour dirigeants de TPE/PME : roadmap IA, priorités opérationnelles, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions 1-to-1 à Gennevilliers pour dirigeants de PME et ETI : roadmap IA, priorités opérationnelles, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Gennevilliers pour dirigeants de PME et ETI : roadmap IA, priorités opérationnelles, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou catalogue B2B",
-            detail:
-              "Pour les artisans, transporteurs indépendants et petits négoces de la zone du port : site rapide, mobile, formulaire de devis, référencement local Gennevilliers/Hauts-de-Seine.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
@@ -172,12 +166,6 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or B2B catalogue",
-            detail:
-              "For craftspeople, independent carriers and small traders in the port area: fast, mobile site, quote form, local Gennevilliers/Hauts-de-Seine SEO.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce platform or business portal",
             detail:
@@ -243,7 +231,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous le plus à Gennevilliers ?",
-      a: "Principalement les TPE/PME du transport, de la logistique fluviale, du négoce de matériaux et du BTP — les coeurs de métier autour du port. Les artisans et commerçants de proximité sont accompagnés en parallèle, et les ETI en complément.",
+      a: "Principalement les PME et ETI du transport, de la logistique fluviale, du négoce de matériaux et du BTP — les coeurs de métier autour du port. Les artisans et commerçants de proximité sont accompagnés en parallèle, et les grands groupes en complément.",
     },
     {
       q: "Faites-vous du no-code ou du code sur mesure à Gennevilliers ?",

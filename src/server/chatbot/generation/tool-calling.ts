@@ -166,7 +166,7 @@ export async function generateAnswerWithTools(
   const toolDirective =
     "\n\n## OUTILS — RÈGLES IMPÉRATIVES (appel AVANT de répondre)\n" +
     "1. Si le message contient le MOINDRE élément de profil du visiteur — type de " +
-    "structure (TPE/PME/ETI/école/association), secteur d'activité, besoin exprimé, " +
+    "structure (PME/ETI/grands groupes/école/association), secteur d'activité, besoin exprimé, " +
     "niveau de maturité IA, ou urgence — tu DOIS appeler `qualifier_prospect` avec " +
     "UNIQUEMENT les champs réellement exprimés (jamais inventés). Exemple : « je dirige " +
     'une PME industrielle » → qualifier_prospect({type_structure:"pme", secteur:"industrie"}).\n' +

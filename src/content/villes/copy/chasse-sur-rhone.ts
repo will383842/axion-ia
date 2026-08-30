@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA collabore avec toutes les structures locales.",
+    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), PME du BTP, commerces, agriculture. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA collabore avec toutes les structures locales.",
+    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), PME du BTP, commerces, agriculture. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, PME du BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, PME du BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
   seoHook: "industrie rhodanienne & logistique axe",
   ecosystemFr:
-    "Chasse-sur-Rhône est positionnée à l'extrémité ouest du département de l'Isère et de l'arrondissement de Vienne, sur la rive est du Rhône. Position stratégique entre Lyon (30 min) et Vienne (10 min). Tissu PME industrielles et logistiques rhodaniennes, TPE artisanat BTP, agriculture vallée du Rhône (vignobles AOC Côte-Rôtie et Condrieu à proximité immédiate sur la rive droite), commerces.",
+    "Chasse-sur-Rhône est positionnée à l'extrémité ouest du département de l'Isère et de l'arrondissement de Vienne, sur la rive est du Rhône. Position stratégique entre Lyon (30 min) et Vienne (10 min). Tissu PME industrielles et logistiques rhodaniennes, PME du BTP, agriculture vallée du Rhône (vignobles AOC Côte-Rôtie et Condrieu à proximité immédiate sur la rive droite), commerces.",
   ecosystemEn:
-    "Chasse-sur-Rhône est positionnée à l'extrémité ouest du département de l'Isère et de l'arrondissement de Vienne, sur la rive est du Rhône. Position stratégique entre Lyon (30 min) et Vienne (10 min). Tissu PME industrielles et logistiques rhodaniennes, TPE artisanat BTP, agriculture vallée du Rhône (vignobles AOC Côte-Rôtie et Condrieu à proximité immédiate sur la rive droite), commerces.",
+    "Chasse-sur-Rhône est positionnée à l'extrémité ouest du département de l'Isère et de l'arrondissement de Vienne, sur la rive est du Rhône. Position stratégique entre Lyon (30 min) et Vienne (10 min). Tissu PME industrielles et logistiques rhodaniennes, PME du BTP, agriculture vallée du Rhône (vignobles AOC Côte-Rôtie et Condrieu à proximité immédiate sur la rive droite), commerces.",
   distancesFr:
     "Gare Givors-Ville/Vienne à 10 min. Aéroport Lyon-Saint-Exupéry à 30 min. Lyon centre à 30 min A7. Vienne à 10 min. Axe A7 vers Marseille / A47 vers Saint-Étienne.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
     "Industrie rhodanienne Lyon-Vienne",
     "Logistique axe A7",
     "Viticulture proximité (Côte-Rôtie, Condrieu)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, PME artisanales, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, PME artisanales, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chasse-sur-Rhône : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
       en: "Implémentation IA à Chasse-sur-Rhône : optimisation supply chain A7, prédiction maintenance industrielle, classification photos vignobles, automatisation devis BTP. Axe Lyon-Vienne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chasse-sur-Rhône : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, logistique, agriculteurs, artisans, gérants TPE/PME chassérots.",
-      en: "Coaching 1-to-1 à Chasse-sur-Rhône : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, logistique, agriculteurs, artisans, gérants TPE/PME chassérots.",
+      fr: "Coaching 1-to-1 à Chasse-sur-Rhône : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, logistique, agriculteurs, artisans, gérants PME et ETI chassérots.",
+      en: "Coaching 1-to-1 à Chasse-sur-Rhône : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, logistique, agriculteurs, artisans, gérants PME et ETI chassérots.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les vignerons AOC Côte-Rôtie et Condrieu à proximité immédiate de Chasse-sur-Rhône sur leurs cas IA : prédiction vendanges, classification photos cépages, traçabilité bouteilles, agents conversationnels oenotourisme multilingue.",
     },
     {
-      q: "Quels services pour les TPE artisans chassérots ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chasse-sur-Rhône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      q: "Quels services pour les PME artisanales chassérots ?",
+      a: "Pour les PME du BTP et du commerce à Chasse-sur-Rhône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Vienne ?",

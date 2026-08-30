@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-Blangy (62), commune de l'agglomeration d'Arras au bord de la Scarpe, reunit pres de 6 460 habitants. Son economie beneficie de la proximite d'Arras : PME tertiaires, TPE de services, commerces, professions liberales et activites liees aux zones d'activites. Axion-IA y intervient pour tous types d'activites.",
+    "Saint-Laurent-Blangy (62), commune de l'agglomeration d'Arras au bord de la Scarpe, reunit pres de 6 460 habitants. Son economie beneficie de la proximite d'Arras : PME tertiaires, PME de services, commerces, professions liberales et activites liees aux zones d'activites. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Saint-Laurent-Blangy (62), commune de l'agglomeration d'Arras au bord de la Scarpe, reunit pres de 6 460 habitants. Son economie beneficie de la proximite d'Arras : PME tertiaires, TPE de services, commerces, professions liberales et activites liees aux zones d'activites. Axion-IA y intervient pour tous types d'activites.",
+    "Saint-Laurent-Blangy (62), commune de l'agglomeration d'Arras au bord de la Scarpe, reunit pres de 6 460 habitants. Son economie beneficie de la proximite d'Arras : PME tertiaires, PME de services, commerces, professions liberales et activites liees aux zones d'activites. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras, tertiaire & Scarpe",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Saint-Laurent-Blangy jouxte Arras (3 km) au bord de la Scarpe. Tissu economique dynamique : PME tertiaires en zones d'activites, TPE de services, professions liberales, commerces et artisanat. Proximite de la CUA (communaute urbaine d'Arras) et de ses equipements.",
+    "Saint-Laurent-Blangy jouxte Arras (3 km) au bord de la Scarpe. Tissu economique dynamique : PME tertiaires en zones d'activites, PME de services, professions liberales, commerces et artisanat. Proximite de la CUA (communaute urbaine d'Arras) et de ses equipements.",
   ecosystemEn:
-    "Saint-Laurent-Blangy jouxte Arras (3 km) au bord de la Scarpe. Tissu economique dynamique : PME tertiaires en zones d'activites, TPE de services, professions liberales, commerces et artisanat. Proximite de la CUA (communaute urbaine d'Arras) et de ses equipements.",
+    "Saint-Laurent-Blangy jouxte Arras (3 km) au bord de la Scarpe. Tissu economique dynamique : PME tertiaires en zones d'activites, PME de services, professions liberales, commerces et artisanat. Proximite de la CUA (communaute urbaine d'Arras) et de ses equipements.",
   distancesFr:
     "Gare d'Arras (TGV) a 5 min. Lille Europe a 45 min en TGV. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 50 min en TGV direct.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et PME de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et PME de l'agglomeration arrageoise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Laurent-Blangy : formations adaptees aux bureaux tertiaires, cabinets liberaux, commerces et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
       en: "Implementation IA a Saint-Laurent-Blangy : automatisation processus tertiaires, agents conversationnels cabinet, CRM augmentes pour PME de l'agglomeration d'Arras.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Saint-Laurent-Blangy : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants TPE de l'agglo d'Arras.",
-      en: "Coaching 1-to-1 a Saint-Laurent-Blangy : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants TPE de l'agglo d'Arras.",
+      fr: "Coaching 1-to-1 a Saint-Laurent-Blangy : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants PME de l'agglo d'Arras.",
+      en: "Coaching 1-to-1 a Saint-Laurent-Blangy : accompagnement personnalise dirigeants PME tertiaires, professions liberales et gerants PME de l'agglo d'Arras.",
     },
   },
   faqGeolocalisee: [

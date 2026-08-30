@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BONNEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Bonneville (74), sous-prefecture du Faucigny au coeur de la vallee de l'Arve, est le centre administratif d'un bassin industriel historique (decolletage, horlogerie). Tissu PME industrielles, TPE artisans, commerces et services publics. Axion-IA y intervient pour tous types d'activites de la vallee de l'Arve.",
+    "Bonneville (74), sous-prefecture du Faucigny au coeur de la vallee de l'Arve, est le centre administratif d'un bassin industriel historique (decolletage, horlogerie). Tissu PME industrielles, PME artisanales, commerces et services publics. Axion-IA y intervient pour tous types d'activites de la vallee de l'Arve.",
   pitchEn:
-    "Bonneville (74), sous-prefecture du Faucigny au coeur de la vallee de l'Arve, est le centre administratif d'un bassin industriel historique (decolletage, horlogerie). Tissu PME industrielles, TPE artisans, commerces et services publics. Axion-IA y intervient pour tous types d'activites de la vallee de l'Arve.",
+    "Bonneville (74), sous-prefecture du Faucigny au coeur de la vallee de l'Arve, est le centre administratif d'un bassin industriel historique (decolletage, horlogerie). Tissu PME industrielles, PME artisanales, commerces et services publics. Axion-IA y intervient pour tous types d'activites de la vallee de l'Arve.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bonneville (74). Nous accompagnons PME et ETI : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bonneville (74). Nous accompagnons PME et ETI : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "decolletage horlogerie & administration",
   ecosystemFr:
     "Bonneville est la sous-prefecture de la Haute-Savoie et la capitale du Faucigny, au coeur de la vallee de l'Arve. Ce bassin industriel historique concentre des PME de decolletage et horlogerie de renommee mondiale (Cluses a 15 min). Administration departementale, commerces de centre-ville, artisanat BTP et services aux entreprises completent le tissu economique.",
@@ -25,7 +25,7 @@ export const BONNEVILLE_COPY: VilleCopy = {
     "Decolletage & horlogerie",
     "Administration (sous-prefecture)",
     "PME industrielles vallee Arve",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce",
   ],
   servicesContext: {
@@ -60,8 +60,8 @@ export const BONNEVILLE_COPY: VilleCopy = {
       a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME industrielles de la vallee de l'Arve, nous proposons des audits approfondis adaptes aux enjeux de production et qualite du decolletage.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans du Faucigny ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commercants et independants de Bonneville et du Faucigny. Cas typiques : automatisation devis, gestion planning chantiers, agents IA prise de rendez-vous, facturation.",
+      q: "Accompagnez-vous les PME et artisans du Faucigny ?",
+      a: "Oui, nous accompagnons les PME du BTP, commercants et independants de Bonneville et du Faucigny. Cas typiques : automatisation devis, gestion planning chantiers, agents IA prise de rendez-vous, facturation.",
     },
     {
       q: "Proposez-vous des formations IA a Bonneville ?",

@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/devenir-commercial-ia",
       title,
       description: isFr
-        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act oblige TPE, PME, ETI et grands groupes à former leurs équipes à l'IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
         : "€500 for you per AI training day sold, uncapped. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     })),
     title: { absolute: title },
@@ -131,8 +131,8 @@ export default async function DevenirCommercialHub({ params }: Props) {
       ? "Commercial indépendant en IA (agent commercial, VRP, apporteur d'affaires)"
       : "Independent AI sales representative (agent or business introducer)",
     description: isFr
-      ? `Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grands groupes. L'AI Act impose à toute entreprise qui utilise l'IA de former ses équipes (article 4, en vigueur) et les formations sont finançables OPCO : la demande est déjà là. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "fr", { compact: true })} par journée de formation vendue, quel que soit le format. Statut indépendant, revenus non plafonnés, emploi du temps libre.`
-      : `Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to businesses of every size. The AI Act requires any company using AI to train its staff (article 4, in force) and trainings are OPCO-fundable: the demand is already there. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "en", { compact: true })} per training day sold, whatever the format. Self-employed status, uncapped income, flexible schedule.`,
+      ? `Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux PME, ETI et grands groupes, artisans et commerçants compris. L'AI Act impose à toute entreprise qui utilise l'IA de former ses équipes (article 4, en vigueur) et les formations sont finançables OPCO : la demande est déjà là. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "fr", { compact: true })} par journée de formation vendue, quel que soit le format. Statut indépendant, revenus non plafonnés, emploi du temps libre.`
+      : `Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to SMEs, mid-caps and large groups, trades and retailers included. The AI Act requires any company using AI to train its staff (article 4, in force) and trainings are OPCO-fundable: the demand is already there. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "en", { compact: true })} per training day sold, whatever the format. Self-employed status, uncapped income, flexible schedule.`,
     datePosted: COMMERCIAL_OFFER_DATE_POSTED,
     // Identifiant STABLE de l'offre — recommandé par Google for Jobs. Il permet
     // à Google de reconnaître qu'une republication (nouveau `datePosted`) porte

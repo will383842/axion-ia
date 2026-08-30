@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const AURILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
+    "Axion-IA accompagne les PME et ETI d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
+    "Axion-IA accompagne les PME et ETI d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h et {{price:intervention-4h|flat}} pour la formation collective. Williams intervient sous 5 jours ouvrés.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h et {{price:intervention-4h|flat}} pour la formation collective. Williams intervient sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h et {{price:intervention-4h|flat}} pour la formation collective. Williams intervient sous 5 jours ouvrés.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h et {{price:intervention-4h|flat}} pour la formation collective. Williams intervient sous 5 jours ouvrés.",
   seoHook: "agroalimentaire & commerce détail",
   ecosystemFr:
-    "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les TPE et PME aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
+    "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les PME et ETI aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
   ecosystemEn:
-    "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les TPE et PME aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
+    "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les PME et ETI aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
   distancesFr:
     "Aurillac dispose d'une gare SNCF sur la ligne Figeac-Arvant (TER vers Toulouse, Clermont-Ferrand, Brive-la-Gaillarde) et d'un aéroport municipal avec liaison régulière vers Paris-Orly via Chalair Aviation. La RN 122 relie la ville à l'A75. Distance routière approximative à Clermont-Ferrand : 160 km.",
   distancesEn:
@@ -32,8 +32,8 @@ export const AURILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
-      en: "Audit sur place 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
+      fr: "Audit sur place 4h à Aurillac pour PME et ETI du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
+      en: "Audit sur place 4h à Aurillac pour PME et ETI du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Formation collective sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement Williams sous 5 jours.",
@@ -44,8 +44,8 @@ export const AURILLAC_COPY: VilleCopy = {
       en: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions un-à-un avec les dirigeants de PME et d'ETI aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions un-à-un avec les dirigeants de PME et d'ETI aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const AURILLAC_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous, relances automatisées — sur le site d'un commerce de centre-ville, d'un producteur fromager, d'une distillerie ou d'un artisan aurillacois, en quelques semaines et sans refonte du site existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const AURILLAC_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous, relances automatisées — sur le site d'un commerce de centre-ville, d'un producteur fromager, d'une distillerie ou d'un artisan aurillacois, en quelques semaines et sans refonte du site existant.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -244,11 +232,11 @@ export const AURILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux d'Aurillac accompagnez-vous ?",
-      a: "Nous travaillons avec les TPE et PME de l'agroalimentaire (producteurs laitiers, fromagers, charcutiers, distilleries), du commerce de détail, de la restauration, de la construction et des services à la santé du bassin aurillacois.",
+      a: "Nous travaillons avec les PME et ETI de l'agroalimentaire (producteurs laitiers, fromagers, charcutiers, distilleries), du commerce de détail, de la restauration, de la construction et des services à la santé du bassin aurillacois.",
     },
     {
       q: "Pourquoi du code IA sur mesure plutôt qu'un outil no-code à Aurillac ?",
-      a: "Le code custom Axion-IA s'intègre durablement à vos logiciels métier existants (ERP, caisse, comptabilité), reste votre propriété, évite la dépendance à un éditeur SaaS et garantit un contrôle RGPD complet — adapté aux TPE et PME aurillacoises qui veulent capitaliser, pas louer.",
+      a: "Le code custom Axion-IA s'intègre durablement à vos logiciels métier existants (ERP, caisse, comptabilité), reste votre propriété, évite la dépendance à un éditeur SaaS et garantit un contrôle RGPD complet — adapté aux PME et ETI aurillacoises qui veulent capitaliser, pas louer.",
     },
   ],
 };

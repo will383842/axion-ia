@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GEX_COPY: VilleCopy = {
   pitchFr:
-    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
+    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
   pitchEn:
-    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
+    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, PME du BTP, commerçants et services aux entreprises du pays de Gex.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, PME du BTP, commerçants et services aux entreprises du pays de Gex.",
   seoHook: "économie frontalière & administration",
   ecosystemFr:
-    "Gex est la sous-préfecture de l'Ain et chef-lieu du pays de Gex, positionnée au pied du massif du Jura avec panorama Mont-Blanc. Proximité frontière suisse / Genève (20 min). Tissu économie frontalière dynamique, administration, PME tertiaires, tourisme montagne Jura (station Lélex-Crozet), TPE artisanat BTP, commerces.",
+    "Gex est la sous-préfecture de l'Ain et chef-lieu du pays de Gex, positionnée au pied du massif du Jura avec panorama Mont-Blanc. Proximité frontière suisse / Genève (20 min). Tissu économie frontalière dynamique, administration, PME tertiaires, tourisme montagne Jura (station Lélex-Crozet), PME du BTP, commerces.",
   ecosystemEn:
-    "Gex est la sous-préfecture de l'Ain et chef-lieu du pays de Gex, positionnée au pied du massif du Jura avec panorama Mont-Blanc. Proximité frontière suisse / Genève (20 min). Tissu économie frontalière dynamique, administration, PME tertiaires, tourisme montagne Jura (station Lélex-Crozet), TPE artisanat BTP, commerces.",
+    "Gex est la sous-préfecture de l'Ain et chef-lieu du pays de Gex, positionnée au pied du massif du Jura avec panorama Mont-Blanc. Proximité frontière suisse / Genève (20 min). Tissu économie frontalière dynamique, administration, PME tertiaires, tourisme montagne Jura (station Lélex-Crozet), PME du BTP, commerces.",
   distancesFr:
     "Genève centre à 20 min. Aéroport Genève-Cointrin à 25 min. Lyon centre à 1h30. Ferney-Voltaire à 10 min. Saint-Genis-Pouilly à 10 min. Station Lélex à 25 min.",
   distancesEn:
@@ -26,12 +26,12 @@ export const GEX_COPY: VilleCopy = {
     "Administration (sous-préfecture)",
     "Tourisme montagne Jura",
     "PME tertiaires pays de Gex",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gex : formats adaptés à l'administration, bureau tertiaire, station tourisme, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const GEX_COPY: VilleCopy = {
       en: "Implémentation IA à Gex : agents conversationnels multilingue FR/EN/DE (frontaliers Genève), automatisation flux administratifs, agents touristes Jura, classification documents.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gex : sessions dans votre bureau, administration, station ou en visio. Dirigeants frontaliers, acteurs tourisme, professions libérales, artisans, gérants TPE/PME gessiens.",
-      en: "Coaching 1-to-1 à Gex : sessions dans votre bureau, administration, station ou en visio. Dirigeants frontaliers, acteurs tourisme, professions libérales, artisans, gérants TPE/PME gessiens.",
+      fr: "Coaching 1-to-1 à Gex : sessions dans votre bureau, administration, station ou en visio. Dirigeants frontaliers, acteurs tourisme, professions libérales, artisans, gérants PME et ETI gessiens.",
+      en: "Coaching 1-to-1 à Gex : sessions dans votre bureau, administration, station ou en visio. Dirigeants frontaliers, acteurs tourisme, professions libérales, artisans, gérants PME et ETI gessiens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const GEX_COPY: VilleCopy = {
       a: "Oui, agents conversationnels touristes multilingue, automatisation réservations stations, classification feedback, recommandations parcours montagne.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

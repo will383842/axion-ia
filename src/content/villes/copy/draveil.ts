@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DRAVEIL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Draveil, commune verte de l'Essonne entre les bords de Seine et la forêt de Sénart. Dans ce sud francilien à dominante résidentielle, le tissu économique repose sur le commerce de proximité, l'artisanat du bâtiment, les services aux particuliers et les professions libérales. Nous y ancrons l'IA dans le concret : devis automatisés, relances, prise de rendez-vous, support administratif.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les PME et ETI de Draveil, commune verte de l'Essonne entre les bords de Seine et la forêt de Sénart. Dans ce sud francilien à dominante résidentielle, le tissu économique repose sur le commerce de proximité, l'artisanat du bâtiment, les services aux particuliers et les professions libérales. Nous y ancrons l'IA dans le concret : devis automatisés, relances, prise de rendez-vous, support administratif.",
   pitchEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Draveil, commune verte de l'Essonne entre les bords de Seine et la forêt de Sénart. Dans ce sud francilien à dominante résidentielle, le tissu économique repose sur le commerce de proximité, l'artisanat du bâtiment, les services aux particuliers et les professions libérales. Nous y ancrons l'IA dans le concret : devis automatisés, relances, prise de rendez-vous, support administratif.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les PME et ETI de Draveil, commune verte de l'Essonne entre les bords de Seine et la forêt de Sénart. Dans ce sud francilien à dominante résidentielle, le tissu économique repose sur le commerce de proximité, l'artisanat du bâtiment, les services aux particuliers et les professions libérales. Nous y ancrons l'IA dans le concret : devis automatisés, relances, prise de rendez-vous, support administratif.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Draveil (Essonne). Nous accompagnons en priorité les TPE et PME locales : commerces de proximité, artisans du bâtiment, professions libérales, services aux particuliers et petites entreprises du sud francilien. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Draveil (Essonne). Nous accompagnons en priorité les PME et ETI locales : commerces de proximité, artisans du bâtiment, professions libérales, services aux particuliers et PME du sud francilien. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Draveil (Essonne). Nous accompagnons en priorité les TPE et PME locales : commerces de proximité, artisans du bâtiment, professions libérales, services aux particuliers et petites entreprises du sud francilien. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Draveil (Essonne). Nous accompagnons en priorité les PME et ETI locales : commerces de proximité, artisans du bâtiment, professions libérales, services aux particuliers et PME du sud francilien. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les grands groupes complètent ce socle.",
   seoHook: "commerce & artisanat de proximité",
   ecosystemFr:
-    "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de TPE et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
+    "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de PME et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
   ecosystemEn:
-    "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de TPE et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
+    "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de PME et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
   distancesFr:
     "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nos consultants se déplacent depuis Paris sur tout le sud-est de l'Essonne : Montgeron, Vigneux-sur-Seine, Ris-Orangis et la vallée de la Seine.",
   distancesEn:
@@ -30,20 +30,20 @@ export const DRAVEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Draveil : diagnostic des devis, relances et tâches administratives dans les commerces, l'artisanat et les cabinets libéraux. ROI chiffré, priorité TPE/PME.",
-      en: "Audit IA à Draveil : diagnostic des devis, relances et tâches administratives dans les commerces, l'artisanat et les cabinets libéraux. ROI chiffré, priorité TPE/PME.",
+      fr: "Audit IA à Draveil : diagnostic des devis, relances et tâches administratives dans les commerces, l'artisanat et les cabinets libéraux. ROI chiffré, priorité PME et ETI.",
+      en: "Audit IA à Draveil : diagnostic des devis, relances et tâches administratives dans les commerces, l'artisanat et les cabinets libéraux. ROI chiffré, priorité PME et ETI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Draveil : formats courts adaptés au commerce, au chantier ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
       en: "Interventions IA sur site à Draveil : formats courts adaptés au commerce, au chantier ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Draveil : automatisation des devis et relances, agents conversationnels, prise de RDV intelligente, classification de documents pour TPE et PME.",
-      en: "Implémentation IA à Draveil : automatisation des devis et relances, agents conversationnels, prise de RDV intelligente, classification de documents pour TPE et PME.",
+      fr: "Implémentation IA à Draveil : automatisation des devis et relances, agents conversationnels, prise de RDV intelligente, classification de documents pour PME et ETI.",
+      en: "Implémentation IA à Draveil : automatisation des devis et relances, agents conversationnels, prise de RDV intelligente, classification de documents pour PME et ETI.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Draveil : sessions au commerce, au cabinet, sur chantier ou en visio. Pour dirigeants de TPE/PME draveilloises qui veulent piloter l'IA eux-mêmes.",
-      en: "Coaching 1-to-1 à Draveil : sessions au commerce, au cabinet, sur chantier ou en visio. Pour dirigeants de TPE/PME draveilloises qui veulent piloter l'IA eux-mêmes.",
+      fr: "Coaching 1-to-1 à Draveil : sessions au commerce, au cabinet, sur chantier ou en visio. Pour dirigeants de PME et ETI draveilloises qui veulent piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Draveil : sessions au commerce, au cabinet, sur chantier ou en visio. Pour dirigeants de PME et ETI draveilloises qui veulent piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Draveil : plateformes et outils IA sur mesure pour commerces, artisans et professions libérales — prise de RDV, devis intelligents, portails clients.",
@@ -53,9 +53,9 @@ export const DRAVEIL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Draveil (91210), le tissu économique n'est pas celui d'une métropole : ce sont près de 3 968 entreprises, en immense majorité des entrepreneurs individuels et TPE — services aux particuliers, immobilier, artisanat, logistique-transports, professions libérales — auxquels s'ajoutent la zone d'activité de Mainville (Avenue de l'Europe, gérée par l'agglomération Val d'Yerres Val de Seine), l'opérateur de bus Keolis Seine Sénart, le pôle gériatrique AP-HP Joffre-Dupuytren et l'économie de loisirs du Port aux Cerises. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA calibrés pour cette réalité : prise de rendez-vous, devis intelligents, portails clients et automatisations utiles à des structures souvent en sous-effectif administratif — hébergement en Union européenne, conforme RGPD.",
+        hero: "À Draveil (91210), le tissu économique n'est pas celui d'une métropole : ce sont près de 3 968 entreprises, en immense majorité des entrepreneurs individuels et PME — services aux particuliers, immobilier, artisanat, logistique-transports, professions libérales — auxquels s'ajoutent la zone d'activité de Mainville (Avenue de l'Europe, gérée par l'agglomération Val d'Yerres Val de Seine), l'opérateur de bus Keolis Seine Sénart, le pôle gériatrique AP-HP Joffre-Dupuytren et l'économie de loisirs du Port aux Cerises. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA calibrés pour cette réalité : prise de rendez-vous, devis intelligents, portails clients et automatisations utiles à des structures souvent en sous-effectif administratif — hébergement en Union européenne, conforme RGPD.",
         whyHere: [
-          "Le tissu draveillois est dominé par des entrepreneurs individuels et des TPE à effectif moyen d'environ 1 personne : nos sites et outils IA sont pensés pour des dirigeants seuls ou en petite équipe, qui ne peuvent pas dédier un poste à l'administratif — prise de RDV, devis et relances automatisés en priorité.",
+          "Le tissu draveillois est dominé par des entrepreneurs individuels et des PME à effectif moyen d'environ 1 personne : nos sites et outils IA sont pensés pour des dirigeants seuls ou en petite équipe, qui ne peuvent pas dédier un poste à l'administratif — prise de RDV, devis et relances automatisés en priorité.",
           "Nous couvrons les acteurs de la zone d'activité de Mainville (Avenue de l'Europe) et leurs voisins logistique-transports — l'écosystème dans lequel opèrent Keolis Seine Sénart, La Poste et la centaine de PME gérées par l'agglomération Val d'Yerres Val de Seine — avec des portails et automatisations de back-office sur mesure.",
           "Le pôle santé-gériatrie incarné par l'hôpital Joffre-Dupuytren et le tissu de services à la personne du sud-Essonne génèrent un besoin réel de plateformes de prise de rendez-vous, de gestion de dossiers et de relation usagers, que nous concevons en respectant la confidentialité des données et l'hébergement UE.",
           "L'économie de loisirs et de tourisme vert — île de loisirs du Port aux Cerises, bords de Seine, patrimoine de Champrosay et Maison d'Alphonse Daudet — alimente une demande de sites de réservation, billetterie et e-commerce local que nous livrons en multi-CMS, mobile-first, UX/UI soignée.",
@@ -89,12 +89,6 @@ export const DRAVEIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou outil IA simple",
-            detail:
-              "Pour les indépendants, commerces du centre-ville de Draveil, artisans du bâtiment et professions libérales : site mobile-first avec prise de RDV, formulaire de devis intelligent ou page e-commerce locale.",
-          },
-          {
             price: "Plateforme métier sur mesure",
             sizeLabel: "PME",
             detail:
@@ -116,7 +110,7 @@ export const DRAVEIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des sites et outils IA pour les commerces et artisans du centre-ville de Draveil ?",
-            a: "Oui, c'est notre cible principale ici. Le tissu draveillois est fait de TPE et d'entrepreneurs individuels (effectif moyen d'environ 1 personne) : commerces de la place du Marché, artisans du bâtiment, professions libérales. Nous livrons des sites mobile-first avec prise de RDV, devis intelligents et e-commerce local, conçus pour des dirigeants qui n'ont pas d'équipe administrative dédiée.",
+            a: "Oui, c'est notre cible principale ici. Le tissu draveillois est fait de PME et d'entrepreneurs individuels (effectif moyen d'environ 1 personne) : commerces de la place du Marché, artisans du bâtiment, professions libérales. Nous livrons des sites mobile-first avec prise de RDV, devis intelligents et e-commerce local, conçus pour des dirigeants qui n'ont pas d'équipe administrative dédiée.",
           },
           {
             q: "Travaillez-vous avec les entreprises de la zone d'activité de Mainville ?",
@@ -175,12 +169,6 @@ export const DRAVEIL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or simple AI tool",
-            detail:
-              "For freelancers, Draveil town-centre shops, building trades and independent professionals: mobile-first site with online booking, smart quote form or local e-commerce page.",
-          },
-          {
             price: "Bespoke business platform",
             sizeLabel: "PME",
             detail:
@@ -230,7 +218,7 @@ export const DRAVEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Draveil et dans le sud-est de l'Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Draveil et des communes voisines (Montgeron, Vigneux-sur-Seine, Ris-Orangis). Nos consultants viennent de Paris, à 25 min par le RER D.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Draveil et des communes voisines (Montgeron, Vigneux-sur-Seine, Ris-Orangis). Nos consultants viennent de Paris, à 25 min par le RER D.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Draveil ?",
@@ -238,11 +226,11 @@ export const DRAVEIL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales et les commerces ?",
-      a: "Oui, professions libérales et commerces de proximité font partie de notre cible TPE/PME. Prise de RDV intelligente, agents conversationnels, classification de documents.",
+      a: "Oui, professions libérales et commerces de proximité font partie de notre cible PME et ETI. Prise de RDV intelligente, agents conversationnels, classification de documents.",
     },
     {
-      q: "Quels services pour une petite entreprise draveilloise ?",
-      a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
+      q: "Quels services pour une PME draveilloise ?",
+      a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des PME locales, sans jargon technique.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

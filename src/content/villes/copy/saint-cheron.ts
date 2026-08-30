@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CHERON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chéron (91). Nous accompagnons PME et ETI : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Chéron (91). Nous accompagnons PME et ETI : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
+    "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
   ecosystemEn:
-    "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
+    "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
   distancesFr:
     "Gare RER C Saint-Chéron (Paris en 50 min). Dourdan à 10 min. Arpajon à 15 min. Évry-Courcouronnes à 25 min. Aéroport Paris-Orly à 30 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SAINT_CHERON_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Chéron : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, suivi chantiers BTP, facturation intelligente PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Chéron : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME saint-chéronnais, artisans, professions libérales.",
-      en: "Coaching 1-to-1 à Saint-Chéron : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME saint-chéronnais, artisans, professions libérales.",
+      fr: "Coaching 1-to-1 à Saint-Chéron : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI saint-chéronnais, artisans, professions libérales.",
+      en: "Coaching 1-to-1 à Saint-Chéron : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI saint-chéronnais, artisans, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

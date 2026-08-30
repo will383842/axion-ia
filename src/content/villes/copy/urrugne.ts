@@ -9,14 +9,14 @@ export const URRUGNE_COPY: VilleCopy = {
   pitchEn:
     "Urrugne (64), commune du Pays Basque sur la corniche basque, 10 661 habitants. Frontière espagnole, agriculture basque, tourisme balnéaire, artisanat local et commerces transfrontaliers. Axion-IA y intervient pour tous types d'activités de la côte basque sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Urrugne (64). Nous accompagnons PME, ETI et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Urrugne (64). Nous accompagnons PME, ETI et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit sur place sur mesure.",
   seoHook: "agriculture basque & tourisme balnéaire",
   ecosystemFr:
-    "Urrugne est une commune du Labourd sur la corniche basque, 10 661 habitants, à la frontière espagnole (Hendaye/Irún). Tissu de TPE agricoles basques, artisans (produits du terroir, piment d'Espelette), PME tourisme balnéaire, commerces transfrontaliers, hébergements saisonniers et services aux particuliers.",
+    "Urrugne est une commune du Labourd sur la corniche basque, 10 661 habitants, à la frontière espagnole (Hendaye/Irún). Tissu de PME agricoles basques, artisans (produits du terroir, piment d'Espelette), PME tourisme balnéaire, commerces transfrontaliers, hébergements saisonniers et services aux particuliers.",
   ecosystemEn:
-    "Urrugne est une commune du Labourd sur la corniche basque, 10 661 habitants, à la frontière espagnole (Hendaye/Irún). Tissu de TPE agricoles basques, artisans (produits du terroir, piment d'Espelette), PME tourisme balnéaire, commerces transfrontaliers, hébergements saisonniers et services aux particuliers.",
+    "Urrugne est une commune du Labourd sur la corniche basque, 10 661 habitants, à la frontière espagnole (Hendaye/Irún). Tissu de PME agricoles basques, artisans (produits du terroir, piment d'Espelette), PME tourisme balnéaire, commerces transfrontaliers, hébergements saisonniers et services aux particuliers.",
   distancesFr:
     "Gare d'Hendaye à 5 min (TGV Paris 5h direct). Saint-Jean-de-Luz à 10 min. Bayonne à 30 min. Biarritz à 25 min. Aéroport Biarritz Pays Basque à 20 min. Frontière Espagne (Irún/San Sebastián) à 10 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const URRUGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Urrugne : diagnostic adapté aux TPE agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Urrugne : diagnostic adapté aux TPE agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Urrugne : diagnostic adapté aux PME agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Urrugne : diagnostic adapté aux PME agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Urrugne : déploiement outils IA dans vos exploitations agricoles, ateliers artisanaux, hébergements ou commerces transfrontaliers. Équipes formées et autonomes.",

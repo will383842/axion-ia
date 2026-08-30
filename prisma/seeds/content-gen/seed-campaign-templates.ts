@@ -25,7 +25,7 @@
  *   7. `landing-villes-all` — Landing pages multi-villes (5 verticales)
  *   8. `rss-daily` — RSS quotidien actualité IA
  *
- * Couvre les 5 verticales Axion-IA × TPE/PME/ETI/GE.
+ * Couvre les 5 verticales Axion-IA × PME/ETI/GE.
  * Idempotent via upsert on slug.
  */
 
@@ -62,7 +62,8 @@ const TEMPLATES = [
   {
     slug: "interventions-formations-all",
     name: "Interventions & Formations — Toutes cibles",
-    description: "Articles formations IA pour TPE, PME, ETI et GE — blog pilier + keywords + Q/R.",
+    description:
+      "Articles formations IA pour PME, ETI et grands groupes — blog pilier + keywords + Q/R.",
     config: {
       verticals: ["interventions_formations"],
       target: ALL_TARGETS,

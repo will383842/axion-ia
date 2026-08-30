@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const ANGOULEME_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
+    "Axion-IA accompagne les PME et ETI d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
+    "Axion-IA accompagne les PME et ETI d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
   directAnswerFr:
-    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention et à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, en français et avec un seul interlocuteur référent.",
+    "À Angoulême, Axion-IA propose aux PME et ETI charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention et à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, en français et avec un seul interlocuteur référent.",
   directAnswerEn:
-    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention et à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, en français et avec un seul interlocuteur référent.",
+    "À Angoulême, Axion-IA propose aux PME et ETI charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention et à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, en français et avec un seul interlocuteur référent.",
   seoHook: "imprimerie & édition",
   ecosystemFr:
-    "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les TPE et PME de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
+    "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les PME et ETI de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
   ecosystemEn:
-    "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les TPE et PME de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
+    "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les PME et ETI de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
   distancesFr:
     "Angoulême est desservie par la LGV Sud Europe Atlantique (Paris en 1h45, Bordeaux en 35 min) depuis la gare d'Angoulême. L'aéroport d'Angoulême-Cognac se trouve à environ 10 km au nord, à Brie-Champniers, et l'aéroport de Bordeaux-Mérignac à 120 km. La ville est positionnée à l'intersection des routes N10 (Paris-Bayonne) et N141 (Limoges-Saintes).",
   distancesEn:
@@ -33,8 +33,8 @@ export const ANGOULEME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de {{price:audit-flash|flat}}.",
-      en: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Angoulême pour PME et ETI : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Angoulême pour PME et ETI : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès {{price:intervention-4h|flat}} par demi-journée.",
@@ -87,12 +87,6 @@ export const ANGOULEME_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou portfolio IA-augmenté",
-            detail:
-              "Pour studios indépendants, freelances de l'animation et du jeu vidéo, artisans et commerces d'Angoulême : site rapide, mobile-first, avec recherche et génération de contenu assistées par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web + module IA métier",
@@ -174,12 +168,6 @@ export const ANGOULEME_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or portfolio site",
-            detail:
-              "For independent studios, animation and video game freelancers, craftspeople and shops in Angoulême: a fast, mobile-first site with AI-assisted search and content generation.",
-          },
-          {
             sizeLabel: "SME",
             price: "Web platform + business AI module",
             detail:
@@ -229,7 +217,7 @@ export const ANGOULEME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Angoulême ?",
-      a: "À Angoulême, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
+      a: "À Angoulême, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un destiné aux dirigeants de PME et d'ETI.",
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Angoulême ?",
@@ -245,7 +233,7 @@ export const ANGOULEME_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux servez-vous à Angoulême ?",
-      a: "Nous accompagnons en priorité les TPE et PME charentaises de l'imprimerie, de l'édition, de la filière image (BD, animation), du commerce de détail, des services professionnels et de l'industrie papier-carton.",
+      a: "Nous accompagnons en priorité les PME et ETI charentaises de l'imprimerie, de l'édition, de la filière image (BD, animation), du commerce de détail, des services professionnels et de l'industrie papier-carton.",
     },
     {
       q: "Proposez-vous des formations IA à Angoulême ?",

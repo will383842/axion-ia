@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PLOUFRAGAN_COPY: VilleCopy = {
   pitchFr:
-    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
+    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de PME et ETI agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
   pitchEn:
-    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
+    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de PME et ETI agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploufragan (22). Nous accompagnons PME et ETI : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Côtes-d'Armor",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploufragan (22). Nous accompagnons PME et ETI : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+  seoHook: "PME & PME Côtes-d'Armor",
   ecosystemFr:
-    "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, TPE artisans, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",
+    "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, PME artisanales, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",
   ecosystemEn:
-    "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, TPE artisans, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",
+    "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, PME artisanales, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",
   distancesFr:
     "Saint-Brieuc centre à 5 min, gare SNCF de Saint-Brieuc (TGV Paris 2 h 40) à 10 min. Lamballe à 15 min, Loudéac à 40 min, Rennes à 1 h. Accès RN12 et voie express vers Brest. Aéroport Saint-Brieuc — Armor à 15 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploufragan : diagnostic adapté aux PME agroalimentaires, laboratoires du Zoopôle, TPE artisans et professions libérales de l'agglo briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ploufragan : diagnostic adapté aux PME agroalimentaires, laboratoires du Zoopôle, TPE artisans et professions libérales de l'agglo briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ploufragan : diagnostic adapté aux PME agroalimentaires, laboratoires du Zoopôle, PME artisanales et professions libérales de l'agglo briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ploufragan : diagnostic adapté aux PME agroalimentaires, laboratoires du Zoopôle, PME artisanales et professions libérales de l'agglo briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploufragan : formats adaptés au laboratoire, à l'usine agroalimentaire, au bureau ou en zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Ploufragan : formats adaptés au laboratoire, à l'usine agroalimentaire, au bureau ou en zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Ploufragan : automatisation traçabilité agroalimentaire, agents conversationnels, gestion qualité augmentée, CRM industriel. Solutions sur mesure pour TPE et PME de l'agglo briochine.",
-      en: "Implémentation IA à Ploufragan : automatisation traçabilité agroalimentaire, agents conversationnels, gestion qualité augmentée, CRM industriel. Solutions sur mesure pour TPE et PME de l'agglo briochine.",
+      fr: "Implémentation IA à Ploufragan : automatisation traçabilité agroalimentaire, agents conversationnels, gestion qualité augmentée, CRM industriel. Solutions sur mesure pour PME et ETI de l'agglo briochine.",
+      en: "Implémentation IA à Ploufragan : automatisation traçabilité agroalimentaire, agents conversationnels, gestion qualité augmentée, CRM industriel. Solutions sur mesure pour PME et ETI de l'agglo briochine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ploufragan : sessions dans vos locaux ou en visio. Dirigeants TPE, responsables qualité agroalimentaire, gérants PME et professions libérales de l'agglomération de Saint-Brieuc.",
-      en: "Coaching 1-to-1 à Ploufragan : sessions dans vos locaux ou en visio. Dirigeants TPE, responsables qualité agroalimentaire, gérants PME et professions libérales de l'agglomération de Saint-Brieuc.",
+      fr: "Coaching 1-to-1 à Ploufragan : sessions dans vos locaux ou en visio. Dirigeants PME, responsables qualité agroalimentaire, gérants PME et professions libérales de l'agglomération de Saint-Brieuc.",
+      en: "Coaching 1-to-1 à Ploufragan : sessions dans vos locaux ou en visio. Dirigeants PME, responsables qualité agroalimentaire, gérants PME et professions libérales de l'agglomération de Saint-Brieuc.",
     },
   },
   faqGeolocalisee: [

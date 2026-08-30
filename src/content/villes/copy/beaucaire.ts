@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
+    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu PME et ETI logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
   pitchEn:
-    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
+    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu PME et ETI logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit sur place sur mesure.",
   seoHook: "logistique vallée & viticulture costières",
   ecosystemFr:
     "Beaucaire (~15 700 hab) est une ville historique du Gard rhodanien, face à Tarascon (Bouches-du-Rhône). Carrefour logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP, tourisme patrimonial (château, canal du Rhône à Sète) et services aux entreprises.",
@@ -30,8 +30,8 @@ export const BEAUCAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaucaire : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Beaucaire : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Beaucaire : diagnostic adapté aux PME et ETI logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beaucaire : diagnostic adapté aux PME et ETI logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaucaire : formats adaptés aux entreprises logistique, viticulteurs, commerçants. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const BEAUCAIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Beaucaire : optimisation supply chain Rhône, prédiction vendanges Costières, agents conversationnels commerce, automatisation gestion touristique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beaucaire : sessions dirigeants TPE/PME logistique, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Gard rhodanien.",
-      en: "Coaching 1-to-1 à Beaucaire : sessions dirigeants TPE/PME logistique, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Gard rhodanien.",
+      fr: "Coaching 1-to-1 à Beaucaire : sessions dirigeants de PME et d'ETI logistique, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Gard rhodanien.",
+      en: "Coaching 1-to-1 à Beaucaire : sessions dirigeants de PME et d'ETI logistique, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Gard rhodanien.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const BEAUCAIRE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises logistique du Rhône ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique de la vallée du Rhône : optimisation tournées, prédiction demande, automatisation documentation transport, agents IA suivi expéditions.",
+      a: "Oui, nous accompagnons les PME et ETI logistique de la vallée du Rhône : optimisation tournées, prédiction demande, automatisation documentation transport, agents IA suivi expéditions.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Beaucaire ?",

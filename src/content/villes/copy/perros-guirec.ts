@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PERROS_GUIREC_COPY: VilleCopy = {
   pitchFr:
-    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu PME et ETI commerçants, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu PME et ETI commerçants, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perros-Guirec (22). Nous accompagnons PME et ETI : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Perros-Guirec (22). Nous accompagnons PME et ETI : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
   seoHook: "tourisme activités & hôtellerie restauration",
   ecosystemFr:
     "Perros-Guirec est la station balnéaire phare de la Côte de Granit Rose, site naturel mondialement connu. Économie dominée par le tourisme (Sentier des Douaniers, Sept-Îles, thalasso), l'hôtellerie-restauration saisonnière, les commerces de centre-ville et du port, les professions libérales et l'artisanat local.",
@@ -26,7 +26,7 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
     "Hôtellerie et restauration",
     "Commerce de centre-ville et port",
     "Professions libérales",
-    "TPE artisanat et services",
+    "PME de l'artisanat et services",
   ],
   servicesContext: {
     audit: {
@@ -42,8 +42,8 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
       en: "Implémentation IA à Perros-Guirec : gestion réservations tourisme, revenue management hôtelier, agents conversationnels multilingues, CRM fidélisation, optimisation planning saisonnier, automatisation restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Perros-Guirec : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE/PME perrosiens, hôteliers, restaurateurs, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Perros-Guirec : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE/PME perrosiens, hôteliers, restaurateurs, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 à Perros-Guirec : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME et ETI perrosiens, hôteliers, restaurateurs, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 à Perros-Guirec : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME et ETI perrosiens, hôteliers, restaurateurs, commerçants, professions libérales.",
     },
   },
   faqGeolocalisee: [

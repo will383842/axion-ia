@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEGLES_COPY: VilleCopy = {
   pitchFr:
-    "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu TPE/PME mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
+    "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu PME et ETI mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
   pitchEn:
-    "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu TPE/PME mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
+    "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu PME et ETI mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bègles (33). Nous accompagnons en priorité les PME, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bègles (33). Nous accompagnons en priorité les PME, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   seoHook: "économie créative & artisanat Bordeaux Métropole",
   ecosystemFr:
     "Bègles est une commune dense de Bordeaux Métropole (3 196 hab/km²), située en limite sud de Bordeaux rive gauche, à la confluence du projet d'aménagement Euratlantique. Économie locale tournée vers le numérique et la création (parc d'activités des Terres Neuves), l'artisanat BTP, le commerce de proximité, la restauration et la rénovation urbaine. Héritage industriel (ancienne raffinerie, sécherie de morue) reconverti en quartiers mixtes le long de la Garonne.",
@@ -30,8 +30,8 @@ export const BEGLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bègles : diagnostic pour PME du BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bègles : diagnostic pour PME du BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bègles : ateliers et déploiement outils IA dans vos locaux du parc Terres Neuves, sur chantiers BTP ou en boutique. Code custom, pas no-code.",
@@ -42,8 +42,8 @@ export const BEGLES_COPY: VilleCopy = {
       en: "Implémentation IA à Bègles : automatisation devis-facturation BTP, gestion projets studios créatifs, agents IA prise de RDV restauration, optimisation stocks commerces de proximité.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bègles : sessions dans vos locaux Terres Neuves, en boutique ou en visio. Dirigeants TPE/PME du quartier Euratlantique et de l'agglo bordelaise.",
-      en: "Coaching 1-to-1 à Bègles : sessions dans vos locaux Terres Neuves, en boutique ou en visio. Dirigeants TPE/PME du quartier Euratlantique et de l'agglo bordelaise.",
+      fr: "Coaching 1-to-1 à Bègles : sessions dans vos locaux Terres Neuves, en boutique ou en visio. Dirigeants PME et ETI du quartier Euratlantique et de l'agglo bordelaise.",
+      en: "Coaching 1-to-1 à Bègles : sessions dans vos locaux Terres Neuves, en boutique ou en visio. Dirigeants PME et ETI du quartier Euratlantique et de l'agglo bordelaise.",
     },
   },
   services: {
@@ -84,12 +84,6 @@ export const BEGLES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, recommandation) sur un site ou une boutique existante d'un commerçant, artisan ou studio béglais, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / boutique e-commerce sur mesure",
@@ -171,12 +165,6 @@ export const BEGLES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, recommendation) to an existing site or shop of a Bègles retailer, craftsperson or studio, in a few weeks, without a rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / e-commerce store",
             detail:
@@ -234,7 +222,7 @@ export const BEGLES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Bègles ?",
-      a: "À Bègles, nous accompagnons en priorité les TPE et PME : artisans BTP, studios créatifs et numériques du parc Terres Neuves, commerces de proximité, restauration. Les ETI sont également accompagnées en complément.",
+      a: "À Bègles, nous accompagnons en priorité les PME et ETI : artisans BTP, studios créatifs et numériques du parc Terres Neuves, commerces de proximité, restauration. Les grands groupes sont accompagnés en complément.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Bègles ?",

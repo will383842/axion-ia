@@ -7,7 +7,7 @@
 //   - Durée minimale = 1 journée. Pas de demi-journée.
 //   - Aucun prix hardcodé : libellés contextuels uniquement (tarifs viennent
 //     de `src/content/pricing.ts`).
-//   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric + ~5 % data INSEE bouclier anti-doorway HCU.
 //   - Aucun « basé en UE » (mention supprimée).
 //
@@ -21,7 +21,7 @@ import type { VilleCopy } from "./types";
 
 export const NICE_COPY: VilleCopy = {
   pitchFr:
-    "Nice réunit 16 327 établissements actifs, le premier technopôle européen à Sophia Antipolis (à 20 km), les R&D mondiales d'Amadeus IT et d'IBM, l'institut 3IA Côte d'Azur et la French Tech Côte d'Azur. Axion-IA y intervient sur site, des TPE du Vieux-Nice aux sièges régionaux de la Côte d'Azur.",
+    "Nice réunit 16 327 établissements actifs, le premier technopôle européen à Sophia Antipolis (à 20 km), les R&D mondiales d'Amadeus IT et d'IBM, l'institut 3IA Côte d'Azur et la French Tech Côte d'Azur. Axion-IA y intervient sur site, des PME du Vieux-Nice aux sièges régionaux de la Côte d'Azur.",
   pitchEn:
     "Nice brings together 16,327 active businesses, Europe's leading tech park at Sophia Antipolis (20 km away), worldwide R&D from Amadeus IT and IBM, the 3IA Côte d'Azur AI institute and French Tech Côte d'Azur. Axion-IA delivers on site, from Old Nice micro-businesses to regional Côte d'Azur headquarters.",
 
@@ -29,7 +29,7 @@ export const NICE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nice : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés de la TPE niçoise aux ETI et grandes entreprises de la Côte d'Azur.",
+      fr: "Audit IA opérationnel à Nice : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés de la PME niçoise aux ETI et grandes entreprises de la Côte d'Azur.",
       en: "Operational AI audit in Nice: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated from Nice micro-businesses to Côte d'Azur mid-caps and large enterprises.",
     },
     interventions: {
@@ -51,7 +51,7 @@ export const NICE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes azuréennes conservent la maîtrise pleine de la stack (modèles, CRM hôtelier, intégrations Sophia) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons PME, ETI et grands groupes de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes azuréennes conservent la maîtrise pleine de la stack (modèles, CRM hôtelier, intégrations Sophia) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Nice (06) on site, from the Promenade des Anglais to Sophia Antipolis. We support micro-businesses, SMEs, mid-caps and large enterprises on the Côte d'Azur — business tourism, IT, health, services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -78,7 +78,7 @@ export const NICE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles : TPE et PME du Vieux-Nice ou du quartier d'affaires Grand Arénas, ETI hôtelières et de services de la Côte d'Azur, sièges régionaux du bassin Sophia Antipolis.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle : PME et ETI du Vieux-Nice ou du quartier d'affaires Grand Arénas, ETI hôtelières et de services de la Côte d'Azur, sièges régionaux du bassin Sophia Antipolis.",
         whyHere: [
           "Nice et sa métropole concentrent un tissu B2B dense : 16 327 établissements actifs, du petit commerce de la vieille ville aux centres R&D mondiaux d'Amadeus IT et d'IBM.",
           "Le bassin Sophia Antipolis — à 20 km de Nice — héberge le 1er technopôle européen avec Amadeus, IBM, SAP, Accenture, EURECOM : autant de directions IA que nous accompagnons régulièrement.",
@@ -115,12 +115,6 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets niçois jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -184,7 +178,7 @@ export const NICE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la French Tech Côte d'Azur ou par vos équipes en interne, sans prestation continue obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size: Nice and Grand Arénas micro-businesses and SMEs, Côte d'Azur hospitality and services mid-caps, Sophia Antipolis regional R&D headquarters.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range: Nice and Grand Arénas micro-businesses and SMEs, Côte d'Azur hospitality and services mid-caps, Sophia Antipolis regional R&D headquarters.",
         whyHere: [
           "Nice and its metro area hold a dense B2B fabric: 16,327 active businesses, from Old Town shops to the worldwide R&D centres of Amadeus IT and IBM.",
           "The Sophia Antipolis basin — 20 km from Nice — hosts Europe's leading tech park with Amadeus, IBM, SAP, Accenture, EURECOM: AI leadership we engage with regularly.",
@@ -221,11 +215,6 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail: "Suited to Nice freelancers, micro-firms and practices up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -329,12 +318,6 @@ export const NICE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, artisans, commerçants et petites structures niçoises jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -434,12 +417,6 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group training",
-            detail:
-              "Ideal Nice freelancers, artisans, retailers and small structures up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -543,12 +520,6 @@ export const NICE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads, réponses email).",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -584,7 +555,7 @@ export const NICE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nice ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -648,12 +619,6 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification, email responses).",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -757,12 +722,6 @@ export const NICE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Séance découverte — à partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Pour indépendants, professions libérales et dirigeants de micro-structures niçoises : une séance intensive sur site ou distance pour débloquer un cas IA concret.",
-          },
-          {
             sizeLabel: "PME",
             price: "Programme PME — sur devis",
             detail:
@@ -862,12 +821,6 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Discovery session — from €990 excl. VAT",
-            detail:
-              "For Nice freelancers, independent professionals and micro-business owners: an intensive on-site or remote session to unblock one concrete AI use case.",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme — custom quote",
@@ -969,12 +922,6 @@ export const NICE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1055,12 +1002,6 @@ export const NICE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1110,7 +1051,7 @@ export const NICE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nice ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les PME indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
       q: "Intervenez-vous à Sophia Antipolis depuis Nice ?",

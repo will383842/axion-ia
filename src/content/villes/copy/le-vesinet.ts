@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_VESINET_COPY: VilleCopy = {
   pitchFr:
-    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA accompagne tout le tissu professionnel local.",
+    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de PME et ETI tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA accompagne tout le tissu professionnel local.",
+    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de PME et ETI tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : PME et ETI tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : PME et ETI tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
   seoHook: "professions libérales & immobilier prestige",
   ecosystemFr:
     "Le Vésinet est une ville-parc unique en France, conçue en 1875 par le comte de Choulot avec un plan paysager intégrant lacs artificiels (lac de la Station, lac Supérieur, lac des Ibis), pelouses classées et allées arborées. Commune résidentielle prestige de l'ouest parisien. Tissu économique dominé par les professions libérales haut de gamme (cabinets médicaux, juridiques, conseil en patrimoine), agences immobilières, commerces de centre-ville et services premium aux particuliers.",
@@ -25,13 +25,13 @@ export const LE_VESINET_COPY: VilleCopy = {
     "Professions libérales haut de gamme (santé, juridique, patrimoine)",
     "Immobilier prestige & gestion de patrimoine",
     "Commerce de centre-ville & artisanat",
-    "TPE/PME services tertiaires",
+    "PME et ETI services tertiaires",
     "Services premium aux particuliers",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et PME et ETI tertiaires de cette ville-parc de l'ouest parisien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et PME et ETI tertiaires de cette ville-parc de l'ouest parisien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Vésinet : formats adaptés au cabinet médical, étude juridique, agence immobilière ou commerce de centre-ville. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LE_VESINET_COPY: VilleCopy = {
       en: "Implémentation IA au Vésinet : agents conversationnels patients/clients, automatisation gestion RDV (santé, juridique), estimation immobilière assistée IA, CRM augmentés patrimoine. Adapté tissu prestige ouest parisien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Vésinet : sessions dans votre cabinet, étude, agence ou en visio. Professions libérales, agents immobiliers, commerçants, gérants TPE/PME vésigondins souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 au Vésinet : sessions dans votre cabinet, étude, agence ou en visio. Professions libérales, agents immobiliers, commerçants, gérants TPE/PME vésigondins souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 au Vésinet : sessions dans votre cabinet, étude, agence ou en visio. Professions libérales, agents immobiliers, commerçants, gérants PME et ETI vésigondins souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 au Vésinet : sessions dans votre cabinet, étude, agence ou en visio. Professions libérales, agents immobiliers, commerçants, gérants PME et ETI vésigondins souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LE_VESINET_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA au Vésinet ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
       q: "Comment se rendre au Vésinet depuis Paris ?",

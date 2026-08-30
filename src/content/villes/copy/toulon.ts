@@ -6,7 +6,7 @@
 //     facturés en sus sur les formats interventions.
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : libellés de niveau uniquement (source pricing.ts).
-//   - Tailles d'entreprise INSEE : TPE / PME / ETI / GE.
+//   - Tailles d'entreprise INSEE : PME/ETI/GE.
 //   - Pas de mention « basé en UE ».
 //   - ~95 % Axion-IA-centric / ~5 % data locale anti-doorway HCU 2024.
 //   - Singularité Toulon : 1er port militaire d'Europe (Marine nationale),
@@ -18,13 +18,13 @@ import type { VilleCopy } from "./types";
 
 export const TOULON_COPY: VilleCopy = {
   pitchFr:
-    "Toulon concentre 14 921 établissements actifs, le 1er port militaire d'Europe (Marine nationale), Naval Group, Thales Underwater Systems et le Pôle Mer Méditerranée à vocation mondiale. Axion-IA intervient sur site auprès des TPE du centre-ville comme des ETI et grandes entreprises de défense maritime qui structurent leurs cas IA opérationnels.",
+    "Toulon concentre 14 921 établissements actifs, le 1er port militaire d'Europe (Marine nationale), Naval Group, Thales Underwater Systems et le Pôle Mer Méditerranée à vocation mondiale. Axion-IA intervient sur site auprès des PME du centre-ville comme des ETI et grandes entreprises de défense maritime qui structurent leurs cas IA opérationnels.",
   pitchEn:
     "Toulon hosts 14,921 active businesses, France's premier military port (Marine nationale), Naval Group, Thales Underwater Systems and the world-class Pôle Mer Méditerranée cluster. Axion-IA delivers on site for micro-businesses in the city centre as well as mid-caps and large maritime-defence firms structuring their operational AI use cases.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Toulon : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les TPE du Var comme pour les grands donneurs d'ordres de la défense maritime.",
+      fr: "Audit IA opérationnel à Toulon : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les PME du Var comme pour les grands donneurs d'ordres de la défense maritime.",
       en: "Operational AI audit in Toulon: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Var micro-businesses as well as large maritime-defence primes.",
     },
     interventions: {
@@ -46,7 +46,7 @@ export const TOULON_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toulon (83) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises de l'agglomération toulonnaise — défense maritime (Naval Group, Thales), économie maritime (Pôle Mer Méditerranée), tourisme & hôtellerie, commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Tarifs publics, aucun lock-in, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Toulon (83) sur site. Nous accompagnons les PME, ETI et grands groupes de l'agglomération toulonnaise — défense maritime (Naval Group, Thales), économie maritime (Pôle Mer Méditerranée), tourisme & hôtellerie, commerce et services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Tarifs publics, aucun lock-in, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that delivers on site in Toulon (83). We support micro-businesses, SMEs, mid-caps and large enterprises across the Toulon agglomeration — maritime defence (Naval Group, Thales), maritime economy (Pôle Mer Méditerranée), tourism & hospitality, trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Public pricing, no lock-in, your teams stay in control.",
 
@@ -74,7 +74,7 @@ export const TOULON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Toulon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles : TPE du centre-ville et de La Garde, PME de services aux entreprises, ETI industrielles de La Seyne-sur-Mer, jusqu'aux grands comptes de la défense maritime. Le tissu économique toulonnais est singulier en France — défense, mer, numérique embarqué — et nos audits en tiennent compte dans chaque diagnostic.",
+        hero: "L'audit IA Axion-IA à Toulon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle : PME du centre-ville et de La Garde, PME de services aux entreprises, ETI industrielles de La Seyne-sur-Mer, jusqu'aux grands comptes de la défense maritime. Le tissu économique toulonnais est singulier en France — défense, mer, numérique embarqué — et nos audits en tiennent compte dans chaque diagnostic.",
         whyHere: [
           "Toulon est l'un de nos pôles d'intervention en région PACA : nos consultants se déplacent dans toute l'agglomération TPM (Toulon Provence Méditerranée) et dans les communes du Var (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules).",
           "Le tissu industriel toulonnais est unique en France : Naval Group, Thales Underwater Systems, CNIM, Marine nationale — nous maîtrisons les contraintes spécifiques de confidentialité, souveraineté des données et processus métier de la défense maritime.",
@@ -111,12 +111,6 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, artisans, cabinets et petits commerces toulonnais jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -180,7 +174,7 @@ export const TOULON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Pour les secteurs sensibles (défense, maritime industrielle), possibilité de déploiement IA sur infra souveraine chez vous. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Toulon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size: city-centre micro-businesses, professional services SMEs, industrial mid-caps from La Seyne-sur-Mer, through to large maritime-defence accounts. Toulon's economic fabric is unique in France — defence, sea, embedded digital — and our audits reflect that in every diagnosis.",
+        hero: "Axion-IA's AI audit in Toulon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range: city-centre micro-businesses, professional services SMEs, industrial mid-caps from La Seyne-sur-Mer, through to large maritime-defence accounts. Toulon's economic fabric is unique in France — defence, sea, embedded digital — and our audits reflect that in every diagnosis.",
         whyHere: [
           "Toulon is one of our key engagement hubs in the PACA region: our consultants travel across the entire TPM agglomeration (Toulon Provence Méditerranée) and the Var communes (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules).",
           "Toulon's industrial fabric is unique in France: Naval Group, Thales Underwater Systems, CNIM, Marine nationale — we understand the specific confidentiality, data sovereignty and business-process constraints of maritime defence.",
@@ -217,12 +211,6 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Toulon independents, tradespeople, practices and small retail up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -326,12 +314,6 @@ export const TOULON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, artisans, cabinets et commerces toulonnais jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -431,12 +413,6 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Toulon independents, tradespeople, practices and retail businesses up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -540,12 +516,6 @@ export const TOULON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (traitement emails, qualification de devis, comptes-rendus) pour indépendants et petites structures de l'agglomération toulonnaise.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -581,7 +551,7 @@ export const TOULON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Toulon ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard s'étale sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard s'étale sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Pouvez-vous déployer une IA sur notre infra interne pour des raisons de souveraineté ?",
@@ -645,12 +615,6 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (email handling, quote qualification, meeting minutes) for independents and small Toulon agglomeration structures.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -754,12 +718,6 @@ export const TOULON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Entrée accessible pour indépendants, artisans, gérants de TPE du Var souhaitant un parcours court sur 2-3 séances focalisées sur leurs cas d'usage prioritaires.",
-          },
-          {
             sizeLabel: "PME",
             price: "Forfait PME",
             detail:
@@ -789,7 +747,7 @@ export const TOULON_COPY: VilleCopy = {
             quote:
               "Format idéal pour un dirigeant avec un agenda contraint. Séances à distance efficaces, ancrées sur mes enjeux de gestion et de développement commercial dans le Var. J'aurais perdu trois fois plus de temps dans un programme collectif.",
             role: "Directrice générale",
-            companyProfile: "TPE conseil en management, agglomération TPM",
+            companyProfile: "PME conseil en management, agglomération TPM",
           },
         ],
         faq: [
@@ -859,12 +817,6 @@ export const TOULON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Accessible entry for Var independents, tradespeople and micro-business owners wanting a short programme of 2-3 sessions focused on their priority use cases.",
-          },
           {
             sizeLabel: "SME",
             price: "SME package",
@@ -966,12 +918,6 @@ export const TOULON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1052,12 +998,6 @@ export const TOULON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1107,7 +1047,7 @@ export const TOULON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : même tarif qu'à Paris ou Marseille.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise). Aucun supplément géographique : même tarif qu'à Paris ou Marseille.",
     },
     {
       q: "Axion-IA peut-il intervenir auprès des entreprises de défense maritime à Toulon ?",

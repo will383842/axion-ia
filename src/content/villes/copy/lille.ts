@@ -7,7 +7,7 @@
 //   - Durée minimale = 1 journée.
 //   - Mention systématique « frais de logement, repas et forfait trajet en sus »
 //     sur les formats interventions.
-//   - Tailles INSEE TPE / PME / ETI / GE uniquement (pas de métiers-type).
+//   - Tailles INSEE PME/ETI/GE uniquement (pas de métiers-type).
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn (conformément au brief).
 //
@@ -27,14 +27,14 @@ import type { VilleCopy } from "./types";
 
 export const LILLE_COPY: VilleCopy = {
   pitchFr:
-    "Lille regroupe 28 800 établissements actifs, les sièges de Decathlon, Auchan, La Redoute et OVHcloud, le 1er incubateur numérique de France (EuraTechnologies) et le hub ferroviaire le mieux connecté d'Europe du Nord. Axion-IA y intervient sur site auprès des TPE du Vieux-Lille aux directions IA des ETI d'Euralille.",
+    "Lille regroupe 28 800 établissements actifs, les sièges de Decathlon, Auchan, La Redoute et OVHcloud, le 1er incubateur numérique de France (EuraTechnologies) et le hub ferroviaire le mieux connecté d'Europe du Nord. Axion-IA y intervient sur site auprès des PME du Vieux-Lille aux directions IA des ETI d'Euralille.",
   pitchEn:
     "Lille hosts 28,800 active businesses, the French HQs of Decathlon, Auchan, La Redoute and OVHcloud, France's leading digital incubator (EuraTechnologies) and Northern Europe's best-connected rail hub. Axion-IA delivers on site, from Vieux-Lille micro-businesses to Euralille mid-cap AI leadership.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Lille : nous identifions vos processus automatisables et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, adaptés à toutes les tailles du tissu lillois.",
-      en: "Operational AI audit in Lille: we identify automatable processes and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated to every size in the Lille business fabric.",
+      fr: "Audit IA opérationnel à Lille : nous identifions vos processus automatisables et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, adaptés à toute l'échelle du tissu lillois.",
+      en: "Operational AI audit in Lille: we identify automatable processes and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated to the full range in the Lille business fabric.",
     },
     interventions: {
       fr: "Interventions IA à Lille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel.",
@@ -55,7 +55,7 @@ export const LILLE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lille (59350) sur site dans la métropole lilloise : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing et communes limitrophes. Nous accompagnons les TPE, PME, ETI et grandes entreprises lilloise — des startups d'EuraTechnologies aux sièges retail de la métropole (Decathlon, Auchan, La Redoute) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lille (59350) sur site dans la métropole lilloise : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing et communes limitrophes. Nous accompagnons les PME, ETI et grands groupes lilloise — des startups d'EuraTechnologies aux sièges retail de la métropole (Decathlon, Auchan, La Redoute) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that delivers on site in Lille (59350) across the metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing and surrounding communes. We support Lille micro-businesses, SMEs, mid-caps and large enterprises — from EuraTechnologies startups to major retail HQs (Decathlon, Auchan, La Redoute) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -85,7 +85,7 @@ export const LILLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du Vieux-Lille aux directions IA des sièges retail d'Euralille. Restitution toujours en présentiel dans vos locaux, livrable PDF chiffré remis en main propre.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du Vieux-Lille aux directions IA des sièges retail d'Euralille. Restitution toujours en présentiel dans vos locaux, livrable PDF chiffré remis en main propre.",
         whyHere: [
           "Lille est une place prioritaire pour Axion-IA : tissu retail/e-commerce le plus dense de France hors Île-de-France, sièges de groupes internationaux (Decathlon, Auchan, La Redoute) et 466 startups issues d'EuraTechnologies.",
           "Secteurs B2B lillois surreprésentés dans nos mandats : retail omnicanal, logistique supply chain, IT/SaaS EuraTechnologies, banque/assurance Euralille, industrie agroalimentaire (Bonduelle, Euralimentaire).",
@@ -122,12 +122,6 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets lillois jusqu'à une dizaine de collaborateurs — artisans, agences, startups pre-seed EuraTechnologies.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -191,7 +185,7 @@ export const LILLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Lille company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Vieux-Lille micro-businesses to Euralille large-enterprise HQs. Read-out always in person at your premises, costed PDF deliverable handed over face to face.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Lille company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Vieux-Lille micro-businesses to Euralille large-enterprise HQs. Read-out always in person at your premises, costed PDF deliverable handed over face to face.",
         whyHere: [
           "Lille is a priority location for Axion-IA: densest retail/e-commerce fabric in France outside Île-de-France, international group HQs (Decathlon, Auchan, La Redoute) and 466 EuraTechnologies start-ups.",
           "Lille B2B sectors over-represented in our mandates: omnichannel retail, logistics supply chain, IT/SaaS EuraTechnologies, banking/insurance Euralille, agri-food industry (Bonduelle, Euralimentaire).",
@@ -228,12 +222,6 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Lille freelancers, micro-firms and practices up to about ten staff — artisans, agencies, pre-seed EuraTechnologies startups.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -302,7 +290,7 @@ export const LILLE_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Lille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez une équipe retail, logistique, IT ou finance.",
         whyHere: [
-          "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — toutes tailles, tous secteurs.",
+          "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — de la PME au grand groupe, tous secteurs.",
           "Toute la métropole lilloise couverte en présentiel : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul, Lesquin et communes limitrophes.",
           "Le format collectif (1 journée) est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME lilloise en transformation digitale.",
           "Le format Conférence convient aux plénières d'entreprise (Lille Grand Palais, auditoriums Euralille, campus EuraTechnologies, Plaine Images Tourcoing).",
@@ -337,12 +325,6 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, agences, cabinets et startups EuraTechnologies lillois jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -443,12 +425,6 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Lille freelancers, agencies, practices and EuraTechnologies startups up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -553,12 +529,6 @@ export const LILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (génération fiches produits e-commerce, tri emails clients, comptes-rendus réunions) pour les TPE et startups EuraTechnologies.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -594,7 +564,7 @@ export const LILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Lille ?",
-            a: "Cela dépend de l'ampleur. Un POC TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Axion-IA peut-il s'intégrer à notre plateforme e-commerce ou notre WMS ?",
@@ -658,12 +628,6 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (e-commerce product sheet generation, customer email sorting, meeting minutes) for micro-businesses and EuraTechnologies startups.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -768,12 +732,6 @@ export const LILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Coaching individuel entrée pour dirigeants TPE, fondateurs de startups EuraTechnologies et indépendants lillois — une journée, un consultant dédié.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -869,12 +827,6 @@ export const LILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry individual coaching for Lille micro-business executives, EuraTechnologies start-up founders and freelancers — one day, one dedicated consultant.",
-          },
           {
             sizeLabel: "SME",
             price: "On request",
@@ -976,12 +928,6 @@ export const LILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
             detail:
@@ -1062,12 +1008,6 @@ export const LILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / shop",
             detail:
@@ -1117,7 +1057,7 @@ export const LILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lille ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Lille et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Lille et partout en France.",
     },
     {
       q: "Axion-IA intervient-il à EuraTechnologies et dans toute la métropole lilloise ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_MAXIME_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA accompagne tout le tissu professionnel local.",
+    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de PME artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA accompagne tout le tissu professionnel local.",
+    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de PME artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
   seoHook: "station balnéaire",
   ecosystemFr:
-    "Sainte-Maxime est une station balnéaire prisée du Var, face à Saint-Tropez, mêlant tourisme haut de gamme, plaisance et économie résidentielle. Tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Saint-Tropez à 15 min en bateau, Fréjus à 25 min, A8 via Le Muy.",
+    "Sainte-Maxime est une station balnéaire prisée du Var, face à Saint-Tropez, mêlant tourisme haut de gamme, plaisance et économie résidentielle. Tissu de PME artisanales, PME hôtellerie-restauration, commerces et services. Saint-Tropez à 15 min en bateau, Fréjus à 25 min, A8 via Le Muy.",
   ecosystemEn:
-    "Sainte-Maxime est une station balnéaire prisée du Var, face à Saint-Tropez, mêlant tourisme haut de gamme, plaisance et économie résidentielle. Tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Saint-Tropez à 15 min en bateau, Fréjus à 25 min, A8 via Le Muy.",
+    "Sainte-Maxime est une station balnéaire prisée du Var, face à Saint-Tropez, mêlant tourisme haut de gamme, plaisance et économie résidentielle. Tissu de PME artisanales, PME hôtellerie-restauration, commerces et services. Saint-Tropez à 15 min en bateau, Fréjus à 25 min, A8 via Le Muy.",
   distancesFr:
     "Saint-Tropez à 15 min en bateau. Fréjus à 25 min. Saint-Raphaël à 30 min. Cannes à 50 min. A8 via Le Muy à 20 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Maxime : diagnostic adapté aux TPE hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sainte-Maxime : diagnostic adapté aux TPE hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sainte-Maxime : diagnostic adapté aux PME hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Maxime : diagnostic adapté aux PME hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Maxime : formats adaptés aux hôtels, restaurants, commerces, plaisance et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Sainte-Maxime : formats adaptés aux hôtels, restaurants, commerces, plaisance et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Sainte-Maxime : gestion réservations hôtelières et yacht, optimisation occupation saisonnière, automatisation devis artisans, outils relation client haut de gamme. Adapté TPE/PME golfe Saint-Tropez.",
-      en: "Implémentation IA à Sainte-Maxime : gestion réservations hôtelières et yacht, optimisation occupation saisonnière, automatisation devis artisans, outils relation client haut de gamme. Adapté TPE/PME golfe Saint-Tropez.",
+      fr: "Implémentation IA à Sainte-Maxime : gestion réservations hôtelières et yacht, optimisation occupation saisonnière, automatisation devis artisans, outils relation client haut de gamme. Adapté PME et ETI golfe Saint-Tropez.",
+      en: "Implémentation IA à Sainte-Maxime : gestion réservations hôtelières et yacht, optimisation occupation saisonnière, automatisation devis artisans, outils relation client haut de gamme. Adapté PME et ETI golfe Saint-Tropez.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sainte-Maxime : sessions dans vos locaux ou en visio. Dirigeants TPE/PME hôtellerie-restauration, plaisance, commerce et artisanat golfe de Saint-Tropez.",
-      en: "Coaching 1-to-1 à Sainte-Maxime : sessions dans vos locaux ou en visio. Dirigeants TPE/PME hôtellerie-restauration, plaisance, commerce et artisanat golfe de Saint-Tropez.",
+      fr: "Coaching 1-to-1 à Sainte-Maxime : sessions dans vos locaux ou en visio. Dirigeants PME et ETI hôtellerie-restauration, plaisance, commerce et artisanat golfe de Saint-Tropez.",
+      en: "Coaching 1-to-1 à Sainte-Maxime : sessions dans vos locaux ou en visio. Dirigeants PME et ETI hôtellerie-restauration, plaisance, commerce et artisanat golfe de Saint-Tropez.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Sainte-Maxime  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sainte-Maxime ?",

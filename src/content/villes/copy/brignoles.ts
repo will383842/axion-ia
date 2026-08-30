@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRIGNOLES_COPY: VilleCopy = {
   pitchFr:
-    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
+    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de PME artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
+    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de PME artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
   seoHook: "industrielles zones & viticulture côtes",
   ecosystemFr:
-    "Brignoles est la sous-préfecture et le pôle économique du centre-Var, héritière d'une histoire bauxitière, aujourd'hui dynamisée par ses zones d'activités, son tissu industriel et viticole Côtes de Provence. PME, TPE et commerces. Toulon à 45 min, Aix-en-Provence à 45 min, A8 directe.",
+    "Brignoles est la sous-préfecture et le pôle économique du centre-Var, héritière d'une histoire bauxitière, aujourd'hui dynamisée par ses zones d'activités, son tissu industriel et viticole Côtes de Provence. PME, ETI et commerces. Toulon à 45 min, Aix-en-Provence à 45 min, A8 directe.",
   ecosystemEn:
-    "Brignoles est la sous-préfecture et le pôle économique du centre-Var, héritière d'une histoire bauxitière, aujourd'hui dynamisée par ses zones d'activités, son tissu industriel et viticole Côtes de Provence. PME, TPE et commerces. Toulon à 45 min, Aix-en-Provence à 45 min, A8 directe.",
+    "Brignoles est la sous-préfecture et le pôle économique du centre-Var, héritière d'une histoire bauxitière, aujourd'hui dynamisée par ses zones d'activités, son tissu industriel et viticole Côtes de Provence. PME, ETI et commerces. Toulon à 45 min, Aix-en-Provence à 45 min, A8 directe.",
   distancesFr:
     "Toulon à 45 min. Aix-en-Provence à 45 min. Marseille à 1 h. Saint-Maximin à 15 min. A8 directe.",
   distancesEn:
@@ -30,20 +30,20 @@ export const BRIGNOLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brignoles : diagnostic adapté aux TPE artisans, PME industrielles, domaines viticoles et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Brignoles : diagnostic adapté aux TPE artisans, PME industrielles, domaines viticoles et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Brignoles : diagnostic adapté aux PME artisanales, PME industrielles, domaines viticoles et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brignoles : diagnostic adapté aux PME artisanales, PME industrielles, domaines viticoles et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brignoles : formats adaptés aux artisans, PME industrielles, domaines viticoles et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Brignoles : formats adaptés aux artisans, PME industrielles, domaines viticoles et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Brignoles : automatisation devis artisans, maintenance prédictive PME industrielles, traçabilité viticole, outils gestion cabinet libéral. Adapté TPE/PME centre-Var.",
-      en: "Implémentation IA à Brignoles : automatisation devis artisans, maintenance prédictive PME industrielles, traçabilité viticole, outils gestion cabinet libéral. Adapté TPE/PME centre-Var.",
+      fr: "Implémentation IA à Brignoles : automatisation devis artisans, maintenance prédictive PME industrielles, traçabilité viticole, outils gestion cabinet libéral. Adapté PME et ETI centre-Var.",
+      en: "Implémentation IA à Brignoles : automatisation devis artisans, maintenance prédictive PME industrielles, traçabilité viticole, outils gestion cabinet libéral. Adapté PME et ETI centre-Var.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brignoles : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, artisanat, viticulture et professions libérales centre-Var.",
-      en: "Coaching 1-to-1 à Brignoles : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, artisanat, viticulture et professions libérales centre-Var.",
+      fr: "Coaching 1-to-1 à Brignoles : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, artisanat, viticulture et professions libérales centre-Var.",
+      en: "Coaching 1-to-1 à Brignoles : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, artisanat, viticulture et professions libérales centre-Var.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const BRIGNOLES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Brignoles  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Brignoles ?",

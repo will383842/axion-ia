@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LONS_LE_SAUNIER_COPY: VilleCopy = {
   pitchFr:
-    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre TPE artisans, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y travaille avec les organisations du territoire du Jura.",
+    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre PME artisanales, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y travaille avec les organisations du territoire du Jura.",
   pitchEn:
-    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre TPE artisans, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y travaille avec les organisations du territoire du Jura.",
+    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre PME artisanales, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y travaille avec les organisations du territoire du Jura.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
   seoHook: "agroalimentaire filière & artisanat services",
   ecosystemFr:
     "Lons-le-Saunier, préfecture du Jura, est le centre administratif, commercial et thermal du département. L'économie locale repose sur l'agroalimentaire (filière Comté, industrie fromagère, berceau historique de la Vache qui rit), le thermalisme (Thermes Lédonia), les services publics départementaux, l'artisanat BTP, le commerce de centre-ville et le tourisme jurassien (reculées, vignoble).",
@@ -23,27 +23,27 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
     "Gare de Lons-le-Saunier (TER Bourg-en-Bresse-Besançon). Besançon à 1h10. Bourg-en-Bresse à 1h. Lyon à 1h40 via A39. Dijon à 1h20 via A39. Aéroport Lyon-Saint-Exupéry à 1h50.",
   topSectorsNaf: [
     "Agroalimentaire & filière fromagère (Comté)",
-    "TPE artisanat BTP & services",
+    "PME du BTP & services",
     "Thermalisme & tourisme",
     "Commerce de centre-ville & professions libérales",
     "Services publics & collectivités",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lons-le-Saunier : diagnostic adapté aux TPE artisans, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Lons-le-Saunier : diagnostic adapté aux TPE artisans, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Lons-le-Saunier : diagnostic adapté aux PME artisanales, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Lons-le-Saunier : diagnostic adapté aux PME artisanales, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lons-le-Saunier : formats adaptés à l'atelier agroalimentaire, fromagerie, TPE artisan BTP ou établissement thermal. Vos équipes repartent autonomes sur les outils IA métier.",
-      en: "Interventions IA sur site à Lons-le-Saunier : formats adaptés à l'atelier agroalimentaire, fromagerie, TPE artisan BTP ou établissement thermal. Vos équipes repartent autonomes sur les outils IA métier.",
+      fr: "Interventions IA sur site à Lons-le-Saunier : formats adaptés à l'atelier agroalimentaire, fromagerie, PME du BTP ou établissement thermal. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Lons-le-Saunier : formats adaptés à l'atelier agroalimentaire, fromagerie, PME du BTP ou établissement thermal. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Lons-le-Saunier : agents conversationnels traçabilité fromagère, automatisation contrôle qualité agroalimentaire, gestion réservations thermes, classification documents collectivités. Adapté tissu jurassien.",
       en: "Implémentation IA à Lons-le-Saunier : agents conversationnels traçabilité fromagère, automatisation contrôle qualité agroalimentaire, gestion réservations thermes, classification documents collectivités. Adapté tissu jurassien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lons-le-Saunier : sessions sur site ou en visio. Dirigeants PME agroalimentaires, artisans, gérants TPE, commerçants et cadres de collectivités du Jura souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Lons-le-Saunier : sessions sur site ou en visio. Dirigeants PME agroalimentaires, artisans, gérants TPE, commerçants et cadres de collectivités du Jura souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Lons-le-Saunier : sessions sur site ou en visio. Dirigeants PME agroalimentaires, artisans, gérants PME, commerçants et cadres de collectivités du Jura souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Lons-le-Saunier : sessions sur site ou en visio. Dirigeants PME agroalimentaires, artisans, gérants PME, commerçants et cadres de collectivités du Jura souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et fromagères du Jura (filière Comté, fromageries, affineurs, coopératives laitières) sur leurs cas IA : traçabilité automatisée, contrôle qualité par vision, agents conversationnels documentation, optimisation gestion stocks et affinage.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants lédoniens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Lons-le-Saunier sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce lédoniens ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce de Lons-le-Saunier sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour le thermalisme et le tourisme jurassien ?",

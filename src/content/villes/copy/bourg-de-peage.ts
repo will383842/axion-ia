@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-de-Péage (26), commune voisine de Romans-sur-Isère dans la Drôme, est intégrée à Valence Romans Agglo. Historiquement liée à la filière chaussure du bassin Romans, elle a diversifié vers un tissu PME industrielles, tertiaires, TPE artisans BTP et commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
+    "Bourg-de-Péage (26), commune voisine de Romans-sur-Isère dans la Drôme, est intégrée à Valence Romans Agglo. Historiquement liée à la filière chaussure du bassin Romans, elle a diversifié vers un tissu PME industrielles, tertiaires, PME du BTP et commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
   pitchEn:
-    "Bourg-de-Péage (26), commune voisine de Romans-sur-Isère dans la Drôme, est intégrée à Valence Romans Agglo. Historiquement liée à la filière chaussure du bassin Romans, elle a diversifié vers un tissu PME industrielles, tertiaires, TPE artisans BTP et commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
+    "Bourg-de-Péage (26), commune voisine de Romans-sur-Isère dans la Drôme, est intégrée à Valence Romans Agglo. Historiquement liée à la filière chaussure du bassin Romans, elle a diversifié vers un tissu PME industrielles, tertiaires, PME du BTP et commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourg-de-Péage (26). Nous accompagnons tous types d'activités : PME industrielles (héritage filière chaussure Romans) et tertiaires, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises du bassin Romans-Valence.",
   seoHook: "bassin romans",
   ecosystemFr:
-    "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, TPE artisanat BTP, commerces et agriculture périphérique (vallée de l'Isère).",
+    "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, PME du BTP, commerces et agriculture périphérique (vallée de l'Isère).",
   ecosystemEn:
-    "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, TPE artisanat BTP, commerces et agriculture périphérique (vallée de l'Isère).",
+    "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, PME du BTP, commerces et agriculture périphérique (vallée de l'Isère).",
   distancesFr:
     "Gare Romans-Bourg-de-Péage à 5 min (TER Valence-Grenoble). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15. Grenoble à 1h.",
   distancesEn:
@@ -25,13 +25,13 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
     "Industrie filière chaussure / cuir (héritage)",
     "PME industrielles diversifiées",
     "PME tertiaires & services",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, PME artisanales du bassin Romans-Valence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, PME artisanales du bassin Romans-Valence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-de-Péage : formats adaptés à l'atelier industriel (filière cuir/chaussure), bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
       en: "Implémentation IA à Bourg-de-Péage : classification photos pièces cuir/maroquinerie, prédiction maintenance industrielle, agents conversationnels client, CRM augmentés. Bassin Romans-Valence.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bourg-de-Péage : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants filière cuir, industriels, artisans, gérants TPE/PME péageois.",
-      en: "Coaching 1-to-1 à Bourg-de-Péage : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants filière cuir, industriels, artisans, gérants TPE/PME péageois.",
+      fr: "Coaching 1-to-1 à Bourg-de-Péage : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants filière cuir, industriels, artisans, gérants PME et ETI péageois.",
+      en: "Coaching 1-to-1 à Bourg-de-Péage : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants filière cuir, industriels, artisans, gérants PME et ETI péageois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires de Valence Romans Agglo sur leurs cas IA : agents conversationnels client, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans péageois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Bourg-de-Péage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      q: "Quels services pour les PME artisanales péageois ?",
+      a: "Pour les PME du BTP et du commerce à Bourg-de-Péage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GUJAN_MESTRAS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Gujan-Mestras, capitale ostréicole du bassin d'Arcachon avec ses sept ports, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances, réservations et gestion de stock, au service des ostréiculteurs, hébergeurs touristiques et commerçants locaux.",
+    "Axion-IA accompagne les PME et ETI de Gujan-Mestras, capitale ostréicole du bassin d'Arcachon avec ses sept ports, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances, réservations et gestion de stock, au service des ostréiculteurs, hébergeurs touristiques et commerçants locaux.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Gujan-Mestras, capitale ostréicole du bassin d'Arcachon avec ses sept ports, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances, réservations et gestion de stock, au service des ostréiculteurs, hébergeurs touristiques et commerçants locaux.",
+    "Axion-IA accompagne les PME et ETI de Gujan-Mestras, capitale ostréicole du bassin d'Arcachon avec ses sept ports, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances, réservations et gestion de stock, au service des ostréiculteurs, hébergeurs touristiques et commerçants locaux.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de Gujan-Mestras à intégrer l'intelligence artificielle dans leurs opérations quotidiennes. Sur ce territoire marqué par l'ostréiculture du bassin d'Arcachon, le tourisme balnéaire et le commerce de proximité, nous intervenons directement sur site pour auditer vos processus, automatiser vos tâches répétitives et déployer des outils mesurables. Tarifs publics, sans jargon, avec un démarrage rapide. Les PME complètent ce socle, les ETI restent marginales sur ce bassin de petites structures.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de Gujan-Mestras à intégrer l'intelligence artificielle dans leurs opérations quotidiennes. Sur ce territoire marqué par l'ostréiculture du bassin d'Arcachon, le tourisme balnéaire et le commerce de proximité, nous intervenons directement sur site pour auditer vos processus, automatiser vos tâches répétitives et déployer des outils mesurables. Tarifs publics, sans jargon, avec un démarrage rapide. Les PME complètent ce socle, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de Gujan-Mestras à intégrer l'intelligence artificielle dans leurs opérations quotidiennes. Sur ce territoire marqué par l'ostréiculture du bassin d'Arcachon, le tourisme balnéaire et le commerce de proximité, nous intervenons directement sur site pour auditer vos processus, automatiser vos tâches répétitives et déployer des outils mesurables. Tarifs publics, sans jargon, avec un démarrage rapide. Les PME complètent ce socle, les ETI restent marginales sur ce bassin de petites structures.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de Gujan-Mestras à intégrer l'intelligence artificielle dans leurs opérations quotidiennes. Sur ce territoire marqué par l'ostréiculture du bassin d'Arcachon, le tourisme balnéaire et le commerce de proximité, nous intervenons directement sur site pour auditer vos processus, automatiser vos tâches répétitives et déployer des outils mesurables. Tarifs publics, sans jargon, avec un démarrage rapide. Les PME complètent ce socle, les grands groupes complètent ce socle.",
   seoHook: "ostréiculture & tourisme balnéaire",
   ecosystemFr:
-    "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de TPE familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de petites entreprises où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces TPE, puis les PME du tourisme et de l'agroalimentaire local.",
+    "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de PME familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de PME où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces PME, puis les PME du tourisme et de l'agroalimentaire local.",
   ecosystemEn:
-    "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de TPE familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de petites entreprises où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces TPE, puis les PME du tourisme et de l'agroalimentaire local.",
+    "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de PME familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de PME où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces PME, puis les PME du tourisme et de l'agroalimentaire local.",
   distancesFr:
     "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE ostréicole ou un hébergeur de Gujan-Mestras pour repérer les automatisations à fort impact : prise de commande, traçabilité des lots, planning saisonnier.",
-      en: "Auditer une TPE ostréicole ou un hébergeur de Gujan-Mestras pour repérer les automatisations à fort impact : prise de commande, traçabilité des lots, planning saisonnier.",
+      fr: "Auditer une PME ostréicole ou un hébergeur de Gujan-Mestras pour repérer les automatisations à fort impact : prise de commande, traçabilité des lots, planning saisonnier.",
+      en: "Auditer une PME ostréicole ou un hébergeur de Gujan-Mestras pour repérer les automatisations à fort impact : prise de commande, traçabilité des lots, planning saisonnier.",
     },
     interventions: {
       fr: "Intervenir sur site à Gujan-Mestras pour automatiser devis, relances et réservations des commerces et restaurants du front de mer, sans bouleverser vos outils.",
@@ -42,8 +42,8 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME touristiques et agroalimentaires de Gujan-Mestras : gestion des stocks, suivi client, reporting saisonnier.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Gujan-Mestras pour piloter sereinement leur transition vers l'IA, à leur rythme.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Gujan-Mestras pour piloter sereinement leur transition vers l'IA, à leur rythme.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Gujan-Mestras pour piloter sereinement leur transition vers l'IA, à leur rythme.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Gujan-Mestras pour piloter sereinement leur transition vers l'IA, à leur rythme.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les ostréiculteurs et hébergeurs de Gujan-Mestras : vente en ligne, réservation directe, assistant client multilingue.",
@@ -53,11 +53,11 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Gujan-Mestras des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe d'huîtres et de produits de la mer, réservation en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale ostréicole du bassin d'Arcachon et ses sept ports, où le tissu mêle TPE familiales conchylicoles, hébergeurs touristiques, commerçants du front de mer et entreprises du parc d'activités Actipole et de la ZAE de Nay. On greffe l'IA sur l'existant ou on construit en IA-native, sans verrou propriétaire ni abonnement imposé. Devis à partir de 24-48 h selon la complexité, hébergement UE conforme RGPD et AI Act, code et données à vous. Kick-off en présentiel à Gujan-Mestras, près du port de Larros ou de la Maison de l'Huître, puis itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Gujan-Mestras des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe d'huîtres et de produits de la mer, réservation en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale ostréicole du bassin d'Arcachon et ses sept ports, où le tissu mêle PME familiales conchylicoles, hébergeurs touristiques, commerçants du front de mer et entreprises du parc d'activités Actipole et de la ZAE de Nay. On greffe l'IA sur l'existant ou on construit en IA-native, sans verrou propriétaire ni abonnement imposé. Devis à partir de 24-48 h selon la complexité, hébergement UE conforme RGPD et AI Act, code et données à vous. Kick-off en présentiel à Gujan-Mestras, près du port de Larros ou de la Maison de l'Huître, puis itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Filière ostréicole structurée autour des sept ports (Larros, La Hume, Le Canal, Meyran, Gujan, La Mole, Le Rocher) et de la Maison de l'Huître au port de Larros : on construit des boutiques de vente directe en WooCommerce ou Shopify avec calendrier de retrait au port, expédition de bourriches, traçabilité des lots affichée au client et recherche sémantique sur les calibres et les crus du bassin.",
           "Économie touristique saisonnière et balnéaire au bord du bassin d'Arcachon, avec des sites d'attraction comme Aqualand et le parc des expositions de la Côte d'Argent : nos chatbots RAG et agents conversationnels sont multilingues par défaut, calibrés pour les hébergeurs, les loueurs de cabanes tchanquées et la restauration de produits de la mer qui doivent absorber le pic estival sans étoffer leur back-office.",
-          "Tissu dense de TPE du commerce, de l'artisanat et des loisirs nautiques, doublé des entreprises installées sur le parc Actipole et la ZAE de Nay (créée en 1995, une vingtaine d'hectares) : on greffe l'IA sur l'existant (widget, plugin WordPress, WooCommerce, PrestaShop ou Magento, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure pour les produits locaux du bassin.",
+          "Tissu dense de PME du commerce, de l'artisanat et des loisirs nautiques, doublé des entreprises installées sur le parc Actipole et la ZAE de Nay (créée en 1995, une vingtaine d'hectares) : on greffe l'IA sur l'existant (widget, plugin WordPress, WooCommerce, PrestaShop ou Magento, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure pour les produits locaux du bassin.",
           "Proximité d'Arcachon (10 km) et de Bordeaux (50 km), gare TER sur la ligne Bordeaux-Arcachon, et ancrage dans la COBAS (agglomération du Bassin d'Arcachon Sud) : déplacements faciles pour le cadrage sur site, automatisations branchées sur vos outils métier, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de commande et clients restent maîtrisées.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande automatisée, relances) sur le site d'un ostréiculteur du port de Larros, d'un hébergeur saisonnier ou d'un commerçant du front de mer de Gujan-Mestras, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison touristique au bord du bassin d'Arcachon ou en pic de ventes d'huîtres de fin d'année. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Le projet reste transférable à tout moment à un prestataire local en Gironde ou en Nouvelle-Aquitaine, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Gujan-Mestras des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe d'huîtres et de produits de la mer, réservation en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale ostréicole du bassin d'Arcachon et ses sept ports, où le tissu mêle TPE familiales conchylicoles, hébergeurs touristiques, commerçants du front de mer et entreprises du parc d'activités Actipole et de la ZAE de Nay. On greffe l'IA sur l'existant ou on construit en IA-native, sans verrou propriétaire ni abonnement imposé. Devis à partir de 24-48 h selon la complexité, hébergement UE conforme RGPD et AI Act, code et données à vous. Kick-off en présentiel à Gujan-Mestras, près du port de Larros ou de la Maison de l'Huître, puis itérations à distance avec démos hebdomadaires.",
+        hero: "Axion-IA conçoit et augmente à Gujan-Mestras des sites web, boutiques en ligne et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe d'huîtres et de produits de la mer, réservation en ligne, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale ostréicole du bassin d'Arcachon et ses sept ports, où le tissu mêle PME familiales conchylicoles, hébergeurs touristiques, commerçants du front de mer et entreprises du parc d'activités Actipole et de la ZAE de Nay. On greffe l'IA sur l'existant ou on construit en IA-native, sans verrou propriétaire ni abonnement imposé. Devis à partir de 24-48 h selon la complexité, hébergement UE conforme RGPD et AI Act, code et données à vous. Kick-off en présentiel à Gujan-Mestras, près du port de Larros ou de la Maison de l'Huître, puis itérations à distance avec démos hebdomadaires.",
         whyHere: [
           "Filière ostréicole structurée autour des sept ports (Larros, La Hume, Le Canal, Meyran, Gujan, La Mole, Le Rocher) et de la Maison de l'Huître au port de Larros : on construit des boutiques de vente directe en WooCommerce ou Shopify avec calendrier de retrait au port, expédition de bourriches, traçabilité des lots affichée au client et recherche sémantique sur les calibres et les crus du bassin.",
           "Économie touristique saisonnière et balnéaire au bord du bassin d'Arcachon, avec des sites d'attraction comme Aqualand et le parc des expositions de la Côte d'Argent : nos chatbots RAG et agents conversationnels sont multilingues par défaut, calibrés pour les hébergeurs, les loueurs de cabanes tchanquées et la restauration de produits de la mer qui doivent absorber le pic estival sans étoffer leur back-office.",
-          "Tissu dense de TPE du commerce, de l'artisanat et des loisirs nautiques, doublé des entreprises installées sur le parc Actipole et la ZAE de Nay (créée en 1995, une vingtaine d'hectares) : on greffe l'IA sur l'existant (widget, plugin WordPress, WooCommerce, PrestaShop ou Magento, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure pour les produits locaux du bassin.",
+          "Tissu dense de PME du commerce, de l'artisanat et des loisirs nautiques, doublé des entreprises installées sur le parc Actipole et la ZAE de Nay (créée en 1995, une vingtaine d'hectares) : on greffe l'IA sur l'existant (widget, plugin WordPress, WooCommerce, PrestaShop ou Magento, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur mesure pour les produits locaux du bassin.",
           "Proximité d'Arcachon (10 km) et de Bordeaux (50 km), gare TER sur la ligne Bordeaux-Arcachon, et ancrage dans la COBAS (agglomération du Bassin d'Arcachon Sud) : déplacements faciles pour le cadrage sur site, automatisations branchées sur vos outils métier, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données de commande et clients restent maîtrisées.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande automatisée, relances) sur le site d'un ostréiculteur du port de Larros, d'un hébergeur saisonnier ou d'un commerçant du front de mer de Gujan-Mestras, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,12 +221,12 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
       a: "Oui. Notre cabinet d'experts IA se déplace directement sur les sept ports et les exploitations de Gujan-Mestras pour observer vos processus réels avant toute recommandation, généralement sous cinq jours ouvrés.",
     },
     {
-      q: "Quels gains l'IA apporte-t-elle à une TPE ostréicole de Gujan-Mestras ?",
-      a: "L'IA automatise la prise de commande, le suivi des lots, les relances clients et la gestion saisonnière. Une TPE ostréicole gagne du temps administratif et fiabilise sa traçabilité sans embaucher.",
+      q: "Quels gains l'IA apporte-t-elle à une PME ostréicole de Gujan-Mestras ?",
+      a: "L'IA automatise la prise de commande, le suivi des lots, les relances clients et la gestion saisonnière. Une PME ostréicole gagne du temps administratif et fiabilise sa traçabilité sans embaucher.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Gujan-Mestras ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME du bassin d'Arcachon. Les structures de quelques salariés sont notre cœur de cible, les ETI restant marginales sur ce territoire.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI du bassin d'Arcachon. Les structures de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se déroule un audit IA à Gujan-Mestras ?",

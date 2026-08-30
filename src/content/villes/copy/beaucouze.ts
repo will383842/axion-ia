@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCOUZE_COPY: VilleCopy = {
   pitchFr:
-    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent PME de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent PME de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : PME de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : PME de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
   seoHook: "numérique services & commerce grande",
   ecosystemFr:
     "Beaucouzé est un pôle économique de l'ouest d'Angers Loire Métropole. La commune abrite le centre commercial Atoll et plusieurs parcs d'activités tertiaires et technologiques. Tissu économique diversifié : numérique, services aux entreprises, commerce, professions libérales, logistique.",
@@ -30,8 +30,8 @@ export const BEAUCOUZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Beaucouzé : diagnostic adapté aux PME de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beaucouzé : diagnostic adapté aux PME de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaucouzé : formations adaptées aux PME numériques, prestataires B2B, commerces et professions libérales du pôle ouest angevin. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const BEAUCOUZE_COPY: VilleCopy = {
       en: "Implémentation IA à Beaucouzé : automatisation processus tertiaires, agents conversationnels commerce, optimisation logistique, outils IA pour prestataires B2B et professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beaucouzé : sessions dans vos locaux en zone d'activités, au parc technologique ou en visio. Dirigeants TPE/PME numériques, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Beaucouzé : sessions dans vos locaux en zone d'activités, au parc technologique ou en visio. Dirigeants TPE/PME numériques, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 à Beaucouzé : sessions dans vos locaux en zone d'activités, au parc technologique ou en visio. Dirigeants PME et ETI numériques, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 à Beaucouzé : sessions dans vos locaux en zone d'activités, au parc technologique ou en visio. Dirigeants PME et ETI numériques, commerçants, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const BEAUCOUZE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises installées sur les zones d'activités de Beaucouzé (Atoll, parc technologique) : PME numériques, prestataires B2B, commerces, professions libérales. Audit, formation, implémentation IA.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Beaucouzé ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE de services, PME du numérique et commerces de l'ouest angevin. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Beaucouzé ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME de services, PME du numérique et commerces de l'ouest angevin. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME numériques ?",

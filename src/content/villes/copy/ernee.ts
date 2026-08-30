@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ERNEE_COPY: VilleCopy = {
   pitchFr:
-    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ernée (53). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ernée (53). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Ernée est un bourg du nord-ouest de la Mayenne, aux marches de la Bretagne (entre Laval et Fougères). Économie fortement agricole : élevage bovin laitier, agroalimentaire (filière lait), industrie (plasturgie, agroéquipement), artisanat, commerces de proximité. Musée Robert-Tatin à proximité.",
@@ -30,8 +30,8 @@ export const ERNEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ernée : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs laitiers des marches Bretagne-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ernée : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs laitiers des marches Bretagne-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ernée : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et éleveurs laitiers des marches Bretagne-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ernée : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et éleveurs laitiers des marches Bretagne-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ernée : formations adaptées aux PME laitières, industriels plasturgie, artisans, éleveurs et commerçants du nord-ouest Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const ERNEE_COPY: VilleCopy = {
       en: "Implémentation IA à Ernée : traçabilité laitière, maintenance prédictive agroéquipement, contrôle qualité plasturgie, automatisation gestion élevage et logistique froide.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ernée : sessions dans votre exploitation laitière, usine, commerce ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, éleveurs, artisans.",
-      en: "Coaching 1-to-1 à Ernée : sessions dans votre exploitation laitière, usine, commerce ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, éleveurs, artisans.",
+      fr: "Coaching 1-to-1 à Ernée : sessions dans votre exploitation laitière, usine, commerce ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, éleveurs, artisans.",
+      en: "Coaching 1-to-1 à Ernée : sessions dans votre exploitation laitière, usine, commerce ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, éleveurs, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const ERNEE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les éleveurs laitiers et PME agroalimentaires autour d'Ernée sur leurs cas IA : traçabilité laitière, prédiction production, optimisation rations, automatisation collecte et suivi sanitaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Ernée ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du nord-ouest Mayenne. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Ernée ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agroalimentaires et industriels du nord-ouest Mayenne. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour l'industrie plasturgique ?",

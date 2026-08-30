@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
   pitchFr:
-    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de PME et ETI dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de PME et ETI dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moissy-Cramayel (77). Nous accompagnons PME et ETI : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moissy-Cramayel (77). Nous accompagnons PME et ETI : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce gros",
   ecosystemFr:
-    "Moissy-Cramayel est un pôle économique de l'agglomération Grand Paris Sud, avec plusieurs zones d'activités (Chanteloup, Lugny, Plain de l'Aunette). Tissu TPE/PME logistique, transport, commerce de gros et détail, services aux entreprises, artisanat BTP. Proximité de Sénart et de la Francilienne (N104).",
+    "Moissy-Cramayel est un pôle économique de l'agglomération Grand Paris Sud, avec plusieurs zones d'activités (Chanteloup, Lugny, Plain de l'Aunette). Tissu PME et ETI logistique, transport, commerce de gros et détail, services aux entreprises, artisanat BTP. Proximité de Sénart et de la Francilienne (N104).",
   ecosystemEn:
-    "Moissy-Cramayel est un pôle économique de l'agglomération Grand Paris Sud, avec plusieurs zones d'activités (Chanteloup, Lugny, Plain de l'Aunette). Tissu TPE/PME logistique, transport, commerce de gros et détail, services aux entreprises, artisanat BTP. Proximité de Sénart et de la Francilienne (N104).",
+    "Moissy-Cramayel est un pôle économique de l'agglomération Grand Paris Sud, avec plusieurs zones d'activités (Chanteloup, Lugny, Plain de l'Aunette). Tissu PME et ETI logistique, transport, commerce de gros et détail, services aux entreprises, artisanat BTP. Proximité de Sénart et de la Francilienne (N104).",
   distancesFr:
     "Paris centre à 45 min via A5/A105. Gare RER D Lieusaint-Moissy à 5 min. Aéroport Orly à 30 min. Melun à 15 min. Francilienne N104 à 5 min. Évry-Courcouronnes à 20 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Moissy-Cramayel : diagnostic adapté aux PME et ETI logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Moissy-Cramayel : diagnostic adapté aux PME et ETI logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Moissy-Cramayel : automatisation flux logistiques, gestion stocks, CRM commercial, classification documents transport. Adapté TPE/PME zones d'activités Grand Paris Sud.",
-      en: "Implémentation IA à Moissy-Cramayel : automatisation flux logistiques, gestion stocks, CRM commercial, classification documents transport. Adapté TPE/PME zones d'activités Grand Paris Sud.",
+      fr: "Implémentation IA à Moissy-Cramayel : automatisation flux logistiques, gestion stocks, CRM commercial, classification documents transport. Adapté PME et ETI zones d'activités Grand Paris Sud.",
+      en: "Implémentation IA à Moissy-Cramayel : automatisation flux logistiques, gestion stocks, CRM commercial, classification documents transport. Adapté PME et ETI zones d'activités Grand Paris Sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Moissy-Cramayel : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants TPE/PME, gérants logistique, commerçants et artisans du bassin Grand Paris Sud.",
-      en: "Coaching 1-to-1 à Moissy-Cramayel : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants TPE/PME, gérants logistique, commerçants et artisans du bassin Grand Paris Sud.",
+      fr: "Coaching 1-to-1 à Moissy-Cramayel : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants PME et ETI, gérants logistique, commerçants et artisans du bassin Grand Paris Sud.",
+      en: "Coaching 1-to-1 à Moissy-Cramayel : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants PME et ETI, gérants logistique, commerçants et artisans du bassin Grand Paris Sud.",
     },
   },
   faqGeolocalisee: [
@@ -57,10 +57,10 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises logistique des zones d'activités ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique et transport des zones d'activités de Moissy-Cramayel sur leurs cas IA : optimisation tournées, prédiction flux, automatisation préparation commandes, suivi temps réel.",
+      a: "Oui, nous accompagnons les PME et ETI logistique et transport des zones d'activités de Moissy-Cramayel sur leurs cas IA : optimisation tournées, prédiction flux, automatisation préparation commandes, suivi temps réel.",
     },
     {
-      q: "Quels services pour les TPE et PME de Moissy-Cramayel ?",
+      q: "Quels services pour les PME et ETI de Moissy-Cramayel ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {

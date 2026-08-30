@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pol-de-Léon (29), capitale historique de la Ceinture dorée du nord Finistère, est le premier bassin légumier de France avec ses coopératives maraîchères et ses criées. TPE agricoles, PME agroalimentaires, commerces de centre-ville, artisans, professions libérales et acteurs du tourisme patrimonial composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la Ceinture dorée.",
+    "Saint-Pol-de-Léon (29), capitale historique de la Ceinture dorée du nord Finistère, est le premier bassin légumier de France avec ses coopératives maraîchères et ses criées. PME agricoles, PME agroalimentaires, commerces de centre-ville, artisans, professions libérales et acteurs du tourisme patrimonial composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la Ceinture dorée.",
   pitchEn:
-    "Saint-Pol-de-Léon (29), capitale historique de la Ceinture dorée du nord Finistère, est le premier bassin légumier de France avec ses coopératives maraîchères et ses criées. TPE agricoles, PME agroalimentaires, commerces de centre-ville, artisans, professions libérales et acteurs du tourisme patrimonial composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la Ceinture dorée.",
+    "Saint-Pol-de-Léon (29), capitale historique de la Ceinture dorée du nord Finistère, est le premier bassin légumier de France avec ses coopératives maraîchères et ses criées. PME agricoles, PME agroalimentaires, commerces de centre-ville, artisans, professions libérales et acteurs du tourisme patrimonial composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la Ceinture dorée.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pol-de-Léon (29). Nous accompagnons tous types d'activités : TPE maraîchères et agricoles de la Ceinture dorée, PME agroalimentaires et coopératives légumières, commerçants de centre-ville, artisans, professions libérales, acteurs du tourisme patrimonial et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pol-de-Léon (29). Nous accompagnons tous types d'activités : PME maraîchères et agricoles de la Ceinture dorée, PME agroalimentaires et coopératives légumières, commerçants de centre-ville, artisans, professions libérales, acteurs du tourisme patrimonial et indépendants du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pol-de-Léon (29). Nous accompagnons tous types d'activités : TPE maraîchères et agricoles de la Ceinture dorée, PME agroalimentaires et coopératives légumières, commerçants de centre-ville, artisans, professions libérales, acteurs du tourisme patrimonial et indépendants du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pol-de-Léon (29). Nous accompagnons tous types d'activités : PME maraîchères et agricoles de la Ceinture dorée, PME agroalimentaires et coopératives légumières, commerçants de centre-ville, artisans, professions libérales, acteurs du tourisme patrimonial et indépendants du secteur.",
   seoHook: "légumes primeurs & agroalimentaire",
   ecosystemFr:
     "Saint-Pol-de-Léon est la capitale de la Ceinture dorée, premier bassin de production de légumes primeurs en France (artichauts, choux-fleurs, échalotes). La ville abrite le siège de grandes coopératives maraîchères et une criée historique. Le tourisme patrimonial (cathédrale, chapelle du Kreisker) et les commerces de centre-bourg complètent une économie tournée vers la terre et la mer.",
@@ -30,20 +30,20 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux PME maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux PME maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Pol-de-Léon : formats adaptés aux coopératives maraîchères, TPE agricoles, PME agroalimentaires ou commerces de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",
-      en: "Interventions IA sur site à Saint-Pol-de-Léon : formats adaptés aux coopératives maraîchères, TPE agricoles, PME agroalimentaires ou commerces de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",
+      fr: "Interventions IA sur site à Saint-Pol-de-Léon : formats adaptés aux coopératives maraîchères, PME agricoles, PME agroalimentaires ou commerces de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Saint-Pol-de-Léon : formats adaptés aux coopératives maraîchères, PME agricoles, PME agroalimentaires ou commerces de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Pol-de-Léon : automatisation tri et conditionnement légumes, agents conversationnels coopératives, gestion stocks criée, classification documents qualité. Adapté filière Ceinture dorée.",
       en: "Implémentation IA à Saint-Pol-de-Léon : automatisation tri et conditionnement légumes, agents conversationnels coopératives, gestion stocks criée, classification documents qualité. Adapté filière Ceinture dorée.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Pol-de-Léon : sessions sur site ou en visio. Dirigeants coopératives, gérants TPE maraîchères, commerçants et indépendants de la Ceinture dorée souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Saint-Pol-de-Léon : sessions sur site ou en visio. Dirigeants coopératives, gérants TPE maraîchères, commerçants et indépendants de la Ceinture dorée souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Saint-Pol-de-Léon : sessions sur site ou en visio. Dirigeants coopératives, gérants PME maraîchères, commerçants et indépendants de la Ceinture dorée souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Saint-Pol-de-Léon : sessions sur site ou en visio. Dirigeants coopératives, gérants PME maraîchères, commerçants et indépendants de la Ceinture dorée souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les coopératives légumières et PME agroalimentaires de la Ceinture dorée sur leurs cas IA : tri automatisé des récoltes, optimisation logistique conditionnement, agents IA documentation qualité, prévision volumes saisonniers. Confidentialité industrielle garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE agricoles et commerçants de Saint-Pol-de-Léon ?",
-      a: "Oui, nous accompagnons les TPE maraîchères et commerçants de Saint-Pol-de-Léon sur des cas IA pratiques : automatisation devis, agents IA prise de commandes, gestion stocks saisonniers, optimisation planning récoltes. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME agricoles et commerçants de Saint-Pol-de-Léon ?",
+      a: "Oui, nous accompagnons les PME maraîchères et commerçants de Saint-Pol-de-Léon sur des cas IA pratiques : automatisation devis, agents IA prise de commandes, gestion stocks saisonniers, optimisation planning récoltes. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
-      q: "Quels tarifs pour une TPE ou PME de la Ceinture dorée ?",
-      a: "L'audit sur place est tarifé selon vos enjeux, accessible aux TPE. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      q: "Quels tarifs pour une PME ou ETI de la Ceinture dorée ?",
+      a: "L'audit sur place est tarifé selon vos enjeux, accessible aux PME. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Pol-de-Léon ?",

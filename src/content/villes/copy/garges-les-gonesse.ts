@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
+    "Axion-IA accompagne les PME et ETI de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
+    "Axion-IA accompagne les PME et ETI de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
   directAnswerFr:
-    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des PME et ETI, et complémentairement des grands groupes proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des PME et ETI, et complémentairement des grands groupes proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   seoHook: "RER D, tramway T5 & aéroport Paris-Le Bourget",
   ecosystemFr:
-    "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de TPE et PME éligibles à nos accompagnements IA.",
+    "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de PME et ETI éligibles à nos accompagnements IA.",
   ecosystemEn:
-    "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de TPE et PME éligibles à nos accompagnements IA.",
+    "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de PME et ETI éligibles à nos accompagnements IA.",
   distancesFr:
     "Garges-lès-Gonesse est à 15 km au nord de Paris, à 12 km de l'aéroport Paris-Charles-de-Gaulle et borde l'aéroport Paris-Le Bourget ; la gare Garges-Sarcelles (RER D) relie la Gare du Nord en 18 minutes.",
   distancesEn:
@@ -32,20 +32,20 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA sur site à Garges-lès-Gonesse pour les PME et ETI du commerce et de la logistique péri-aéroportuaire — Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA sur site à Garges-lès-Gonesse pour les PME et ETI du commerce et de la logistique péri-aéroportuaire — Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
-      en: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
+      fr: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des PME et ETI en code custom — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des PME et ETI en code custom — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA à Garges-lès-Gonesse pour PME et ETI logistiques liées à Roissy et Le Bourget — dès {{price:impl-poc|entry}}.",
       en: "Implémentation de solutions IA à Garges-lès-Gonesse pour PME et ETI logistiques liées à Roissy et Le Bourget — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME gargeoises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME gargeoises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI gargeoises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI gargeoises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
         hero: "Garges-lès-Gonesse (Val-d'Oise) est une ville logistique et commerciale de la grande couronne nord, structurée par la ZA de la Muette (36,42 ha, plus d'un millier d'établissements) et la ZA des Doucettes, où se concentrent transporteurs et prestataires logistiques — GIST France, Herport, IDF Logistique, SMTP, Aigle Transport & Logistique — autour de l'hypermarché Cora du boulevard de la Muette. Axion-IA conçoit et déploie pour ces entreprises des sites web et plateformes SaaS augmentés par l'IA : suivi d'expéditions, devis et e-commerce, portails clients, le tout en code custom, hébergé en Union européenne et conforme RGPD.",
         whyHere: [
           "Tissu dominé par le commerce de détail et le transport/logistique péri-aéroportuaire (Le Bourget, Roissy) : nous outillons les acteurs de la ZA de la Muette et des Doucettes avec des portails de suivi d'expéditions, des espaces clients et des back-offices reliés à leur TMS, plutôt que des vitrines génériques.",
-          "Commune en Zone Franche Urbaine – Territoires Entrepreneurs, avec un volume important de TPE de services et d'artisanat : nous livrons des sites e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des prises de rendez-vous en ligne calibrés pour des structures de quelques personnes.",
+          "Commune en Zone Franche Urbaine – Territoires Entrepreneurs, avec un volume important de PME de services et d'artisanat : nous livrons des sites e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des prises de rendez-vous en ligne calibrés pour des structures de quelques personnes.",
           "Le NPNRU « Dame Blanche Nord » (piloté par Grand Paris Aménagement et Immobilière 3F) fait émerger de nouveaux locaux d'activité et commerces : nous accompagnons les nouvelles implantations sur leur présence en ligne, leur référencement local et leur réservation/commande en ligne.",
           "Garges accueille le lycée des métiers Arthur Rimbaud (automobile, commerce, logistique, transport) et un vivier de profils opérationnels : nous concevons des interfaces simples, mobile-first, pensées pour des équipes terrain et des clients qui consultent surtout au smartphone.",
         ],
@@ -87,12 +87,6 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les indépendants, commerces et artisans gargeois en Zone Franche Urbaine : site vitrine mobile-first ou boutique multi-CMS (WooCommerce, Shopify, PrestaShop), prise de rendez-vous ou paiement en ligne, référencement local Garges-lès-Gonesse / Roissy Pays de France.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
             detail:
@@ -118,7 +112,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous créer une boutique en ligne pour un commerce gargeois ?",
-            a: "Oui. Nous concevons des sites e-commerce sur les principaux CMS (WooCommerce, Shopify, PrestaShop) ou en développement sur mesure, avec paiement, gestion des stocks, click-and-collect et référencement local Garges-lès-Gonesse — adaptés aux TPE en Zone Franche Urbaine comme aux enseignes du secteur de Cora boulevard de la Muette.",
+            a: "Oui. Nous concevons des sites e-commerce sur les principaux CMS (WooCommerce, Shopify, PrestaShop) ou en développement sur mesure, avec paiement, gestion des stocks, click-and-collect et référencement local Garges-lès-Gonesse — adaptés aux PME en Zone Franche Urbaine comme aux enseignes du secteur de Cora boulevard de la Muette.",
           },
           {
             q: "Le site fonctionnera-t-il bien sur mobile ?",
@@ -172,12 +166,6 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site",
-            detail:
-              "For Garges freelancers, shops and craftspeople in the Urban Free Zone: mobile-first showcase site or multi-CMS store (WooCommerce, Shopify, PrestaShop), online booking or payment, local SEO for Garges-lès-Gonesse / Roissy Pays de France.",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform or advanced e-commerce",
@@ -248,7 +236,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux de Garges-lès-Gonesse accompagnez-vous en priorité ?",
-      a: "Nous priorisons les TPE et PME du commerce de détail, du transport et de la logistique péri-aéroportuaire (Le Bourget, Roissy), de la construction et de la restauration.",
+      a: "Nous priorisons les PME et ETI du commerce de détail, du transport et de la logistique péri-aéroportuaire (Le Bourget, Roissy), de la construction et de la restauration.",
     },
   ],
 };

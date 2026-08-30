@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const DIVION_COPY: VilleCopy = {
   pitchFr:
-    "Divion (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 770 habitants. Situee entre Bruay-la-Buissiere et Houdain, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les activites liees au patrimoine minier. Axion-IA y intervient pour tous types d'activites.",
+    "Divion (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 770 habitants. Situee entre Bruay-la-Buissiere et Houdain, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les activites liees au patrimoine minier. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Divion (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 770 habitants. Situee entre Bruay-la-Buissiere et Houdain, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les activites liees au patrimoine minier. Axion-IA y intervient pour tous types d'activites.",
+    "Divion (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 770 habitants. Situee entre Bruay-la-Buissiere et Houdain, son economie repose sur les PME artisanales, les PME de services, le commerce de proximite et les activites liees au patrimoine minier. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Divion (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Divion (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Divion est situee dans le bassin minier entre Bruay-la-Buissiere (3 km) et Houdain (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, garages automobiles et petites industries. Heritage minier reconverti en activites tertiaires.",
+    "Divion est situee dans le bassin minier entre Bruay-la-Buissiere (3 km) et Houdain (4 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-bourg, garages automobiles et petites industries. Heritage minier reconverti en activites tertiaires.",
   ecosystemEn:
-    "Divion est situee dans le bassin minier entre Bruay-la-Buissiere (3 km) et Houdain (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, garages automobiles et petites industries. Heritage minier reconverti en activites tertiaires.",
+    "Divion est situee dans le bassin minier entre Bruay-la-Buissiere (3 km) et Houdain (4 km). Tissu economique compose de PME du BTP, PME de services, commerces de centre-bourg, garages automobiles et petites industries. Heritage minier reconverti en activites tertiaires.",
   distancesFr:
     "Gare de Divion (TER Bethune-Saint-Pol). Bethune a 12 min. Lille Europe (TGV) a 1h05 en TER. Aeroport Lille-Lesquin a 1h15. Paris-Nord a 1h50 via TGV Lens.",
   distancesEn:
     "Gare de Divion (TER Bethune-Saint-Pol). Bethune a 12 min. Lille Europe (TGV) a 1h05 en TER. Aeroport Lille-Lesquin a 1h15. Paris-Nord a 1h50 via TGV Lens.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services aux entreprises",
     "Reparation automobile",
@@ -30,8 +30,8 @@ export const DIVION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Divion : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Divion : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Divion : diagnostic adapte aux PME artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Divion : diagnostic adapte aux PME artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Divion : formations adaptees aux ateliers artisanaux, garages, commerces et bureaux PME du bassin minier. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DIVION_COPY: VilleCopy = {
       en: "Implementation IA a Divion : automatisation gestion artisanale, planning IA garage, agents conversationnels commerce, CRM augmentes pour PME du bethunois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Divion : accompagnement personnalise pour dirigeants artisans, gerants TPE/PME et commercants du bassin minier bethunois.",
-      en: "Coaching 1-to-1 a Divion : accompagnement personnalise pour dirigeants artisans, gerants TPE/PME et commercants du bassin minier bethunois.",
+      fr: "Coaching 1-to-1 a Divion : accompagnement personnalise pour dirigeants artisans, gerants PME et ETI et commercants du bassin minier bethunois.",
+      en: "Coaching 1-to-1 a Divion : accompagnement personnalise pour dirigeants artisans, gerants PME et ETI et commercants du bassin minier bethunois.",
     },
   },
   faqGeolocalisee: [

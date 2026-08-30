@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les TPE et PME locales — commerces, services, professions libérales, artisans — avec du code custom et des audits sur place, sans no-code, en déplaçant ses consultants sur site.",
+    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les PME et ETI locales — commerces, services, professions libérales, artisans — avec du code custom et des audits sur place, sans no-code, en déplaçant ses consultants sur site.",
   pitchEn:
-    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les TPE et PME locales — commerces, services, professions libérales, artisans — avec du code custom et des audits sur place, sans no-code, en déplaçant ses consultants sur site.",
+    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les PME et ETI locales — commerces, services, professions libérales, artisans — avec du code custom et des audits sur place, sans no-code, en déplaçant ses consultants sur site.",
   directAnswerFr:
-    "À La Valette-du-Var, Axion-IA propose aux TPE et PME des audits IA dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nous nous déplaçons sur la ZAC Valgora (~100 entreprises tertiaires) et les zones commerciales autour de l'Avenue de l'Université, et accompagnons aussi les structures de Toulon, La Garde, La Farlède et Le Revest-les-Eaux. Spécialisés sur les flux administratifs, devis, facturation et SAV des commerces et services locaux.",
+    "À La Valette-du-Var, Axion-IA propose aux PME et ETI des audits IA dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nous nous déplaçons sur la ZAC Valgora (~100 entreprises tertiaires) et les zones commerciales autour de l'Avenue de l'Université, et accompagnons aussi les structures de Toulon, La Garde, La Farlède et Le Revest-les-Eaux. Spécialisés sur les flux administratifs, devis, facturation et SAV des commerces et services locaux.",
   directAnswerEn:
-    "À La Valette-du-Var, Axion-IA propose aux TPE et PME des audits IA dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nous nous déplaçons sur la ZAC Valgora (~100 entreprises tertiaires) et les zones commerciales autour de l'Avenue de l'Université, et accompagnons aussi les structures de Toulon, La Garde, La Farlède et Le Revest-les-Eaux. Spécialisés sur les flux administratifs, devis, facturation et SAV des commerces et services locaux.",
+    "À La Valette-du-Var, Axion-IA propose aux PME et ETI des audits IA dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nous nous déplaçons sur la ZAC Valgora (~100 entreprises tertiaires) et les zones commerciales autour de l'Avenue de l'Université, et accompagnons aussi les structures de Toulon, La Garde, La Farlède et Le Revest-les-Eaux. Spécialisés sur les flux administratifs, devis, facturation et SAV des commerces et services locaux.",
   seoHook: "ZAC Valgora & commerces aire toulonnaise",
   ecosystemFr:
-    "La Valette-du-Var concentre une activité tertiaire forte autour de la ZAC Valgora, premier parc tertiaire du Var avec une centaine d'entreprises de services, complétée par plus de 200 commerces et services de proximité. Limitrophe de Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux, la commune s'inscrit dans la métropole Toulon-Provence-Méditerranée. Le tissu local est dominé par les TPE et PME : commerce de détail, restauration, services aux entreprises, professions libérales et tourisme saisonnier.",
+    "La Valette-du-Var concentre une activité tertiaire forte autour de la ZAC Valgora, premier parc tertiaire du Var avec une centaine d'entreprises de services, complétée par plus de 200 commerces et services de proximité. Limitrophe de Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux, la commune s'inscrit dans la métropole Toulon-Provence-Méditerranée. Le tissu local est dominé par les PME et ETI : commerce de détail, restauration, services aux entreprises, professions libérales et tourisme saisonnier.",
   ecosystemEn:
-    "La Valette-du-Var concentre une activité tertiaire forte autour de la ZAC Valgora, premier parc tertiaire du Var avec une centaine d'entreprises de services, complétée par plus de 200 commerces et services de proximité. Limitrophe de Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux, la commune s'inscrit dans la métropole Toulon-Provence-Méditerranée. Le tissu local est dominé par les TPE et PME : commerce de détail, restauration, services aux entreprises, professions libérales et tourisme saisonnier.",
+    "La Valette-du-Var concentre une activité tertiaire forte autour de la ZAC Valgora, premier parc tertiaire du Var avec une centaine d'entreprises de services, complétée par plus de 200 commerces et services de proximité. Limitrophe de Toulon, La Garde, La Farlède, Solliès-Ville et Le Revest-les-Eaux, la commune s'inscrit dans la métropole Toulon-Provence-Méditerranée. Le tissu local est dominé par les PME et ETI : commerce de détail, restauration, services aux entreprises, professions libérales et tourisme saisonnier.",
   distancesFr:
     "La Valette-du-Var est à 8 km de Toulon (gare TGV), ~20 km de l'aéroport Toulon-Hyères, 72 km de Marseille et 95 km de l'aéroport Marseille-Provence. Accès direct A57.",
   distancesEn:
@@ -32,8 +32,8 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
-      en: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
+      fr: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour PME et ETI de la ZAC Valgora et commerces locaux.",
+      en: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour PME et ETI de la ZAC Valgora et commerces locaux.",
     },
     interventions: {
       fr: "Intervention sur site à La Valette-du-Var dès {{price:intervention-4h|flat}} — déplacement consultant ZAC Valgora, centre-ville, et zones commerciales limitrophes (Toulon, La Garde).",
@@ -44,14 +44,14 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
       en: "Implémentation code custom à La Valette-du-Var dès {{price:impl-poc|entry}} — automatisations devis, facturation, SAV pour commerces et services tertiaires varois.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de La Valette-du-Var dès {{price:intervention-dirigeants|flat}} — feuille de route IA pragmatique, ROI mesurable, transfert de compétences.",
-      en: "Accompagnement 1-to-1 dirigeants TPE/PME de La Valette-du-Var dès {{price:intervention-dirigeants|flat}} — feuille de route IA pragmatique, ROI mesurable, transfert de compétences.",
+      fr: "Accompagnement 1-to-1 dirigeants de PME et d'ETI de La Valette-du-Var dès {{price:intervention-dirigeants|flat}} — feuille de route IA pragmatique, ROI mesurable, transfert de compétences.",
+      en: "Accompagnement 1-to-1 dirigeants de PME et d'ETI de La Valette-du-Var dès {{price:intervention-dirigeants|flat}} — feuille de route IA pragmatique, ROI mesurable, transfert de compétences.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de TPE et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de PME et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
         whyHere: [
           "Pôle tertiaire dense : la ZAC Valgora rassemble une centaine d'entreprises de services au cœur du Var, sous gestion de la métropole Toulon-Provence-Méditerranée. Terrain idéal pour des portails clients, des espaces SaaS métier et des CRM augmentés à l'IA branchés sur l'existant — devis, facturation et reporting automatisés pour les sociétés de services et bureaux d'études installés à Valgora.",
           "Pôle marchand majeur : le centre commercial Grand Var et ses 135+ enseignes, complété par plus de 200 commerces et services de proximité autour de l'Avenue de l'Université, forment l'un des premiers bassins de chalandise varois. On y construit des vitrines e-commerce sur mesure (WooCommerce, Shopify, PrestaShop, Magento) avec click-and-collect, programmes de fidélité et gestion de stocks assistée par l'IA.",
@@ -86,12 +86,6 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, relances automatiques) sur le site existant d'un commerce du Grand Var, d'un artisan ou d'une profession libérale de l'aire toulonnaise, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,7 +131,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : périmètre et prix écrits, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour une enseigne du Grand Var en pleine saison. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire varois de l'aire toulonnaise ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de TPE et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Valette-du-Var des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune tertiaire de l'aire toulonnaise (23 719 habitants, 8 km de Toulon), où la ZAC Valgora — premier parc de services du Var — voisine le centre commercial Grand Var et ses 135+ enseignes, l'un des plus grands pôles marchands du département. Tissu fait de PME et de PME du commerce, des services aux entreprises et des professions libérales, prolongé par l'éco-quartier Entrevert et le futur projet urbain mixte de l'Avenue de l'Université. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Cadrage en présentiel à La Valette-du-Var, itérations à distance.",
         whyHere: [
           "Pôle tertiaire dense : la ZAC Valgora rassemble une centaine d'entreprises de services au cœur du Var, sous gestion de la métropole Toulon-Provence-Méditerranée. Terrain idéal pour des portails clients, des espaces SaaS métier et des CRM augmentés à l'IA branchés sur l'existant — devis, facturation et reporting automatisés pour les sociétés de services et bureaux d'études installés à Valgora.",
           "Pôle marchand majeur : le centre commercial Grand Var et ses 135+ enseignes, complété par plus de 200 commerces et services de proximité autour de l'Avenue de l'Université, forment l'un des premiers bassins de chalandise varois. On y construit des vitrines e-commerce sur mesure (WooCommerce, Shopify, PrestaShop, Magento) avec click-and-collect, programmes de fidélité et gestion de stocks assistée par l'IA.",
@@ -172,12 +166,6 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, relances automatiques) sur le site existant d'un commerce du Grand Var, d'un artisan ou d'une profession libérale de l'aire toulonnaise, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -247,8 +235,8 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
       a: "Le commerce de détail (gestion stocks, fidélité), les services tertiaires de la ZAC Valgora (CRM, devis), la restauration (réservations, plannings), les professions libérales (relances, rendez-vous) et l'hôtellerie saisonnière.",
     },
     {
-      q: "Travaillez-vous avec les TPE varoises ou seulement les PME ?",
-      a: "Axion-IA cible prioritairement les TPE (1-9 salariés), puis les PME (10-249 salariés) du Var. Les ETI restent l'exception. Notre offre {{price:intervention-4h|flat}} est calibrée pour artisans, commerçants et petites structures de services.",
+      q: "Travaillez-vous avec les PME varoises ou seulement les PME ?",
+      a: "Axion-IA cible prioritairement les PME (1-9 salariés), puis les PME (10-249 salariés) du Var. Les ETI restent l'exception. Notre offre {{price:intervention-4h|flat}} est calibrée pour artisans, commerçants et PME de services.",
     },
   ],
 };

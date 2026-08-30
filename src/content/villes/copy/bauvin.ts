@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BAUVIN_COPY: VilleCopy = {
   pitchFr:
-    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu PME artisanales, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu PME artisanales, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : PME du BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : PME du BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
-    "Bauvin est au sud de Lille, entre la métropole lilloise et le bassin minier. Position stratégique entre Lille, Lens et Douai, proximité axes A1/A21. Économie mixte : TPE artisanat, PME logistiques, agriculture (plaine de la Deûle), commerces et professions libérales.",
+    "Bauvin est au sud de Lille, entre la métropole lilloise et le bassin minier. Position stratégique entre Lille, Lens et Douai, proximité axes A1/A21. Économie mixte : PME de l'artisanat, PME logistiques, agriculture (plaine de la Deûle), commerces et professions libérales.",
   ecosystemEn:
-    "Bauvin est au sud de Lille, entre la métropole lilloise et le bassin minier. Position stratégique entre Lille, Lens et Douai, proximité axes A1/A21. Économie mixte : TPE artisanat, PME logistiques, agriculture (plaine de la Deûle), commerces et professions libérales.",
+    "Bauvin est au sud de Lille, entre la métropole lilloise et le bassin minier. Position stratégique entre Lille, Lens et Douai, proximité axes A1/A21. Économie mixte : PME de l'artisanat, PME logistiques, agriculture (plaine de la Deûle), commerces et professions libérales.",
   distancesFr:
     "Lille centre à 25 min. Lens à 15 min. Douai à 20 min. Gare de Seclin (TER Lille-Douai) à 10 min. Aéroport Lille-Lesquin à 15 min. A1 et A21 à 5 min.",
   distancesEn:
     "Lille centre à 25 min. Lens à 15 min. Douai à 20 min. Gare de Seclin (TER Lille-Douai) à 10 min. Aéroport Lille-Lesquin à 15 min. A1 et A21 à 5 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Logistique & transport (axe A1/A21)",
     "Agriculture & agroalimentaire (plaine de la Deûle)",
     "Commerce de proximité & détail",
@@ -30,8 +30,8 @@ export const BAUVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bauvin : diagnostic adapté aux TPE artisans, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Bauvin : diagnostic adapté aux TPE artisans, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Bauvin : diagnostic adapté aux PME artisanales, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bauvin : diagnostic adapté aux PME artisanales, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bauvin : formats adaptés à l'atelier, l'entrepôt, l'exploitation agricole ou le commerce. Vos équipes repartent avec des outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const BAUVIN_COPY: VilleCopy = {
       en: "Implémentation IA à Bauvin : optimisation logistique (A1/A21), prédiction récoltes, agents conversationnels, automatisation devis BTP, classification documents. Tous secteurs sud Lillois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bauvin : sessions dans vos locaux, exploitation, atelier ou en visio. Artisans, agriculteurs, gérants TPE/PME et dirigeants du sud Lillois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Bauvin : sessions dans vos locaux, exploitation, atelier ou en visio. Artisans, agriculteurs, gérants TPE/PME et dirigeants du sud Lillois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Bauvin : sessions dans vos locaux, exploitation, atelier ou en visio. Artisans, agriculteurs, gérants PME et ETI et dirigeants du sud Lillois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Bauvin : sessions dans vos locaux, exploitation, atelier ou en visio. Artisans, agriculteurs, gérants PME et ETI et dirigeants du sud Lillois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BAUVIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles et maraîchers de la plaine de la Deûle sur leurs cas IA : prédiction récoltes, classification photos cultures, traçabilité parcelles, optimisation vente directe. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants de Bauvin ?",
-      a: "Pour les TPE artisans et commerçants de Bauvin, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation devis, gestion planning) et coaching 1-to-1 dirigeants.",
+      q: "Quels services pour les PME de l'artisanat et du commerce de Bauvin ?",
+      a: "Pour les PME de l'artisanat et du commerce de Bauvin, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation devis, gestion planning) et coaching 1-to-1 dirigeants.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const BALARUC_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Balaruc-les-Bains (34), première station thermale de France par la fréquentation, sur l'étang de Thau. Thermalisme, bien-être, tourisme santé. Tissu TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Balaruc-les-Bains (34), première station thermale de France par la fréquentation, sur l'étang de Thau. Thermalisme, bien-être, tourisme santé. Tissu PME du commerce, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Balaruc-les-Bains (34), première station thermale de France par la fréquentation, sur l'étang de Thau. Thermalisme, bien-être, tourisme santé. Tissu TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Balaruc-les-Bains (34), première station thermale de France par la fréquentation, sur l'étang de Thau. Thermalisme, bien-être, tourisme santé. Tissu PME du commerce, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balaruc-les-Bains (34). Nous accompagnons TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balaruc-les-Bains (34). Nous accompagnons PME du commerce, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balaruc-les-Bains (34). Nous accompagnons TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balaruc-les-Bains (34). Nous accompagnons PME du commerce, PME thermalisme et santé, hôtellerie-restauration, artisans et professions libérales de la première station thermale de France.",
   ecosystemFr:
-    "Balaruc-les-Bains est la première station thermale de France par la fréquentation (plus de 50 000 curistes/an), sur les rives de l'étang de Thau. Thermalisme (eaux chaudes naturelles, rhumatologie, phlébologie), bien-être, tourisme santé. Tissu TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales (santé).",
+    "Balaruc-les-Bains est la première station thermale de France par la fréquentation (plus de 50 000 curistes/an), sur les rives de l'étang de Thau. Thermalisme (eaux chaudes naturelles, rhumatologie, phlébologie), bien-être, tourisme santé. Tissu PME du commerce, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales (santé).",
   ecosystemEn:
-    "Balaruc-les-Bains est la première station thermale de France par la fréquentation (plus de 50 000 curistes/an), sur les rives de l'étang de Thau. Thermalisme (eaux chaudes naturelles, rhumatologie, phlébologie), bien-être, tourisme santé. Tissu TPE commerçants, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales (santé).",
+    "Balaruc-les-Bains est la première station thermale de France par la fréquentation (plus de 50 000 curistes/an), sur les rives de l'étang de Thau. Thermalisme (eaux chaudes naturelles, rhumatologie, phlébologie), bien-être, tourisme santé. Tissu PME du commerce, PME thermalisme et santé, hôtellerie-restauration, artisans, professions libérales (santé).",
   distancesFr:
     "Sète à 10 min. Montpellier à 30 min par A9. Béziers à 40 min. Gare SNCF Frontignan-La Peyrade à 10 min. Aéroport Montpellier-Méditerranée à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BALARUC_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, TPE commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, TPE commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, PME du commerce et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, PME du commerce et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Balaruc-les-Bains : ateliers adaptés établissement thermal, hôtel curistes, cabinet santé ou commerce. Équipes autonomes sur outils IA métier.",

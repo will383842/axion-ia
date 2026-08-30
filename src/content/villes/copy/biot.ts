@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BIOT_COPY: VilleCopy = {
   pitchFr:
-    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu TPE/PME artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu PME et ETI artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu TPE/PME artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu PME et ETI artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Biot (06). Nous accompagnons tous types d'activités : TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Biot (06). Nous accompagnons tous types d'activités : PME artisanales d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Biot (06). Nous accompagnons tous types d'activités : TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Biot (06). Nous accompagnons tous types d'activités : PME artisanales d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
   seoHook: "artisanat d'art & tech startups",
   ecosystemFr:
     "Biot réunit deux pôles économiques distincts : le village historique (verrerie d'art soufflé — tradition depuis 1956, Musée national Fernand Léger, galeries, artisanat) et la zone Sophia Antipolis (tech, R&D, startups). La commune abrite plusieurs centres de recherche du technopôle. Tourisme culturel et gastronomique actif toute l'année.",
@@ -30,20 +30,20 @@ export const BIOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Biot : diagnostic adapté aux PME artisanales d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
+      en: "Audit IA à Biot : diagnostic adapté aux PME artisanales d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos collaborateurs maîtrisent leurs outils IA après notre intervention créatif ou tech.",
       en: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos collaborateurs maîtrisent leurs outils IA après notre intervention créatif ou tech.",
     },
     implementation: {
-      fr: "Implémentation IA à Biot : e-commerce artisanat d'art augmenté, pipelines ML startups, agents conversationnels multilingues (tourisme), CRM galeriste, automatisation gestion boutique. Adapté aux TPE/PME art et tech.",
-      en: "Implémentation IA à Biot : e-commerce artisanat d'art augmenté, pipelines ML startups, agents conversationnels multilingues (tourisme), CRM galeriste, automatisation gestion boutique. Adapté aux TPE/PME art et tech.",
+      fr: "Implémentation IA à Biot : e-commerce artisanat d'art augmenté, pipelines ML startups, agents conversationnels multilingues (tourisme), CRM galeriste, automatisation gestion boutique. Adapté aux PME et ETI art et tech.",
+      en: "Implémentation IA à Biot : e-commerce artisanat d'art augmenté, pipelines ML startups, agents conversationnels multilingues (tourisme), CRM galeriste, automatisation gestion boutique. Adapté aux PME et ETI art et tech.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Biot : sessions dans votre atelier, galerie, bureau Sophia ou en visio. Artisans d'art, fondateurs startups, chercheurs et gérants TPE/PME biotois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Biot : sessions dans votre atelier, galerie, bureau Sophia ou en visio. Artisans d'art, fondateurs startups, chercheurs et gérants TPE/PME biotois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Biot : sessions dans votre atelier, galerie, bureau Sophia ou en visio. Artisans d'art, fondateurs startups, chercheurs et gérants PME et ETI biotois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Biot : sessions dans votre atelier, galerie, bureau Sophia ou en visio. Artisans d'art, fondateurs startups, chercheurs et gérants PME et ETI biotois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [

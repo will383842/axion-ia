@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLOUMAGOAR_COPY: VilleCopy = {
   pitchFr:
-    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA opère pour toutes les structures économiques de la commune du bassin guingampais.",
+    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. PME artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA opère pour toutes les structures économiques de la commune du bassin guingampais.",
   pitchEn:
-    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA opère pour toutes les structures économiques de la commune du bassin guingampais.",
+    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. PME artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA opère pour toutes les structures économiques de la commune du bassin guingampais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : PME artisanales, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : PME artisanales, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
   seoHook: "services aux & agroalimentaire industries",
   ecosystemFr:
     "Ploumagoar est une commune résidentielle limitrophe de Guingamp, à l'ouest des Côtes-d'Armor. L'économie locale s'appuie sur les services aux habitants, l'artisanat BTP, le commerce de proximité, les professions libérales et l'agriculture. Le bassin guingampais est aussi un pôle agroalimentaire breton avec des PME de transformation à proximité.",
@@ -30,8 +30,8 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploumagoar : diagnostic adapté aux TPE artisans, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Ploumagoar : diagnostic adapté aux TPE artisans, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Ploumagoar : diagnostic adapté aux PME artisanales, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Ploumagoar : diagnostic adapté aux PME artisanales, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploumagoar : formats adaptés aux PME agroalimentaires, artisans BTP et professions libérales du bassin guingampais. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
       en: "Implémentation IA à Ploumagoar : automatisation process agroalimentaires, agents conversationnels cabinets libéraux, gestion planning PME, classification documents qualité. Adapté au tissu guingampais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ploumagoar : sessions sur site ou en visio. Dirigeants PME, artisans, gérants TPE, professions libérales et indépendants du bassin guingampais souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Ploumagoar : sessions sur site ou en visio. Dirigeants PME, artisans, gérants TPE, professions libérales et indépendants du bassin guingampais souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Ploumagoar : sessions sur site ou en visio. Dirigeants PME, artisans, gérants PME, professions libérales et indépendants du bassin guingampais souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Ploumagoar : sessions sur site ou en visio. Dirigeants PME, artisans, gérants PME, professions libérales et indépendants du bassin guingampais souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et de transformation du bassin guingampais sur leurs cas IA : automatisation contrôle qualité, traçabilité assistée, optimisation logistique, classification documents réglementaires, gestion planning production. Confidentialité industrielle garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et professions libérales de Ploumagoar ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, professions libérales et commerçants de Ploumagoar sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning, optimisation comptabilité. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME artisanales et professions libérales de Ploumagoar ?",
+      a: "Oui, nous accompagnons les PME du BTP, professions libérales et commerçants de Ploumagoar sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning, optimisation comptabilité. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
-      q: "Quels tarifs pour une TPE ou PME du bassin guingampais ?",
-      a: "L'audit sur place s'adapte à votre périmètre, accessible aux TPE. Pour les PME de services et agroalimentaires, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      q: "Quels tarifs pour une PME ou ETI du bassin guingampais ?",
+      a: "L'audit sur place s'adapte à votre périmètre, accessible aux PME. Pour les PME de services et agroalimentaires, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Ploumagoar ?",

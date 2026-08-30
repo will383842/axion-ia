@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -21,7 +21,7 @@ import type { VilleCopy } from "./types";
 
 export const LYON_COPY: VilleCopy = {
   pitchFr:
-    "Lyon regroupe 27 316 établissements actifs, la 2e place tertiaire française (Part-Dieu), le premier pôle biotech Auvergne-Rhône-Alpes (Gerland, Sanofi, bioMérieux) et un tissu industriel dense (Vallée de la Chimie, Renault Trucks). Axion-IA y intervient sur site, des TPE lyonnaises aux grandes directions IA de la Métropole.",
+    "Lyon regroupe 27 316 établissements actifs, la 2e place tertiaire française (Part-Dieu), le premier pôle biotech Auvergne-Rhône-Alpes (Gerland, Sanofi, bioMérieux) et un tissu industriel dense (Vallée de la Chimie, Renault Trucks). Axion-IA y intervient sur site, des PME lyonnaises aux grandes directions IA de la Métropole.",
   pitchEn:
     "Lyon hosts 27,316 active businesses, France's second largest business district (Part-Dieu), the leading Auvergne-Rhône-Alpes biotech hub (Gerland, Sanofi, bioMérieux) and a dense industrial fabric (Vallée de la Chimie, Renault Trucks). Axion-IA delivers on site, from Lyon micro-businesses to large-enterprise AI leadership across the Métropole.",
 
@@ -51,7 +51,7 @@ export const LYON_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises lyonnaises (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes lyonnaises conservent la maîtrise pleine de la stack (modèles, prompts, intégrations Vallée de la Chimie ou Gerland) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les PME, ETI et grands groupes lyonnais (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes lyonnaises conservent la maîtrise pleine de la stack (modèles, prompts, intégrations Vallée de la Chimie ou Gerland) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Lyon (69) on site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise and Métropole communes. We support Lyon micro-businesses, SMEs, mid-caps and large enterprises (industry, biotech, banking, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -80,7 +80,7 @@ export const LYON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lyonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du Vieux-Lyon aux ETI industrielles de la Vallée de la Chimie et aux directions IA des sièges Part-Dieu.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lyonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du Vieux-Lyon aux ETI industrielles de la Vallée de la Chimie et aux directions IA des sièges Part-Dieu.",
         whyHere: [
           "Lyon est notre deuxième pôle d'intervention après Paris : l'écosystème B2B lyonnais (Part-Dieu, Gerland, Confluence, Villeurbanne) génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B sectorisé sur-représenté chez nos clients lyonnais : industrie chimique et pharmaceutique (Vallée de la Chimie, Gerland), banque/assurance Part-Dieu, PME numériques Villeurbanne et Vaise, cabinets conseil Presqu'île.",
@@ -117,12 +117,6 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets lyonnais jusqu'à une dizaine de collaborateurs — Presqu'île, Vieux Lyon, Caluire.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -186,7 +180,7 @@ export const LYON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout intégrateur de la French Tech Lyon-Auvergne-Rhône-Alpes ou par vos équipes en interne, sans contrat de prestation continue obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
         whyHere: [
           "Lyon is our second top engagement hub after Paris: the sectorised Lyon B2B ecosystem (Part-Dieu, Gerland, Confluence, Villeurbanne) drives strong operational AI audit demand.",
           "Lyon B2B fabric over-represented in our cases: chemical and pharmaceutical industry (Vallée de la Chimie, Gerland), banking/insurance at Part-Dieu, digital SMEs in Villeurbanne and Vaise, consulting firms in Presqu'île.",
@@ -223,12 +217,6 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Lyon freelancers, micro-firms and practices up to about ten staff — Presqu'île, Vieux Lyon, Caluire.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -332,12 +320,6 @@ export const LYON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, cabinets et petites agences lyonnaises jusqu'à une dizaine de collaborateurs — Presqu'île, Vieux Lyon, quartiers résidentiels.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -437,12 +419,6 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Lyon freelancers, practices and small agencies up to about ten staff — Presqu'île, Vieux Lyon, residential districts.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -546,12 +522,6 @@ export const LYON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants lyonnais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -587,7 +557,7 @@ export const LYON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Lyon ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -651,12 +621,6 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Lyon micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -760,12 +724,6 @@ export const LYON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "à partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Pour indépendants, gérants et dirigeants de TPE lyonnaises (Presqu'île, Vieux Lyon, quartiers résidentiels). Parcours court sur sessions de travail ciblées — email, devis, veille, gestion administrative.",
-          },
-          {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
@@ -865,12 +823,6 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
-            detail:
-              "For freelancers, managers and micro-business leaders in Lyon (Presqu'île, Vieux Lyon, residential districts). Short programme with targeted working sessions — email, quotes, competitive watch, admin management.",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme — on quote",
@@ -972,12 +924,6 @@ export const LYON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1058,12 +1004,6 @@ export const LYON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1113,7 +1053,7 @@ export const LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lyon ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les PME Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
     },
     {
       q: "Avez-vous des cas clients dans la Métropole de Lyon ?",

@@ -7,7 +7,7 @@
  *   - Levenshtein/MinHash détectent le PLAGIAT (texte ~identique mot-à-mot)
  *   - SimHash sémantique détecte la REDONDANCE THÉMATIQUE (même sujet, mots
  *     différents). Ex : 2 articles "Comment auditer son IA en PME" vs
- *     "Audit IA pour TPE/PME : guide pratique" → mots différents mais
+ *     "Audit IA pour PME/ETI : guide pratique" → mots différents mais
  *     topic identique. Spam Brain HCU 2024-2026 pénalise. Utile aussi pour le
  *     cross-flux RSS : 2 sources couvrant le MÊME événement, rédigées
  *     différemment (donc passant le plagiat lexical Jaccard).

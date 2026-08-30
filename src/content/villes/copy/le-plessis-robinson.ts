@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
   pitchFr:
-    "Le Plessis-Robinson (92), commune résidentielle rénovée du sud des Hauts-de-Seine, marie un centre-ville reconstruit attractif et un pôle d'activités tourné vers l'aéronautique et la haute technologie (présence Thales). Son tissu local mêle TPE de services et commerces, professions libérales, indépendants et PME sous-traitantes ou prestataires des grands donneurs d'ordre voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME robinsonnaises, l'ETI restant marginale.",
+    "Le Plessis-Robinson (92), commune résidentielle rénovée du sud des Hauts-de-Seine, marie un centre-ville reconstruit attractif et un pôle d'activités tourné vers l'aéronautique et la haute technologie (présence Thales). Son tissu local mêle PME de services et commerces, professions libérales, indépendants et PME sous-traitantes ou prestataires des grands donneurs d'ordre voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI robinsonnaises, les grands groupes venant en complément.",
   pitchEn:
-    "Le Plessis-Robinson (92), commune résidentielle rénovée du sud des Hauts-de-Seine, marie un centre-ville reconstruit attractif et un pôle d'activités tourné vers l'aéronautique et la haute technologie (présence Thales). Son tissu local mêle TPE de services et commerces, professions libérales, indépendants et PME sous-traitantes ou prestataires des grands donneurs d'ordre voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME robinsonnaises, l'ETI restant marginale.",
+    "Le Plessis-Robinson (92), commune résidentielle rénovée du sud des Hauts-de-Seine, marie un centre-ville reconstruit attractif et un pôle d'activités tourné vers l'aéronautique et la haute technologie (présence Thales). Son tissu local mêle PME de services et commerces, professions libérales, indépendants et PME sous-traitantes ou prestataires des grands donneurs d'ordre voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI robinsonnaises, les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les TPE — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les PME — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les TPE — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les PME — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
   seoHook: "aéronautique, tech & services",
   ecosystemFr:
-    "Le Plessis-Robinson combine un centre-ville rénové très commerçant et un pôle d'activités à dominante aéronautique et haute technologie, marqué par la présence de Thales. Autour de ces grands acteurs gravite un tissu de TPE et PME — prestataires techniques, bureaux d'études, services aux entreprises, commerces et professions libérales. Ce contexte tertiaire et industriel léger produit beaucoup de tâches répétitives : propositions commerciales, documentation technique, support, reporting. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le cœur de métier.",
+    "Le Plessis-Robinson combine un centre-ville rénové très commerçant et un pôle d'activités à dominante aéronautique et haute technologie, marqué par la présence de Thales. Autour de ces grands acteurs gravite un tissu de PME et ETI — prestataires techniques, bureaux d'études, services aux entreprises, commerces et professions libérales. Ce contexte tertiaire et industriel léger produit beaucoup de tâches répétitives : propositions commerciales, documentation technique, support, reporting. Axion-IA y privilégie les PME et ETI, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le cœur de métier.",
   ecosystemEn:
-    "Le Plessis-Robinson combine un centre-ville rénové très commerçant et un pôle d'activités à dominante aéronautique et haute technologie, marqué par la présence de Thales. Autour de ces grands acteurs gravite un tissu de TPE et PME — prestataires techniques, bureaux d'études, services aux entreprises, commerces et professions libérales. Ce contexte tertiaire et industriel léger produit beaucoup de tâches répétitives : propositions commerciales, documentation technique, support, reporting. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le cœur de métier.",
+    "Le Plessis-Robinson combine un centre-ville rénové très commerçant et un pôle d'activités à dominante aéronautique et haute technologie, marqué par la présence de Thales. Autour de ces grands acteurs gravite un tissu de PME et ETI — prestataires techniques, bureaux d'études, services aux entreprises, commerces et professions libérales. Ce contexte tertiaire et industriel léger produit beaucoup de tâches répétitives : propositions commerciales, documentation technique, support, reporting. Axion-IA y privilégie les PME et ETI, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le cœur de métier.",
   distancesFr:
     "Tramway T6 (Châtillon-Vélizy) et bus desservent la commune ; Paris-Montparnasse atteint en ~30 min. Gare de Massy TGV à 15 km, aéroport de Paris-Orly à 12 km, Paris-Charles-de-Gaulle à 35 km. Nos consultants rejoignent Le Plessis-Robinson en moins de 30 min depuis Paris.",
   distancesEn:
@@ -34,16 +34,16 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
       en: "Audit IA au Plessis-Robinson : cartographie des tâches chronophages d'un commerce, d'un bureau d'études ou d'une PME prestataire. Nous priorisons 2-3 cas d'usage à fort ROI et chiffrons les gains.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Plessis-Robinson : formats courts pour TPE, commerces et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, documentation technique) et repartent autonomes.",
-      en: "Interventions IA sur site au Plessis-Robinson : formats courts pour TPE, commerces et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, documentation technique) et repartent autonomes.",
+      fr: "Interventions IA sur site au Plessis-Robinson : formats courts pour PME, commerces et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, documentation technique) et repartent autonomes.",
+      en: "Interventions IA sur site au Plessis-Robinson : formats courts pour PME, commerces et indépendants. Vos équipes maîtrisent les outils IA (rédaction, synthèse, documentation technique) et repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA au Plessis-Robinson : automatisation des devis et du reporting, agents de support, traitement de documentation technique pour bureaux d'études et prestataires aéronautiques. Solutions RGPD-conformes.",
       en: "Implémentation IA au Plessis-Robinson : automatisation des devis et du reporting, agents de support, traitement de documentation technique pour bureaux d'études et prestataires aéronautiques. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Plessis-Robinson : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, professions libérales et prestataires techniques souhaitant piloter l'IA sans dépendre d'un tiers.",
-      en: "Coaching 1-to-1 au Plessis-Robinson : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, professions libérales et prestataires techniques souhaitant piloter l'IA sans dépendre d'un tiers.",
+      fr: "Coaching 1-to-1 au Plessis-Robinson : sessions dans vos locaux ou en visio pour dirigeants de PME et ETI, professions libérales et prestataires techniques souhaitant piloter l'IA sans dépendre d'un tiers.",
+      en: "Coaching 1-to-1 au Plessis-Robinson : sessions dans vos locaux ou en visio pour dirigeants de PME et ETI, professions libérales et prestataires techniques souhaitant piloter l'IA sans dépendre d'un tiers.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA au Plessis-Robinson : sites vitrines et portails B2B pour commerces, bureaux d'études et prestataires tech, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
@@ -53,11 +53,11 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Au Plessis-Robinson (92), l'économie locale s'organise autour d'un fait rare en proche banlieue sud : le siège mondial de MBDA, missilier européen aux ~6 000 salariés sur un site de 70 000 m², voisin du parc d'activités de La Boursidière — 16 bâtiments HQE, 60 000 m² de bureaux et près de 2 000 emplois répartis sur trois filières, défense, automobile (Renault) et recherche médicale (Actavis, ELA Medical, Orion Santé). Autour gravitent les TPE et PME du Parc Technologique et les commerces du Cœur de Ville reconstruit par François Spoerry. Axion-IA conçoit pour ce tissu des sites web et plateformes SaaS augmentés par l'IA : portails B2B pour sous-traitants de la défense et bureaux d'études, sites e-commerce multi-CMS pour les commerces robinsonnais, applicatifs métier pour la pharma et l'automotive — code sur mesure, hébergement UE/RGPD, zéro lock-in éditeur.",
+        hero: "Au Plessis-Robinson (92), l'économie locale s'organise autour d'un fait rare en proche banlieue sud : le siège mondial de MBDA, missilier européen aux ~6 000 salariés sur un site de 70 000 m², voisin du parc d'activités de La Boursidière — 16 bâtiments HQE, 60 000 m² de bureaux et près de 2 000 emplois répartis sur trois filières, défense, automobile (Renault) et recherche médicale (Actavis, ELA Medical, Orion Santé). Autour gravitent les PME et ETI du Parc Technologique et les commerces du Cœur de Ville reconstruit par François Spoerry. Axion-IA conçoit pour ce tissu des sites web et plateformes SaaS augmentés par l'IA : portails B2B pour sous-traitants de la défense et bureaux d'études, sites e-commerce multi-CMS pour les commerces robinsonnais, applicatifs métier pour la pharma et l'automotive — code sur mesure, hébergement UE/RGPD, zéro lock-in éditeur.",
         whyHere: [
           "Le siège mondial de MBDA et l'écosystème défense/aéronautique (ex-présence Thales) génèrent un réseau dense de sous-traitants et bureaux d'études : ils ont besoin de portails fournisseurs, d'espaces documentaires techniques et de chatbots RAG sur cahiers des charges — pas de simples sites vitrines.",
           "La Boursidière concentre des acteurs de la recherche médicale et pharma (Actavis, ELA Medical sur les dispositifs cardiaques, Orion Santé, Pharmadiem) et de l'automobile (Renault SAS, Renault Merchandising) : pour eux nous construisons des plateformes SaaS conformes, search sémantique sur documentation réglementaire et data RGPD by design.",
-          "Le Parc Technologique du Plessis-Robinson (2,5 ha, ~19 entreprises dont Compass Group France, Abiotec, AR2I, Copiver) réunit des TPE/PME de services et d'instrumentation qui gagnent à des sites B2B avec devis automatisés et assistants intelligents intégrés à leur CRM.",
+          "Le Parc Technologique du Plessis-Robinson (2,5 ha, ~19 entreprises dont Compass Group France, Abiotec, AR2I, Copiver) réunit des PME et ETI de services et d'instrumentation qui gagnent à des sites B2B avec devis automatisés et assistants intelligents intégrés à leur CRM.",
           "Le Cœur de Ville rénové (François Spoerry, ~20 commerces, marché, centre de santé) abrite commerçants et professions libérales pour qui un site e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) doublé d'un assistant de prise de rendez-vous ou de commande change l'économie quotidienne.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour commerçants, artisans et professions libérales du Cœur de Ville : site mobile-first multi-CMS, assistant de prise de rendez-vous ou de commande, contenus optimisés pour la recherche locale.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail B2B ou plateforme métier IA",
@@ -175,12 +169,6 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented brochure or e-commerce site",
-            detail:
-              "For Cœur de Ville retailers, craftspeople and professionals: mobile-first multi-CMS site, booking or ordering assistant, content optimised for local search.",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B portal or AI business platform",
             detail:
@@ -233,7 +221,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
       a: "Oui. Nos consultants rejoignent Le Plessis-Robinson en moins de 30 min depuis Paris et interviennent dans vos locaux, ainsi qu'à Clamart, Châtenay-Malabry, Sceaux et Antony.",
     },
     {
-      q: "Travaillez-vous avec les TPE et commerces robinsonnais ?",
+      q: "Travaillez-vous avec les PME et commerces robinsonnais ?",
       a: "Oui, c'est notre priorité. Commerces du centre-ville rénové, professions libérales et indépendants profitent fortement d'automatisations simples sur devis, relances, support et gestion administrative.",
     },
     {

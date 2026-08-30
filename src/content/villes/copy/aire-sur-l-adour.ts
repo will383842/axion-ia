@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
   pitchFr:
-    "Aire-sur-l'Adour (40), sous-préfecture des Landes sur les bords de l'Adour, est une commune historique (résidence royale wisigothe, époque romaine) entre Bordeaux et Pau. Agriculture (foie gras, maïs, élevage), agroalimentaire, TPE artisans, commerces de bourg, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Aire-sur-l'Adour (40), sous-préfecture des Landes sur les bords de l'Adour, est une commune historique (résidence royale wisigothe, époque romaine) entre Bordeaux et Pau. Agriculture (foie gras, maïs, élevage), agroalimentaire, PME artisanales, commerces de bourg, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Aire-sur-l'Adour (40), sous-préfecture des Landes sur les bords de l'Adour, est une commune historique (résidence royale wisigothe, époque romaine) entre Bordeaux et Pau. Agriculture (foie gras, maïs, élevage), agroalimentaire, TPE artisans, commerces de bourg, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Aire-sur-l'Adour (40), sous-préfecture des Landes sur les bords de l'Adour, est une commune historique (résidence royale wisigothe, époque romaine) entre Bordeaux et Pau. Agriculture (foie gras, maïs, élevage), agroalimentaire, PME artisanales, commerces de bourg, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aire-sur-l'Adour (40). Nous accompagnons TPE et PME de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aire-sur-l'Adour (40). Nous accompagnons PME et ETI de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aire-sur-l'Adour (40). Nous accompagnons TPE et PME de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aire-sur-l'Adour (40). Nous accompagnons PME et ETI de l'agroalimentaire (foie gras, volaille), agriculteurs, commerçants du bourg, artisans BTP, professions libérales et services publics de cette sous-préfecture landaise.",
   seoHook: "agroalimentaire, foie gras & sous-préfecture",
   ecosystemFr:
     "Aire-sur-l'Adour est une sous-préfecture des Landes, cité historique remontant à l'époque romaine puis résidence royale du royaume wisigoth. Reliée à l'autoroute A65 (Langon-Pau). L'économie repose sur l'agriculture (maïs, élevage canard et volaille, foie gras), l'agroalimentaire, les services publics (sous-préfecture), le commerce de bourg, les artisans BTP et les professions libérales.",
@@ -30,8 +30,8 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux PME et ETI agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux PME et ETI agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aire-sur-l'Adour : formations adaptées aux ateliers agroalimentaires, exploitations agricoles, commerces et services publics. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans airois ?",
-      a: "Pour les TPE commerçants et artisans à Aire-sur-l'Adour, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks, agents IA communication clients, facturation.",
+      a: "Pour les PME du commerce et artisans à Aire-sur-l'Adour, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks, agents IA communication clients, facturation.",
     },
     {
       q: "Comment se déroule une mission à Aire-sur-l'Adour ?",

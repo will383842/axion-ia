@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Clichy-sous-Bois, commune résidentielle de 29 354 habitants en Seine-Saint-Denis située à 11 km à l'est des portes de Paris. Le territoire ne dispose d'aucun axe autoroutier ni gare ferroviaire mais est desservi par le tramway T4 (stations Maurice Audin, Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil) et de nombreuses lignes de bus. Nous nous déplaçons sur place pour auditer les commerces de détail, artisans du bâtiment et structures associatives locales, afin d'identifier des automatisations IA concrètes — devis, facturation, prise de rendez-vous, suivi clients — avec un code custom auditable, sans solution no-code propriétaire.",
+    "Axion-IA accompagne les PME et ETI de Clichy-sous-Bois, commune résidentielle de 29 354 habitants en Seine-Saint-Denis située à 11 km à l'est des portes de Paris. Le territoire ne dispose d'aucun axe autoroutier ni gare ferroviaire mais est desservi par le tramway T4 (stations Maurice Audin, Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil) et de nombreuses lignes de bus. Nous nous déplaçons sur place pour auditer les commerces de détail, artisans du bâtiment et structures associatives locales, afin d'identifier des automatisations IA concrètes — devis, facturation, prise de rendez-vous, suivi clients — avec un code custom auditable, sans solution no-code propriétaire.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Clichy-sous-Bois, commune résidentielle de 29 354 habitants en Seine-Saint-Denis située à 11 km à l'est des portes de Paris. Le territoire ne dispose d'aucun axe autoroutier ni gare ferroviaire mais est desservi par le tramway T4 (stations Maurice Audin, Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil) et de nombreuses lignes de bus. Nous nous déplaçons sur place pour auditer les commerces de détail, artisans du bâtiment et structures associatives locales, afin d'identifier des automatisations IA concrètes — devis, facturation, prise de rendez-vous, suivi clients — avec un code custom auditable, sans solution no-code propriétaire.",
+    "Axion-IA accompagne les PME et ETI de Clichy-sous-Bois, commune résidentielle de 29 354 habitants en Seine-Saint-Denis située à 11 km à l'est des portes de Paris. Le territoire ne dispose d'aucun axe autoroutier ni gare ferroviaire mais est desservi par le tramway T4 (stations Maurice Audin, Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil) et de nombreuses lignes de bus. Nous nous déplaçons sur place pour auditer les commerces de détail, artisans du bâtiment et structures associatives locales, afin d'identifier des automatisations IA concrètes — devis, facturation, prise de rendez-vous, suivi clients — avec un code custom auditable, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les TPE puis les PME locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit sur place à {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
+    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les PME puis les ETI locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit sur place à {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les TPE puis les PME locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit sur place à {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
+    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les PME puis les ETI locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit sur place à {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
   seoHook: "commerces de proximité & artisans bâtiment",
   ecosystemFr:
     "Clichy-sous-Bois est une commune à forte dominante résidentielle de Seine-Saint-Denis, sans grande zone d'activités industrielles sur son territoire. Son économie repose principalement sur les commerces de détail, l'artisanat du bâtiment et un tissu associatif dense. Historiquement, la Fosse Maussoin exploitait une carrière de gypse pour la production de plâtre, dont la production était évacuée par un chemin de fer industriel vers le canal de l'Ourcq. La commune compte aujourd'hui 110 hectares de forêt sur 413 hectares au total, dont le parc de la Fosse-Maussoin classé Natura 2000, ce qui en fait la deuxième ville la plus verte du département.",
@@ -31,8 +31,8 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clichy-sous-Bois pour les TPE/PME locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de {{price:audit-flash|flat}}.",
-      en: "Audit IA à Clichy-sous-Bois pour les TPE/PME locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Clichy-sous-Bois pour les PME et ETI locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Clichy-sous-Bois pour les PME et ETI locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Clichy-sous-Bois pour automatiser facturation, suivi clients et tâches administratives répétitives — code custom auditable, sans no-code. Dès {{price:intervention-4h|flat}}.",
@@ -43,8 +43,8 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
       en: "Implémentation de solutions IA mesurées à Clichy-sous-Bois pour les artisans du bâtiment et commerces — outils internes développés sur-mesure, conformes RGPD.",
     },
     unAUn: {
-      fr: "Sessions un-à-un pour les dirigeants de TPE/PME de Clichy-sous-Bois — montée en compétences IA opérationnelle, sans jargon, orientée cas concrets.",
-      en: "Sessions un-à-un pour les dirigeants de TPE/PME de Clichy-sous-Bois — montée en compétences IA opérationnelle, sans jargon, orientée cas concrets.",
+      fr: "Sessions un-à-un pour les dirigeants de PME et ETI de Clichy-sous-Bois — montée en compétences IA opérationnelle, sans jargon, orientée cas concrets.",
+      en: "Sessions un-à-un pour les dirigeants de PME et ETI de Clichy-sous-Bois — montée en compétences IA opérationnelle, sans jargon, orientée cas concrets.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou brique IA greffée",
-            detail:
-              "Pour les commerces de proximité, artisans et micro-entreprises des rez-de-chaussée actifs du Bas-Clichy : site vitrine, fiche locale, formulaire de devis ou chatbot greffé en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / e-commerce sur mesure",
@@ -172,12 +166,6 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or grafted AI brick",
-            detail:
-              "For local shops, craftsmen and micro-businesses of the Bas-Clichy active ground floors: showcase site, local listing, quote form or grafted chatbot in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / e-commerce",
             detail:
@@ -247,7 +235,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Pourquoi un cabinet IA pour les commerces et artisans de Clichy-sous-Bois ?",
-      a: "Le tissu local — commerces de détail, artisans du bâtiment, associations — gagne fortement en productivité sur les tâches administratives (devis, relances, planning). Nous priorisons les TPE puis les PME ; l'ETI reste marginale localement.",
+      a: "Le tissu local — commerces de détail, artisans du bâtiment, associations — gagne fortement en productivité sur les tâches administratives (devis, relances, planning). Nous priorisons les PME puis les ETI ; les grands groupes venant en complément.",
     },
   ],
 };

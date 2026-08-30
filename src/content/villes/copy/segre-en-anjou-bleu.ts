@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
   pitchFr:
-    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA répond aux besoins de toutes les entreprises de l'Anjou bleu.",
+    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, PME artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA répond aux besoins de toutes les entreprises de l'Anjou bleu.",
   pitchEn:
-    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA répond aux besoins de toutes les entreprises de l'Anjou bleu.",
+    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, PME artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA répond aux besoins de toutes les entreprises de l'Anjou bleu.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, PME de l'artisanat et du commerce, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
-  seoHook: "TPE & PME Maine-et-Loire",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, PME de l'artisanat et du commerce, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit sur place accessible.",
+  seoHook: "PME & PME Maine-et-Loire",
   ecosystemFr:
     "Segré-en-Anjou Bleu est la plus vaste commune du Maine-et-Loire, née de la fusion de 15 communes autour de Segré. L'économie locale hérite des ardoisières historiques (Anjou bleu) et s'appuie aujourd'hui sur un tissu industriel diversifié (agroalimentaire, métallurgie, plasturgie), l'agriculture (élevage bovin laitier, polyculture), l'artisanat et les commerces de centre-bourg. Pôle de santé rural structurant.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, TPE artisans, exploitants agricoles et commerçants du Haut-Anjou. Audit sur place {{price:audit-flash|flat}} pour les petites structures.",
-      en: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, TPE artisans, exploitants agricoles et commerçants du Haut-Anjou. Audit sur place {{price:audit-flash|flat}} pour les petites structures.",
+      fr: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, PME artisanales, exploitants agricoles et commerçants du Haut-Anjou. Audit sur place {{price:audit-flash|flat}} pour les PME.",
+      en: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, PME artisanales, exploitants agricoles et commerçants du Haut-Anjou. Audit sur place {{price:audit-flash|flat}} pour les PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Segré-en-Anjou Bleu : formations PME agroalimentaires et manufacturières, ateliers artisans et exploitants agricoles. Autonomie IA de vos équipes terrain.",
@@ -42,18 +42,18 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
       en: "Implémentation IA à Segré-en-Anjou Bleu : prédiction maintenance industrielle, automatisation qualité agroalimentaire, gestion troupeau éleveurs, agents IA commerciaux et digitalisation PME Anjou bleu.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Segré-en-Anjou Bleu : sessions dans votre usine, exploitation ou commerce. Dirigeants industriels, éleveurs, artisans et gérants TPE/PME du Haut-Anjou souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Segré-en-Anjou Bleu : sessions dans votre usine, exploitation ou commerce. Dirigeants industriels, éleveurs, artisans et gérants TPE/PME du Haut-Anjou souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Segré-en-Anjou Bleu : sessions dans votre usine, exploitation ou commerce. Dirigeants industriels, éleveurs, artisans et gérants PME et ETI du Haut-Anjou souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Segré-en-Anjou Bleu : sessions dans votre usine, exploitation ou commerce. Dirigeants industriels, éleveurs, artisans et gérants PME et ETI du Haut-Anjou souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Segré-en-Anjou Bleu ?",
-      a: "Oui, Axion-IA intervient à Segré-en-Anjou Bleu et dans tout le Haut-Anjou (Château-Gontier, Craon, Pouancé, Candé). Nos consultants se déplacent sur site pour accompagner PME industrielles, TPE artisans, exploitants agricoles et commerçants.",
+      a: "Oui, Axion-IA intervient à Segré-en-Anjou Bleu et dans tout le Haut-Anjou (Château-Gontier, Craon, Pouancé, Candé). Nos consultants se déplacent sur site pour accompagner PME industrielles, PME artisanales, exploitants agricoles et commerçants.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME agroalimentaire à Segré ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME agroalimentaires, l'Audit Stratégique complet offre un diagnostic approfondi : automatisation qualité, traçabilité, optimisation production et supply chain. ROI chiffré.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux PME. Pour les PME agroalimentaires, l'Audit Stratégique complet offre un diagnostic approfondi : automatisation qualité, traçabilité, optimisation production et supply chain. ROI chiffré.",
     },
     {
       q: "L'IA peut-elle aider les éleveurs laitiers de l'Anjou bleu ?",
@@ -61,7 +61,7 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants du centre-bourg de Segré ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Segré et des 14 communes déléguées sur des cas IA concrets : automatisation devis, gestion stocks, communication locale, agents IA prise de rendez-vous.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Segré et des 14 communes déléguées sur des cas IA concrets : automatisation devis, gestion stocks, communication locale, agents IA prise de rendez-vous.",
     },
     {
       q: "Comment vos consultants se rendent-ils à Segré-en-Anjou Bleu ?",

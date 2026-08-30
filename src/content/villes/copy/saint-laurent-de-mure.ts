@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur de l'est lyonnais.",
+    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur de l'est lyonnais.",
   pitchEn:
-    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur de l'est lyonnais.",
+    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur de l'est lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, PME du BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, PME du BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
   seoHook: "logistiques aire & tertiaires zones",
   ecosystemFr:
-    "Saint-Laurent-de-Mure est positionnée en banlieue est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",
+    "Saint-Laurent-de-Mure est positionnée en banlieue est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces, agriculture résiduelle.",
   ecosystemEn:
-    "Saint-Laurent-de-Mure est positionnée en banlieue est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",
+    "Saint-Laurent-de-Mure est positionnée en banlieue est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), PME du BTP, commerces, agriculture résiduelle.",
   distancesFr:
     "Aéroport Lyon-Saint-Exupéry à 5 min. Lyon centre à 25 min. Genas à 10 min. Saint-Bonnet-de-Mure à 5 min. Chassieu à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME logistiques aire Saint-Exupéry",
     "PME tertiaires zones d'activités",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Agriculture résiduelle",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Laurent-de-Mure : formats adaptés à l'entrepôt, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Laurent-de-Mure : optimisation supply chain Saint-Exupéry, agents conversationnels B2B, automatisation workflow, classification documents.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Laurent-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants TPE/PME laurentinois.",
-      en: "Coaching 1-to-1 à Saint-Laurent-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants TPE/PME laurentinois.",
+      fr: "Coaching 1-to-1 à Saint-Laurent-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants PME et ETI laurentinois.",
+      en: "Coaching 1-to-1 à Saint-Laurent-de-Mure : sessions dans votre entrepôt, bureau, commerce ou en visio. Dirigeants logistique, tertiaires, artisans, gérants PME et ETI laurentinois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires est lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

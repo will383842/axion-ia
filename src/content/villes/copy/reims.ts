@@ -6,7 +6,7 @@
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : libellés seulement, tarifs depuis pricing.ts.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data Reims bouclier anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn (non demandés pour cette ville).
 //
@@ -22,7 +22,7 @@ import type { VilleCopy } from "./types";
 
 export const REIMS_COPY: VilleCopy = {
   pitchFr:
-    "Reims regroupe 5 701 établissements actifs, les sièges des grandes maisons de Champagne (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po et l'Université de Reims — à 45 minutes de Paris en TGV. Axion-IA y intervient sur site auprès des TPE, PME, ETI et GE du Grand Reims et du bassin Champagne.",
+    "Reims regroupe 5 701 établissements actifs, les sièges des grandes maisons de Champagne (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po et l'Université de Reims — à 45 minutes de Paris en TGV. Axion-IA y intervient sur site auprès des PME, ETI et grands groupes et GE du Grand Reims et du bassin Champagne.",
   pitchEn:
     "Reims hosts 5,701 active businesses, the headquarters of major Champagne houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po and the University of Reims — 45 minutes from Paris by TGV. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large enterprises across Greater Reims and the Champagne basin.",
 
@@ -50,7 +50,7 @@ export const REIMS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les PME, ETI et grands groupes rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
 
@@ -78,7 +78,7 @@ export const REIMS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du Grand Reims aux grandes maisons de Champagne cotées en bourse ou filiales LVMH. Reims, capitale du Champagne à 45 minutes de Paris en TGV, est un marché B2B à haut potentiel IA — agroalimentaire de prestige, bioéconomie industrielle, tertiaire académique — que nous connaissons en profondeur.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME artisanales du Grand Reims aux grandes maisons de Champagne cotées en bourse ou filiales LVMH. Reims, capitale du Champagne à 45 minutes de Paris en TGV, est un marché B2B à haut potentiel IA — agroalimentaire de prestige, bioéconomie industrielle, tertiaire académique — que nous connaissons en profondeur.",
         whyHere: [
           "Reims concentre des secteurs à forte valeur ajoutée — Champagne, agroalimentaire, bioéconomie, enseignement supérieur — où l'IA opérationnelle génère des gains mesurables : traçabilité, génération de documents export, qualification commerciale internationale.",
           "Les grandes maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) ont des équipes commerciales, export, marketing et RH éligibles à des cas IA structurés — comptes-rendus de dégustation, traduction multilingue automatique, qualification de leads B2B internationaux.",
@@ -115,12 +115,6 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, artisans, viticulteurs, petits négoces ou prestataires de services du Grand Reims jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -184,7 +178,7 @@ export const REIMS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
         whyHere: [
           "Reims concentrates high-value sectors — Champagne, agri-food, bioeconomy, higher education — where operational AI delivers measurable gains: traceability, export document generation, international commercial qualification.",
           "Major Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) have commercial, export, marketing and HR teams eligible for structured AI use cases — tasting notes, automatic multilingual translation, international B2B lead qualification.",
@@ -221,12 +215,6 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Grand Reims freelancers, craftspeople, winegrowers, small trading companies or service providers up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -330,12 +318,6 @@ export const REIMS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour viticulteurs indépendants, petits négoces, prestataires de services du Grand Reims jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -435,12 +417,6 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for independent winegrowers, small traders, Grand Reims service providers up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -544,12 +520,6 @@ export const REIMS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (traduction automatique fiche Champagne, compte-rendu réunion, qualification leads export) en quelques semaines.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -585,7 +555,7 @@ export const REIMS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Reims ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -649,12 +619,6 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (automatic Champagne sheet translation, meeting notes, export lead qualification) over a few weeks.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -759,12 +723,6 @@ export const REIMS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Entrée coaching 1-to-1 — viticulteur indépendant, artisan, dirigeant TPE de services ou négoce du Grand Reims.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -804,7 +762,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Combien de séances faut-il pour être autonome sur l'IA à Reims ?",
-            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant TPE viticulteur atteint une autonomie confortable en quelques séances. Un manager ETI Champagne cherchant à maîtriser le multilingue export aura un programme plus étendu. Le plan est cadré à la première séance.",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant PME viticulteur atteint une autonomie confortable en quelques séances. Un manager ETI Champagne cherchant à maîtriser le multilingue export aura un programme plus étendu. Le plan est cadré à la première séance.",
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux rémois ou dans le bassin Champagne ?",
@@ -864,12 +822,6 @@ export const REIMS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
-            detail:
-              "Entry-level 1-to-1 coaching — independent winegrower, artisan, service or trading micro-business executive in Grand Reims.",
-          },
           {
             sizeLabel: "SME",
             price: "On quote",
@@ -971,12 +923,6 @@ export const REIMS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / boutique premium sur mesure",
             detail:
@@ -1057,12 +1003,6 @@ export const REIMS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke premium site / shop",
             detail:
@@ -1112,7 +1052,7 @@ export const REIMS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Reims ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Reims qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Reims qu'à Paris.",
     },
     {
       q: "Axion-IA intervient-il auprès des maisons de Champagne ?",

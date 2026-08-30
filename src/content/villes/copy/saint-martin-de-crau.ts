@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie son expertise pour toutes les organisations du bassin craurais.",
+    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. PME exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie son expertise pour toutes les organisations du bassin craurais.",
   pitchEn:
-    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie son expertise pour toutes les organisations du bassin craurais.",
+    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. PME exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie son expertise pour toutes les organisations du bassin craurais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons PME exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons PME exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   seoHook: "agriculture, foin AOC & logistique",
   ecosystemFr:
-    "Saint-Martin-de-Crau est le coeur de la plaine de la Crau, territoire agricole unique (foin de Crau AOC, élevage ovin). Développement récent de zones logistiques (entrepôts, transport). TPE exploitants agricoles, PME agroalimentaire, prestataires logistiques et commerces de bourg. Proximité Arles et Salon-de-Provence.",
+    "Saint-Martin-de-Crau est le coeur de la plaine de la Crau, territoire agricole unique (foin de Crau AOC, élevage ovin). Développement récent de zones logistiques (entrepôts, transport). PME exploitants agricoles, PME agroalimentaire, prestataires logistiques et commerces de bourg. Proximité Arles et Salon-de-Provence.",
   ecosystemEn:
-    "Saint-Martin-de-Crau est le coeur de la plaine de la Crau, territoire agricole unique (foin de Crau AOC, élevage ovin). Développement récent de zones logistiques (entrepôts, transport). TPE exploitants agricoles, PME agroalimentaire, prestataires logistiques et commerces de bourg. Proximité Arles et Salon-de-Provence.",
+    "Saint-Martin-de-Crau est le coeur de la plaine de la Crau, territoire agricole unique (foin de Crau AOC, élevage ovin). Développement récent de zones logistiques (entrepôts, transport). PME exploitants agricoles, PME agroalimentaire, prestataires logistiques et commerces de bourg. Proximité Arles et Salon-de-Provence.",
   distancesFr:
     "Arles à 15 min. Salon-de-Provence à 25 min. Istres à 15 min. Marseille à 55 min. Aéroport Marseille Provence à 35 min. Gare TGV Avignon à 50 min. Nîmes à 45 min.",
   distancesEn:
@@ -26,7 +26,7 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
     "Logistique & transport",
     "Agroalimentaire",
     "Commerce de proximité",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
   ],
   servicesContext: {
     audit: {
@@ -42,8 +42,8 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Martin-de-Crau : automatisation traçabilité AOC, optimisation logistique entrepôts, agents IA gestion stocks agroalimentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Martin-de-Crau : sessions pour dirigeants TPE/PME agricoles, responsables logistiques et commerçants souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Martin-de-Crau : sessions pour dirigeants TPE/PME agricoles, responsables logistiques et commerçants souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Martin-de-Crau : sessions pour dirigeants de PME et d'ETI agricoles, responsables logistiques et commerçants souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Martin-de-Crau : sessions pour dirigeants de PME et d'ETI agricoles, responsables logistiques et commerçants souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

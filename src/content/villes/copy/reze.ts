@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const REZE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
+    "Axion-IA accompagne les PME et ETI de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
+    "Axion-IA accompagne les PME et ETI de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
   directAnswerFr:
-    "À Rezé, Axion-IA propose aux TPE et PME des audits IA sur place dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
+    "À Rezé, Axion-IA propose aux PME et ETI des audits IA sur place dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
   directAnswerEn:
-    "À Rezé, Axion-IA propose aux TPE et PME des audits IA sur place dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
+    "À Rezé, Axion-IA propose aux PME et ETI des audits IA sur place dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
   seoHook: "Atout-Sud, MIN & rive sud Nantes Métropole",
   ecosystemFr:
-    "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les TPE et PME : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
+    "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les PME et ETI : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
   ecosystemEn:
-    "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les TPE et PME : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
+    "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les PME et ETI : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
   distancesFr:
     "Rezé est à ~3 km au sud de Nantes (gare TGV Nantes), ~6 km de l'aéroport Nantes-Atlantique (Bouguenais). Desservie par 2 lignes de tramway, 5 lignes de bus, le Navibus fluvial et la gare TER Rezé-Pont-Rousseau (lignes Pornic et Saint-Gilles-Croix-de-Vie).",
   distancesEn:
@@ -32,8 +32,8 @@ export const REZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur place 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
-      en: "Audit IA sur place 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
+      fr: "Audit IA sur place 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour PME et ETI de la zone Atout-Sud, du MIN et des artisans locaux.",
+      en: "Audit IA sur place 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour PME et ETI de la zone Atout-Sud, du MIN et des artisans locaux.",
     },
     interventions: {
       fr: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
@@ -44,8 +44,8 @@ export const REZE_COPY: VilleCopy = {
       en: "Implémentation code custom à Rezé dès {{price:impl-poc|entry}} — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès {{price:intervention-dirigeants|flat}} — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
-      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès {{price:intervention-dirigeants|flat}} — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
+      fr: "Accompagnement 1-to-1 dirigeants de PME et d'ETI de Rezé dès {{price:intervention-dirigeants|flat}} — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
+      en: "Accompagnement 1-to-1 dirigeants de PME et d'ETI de Rezé dès {{price:intervention-dirigeants|flat}} — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const REZE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de réservation) sur le site existant d'un commerce de Trentemoult ou d'un artisan rezéen, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
@@ -173,12 +167,6 @@ export const REZE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, booking) onto the existing site of a Trentemoult shop or a Rezé craftsperson, within weeks, no rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / store",
             detail:
@@ -247,8 +235,8 @@ export const REZE_COPY: VilleCopy = {
       a: "Le commerce de détail (Atout-Sud, gestion stocks et fidélité), la logistique agroalimentaire du MIN (suivi flux, traçabilité), la construction (devis automatisés), la restauration (planning, réservations) et les transporteurs (optimisation tournées).",
     },
     {
-      q: "Travaillez-vous avec les TPE de Rezé ou uniquement les PME ?",
-      a: "Axion-IA cible prioritairement les TPE (1-9 salariés), puis les PME (10-249 salariés) de Rezé et Nantes Métropole. Les ETI restent l'exception. Notre forfait {{price:intervention-4h|flat}} est calibré pour artisans, commerçants et petites structures de services.",
+      q: "Travaillez-vous avec les PME de Rezé ou uniquement les PME ?",
+      a: "Axion-IA cible prioritairement les PME (1-9 salariés), puis les PME (10-249 salariés) de Rezé et Nantes Métropole. Les ETI restent l'exception. Notre forfait {{price:intervention-4h|flat}} est calibré pour artisans, commerçants et PME de services.",
     },
   ],
 };

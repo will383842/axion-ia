@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MAXEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants.",
+    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu PME et ETI commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants.",
+    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu PME et ETI commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maxéville (54). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales nord Nancy, enseignes distribution, restaurants, prestataires de services aux entreprises et artisans maxévillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maxéville (54). Nous accompagnons tous types d'activités : PME et ETI des zones commerciales nord Nancy, enseignes distribution, restaurants, prestataires de services aux entreprises et artisans maxévillois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maxéville (54). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales nord Nancy, enseignes distribution, restaurants, prestataires de services aux entreprises et artisans maxévillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maxéville (54). Nous accompagnons tous types d'activités : PME et ETI des zones commerciales nord Nancy, enseignes distribution, restaurants, prestataires de services aux entreprises et artisans maxévillois.",
   ecosystemFr:
-    "Maxéville est une commune de l'agglomération Nancy nord dotée de zones d'activités commerciales (pôle Zénith), d'enseignes de distribution et de services tertiaires. Tissu TPE/PME commerce, restauration, services aux entreprises, artisanat, professions de santé.",
+    "Maxéville est une commune de l'agglomération Nancy nord dotée de zones d'activités commerciales (pôle Zénith), d'enseignes de distribution et de services tertiaires. Tissu PME et ETI commerce, restauration, services aux entreprises, artisanat, professions de santé.",
   ecosystemEn:
-    "Maxéville est une commune de l'agglomération Nancy nord dotée de zones d'activités commerciales (pôle Zénith), d'enseignes de distribution et de services tertiaires. Tissu TPE/PME commerce, restauration, services aux entreprises, artisanat, professions de santé.",
+    "Maxéville est une commune de l'agglomération Nancy nord dotée de zones d'activités commerciales (pôle Zénith), d'enseignes de distribution et de services tertiaires. Tissu PME et ETI commerce, restauration, services aux entreprises, artisanat, professions de santé.",
   distancesFr:
     "Nancy centre à 8 min. Gare Nancy-Ville TGV Est (Paris 1h30) à 12 min. Zénith de Nancy sur place. Vandœuvre-lès-Nancy (Brabois) à 20 min. Metz à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MAXEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Maxéville : diagnostic adapté aux PME et ETI zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Maxéville : diagnostic adapté aux PME et ETI zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maxéville : formats adaptés au bureau, commerce, restaurant ou atelier. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const MAXEVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Maxéville : automatisation gestion commerciale, relation client distribution, agents conversationnels B2B, workflow restauration, gestion stocks.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Maxéville : sessions dans vos locaux commerciaux, bureau, restaurant ou en visio. Commerçants, restaurateurs, prestataires B2B, gérants TPE/PME maxévillois.",
-      en: "Coaching 1-to-1 à Maxéville : sessions dans vos locaux commerciaux, bureau, restaurant ou en visio. Commerçants, restaurateurs, prestataires B2B, gérants TPE/PME maxévillois.",
+      fr: "Coaching 1-to-1 à Maxéville : sessions dans vos locaux commerciaux, bureau, restaurant ou en visio. Commerçants, restaurateurs, prestataires B2B, gérants PME et ETI maxévillois.",
+      en: "Coaching 1-to-1 à Maxéville : sessions dans vos locaux commerciaux, bureau, restaurant ou en visio. Commerçants, restaurateurs, prestataires B2B, gérants PME et ETI maxévillois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces et enseignes de distribution ?",
-      a: "Oui, nous accompagnons les TPE/PME commerce et distribution des zones d'activités Maxéville : gestion stocks, relation client, automatisation caisse et logistique, présence en ligne.",
+      a: "Oui, nous accompagnons les PME et ETI commerce et distribution des zones d'activités Maxéville : gestion stocks, relation client, automatisation caisse et logistique, présence en ligne.",
     },
     {
       q: "Accompagnez-vous les restaurants et services ?",
@@ -61,7 +61,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Maxéville ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Maxéville ?",

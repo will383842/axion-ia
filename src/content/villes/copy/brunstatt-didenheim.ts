@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants.",
+    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de PME et ETI en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants.",
+    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de PME et ETI en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brunstatt-Didenheim (68). Nous accompagnons PME et ETI : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brunstatt-Didenheim (68). Nous accompagnons PME et ETI : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Brunstatt-Didenheim, commune nouvelle créée en 2016, s'inscrit en première couronne sud de Mulhouse au sein de Mulhouse Alsace Agglomération (m2A). Profil mixte résidentiel et tertiaire, avec présence de zones d'activités, commerces de proximité, services aux entreprises et professions libérales. Proximité immédiate du pôle universitaire et hospitalier mulhousien.",
@@ -34,16 +34,16 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
       en: "Audit IA à Brunstatt-Didenheim : diagnostic adapté aux prestataires de services, professions libérales, artisans BTP, commerçants et sous-traitants industriels du sud mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
-      en: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      fr: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la PME de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la PME de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Brunstatt-Didenheim : automatisation prise de rendez-vous et relation patient/client, OCR factures et devis, agents conversationnels SAV, reporting cabinet et automatisation administrative TPE/PME.",
-      en: "Implémentation IA à Brunstatt-Didenheim : automatisation prise de rendez-vous et relation patient/client, OCR factures et devis, agents conversationnels SAV, reporting cabinet et automatisation administrative TPE/PME.",
+      fr: "Implémentation IA à Brunstatt-Didenheim : automatisation prise de rendez-vous et relation patient/client, OCR factures et devis, agents conversationnels SAV, reporting cabinet et automatisation administrative PME et ETI.",
+      en: "Implémentation IA à Brunstatt-Didenheim : automatisation prise de rendez-vous et relation patient/client, OCR factures et devis, agents conversationnels SAV, reporting cabinet et automatisation administrative PME et ETI.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brunstatt-Didenheim : sessions dans votre cabinet, bureau ou en visio. Dirigeants TPE/PME et professionnels libéraux du sud mulhousien souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Brunstatt-Didenheim : sessions dans votre cabinet, bureau ou en visio. Dirigeants TPE/PME et professionnels libéraux du sud mulhousien souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Brunstatt-Didenheim : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME et ETI et professionnels libéraux du sud mulhousien souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Brunstatt-Didenheim : sessions dans votre cabinet, bureau ou en visio. Dirigeants PME et ETI et professionnels libéraux du sud mulhousien souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,14 +53,14 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Brunstatt-Didenheim  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Brunstatt-Didenheim et du sud mulhousien, il identifie les cas d'usage IA à fort ROI pour votre cabinet, atelier, commerce ou activité de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Brunstatt-Didenheim et du sud mulhousien, il identifie les cas d'usage IA à fort ROI pour votre cabinet, atelier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les professions libérales et services de Brunstatt-Didenheim ?",
       a: "Oui, nous accompagnons les cabinets de conseil, professions médicales et paramédicales, experts-comptables et prestataires de services présents dans le sud mulhousien. Cas IA typiques : automatisation prise de rendez-vous, OCR factures, reporting et veille réglementaire.",
     },
     {
-      q: "L'IA peut-elle aider les TPE et artisans du sud mulhousien ?",
+      q: "L'IA peut-elle aider les PME et artisans du sud mulhousien ?",
       a: "Oui, nous accompagnons les artisans BTP, commerçants de proximité et sous-traitants industriels de Brunstatt-Didenheim sur des cas concrets : devis automatisés, gestion clients, chatbots SAV, automatisation administrative et veille concurrentielle locale.",
     },
     {

@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const GUINGAMP_COPY: VilleCopy = {
   pitchFr:
-    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA accompagne tout le tissu professionnel local.",
+    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA accompagne tout le tissu professionnel local.",
+    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guingamp (22). Nous accompagnons PME et ETI : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guingamp (22). Nous accompagnons PME et ETI : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
-    "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu TPE artisans, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",
+    "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu PME artisanales, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",
   ecosystemEn:
-    "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu TPE artisans, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",
+    "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu PME artisanales, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",
   distancesFr:
     "Gare de Guingamp sur place (TGV Paris 3h, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Lannion à 30 min. Aéroport Brest-Bretagne à 1h15. Rennes à 1h20.",
   distancesEn:
     "Gare de Guingamp sur place (TGV Paris 3h, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Lannion à 30 min. Aéroport Brest-Bretagne à 1h15. Rennes à 1h20.",
   topSectorsNaf: [
     "Agroalimentaire (viande, lait, légumes)",
-    "TPE artisanat et services",
+    "PME de l'artisanat et services",
     "Commerce de centre-ville",
     "Professions libérales",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, PME artisanales, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, PME artisanales, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const GUINGAMP_COPY: VilleCopy = {
       en: "Implémentation IA à Guingamp : traçabilité et qualité agroalimentaire, prédiction maintenance industrielle, CRM augmenté commerces, automatisation devis artisans, agents conversationnels PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Guingamp : sessions dans votre usine, commerce, cabinet ou en visio. Dirigeants TPE/PME guingampais, responsables agroalimentaire, artisans, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Guingamp : sessions dans votre usine, commerce, cabinet ou en visio. Dirigeants TPE/PME guingampais, responsables agroalimentaire, artisans, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 à Guingamp : sessions dans votre usine, commerce, cabinet ou en visio. Dirigeants PME et ETI guingampais, responsables agroalimentaire, artisans, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 à Guingamp : sessions dans votre usine, commerce, cabinet ou en visio. Dirigeants PME et ETI guingampais, responsables agroalimentaire, artisans, commerçants, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const GUINGAMP_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires guingampaises sur leurs cas IA : traçabilité production, contrôle qualité par vision, prédiction maintenance lignes, optimisation supply chain, conformité sanitaire.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants ?",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents IA prise de rendez-vous pour artisans et commerçants de centre-ville.",
     },
     {

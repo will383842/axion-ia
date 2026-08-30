@@ -45,7 +45,7 @@ export interface BarometerAnalysisPayload {
   readonly segments: ReadonlyArray<AnalysisSegmentComment>;
   /** Points clés à retenir (puces courtes). */
   readonly takeaways: ReadonlyArray<string>;
-  /** Recommandations opérationnelles pour dirigeants TPE/PME/ETI. */
+  /** Recommandations opérationnelles pour dirigeants de PME, ETI et grands groupes. */
   readonly recommendations: ReadonlyArray<string>;
 }
 
@@ -127,7 +127,7 @@ function buildVerifiedDataBlock(s: BarometerSnapshotPayload): string {
   ].join("\n");
 }
 
-const SYSTEM_PROMPT = `Tu es Manon, analyste IA chez Axion-IA. Tu rédiges la SYNTHÈSE d'analyse de « ${STUDY_NAME_FR} » pour des dirigeants de TPE/PME/ETI françaises.
+const SYSTEM_PROMPT = `Tu es Manon, analyste IA chez Axion-IA. Tu rédiges la SYNTHÈSE d'analyse de « ${STUDY_NAME_FR} » pour des dirigeants de PME, d'ETI et de grands groupes français.
 Règles absolues :
 - Tu n'utilises QUE les chiffres du bloc « DONNÉES VÉRIFIÉES ». AUCUNE invention de pourcentage, d'effectif ou de fait. Si un angle n'est pas chiffré, reste qualitatif.
 - Ton professionnel, factuel, utile et concis. Pas de superlatifs creux. Français.

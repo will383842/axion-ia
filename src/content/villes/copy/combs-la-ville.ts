@@ -7,14 +7,14 @@ import type { VilleCopy } from "./types";
 
 export const COMBS_LA_VILLE_COPY: VilleCopy = {
   pitchFr:
-    "Combs-la-Ville (23 350 habitants, 77380), commune de Seine-et-Marne intégrée à la Communauté d'agglomération Grand Paris Sud Seine Essonne Sénart, est desservie par la gare RER D Combs-la-Ville – Quincy à environ 28 km au sud-est de Paris. Axion-IA, cabinet d'IA pour TPE et PME francophones, se déplace sur place pour automatiser devis, relances, comptes-rendus ou suivi client. Notre code est custom (pas de no-code) et adapté au tissu local : commerces de proximité, artisans BTP du plateau de Brie, PME industrielles des zones d'activités proches du Carré Sénart, professions agricoles (céréales et oléagineux occupent 46 % du foncier communal).",
+    "Combs-la-Ville (23 350 habitants, 77380), commune de Seine-et-Marne intégrée à la Communauté d'agglomération Grand Paris Sud Seine Essonne Sénart, est desservie par la gare RER D Combs-la-Ville – Quincy à environ 28 km au sud-est de Paris. Axion-IA, cabinet d'IA pour PME et ETI francophones, se déplace sur place pour automatiser devis, relances, comptes-rendus ou suivi client. Notre code est custom (pas de no-code) et adapté au tissu local : commerces de proximité, artisans BTP du plateau de Brie, PME industrielles des zones d'activités proches du Carré Sénart, professions agricoles (céréales et oléagineux occupent 46 % du foncier communal).",
   pitchEn:
-    "Combs-la-Ville (23 350 habitants, 77380), commune de Seine-et-Marne intégrée à la Communauté d'agglomération Grand Paris Sud Seine Essonne Sénart, est desservie par la gare RER D Combs-la-Ville – Quincy à environ 28 km au sud-est de Paris. Axion-IA, cabinet d'IA pour TPE et PME francophones, se déplace sur place pour automatiser devis, relances, comptes-rendus ou suivi client. Notre code est custom (pas de no-code) et adapté au tissu local : commerces de proximité, artisans BTP du plateau de Brie, PME industrielles des zones d'activités proches du Carré Sénart, professions agricoles (céréales et oléagineux occupent 46 % du foncier communal).",
+    "Combs-la-Ville (23 350 habitants, 77380), commune de Seine-et-Marne intégrée à la Communauté d'agglomération Grand Paris Sud Seine Essonne Sénart, est desservie par la gare RER D Combs-la-Ville – Quincy à environ 28 km au sud-est de Paris. Axion-IA, cabinet d'IA pour PME et ETI francophones, se déplace sur place pour automatiser devis, relances, comptes-rendus ou suivi client. Notre code est custom (pas de no-code) et adapté au tissu local : commerces de proximité, artisans BTP du plateau de Brie, PME industrielles des zones d'activités proches du Carré Sénart, professions agricoles (céréales et oléagineux occupent 46 % du foncier communal).",
   directAnswerFr:
-    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les TPE et PME locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
+    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les PME et ETI locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les TPE et PME locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
-  seoHook: "TPE/PME Seine-et-Marne & plateau de Brie",
+    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les PME et ETI locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
+  seoHook: "PME et ETI Seine-et-Marne & plateau de Brie",
   ecosystemFr:
     "Combs-la-Ville appartient à l'agglomération Grand Paris Sud Seine Essonne Sénart et bénéficie de la proximité immédiate de pôles d'activité majeurs : Lieusaint, Moissy-Cramayel et le Carré Sénart au sud, Brie-Comte-Robert à l'est, Quincy-sous-Sénart à l'ouest. Le tissu économique mêle commerces de centre-ville, artisanat BTP, logistique sur la Francilienne (RN 104) et exploitations céréalières du plateau de Brie. Forêt de Sénart à l'ouest et vallée de l'Yerres au nord encadrent la commune.",
   ecosystemEn:
@@ -36,16 +36,16 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
       en: "Audit sur place sur site à Combs-la-Ville pour cartographier les processus automatisables (devis, relances, planning) — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Combs-la-Ville pour les TPE et PME du plateau de Brie (BTP, commerce, logistique) — dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Combs-la-Ville pour les TPE et PME du plateau de Brie (BTP, commerce, logistique) — dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Combs-la-Ville pour les PME et ETI du plateau de Brie (BTP, commerce, logistique) — dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Combs-la-Ville pour les PME et ETI du plateau de Brie (BTP, commerce, logistique) — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation d'agents IA custom (Node, Python, Postgres) connectés à votre ERP ou CRM à Combs-la-Ville — dès {{price:impl-poc|entry}}.",
       en: "Implémentation d'agents IA custom (Node, Python, Postgres) connectés à votre ERP ou CRM à Combs-la-Ville — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 d'un dirigeant TPE/PME à Combs-la-Ville pour cadrer un cas d'usage IA prioritaire — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-to-1 d'un dirigeant TPE/PME à Combs-la-Ville pour cadrer un cas d'usage IA prioritaire — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-to-1 d'un dirigeants de PME et d'ETI à Combs-la-Ville pour cadrer un cas d'usage IA prioritaire — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 d'un dirigeants de PME et d'ETI à Combs-la-Ville pour cadrer un cas d'usage IA prioritaire — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis ou de relances) sur le site existant d'un commerce du centre-ville, d'un artisan BTP du plateau de Brie ou d'un restaurant combs-la-villais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site ou boutique e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis ou de relances) sur le site existant d'un commerce du centre-ville, d'un artisan BTP du plateau de Brie ou d'un restaurant combs-la-villais, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site ou boutique e-commerce sur mesure",
             detail:
@@ -239,12 +227,12 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
       a: "Oui, nous couvrons l'ensemble de l'agglomération Grand Paris Sud Seine Essonne Sénart : Lieusaint, Moissy-Cramayel, Brie-Comte-Robert, Quincy-sous-Sénart, Tigery et le pôle commercial du Carré Sénart.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD pour une TPE à Combs-la-Ville ?",
+      q: "Comment Axion-IA assure-t-il la conformité RGPD pour une PME à Combs-la-Ville ?",
       a: "Nous hébergeons les données en France, signons un DPA, minimisons les données collectées et documentons les traitements. Le code étant custom (pas de no-code SaaS US), vous gardez la maîtrise complète.",
     },
     {
       q: "Quels secteurs d'activité accompagnez-vous à Combs-la-Ville ?",
-      a: "TPE et PME locales prioritairement : artisans BTP, commerces de détail, restaurateurs, PME logistiques proches de la RN 104, exploitations agricoles du plateau de Brie. Les ETI restent l'exception, notre cœur de cible étant la TPE et la PME.",
+      a: "PME et ETI locales prioritairement : artisans BTP, commerces de détail, restaurateurs, PME logistiques proches de la RN 104, exploitations agricoles du plateau de Brie. Les ETI restent l'exception, notre cœur de cible étant la PME et la PME.",
     },
     {
       q: "Axion-IA se déplace-t-il vraiment sur site à Combs-la-Ville ?",

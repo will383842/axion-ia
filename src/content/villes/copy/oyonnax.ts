@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const OYONNAX_COPY: VilleCopy = {
   pitchFr:
-    "Oyonnax (01), deuxième ville de l'Ain avec 22 480 habitants (Oyonnaxiens), située dans la vallée jurassienne et cœur historique de la Plastics Vallée. Tissu économique dominé par les TPE et PME de la plasturgie (héritage de la fabrique de peignes médiévale devenue capitale française du plastique), avec une concentration unique de sous-traitants injection, moulistes, ateliers d'usinage, négoce de matières premières et entreprises de décoration plastique. Axion-IA y accompagne les structures locales et celles de la communauté d'agglomération du Haut-Bugey.",
+    "Oyonnax (01), deuxième ville de l'Ain avec 22 480 habitants (Oyonnaxiens), située dans la vallée jurassienne et cœur historique de la Plastics Vallée. Tissu économique dominé par les PME et ETI de la plasturgie (héritage de la fabrique de peignes médiévale devenue capitale française du plastique), avec une concentration unique de sous-traitants injection, moulistes, ateliers d'usinage, négoce de matières premières et entreprises de décoration plastique. Axion-IA y accompagne les structures locales et celles de la communauté d'agglomération du Haut-Bugey.",
   pitchEn:
-    "Oyonnax (01), deuxième ville de l'Ain avec 22 480 habitants (Oyonnaxiens), située dans la vallée jurassienne et cœur historique de la Plastics Vallée. Tissu économique dominé par les TPE et PME de la plasturgie (héritage de la fabrique de peignes médiévale devenue capitale française du plastique), avec une concentration unique de sous-traitants injection, moulistes, ateliers d'usinage, négoce de matières premières et entreprises de décoration plastique. Axion-IA y accompagne les structures locales et celles de la communauté d'agglomération du Haut-Bugey.",
+    "Oyonnax (01), deuxième ville de l'Ain avec 22 480 habitants (Oyonnaxiens), située dans la vallée jurassienne et cœur historique de la Plastics Vallée. Tissu économique dominé par les PME et ETI de la plasturgie (héritage de la fabrique de peignes médiévale devenue capitale française du plastique), avec une concentration unique de sous-traitants injection, moulistes, ateliers d'usinage, négoce de matières premières et entreprises de décoration plastique. Axion-IA y accompagne les structures locales et celles de la communauté d'agglomération du Haut-Bugey.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des TPE et PME de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Déplacement depuis Lyon en 1h30 (A40+RN84) ou depuis Bourg-en-Bresse en 1h.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des PME et ETI de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Déplacement depuis Lyon en 1h30 (A40+RN84) ou depuis Bourg-en-Bresse en 1h.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des TPE et PME de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Déplacement depuis Lyon en 1h30 (A40+RN84) ou depuis Bourg-en-Bresse en 1h.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des PME et ETI de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Déplacement depuis Lyon en 1h30 (A40+RN84) ou depuis Bourg-en-Bresse en 1h.",
   seoHook: "plasturgie & sous-traitance industrielle",
   ecosystemFr:
-    "L'écosystème d'Oyonnax est unique en France : surnommée la « ville du plastique » et historiquement « cité du peigne », elle a évolué du travail du bois et de la corne (Moyen-Âge) vers l'injection plastique au XXe siècle. La vallée concentre aujourd'hui plus de 600 entreprises de la filière, majoritairement des TPE et PME familiales (moulistes, ateliers d'injection, finition, décoration, négoce matières), structurées autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme. La ville fut aussi la première en France à recevoir un transport d'électricité à longue distance (1889), témoin d'une culture industrielle innovante. Tissu complété par le commerce de centre-ville, l'artisanat BTP et les professions de santé.",
+    "L'écosystème d'Oyonnax est unique en France : surnommée la « ville du plastique » et historiquement « cité du peigne », elle a évolué du travail du bois et de la corne (Moyen-Âge) vers l'injection plastique au XXe siècle. La vallée concentre aujourd'hui plus de 600 entreprises de la filière, majoritairement des PME et ETI familiales (moulistes, ateliers d'injection, finition, décoration, négoce matières), structurées autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme. La ville fut aussi la première en France à recevoir un transport d'électricité à longue distance (1889), témoin d'une culture industrielle innovante. Tissu complété par le commerce de centre-ville, l'artisanat BTP et les professions de santé.",
   ecosystemEn:
-    "L'écosystème d'Oyonnax est unique en France : surnommée la « ville du plastique » et historiquement « cité du peigne », elle a évolué du travail du bois et de la corne (Moyen-Âge) vers l'injection plastique au XXe siècle. La vallée concentre aujourd'hui plus de 600 entreprises de la filière, majoritairement des TPE et PME familiales (moulistes, ateliers d'injection, finition, décoration, négoce matières), structurées autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme. La ville fut aussi la première en France à recevoir un transport d'électricité à longue distance (1889), témoin d'une culture industrielle innovante. Tissu complété par le commerce de centre-ville, l'artisanat BTP et les professions de santé.",
+    "L'écosystème d'Oyonnax est unique en France : surnommée la « ville du plastique » et historiquement « cité du peigne », elle a évolué du travail du bois et de la corne (Moyen-Âge) vers l'injection plastique au XXe siècle. La vallée concentre aujourd'hui plus de 600 entreprises de la filière, majoritairement des PME et ETI familiales (moulistes, ateliers d'injection, finition, décoration, négoce matières), structurées autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme. La ville fut aussi la première en France à recevoir un transport d'électricité à longue distance (1889), témoin d'une culture industrielle innovante. Tissu complété par le commerce de centre-ville, l'artisanat BTP et les professions de santé.",
   distancesFr:
     "Bourg-en-Bresse à 1h (RN84). Lyon à 1h30 (A40 + RN84). Genève à 1h15 (A40). Aéroport Lyon-Saint Exupéry à 1h40. Gare TGV Bellegarde-sur-Valserine à 45 min. Arbent et Bellignat à 5 min (cœur Plastics Vallée).",
   distancesEn:
@@ -43,18 +43,18 @@ export const OYONNAX_COPY: VilleCopy = {
       en: "Implémentation IA à Oyonnax : vision par ordinateur pour contrôle qualité injection, OCR factures fournisseurs matières, classification documents techniques, agents conversationnels SAV. Code custom (jamais de no-code), hébergement Europe, conformité RGPD. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Oyonnax : sessions dirigeants TPE plasturgiques, gérants PME industrielles, artisans et commerçants du Haut-Bugey. Format adapté aux structures familiales de la Plastics Vallée.",
-      en: "Coaching 1-to-1 à Oyonnax : sessions dirigeants TPE plasturgiques, gérants PME industrielles, artisans et commerçants du Haut-Bugey. Format adapté aux structures familiales de la Plastics Vallée.",
+      fr: "Coaching 1-to-1 à Oyonnax : sessions dirigeants de PME et d'ETI plasturgiques, gérants PME industrielles, artisans et commerçants du Haut-Bugey. Format adapté aux structures familiales de la Plastics Vallée.",
+      en: "Coaching 1-to-1 à Oyonnax : sessions dirigeants de PME et d'ETI plasturgiques, gérants PME industrielles, artisans et commerçants du Haut-Bugey. Format adapté aux structures familiales de la Plastics Vallée.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de PME et ETI familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
         whyHere: [
           "Capitale française de la plasturgie, héritière de la « cité du peigne » : moulistes, sous-traitants injection et ateliers d'usinage de précision ont besoin de portails B2B, de configurateurs de pièces et de catalogues techniques en ligne. On construit ces parcours sur mesure, avec recherche sémantique sur vos fiches matières, références et cahiers des charges, et une UX mobile-first utilisable jusqu'au pied de la presse.",
           "Filière structurée autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme, vivier d'export et de donneurs d'ordre exigeants : on déploie des chatbots RAG multilingues (français, anglais, allemand, italien) et des espaces clients pour fluidifier devis, suivi de commandes et SAV, en reliant l'outil à votre ERP ou GPAO sans rupture.",
-          "Tissu majoritairement TPE/PME familiales sur Arbent, Bellignat, Dortan et Géovreisset à quelques minutes, aux côtés d'acteurs structurants comme Grosfillex : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce pour valoriser une production locale auprès d'acheteurs nationaux.",
+          "Tissu majoritairement PME et ETI familiales sur Arbent, Bellignat, Dortan et Géovreisset à quelques minutes, aux côtés d'acteurs structurants comme Grosfillex : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce pour valoriser une production locale auprès d'acheteurs nationaux.",
           "Données industrielles sensibles — plans, moules, cahiers des charges, grilles de prix : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, avec des modèles européens ou open-source quand la confidentialité l'exige. Vos données techniques et clients restent maîtrisées, sans transit hors Europe ni dépendance à un prestataire unique.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const OYONNAX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur fiches techniques, OCR de cahiers des charges — sur le site existant d'un atelier d'injection, d'un négoce de matières ou d'un commerce de centre-ville d'Oyonnax, sans refonte ni interruption.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -136,11 +130,11 @@ export const OYONNAX_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper vos prises de commande. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout moment à un prestataire local d'Auvergne-Rhône-Alpes ou reprise en interne par vos équipes du Haut-Bugey.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de TPE et PME familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Oyonnax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le cœur de la Plastics Vallée, où plus de 600 entreprises de la filière — moulistes, ateliers d'injection, finition, décoration, négoce de matières — forment un tissu dense de PME et ETI familiales du Haut-Bugey, des géants historiques comme Grosfillex à Arbent jusqu'aux ateliers de Bellignat. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Oyonnax, itérations à distance.",
         whyHere: [
           "Capitale française de la plasturgie, héritière de la « cité du peigne » : moulistes, sous-traitants injection et ateliers d'usinage de précision ont besoin de portails B2B, de configurateurs de pièces et de catalogues techniques en ligne. On construit ces parcours sur mesure, avec recherche sémantique sur vos fiches matières, références et cahiers des charges, et une UX mobile-first utilisable jusqu'au pied de la presse.",
           "Filière structurée autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme, vivier d'export et de donneurs d'ordre exigeants : on déploie des chatbots RAG multilingues (français, anglais, allemand, italien) et des espaces clients pour fluidifier devis, suivi de commandes et SAV, en reliant l'outil à votre ERP ou GPAO sans rupture.",
-          "Tissu majoritairement TPE/PME familiales sur Arbent, Bellignat, Dortan et Géovreisset à quelques minutes, aux côtés d'acteurs structurants comme Grosfillex : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce pour valoriser une production locale auprès d'acheteurs nationaux.",
+          "Tissu majoritairement PME et ETI familiales sur Arbent, Bellignat, Dortan et Géovreisset à quelques minutes, aux côtés d'acteurs structurants comme Grosfillex : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on bâtit une vitrine e-commerce pour valoriser une production locale auprès d'acheteurs nationaux.",
           "Données industrielles sensibles — plans, moules, cahiers des charges, grilles de prix : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, avec des modèles européens ou open-source quand la confidentialité l'exige. Vos données techniques et clients restent maîtrisées, sans transit hors Europe ni dépendance à un prestataire unique.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const OYONNAX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur fiches techniques, OCR de cahiers des charges — sur le site existant d'un atelier d'injection, d'un négoce de matières ou d'un commerce de centre-ville d'Oyonnax, sans refonte ni interruption.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -247,7 +235,7 @@ export const OYONNAX_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches d'Oyonnax accompagnez-vous ?",
-      a: "Nous accompagnons les TPE et PME de tout le Haut-Bugey : Arbent, Bellignat, Dortan, Géovreisset, Samognat, Échallon, Apremont, Charix, ainsi que Nantua, Bellegarde-sur-Valserine et Saint-Claude (Jura) à proximité.",
+      a: "Nous accompagnons les PME et ETI de tout le Haut-Bugey : Arbent, Bellignat, Dortan, Géovreisset, Samognat, Échallon, Apremont, Charix, ainsi que Nantua, Bellegarde-sur-Valserine et Saint-Claude (Jura) à proximité.",
     },
   ],
 };

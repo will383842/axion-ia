@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
   pitchFr:
-    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire, à 70 km de Nantes. Desservie par le TGV depuis 2008 et reliée par l'A87, la ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les TPE et PME locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams se déplace sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
+    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire, à 70 km de Nantes. Desservie par le TGV depuis 2008 et reliée par l'A87, la ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les PME et ETI locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams se déplace sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
   pitchEn:
-    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire, à 70 km de Nantes. Desservie par le TGV depuis 2008 et reliée par l'A87, la ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les TPE et PME locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams se déplace sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
+    "La Roche-sur-Yon (85000, 54 849 habitants en 2023) est la préfecture de la Vendée, en région Pays de la Loire, à 70 km de Nantes. Desservie par le TGV depuis 2008 et reliée par l'A87, la ville structure un bassin industriel et tertiaire majeur. Axion-IA accompagne les PME et ETI locales — sous-traitants industriels, commerces, cabinets, services aux entreprises, exploitations agroalimentaires — pour automatiser leurs processus opérationnels (devis, relances, reporting, gestion stock) avec du code custom Python/Node. Williams se déplace sur site à La Roche-sur-Yon ainsi qu'à Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte ou Aubigny-Les Clouzeaux pour des interventions concrètes et mesurables.",
   directAnswerFr:
-    "Axion-IA intervient à La Roche-sur-Yon (Vendée, 85000), préfecture des Pays de la Loire à 70 km de Nantes, auprès des TPE et PME du bassin yonnais. Williams se déplace en train via la gare TGV de La Roche-sur-Yon ou par l'A87 (4 sorties desservant la ville). Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting, gestion stock), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom Python/Node, RGPD et AI Act.",
+    "Axion-IA intervient à La Roche-sur-Yon (Vendée, 85000), préfecture des Pays de la Loire à 70 km de Nantes, auprès des PME et ETI du bassin yonnais. Williams se déplace en train via la gare TGV de La Roche-sur-Yon ou par l'A87 (4 sorties desservant la ville). Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting, gestion stock), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom Python/Node, RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA intervient à La Roche-sur-Yon (Vendée, 85000), préfecture des Pays de la Loire à 70 km de Nantes, auprès des TPE et PME du bassin yonnais. Williams se déplace en train via la gare TGV de La Roche-sur-Yon ou par l'A87 (4 sorties desservant la ville). Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting, gestion stock), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom Python/Node, RGPD et AI Act.",
-  seoHook: "TPE & PME Vendée · IA opérationnelle sur site",
+    "Axion-IA intervient à La Roche-sur-Yon (Vendée, 85000), préfecture des Pays de la Loire à 70 km de Nantes, auprès des PME et ETI du bassin yonnais. Williams se déplace en train via la gare TGV de La Roche-sur-Yon ou par l'A87 (4 sorties desservant la ville). Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting, gestion stock), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom Python/Node, RGPD et AI Act.",
+  seoHook: "PME & PME Vendée · IA opérationnelle sur site",
   ecosystemFr:
     "La Roche-sur-Yon, préfecture de Vendée, concentre un tissu industriel et tertiaire dense : sous-traitants mécaniques et métalliques, industrie agroalimentaire, commerces de détail, transport terrestre, services aux entreprises et un pôle universitaire d'environ 8 000 étudiants. Les communes voisines (Mouilleron-le-Captif, Dompierre-sur-Yon, La Ferrière, Venansault, La Chaize-le-Vicomte, Nesmy, Aubigny-Les Clouzeaux, Rives-de-l'Yon) accueillent zones d'activité, artisans et PME industrielles. La proximité du littoral vendéen et de Nantes connecte le bassin yonnais à un marché régional dynamique.",
   ecosystemEn:
@@ -36,16 +36,16 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
       en: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
-      en: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
+      fr: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour PME et ETI vendéennes.",
+      en: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour PME et ETI vendéennes.",
     },
     implementation: {
       fr: "Implémentation IA sur site à La Roche-sur-Yon dès {{price:impl-poc|entry}} — intégration code custom à votre ERP/CRM existant, sans dépendance no-code.",
       en: "Implémentation IA sur site à La Roche-sur-Yon dès {{price:impl-poc|entry}} — intégration code custom à votre ERP/CRM existant, sans dépendance no-code.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 dirigeant à La Roche-sur-Yon dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME du bassin yonnais.",
-      en: "Sessions 1-to-1 dirigeant à La Roche-sur-Yon dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME du bassin yonnais.",
+      fr: "Sessions 1-to-1 dirigeant à La Roche-sur-Yon dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de PME et ETI du bassin yonnais.",
+      en: "Sessions 1-to-1 dirigeant à La Roche-sur-Yon dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de PME et ETI du bassin yonnais.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de devis) sur un site existant en quelques semaines, sans refonte — idéal pour artisans et commerces des parcs de Beaupuy ou de la ZI des Ajoncs.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -173,12 +167,6 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Add an AI brick (RAG chatbot, semantic search, quote intake) onto an existing site in a few weeks, no rebuild — ideal for craftspeople and shops of the Beaupuy park or the ZI des Ajoncs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -236,7 +224,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à La Roche-sur-Yon ?",
-      a: "Pour une TPE ou PME yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon le périmètre et la disponibilité.",
+      a: "Pour une PME ou ETI yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon le périmètre et la disponibilité.",
     },
     {
       q: "Couvrez-vous les communes proches de La Roche-sur-Yon ?",
@@ -244,7 +232,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous en Vendée ?",
-      a: "TPE et PME du bassin yonnais : sous-traitants industriels (métallique, mécanique), agroalimentaire, commerces, transport-logistique, artisans BTP, cabinets de services et structures intermédiaires.",
+      a: "PME et ETI du bassin yonnais : sous-traitants industriels (métallique, mécanique), agroalimentaire, commerces, transport-logistique, artisans BTP, cabinets de services et structures intermédiaires.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à La Roche-sur-Yon ?",

@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_BOUSCAT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
+    "Axion-IA accompagne les PME et ETI du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
+    "Axion-IA accompagne les PME et ETI du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
   directAnswerFr:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux PME et ETI locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   directAnswerEn:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux PME et ETI locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une formation collective, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   seoHook: "commerce détail & services aux entreprises",
   ecosystemFr:
     "Le Bouscat est limitrophe de Bordeaux, Bruges et Eysines, et membre de Bordeaux Métropole. Avec 4 750 habitants/km², la commune concentre commerces de proximité, professions libérales (santé, droit, expertise comptable), services aux entreprises et quelques unités artisanales. L'Hippodrome du Bouscat, le stade Sainte-Germaine et le Castel d'Andorte rythment la vie locale. L'accès rapide à la rocade bordelaise (sortie 7) connecte les entreprises locales à l'ensemble du bassin métropolitain.",
@@ -31,8 +31,8 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
-      en: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      fr: "Audit IA sur site au Bouscat pour PME et ETI du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site au Bouscat pour PME et ETI du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
       fr: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -43,8 +43,8 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
       en: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
         whyHere: [
           "Forte densité de professions libérales — santé humaine, cabinets juridiques et d'expertise comptable, nombreux autour de l'avenue de la Libération et des abords du parc de la Chêneraie : on déploie des sites de prise de rendez-vous en ligne, des portails patients et clients, et des chatbots RAG multilingues qui répondent 24/7 aux demandes courantes sans mobiliser le secrétariat ni saturer le standard téléphonique.",
           "Commerce de détail et restauration de centre-ville, le long de l'avenue de la Libération et autour des marchés et de la place Gambetta : vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), click-and-collect, fiches produits enrichies et recherche sémantique pour exister face aux grandes enseignes voisines de Bruges et d'Eysines et capter la clientèle de proximité sur smartphone.",
-          "Tissu 100 % TPE/PME relié au bassin bordelais par la rocade A630 (sortie 7), le tramway TBM et la gare du Bouscat-Sainte-Germaine : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, avec des agents qui automatisent devis, relances et comptabilité fournisseurs pour des structures de 1 à 50 salariés.",
+          "Tissu 100 % PME et ETI relié au bassin bordelais par la rocade A630 (sortie 7), le tramway TBM et la gare du Bouscat-Sainte-Germaine : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, avec des agents qui automatisent devis, relances et comptabilité fournisseurs pour des structures de 1 à 50 salariés.",
           "Vie locale et associative animée par l'Hippodrome du Bouscat, le stade Sainte-Germaine, le Castel d'Andorte et le parc de la Chêneraie : clubs sportifs, associations et organisateurs d'événements gagnent des sites légers et rapides, des billetteries en ligne et des agents de réservation, tout hébergeable en UE et conforme RGPD, transférable sans verrou.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de prise de rendez-vous) sur le site existant d'un commerce de l'avenue de la Libération, d'un artisan ou d'un cabinet libéral de santé ou de droit du Bouscat, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -140,7 +134,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
         whyHere: [
           "Forte densité de professions libérales — santé humaine, cabinets juridiques et d'expertise comptable, nombreux autour de l'avenue de la Libération et des abords du parc de la Chêneraie : on déploie des sites de prise de rendez-vous en ligne, des portails patients et clients, et des chatbots RAG multilingues qui répondent 24/7 aux demandes courantes sans mobiliser le secrétariat ni saturer le standard téléphonique.",
           "Commerce de détail et restauration de centre-ville, le long de l'avenue de la Libération et autour des marchés et de la place Gambetta : vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), click-and-collect, fiches produits enrichies et recherche sémantique pour exister face aux grandes enseignes voisines de Bruges et d'Eysines et capter la clientèle de proximité sur smartphone.",
-          "Tissu 100 % TPE/PME relié au bassin bordelais par la rocade A630 (sortie 7), le tramway TBM et la gare du Bouscat-Sainte-Germaine : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, avec des agents qui automatisent devis, relances et comptabilité fournisseurs pour des structures de 1 à 50 salariés.",
+          "Tissu 100 % PME et ETI relié au bassin bordelais par la rocade A630 (sortie 7), le tramway TBM et la gare du Bouscat-Sainte-Germaine : on greffe l'IA sur l'existant (widget, plugin, API) sans refonte coûteuse, avec des agents qui automatisent devis, relances et comptabilité fournisseurs pour des structures de 1 à 50 salariés.",
           "Vie locale et associative animée par l'Hippodrome du Bouscat, le stade Sainte-Germaine, le Castel d'Andorte et le parc de la Chêneraie : clubs sportifs, associations et organisateurs d'événements gagnent des sites légers et rapides, des billetteries en ligne et des agents de réservation, tout hébergeable en UE et conforme RGPD, transférable sans verrou.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de prise de rendez-vous) sur le site existant d'un commerce de l'avenue de la Libération, d'un artisan ou d'un cabinet libéral de santé ou de droit du Bouscat, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -243,7 +231,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il au Bouscat ?",
-      a: "Le tissu local du Bouscat (commerce de détail, santé humaine, professions libérales, services aux entreprises, restauration) correspond à notre cœur de cible : TPE et PME de 1 à 50 salariés qui veulent industrialiser leurs processus administratifs.",
+      a: "Le tissu local du Bouscat (commerce de détail, santé humaine, professions libérales, services aux entreprises, restauration) correspond à notre cœur de cible : PME et ETI de 1 à 50 salariés qui veulent industrialiser leurs processus administratifs.",
     },
     {
       q: "Intervenez-vous dans les communes limitrophes du Bouscat ?",

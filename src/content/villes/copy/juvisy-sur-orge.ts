@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Juvisy-sur-Orge (91), carrefour ferroviaire majeur d'Île-de-France (RER C et RER D), se situe au confluent de la Seine et de l'Orge. PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration. Axion-IA y travaille avec les organisations du territoire.",
+    "Juvisy-sur-Orge (91), carrefour ferroviaire majeur d'Île-de-France (RER C et RER D), se situe au confluent de la Seine et de l'Orge. PME tertiaires et services, commerces de gare et centre-ville, PME du BTP, professions libérales, restauration. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Juvisy-sur-Orge (91), carrefour ferroviaire majeur d'Île-de-France (RER C et RER D), se situe au confluent de la Seine et de l'Orge. PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration. Axion-IA y travaille avec les organisations du territoire.",
+    "Juvisy-sur-Orge (91), carrefour ferroviaire majeur d'Île-de-France (RER C et RER D), se situe au confluent de la Seine et de l'Orge. PME tertiaires et services, commerces de gare et centre-ville, PME du BTP, professions libérales, restauration. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvisy-sur-Orge (91). Nous accompagnons PME et ETI : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Juvisy-sur-Orge (91). Nous accompagnons PME et ETI : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "tertiaires & commerce gare",
   ecosystemFr:
-    "Juvisy-sur-Orge est un carrefour ferroviaire majeur (gare RER C/D, 2e gare RER d'Île-de-France en trafic), au confluent Seine-Orge. Tissu PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration.",
+    "Juvisy-sur-Orge est un carrefour ferroviaire majeur (gare RER C/D, 2e gare RER d'Île-de-France en trafic), au confluent Seine-Orge. Tissu PME tertiaires et services, commerces de gare et centre-ville, PME du BTP, professions libérales, restauration.",
   ecosystemEn:
-    "Juvisy-sur-Orge est un carrefour ferroviaire majeur (gare RER C/D, 2e gare RER d'Île-de-France en trafic), au confluent Seine-Orge. Tissu PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration.",
+    "Juvisy-sur-Orge est un carrefour ferroviaire majeur (gare RER C/D, 2e gare RER d'Île-de-France en trafic), au confluent Seine-Orge. Tissu PME tertiaires et services, commerces de gare et centre-ville, PME du BTP, professions libérales, restauration.",
   distancesFr:
     "Gare de Juvisy (RER C + RER D) sur place. Athis-Mons à 5 min. Aéroport Orly à 10 min. Paris-Austerlitz à 20 min via RER C. Paris-Gare de Lyon à 25 min via RER D.",
   distancesEn:
@@ -24,14 +24,14 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires et services",
     "Commerce de gare et centre-ville",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, TPE artisans BTP, professions libérales, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, TPE artisans BTP, professions libérales, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, PME du BTP, professions libérales, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, PME du BTP, professions libérales, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Juvisy-sur-Orge : formats adaptés bureau, commerce, chantier, cabinet, restaurant. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
       en: "Implémentation IA à Juvisy-sur-Orge : automatisation gestion clients PME, CRM augmenté commerces, outils devis artisans BTP, prise de rendez-vous professions libérales, commandes restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Juvisy-sur-Orge : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE/PME juvisiens, artisans BTP, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Juvisy-sur-Orge : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE/PME juvisiens, artisans BTP, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 à Juvisy-sur-Orge : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants PME et ETI juvisiens, artisans BTP, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 à Juvisy-sur-Orge : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants PME et ETI juvisiens, artisans BTP, commerçants, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, CRM fidélisation clients, gestion stocks IA, optimisation vitrine digitale, caisse et facturation automatisées, analyse flux piétons.",
     },
     {
-      q: "Quels services pour les TPE artisans BTP et professions libérales ?",
+      q: "Quels services pour les PME du BTP et professions libérales ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {

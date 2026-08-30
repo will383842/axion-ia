@@ -73,7 +73,7 @@ export function ImplementationExpertisesGrid({
       titleTail="."
       description={
         isFr
-          ? "De la TPE à la grande entreprise, mono-site ou multi-sites : on conçoit, développe et livre des solutions IA sur-mesure, branchées sur vos outils. Du socle technique (agents, RAG, automatisations) aux fonctions métier (relation client, vente, finance, RH, logistique, vision, prévision…). Vous n'avez pas besoin de tout — on part de votre besoin et de ce qui rapporte le plus vite."
+          ? "De la PME au grand groupe, mono-site ou multi-sites : on conçoit, développe et livre des solutions IA sur-mesure, branchées sur vos outils. Du socle technique (agents, RAG, automatisations) aux fonctions métier (relation client, vente, finance, RH, logistique, vision, prévision…). Vous n'avez pas besoin de tout — on part de votre besoin et de ce qui rapporte le plus vite."
           : "From micro-business to large enterprise, single-site or multi-site: we design, build and ship custom AI solutions, wired into your tools. From the technical core (agents, RAG, automations) to business functions (customer service, sales, finance, HR, logistics, vision, forecasting…). You don't need all of it — we start from your need and what pays off fastest."
       }
     >

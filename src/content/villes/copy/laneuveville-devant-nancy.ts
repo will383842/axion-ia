@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu PME et ETI industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu PME et ETI industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : PME et ETI industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : PME et ETI industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
   ecosystemFr:
     "Laneuveville-devant-Nancy est une commune du sud-est de la Métropole du Grand Nancy, traversée par le canal de la Marne au Rhin et la Meurthe. Son tissu économique mêle PME industrielles, zones d'activités mixtes, BTP, logistique, commerce de proximité et professions libérales. Accès direct au centre de Nancy, axe Nancy-Strasbourg.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrie & sous-traitance",
     "Services aux entreprises & tertiaire",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Logistique, entrepôts & transport",
     "Commerce de proximité & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux PME et ETI industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux PME et ETI industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laneuveville-devant-Nancy : formats adaptés à l'atelier industriel, au bureau tertiaire, au chantier BTP, à l'entrepôt logistique ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
       en: "Implémentation IA à Laneuveville-devant-Nancy : automatisation devis & ERP industriel, agents IA relation client, optimisation tournées logistiques, gestion documentaire chantier BTP, classification documentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Laneuveville-devant-Nancy : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie & services, artisans BTP, responsables logistique et commerçants du sud-est de la Métropole du Grand Nancy.",
-      en: "Coaching 1-to-1 à Laneuveville-devant-Nancy : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie & services, artisans BTP, responsables logistique et commerçants du sud-est de la Métropole du Grand Nancy.",
+      fr: "Coaching 1-to-1 à Laneuveville-devant-Nancy : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie & services, artisans BTP, responsables logistique et commerçants du sud-est de la Métropole du Grand Nancy.",
+      en: "Coaching 1-to-1 à Laneuveville-devant-Nancy : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie & services, artisans BTP, responsables logistique et commerçants du sud-est de la Métropole du Grand Nancy.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrie et services de Laneuveville-devant-Nancy ?",
-      a: "Oui, nous accompagnons les TPE/PME industrie et services : automatisation devis & ERP, maintenance prédictive, agents IA relation client, automatisation workflow, classification documentaire.",
+      a: "Oui, nous accompagnons les PME et ETI industrie et services : automatisation devis & ERP, maintenance prédictive, agents IA relation client, automatisation workflow, classification documentaire.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et logistique de Laneuveville-devant-Nancy ?",
@@ -61,7 +61,7 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Laneuveville-devant-Nancy  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Laneuveville-devant-Nancy et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Laneuveville-devant-Nancy et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Laneuveville-devant-Nancy ?",

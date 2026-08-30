@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BALLAN_MIRE_COPY: VilleCopy = {
   pitchFr:
-    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu PME du BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
+    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu PME du BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : PME du BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : PME du BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
   seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
-    "Ballan-Miré est une commune résidentielle du sud-ouest de Tours Métropole, prisée pour son cadre verdoyant. Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
+    "Ballan-Miré est une commune résidentielle du sud-ouest de Tours Métropole, prisée pour son cadre verdoyant. Tissu PME du BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
   ecosystemEn:
-    "Ballan-Miré est une commune résidentielle du sud-ouest de Tours Métropole, prisée pour son cadre verdoyant. Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
+    "Ballan-Miré est une commune résidentielle du sud-ouest de Tours Métropole, prisée pour son cadre verdoyant. Tissu PME du BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
   distancesFr:
     "Tours centre à 12 min. Joué-lès-Tours à 8 min. Gare TGV Saint-Pierre-des-Corps à 20 min. Aéroport Tours Val de Loire à 20 min. Villandry à 10 min.",
   distancesEn:
     "Tours centre à 12 min. Joué-lès-Tours à 8 min. Gare TGV Saint-Pierre-des-Corps à 20 min. Aéroport Tours Val de Loire à 20 min. Villandry à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME tertiaires & services aux entreprises",
     "Commerce de proximité",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Ballan-Miré : diagnostic adapté aux PME du BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Ballan-Miré : diagnostic adapté aux PME du BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ballan-Miré : formats adaptés au bureau tertiaire, atelier artisan, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Ballan-Miré : automatisation gestion administrative PME, agents conversationnels clients, classification documents comptables, optimisation planning artisans BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ballan-Miré : sessions dans votre bureau, atelier, cabinet ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants TPE/PME ballanais.",
-      en: "Coaching 1-to-1 à Ballan-Miré : sessions dans votre bureau, atelier, cabinet ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants TPE/PME ballanais.",
+      fr: "Coaching 1-to-1 à Ballan-Miré : sessions dans votre bureau, atelier, cabinet ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants de PME et d'ETI ballanais.",
+      en: "Coaching 1-to-1 à Ballan-Miré : sessions dans votre bureau, atelier, cabinet ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants de PME et d'ETI ballanais.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
       a: "Oui, optimisation planning chantiers, automatisation devis et facturation, classification photos chantiers, gestion sous-traitants.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

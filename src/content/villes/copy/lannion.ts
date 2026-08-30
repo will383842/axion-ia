@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const LANNION_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA se déplace à Lannion, sous-préfecture des Côtes-d'Armor de 20 315 habitants et capitale historique du Trégor. Pôle télécoms et photonique français, Lannion accueille Orange Labs (ex-CNET), Nokia et plus de cent PME-PMI dans la technopole Anticipa, le pôle de compétitivité Images et Réseaux ainsi que le cluster Photonics Bretagne. Nous y accompagnons en priorité les TPE et PME des télécoms, de l'optique, de l'agroalimentaire et des industries marines, avec du code custom adapté à leurs outils métiers.",
+    "Axion-IA se déplace à Lannion, sous-préfecture des Côtes-d'Armor de 20 315 habitants et capitale historique du Trégor. Pôle télécoms et photonique français, Lannion accueille Orange Labs (ex-CNET), Nokia et plus de cent PME-PMI dans la technopole Anticipa, le pôle de compétitivité Images et Réseaux ainsi que le cluster Photonics Bretagne. Nous y accompagnons en priorité les PME et ETI des télécoms, de l'optique, de l'agroalimentaire et des industries marines, avec du code custom adapté à leurs outils métiers.",
   pitchEn:
-    "Axion-IA se déplace à Lannion, sous-préfecture des Côtes-d'Armor de 20 315 habitants et capitale historique du Trégor. Pôle télécoms et photonique français, Lannion accueille Orange Labs (ex-CNET), Nokia et plus de cent PME-PMI dans la technopole Anticipa, le pôle de compétitivité Images et Réseaux ainsi que le cluster Photonics Bretagne. Nous y accompagnons en priorité les TPE et PME des télécoms, de l'optique, de l'agroalimentaire et des industries marines, avec du code custom adapté à leurs outils métiers.",
+    "Axion-IA se déplace à Lannion, sous-préfecture des Côtes-d'Armor de 20 315 habitants et capitale historique du Trégor. Pôle télécoms et photonique français, Lannion accueille Orange Labs (ex-CNET), Nokia et plus de cent PME-PMI dans la technopole Anticipa, le pôle de compétitivité Images et Réseaux ainsi que le cluster Photonics Bretagne. Nous y accompagnons en priorité les PME et ETI des télécoms, de l'optique, de l'agroalimentaire et des industries marines, avec du code custom adapté à leurs outils métiers.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des TPE et PME présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
+    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des PME et ETI présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des TPE et PME présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
-  seoHook: "TPE & PME · télécoms, photonique, agroalimentaire",
+    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des PME et ETI présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
+  seoHook: "PME & PME · télécoms, photonique, agroalimentaire",
   ecosystemFr:
     "Lannion est un écosystème technologique unique en Bretagne : Orange Labs (héritier du CNET), Nokia, la technopole Anticipa et son vivier de plus de cent PME-PMI, le pôle de compétitivité Images et Réseaux et le cluster Photonics Bretagne y cohabitent avec 95 entreprises TIC, 20 sociétés d'optique-photonique et 31 acteurs des industries marines. La ville est aussi point d'atterrage des câbles sous-marins APOLLO et WASACE Nord.",
   ecosystemEn:
@@ -32,20 +32,20 @@ export const LANNION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place chez les TPE et PME de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
-      en: "Audit sur place chez les TPE et PME de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
+      fr: "Audit sur place chez les PME et ETI de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
+      en: "Audit sur place chez les PME et ETI de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
     },
     interventions: {
-      fr: "Intervention sur site à Lannion dès {{price:intervention-4h|flat}} : automatisation des tâches administratives, devis, relances et reportings pour les TPE/PME télécoms, photonique et agroalimentaire.",
-      en: "Intervention sur site à Lannion dès {{price:intervention-4h|flat}} : automatisation des tâches administratives, devis, relances et reportings pour les TPE/PME télécoms, photonique et agroalimentaire.",
+      fr: "Intervention sur site à Lannion dès {{price:intervention-4h|flat}} : automatisation des tâches administratives, devis, relances et reportings pour les PME et ETI télécoms, photonique et agroalimentaire.",
+      en: "Intervention sur site à Lannion dès {{price:intervention-4h|flat}} : automatisation des tâches administratives, devis, relances et reportings pour les PME et ETI télécoms, photonique et agroalimentaire.",
     },
     implementation: {
       fr: "Implémentation code custom à Lannion : connecteurs sur mesure avec vos systèmes télécoms, ERP industriels et outils R&D, sans no-code.",
       en: "Implémentation code custom à Lannion : connecteurs sur mesure avec vos systèmes télécoms, ERP industriels et outils R&D, sans no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME lannionnaises : sessions de cadrage IA en face-à-face dans vos bureaux, technopole Anticipa ou centre-ville.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME lannionnaises : sessions de cadrage IA en face-à-face dans vos bureaux, technopole Anticipa ou centre-ville.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI lannionnaises : sessions de cadrage IA en face-à-face dans vos bureaux, technopole Anticipa ou centre-ville.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI lannionnaises : sessions de cadrage IA en face-à-face dans vos bureaux, technopole Anticipa ou centre-ville.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const LANNION_COPY: VilleCopy = {
         whyHere: [
           "Pôle télécoms et photonique de rang national : autour d'Orange Labs, de Nokia, d'Ekinops (transport optique, coté en Bourse) et de Lumibird (lasers, ~200 salariés), les PME R&D ont besoin de portails techniques, de documentations interactives et d'agents IA branchés sur leurs outils métiers et leurs bases de mesure — c'est exactement ce qu'on développe en code custom (Python, TypeScript, SQL).",
           "Technopole Anticipa et son vivier de près de 360 entreprises sur le Pôle Pégase et le Photonics Park : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une plateforme SaaS IA-native pour des acteurs comme IDIL Fibres Optiques et les jeunes pousses de l'optique, des images et des réseaux.",
-          "Tissu trégorois de TPE du commerce (zone Bel Air), de l'agroalimentaire et de la logistique (espace Beg Ar C'hra) et du tourisme côtier (Côte de Granit rose toute proche) : sites vitrines, boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues calibrés pour une clientèle française et estivale.",
+          "Tissu trégorois de PME du commerce (zone Bel Air), de l'agroalimentaire et de la logistique (espace Beg Ar C'hra) et du tourisme côtier (Côte de Granit rose toute proche) : sites vitrines, boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues calibrés pour une clientèle française et estivale.",
           "Point d'atterrage des câbles sous-marins APOLLO et WASACE Nord et culture data forte (filière photonique à ~420 M€ de chiffre d'affaires, 55 % à l'export) : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients, R&D et propriété intellectuelle restent maîtrisées, sans transit hors Europe.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const LANNION_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation des devis et relances) sur le site existant d'un commerce de la zone Bel Air, d'un artisan ou d'un acteur touristique de la Côte de Granit rose, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -141,7 +135,7 @@ export const LANNION_COPY: VilleCopy = {
         whyHere: [
           "Pôle télécoms et photonique de rang national : autour d'Orange Labs, de Nokia, d'Ekinops (transport optique, coté en Bourse) et de Lumibird (lasers, ~200 salariés), les PME R&D ont besoin de portails techniques, de documentations interactives et d'agents IA branchés sur leurs outils métiers et leurs bases de mesure — c'est exactement ce qu'on développe en code custom (Python, TypeScript, SQL).",
           "Technopole Anticipa et son vivier de près de 360 entreprises sur le Pôle Pégase et le Photonics Park : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une plateforme SaaS IA-native pour des acteurs comme IDIL Fibres Optiques et les jeunes pousses de l'optique, des images et des réseaux.",
-          "Tissu trégorois de TPE du commerce (zone Bel Air), de l'agroalimentaire et de la logistique (espace Beg Ar C'hra) et du tourisme côtier (Côte de Granit rose toute proche) : sites vitrines, boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues calibrés pour une clientèle française et estivale.",
+          "Tissu trégorois de PME du commerce (zone Bel Air), de l'agroalimentaire et de la logistique (espace Beg Ar C'hra) et du tourisme côtier (Côte de Granit rose toute proche) : sites vitrines, boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et chatbots multilingues calibrés pour une clientèle française et estivale.",
           "Point d'atterrage des câbles sous-marins APOLLO et WASACE Nord et culture data forte (filière photonique à ~420 M€ de chiffre d'affaires, 55 % à l'export) : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données clients, R&D et propriété intellectuelle restent maîtrisées, sans transit hors Europe.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const LANNION_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation des devis et relances) sur le site existant d'un commerce de la zone Bel Air, d'un artisan ou d'un acteur touristique de la Côte de Granit rose, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const LANNION_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous le plus à Lannion ?",
-      a: "Principalement les TPE et PME des télécoms (autour d'Orange et Nokia), de l'optique-photonique (cluster Photonics Bretagne), de la recherche-développement, de l'agroalimentaire trégorois et des industries marines.",
+      a: "Principalement les PME et ETI des télécoms (autour d'Orange et Nokia), de l'optique-photonique (cluster Photonics Bretagne), de la recherche-développement, de l'agroalimentaire trégorois et des industries marines.",
     },
     {
       q: "Faites-vous du no-code pour les entreprises lannionnaises ?",

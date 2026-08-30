@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   pitchFr:
-    "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en TPE de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME garennoises, plus marginalement les ETI, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
+    "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en PME de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI garennoises, plus marginalement les grands groupes, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
   pitchEn:
-    "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en TPE de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME garennoises, plus marginalement les ETI, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
+    "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en PME de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI garennoises, plus marginalement les grands groupes, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les PME — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les PME — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les grands groupes. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire & services proche La Défense",
   ecosystemFr:
-    "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
+    "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les PME de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les PME et ETI, là où un gain de quelques heures par semaine change réellement la donne, les grands groupes venant en complément.",
   ecosystemEn:
-    "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
+    "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les PME de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les PME et ETI, là où un gain de quelques heures par semaine change réellement la donne, les grands groupes venant en complément.",
   distancesFr:
     "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
   distancesEn:
@@ -34,16 +34,16 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
       en: "Audit IA à La Garenne-Colombes : cartographie des tâches chronophages d'un cabinet, d'un commerce ou d'une PME de services. Nous priorisons 2-3 cas d'usage à fort ROI et chiffrons les gains avant tout déploiement.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Garenne-Colombes : formats courts adaptés aux TPE et indépendants. Vos équipes maîtrisent les outils IA du quotidien (rédaction, synthèse, recherche) et repartent autonomes.",
-      en: "Interventions IA sur site à La Garenne-Colombes : formats courts adaptés aux TPE et indépendants. Vos équipes maîtrisent les outils IA du quotidien (rédaction, synthèse, recherche) et repartent autonomes.",
+      fr: "Interventions IA sur site à La Garenne-Colombes : formats courts adaptés aux PME et indépendants. Vos équipes maîtrisent les outils IA du quotidien (rédaction, synthèse, recherche) et repartent autonomes.",
+      en: "Interventions IA sur site à La Garenne-Colombes : formats courts adaptés aux PME et indépendants. Vos équipes maîtrisent les outils IA du quotidien (rédaction, synthèse, recherche) et repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à La Garenne-Colombes : automatisation des devis, relances et reporting, agents de support client, traitement documentaire pour cabinets comptables et juridiques. Solutions RGPD-conformes.",
       en: "Implémentation IA à La Garenne-Colombes : automatisation des devis, relances et reporting, agents de support client, traitement documentaire pour cabinets comptables et juridiques. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Garenne-Colombes : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à La Garenne-Colombes : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à La Garenne-Colombes : sessions dans vos locaux ou en visio pour dirigeants de PME et ETI, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à La Garenne-Colombes : sessions dans vos locaux ou en visio pour dirigeants de PME et ETI, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA à La Garenne-Colombes : sites vitrines et plateformes sur mesure pour cabinets et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés.",
@@ -53,7 +53,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À La Garenne-Colombes (Hauts-de-Seine), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour deux mondes que la commune juxtapose sur moins de deux kilomètres carrés : d'un côté les filiales de grands comptes installées à l'ouest, dans l'orbite de Paris La Défense — Sage à l'Atrium Défense (Place de Belgique), Hyundai Motor France à la Tour Nova (boulevard National), Bayer sur le même axe — qui ont besoin de portails métier, d'espaces clients et d'agents conversationnels reliés à leurs systèmes ; de l'autre les TPE, commerces de la rue de l'Aigle, cabinets et professions libérales du centre-ville qui veulent un site vitrine ou e-commerce qui prend les rendez-vous et répond aux demandes tout seul. Code sur mesure, hébergement Europe RGPD, zéro verrou éditeur.",
+        hero: "À La Garenne-Colombes (Hauts-de-Seine), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour deux mondes que la commune juxtapose sur moins de deux kilomètres carrés : d'un côté les filiales de grands comptes installées à l'ouest, dans l'orbite de Paris La Défense — Sage à l'Atrium Défense (Place de Belgique), Hyundai Motor France à la Tour Nova (boulevard National), Bayer sur le même axe — qui ont besoin de portails métier, d'espaces clients et d'agents conversationnels reliés à leurs systèmes ; de l'autre les PME, commerces de la rue de l'Aigle, cabinets et professions libérales du centre-ville qui veulent un site vitrine ou e-commerce qui prend les rendez-vous et répond aux demandes tout seul. Code sur mesure, hébergement Europe RGPD, zéro verrou éditeur.",
         whyHere: [
           "Le quartier des Champs-Philippe / Charlebourg, intégré à l'aménagement Défense Seine Arche et desservi par le tramway T2 (Charlebourg, Les Fauvelles, Faubourg de l'Arche), concentre des filiales de grands groupes — Sage, Hyundai Motor France, Bayer — dont les équipes marketing et digitales commandent des portails clients, des configurateurs et des assistants reliés à leur CRM/ERP.",
           "L'Atrium Défense (10 Place de Belgique, immeuble Foster + Partners) et la Tour Nova (71 boulevard National) hébergent des directions France qui pilotent leur présence web depuis La Garenne-Colombes : nous y intervenons sur des plateformes SaaS internes, des espaces partenaires et des chatbots RAG branchés sur leur documentation produit.",
@@ -88,12 +88,6 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA",
-            detail:
-              "Pour les commerçants de la rue de l'Aigle et du centre-ville, restaurants, artisans, professions libérales et indépendants garennois : site vitrine ou boutique sur CMS (Shopify, WooCommerce, Wix) avec prise de rendez-vous automatisée et assistant de réponse aux demandes.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web sur mesure",
@@ -175,12 +169,6 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI showcase or e-commerce site",
-            detail:
-              "For rue de l'Aigle and town-centre retailers, restaurants, craftspeople, independent professionals and freelancers in La Garenne-Colombes: showcase site or shop on a CMS (Shopify, WooCommerce, Wix) with automated appointment booking and an enquiry-response assistant.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom web platform",
             detail:
@@ -233,8 +221,8 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
       a: "Oui. Nos consultants rejoignent La Garenne-Colombes en moins de 20 min depuis Paris et interviennent directement dans vos locaux, ainsi qu'à Courbevoie, Colombes, Bois-Colombes et sur La Défense.",
     },
     {
-      q: "Travaillez-vous avec les TPE et indépendants garennois ?",
-      a: "Oui, c'est notre priorité. Cabinets de conseil, experts-comptables, professions libérales, commerçants et indépendants forment l'essentiel des TPE locales et profitent fortement d'automatisations simples sur devis, relances et support.",
+      q: "Travaillez-vous avec les PME et indépendants garennois ?",
+      a: "Oui, c'est notre priorité. Cabinets de conseil, experts-comptables, professions libérales, commerçants et indépendants forment l'essentiel des PME locales et profitent fortement d'automatisations simples sur devis, relances et support.",
     },
     {
       q: "Quels cas d'usage IA pour une PME de services ici ?",

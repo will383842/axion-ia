@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LATTES_COPY: VilleCopy = {
   pitchFr:
-    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de PME et ETI du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de PME et ETI du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lattes (34). Nous accompagnons PME et ETI de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lattes (34). Nous accompagnons PME et ETI de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit sur place sur mesure.",
   ecosystemFr:
     "Lattes est une commune de la première couronne sud de Montpellier, entre urbanisme dynamique et lagune du Méjean. Son économie repose sur la zone commerciale de Boirargues (grande distribution, enseignes nationales), la restauration, les services aux entreprises, les professions libérales, la santé et le sport. Site archéologique de Lattara (musée Henri Prades). Tramway T3 vers Montpellier.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LATTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lattes : diagnostic adapté aux TPE/PME commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Lattes : diagnostic adapté aux TPE/PME commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Lattes : diagnostic adapté aux PME et ETI commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lattes : diagnostic adapté aux PME et ETI commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lattes : formats adaptés à l'enseigne commerciale, au restaurant, au cabinet ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LATTES_COPY: VilleCopy = {
       en: "Implémentation IA à Lattes : automatisation gestion stocks retail, CRM clients, optimisation plannings, facturation OCR, analyse flux commerciaux et prévision demande.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lattes : sessions sur site ou en visio pour dirigeants TPE/PME de l'agglo Montpellier sud souhaitant maîtriser l'IA appliquée au commerce, à la restauration ou aux services.",
-      en: "Coaching 1-to-1 à Lattes : sessions sur site ou en visio pour dirigeants TPE/PME de l'agglo Montpellier sud souhaitant maîtriser l'IA appliquée au commerce, à la restauration ou aux services.",
+      fr: "Coaching 1-to-1 à Lattes : sessions sur site ou en visio pour dirigeants de PME et d'ETI de l'agglo Montpellier sud souhaitant maîtriser l'IA appliquée au commerce, à la restauration ou aux services.",
+      en: "Coaching 1-to-1 à Lattes : sessions sur site ou en visio pour dirigeants de PME et d'ETI de l'agglo Montpellier sud souhaitant maîtriser l'IA appliquée au commerce, à la restauration ou aux services.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LATTES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Lattes  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Lattes : enseignes commerciales Boirargues, restaurateurs, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Lattes : enseignes commerciales Boirargues, restaurateurs, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les commerces de Lattes ?",

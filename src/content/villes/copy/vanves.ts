@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const VANVES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
+    "Axion-IA accompagne les PME et ETI de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué PME et ETI, et ponctuellement des grands groupes.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
+    "Axion-IA accompagne les PME et ETI de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué PME et ETI, et ponctuellement des grands groupes.",
   directAnswerFr:
-    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site (métro ligne 13 station Plateau de Vanves, gare SNCF Vanves-Malakoff) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des PME, ETI et professions libérales du sud-ouest parisien. Williams se déplace sur site (métro ligne 13 station Plateau de Vanves, gare SNCF Vanves-Malakoff) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site (métro ligne 13 station Plateau de Vanves, gare SNCF Vanves-Malakoff) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des PME, ETI et professions libérales du sud-ouest parisien. Williams se déplace sur site (métro ligne 13 station Plateau de Vanves, gare SNCF Vanves-Malakoff) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   seoHook: "édition, services & PME sud-ouest parisien",
   ecosystemFr:
-    "Vanves combine un tissu de TPE-PME dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
+    "Vanves combine un tissu de PME et ETI dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
   ecosystemEn:
-    "Vanves combine un tissu de TPE-PME dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
+    "Vanves combine un tissu de PME et ETI dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
   distancesFr:
     "Vanves est desservie par la ligne 13 du métro (Plateau de Vanves – Malakoff) et la gare SNCF Vanves-Malakoff (Transilien N). La gare Montparnasse est à 5 km, le centre de Paris à 6 km, l'aéroport de Paris-Orly à 12 km via l'A86.",
   distancesEn:
@@ -32,8 +32,8 @@ export const VANVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h à Vanves pour TPE-PME de l'édition, du conseil, du commerce et des services — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
-      en: "Audit sur place 4h à Vanves pour TPE-PME de l'édition, du conseil, du commerce et des services — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
+      fr: "Audit sur place 4h à Vanves pour PME et ETI de l'édition, du conseil, du commerce et des services — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
+      en: "Audit sur place 4h à Vanves pour PME et ETI de l'édition, du conseil, du commerce et des services — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
     },
     interventions: {
       fr: "Intervention sur site à Vanves dès {{price:intervention-4h|flat}} : prototype automatisation devis, relances clients, OCR factures, knowledge base éditoriale ou assistant interne sur LLM.",
@@ -44,8 +44,8 @@ export const VANVES_COPY: VilleCopy = {
       en: "Implémentation complète à Vanves à partir de {{price:impl-poc|entry}} : code custom Python/Node intégré à votre SI (CRM, ERP, outils éditoriaux), tests recette et transfert de compétences équipe.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 dirigeant à Vanves dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
-      en: "Coaching 1-to-1 dirigeant à Vanves dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      fr: "Coaching 1-to-1 dirigeant à Vanves dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant PME et ETI, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      en: "Coaching 1-to-1 dirigeant à Vanves dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant PME et ETI, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const VANVES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou landing IA",
-            detail:
-              "Pour indépendants, libraires, agences de droits, auteurs et petits éditeurs de Vanves : site vitrine performant, formulaire intelligent et premier assistant IA, livré rapidement.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce",
@@ -173,12 +167,6 @@ export const VANVES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or AI landing",
-            detail:
-              "For freelancers, booksellers, rights agencies, authors and small publishers in Vanves: a high-performance showcase site, smart form and first AI assistant, delivered quickly.",
-          },
-          {
             sizeLabel: "PME",
             price: "Business platform or e-commerce",
             detail:
@@ -240,7 +228,7 @@ export const VANVES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs vanvéens Axion-IA accompagne-t-il en priorité ?",
-      a: "Nos cas d'usage les plus fréquents à Vanves concernent les TPE-PME de l'édition et des médias (héritage Hachette Livre), du conseil aux entreprises, du commerce de proximité, des cabinets juridiques-comptables et des professions de santé libérales.",
+      a: "Nos cas d'usage les plus fréquents à Vanves concernent les PME et ETI de l'édition et des médias (héritage Hachette Livre), du conseil aux entreprises, du commerce de proximité, des cabinets juridiques-comptables et des professions de santé libérales.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Vanves ?",

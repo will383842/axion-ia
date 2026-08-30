@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DAX_COPY: VilleCopy = {
   pitchFr:
-    "Dax (40), sur les rives de l'Adour dans les Landes, est la première ville thermale de France : son économie est portée par le thermalisme, l'hôtellerie, le tourisme et un fort esprit rugby (US Dax). Son tissu mêle établissements thermaux, hébergement, santé, commerces et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME dacquoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Dax (40), sur les rives de l'Adour dans les Landes, est la première ville thermale de France : son économie est portée par le thermalisme, l'hôtellerie, le tourisme et un fort esprit rugby (US Dax). Son tissu mêle établissements thermaux, hébergement, santé, commerces et un dense réseau de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI dacquoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Dax (40), sur les rives de l'Adour dans les Landes, est la première ville thermale de France : son économie est portée par le thermalisme, l'hôtellerie, le tourisme et un fort esprit rugby (US Dax). Son tissu mêle établissements thermaux, hébergement, santé, commerces et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME dacquoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Dax (40), sur les rives de l'Adour dans les Landes, est la première ville thermale de France : son économie est portée par le thermalisme, l'hôtellerie, le tourisme et un fort esprit rugby (US Dax). Son tissu mêle établissements thermaux, hébergement, santé, commerces et un dense réseau de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI dacquoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dax (40, Landes). Nous accompagnons en priorité les TPE, puis les PME du bassin de l'Adour : établissements thermaux et acteurs de la santé, hôtellerie et hébergement touristique, restauration, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dax (40, Landes). Nous accompagnons en priorité les PME, puis les PME du bassin de l'Adour : établissements thermaux et acteurs de la santé, hôtellerie et hébergement touristique, restauration, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dax (40, Landes). Nous accompagnons en priorité les TPE, puis les PME du bassin de l'Adour : établissements thermaux et acteurs de la santé, hôtellerie et hébergement touristique, restauration, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dax (40, Landes). Nous accompagnons en priorité les PME, puis les PME du bassin de l'Adour : établissements thermaux et acteurs de la santé, hôtellerie et hébergement touristique, restauration, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "thermalisme, tourisme & santé",
   ecosystemFr:
-    "Dax est la première destination thermale de France, accueillant chaque année des dizaines de milliers de curistes. Son économie repose sur les établissements thermaux, un dense parc hôtelier et de résidences, la restauration et un secteur santé important lié aux soins. Autour gravitent des TPE et PME de services, des commerces de centre-ville dynamisés par la fréquentation touristique et un artisanat actif. Ce tissu, marqué par une forte saisonnalité, cherche à optimiser l'accueil, la réservation et la gestion de la relation client.",
+    "Dax est la première destination thermale de France, accueillant chaque année des dizaines de milliers de curistes. Son économie repose sur les établissements thermaux, un dense parc hôtelier et de résidences, la restauration et un secteur santé important lié aux soins. Autour gravitent des PME et ETI de services, des commerces de centre-ville dynamisés par la fréquentation touristique et un artisanat actif. Ce tissu, marqué par une forte saisonnalité, cherche à optimiser l'accueil, la réservation et la gestion de la relation client.",
   ecosystemEn:
-    "Dax est la première destination thermale de France, accueillant chaque année des dizaines de milliers de curistes. Son économie repose sur les établissements thermaux, un dense parc hôtelier et de résidences, la restauration et un secteur santé important lié aux soins. Autour gravitent des TPE et PME de services, des commerces de centre-ville dynamisés par la fréquentation touristique et un artisanat actif. Ce tissu, marqué par une forte saisonnalité, cherche à optimiser l'accueil, la réservation et la gestion de la relation client.",
+    "Dax est la première destination thermale de France, accueillant chaque année des dizaines de milliers de curistes. Son économie repose sur les établissements thermaux, un dense parc hôtelier et de résidences, la restauration et un secteur santé important lié aux soins. Autour gravitent des PME et ETI de services, des commerces de centre-ville dynamisés par la fréquentation touristique et un artisanat actif. Ce tissu, marqué par une forte saisonnalité, cherche à optimiser l'accueil, la réservation et la gestion de la relation client.",
   distancesFr:
     "Gare TGV de Dax en centre-ville, Bordeaux en environ 1h, Paris en 4h. Aéroport de Biarritz à 45 min. Mont-de-Marsan à 50 min, Bayonne à 40 min, océan à 30 min par l'A63.",
   distancesEn:
@@ -30,8 +30,8 @@ export const DAX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dax : diagnostic adapté aux TPE et PME landaises — thermes, hôtellerie, restauration, commerces et services. Nous ciblons les automatisations à fort ROI, sans jargon.",
-      en: "Audit IA à Dax : diagnostic adapté aux TPE et PME landaises — thermes, hôtellerie, restauration, commerces et services. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      fr: "Audit IA à Dax : diagnostic adapté aux PME et ETI landaises — thermes, hôtellerie, restauration, commerces et services. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      en: "Audit IA à Dax : diagnostic adapté aux PME et ETI landaises — thermes, hôtellerie, restauration, commerces et services. Nous ciblons les automatisations à fort ROI, sans jargon.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dax : formats courts pour automatiser réservations, accueil curistes, devis et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
@@ -42,8 +42,8 @@ export const DAX_COPY: VilleCopy = {
       en: "Implémentation IA à Dax : agents conversationnels multilingues, automatisation de la réservation et de la relation client, classification documentaire pour thermes et hôtellerie. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Dax : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du thermalisme, de l'hôtellerie, de la restauration et du commerce dacquoises.",
-      en: "Coaching un-à-un à Dax : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du thermalisme, de l'hôtellerie, de la restauration et du commerce dacquoises.",
+      fr: "Coaching un-à-un à Dax : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI du thermalisme, de l'hôtellerie, de la restauration et du commerce dacquoises.",
+      en: "Coaching un-à-un à Dax : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI du thermalisme, de l'hôtellerie, de la restauration et du commerce dacquoises.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Dax : plateformes de réservation et outils sur mesure pour thermes, hôtels, restaurants et commerces landais, avec automatisations et SEO local intégrés.",
@@ -53,11 +53,11 @@ export const DAX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de PME du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
         whyHere: [
           "Première destination thermale de France : autour de la Fontaine chaude et de la Régie Municipale des Boues qui prépare le péloïde TERDAX, les dix-sept établissements thermaux et résidences de cure accueillent chaque saison des dizaines de milliers de curistes. Terrain idéal pour des portails de réservation directe de cures, un parcours d'accueil curiste augmenté à l'IA et un suivi multilingue des séjours, branchés sur vos plannings.",
           "Forte saisonnalité touristique et clientèle de passage venue par la gare TGV ou l'aéroport de Biarritz : nos chatbots RAG et agents conversationnels, multilingues par défaut, absorbent les pics de demandes de l'hôtellerie, des résidences de cure et de la restauration du cœur de ville sans surcharger les petites équipes dacquoises, avec relances et confirmations automatisées.",
-          "Tissu très majoritairement composé de TPE et de PME — commerces du centre-ville, artisans, cabinets de santé liés aux soins thermaux et boutiques de produits du terroir landais : on greffe l'IA sur l'existant (widget, plugin, API WordPress, Shopify ou PrestaShop) sans refonte coûteuse, ou on construit une vitrine e-commerce sur mesure pour vendre cataplasmes de boue, soins et spécialités landaises en ligne.",
+          "Tissu très majoritairement composé de PME et de PME — commerces du centre-ville, artisans, cabinets de santé liés aux soins thermaux et boutiques de produits du terroir landais : on greffe l'IA sur l'existant (widget, plugin, API WordPress, Shopify ou PrestaShop) sans refonte coûteuse, ou on construit une vitrine e-commerce sur mesure pour vendre cataplasmes de boue, soins et spécialités landaises en ligne.",
           "Données de santé et de réservation des curistes particulièrement sensibles, à l'image de celles traitées par la filière thermale qui pèse autour de huit cents salariés sur l'agglomération : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Les informations personnelles et médicales restent maîtrisées et ne transitent pas hors UE sans cadre contractuel.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const DAX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue d'accueil curiste, recherche sémantique, mini-moteur de réservation) sur le site existant d'un commerce du centre-ville, d'un cabinet de soins, d'un artisan ou d'un hôtel dacquois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const DAX_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de cures. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act pour les données sensibles des curistes : propriété totale, aucun lock-in, aucun abonnement imposé. Solution documentée, reprenable en interne ou transférable à tout prestataire de Nouvelle-Aquitaine, sans dépendance durable à Axion-IA.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de TPE du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dax des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la première ville thermale de France, où l'économie vit au rythme des curistes, du péloïde TERDAX, du thermalisme, de l'hôtellerie et d'un tissu dense de PME du commerce de centre-ville et de l'artisanat, sur les rives de l'Adour. Nous tissons vos parcours de réservation de cures, vos boutiques de produits landais et vos automatisations d'accueil dans une seule plateforme cohérente. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dax, itérations à distance.",
         whyHere: [
           "Première destination thermale de France : autour de la Fontaine chaude et de la Régie Municipale des Boues qui prépare le péloïde TERDAX, les dix-sept établissements thermaux et résidences de cure accueillent chaque saison des dizaines de milliers de curistes. Terrain idéal pour des portails de réservation directe de cures, un parcours d'accueil curiste augmenté à l'IA et un suivi multilingue des séjours, branchés sur vos plannings.",
           "Forte saisonnalité touristique et clientèle de passage venue par la gare TGV ou l'aéroport de Biarritz : nos chatbots RAG et agents conversationnels, multilingues par défaut, absorbent les pics de demandes de l'hôtellerie, des résidences de cure et de la restauration du cœur de ville sans surcharger les petites équipes dacquoises, avec relances et confirmations automatisées.",
-          "Tissu très majoritairement composé de TPE et de PME — commerces du centre-ville, artisans, cabinets de santé liés aux soins thermaux et boutiques de produits du terroir landais : on greffe l'IA sur l'existant (widget, plugin, API WordPress, Shopify ou PrestaShop) sans refonte coûteuse, ou on construit une vitrine e-commerce sur mesure pour vendre cataplasmes de boue, soins et spécialités landaises en ligne.",
+          "Tissu très majoritairement composé de PME et de PME — commerces du centre-ville, artisans, cabinets de santé liés aux soins thermaux et boutiques de produits du terroir landais : on greffe l'IA sur l'existant (widget, plugin, API WordPress, Shopify ou PrestaShop) sans refonte coûteuse, ou on construit une vitrine e-commerce sur mesure pour vendre cataplasmes de boue, soins et spécialités landaises en ligne.",
           "Données de santé et de réservation des curistes particulièrement sensibles, à l'image de celles traitées par la filière thermale qui pèse autour de huit cents salariés sur l'agglomération : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act. Les informations personnelles et médicales restent maîtrisées et ne transitent pas hors UE sans cadre contractuel.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const DAX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue d'accueil curiste, recherche sémantique, mini-moteur de réservation) sur le site existant d'un commerce du centre-ville, d'un cabinet de soins, d'un artisan ou d'un hôtel dacquois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,7 +218,7 @@ export const DAX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dax et dans les Landes ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Dax et des communes voisines : Saint-Paul-lès-Dax, Saint-Pandelon, Narrosse, Tercis-les-Bains. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Dax et des communes voisines : Saint-Paul-lès-Dax, Saint-Pandelon, Narrosse, Tercis-les-Bains. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec les thermes et l'hôtellerie ?",

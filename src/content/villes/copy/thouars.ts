@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const THOUARS_COPY: VilleCopy = {
   pitchFr:
-    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de TPE artisans, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du Thouarsais.",
+    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de PME artisanales, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du Thouarsais.",
   pitchEn:
-    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de TPE artisans, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du Thouarsais.",
+    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de PME artisanales, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du Thouarsais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thouars (79). Nous accompagnons TPE, PME et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thouars (79). Nous accompagnons PME, ETI et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thouars (79). Nous accompagnons TPE, PME et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thouars (79). Nous accompagnons PME, ETI et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
-    "Thouars est sous-préfecture des Deux-Sèvres sur le Thouet, 13 891 habitants. Patrimoine médiéval (château des ducs de La Trémoïlle). PME agroalimentaires, industrie mécanique et plastique, TPE artisans BTP, commerces de centre-ville et services de proximité. Pôle économique du nord Deux-Sèvres.",
+    "Thouars est sous-préfecture des Deux-Sèvres sur le Thouet, 13 891 habitants. Patrimoine médiéval (château des ducs de La Trémoïlle). PME agroalimentaires, industrie mécanique et plastique, PME du BTP, commerces de centre-ville et services de proximité. Pôle économique du nord Deux-Sèvres.",
   ecosystemEn:
-    "Thouars est sous-préfecture des Deux-Sèvres sur le Thouet, 13 891 habitants. Patrimoine médiéval (château des ducs de La Trémoïlle). PME agroalimentaires, industrie mécanique et plastique, TPE artisans BTP, commerces de centre-ville et services de proximité. Pôle économique du nord Deux-Sèvres.",
+    "Thouars est sous-préfecture des Deux-Sèvres sur le Thouet, 13 891 habitants. Patrimoine médiéval (château des ducs de La Trémoïlle). PME agroalimentaires, industrie mécanique et plastique, PME du BTP, commerces de centre-ville et services de proximité. Pôle économique du nord Deux-Sèvres.",
   distancesFr:
     "Gare de Thouars (TER Tours-Bressuire). Poitiers à 50 min voiture. Saumur à 25 min. Bressuire à 25 min. Tours à 1h15. Accès A10 (échangeur Loudun). Parthenay à 35 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const THOUARS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire",
     "Industrie mécanique & plastique",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de centre-ville",
     "Services de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, TPE artisans et commerçants du Thouarsais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, TPE artisans et commerçants du Thouarsais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, PME de l'artisanat et du commerce du Thouarsais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, PME de l'artisanat et du commerce du Thouarsais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thouars : déploiement outils IA dans vos usines, ateliers ou commerces. Optimisation production, contrôle qualité et automatisation processus administratifs.",

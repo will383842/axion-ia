@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AMBAZAC_COPY: VilleCopy = {
   pitchFr:
-    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA répond aux besoins des activités professionnelles présentes du piémont nord-est limougeaud.",
+    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu PME artisanales, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA répond aux besoins des activités professionnelles présentes du piémont nord-est limougeaud.",
   pitchEn:
-    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA répond aux besoins des activités professionnelles présentes du piémont nord-est limougeaud.",
+    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu PME artisanales, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA répond aux besoins des activités professionnelles présentes du piémont nord-est limougeaud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambazac (87). Nous accompagnons PME artisanales, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambazac (87). Nous accompagnons PME artisanales, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit sur place sur mesure.",
   seoHook: "filière bois & extraction transformation",
   ecosystemFr:
     "Ambazac est le bourg principal des Monts d'Ambazac, massif granitique au nord-est de Limoges. Économie locale portée par la filière bois (scieries, menuiseries), l'extraction de granit, l'artisanat BTP, l'agriculture et le tourisme vert (tourbières de la Mazure, sentiers de randonnée). Commerces centre-bourg et professions libérales complètent le tissu.",
@@ -24,14 +24,14 @@ export const AMBAZAC_COPY: VilleCopy = {
   topSectorsNaf: [
     "Filière bois (scieries, menuiseries)",
     "Extraction & transformation granit",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & élevage piémont",
     "Tourisme vert & hébergement randonnée",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambazac : diagnostic adapté aux TPE artisans, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ambazac : diagnostic adapté aux TPE artisans, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ambazac : diagnostic adapté aux PME artisanales, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ambazac : diagnostic adapté aux PME artisanales, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambazac : formats adaptés à la scierie, l'atelier granit, l'exploitation agricole, le gîte rural. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const AMBAZAC_COPY: VilleCopy = {
       en: "Implémentation IA à Ambazac : automatisation gestion stocks bois, classification qualité granit, agents conversationnels tourisme vert multilingues, pilotage exploitation agricole prédictif.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ambazac : sessions dans vos locaux (scierie, atelier, exploitation, commerce) ou en visio. Dirigeants TPE/PME des Monts d'Ambazac et piémont nord-est limougeaud.",
-      en: "Coaching 1-to-1 à Ambazac : sessions dans vos locaux (scierie, atelier, exploitation, commerce) ou en visio. Dirigeants TPE/PME des Monts d'Ambazac et piémont nord-est limougeaud.",
+      fr: "Coaching 1-to-1 à Ambazac : sessions dans vos locaux (scierie, atelier, exploitation, commerce) ou en visio. Dirigeants PME et ETI des Monts d'Ambazac et piémont nord-est limougeaud.",
+      en: "Coaching 1-to-1 à Ambazac : sessions dans vos locaux (scierie, atelier, exploitation, commerce) ou en visio. Dirigeants PME et ETI des Monts d'Ambazac et piémont nord-est limougeaud.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const AMBAZAC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises de la filière bois et granit ?",
-      a: "Oui, nous accompagnons les PME et TPE de la filière bois (scieries, menuiseries) et granit sur des cas IA concrets : automatisation gestion stocks, classification qualité, prédiction maintenance machines, optimisation logistique transport bois.",
+      a: "Oui, nous accompagnons les PME et ETI de la filière bois (scieries, menuiseries) et granit sur des cas IA concrets : automatisation gestion stocks, classification qualité, prédiction maintenance machines, optimisation logistique transport bois.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Ambazac  ?",
-      a: "L'audit sur place s'adapte à votre périmètre pour une TPE. Pour les PME filière bois ou granit, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, sans surprise.",
+      a: "L'audit sur place s'adapte à votre périmètre pour une PME. Pour les PME filière bois ou granit, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, sans surprise.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ?",

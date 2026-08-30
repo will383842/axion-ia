@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const HAYANGE_COPY: VilleCopy = {
   pitchFr:
-    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu TPE/PME industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu PME et ETI industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu TPE/PME industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu PME et ETI industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hayange (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hayange (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hayange (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hayange (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
   ecosystemFr:
-    "Hayange est une ville mosellane de la Vallée de la Fensch, héritière d'un passé sidérurgique majeur reconverti. Tissu TPE/PME industrie, sous-traitance métallurgique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière liée au bassin économique luxembourgeois.",
+    "Hayange est une ville mosellane de la Vallée de la Fensch, héritière d'un passé sidérurgique majeur reconverti. Tissu PME et ETI industrie, sous-traitance métallurgique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière liée au bassin économique luxembourgeois.",
   ecosystemEn:
-    "Hayange est une ville mosellane de la Vallée de la Fensch, héritière d'un passé sidérurgique majeur reconverti. Tissu TPE/PME industrie, sous-traitance métallurgique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière liée au bassin économique luxembourgeois.",
+    "Hayange est une ville mosellane de la Vallée de la Fensch, héritière d'un passé sidérurgique majeur reconverti. Tissu PME et ETI industrie, sous-traitance métallurgique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière liée au bassin économique luxembourgeois.",
   distancesFr:
     "Thionville à 10 min. Metz à 30 min. Luxembourg-Ville à 35 min. Gare SNCF Hayange (ligne Metz–Luxembourg). Autoroute A30 accès direct. Aéroport Metz-Nancy-Lorraine à 40 min. Aéroport Luxembourg à 45 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const HAYANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hayange : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, artisans BTP, commerces et services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Hayange : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, artisans BTP, commerces et services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Hayange : diagnostic adapté aux PME et ETI industrie, sous-traitants métallurgie, artisans BTP, commerces et services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hayange : diagnostic adapté aux PME et ETI industrie, sous-traitants métallurgie, artisans BTP, commerces et services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hayange : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const HAYANGE_COPY: VilleCopy = {
       en: "Implémentation IA à Hayange : contrôle qualité production, traçabilité sous-traitance, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hayange : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants TPE/PME hayangeois.",
-      en: "Coaching 1-to-1 à Hayange : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants TPE/PME hayangeois.",
+      fr: "Coaching 1-to-1 à Hayange : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants PME et ETI hayangeois.",
+      en: "Coaching 1-to-1 à Hayange : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants PME et ETI hayangeois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const HAYANGE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et sous-traitants de la Vallée de la Fensch : contrôle qualité, traçabilité production, automatisation workflow, optimisation relations donneurs d'ordres.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et sous-traitants de la Vallée de la Fensch : contrôle qualité, traçabilité production, automatisation workflow, optimisation relations donneurs d'ordres.",
     },
     {
       q: "Accompagnez-vous les frontaliers et entrepreneurs vers le Luxembourg ?",
@@ -61,7 +61,7 @@ export const HAYANGE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Hayange ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Hayange ?",

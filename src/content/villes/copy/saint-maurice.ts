@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAURICE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu PME et ETI santé, professions libérales, commerces, services à la personne, restauration. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu PME et ETI santé, professions libérales, commerces, services à la personne, restauration. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maurice (94). Nous accompagnons PME et ETI : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Maurice (94). Nous accompagnons PME et ETI : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit sur place sur mesure.",
   seoHook: "santé médico-social & commerce proximité",
   ecosystemFr:
     "Saint-Maurice est une commune résidentielle en bordure du Bois de Vincennes, marquée par la présence des hôpitaux nationaux de Saint-Maurice (Esquirol). Tissu économique de proximité orienté santé, professions libérales, commerces, restauration et services à la personne. Accès direct Paris 12e par le pont de Charenton.",
@@ -26,7 +26,7 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
     "Professions libérales",
     "Commerce de proximité & restauration",
     "Services à la personne",
-    "TPE artisanat & maintenance",
+    "PME de l'artisanat & maintenance",
   ],
   servicesContext: {
     audit: {
@@ -38,12 +38,12 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Saint-Maurice : formats adaptés cabinet médical, commerce, restaurant, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Saint-Maurice : automatisation gestion rendez-vous santé, CRM augmentés commerces, prise de commande restauration, planning services à la personne, facturation TPE.",
-      en: "Implémentation IA à Saint-Maurice : automatisation gestion rendez-vous santé, CRM augmentés commerces, prise de commande restauration, planning services à la personne, facturation TPE.",
+      fr: "Implémentation IA à Saint-Maurice : automatisation gestion rendez-vous santé, CRM augmentés commerces, prise de commande restauration, planning services à la personne, facturation PME.",
+      en: "Implémentation IA à Saint-Maurice : automatisation gestion rendez-vous santé, CRM augmentés commerces, prise de commande restauration, planning services à la personne, facturation PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Maurice : sessions dans votre cabinet, commerce, restaurant ou en visio. Dirigeants TPE, professions libérales, prestataires santé, commerçants et restaurateurs saint-mauriciens.",
-      en: "Coaching 1-to-1 à Saint-Maurice : sessions dans votre cabinet, commerce, restaurant ou en visio. Dirigeants TPE, professions libérales, prestataires santé, commerçants et restaurateurs saint-mauriciens.",
+      fr: "Coaching 1-to-1 à Saint-Maurice : sessions dans votre cabinet, commerce, restaurant ou en visio. Dirigeants PME, professions libérales, prestataires santé, commerçants et restaurateurs saint-mauriciens.",
+      en: "Coaching 1-to-1 à Saint-Maurice : sessions dans votre cabinet, commerce, restaurant ou en visio. Dirigeants PME, professions libérales, prestataires santé, commerçants et restaurateurs saint-mauriciens.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les prestataires santé autour des hôpitaux ?",
-      a: "Oui, nous accompagnons les TPE et PME du secteur santé à Saint-Maurice : automatisation prise de rendez-vous, gestion dossiers patients IA, secrétariat augmenté, facturation, conformité RGPD données de santé.",
+      a: "Oui, nous accompagnons les PME et ETI du secteur santé à Saint-Maurice : automatisation prise de rendez-vous, gestion dossiers patients IA, secrétariat augmenté, facturation, conformité RGPD données de santé.",
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Maurice ?",
@@ -65,7 +65,7 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à Saint-Maurice ?",
-      a: "Le coaching individuel se déroule dans vos locaux à Saint-Maurice ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE ou professionnel libéral. Prise en main d'outils IA concrets pour votre activité.",
+      a: "Le coaching individuel se déroule dans vos locaux à Saint-Maurice ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI ou professionnel libéral. Prise en main d'outils IA concrets pour votre activité.",
     },
   ],
 };

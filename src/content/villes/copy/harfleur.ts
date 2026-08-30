@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const HARFLEUR_COPY: VilleCopy = {
   pitchFr:
-    "Harfleur (76), commune historique de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 290 habitants. Ancien port medieval, la ville accueille des TPE de services, des PME commerciales, des artisans, des professions liberales et des acteurs lies au port du Havre. Axion-IA y intervient pour tous types d'activites.",
+    "Harfleur (76), commune historique de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 290 habitants. Ancien port medieval, la ville accueille des PME de services, des PME commerciales, des artisans, des professions liberales et des acteurs lies au port du Havre. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Harfleur (76), commune historique de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 290 habitants. Ancien port medieval, la ville accueille des TPE de services, des PME commerciales, des artisans, des professions liberales et des acteurs lies au port du Havre. Axion-IA y intervient pour tous types d'activites.",
+    "Harfleur (76), commune historique de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 290 habitants. Ancien port medieval, la ville accueille des PME de services, des PME commerciales, des artisans, des professions liberales et des acteurs lies au port du Havre. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "port historique, commerce & agglo Le Havre",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Harfleur (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Harfleur (76). Nous accompagnons les PME, ETI et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Harfleur est situee a l'entree de l'agglomeration havraise, ancien port medieval devenu ville residentielle et commercante. Tissu de TPE de services, PME commerciales, artisanat, professions liberales et acteurs logistiques lies au port du Havre. Acces tramway et A29.",
+    "Harfleur est situee a l'entree de l'agglomeration havraise, ancien port medieval devenu ville residentielle et commercante. Tissu de PME de services, PME commerciales, artisanat, professions liberales et acteurs logistiques lies au port du Havre. Acces tramway et A29.",
   ecosystemEn:
-    "Harfleur est situee a l'entree de l'agglomeration havraise, ancien port medieval devenu ville residentielle et commercante. Tissu de TPE de services, PME commerciales, artisanat, professions liberales et acteurs logistiques lies au port du Havre. Acces tramway et A29.",
+    "Harfleur est situee a l'entree de l'agglomeration havraise, ancien port medieval devenu ville residentielle et commercante. Tissu de PME de services, PME commerciales, artisanat, professions liberales et acteurs logistiques lies au port du Havre. Acces tramway et A29.",
   distancesFr:
     "Le Havre centre a 10 min. Tramway Le Havre a 5 min. A29 Le Havre-Amiens a 5 min. Gonfreville-l'Orcher a 5 min. Rouen a 1h par A150. Paris a 2h15 par A13. Gare du Havre (TGV Paris 2h10).",
   distancesEn:
     "Le Havre centre a 10 min. Tramway Le Havre a 5 min. A29 Le Havre-Amiens a 5 min. Gonfreville-l'Orcher a 5 min. Rouen a 1h par A150. Paris a 2h15 par A13. Gare du Havre (TGV Paris 2h10).",
   topSectorsNaf: [
     "Commerce de proximite & detail",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Logistique & transport portuaire",
     "Professions liberales & sante",
     "Artisanat & renovation",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Harfleur : diagnostic adapte aux TPE de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Harfleur : diagnostic adapte aux TPE de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Harfleur : diagnostic adapte aux PME de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Harfleur : diagnostic adapte aux PME de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Harfleur : formations adaptees aux commerces, cabinets, PME logistiques et artisans de l'agglomeration havraise. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const HARFLEUR_COPY: VilleCopy = {
       en: "Implementation IA a Harfleur : automatisation logistique, agents conversationnels, CRM augmentes pour commercants et PME de l'agglo havraise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Harfleur : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de l'agglomeration havraise.",
-      en: "Coaching 1-to-1 a Harfleur : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de l'agglomeration havraise.",
+      fr: "Coaching 1-to-1 a Harfleur : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de l'agglomeration havraise.",
+      en: "Coaching 1-to-1 a Harfleur : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de l'agglomeration havraise.",
     },
   },
   faqGeolocalisee: [

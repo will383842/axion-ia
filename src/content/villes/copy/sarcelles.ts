@@ -9,13 +9,13 @@ import type { VilleCopy } from "./types";
 
 export const SARCELLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
+    "Axion-IA accompagne les PME et ETI de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
+    "Axion-IA accompagne les PME et ETI de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "commerce détail & services à la population",
   ecosystemFr:
     "Chef-lieu d'arrondissement du Val-d'Oise depuis 2000, Sarcelles dispose d'un tissu économique dense lié à sa population : commerces de proximité, restauration, santé humaine, action sociale, enseignement et services administratifs. L'urbanisation autour du grand ensemble construit entre 1955 et 1970 structure encore l'organisation économique de la commune. Deux gares (Sarcelles-Saint-Brice et Garges-Sarcelles) et le tramway T5 depuis 2013 ouvrent le bassin d'emploi vers Paris et Roissy.",
@@ -47,8 +47,8 @@ export const SARCELLES_COPY: VilleCopy = {
       en: "Implémentation IA sur site à Sarcelles à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Session 1-to-1 dirigeant TPE/PME à Sarcelles dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
-      en: "Session 1-to-1 dirigeant TPE/PME à Sarcelles dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      fr: "Session 1-to-1 dirigeants de PME et d'ETI à Sarcelles dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeants de PME et d'ETI à Sarcelles dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   services: {
@@ -89,12 +89,6 @@ export const SARCELLES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA-augmentée",
-            detail:
-              "Pour un joaillier ou diamantaire de Sarcelles, un commerce de détail ou un artisan : site vitrine ou boutique en ligne avec fiches produits enrichies, prise de rendez-vous et recherche assistée par IA, optimisé mobile et référencement local.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -176,12 +170,6 @@ export const SARCELLES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or store",
-            detail:
-              "For a Sarcelles jeweller or diamond dealer, a retailer or a craftsperson: showcase site or online store with enriched product sheets, booking and AI-assisted search, optimised for mobile and local search.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or advanced e-commerce",
             detail:
@@ -235,7 +223,7 @@ export const SARCELLES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Sarcelles ?",
-      a: "Pour les TPE et PME de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",
@@ -251,7 +239,7 @@ export const SARCELLES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Sarcelles ?",
-      a: "Oui, nos sessions 1-to-1 dirigeants à Sarcelles démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Sarcelles démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de PME ou ETI.",
     },
   ],
 };

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Cognac (16), sous-préfecture de la Charente, capitale mondiale des eaux-de-vie AOC. Tissu de TPE artisans tonneliers, PME viticoles et négoce, maisons de cognac, tourisme patrimonial et œnotourisme, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin cognaçais.",
+    "Cognac (16), sous-préfecture de la Charente, capitale mondiale des eaux-de-vie AOC. Tissu de PME artisanales tonneliers, PME viticoles et négoce, maisons de cognac, tourisme patrimonial et œnotourisme, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin cognaçais.",
   pitchEn:
-    "Cognac (16), sous-préfecture de la Charente, capitale mondiale des eaux-de-vie AOC. Tissu de TPE artisans tonneliers, PME viticoles et négoce, maisons de cognac, tourisme patrimonial et œnotourisme, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin cognaçais.",
+    "Cognac (16), sous-préfecture de la Charente, capitale mondiale des eaux-de-vie AOC. Tissu de PME artisanales tonneliers, PME viticoles et négoce, maisons de cognac, tourisme patrimonial et œnotourisme, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin cognaçais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cognac (16). Nous accompagnons tous types d'activités : PME artisanales tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cognac (16). Nous accompagnons tous types d'activités : PME artisanales tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
   seoHook: "bassin cognaçais",
   ecosystemFr:
-    "Cognac est la capitale mondiale des eaux-de-vie AOC, sous-préfecture de la Charente. Filière cognac complète : viticulteurs, distillateurs, tonneliers, maisons de négoce, logistique export. Œnotourisme en forte croissance, patrimoine bords de Charente, TPE artisans, PME services, commerces de centre-ville.",
+    "Cognac est la capitale mondiale des eaux-de-vie AOC, sous-préfecture de la Charente. Filière cognac complète : viticulteurs, distillateurs, tonneliers, maisons de négoce, logistique export. Œnotourisme en forte croissance, patrimoine bords de Charente, PME artisanales, PME services, commerces de centre-ville.",
   ecosystemEn:
-    "Cognac est la capitale mondiale des eaux-de-vie AOC, sous-préfecture de la Charente. Filière cognac complète : viticulteurs, distillateurs, tonneliers, maisons de négoce, logistique export. Œnotourisme en forte croissance, patrimoine bords de Charente, TPE artisans, PME services, commerces de centre-ville.",
+    "Cognac est la capitale mondiale des eaux-de-vie AOC, sous-préfecture de la Charente. Filière cognac complète : viticulteurs, distillateurs, tonneliers, maisons de négoce, logistique export. Œnotourisme en forte croissance, patrimoine bords de Charente, PME artisanales, PME services, commerces de centre-ville.",
   distancesFr:
     "Gare de Cognac (TER Nouvelle-Aquitaine, Angoulême 45 min). Angoulême TGV à 45 min voiture (N141). Bordeaux à 1h30 (A10). Aéroport Bordeaux-Mérignac à 1h30. Saintes à 25 min. La Rochelle à 1h15.",
   distancesEn:
@@ -42,8 +42,8 @@ export const COGNAC_COPY: VilleCopy = {
       en: "Implémentation IA à Cognac : traçabilité parcelles viticoles et lots distillation, prédiction qualité eaux-de-vie, automatisation gestion stocks export, agents conversationnels accueil œnotouristique multilingue.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cognac : sessions dans votre chai, distillerie, bureau ou en visio. Viticulteurs, distillateurs, dirigeants TPE/PME du négoce et de l'œnotourisme cognaçais souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Cognac : sessions dans votre chai, distillerie, bureau ou en visio. Viticulteurs, distillateurs, dirigeants TPE/PME du négoce et de l'œnotourisme cognaçais souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Cognac : sessions dans votre chai, distillerie, bureau ou en visio. Viticulteurs, distillateurs, dirigeants de PME et d'ETI du négoce et de l'œnotourisme cognaçais souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Cognac : sessions dans votre chai, distillerie, bureau ou en visio. Viticulteurs, distillateurs, dirigeants de PME et d'ETI du négoce et de l'œnotourisme cognaçais souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les TPE et PME locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
+    "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les PME et ETI locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
   pitchEn:
-    "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les TPE et PME locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
+    "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les PME et ETI locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les PME et ETI de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
   directAnswerEn:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les PME et ETI de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
   seoHook: "commerce de détail La Croix-Blanche & artisanat Essonne",
   ecosystemFr:
     "Sainte-Geneviève-des-Bois est siège de Cœur d'Essonne Agglomération. Le tissu économique est structuré autour du parc commercial La Croix-Blanche (premier parc commercial d'Île-de-France) où a ouvert le premier Carrefour de France en 1963. Les communes limitrophes incluent Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge. Le territoire est urbanisé à 74,9 %, avec 10,9 % d'espace rural.",
@@ -32,20 +32,20 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Sainte-Geneviève-des-Bois pour les TPE et PME du parc commercial La Croix-Blanche et du centre — identifier les automatisations prioritaires (caisse, stock, CRM, devis).",
-      en: "Réaliser un audit IA à Sainte-Geneviève-des-Bois pour les TPE et PME du parc commercial La Croix-Blanche et du centre — identifier les automatisations prioritaires (caisse, stock, CRM, devis).",
+      fr: "Réaliser un audit IA à Sainte-Geneviève-des-Bois pour les PME et ETI du parc commercial La Croix-Blanche et du centre — identifier les automatisations prioritaires (caisse, stock, CRM, devis).",
+      en: "Réaliser un audit IA à Sainte-Geneviève-des-Bois pour les PME et ETI du parc commercial La Croix-Blanche et du centre — identifier les automatisations prioritaires (caisse, stock, CRM, devis).",
     },
     interventions: {
       fr: "Intervenir à Sainte-Geneviève-des-Bois (24 km au sud de Paris, RER C ou RN104) pour automatiser les processus métier des commerçants et artisans locaux — code custom, pas de no-code.",
       en: "Intervenir à Sainte-Geneviève-des-Bois (24 km au sud de Paris, RER C ou RN104) pour automatiser les processus métier des commerçants et artisans locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services, avec accompagnement post-livraison.",
-      en: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services, avec accompagnement post-livraison.",
+      fr: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les PME et ETI du commerce et des services, avec accompagnement post-livraison.",
+      en: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les PME et ETI du commerce et des services, avec accompagnement post-livraison.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
         hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Sainte-Geneviève-des-Bois, ville-berceau de la grande distribution française où Carrefour a ouvert son premier hypermarché en 1963 et où s'étend La Croix-Blanche, premier parc commercial d'Île-de-France (700 000 m², 250+ enseignes, ~4 164 emplois). Nous outillons les commerçants et enseignes du parc (Leroy Merlin, Decathlon, Boulanger, Fnac, Darty, Maisons du Monde, Kiabi), les artisans BTP, les services aux entreprises et les acteurs publics du siège Cœur d'Essonne Agglomération avec du code custom — UX/UI, mobile, e-commerce multi-CMS et IA — hébergé en Europe, sans no-code ni verrou éditeur.",
         whyHere: [
           "La Croix-Blanche concentre 250+ magasins d'enseignes nationales (Leroy Merlin, Decathlon, Boulanger, Darty, Fnac, Kiabi) sur 700 000 m² : la priorité locale, c'est l'e-commerce omnicanal — vitrines transactionnelles, click & collect, recherche produit sémantique IA et synchronisation stock entre magasin physique et boutique en ligne.",
-          "Berceau du premier Carrefour de France (1963), la ville reste un terrain de grande distribution et de retail : nous bâtissons des plateformes SaaS de gestion catalogue, de fiches produit générées par IA et de chatbots de support client pour TPE et PME du commerce de détail génovéfain.",
+          "Berceau du premier Carrefour de France (1963), la ville reste un terrain de grande distribution et de retail : nous bâtissons des plateformes SaaS de gestion catalogue, de fiches produit générées par IA et de chatbots de support client pour PME et ETI du commerce de détail génovéfain.",
           "Tissu B2B local diversifié au-delà du commerce : EPS Barthélemy Durand (1er employeur, santé psychiatrique), Transdev Cœur Essonne (transport routier), artisans BTP et services aux entreprises — chacun avec ses besoins propres de portails, espaces clients et applications métier.",
           "610 établissements créés en 2025 (dont 210 en commerce/transport/restauration) et le projet ZAC Val Vert-Croix Blanche (aménageur Sorgem) alimentent une demande continue de sites de lancement, landing pages et MVP SaaS pour jeunes structures de l'Essonne.",
         ],
@@ -86,12 +86,6 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce de lancement",
-            detail:
-              "Pour indépendants, artisans BTP et petits commerces génovéfains : site vitrine ou première boutique en ligne mobile-first, formulaire de devis ou panier simple, fiches produit assistées par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -173,12 +167,6 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or launch e-commerce site",
-            detail:
-              "For freelancers, BTP craftspeople and small Sainte-Geneviève-des-Bois shops: mobile-first showcase site or first online store, quote form or simple cart, AI-assisted product sheets.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or line-of-business SaaS platform",
             detail:
@@ -236,11 +224,11 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",
-      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des TPE et PME de Sainte-Geneviève-des-Bois restent souveraines et conformes au RGPD.",
+      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des PME et ETI de Sainte-Geneviève-des-Bois restent souveraines et conformes au RGPD.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Sainte-Geneviève-des-Bois ?",
-      a: "Nous accompagnons les TPE et PME locales : commerçants et services du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises, logistique et restauration.",
+      a: "Nous accompagnons les PME et ETI locales : commerçants et services du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises, logistique et restauration.",
     },
     {
       q: "Axion-IA intervient-il dans les communes autour de Sainte-Geneviève-des-Bois ?",

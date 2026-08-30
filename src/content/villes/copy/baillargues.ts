@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const BAILLARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans, professions libérales. Axion-IA accompagne entreprises et indépendants.",
+    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu PME du commerce, PME services et tertiaire, artisans, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans, professions libérales. Axion-IA accompagne entreprises et indépendants.",
+    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu PME du commerce, PME services et tertiaire, artisans, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baillargues (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans, professions libérales et entreprises de l'est montpelliérain proche gare TGV.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baillargues (34). Nous accompagnons PME du commerce, PME de services et tertiaire, artisans, professions libérales et entreprises de l'est montpelliérain proche gare TGV.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baillargues (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans, professions libérales et entreprises de l'est montpelliérain proche gare TGV.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baillargues (34). Nous accompagnons PME du commerce, PME de services et tertiaire, artisans, professions libérales et entreprises de l'est montpelliérain proche gare TGV.",
   ecosystemFr:
-    "Baillargues est une commune résidentielle dynamique de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France (Paris en 3h20). Zones d'activités tertiaires et commerciales, tissu TPE commerçants, PME services, artisans BTP, professions libérales. Accès direct A9/A709.",
+    "Baillargues est une commune résidentielle dynamique de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France (Paris en 3h20). Zones d'activités tertiaires et commerciales, tissu PME du commerce, PME services, artisans BTP, professions libérales. Accès direct A9/A709.",
   ecosystemEn:
-    "Baillargues est une commune résidentielle dynamique de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France (Paris en 3h20). Zones d'activités tertiaires et commerciales, tissu TPE commerçants, PME services, artisans BTP, professions libérales. Accès direct A9/A709.",
+    "Baillargues est une commune résidentielle dynamique de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France (Paris en 3h20). Zones d'activités tertiaires et commerciales, tissu PME du commerce, PME services, artisans BTP, professions libérales. Accès direct A9/A709.",
   distancesFr:
     "Montpellier centre à 15 min. Gare TGV Montpellier Sud de France à 5 min. Aéroport Montpellier-Méditerranée à 10 min. Castries à 5 min. Accès A9/A709.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BAILLARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baillargues : diagnostic pour PME tertiaires, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Baillargues : diagnostic pour PME tertiaires, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Baillargues : diagnostic pour PME tertiaires, PME du commerce, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Baillargues : diagnostic pour PME tertiaires, PME du commerce, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baillargues : ateliers adaptés PME tertiaire, commerce, cabinet libéral ou artisan. Vos équipes repartent autonomes sur outils IA métier.",

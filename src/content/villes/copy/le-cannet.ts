@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_CANNET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
+    "Axion-IA accompagne les PME et ETI du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
+    "Axion-IA accompagne les PME et ETI du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
   directAnswerFr:
-    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les PME, ETI et, en complément, les grands groupes de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
   directAnswerEn:
-    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les PME, ETI et, en complément, les grands groupes de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
   seoHook: "commerce, hôtellerie-restauration & événementiel",
   ecosystemFr:
     "Le Cannet est situé à environ 2 km au nord de Cannes et appartient à la Communauté d'agglomération Cannes Pays de Lérins. Son tissu économique est dominé par le commerce, l'hôtellerie-restauration, les services et un secteur événementiel structuré par les grands rendez-vous cannois (Festival, MIPIM, MIPCOM). La commune accueille également le musée Bonnard, témoin de son patrimoine culturel.",
@@ -42,20 +42,20 @@ export const LE_CANNET_COPY: VilleCopy = {
       en: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA sur mesure au Cannet pour les PME et ETI locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA sur mesure au Cannet pour les PME et ETI locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
-      en: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      fr: "Coaching un-à-un d'un dirigeant PME et ETI cannettan pour cadrer ses premiers chantiers IA — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant PME et ETI cannettan pour cadrer ses premiers chantiers IA — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises du Cannet (Alpes-Maritimes, Communauté d'agglomération Cannes Pays de Lérins). Le tissu local — 1 281 établissements employeurs, 1 024 créations d'entreprises en 2024 dont 276 en services spécialisés, techniques et soutien administratif — est dominé par des TPE de services B2B, le commerce de proximité (boulevard Carnot, Rocheville, Vieux Cannet), l'hôtellerie-restauration adossée à la Côte d'Azur et une silver economy dense (résidences services seniors, six EHPAD). Nous livrons du code applicatif sur mesure — UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, agents IA — hébergé en UE et conforme RGPD, sans verrou éditeur ni dépendance no-code.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises du Cannet (Alpes-Maritimes, Communauté d'agglomération Cannes Pays de Lérins). Le tissu local — 1 281 établissements employeurs, 1 024 créations d'entreprises en 2024 dont 276 en services spécialisés, techniques et soutien administratif — est dominé par des PME de services B2B, le commerce de proximité (boulevard Carnot, Rocheville, Vieux Cannet), l'hôtellerie-restauration adossée à la Côte d'Azur et une silver economy dense (résidences services seniors, six EHPAD). Nous livrons du code applicatif sur mesure — UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, agents IA — hébergé en UE et conforme RGPD, sans verrou éditeur ni dépendance no-code.",
         whyHere: [
-          "Les services B2B sont le premier vivier de créations cannettanes (276 entreprises en 2024 en activités spécialisées, scientifiques, techniques et soutien administratif) : conseil, ingénierie, agences. Ces TPE ont besoin de sites vitrines crédibles et d'outils SaaS internes (devis, suivi mission, portail client) que nous codons sur mesure.",
+          "Les services B2B sont le premier vivier de créations cannettanes (276 entreprises en 2024 en activités spécialisées, scientifiques, techniques et soutien administratif) : conseil, ingénierie, agences. Ces PME ont besoin de sites vitrines crédibles et d'outils SaaS internes (devis, suivi mission, portail client) que nous codons sur mesure.",
           "Le commerce de proximité du boulevard Carnot, de Rocheville et du Vieux Cannet (rue Saint-Sauveur, rue Cavasse) bascule vers l'omnicanal : nous construisons des boutiques e-commerce multi-CMS (Shopify, WooCommerce, headless) avec click-and-collect, réservation et recommandation produit par IA.",
           "L'hôtellerie-restauration et le tourisme — au Cannet « la Madère de la France », à deux pas du Palais des Festivals de Cannes (MIPIM, MIPCOM) et du Marché Forville — exigent des sites multilingues rapides, moteurs de réservation et chatbots conciergerie : nous les développons avec un noyau IA et une performance Web Vitals stricte.",
           "La silver economy locale (six EHPAD, résidences services seniors type OBEO) et le tourisme culturel (musée Bonnard, seul musée au monde dédié à Pierre Bonnard) appellent des plateformes spécifiques : portails familles, billetterie, agendas culturels, accessibilité — autant de SaaS métier que nous concevons en code maîtrisé.",
@@ -88,12 +88,6 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA-ready",
-            detail:
-              "Pour indépendants, commerçants du boulevard Carnot / Rocheville et TPE de services cannettanes : site vitrine ou e-commerce mono-CMS avec un module IA (chatbot, recommandation, génération de fiches).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -174,12 +168,6 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase site or store",
-            detail:
-              "For Le Cannet freelancers, boulevard Carnot / Rocheville retailers and B2B service micro-firms: a showcase site or single-CMS e-commerce store with one AI module (chatbot, recommendation, listing generation).",
-          },
           {
             sizeLabel: "SME",
             price: "E-commerce platform or domain SaaS",

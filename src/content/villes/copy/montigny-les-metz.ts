@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Montigny-lès-Metz (21 718 habitants, Moselle), deuxième commune de l'Eurométropole de Metz située à moins de 2 km du centre messin. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les commerçants, artisans et professions libérales de la commune, ainsi que pour les PME du tertiaire et du BTP du bassin lorrain.",
+    "Axion-IA accompagne les PME et ETI de Montigny-lès-Metz (21 718 habitants, Moselle), deuxième commune de l'Eurométropole de Metz située à moins de 2 km du centre messin. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les commerçants, artisans et professions libérales de la commune, ainsi que pour les PME du tertiaire et du BTP du bassin lorrain.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Montigny-lès-Metz (21 718 habitants, Moselle), deuxième commune de l'Eurométropole de Metz située à moins de 2 km du centre messin. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les commerçants, artisans et professions libérales de la commune, ainsi que pour les PME du tertiaire et du BTP du bassin lorrain.",
+    "Axion-IA accompagne les PME et ETI de Montigny-lès-Metz (21 718 habitants, Moselle), deuxième commune de l'Eurométropole de Metz située à moins de 2 km du centre messin. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les commerçants, artisans et professions libérales de la commune, ainsi que pour les PME du tertiaire et du BTP du bassin lorrain.",
   directAnswerFr:
-    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit sur place 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des PME et ETI locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit sur place 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   directAnswerEn:
-    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit sur place 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des PME et ETI locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit sur place 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   seoHook: "commerce de proximité, BTP & tertiaire messin",
   ecosystemFr:
     "Montigny-lès-Metz est un grand centre urbain résidentiel et commerçant intégré à l'unité urbaine de Metz (42 communes, plus de 510 000 emplois dans la zone d'emploi). Le tissu local est dominé par le commerce de détail, les services aux particuliers (santé, restauration, coiffure) et les artisans du bâtiment, avec une activité tertiaire dense alimentée par la proximité immédiate du centre de Metz. Le siège du groupe Demathieu Bard (BTP, près de 3 000 collaborateurs nationalement) ancre la place industrielle locale.",
@@ -35,16 +35,16 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
       en: "Audit IA à Montigny-lès-Metz pour les commerçants, artisans et cabinets libéraux de la commune — cartographie des automatisations à {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions à Montigny-lès-Metz pour automatiser devis, factures et relances des TPE du commerce de détail et des artisans BTP — dès {{price:intervention-4h|flat}}.",
-      en: "Interventions à Montigny-lès-Metz pour automatiser devis, factures et relances des TPE du commerce de détail et des artisans BTP — dès {{price:intervention-4h|flat}}.",
+      fr: "Interventions à Montigny-lès-Metz pour automatiser devis, factures et relances des PME du commerce de détail et des artisans BTP — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions à Montigny-lès-Metz pour automatiser devis, factures et relances des PME du commerce de détail et des artisans BTP — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA codées sur mesure à Montigny-lès-Metz (pas de no-code) pour les PME du tertiaire et du BTP de l'Eurométropole — dès {{price:impl-poc|entry}}.",
       en: "Implémentation de solutions IA codées sur mesure à Montigny-lès-Metz (pas de no-code) pour les PME du tertiaire et du BTP de l'Eurométropole — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Montigny-lès-Metz pour dirigeants de TPE/PME : roadmap IA, choix d'outils, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions 1-to-1 à Montigny-lès-Metz pour dirigeants de TPE/PME : roadmap IA, choix d'outils, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions 1-to-1 à Montigny-lès-Metz pour dirigeants de PME et ETI : roadmap IA, choix d'outils, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Montigny-lès-Metz pour dirigeants de PME et ETI : roadmap IA, choix d'outils, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -53,7 +53,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
         whyHere: [
           "Centre commerçant indépendant fédéré par l'association Montigny Entreprendre : avec une majorité de boutiques en propre rue de Pont-à-Mousson et au cœur de ville, les commerçants gagnent à une vitrine e-commerce mobile-first (click & collect, catalogue, paiement, fiche Google) plutôt qu'à un site figé qui laisse fuir le trafic vers Metz. On conçoit l'UX/UI et l'on branche la recherche sémantique sur leur catalogue.",
-          "Artisans et TPE du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
+          "Artisans et PME du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
           "Siège du groupe Demathieu Bard (BTP, près de 3 000 collaborateurs au national, présent dans la requalification du quartier Lizé) : pour un acteur structurant de cette taille, on construit des plateformes métier et portails client SaaS IA-native, branchés sur le SI (ERP, CRM, gestion de chantier), au-delà du simple site vitrine.",
           "Cabinets libéraux denses (santé, juridique, comptable) et RGPD strict, alimentés par la proximité immédiate du centre de Metz : toute la chaîne IA — chatbot, recherche, agents — est hébergeable en UE, conforme AI Act, avec un design mobile-first pour la prise de rendez-vous. Les données patients, dossiers et clients restent maîtrisées, registre des traitements à l'appui.",
         ],
@@ -85,12 +85,6 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, formulaire de devis intelligent) sur le site existant d'un commerçant de la rue de Pont-à-Mousson ou d'un artisan du bâtiment, en quelques semaines et sans refonte. Idéal pour la restauration, la coiffure et les services aux particuliers.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Montigny-lès-Metz des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vitrines et boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Metz (21 718 habitants, à moins de 2 km du centre messin), où près de 500 commerces de proximité, des artisans du bâtiment et des cabinets libéraux cohabitent avec le tertiaire dense du bassin lorrain, le siège BTP du groupe Demathieu Bard et le nouveau quartier Lizé né de l'ancienne caserne d'artillerie (755 logements, environ 4 560 m² de commerces). Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montigny-lès-Metz, itérations à distance.",
         whyHere: [
           "Centre commerçant indépendant fédéré par l'association Montigny Entreprendre : avec une majorité de boutiques en propre rue de Pont-à-Mousson et au cœur de ville, les commerçants gagnent à une vitrine e-commerce mobile-first (click & collect, catalogue, paiement, fiche Google) plutôt qu'à un site figé qui laisse fuir le trafic vers Metz. On conçoit l'UX/UI et l'on branche la recherche sémantique sur leur catalogue.",
-          "Artisans et TPE du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
+          "Artisans et PME du bâtiment du bassin lorrain : on greffe sur l'existant des automatisations concrètes — formulaires de devis intelligents, suivi de chantier, relances clients, agents qui trient les demandes — sans imposer une refonte coûteuse à des équipes sans service informatique. Le tissu est nourri par les chantiers du quartier Lizé et de l'Eurométropole.",
           "Siège du groupe Demathieu Bard (BTP, près de 3 000 collaborateurs au national, présent dans la requalification du quartier Lizé) : pour un acteur structurant de cette taille, on construit des plateformes métier et portails client SaaS IA-native, branchés sur le SI (ERP, CRM, gestion de chantier), au-delà du simple site vitrine.",
           "Cabinets libéraux denses (santé, juridique, comptable) et RGPD strict, alimentés par la proximité immédiate du centre de Metz : toute la chaîne IA — chatbot, recherche, agents — est hébergeable en UE, conforme AI Act, avec un design mobile-first pour la prise de rendez-vous. Les données patients, dossiers et clients restent maîtrisées, registre des traitements à l'appui.",
         ],
@@ -171,12 +165,6 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, formulaire de devis intelligent) sur le site existant d'un commerçant de la rue de Pont-à-Mousson ou d'un artisan du bâtiment, en quelques semaines et sans refonte. Idéal pour la restauration, la coiffure et les services aux particuliers.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -243,7 +231,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous le plus à Montigny-lès-Metz ?",
-      a: "Principalement les TPE du commerce de détail (près de 500 commerces locaux), les artisans du BTP, les professions libérales (santé, juridique, comptable) et les PME tertiaires. Les ETI comme Demathieu Bard sont accompagnées en complément.",
+      a: "Principalement les PME du commerce de détail (près de 500 commerces locaux), les artisans du BTP, les professions libérales (santé, juridique, comptable) et les PME tertiaires. Les ETI comme Demathieu Bard sont accompagnées en complément.",
     },
     {
       q: "Faites-vous du no-code ou du code sur mesure à Montigny-lès-Metz ?",

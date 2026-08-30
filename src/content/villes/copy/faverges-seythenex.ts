@@ -9,14 +9,14 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
   pitchEn:
     "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA collabore avec toutes les structures locales de ce carrefour montagnard.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faverges-Seythenex (74). Nous accompagnons TPE et PME : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faverges-Seythenex (74). Nous accompagnons PME et ETI : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faverges-Seythenex (74). Nous accompagnons TPE et PME : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faverges-Seythenex (74). Nous accompagnons PME et ETI : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
   seoHook: "industrielles & tourisme montagne",
   ecosystemFr:
-    "Faverges-Seythenex occupe une position stratégique entre les bassins d'Annecy (25 min) et d'Albertville (20 min). Héritage industriel fort : PME de mécanique de précision et d'horlogerie implantées de longue date. Tourisme de montagne actif (randonnée, stations proches). Agriculture alpine (élevage laitier, alpages). TPE artisanat et commerces de bourg complètent le tissu. Carrefour vers Chambéry (45 min) et vallée de la Tarentaise.",
+    "Faverges-Seythenex occupe une position stratégique entre les bassins d'Annecy (25 min) et d'Albertville (20 min). Héritage industriel fort : PME de mécanique de précision et d'horlogerie implantées de longue date. Tourisme de montagne actif (randonnée, stations proches). Agriculture alpine (élevage laitier, alpages). PME de l'artisanat et du commerce de bourg complètent le tissu. Carrefour vers Chambéry (45 min) et vallée de la Tarentaise.",
   ecosystemEn:
-    "Faverges-Seythenex occupe une position stratégique entre les bassins d'Annecy (25 min) et d'Albertville (20 min). Héritage industriel fort : PME de mécanique de précision et d'horlogerie implantées de longue date. Tourisme de montagne actif (randonnée, stations proches). Agriculture alpine (élevage laitier, alpages). TPE artisanat et commerces de bourg complètent le tissu. Carrefour vers Chambéry (45 min) et vallée de la Tarentaise.",
+    "Faverges-Seythenex occupe une position stratégique entre les bassins d'Annecy (25 min) et d'Albertville (20 min). Héritage industriel fort : PME de mécanique de précision et d'horlogerie implantées de longue date. Tourisme de montagne actif (randonnée, stations proches). Agriculture alpine (élevage laitier, alpages). PME de l'artisanat et du commerce de bourg complètent le tissu. Carrefour vers Chambéry (45 min) et vallée de la Tarentaise.",
   distancesFr:
     "Annecy à 25 min, Albertville à 20 min, Chambéry à 45 min, Aéroport international de Genève à 1h15. Carrefour entre bassins annécien et tarin.",
   distancesEn:
@@ -25,7 +25,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
     "PME industrielles (mécanique, horlogerie)",
     "Tourisme montagne & activités plein air",
     "Agriculture alpine & élevage laitier",
-    "TPE artisanat local",
+    "PME de l'artisanat local",
     "Commerce de bourg montagnard",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
       en: "Implémentation IA à Faverges-Seythenex : contrôle qualité visuel usine, maintenance prédictive horlogerie, agents conversationnels réservation montagne, gestion troupeaux et traçabilité alpine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Faverges-Seythenex : sessions dans votre usine, exploitation, commerce ou en visio. Dirigeants TPE/PME souhaitant maîtriser l'IA dans leur activité industrielle, touristique ou agricole.",
-      en: "Coaching 1-to-1 à Faverges-Seythenex : sessions dans votre usine, exploitation, commerce ou en visio. Dirigeants TPE/PME souhaitant maîtriser l'IA dans leur activité industrielle, touristique ou agricole.",
+      fr: "Coaching 1-to-1 à Faverges-Seythenex : sessions dans votre usine, exploitation, commerce ou en visio. Dirigeants PME et ETI souhaitant maîtriser l'IA dans leur activité industrielle, touristique ou agricole.",
+      en: "Coaching 1-to-1 à Faverges-Seythenex : sessions dans votre usine, exploitation, commerce ou en visio. Dirigeants PME et ETI souhaitant maîtriser l'IA dans leur activité industrielle, touristique ou agricole.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Faverges-Seythenex  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de ce carrefour montagnard, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, tourisme, agriculture, artisanat). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de ce carrefour montagnard, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, tourisme, agriculture, artisanat). Tarifs publics.",
     },
     {
       q: "Proposez-vous des solutions IA pour l'agriculture alpine ?",

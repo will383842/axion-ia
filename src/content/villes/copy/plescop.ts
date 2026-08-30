@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLESCOP_COPY: VilleCopy = {
   pitchFr:
-    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
+    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de PME tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
+    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de PME tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plescop (56). Nous accompagnons tous types d'activités : PME tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plescop (56). Nous accompagnons tous types d'activités : PME tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
   ecosystemFr:
     "Plescop est une commune résidentielle prisée au nord de Vannes, bénéficiant de la dynamique économique de l'agglomération vannetaise. Le tissu local repose sur les services aux entreprises, les professions libérales, le commerce de proximité et l'artisanat. La proximité du golfe du Morbihan nourrit également une activité touristique et nautique.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const PLESCOP_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises & conseil",
     "Professions libérales & santé",
-    "TPE artisanat & services à la personne",
+    "PME de l'artisanat & services à la personne",
     "Commerce de détail & proximité",
     "Tourisme & nautisme golfe du Morbihan",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
-      en: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      fr: "Audit IA à Plescop : diagnostic adapté aux PME tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Plescop : diagnostic adapté aux PME tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plescop : formats adaptés au cabinet libéral, au bureau PME ou au commerce de proximité. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -42,8 +42,8 @@ export const PLESCOP_COPY: VilleCopy = {
       en: "Implémentation IA à Plescop : agents conversationnels relation client, automatisation gestion documentaire, chatbots prise de RDV, classification courriers et dossiers. Adapté tissu tertiaire agglomération vannetaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plescop : sessions dans vos locaux ou en visio. Professions libérales, gérants TPE, dirigeants PME et indépendants de l'agglomération vannetaise souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Plescop : sessions dans vos locaux ou en visio. Professions libérales, gérants TPE, dirigeants PME et indépendants de l'agglomération vannetaise souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Plescop : sessions dans vos locaux ou en visio. Professions libérales, gérants PME, dirigeants PME et indépendants de l'agglomération vannetaise souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Plescop : sessions dans vos locaux ou en visio. Professions libérales, gérants PME, dirigeants PME et indépendants de l'agglomération vannetaise souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const PLESCOP_COPY: VilleCopy = {
       a: "Oui, nous accompagnons professions libérales et PME de services de Plescop sur leurs cas IA : automatisation gestion documentaire, agents conversationnels, chatbots prise de RDV, classification dossiers et optimisation processus administratifs.",
     },
     {
-      q: "Accompagnez-vous les TPE et commerces de proximité de Plescop ?",
-      a: "Oui, nous accompagnons TPE et commerces de Plescop sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME et commerces de proximité de Plescop ?",
+      a: "Oui, nous accompagnons PME et commerces de Plescop sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Plescop  ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Plescop et de l'agglomération vannetaise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Plescop et de l'agglomération vannetaise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Plescop ?",

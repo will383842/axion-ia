@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const HONFLEUR_COPY: VilleCopy = {
   pitchFr:
-    "Honfleur (14), port pittoresque du Calvados à l'embouchure de la Seine, est un haut lieu du tourisme normand. Berceau de l'impressionnisme (Boudin, Monet, Jongkind), le Vieux Bassin et les maisons à colombages attirent des visiteurs du monde entier. Tissu TPE artisans d'art, PME tourisme et hôtellerie, commerces, galeries. Axion-IA y intervient pour tous types d'activités.",
+    "Honfleur (14), port pittoresque du Calvados à l'embouchure de la Seine, est un haut lieu du tourisme normand. Berceau de l'impressionnisme (Boudin, Monet, Jongkind), le Vieux Bassin et les maisons à colombages attirent des visiteurs du monde entier. Tissu PME artisanales d'art, PME tourisme et hôtellerie, commerces, galeries. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Honfleur (14), port pittoresque du Calvados à l'embouchure de la Seine, est un haut lieu du tourisme normand. Berceau de l'impressionnisme (Boudin, Monet, Jongkind), le Vieux Bassin et les maisons à colombages attirent des visiteurs du monde entier. Tissu TPE artisans d'art, PME tourisme et hôtellerie, commerces, galeries. Axion-IA y intervient pour tous types d'activités.",
+    "Honfleur (14), port pittoresque du Calvados à l'embouchure de la Seine, est un haut lieu du tourisme normand. Berceau de l'impressionnisme (Boudin, Monet, Jongkind), le Vieux Bassin et les maisons à colombages attirent des visiteurs du monde entier. Tissu PME artisanales d'art, PME tourisme et hôtellerie, commerces, galeries. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Honfleur (14). Nous accompagnons tous types d'activités : TPE artisans d'art et galeries, PME hôtellerie-restauration haut de gamme, acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), commerçants, professions libérales et services aux entreprises de l'estuaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Honfleur (14). Nous accompagnons tous types d'activités : PME artisanales d'art et galeries, PME hôtellerie-restauration haut de gamme, acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), commerçants, professions libérales et services aux entreprises de l'estuaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Honfleur (14). Nous accompagnons tous types d'activités : TPE artisans d'art et galeries, PME hôtellerie-restauration haut de gamme, acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), commerçants, professions libérales et services aux entreprises de l'estuaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Honfleur (14). Nous accompagnons tous types d'activités : PME artisanales d'art et galeries, PME hôtellerie-restauration haut de gamme, acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), commerçants, professions libérales et services aux entreprises de l'estuaire.",
   seoHook: "bassin et les",
   ecosystemFr:
-    "Honfleur est un port pittoresque à l'embouchure de la Seine, face au Havre (pont de Normandie). Berceau de l'impressionnisme, le Vieux Bassin et l'église Sainte-Catherine (charpente bois) sont classés. Économie touristique forte (hôtellerie haut de gamme, gastronomie, galeries d'art), TPE artisans d'art, commerces, activités portuaires et maritimes.",
+    "Honfleur est un port pittoresque à l'embouchure de la Seine, face au Havre (pont de Normandie). Berceau de l'impressionnisme, le Vieux Bassin et l'église Sainte-Catherine (charpente bois) sont classés. Économie touristique forte (hôtellerie haut de gamme, gastronomie, galeries d'art), PME artisanales d'art, commerces, activités portuaires et maritimes.",
   ecosystemEn:
-    "Honfleur est un port pittoresque à l'embouchure de la Seine, face au Havre (pont de Normandie). Berceau de l'impressionnisme, le Vieux Bassin et l'église Sainte-Catherine (charpente bois) sont classés. Économie touristique forte (hôtellerie haut de gamme, gastronomie, galeries d'art), TPE artisans d'art, commerces, activités portuaires et maritimes.",
+    "Honfleur est un port pittoresque à l'embouchure de la Seine, face au Havre (pont de Normandie). Berceau de l'impressionnisme, le Vieux Bassin et l'église Sainte-Catherine (charpente bois) sont classés. Économie touristique forte (hôtellerie haut de gamme, gastronomie, galeries d'art), PME artisanales d'art, commerces, activités portuaires et maritimes.",
   distancesFr:
     "Le Havre à 25 min (pont de Normandie). Deauville à 15 min. Caen à 1h A13. Gare SNCF Deauville-Trouville à 20 min. Aéroport Deauville-Normandie à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const HONFLEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, PME de l'artisanat et du commerce. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, PME de l'artisanat et du commerce. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Honfleur : formats adaptés à l'hôtel de charme, restaurant gastronomique, galerie d'art ou commerce touristique. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const HONFLEUR_COPY: VilleCopy = {
       en: "Implémentation IA à Honfleur : agents conversationnels multilingues touristes, gestion saisonnalité hôtelière, automatisation réservations, classification avis clients, optimisation revenue management.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Honfleur : sessions dans votre hôtel, restaurant, galerie ou en visio. Hôteliers-restaurateurs, galeristes, commerçants touristiques, gérants TPE/PME estuaire.",
-      en: "Coaching 1-to-1 à Honfleur : sessions dans votre hôtel, restaurant, galerie ou en visio. Hôteliers-restaurateurs, galeristes, commerçants touristiques, gérants TPE/PME estuaire.",
+      fr: "Coaching 1-to-1 à Honfleur : sessions dans votre hôtel, restaurant, galerie ou en visio. Hôteliers-restaurateurs, galeristes, commerçants touristiques, gérants PME et ETI estuaire.",
+      en: "Coaching 1-to-1 à Honfleur : sessions dans votre hôtel, restaurant, galerie ou en visio. Hôteliers-restaurateurs, galeristes, commerçants touristiques, gérants PME et ETI estuaire.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const HONFLEUR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Honfleur  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Honfleur ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre les activités professionnelles du bassin.",
+    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. PME de l'artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre les activités professionnelles du bassin.",
+    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. PME de l'artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons PME et ETI : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons PME et ETI : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit sur place sur mesure.",
   seoHook: "industrie légère & tourisme vert",
   ecosystemFr:
-    "Saint-Pierre-lès-Nemours est une commune de Seine-et-Marne en bordure du Loing, aux portes de Nemours et du Gâtinais. Tissu TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert et loisirs nature.",
+    "Saint-Pierre-lès-Nemours est une commune de Seine-et-Marne en bordure du Loing, aux portes de Nemours et du Gâtinais. Tissu PME de l'artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert et loisirs nature.",
   ecosystemEn:
-    "Saint-Pierre-lès-Nemours est une commune de Seine-et-Marne en bordure du Loing, aux portes de Nemours et du Gâtinais. Tissu TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert et loisirs nature.",
+    "Saint-Pierre-lès-Nemours est une commune de Seine-et-Marne en bordure du Loing, aux portes de Nemours et du Gâtinais. Tissu PME de l'artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert et loisirs nature.",
   distancesFr:
     "Nemours centre à 5 min. Gare Transilien Nemours–Saint-Pierre (ligne R) à 3 min. Fontainebleau à 20 min. Paris centre à 1h15.",
   distancesEn:
     "Nemours centre à 5 min. Gare Transilien Nemours–Saint-Pierre (ligne R) à 3 min. Fontainebleau à 20 min. Paris centre à 1h15.",
   topSectorsNaf: [
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "PME industrie légère",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-lès-Nemours : formats adaptés atelier artisan, commerce, usine PME, cabinet libéral, hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Pierre-lès-Nemours : automatisation devis artisans, gestion stocks commerce, optimisation production PME, planning professions libérales, réservation tourisme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Pierre-lès-Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME, artisans, professions libérales du sud Seine-et-Marne.",
-      en: "Coaching 1-to-1 à Saint-Pierre-lès-Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME, artisans, professions libérales du sud Seine-et-Marne.",
+      fr: "Coaching 1-to-1 à Saint-Pierre-lès-Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI, artisans, professions libérales du sud Seine-et-Marne.",
+      en: "Coaching 1-to-1 à Saint-Pierre-lès-Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI, artisans, professions libérales du sud Seine-et-Marne.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",
-      a: "Oui, automatisation devis et facturation, gestion stocks, relances clients, planning équipes. Solutions adaptées TPE artisanales et commerces de proximité.",
+      a: "Oui, automatisation devis et facturation, gestion stocks, relances clients, planning équipes. Solutions adaptées PME de l'artisanat et du commerce.",
     },
     {
       q: "Quels services pour les acteurs du tourisme vert ?",

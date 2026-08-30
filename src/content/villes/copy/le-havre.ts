@@ -6,7 +6,7 @@
 //     forfait trajet facturés à part pour les interventions sur site.
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : libellés uniquement, tarifs viennent de pricing.ts.
-//   - Pas de mention de métier-type : tailles INSEE (TPE / PME / ETI / GE).
+//   - Pas de mention de métier-type : tailles INSEE (PME/ETI/GE).
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn.
 //
@@ -25,7 +25,7 @@ import type { VilleCopy } from "./types";
 
 export const LE_HAVRE_COPY: VilleCopy = {
   pitchFr:
-    "Le Havre concentre 10 876 entreprises actives, le 1er port français à conteneurs (HAROPA Port, 3,1 M EVP) et un tissu industriel unique — logistique, pétrochimie, aéronautique, automobile. Axion-IA intervient sur site auprès des TPE havraises comme des ETI et grandes entreprises de la ZIP.",
+    "Le Havre concentre 10 876 entreprises actives, le 1er port français à conteneurs (HAROPA Port, 3,1 M EVP) et un tissu industriel unique — logistique, pétrochimie, aéronautique, automobile. Axion-IA intervient sur site auprès des PME havraises comme des ETI et grandes entreprises de la ZIP.",
   pitchEn:
     "Le Havre hosts 10,876 active businesses, France's leading container port (HAROPA Port, 3.1 M TEU) and a unique industrial fabric — logistics, petrochemicals, aeronautics, automotive. Axion-IA delivers on site from Le Havre micro-businesses to mid-caps and large enterprises in the industrial port zone.",
 
@@ -53,7 +53,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Havre (76) sur site dans la ville et le bassin Seine Estuaire (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). Nous accompagnons les TPE et PME havraises du commerce et des services, les ETI industrielles de la Zone Industrialo-Portuaire (logistique, pétrochimie, aéronautique) et les grandes entreprises du cluster HAROPA sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Havre (76) sur site dans la ville et le bassin Seine Estuaire (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). Nous accompagnons les PME et ETI havraises du commerce et des services, les ETI industrielles de la Zone Industrialo-Portuaire (logistique, pétrochimie, aéronautique) et les grandes entreprises du cluster HAROPA sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Le Havre (76) on site across the city and the Seine Estuaire basin (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). We support Le Havre micro-businesses and SMEs in trade and services, industrial mid-caps in the Port Industrial Zone (logistics, petrochemicals, aeronautics) and large enterprises in the HAROPA cluster on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -82,10 +82,10 @@ export const LE_HAVRE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA au Havre cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du commerce havrais aux grandes entreprises industrielles de la Zone Industrialo-Portuaire (ZIP). Le tissu économique havrais — logistique maritime, pétrochimie, aéronautique, automobile — présente des opportunités IA spécifiques : automatisation documentaire portuaire, maintenance prédictive, optimisation supply chain. Notre diagnostic les quantifie pour vous.",
+        hero: "L'audit IA Axion-IA au Havre cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du commerce havrais aux grandes entreprises industrielles de la Zone Industrialo-Portuaire (ZIP). Le tissu économique havrais — logistique maritime, pétrochimie, aéronautique, automobile — présente des opportunités IA spécifiques : automatisation documentaire portuaire, maintenance prédictive, optimisation supply chain. Notre diagnostic les quantifie pour vous.",
         whyHere: [
           "Le Havre concentre un tissu industriel B2B rare en France : logistique maritime (HAROPA Port, CMA CGM), pétrochimie (TotalEnergies, Yara, Chevron Oronite), aéronautique (Safran Nacelles), automobile (Renault Sandouville), emballage (Sidel) — autant de secteurs où l'IA apporte des gains mesurables sur documentation, maintenance prédictive et optimisation de flux.",
-          "Nov@log, unique pôle de compétitivité logistique en France, est basé au Havre. Ses 152 membres TPE/PME/ETI sont précisément le cœur de cible de nos audits IA : automatisation des processus logistiques, traitement documentaire portuaire, optimisation TMS.",
+          "Nov@log, unique pôle de compétitivité logistique en France, est basé au Havre. Ses 152 membres PME/ETI/grands groupes sont précisément le cœur de cible de nos audits IA : automatisation des processus logistiques, traitement documentaire portuaire, optimisation TMS.",
           "Le CRIANN (Centre Régional Informatique et Numérique de Normandie) offre une infrastructure calcul HPC/IA régionale — contexte favorable aux déploiements IA exigeants pour les ETI et GE du bassin.",
           "Nos consultants se déplacent en présentiel au Havre et dans le bassin Seine Estuaire (Gonfreville-l'Orcher, Montivilliers, Harfleur, Octeville-sur-Mer, Sainte-Adresse), avec kick-off et restitution toujours sur site.",
           "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
@@ -119,12 +119,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et petits commerces havrais jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -188,7 +182,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Le Havre maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Le Havre micro-businesses to large industrial enterprises in the Port Industrial Zone (ZIP). Le Havre's economic fabric — maritime logistics, petrochemicals, aeronautics, automotive — presents specific AI opportunities: port document automation, predictive maintenance, supply chain optimisation. Our diagnosis quantifies these for you.",
+        hero: "Axion-IA's AI audit in Le Havre maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Le Havre micro-businesses to large industrial enterprises in the Port Industrial Zone (ZIP). Le Havre's economic fabric — maritime logistics, petrochemicals, aeronautics, automotive — presents specific AI opportunities: port document automation, predictive maintenance, supply chain optimisation. Our diagnosis quantifies these for you.",
         whyHere: [
           "Le Havre hosts a rare B2B industrial fabric: maritime logistics (HAROPA Port, CMA CGM), petrochemicals (TotalEnergies, Yara, Chevron Oronite), aeronautics (Safran Nacelles), automotive (Renault Sandouville), packaging (Sidel) — sectors where AI delivers measurable gains on documentation, predictive maintenance and flow optimisation.",
           "Nov@log, France's only dedicated logistics competitiveness cluster, is headquartered in Le Havre. Its 152 SME/mid-cap members are precisely the core target of our AI audits: logistics process automation, port document processing, TMS optimisation.",
@@ -225,12 +219,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Le Havre freelancers, micro-firms and small traders up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -301,7 +289,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         whyHere: [
           "Le Havre est un pôle industriel B2B à fort potentiel IA : les équipes logistiques, opérationnelles et administratives des entreprises de la ZIP et du tissu PME havrais sont régulièrement sollicitées sur des tâches documentaires chronophages (CMR, manifestes, offres de prix, reporting ERP).",
           "Toutes les zones couvertes en présentiel : ville du Havre, Zone Industrialo-Portuaire, Gonfreville-l'Orcher, Montivilliers, Harfleur, Octeville-sur-Mer, Sainte-Adresse, Saint-Romain-de-Colbosc.",
-          "Le format collectif (1 journée) est calibré pour les TPE et PME havraises de quelques personnes à une centaine de collaborateurs.",
+          "Le format collectif (1 journée) est calibré pour les PME et ETI havraises de quelques personnes à une centaine de collaborateurs.",
           "Le format Équipes permet de focaliser sur un département clé : équipe logistique, service commercial, ADV, RH, bureau d'études technique.",
           "Le format Dirigeants permet un cadrage IA en huis-clos pour les comités de direction d'ETI et grandes entreprises industrielles.",
           "Vocabulaire ajusté à votre secteur dominant : logistique maritime, pétrochimie, aéronautique, services B2B portuaires. Pas de session générique recyclée.",
@@ -334,12 +322,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour les indépendants, petites agences et PME havraises jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -440,12 +422,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Le Havre freelancers, small agencies and SMEs up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -550,12 +526,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (traitement de documents, automatisation emails, qualification leads) pour les TPE et petites PME havraises.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -591,7 +561,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA au Havre ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année ou plus. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année ou plus. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -655,12 +625,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (document processing, email automation, lead qualification) for Le Havre micro-businesses and small SMEs.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -765,12 +729,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Coaching individuel entrée pour dirigeants TPE, commissionnaires indépendants et petits prestataires portuaires havrais — une journée, un consultant dédié.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -866,12 +824,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry individual coaching for Le Havre micro-business executives, independent freight forwarders and small port service providers — one day, one dedicated consultant.",
-          },
           {
             sizeLabel: "SME",
             price: "On request",
@@ -973,12 +925,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1059,12 +1005,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1114,7 +1054,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel au Havre ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre industriel. Aucun supplément géographique : le tarif est le même au Havre qu'en Île-de-France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre industriel. Aucun supplément géographique : le tarif est le même au Havre qu'en Île-de-France.",
     },
     {
       q: "Avez-vous des références clients au Havre ou en Seine Estuaire ?",

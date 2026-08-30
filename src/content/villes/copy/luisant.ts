@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LUISANT_COPY: VilleCopy = {
   pitchFr:
-    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
+    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de PME et ETI services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
+    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de PME et ETI services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luisant (28). Nous accompagnons tous types d'activités : PME et ETI services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luisant (28). Nous accompagnons tous types d'activités : PME et ETI services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   seoHook: "professions libérales & conseil indépendants",
   ecosystemFr:
-    "Luisant est une commune résidentielle prisée au sud de Chartres (Chartres Métropole), avec un cadre de vie attractif (parc de Mainvilliers-Luisant, forêt domaniale). L'économie locale repose sur les TPE/PME de services, professions libérales (santé, juridique, comptable), artisans BTP, commerces de proximité et indépendants.",
+    "Luisant est une commune résidentielle prisée au sud de Chartres (Chartres Métropole), avec un cadre de vie attractif (parc de Mainvilliers-Luisant, forêt domaniale). L'économie locale repose sur les PME et ETI de services, professions libérales (santé, juridique, comptable), artisans BTP, commerces de proximité et indépendants.",
   ecosystemEn:
-    "Luisant est une commune résidentielle prisée au sud de Chartres (Chartres Métropole), avec un cadre de vie attractif (parc de Mainvilliers-Luisant, forêt domaniale). L'économie locale repose sur les TPE/PME de services, professions libérales (santé, juridique, comptable), artisans BTP, commerces de proximité et indépendants.",
+    "Luisant est une commune résidentielle prisée au sud de Chartres (Chartres Métropole), avec un cadre de vie attractif (parc de Mainvilliers-Luisant, forêt domaniale). L'économie locale repose sur les PME et ETI de services, professions libérales (santé, juridique, comptable), artisans BTP, commerces de proximité et indépendants.",
   distancesFr:
     "Chartres centre à 5 min. Gare de Chartres (TER Paris-Montparnasse 1h10). Paris à 1h20 via A11. Orléans à 1h15. Rambouillet à 35 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LUISANT_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises",
     "Professions libérales (santé, juridique)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Conseil & indépendants",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Luisant : diagnostic adapté aux PME et ETI services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Luisant : diagnostic adapté aux PME et ETI services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luisant : formats adaptés au cabinet libéral, commerce de proximité, atelier artisan ou bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const LUISANT_COPY: VilleCopy = {
       en: "Implémentation IA à Luisant : automatisation secrétariat médical, agents conversationnels cabinet juridique/comptable, gestion planning artisans, chatbots commerce de proximité.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Luisant : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants TPE/PME de l'agglo Chartres sud.",
-      en: "Coaching 1-to-1 à Luisant : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants TPE/PME de l'agglo Chartres sud.",
+      fr: "Coaching 1-to-1 à Luisant : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants PME et ETI de l'agglo Chartres sud.",
+      en: "Coaching 1-to-1 à Luisant : sessions dans votre cabinet, commerce, atelier ou en visio. Professions libérales, artisans, commerçants, gérants PME et ETI de l'agglo Chartres sud.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const LUISANT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Luisant ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et professions libérales. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI et professions libérales. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de proximité ?",
-      a: "Oui, nos formats sont adaptés aux TPE artisans BTP et commerçants de proximité : automatisation devis, agents IA plannings, gestion stocks, chatbots prise de RDV en ligne.",
+      a: "Oui, nos formats sont adaptés aux PME du BTP et du commerce de proximité : automatisation devis, agents IA plannings, gestion stocks, chatbots prise de RDV en ligne.",
     },
     {
       q: "Comment se passe une mission à Luisant ?",

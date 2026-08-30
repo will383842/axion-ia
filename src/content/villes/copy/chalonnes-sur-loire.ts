@@ -9,9 +9,9 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Chalonnes-sur-Loire (49), cité ligérienne au pied de la corniche angevine, compte plus de 6 600 habitants entre vignoble AOC et patrimoine Loire UNESCO. Axion-IA opère pour toutes les structures économiques de la commune : viticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les PME viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les PME viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "viticulture vignoble & tourisme fluvial",
   ecosystemFr:
     "Chalonnes-sur-Loire se situe au pied de la corniche angevine, surplomb spectaculaire de la Loire classée UNESCO. Vignoble AOC (Coteaux du Layon, Savennières) et domaines viticoles familiaux constituent le socle économique. Commerce de bourg, artisanat, tourisme fluvial (Loire à Vélo) et agriculture complètent le tissu local.",
@@ -30,8 +30,8 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et TPE/PME chalonnaises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et TPE/PME chalonnaises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et PME et ETI chalonnaises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et PME et ETI chalonnaises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chalonnes-sur-Loire : formations pour équipes viticoles, touristiques et commerciales. Ateliers métier adaptés au vignoble corniche angevine.",

@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const BRUNOY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Brunoy, commune résidentielle de 25 643 habitants en Essonne, à 21 km au sud-est de Paris. Notre équipe se déplace sur site auprès des commerces de détail, cabinets de professions libérales et petites structures de services qui constituent le tissu économique local. Nous automatisons les tâches administratives, les relances clients et la qualification de prospects avec du code custom — pas de no-code. Desservie par la gare RER D, Brunoy bénéficie d'un accès direct à Paris-Gare-de-Lyon, ce qui facilite nos interventions ponctuelles.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Brunoy, commune résidentielle de 25 643 habitants en Essonne, à 21 km au sud-est de Paris. Notre équipe se déplace sur site auprès des commerces de détail, cabinets de professions libérales et PME de services qui constituent le tissu économique local. Nous automatisons les tâches administratives, les relances clients et la qualification de prospects avec du code custom — pas de no-code. Desservie par la gare RER D, Brunoy bénéficie d'un accès direct à Paris-Gare-de-Lyon, ce qui facilite nos interventions ponctuelles.",
   pitchEn:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Brunoy, commune résidentielle de 25 643 habitants en Essonne, à 21 km au sud-est de Paris. Notre équipe se déplace sur site auprès des commerces de détail, cabinets de professions libérales et petites structures de services qui constituent le tissu économique local. Nous automatisons les tâches administratives, les relances clients et la qualification de prospects avec du code custom — pas de no-code. Desservie par la gare RER D, Brunoy bénéficie d'un accès direct à Paris-Gare-de-Lyon, ce qui facilite nos interventions ponctuelles.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Brunoy, commune résidentielle de 25 643 habitants en Essonne, à 21 km au sud-est de Paris. Notre équipe se déplace sur site auprès des commerces de détail, cabinets de professions libérales et PME de services qui constituent le tissu économique local. Nous automatisons les tâches administratives, les relances clients et la qualification de prospects avec du code custom — pas de no-code. Desservie par la gare RER D, Brunoy bénéficie d'un accès direct à Paris-Gare-de-Lyon, ce qui facilite nos interventions ponctuelles.",
   directAnswerFr:
-    "Axion-IA accompagne les TPE et PME de Brunoy (Essonne, 25 643 habitants) dans l'automatisation IA de leurs processus métier : devis, relances, suivi clients, qualification de leads. Nous intervenons sur site pour les commerces de détail, professionnels libéraux, artisans et petites structures de services du Val d'Yerres. Notre approche repose sur du code custom (Python, Node.js) et non sur des plateformes no-code, ce qui garantit la pérennité et la conformité RGPD de chaque déploiement. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
+    "Axion-IA accompagne les PME et ETI de Brunoy (Essonne, 25 643 habitants) dans l'automatisation IA de leurs processus métier : devis, relances, suivi clients, qualification de leads. Nous intervenons sur site pour les commerces de détail, professionnels libéraux, artisans et PME de services du Val d'Yerres. Notre approche repose sur du code custom (Python, Node.js) et non sur des plateformes no-code, ce qui garantit la pérennité et la conformité RGPD de chaque déploiement. Les grands groupes sont également servis, mais notre cœur de cible reste les structures de moins de 50 salariés.",
   directAnswerEn:
-    "Axion-IA accompagne les TPE et PME de Brunoy (Essonne, 25 643 habitants) dans l'automatisation IA de leurs processus métier : devis, relances, suivi clients, qualification de leads. Nous intervenons sur site pour les commerces de détail, professionnels libéraux, artisans et petites structures de services du Val d'Yerres. Notre approche repose sur du code custom (Python, Node.js) et non sur des plateformes no-code, ce qui garantit la pérennité et la conformité RGPD de chaque déploiement. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
+    "Axion-IA accompagne les PME et ETI de Brunoy (Essonne, 25 643 habitants) dans l'automatisation IA de leurs processus métier : devis, relances, suivi clients, qualification de leads. Nous intervenons sur site pour les commerces de détail, professionnels libéraux, artisans et PME de services du Val d'Yerres. Notre approche repose sur du code custom (Python, Node.js) et non sur des plateformes no-code, ce qui garantit la pérennité et la conformité RGPD de chaque déploiement. Les grands groupes sont également servis, mais notre cœur de cible reste les structures de moins de 50 salariés.",
   seoHook: "commerce détail & services aux particuliers",
   ecosystemFr:
-    "Brunoy est une commune résidentielle de l'Essonne, intégrée à la communauté d'agglomération Val d'Yerres Val de Seine. Le tissu économique local est dominé par les commerces de détail du centre-ville, les services à la personne, les professions libérales (santé, juridique) et l'artisanat. La proximité de la forêt de Sénart et l'accès direct à Paris via le RER D en font un pôle pour entrepreneurs indépendants et petites structures tertiaires.",
+    "Brunoy est une commune résidentielle de l'Essonne, intégrée à la communauté d'agglomération Val d'Yerres Val de Seine. Le tissu économique local est dominé par les commerces de détail du centre-ville, les services à la personne, les professions libérales (santé, juridique) et l'artisanat. La proximité de la forêt de Sénart et l'accès direct à Paris via le RER D en font un pôle pour entrepreneurs indépendants et PME tertiaires.",
   ecosystemEn:
-    "Brunoy est une commune résidentielle de l'Essonne, intégrée à la communauté d'agglomération Val d'Yerres Val de Seine. Le tissu économique local est dominé par les commerces de détail du centre-ville, les services à la personne, les professions libérales (santé, juridique) et l'artisanat. La proximité de la forêt de Sénart et l'accès direct à Paris via le RER D en font un pôle pour entrepreneurs indépendants et petites structures tertiaires.",
+    "Brunoy est une commune résidentielle de l'Essonne, intégrée à la communauté d'agglomération Val d'Yerres Val de Seine. Le tissu économique local est dominé par les commerces de détail du centre-ville, les services à la personne, les professions libérales (santé, juridique) et l'artisanat. La proximité de la forêt de Sénart et l'accès direct à Paris via le RER D en font un pôle pour entrepreneurs indépendants et PME tertiaires.",
   distancesFr:
     "Brunoy est desservie par la gare RER D (ligne directe Paris-Gare-de-Lyon en 30 min), à 21 km au sud-est de Paris et environ 25 km de l'aéroport de Paris-Orly.",
   distancesEn:
@@ -32,20 +32,20 @@ export const BRUNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
-      en: "Audit sur place IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
+      fr: "Audit sur place IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME et ETI du Val d'Yerres — commerces, professions libérales, artisans.",
+      en: "Audit sur place IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME et ETI du Val d'Yerres — commerces, professions libérales, artisans.",
     },
     interventions: {
-      fr: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
-      en: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
+      fr: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des PME locales — code custom, pas de no-code.",
+      en: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des PME locales — code custom, pas de no-code.",
     },
     implementation: {
       fr: "Implémentation IA à Brunoy dès {{price:impl-poc|entry}} : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
       en: "Implémentation IA à Brunoy dès {{price:impl-poc|entry}} : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
-      en: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
+      fr: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
+      en: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const BRUNOY_COPY: VilleCopy = {
         whyHere: [
           "Tissu de commerces de proximité et d'artisans du bâtiment concentré au centre-ville, au Centre Commercial Talma (2 ha, une soixantaine d'enseignes) et sur les marchés des Bosserons et des Provinciales : on construit des vitrines et boutiques e-commerce mobile-first (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, paiement, prise de rendez-vous et devis en ligne, plutôt qu'une refonte lourde et coûteuse.",
           "Forte densité de professions libérales de santé et du droit, beaucoup installées au centre et dans le quartier prioritaire de La Pyramide : nos chatbots RAG répondent aux patients et clients à partir de vos seuls documents, prennent les rendez-vous et filtrent les demandes en plusieurs langues, sans jamais inventer ni divulguer une donnée sensible — chaîne hébergeable en UE et conforme RGPD.",
-          "Commune résidentielle reliée à Paris par le RER D et intégrée à l'agglomération Val d'Yerres Val de Seine, avec un accompagnement local incarné par la Maison de l'éco (25 rue de la République) : on greffe l'IA sur l'existant (widget, API, plugin, recherche sémantique) pour les TPE de services qui n'ont ni le temps ni le budget d'un grand chantier, sans casser ce qui marche déjà.",
+          "Commune résidentielle reliée à Paris par le RER D et intégrée à l'agglomération Val d'Yerres Val de Seine, avec un accompagnement local incarné par la Maison de l'éco (25 rue de la République) : on greffe l'IA sur l'existant (widget, API, plugin, recherche sémantique) pour les PME de services qui n'ont ni le temps ni le budget d'un grand chantier, sans casser ce qui marche déjà.",
           "Clientèle de particuliers exigeante en proximité (forêt de Sénart, centre-ville, services à domicile du Val d'Yerres) : on déploie des parcours mobile-first, une recherche sémantique qui comprend l'intention réelle et des agents qui automatisent relances et confirmations, pour convertir le trafic local en rendez-vous concrets — code et données livrés chez vous, sans verrou.",
         ],
         methodology: [
@@ -87,12 +87,6 @@ export const BRUNOY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, relances automatiques) sur le site existant d'un commerce du Talma, d'un artisan du bâtiment ou d'un cabinet libéral de Brunoy, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -118,7 +112,7 @@ export const BRUNOY_COPY: VilleCopy = {
           },
           {
             q: "Un commerce du centre-ville ou du Centre Commercial Talma peut-il avoir une boutique en ligne ?",
-            a: "Bien sûr. On déploie une vitrine ou une boutique e-commerce mobile-first avec catalogue, paiement, prise de rendez-vous et relances automatiques, dimensionnée pour une TPE de proximité comme celles du Talma, de La Pyramide ou des marchés des Bosserons et des Provinciales. On peut greffer ensuite chatbot et recherche sémantique, sans tout refaire.",
+            a: "Bien sûr. On déploie une vitrine ou une boutique e-commerce mobile-first avec catalogue, paiement, prise de rendez-vous et relances automatiques, dimensionnée pour une PME de proximité comme celles du Talma, de La Pyramide ou des marchés des Bosserons et des Provinciales. On peut greffer ensuite chatbot et recherche sémantique, sans tout refaire.",
           },
           {
             q: "Mes données patients ou clients restent-elles en Europe ?",
@@ -141,7 +135,7 @@ export const BRUNOY_COPY: VilleCopy = {
         whyHere: [
           "Tissu de commerces de proximité et d'artisans du bâtiment concentré au centre-ville, au Centre Commercial Talma (2 ha, une soixantaine d'enseignes) et sur les marchés des Bosserons et des Provinciales : on construit des vitrines et boutiques e-commerce mobile-first (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, paiement, prise de rendez-vous et devis en ligne, plutôt qu'une refonte lourde et coûteuse.",
           "Forte densité de professions libérales de santé et du droit, beaucoup installées au centre et dans le quartier prioritaire de La Pyramide : nos chatbots RAG répondent aux patients et clients à partir de vos seuls documents, prennent les rendez-vous et filtrent les demandes en plusieurs langues, sans jamais inventer ni divulguer une donnée sensible — chaîne hébergeable en UE et conforme RGPD.",
-          "Commune résidentielle reliée à Paris par le RER D et intégrée à l'agglomération Val d'Yerres Val de Seine, avec un accompagnement local incarné par la Maison de l'éco (25 rue de la République) : on greffe l'IA sur l'existant (widget, API, plugin, recherche sémantique) pour les TPE de services qui n'ont ni le temps ni le budget d'un grand chantier, sans casser ce qui marche déjà.",
+          "Commune résidentielle reliée à Paris par le RER D et intégrée à l'agglomération Val d'Yerres Val de Seine, avec un accompagnement local incarné par la Maison de l'éco (25 rue de la République) : on greffe l'IA sur l'existant (widget, API, plugin, recherche sémantique) pour les PME de services qui n'ont ni le temps ni le budget d'un grand chantier, sans casser ce qui marche déjà.",
           "Clientèle de particuliers exigeante en proximité (forêt de Sénart, centre-ville, services à domicile du Val d'Yerres) : on déploie des parcours mobile-first, une recherche sémantique qui comprend l'intention réelle et des agents qui automatisent relances et confirmations, pour convertir le trafic local en rendez-vous concrets — code et données livrés chez vous, sans verrou.",
         ],
         methodology: [
@@ -173,12 +167,6 @@ export const BRUNOY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, relances automatiques) sur le site existant d'un commerce du Talma, d'un artisan du bâtiment ou d'un cabinet libéral de Brunoy, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -204,7 +192,7 @@ export const BRUNOY_COPY: VilleCopy = {
           },
           {
             q: "Un commerce du centre-ville ou du Centre Commercial Talma peut-il avoir une boutique en ligne ?",
-            a: "Bien sûr. On déploie une vitrine ou une boutique e-commerce mobile-first avec catalogue, paiement, prise de rendez-vous et relances automatiques, dimensionnée pour une TPE de proximité comme celles du Talma, de La Pyramide ou des marchés des Bosserons et des Provinciales. On peut greffer ensuite chatbot et recherche sémantique, sans tout refaire.",
+            a: "Bien sûr. On déploie une vitrine ou une boutique e-commerce mobile-first avec catalogue, paiement, prise de rendez-vous et relances automatiques, dimensionnée pour une PME de proximité comme celles du Talma, de La Pyramide ou des marchés des Bosserons et des Provinciales. On peut greffer ensuite chatbot et recherche sémantique, sans tout refaire.",
           },
           {
             q: "Mes données patients ou clients restent-elles en Europe ?",
@@ -244,7 +232,7 @@ export const BRUNOY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA cible-t-elle à Brunoy ?",
-      a: "Nous accompagnons en priorité les TPE et PME de Brunoy : commerces de détail, professions libérales (santé, juridique), artisans du bâtiment, services à la personne, restauration. Les ETI restent un cas marginal.",
+      a: "Nous accompagnons en priorité les PME et ETI de Brunoy : commerces de détail, professions libérales (santé, juridique), artisans du bâtiment, services à la personne, restauration. Les grands groupes complètent ce socle.",
     },
     {
       q: "Proposez-vous des solutions no-code à Brunoy ?",

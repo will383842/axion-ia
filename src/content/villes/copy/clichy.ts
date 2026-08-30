@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CLICHY_COPY: VilleCopy = {
   pitchFr:
-    "Clichy (92), commune dense de la proche couronne nord-ouest de Paris, accueille le siège mondial historique de L'Oréal et concentre sièges sociaux, agences et activités tertiaires. Ancienne ville industrielle en pleine reconversion, son tissu mêle PME de services, agences créatives, TPE et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME clichoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Clichy (92), commune dense de la proche couronne nord-ouest de Paris, accueille le siège mondial historique de L'Oréal et concentre sièges sociaux, agences et activités tertiaires. Ancienne ville industrielle en pleine reconversion, son tissu mêle PME de services, agences créatives, PME et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI clichoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Clichy (92), commune dense de la proche couronne nord-ouest de Paris, accueille le siège mondial historique de L'Oréal et concentre sièges sociaux, agences et activités tertiaires. Ancienne ville industrielle en pleine reconversion, son tissu mêle PME de services, agences créatives, TPE et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME clichoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Clichy (92), commune dense de la proche couronne nord-ouest de Paris, accueille le siège mondial historique de L'Oréal et concentre sièges sociaux, agences et activités tertiaires. Ancienne ville industrielle en pleine reconversion, son tissu mêle PME de services, agences créatives, PME et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI clichoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clichy (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME de la proche couronne nord-ouest : agences de communication et de marketing, PME tertiaires et de conseil, studios créatifs, prestataires de services, artisans et commerces. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clichy (92, Hauts-de-Seine). Nous accompagnons en priorité les PME, puis les PME de la proche couronne nord-ouest : agences de communication et de marketing, PME tertiaires et de conseil, studios créatifs, prestataires de services, artisans et commerces. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clichy (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME de la proche couronne nord-ouest : agences de communication et de marketing, PME tertiaires et de conseil, studios créatifs, prestataires de services, artisans et commerces. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clichy (92, Hauts-de-Seine). Nous accompagnons en priorité les PME, puis les PME de la proche couronne nord-ouest : agences de communication et de marketing, PME tertiaires et de conseil, studios créatifs, prestataires de services, artisans et commerces. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "sièges, agences & tertiaire",
   ecosystemFr:
-    "Clichy a transformé son passé industriel en un pôle tertiaire dynamique : le siège mondial de L'Oréal y côtoie de nombreux sièges sociaux, agences de publicité et de communication, studios créatifs et sociétés de services numériques. Cette concentration attire un dense réseau de PME de conseil et de marketing, de TPE indépendantes et de prestataires, complété par un commerce de proximité vivace. La proximité immédiate de Paris et de La Défense fait de Clichy un bassin tertiaire très attractif.",
+    "Clichy a transformé son passé industriel en un pôle tertiaire dynamique : le siège mondial de L'Oréal y côtoie de nombreux sièges sociaux, agences de publicité et de communication, studios créatifs et sociétés de services numériques. Cette concentration attire un dense réseau de PME de conseil et de marketing, de PME indépendantes et de prestataires, complété par un commerce de proximité vivace. La proximité immédiate de Paris et de La Défense fait de Clichy un bassin tertiaire très attractif.",
   ecosystemEn:
-    "Clichy a transformé son passé industriel en un pôle tertiaire dynamique : le siège mondial de L'Oréal y côtoie de nombreux sièges sociaux, agences de publicité et de communication, studios créatifs et sociétés de services numériques. Cette concentration attire un dense réseau de PME de conseil et de marketing, de TPE indépendantes et de prestataires, complété par un commerce de proximité vivace. La proximité immédiate de Paris et de La Défense fait de Clichy un bassin tertiaire très attractif.",
+    "Clichy a transformé son passé industriel en un pôle tertiaire dynamique : le siège mondial de L'Oréal y côtoie de nombreux sièges sociaux, agences de publicité et de communication, studios créatifs et sociétés de services numériques. Cette concentration attire un dense réseau de PME de conseil et de marketing, de PME indépendantes et de prestataires, complété par un commerce de proximité vivace. La proximité immédiate de Paris et de La Défense fait de Clichy un bassin tertiaire très attractif.",
   distancesFr:
     "Paris-Saint-Lazare à environ 10 min par le Transilien, métro ligne 13 à Mairie de Clichy. La Défense à 15 min, Paris centre à 15 min, aéroport Paris-Charles-de-Gaulle à 30 min. Levallois et Asnières à proximité immédiate.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CLICHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clichy : diagnostic adapté aux TPE et PME — agences de communication, cabinets de conseil, studios créatifs et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
-      en: "Audit IA à Clichy : diagnostic adapté aux TPE et PME — agences de communication, cabinets de conseil, studios créatifs et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      fr: "Audit IA à Clichy : diagnostic adapté aux PME et ETI — agences de communication, cabinets de conseil, studios créatifs et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      en: "Audit IA à Clichy : diagnostic adapté aux PME et ETI — agences de communication, cabinets de conseil, studios créatifs et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clichy : formats courts pour automatiser production de contenu, devis, relances et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
@@ -42,8 +42,8 @@ export const CLICHY_COPY: VilleCopy = {
       en: "Implémentation IA à Clichy : agents conversationnels, automatisation de la production créative et marketing, classification documentaire pour les agences et le tertiaire. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Clichy : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME d'agences, de conseil et de commerce clichoises.",
-      en: "Coaching un-à-un à Clichy : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME d'agences, de conseil et de commerce clichoises.",
+      fr: "Coaching un-à-un à Clichy : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI d'agences, de conseil et de commerce clichoises.",
+      en: "Coaching un-à-un à Clichy : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI d'agences, de conseil et de commerce clichoises.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Clichy : plateformes et outils sur mesure pour agences créatives, cabinets de conseil et commerces de la proche couronne, avec automatisations et SEO local.",
@@ -53,7 +53,7 @@ export const CLICHY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Clichy concentre une singularité rare en proche couronne : deux sièges de dimension internationale et nationale y sont physiquement implantés — le siège mondial de L'Oréal, 41 rue Martre (rénovation confiée à Jean-Michel Wilmotte, plus 6 550 m² dans l'immeuble Link-It) et le siège de Monoprix, 14-16 rue Marc Bloch, qui pilote les enseignes Monop', Monoprix Maison et Naturalia. Autour gravitent l'Hôpital Beaujon (AP-HP), un dense tissu d'agences de publicité et de communication, de TPE de services et de commerces, et la reconversion des friches industrielles en bureaux neufs (Écoquartier du Bac, ZAC Bac d'Asnières). Axion-IA conçoit à Clichy des sites web et plateformes SaaS augmentés par l'IA pour ce bassin beauté-cosmétique, retail/distribution et communication, sur site puis à distance.",
+        hero: "Clichy concentre une singularité rare en proche couronne : deux sièges de dimension internationale et nationale y sont physiquement implantés — le siège mondial de L'Oréal, 41 rue Martre (rénovation confiée à Jean-Michel Wilmotte, plus 6 550 m² dans l'immeuble Link-It) et le siège de Monoprix, 14-16 rue Marc Bloch, qui pilote les enseignes Monop', Monoprix Maison et Naturalia. Autour gravitent l'Hôpital Beaujon (AP-HP), un dense tissu d'agences de publicité et de communication, de PME de services et de commerces, et la reconversion des friches industrielles en bureaux neufs (Écoquartier du Bac, ZAC Bac d'Asnières). Axion-IA conçoit à Clichy des sites web et plateformes SaaS augmentés par l'IA pour ce bassin beauté-cosmétique, retail/distribution et communication, sur site puis à distance.",
         whyHere: [
           "Écosystème beauté-cosmétique et retail unique : le voisinage des sièges L'Oréal (rue Martre, Link-It) et Monoprix (rue Marc Bloch) tire un tissu de prestataires — agences, studios créatifs, e-commerçants, sous-traitants packaging et logistique — pour lesquels nous construisons sites de marque, configurateurs produit et portails B2B IA-native.",
           "Pôle communication et publicité dense (agences type 14 Septembre, bd Victor Hugo, sociétés de conseil en systèmes et logiciels) : nous outillons leur production éditoriale et leur relation client avec des plateformes à génération de contenu et search sémantique intégrés.",
@@ -88,12 +88,6 @@ export const CLICHY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour artisans, commerces de proximité, indépendants et jeunes structures de l'Écoquartier du Bac ou de l'incubateur Intencity : site responsive avec briques IA simples (assistant FAQ, génération de fiches, prise de rendez-vous).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const CLICHY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase or e-commerce site",
-            detail:
-              "For artisans, local shops, freelancers and young firms of the Écoquartier du Bac or the Intencity incubator: responsive site with simple AI bricks (FAQ assistant, content generation, booking).",
-          },
-          {
             sizeLabel: "SME",
             price: "Tailored business platform",
             detail:
@@ -230,14 +218,14 @@ export const CLICHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clichy et dans les Hauts-de-Seine ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Clichy et des communes voisines : Levallois-Perret, Asnières-sur-Seine, Saint-Ouen, Paris 17e. Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Clichy et des communes voisines : Levallois-Perret, Asnières-sur-Seine, Saint-Ouen, Paris 17e. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec les agences de communication et le tertiaire ?",
       a: "Oui. Clichy concentre sièges, agences et studios créatifs. Nous automatisons la production de contenu, le reporting, la relation client et la gestion documentaire des PME de communication et de conseil.",
     },
     {
-      q: "Accompagnez-vous les TPE de services et les commerces ?",
+      q: "Accompagnez-vous les PME de services et les commerces ?",
       a: "Absolument — c'est notre priorité. Devis, relances, relation client et planning : nous adaptons les automatisations aux petites équipes de services et aux commerces de proximité clichois.",
     },
     {

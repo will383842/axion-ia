@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, PME de l'artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, PME de l'artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban-Leysse (73). Nous accompagnons PME et ETI : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Alban-Leysse (73). Nous accompagnons PME et ETI : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
   seoHook: "tertiaires services",
   ecosystemFr:
-    "Saint-Alban-Leysse s'inscrit dans l'agglomération de Chambéry au sein de Grand Chambéry. Commune à dominante résidentielle avec un tissu économique porté par les PME tertiaires, les professions libérales (cabinets médicaux, avocats, comptables) et les TPE artisanat. Commerces de proximité actifs, sociétés de services tournées vers le bassin chambérien. Accès direct à La Ravoire et à l'aéroport Chambéry-Savoie (10 min).",
+    "Saint-Alban-Leysse s'inscrit dans l'agglomération de Chambéry au sein de Grand Chambéry. Commune à dominante résidentielle avec un tissu économique porté par les PME tertiaires, les professions libérales (cabinets médicaux, avocats, comptables) et les PME de l'artisanat. Commerces de proximité actifs, sociétés de services tournées vers le bassin chambérien. Accès direct à La Ravoire et à l'aéroport Chambéry-Savoie (10 min).",
   ecosystemEn:
-    "Saint-Alban-Leysse s'inscrit dans l'agglomération de Chambéry au sein de Grand Chambéry. Commune à dominante résidentielle avec un tissu économique porté par les PME tertiaires, les professions libérales (cabinets médicaux, avocats, comptables) et les TPE artisanat. Commerces de proximité actifs, sociétés de services tournées vers le bassin chambérien. Accès direct à La Ravoire et à l'aéroport Chambéry-Savoie (10 min).",
+    "Saint-Alban-Leysse s'inscrit dans l'agglomération de Chambéry au sein de Grand Chambéry. Commune à dominante résidentielle avec un tissu économique porté par les PME tertiaires, les professions libérales (cabinets médicaux, avocats, comptables) et les PME de l'artisanat. Commerces de proximité actifs, sociétés de services tournées vers le bassin chambérien. Accès direct à La Ravoire et à l'aéroport Chambéry-Savoie (10 min).",
   distancesFr:
     "Chambéry centre à 5 min voiture. La Ravoire à 5 min. Aéroport Chambéry-Savoie à 10 min. Lyon à 1h30.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & services",
     "Professions libérales",
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, PME de l'artisanat et du commerce. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, PME de l'artisanat et du commerce. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Alban-Leysse : formats adaptés aux cabinets libéraux, bureaux tertiaires, ateliers artisans ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Alban-Leysse : automatisation back-office PME tertiaires, agents IA gestion cabinet libéral, classification documentaire, outils prédictifs services aux entreprises Grand Chambéry.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Alban-Leysse : sessions dans vos locaux Grand Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, gérants TPE, indépendants bassin chambérien.",
-      en: "Coaching 1-to-1 à Saint-Alban-Leysse : sessions dans vos locaux Grand Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, gérants TPE, indépendants bassin chambérien.",
+      fr: "Coaching 1-to-1 à Saint-Alban-Leysse : sessions dans vos locaux Grand Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, gérants PME, indépendants bassin chambérien.",
+      en: "Coaching 1-to-1 à Saint-Alban-Leysse : sessions dans vos locaux Grand Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, gérants PME, indépendants bassin chambérien.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Alban-Leysse  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une PME à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Alban-Leysse ?",

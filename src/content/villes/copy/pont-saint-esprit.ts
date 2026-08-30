@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Saint-Esprit (30), ville historique du nord Gard au carrefour du Rhône, célèbre pour son pont médiéval reliant l'Ardèche. Tissu TPE/PME logistique vallée du Rhône, viticulture Côtes du Rhône, commerces, artisanat BTP et services aux entreprises. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard / sud Ardèche.",
+    "Pont-Saint-Esprit (30), ville historique du nord Gard au carrefour du Rhône, célèbre pour son pont médiéval reliant l'Ardèche. Tissu PME et ETI logistique vallée du Rhône, viticulture Côtes du Rhône, commerces, artisanat BTP et services aux entreprises. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard / sud Ardèche.",
   pitchEn:
-    "Pont-Saint-Esprit (30), ville historique du nord Gard au carrefour du Rhône, célèbre pour son pont médiéval reliant l'Ardèche. Tissu TPE/PME logistique vallée du Rhône, viticulture Côtes du Rhône, commerces, artisanat BTP et services aux entreprises. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard / sud Ardèche.",
+    "Pont-Saint-Esprit (30), ville historique du nord Gard au carrefour du Rhône, célèbre pour son pont médiéval reliant l'Ardèche. Tissu PME et ETI logistique vallée du Rhône, viticulture Côtes du Rhône, commerces, artisanat BTP et services aux entreprises. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard / sud Ardèche.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Pont-Saint-Esprit (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Côtes du Rhône, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Pont-Saint-Esprit (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises logistique Rhône, viticulteurs Côtes du Rhône, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Pont-Saint-Esprit (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Côtes du Rhône, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Pont-Saint-Esprit (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises logistique Rhône, viticulteurs Côtes du Rhône, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
   seoHook: "logistique vallée & viticulture côtes",
   ecosystemFr:
     "Pont-Saint-Esprit (~11 000 hab) est un carrefour historique vallée du Rhône au nord du Gard, frontalier Ardèche et Drôme. Logistique transit Rhône, viticulture Côtes du Rhône, commerces, artisanat BTP, services aux entreprises et tourisme patrimonial (pont médiéval XIIIe siècle).",
@@ -30,8 +30,8 @@ export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux PME et ETI logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux PME et ETI logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Saint-Esprit : formats adaptés aux entreprises logistique, viticulteurs, commerçants et artisans BTP nord Gard / sud Ardèche.",
@@ -42,8 +42,8 @@ export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
       en: "Implémentation IA à Pont-Saint-Esprit : optimisation supply chain Rhône, prédiction vendanges, automatisation devis BTP, agents conversationnels commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pont-Saint-Esprit : sessions dirigeants TPE/PME logistique, viticulteurs, commerçants souhaitant intégrer l'IA au carrefour nord Gard / Ardèche.",
-      en: "Coaching 1-to-1 à Pont-Saint-Esprit : sessions dirigeants TPE/PME logistique, viticulteurs, commerçants souhaitant intégrer l'IA au carrefour nord Gard / Ardèche.",
+      fr: "Coaching 1-to-1 à Pont-Saint-Esprit : sessions dirigeants de PME et d'ETI logistique, viticulteurs, commerçants souhaitant intégrer l'IA au carrefour nord Gard / Ardèche.",
+      en: "Coaching 1-to-1 à Pont-Saint-Esprit : sessions dirigeants de PME et d'ETI logistique, viticulteurs, commerçants souhaitant intégrer l'IA au carrefour nord Gard / Ardèche.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises logistique du Rhône ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique vallée du Rhône : optimisation tournées, prédiction demande, automatisation documentation transport, agents IA suivi expéditions.",
+      a: "Oui, nous accompagnons les PME et ETI logistique vallée du Rhône : optimisation tournées, prédiction demande, automatisation documentation transport, agents IA suivi expéditions.",
     },
     {
       q: "Tarifs audit IA à Pont-Saint-Esprit  : quel budget prévoir ?",

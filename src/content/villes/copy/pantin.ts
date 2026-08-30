@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const PANTIN_COPY: VilleCopy = {
   pitchFr:
-    "Pantin (61 929 habitants en 2023, Seine-Saint-Denis) est une commune de la première couronne parisienne, située à environ 6,4 km de Notre-Dame. Connue pour sa transformation rapide le long du canal de l'Ourcq, elle accueille à la fois de grandes implantations (BNP Paribas aux Grands Moulins de Pantin, Hermès, Chanel) et un tissu dense de TPE et PME locales — commerces, ateliers, agences, créateurs. Axion-IA y intervient en priorité auprès des petites structures, en code custom, sans no-code.",
+    "Pantin (61 929 habitants en 2023, Seine-Saint-Denis) est une commune de la première couronne parisienne, située à environ 6,4 km de Notre-Dame. Connue pour sa transformation rapide le long du canal de l'Ourcq, elle accueille à la fois de grandes implantations (BNP Paribas aux Grands Moulins de Pantin, Hermès, Chanel) et un tissu dense de PME et ETI locales — commerces, ateliers, agences, créateurs. Axion-IA y intervient en priorité auprès des PME, en code custom, sans no-code.",
   pitchEn:
-    "Pantin (61 929 habitants en 2023, Seine-Saint-Denis) est une commune de la première couronne parisienne, située à environ 6,4 km de Notre-Dame. Connue pour sa transformation rapide le long du canal de l'Ourcq, elle accueille à la fois de grandes implantations (BNP Paribas aux Grands Moulins de Pantin, Hermès, Chanel) et un tissu dense de TPE et PME locales — commerces, ateliers, agences, créateurs. Axion-IA y intervient en priorité auprès des petites structures, en code custom, sans no-code.",
+    "Pantin (61 929 habitants en 2023, Seine-Saint-Denis) est une commune de la première couronne parisienne, située à environ 6,4 km de Notre-Dame. Connue pour sa transformation rapide le long du canal de l'Ourcq, elle accueille à la fois de grandes implantations (BNP Paribas aux Grands Moulins de Pantin, Hermès, Chanel) et un tissu dense de PME et ETI locales — commerces, ateliers, agences, créateurs. Axion-IA y intervient en priorité auprès des PME, en code custom, sans no-code.",
   directAnswerFr:
-    "Axion-IA se déplace à Pantin (Seine-Saint-Denis, 61 929 habitants) pour accompagner les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. Si la commune est connue pour le siège BNP Paribas (Grands Moulins de Pantin) et la présence d'Hermès et Chanel, notre cœur de cible reste les petites structures du canal de l'Ourcq : commerces, ateliers d'artisans, agences créatives, cabinets, prestataires B2B. Les ETI sont accompagnées plus marginalement. Interventions sur site planifiées sous 5 jours ouvrés.",
+    "Axion-IA se déplace à Pantin (Seine-Saint-Denis, 61 929 habitants) pour accompagner les PME et ETI locales dans l'adoption d'une IA opérationnelle réellement utile. Si la commune est connue pour le siège BNP Paribas (Grands Moulins de Pantin) et la présence d'Hermès et Chanel, notre cœur de cible reste les PME du canal de l'Ourcq : commerces, ateliers d'artisans, agences créatives, cabinets, prestataires B2B. Les grands groupes complètent ce socle. Interventions sur site planifiées sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA se déplace à Pantin (Seine-Saint-Denis, 61 929 habitants) pour accompagner les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. Si la commune est connue pour le siège BNP Paribas (Grands Moulins de Pantin) et la présence d'Hermès et Chanel, notre cœur de cible reste les petites structures du canal de l'Ourcq : commerces, ateliers d'artisans, agences créatives, cabinets, prestataires B2B. Les ETI sont accompagnées plus marginalement. Interventions sur site planifiées sous 5 jours ouvrés.",
-  seoHook: "TPE PME canal Ourcq & reconversion tertiaire",
+    "Axion-IA se déplace à Pantin (Seine-Saint-Denis, 61 929 habitants) pour accompagner les PME et ETI locales dans l'adoption d'une IA opérationnelle réellement utile. Si la commune est connue pour le siège BNP Paribas (Grands Moulins de Pantin) et la présence d'Hermès et Chanel, notre cœur de cible reste les PME du canal de l'Ourcq : commerces, ateliers d'artisans, agences créatives, cabinets, prestataires B2B. Les grands groupes complètent ce socle. Interventions sur site planifiées sous 5 jours ouvrés.",
+  seoHook: "PME PME canal Ourcq & reconversion tertiaire",
   ecosystemFr:
-    "Pantin (5,01 km²) connaît depuis les années 1990 une transformation accélérée, particulièrement marquée dans les années 2020. Les anciennes zones industrielles le long du canal de l'Ourcq se sont reconverties en pôles tertiaires et créatifs : BNP Paribas a installé son centre des Grands Moulins, Hermès et Chanel y ont des opérations. Autour de ces ancres, le tissu local reste majoritairement composé de TPE et PME — commerces de proximité, restaurants, ateliers d'art et de mode, agences, prestataires B2B — qui constituent notre cible principale d'accompagnement IA.",
+    "Pantin (5,01 km²) connaît depuis les années 1990 une transformation accélérée, particulièrement marquée dans les années 2020. Les anciennes zones industrielles le long du canal de l'Ourcq se sont reconverties en pôles tertiaires et créatifs : BNP Paribas a installé son centre des Grands Moulins, Hermès et Chanel y ont des opérations. Autour de ces ancres, le tissu local reste majoritairement composé de PME et ETI — commerces de proximité, restaurants, ateliers d'art et de mode, agences, prestataires B2B — qui constituent notre cible principale d'accompagnement IA.",
   ecosystemEn:
-    "Pantin (5,01 km²) connaît depuis les années 1990 une transformation accélérée, particulièrement marquée dans les années 2020. Les anciennes zones industrielles le long du canal de l'Ourcq se sont reconverties en pôles tertiaires et créatifs : BNP Paribas a installé son centre des Grands Moulins, Hermès et Chanel y ont des opérations. Autour de ces ancres, le tissu local reste majoritairement composé de TPE et PME — commerces de proximité, restaurants, ateliers d'art et de mode, agences, prestataires B2B — qui constituent notre cible principale d'accompagnement IA.",
+    "Pantin (5,01 km²) connaît depuis les années 1990 une transformation accélérée, particulièrement marquée dans les années 2020. Les anciennes zones industrielles le long du canal de l'Ourcq se sont reconverties en pôles tertiaires et créatifs : BNP Paribas a installé son centre des Grands Moulins, Hermès et Chanel y ont des opérations. Autour de ces ancres, le tissu local reste majoritairement composé de PME et ETI — commerces de proximité, restaurants, ateliers d'art et de mode, agences, prestataires B2B — qui constituent notre cible principale d'accompagnement IA.",
   distancesFr:
     "Pantin est desservie par les lignes 5 et 7 du métro, le RER E (gare de Pantin), le tramway T3b à proximité immédiate, ainsi que les RD 932 (ex-RN2) et RD 933 (ex-RN3). Notre-Dame est à environ 6,4 km, l'aéroport Paris-Charles-de-Gaulle à environ 20 km.",
   distancesEn:
@@ -32,26 +32,26 @@ export const PANTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit sur place 4h dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pantin pour PME et ETI : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pantin pour PME et ETI : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Pantin pour PME et ETI : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Pantin pour PME et ETI : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux PME et ETI du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux PME et ETI du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de PME et d'ETI souhaitant cadrer leur stratégie IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de PME et d'ETI souhaitant cadrer leur stratégie IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA pour les entreprises de Pantin, le long du canal de l'Ourcq. La ville est devenue un pôle mode et métiers d'art reconnu — ateliers de maroquinerie Hermès (plus de 1 500 salariés sur ~40 000 m²), laboratoires et ateliers Chanel, école ESMOD installée dans l'ancien siège de la Banque de France, Laboratoires Boiron — adossé à un cluster d'industries créatives (BETC aux Magasins généraux, classée n°1 mondial du WARC Creative 100 en 2024) et à un socle de services financiers aux Grands Moulins de Pantin (BNP Paribas Securities Services). Notre cœur de cible : les TPE, PME, ateliers d'art et studios créatifs du canal — sous-traitants des grandes maisons, e-commerçants, agences — qui ont besoin d'un site ou d'une application sur mesure, en code custom, hébergé en UE et conforme RGPD.",
+        hero: "Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA pour les entreprises de Pantin, le long du canal de l'Ourcq. La ville est devenue un pôle mode et métiers d'art reconnu — ateliers de maroquinerie Hermès (plus de 1 500 salariés sur ~40 000 m²), laboratoires et ateliers Chanel, école ESMOD installée dans l'ancien siège de la Banque de France, Laboratoires Boiron — adossé à un cluster d'industries créatives (BETC aux Magasins généraux, classée n°1 mondial du WARC Creative 100 en 2024) et à un socle de services financiers aux Grands Moulins de Pantin (BNP Paribas Securities Services). Notre cœur de cible : les PME, ETI, ateliers d'art et studios créatifs du canal — sous-traitants des grandes maisons, e-commerçants, agences — qui ont besoin d'un site ou d'une application sur mesure, en code custom, hébergé en UE et conforme RGPD.",
         whyHere: [
           "Capitale de la mode en formation : autour d'Hermès, Chanel, ESMOD et des ateliers de maroquinerie, nous construisons des sites vitrines et catalogues e-commerce pour les fournisseurs, façonniers et créateurs gravitant autour des grandes maisons — portfolios produits à haute exigence visuelle, fiches matières, prise de commande B2B.",
           "Cluster industries créatives et numériques : dans le sillage de BETC aux Magasins généraux et des studios installés en bord de canal de l'Ourcq, nous livrons des plateformes pour agences, studios de production et acteurs de la création numérique — sites éditoriaux rapides, espaces clients, outils de gestion de projets créatifs avec recherche sémantique IA.",
@@ -86,12 +86,6 @@ export const PANTIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou catalogue IA",
-            detail:
-              "Pour les indépendants, ateliers d'art, créateurs de mode et commerces du canal de l'Ourcq : site vitrine ou catalogue produit mobile-first avec une brique IA simple (chatbot FAQ, recherche, génération de descriptifs).",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce ou plateforme métier",
@@ -173,12 +167,6 @@ export const PANTIN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI showcase or catalogue site",
-            detail:
-              "For freelancers, craft ateliers, fashion creators and retailers of the Ourcq Canal: mobile-first showcase or product catalogue with a simple AI brick (FAQ chatbot, search, description generation).",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or business platform",
             detail:
@@ -240,7 +228,7 @@ export const PANTIN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Pantin ?",
-      a: "Priorité aux TPE et PME du commerce, des services, des ateliers de mode et d'artisanat d'art (héritage du canal de l'Ourcq), du numérique et des agences créatives. Les PME du secteur financier autour des Grands Moulins sont également accompagnées. Les ETI restent marginales dans notre activité.",
+      a: "Priorité aux PME et ETI du commerce, des services, des ateliers de mode et d'artisanat d'art (héritage du canal de l'Ourcq), du numérique et des agences créatives. Les PME du secteur financier autour des Grands Moulins sont également accompagnées. Les grands groupes complètent ce socle.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Pantin ?",

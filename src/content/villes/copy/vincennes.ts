@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const VINCENNES_COPY: VilleCopy = {
   pitchFr:
-    "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de TPE et PME — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les TPE/PME vincennoises et de l'est parisien.",
+    "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de PME et ETI — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les PME et ETI vincennoises et de l'est parisien.",
   pitchEn:
-    "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de TPE et PME — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les TPE/PME vincennoises et de l'est parisien.",
+    "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de PME et ETI — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les PME et ETI vincennoises et de l'est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit sur place {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité PME du commerce de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit sur place {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit sur place {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité PME du commerce de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit sur place {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
   seoHook: "commerce de centre-ville, professions libérales & services",
   ecosystemFr:
     "Vincennes occupe un territoire restreint (1,91 km²) avec la 2e densité de population de France (25 232 hab/km²). La population active est dominée par les cadres (15 352 résidents en 2022). Le tissu économique est typique des communes de petite couronne très denses : commerces de proximité dynamiques (avenue de Paris, rue de Fontenay), nombreuses professions libérales et services aux particuliers, restauration, agences immobilières. Patrimoine : Château de Vincennes (ancienne résidence royale) et Bois de Vincennes. Festival America (littérature, années paires).",
@@ -32,8 +32,8 @@ export const VINCENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vincennes : diagnostic 4h pour PME du commerce avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vincennes : diagnostic 4h pour PME du commerce avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Formation 4 h {{price:intervention-4h|flat}}.",
@@ -44,14 +44,14 @@ export const VINCENNES_COPY: VilleCopy = {
       en: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants TPE-PME, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
-      en: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants TPE-PME, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
+      fr: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants PME et ETI, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
+      en: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants PME et ETI, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Vincennes (94), 2e ville la plus dense de France, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu de plus de 12 000 établissements dominé par les TPE/PME, les professions libérales et les services financiers — là où la BRED Banque Populaire a été fondée en 1919. Cabinets de l'avenue de Paris et de la rue de Fontenay, sièges nommés (Magimix, Logista, Harris Interactive, Alban Muller, Bouygues Immobilier), commerces de centre-ville et acteurs du Domaine du Bois : nous livrons du code sur mesure (UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, recherche sémantique), hébergé en UE, sans verrou éditeur.",
+        hero: "À Vincennes (94), 2e ville la plus dense de France, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu de plus de 12 000 établissements dominé par les PME et ETI, les professions libérales et les services financiers — là où la BRED Banque Populaire a été fondée en 1919. Cabinets de l'avenue de Paris et de la rue de Fontenay, sièges nommés (Magimix, Logista, Harris Interactive, Alban Muller, Bouygues Immobilier), commerces de centre-ville et acteurs du Domaine du Bois : nous livrons du code sur mesure (UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, recherche sémantique), hébergé en UE, sans verrou éditeur.",
         whyHere: [
           "Vincennes concentre des services financiers et du conseil sur un territoire d'1,91 km² : héritière de la BRED Banque Populaire (fondée ici en 1919), la ville aligne cabinets d'expertise, courtiers et institut d'études Harris Interactive — des métiers où un site avec espace client, simulateurs et recherche documentaire IA crée un vrai avantage.",
           "Le profil cadres et professions libérales (avocats, médecins, experts-comptables, architectes du quartier des Murs du Parc) appelle des sites de prise de rendez-vous, de qualification de demandes et d'assistants documentaires conformes au secret professionnel et au RGPD santé/juridique.",
@@ -86,12 +86,6 @@ export const VINCENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA",
-            detail:
-              "Pour indépendants, cabinets libéraux et commerçants de l'avenue de Paris / rue de Fontenay : site rapide, prise de rendez-vous, vitrine e-commerce et un premier assistant IA (FAQ, qualification de demande).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -172,12 +166,6 @@ export const VINCENNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI showcase or e-commerce site",
-            detail:
-              "For freelancers, professional practices and retailers of avenue de Paris / rue de Fontenay: a fast site, booking, e-commerce storefront and a first AI assistant (FAQ, request qualification).",
-          },
           {
             sizeLabel: "SME",
             price: "Custom business platform",

@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -23,7 +23,7 @@ import type { VilleCopy } from "./types";
 
 export const ORLEANS_COPY: VilleCopy = {
   pitchFr:
-    "Orléans regroupe un tissu B2B dense autour de la Cosmetic Valley (Shiseido R&D Ormes, 1er pôle mondial cosmétique), du pharmaceutique (Famar, Servier), du siège France de John Deere, du BRGM national et de l'Université d'Orléans fondée en 1306. Axion-IA intervient sur site, des TPE du Loiret aux grandes directions IA de l'agglomération.",
+    "Orléans regroupe un tissu B2B dense autour de la Cosmetic Valley (Shiseido R&D Ormes, 1er pôle mondial cosmétique), du pharmaceutique (Famar, Servier), du siège France de John Deere, du BRGM national et de l'Université d'Orléans fondée en 1306. Axion-IA intervient sur site, des PME du Loiret aux grandes directions IA de l'agglomération.",
   pitchEn:
     "Orléans hosts a dense B2B fabric around the Cosmetic Valley (Shiseido R&D Ormes, world's leading cosmetics cluster), pharma (Famar, Servier), John Deere France's HQ, the BRGM national headquarters and the University of Orléans founded in 1306. Axion-IA delivers on site, from Loiret micro-businesses to large-enterprise AI leadership across the agglomération.",
 
@@ -47,7 +47,7 @@ export const ORLEANS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orléans (45) sur site — centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet et communes de l'agglomération. Nous accompagnons les TPE, PME, ETI et grandes entreprises orléanaises (cosmétique, pharmaceutique, industrie agro-machinisme, géosciences, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orléans (45) sur site — centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet et communes de l'agglomération. Nous accompagnons les PME, ETI et grands groupes orléanais (cosmétique, pharmaceutique, industrie agro-machinisme, géosciences, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Orléans (45) on site — city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet and agglomération communes. We support Orléans micro-businesses, SMEs, mid-caps and large enterprises (cosmetics, pharma, agri-machinery, geosciences, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -78,7 +78,7 @@ export const ORLEANS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise orléanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI cosmétiques et pharmaceutiques de l'agglomération, en passant par les directions IA des groupes implantés à Ormes et Saint-Jean-de-Braye.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise orléanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre-ville aux ETI cosmétiques et pharmaceutiques de l'agglomération, en passant par les directions IA des groupes implantés à Ormes et Saint-Jean-de-Braye.",
         whyHere: [
           "Orléans concentre un tissu B2B rare en région : cosmétique-parfumerie Cosmetic Valley (Shiseido R&D Ormes), pharmaceutique CDMO (Famar Saint-Jean-de-Braye, Servier Gidy), industrie agro-machinisme (John Deere France siège Ormes) — autant de secteurs à fort potentiel d'automatisation IA.",
           "Le BRGM national (La Source), l'INRAE Centre Val de Loire et le CNRS Orléans forment un pôle scientifique de premier plan : nos audits s'adaptent aux processus de documentation et analyse de données propres à la recherche publique.",
@@ -115,12 +115,6 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets orléanais jusqu'à une dizaine de collaborateurs — centre-ville, Olivet, La Source.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -184,7 +178,7 @@ export const ORLEANS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Orléans business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Orléans micro-businesses to large cosmetics and pharmaceutical mid-caps in the agglomération and AI leadership at major group HQs in Ormes.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Orléans business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Orléans micro-businesses to large cosmetics and pharmaceutical mid-caps in the agglomération and AI leadership at major group HQs in Ormes.",
         whyHere: [
           "Orléans concentrates a rare regional B2B fabric: Cosmetic Valley cosmetics-perfume (Shiseido R&D Ormes), pharmaceutical CDMO (Famar Saint-Jean-de-Braye, Servier Gidy), agri-machinery (John Deere France HQ Ormes) — all sectors with high AI automation potential.",
           "The national BRGM (La Source), INRAE Centre Val de Loire and CNRS Orléans form a leading scientific hub: our audits adapt to documentation and data analysis processes specific to public research.",
@@ -221,12 +215,6 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Orléans freelancers, micro-firms and practices up to about ten staff — city centre, Olivet, La Source.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -330,12 +318,6 @@ export const ORLEANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, cabinets et petites agences orléanaises jusqu'à une dizaine de collaborateurs — centre-ville, La Source, Olivet.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -435,12 +417,6 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal Orléans freelancers, practices and small agencies up to about ten staff — city centre, La Source, Olivet.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -544,12 +520,6 @@ export const ORLEANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants orléanais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -585,7 +555,7 @@ export const ORLEANS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Orléans ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -649,12 +619,6 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Orléans micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -758,12 +722,6 @@ export const ORLEANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Séance individuelle",
-            detail:
-              "Pour indépendants, consultants et dirigeants de petites structures orléanaises souhaitant progresser sur l'IA à leur propre rythme.",
-          },
-          {
             sizeLabel: "PME",
             price: "Parcours dirigeant ou manager clé",
             detail:
@@ -863,12 +821,6 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Individual session",
-            detail:
-              "For Orléans freelancers, consultants and small-firm executives who want to progress on AI at their own pace.",
-          },
           {
             sizeLabel: "SME",
             price: "Executive or key manager programme",
@@ -970,12 +922,6 @@ export const ORLEANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
             detail:
@@ -1056,12 +1002,6 @@ export const ORLEANS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / shop",
             detail:
@@ -1111,7 +1051,7 @@ export const ORLEANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Orléans ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Orléans et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Orléans et partout en France.",
     },
     {
       q: "Avez-vous des cas clients dans l'agglomération orléanaise ?",

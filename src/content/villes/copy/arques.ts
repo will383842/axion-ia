@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ARQUES_COPY: VilleCopy = {
   pitchFr:
-    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
+    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, PME artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
   pitchEn:
-    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
+    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, PME artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arques (62). Nous accompagnons PME industrielles, PME artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arques (62). Nous accompagnons PME industrielles, PME artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "industrie verrière & industrielles mécaniques",
   ecosystemFr:
-    "Arques est une commune industrielle de l'agglomération audomaroise, connue pour son ascenseur à bateaux des Fontinettes et la cristallerie Arc (anciennement Arc International). Tissu PME industrielles (verrerie, mécanique), TPE artisanales, commerces et services liés au bassin industriel.",
+    "Arques est une commune industrielle de l'agglomération audomaroise, connue pour son ascenseur à bateaux des Fontinettes et la cristallerie Arc (anciennement Arc International). Tissu PME industrielles (verrerie, mécanique), PME artisanales, commerces et services liés au bassin industriel.",
   ecosystemEn:
-    "Arques est une commune industrielle de l'agglomération audomaroise, connue pour son ascenseur à bateaux des Fontinettes et la cristallerie Arc (anciennement Arc International). Tissu PME industrielles (verrerie, mécanique), TPE artisanales, commerces et services liés au bassin industriel.",
+    "Arques est une commune industrielle de l'agglomération audomaroise, connue pour son ascenseur à bateaux des Fontinettes et la cristallerie Arc (anciennement Arc International). Tissu PME industrielles (verrerie, mécanique), PME artisanales, commerces et services liés au bassin industriel.",
   distancesFr:
     "Saint-Omer à 5 min. Calais à 30 min A26. Longuenesse à 5 min. Gare Saint-Omer (TER vers Lille 50 min). Aéroport Lille-Lesquin à 1h15. Dunkerque à 40 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const ARQUES_COPY: VilleCopy = {
     "Industrie verrière & cristallerie",
     "PME industrielles mécaniques",
     "Commerce de détail",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arques : diagnostic adapté aux PME industrielles, TPE artisanales et professions libérales de l'agglomération audomaroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Arques : diagnostic adapté aux PME industrielles, TPE artisanales et professions libérales de l'agglomération audomaroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Arques : diagnostic adapté aux PME industrielles, PME artisanales et professions libérales de l'agglomération audomaroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Arques : diagnostic adapté aux PME industrielles, PME artisanales et professions libérales de l'agglomération audomaroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arques : formations pratiques adaptées à l'atelier industriel, au commerce ou au cabinet. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const ARQUES_COPY: VilleCopy = {
       en: "Implémentation IA à Arques : contrôle qualité vision industrielle, prédiction maintenance, automatisation production, classification documents. Tissu industriel audomarois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arques : sessions adaptées dirigeants PME industrielles, TPE artisans et gérants de commerces de l'agglomération Saint-Omer.",
-      en: "Coaching 1-to-1 à Arques : sessions adaptées dirigeants PME industrielles, TPE artisans et gérants de commerces de l'agglomération Saint-Omer.",
+      fr: "Coaching 1-to-1 à Arques : sessions adaptées dirigeants PME industrielles, PME artisanales et gérants de commerces de l'agglomération Saint-Omer.",
+      en: "Coaching 1-to-1 à Arques : sessions adaptées dirigeants PME industrielles, PME artisanales et gérants de commerces de l'agglomération Saint-Omer.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const ARQUES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arques  : quel budget prévoir ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE du bassin audomarois.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et PME du bassin audomarois.",
     },
     {
       q: "L'IA peut-elle aider les PME industrielles d'Arques ?",
@@ -61,7 +61,7 @@ export const ARQUES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Arques ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants PME industrielles et TPE. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants PME industrielles et PME. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Arques ?",

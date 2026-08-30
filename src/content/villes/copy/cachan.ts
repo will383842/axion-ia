@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const CACHAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
+    "Axion-IA accompagne les PME et ETI de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
+    "Axion-IA accompagne les PME et ETI de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   directAnswerFr:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les PME et ETI locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   directAnswerEn:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les PME et ETI locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit sur place à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   seoHook: "ingénierie & services universitaires",
   ecosystemFr:
-    "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
+    "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de PME et ETI locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
   ecosystemEn:
-    "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
+    "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de PME et ETI locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
   distancesFr:
     "Cachan se situe à 7,4 km au sud de Notre-Dame de Paris, à 15 minutes en RER B depuis la gare Arcueil-Cachan, à 9 km de l'aéroport de Paris-Orly et à 28 km de Paris-Charles-de-Gaulle.",
   distancesEn:
@@ -33,20 +33,20 @@ export const CACHAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
-      en: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
+      fr: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus PME et ETI et identifier 3 à 5 automatisations prioritaires.",
+      en: "Audit sur place IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus PME et ETI et identifier 3 à 5 automatisations prioritaires.",
     },
     interventions: {
       fr: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
       en: "Formation collective à Cachan dès {{price:intervention-4h|flat}} — Williams se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
     },
     implementation: {
-      fr: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
-      en: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
+      fr: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les PME et ETI du Val-de-Marne.",
+      en: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les PME et ETI du Val-de-Marne.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un dirigeant à Cachan dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
-      en: "Accompagnement un-à-un dirigeant à Cachan dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
+      fr: "Accompagnement un-à-un dirigeant à Cachan dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre PME ou ETI.",
+      en: "Accompagnement un-à-un dirigeant à Cachan dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre PME ou ETI.",
     },
   },
   services: {
@@ -87,12 +87,6 @@ export const CACHAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique e-commerce",
-            detail:
-              "Pour indépendants, commerces des pôles centre-ville / RD920 / La Plaine et jeunes structures de La Fabrique : site vitrine performant ou boutique multi-CMS, mobile-first, avec une première brique IA (chatbot FAQ, recherche produit).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -174,12 +168,6 @@ export const CACHAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or e-commerce store",
-            detail:
-              "For freelancers, retailers of the town-centre / RD920 / La Plaine hubs and young ventures at La Fabrique: high-performance showcase site or multi-CMS store, mobile-first, with a first AI block (FAQ chatbot, product search).",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke business platform",
             detail:
@@ -245,7 +233,7 @@ export const CACHAN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Cachan ?",
-      a: "À Cachan, nous accompagnons en priorité les TPE et PME de l'ingénierie, des professions libérales (cabinets juridiques, comptables, médicaux), du commerce de proximité, de la restauration et les structures liées à l'écosystème ENS Paris-Saclay et ESTP.",
+      a: "À Cachan, nous accompagnons en priorité les PME et ETI de l'ingénierie, des professions libérales (cabinets juridiques, comptables, médicaux), du commerce de proximité, de la restauration et les structures liées à l'écosystème ENS Paris-Saclay et ESTP.",
     },
     {
       q: "Faites-vous du no-code à Cachan ?",

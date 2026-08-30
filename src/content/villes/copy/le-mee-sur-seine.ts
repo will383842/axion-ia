@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu PME du commerce et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu PME du commerce et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mée-sur-Seine (77). Nous accompagnons PME et ETI : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mée-sur-Seine (77). Nous accompagnons PME et ETI : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit sur place sur mesure.",
   seoHook: "commerce détail & tertiaire services",
   ecosystemFr:
-    "Le Mée-sur-Seine fait partie de l'agglomération melunaise, pôle administratif et économique du sud Seine-et-Marne en bord de Seine. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique.",
+    "Le Mée-sur-Seine fait partie de l'agglomération melunaise, pôle administratif et économique du sud Seine-et-Marne en bord de Seine. Tissu PME du commerce et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique.",
   ecosystemEn:
-    "Le Mée-sur-Seine fait partie de l'agglomération melunaise, pôle administratif et économique du sud Seine-et-Marne en bord de Seine. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique.",
+    "Le Mée-sur-Seine fait partie de l'agglomération melunaise, pôle administratif et économique du sud Seine-et-Marne en bord de Seine. Tissu PME du commerce et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique.",
   distancesFr:
     "Melun à 5 min. Corbeil-Essonnes à 20 min. Gare RER D Le Mée. Paris Gare de Lyon à 45 min (RER D). Fontainebleau à 25 min. Aéroport Paris-Orly à 35 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA au Mée-sur-Seine : CRM augmenté commerçants, automatisation back-office PME tertiaire, outils réservation restauration, optimisation flux logistique, facturation intelligente.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Mée-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME méens, gérants agglomération Melun, professions libérales.",
-      en: "Coaching 1-to-1 au Mée-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME méens, gérants agglomération Melun, professions libérales.",
+      fr: "Coaching 1-to-1 au Mée-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI méens, gérants agglomération Melun, professions libérales.",
+      en: "Coaching 1-to-1 au Mée-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI méens, gérants agglomération Melun, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, secrétariat IA, CRM clients, facturation automatisée, outils de pilotage activité, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

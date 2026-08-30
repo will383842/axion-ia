@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HAUTMONT_COPY: VilleCopy = {
   pitchFr:
-    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
+    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : PME et ETI de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
   pitchEn:
-    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
+    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : PME et ETI de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hautmont (59). Nous accompagnons PME et ETI : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hautmont (59). Nous accompagnons PME et ETI : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   seoHook: "bassin sambre-avesnois",
   ecosystemFr:
     "Hautmont est une commune industrielle de l'agglomération de Maubeuge dans la vallée de la Sambre (Sambre-Avesnois). L'économie locale est marquée par l'héritage métallurgique et sidérurgique (forges historiques, transformation des métaux), la sous-traitance industrielle automobile liée à l'usine Toyota de Maubeuge-Onnaing, les PME de mécanique et chaudronnerie, les artisans, commerces de proximité et professions libérales. Le parc naturel régional de l'Avesnois et la proximité de la frontière belge (Erquelinnes) complètent le tissu économique local.",
@@ -30,8 +30,8 @@ export const HAUTMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Hautmont : diagnostic adapté aux PME et ETI de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Hautmont : diagnostic adapté aux PME et ETI de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hautmont : formats adaptés à la PME métallurgie, au sous-traitant automobile, à l'artisan ou au commerçant. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const HAUTMONT_COPY: VilleCopy = {
       en: "Implémentation IA à Hautmont : maintenance prédictive lignes métallurgie, contrôle qualité visuel pièces automobiles, copilotes devis-facturation sous-traitants industriels, gestion stock et approvisionnement automatisés, agents IA planification production mécanique-chaudronnerie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hautmont : sessions dans votre atelier métallurgie, usine, commerce ou en visio. Dirigeants TPE/PME du Sambre-Avesnois souhaitant maîtriser l'IA dans leur activité industrielle ou artisanale.",
-      en: "Coaching 1-to-1 à Hautmont : sessions dans votre atelier métallurgie, usine, commerce ou en visio. Dirigeants TPE/PME du Sambre-Avesnois souhaitant maîtriser l'IA dans leur activité industrielle ou artisanale.",
+      fr: "Coaching 1-to-1 à Hautmont : sessions dans votre atelier métallurgie, usine, commerce ou en visio. Dirigeants PME et ETI du Sambre-Avesnois souhaitant maîtriser l'IA dans leur activité industrielle ou artisanale.",
+      en: "Coaching 1-to-1 à Hautmont : sessions dans votre atelier métallurgie, usine, commerce ou en visio. Dirigeants PME et ETI du Sambre-Avesnois souhaitant maîtriser l'IA dans leur activité industrielle ou artisanale.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const HAUTMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Hautmont  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hautmont et de l'agglomération maubeugeoise, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, sous-traitance auto, mécanique, commerce). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Hautmont et de l'agglomération maubeugeoise, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, sous-traitance auto, mécanique, commerce). Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME de la métallurgie et sous-traitance automobile ?",

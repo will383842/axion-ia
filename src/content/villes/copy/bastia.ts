@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BASTIA_COPY: VilleCopy = {
   pitchFr:
-    "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu TPE commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
+    "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu PME du commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
   pitchEn:
-    "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu TPE commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
+    "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu PME du commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bastia (2B). Nous accompagnons PME du commerce et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bastia (2B). Nous accompagnons PME du commerce et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "commerce détail restauration & logistique portuaire",
   ecosystemFr:
-    "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu TPE commerces et restaurants, PME maritimes, artisans, professions libérales.",
+    "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu PME du commerce et restaurants, PME maritimes, artisans, professions libérales.",
   ecosystemEn:
-    "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu TPE commerces et restaurants, PME maritimes, artisans, professions libérales.",
+    "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu PME du commerce et restaurants, PME maritimes, artisans, professions libérales.",
   distancesFr:
     "Aéroport Bastia-Poretta à 16 km (Lucciana). Port de commerce et passagers au centre-ville. Corte à 69 min. Calvi à 91 km. Ajaccio à 149 km. Communes voisines : Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio.",
   distancesEn:
@@ -30,20 +30,20 @@ export const BASTIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bastia : diagnostic adapté aux TPE commerces et restaurants de centre-ville, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bastia : diagnostic adapté aux TPE commerces et restaurants de centre-ville, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bastia : diagnostic adapté aux PME du commerce et restaurants de centre-ville, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bastia : diagnostic adapté aux PME du commerce et restaurants de centre-ville, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bastia : formats adaptés au commerce de détail, à la restauration, au transport maritime et à la logistique portuaire. Vos équipes repartent autonomes sur les outils IA métier.",
       en: "Interventions IA sur site à Bastia : formats adaptés au commerce de détail, à la restauration, au transport maritime et à la logistique portuaire. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Bastia : gestion stocks commerce, CRM tourisme et hôtellerie, automatisation facturation maritime, suivi logistique portuaire, agents conversationnels clients pour TPE et PME bastiais.",
-      en: "Implémentation IA à Bastia : gestion stocks commerce, CRM tourisme et hôtellerie, automatisation facturation maritime, suivi logistique portuaire, agents conversationnels clients pour TPE et PME bastiais.",
+      fr: "Implémentation IA à Bastia : gestion stocks commerce, CRM tourisme et hôtellerie, automatisation facturation maritime, suivi logistique portuaire, agents conversationnels clients pour PME et ETI bastiais.",
+      en: "Implémentation IA à Bastia : gestion stocks commerce, CRM tourisme et hôtellerie, automatisation facturation maritime, suivi logistique portuaire, agents conversationnels clients pour PME et ETI bastiais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bastia : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants restaurants et hôtels, responsables PME maritimes et logistiques souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Bastia : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants restaurants et hôtels, responsables PME maritimes et logistiques souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Bastia : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants restaurants et hôtels, responsables PME maritimes et logistiques souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Bastia : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants restaurants et hôtels, responsables PME maritimes et logistiques souhaitant intégrer l'IA.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const BASTIA_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou petite boutique IA",
-            detail:
-              "Pour commerçants du centre-ville et de la marina, restaurateurs, caves et producteurs AOP, artisans : site mobile-first, réservation simple ou boutique e-commerce de terroir avec fiches produits assistées par IA et expédition UE.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
             detail:
@@ -128,7 +122,7 @@ export const BASTIA_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et suis-je dépendant de vous ensuite ?",
-            a: "Tout est hébergé dans l'Union européenne, en conformité RGPD : minimisation des données, registre des traitements, clauses adaptées aux TPE et PME locales. Vous gardez la pleine maîtrise du code, des contenus et des intégrations après la mission — aucun lock-in éditeur, vous pouvez reprendre la main en interne ou avec un autre prestataire.",
+            a: "Tout est hébergé dans l'Union européenne, en conformité RGPD : minimisation des données, registre des traitements, clauses adaptées aux PME et ETI locales. Vous gardez la pleine maîtrise du code, des contenus et des intégrations après la mission — aucun lock-in éditeur, vous pouvez reprendre la main en interne ou avec un autre prestataire.",
           },
         ],
         guarantees:
@@ -170,12 +164,6 @@ export const BASTIA_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Showcase site or small AI store",
-            detail:
-              "For city-centre and marina shopkeepers, restaurateurs, wineries and AOP producers, craftspeople: mobile-first site, simple booking or regional-product e-commerce store with AI-assisted product pages and EU shipping.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce platform or business SaaS",
@@ -229,8 +217,8 @@ export const BASTIA_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale. Déplacement sur site organisé via l'aéroport Bastia-Poretta.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Bastia ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE bastiaises. Diagnostic complet des processus, cartographie IA (commerce, restauration, tourisme, maritime) et plan d'action ROI chiffré.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Bastia ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME bastiaises. Diagnostic complet des processus, cartographie IA (commerce, restauration, tourisme, maritime) et plan d'action ROI chiffré.",
     },
     {
       q: "Quel délai pour une intervention IA à Bastia ?",
@@ -242,7 +230,7 @@ export const BASTIA_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Bastia ?",
-      a: "Nos interventions à Bastia respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux TPE et PME locales.",
+      a: "Nos interventions à Bastia respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux PME et ETI locales.",
     },
   ],
 };

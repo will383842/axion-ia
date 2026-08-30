@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LURE_COPY: VilleCopy = {
   pitchFr:
-    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
+    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de PME et ETI industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
   pitchEn:
-    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
+    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de PME et ETI industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons PME et ETI : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons PME et ETI : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   seoHook: "industrie métallurgique & artisanat second",
   ecosystemFr:
-    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
+    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de PME et ETI industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
   ecosystemEn:
-    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de TPE/PME industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
+    "Lure est la sous-préfecture du nord Haute-Saône, pôle de services et de commerces pour le Pays de Lure (~25 000 hab bassin de vie). Tissu de PME et ETI industrielles (métallurgie, agroalimentaire), artisanat BTP, centre hospitalier, professions libérales. Proximité Luxeuil-les-Bains (15 min) et Belfort (30 min A36).",
   distancesFr:
     "Gare de Lure (TER Belfort-Vesoul, 25 min Belfort, 30 min Vesoul). Gare TGV Belfort-Montbéliard à 40 min. Aéroport Bâle-Mulhouse à 1h15. Axe RN19 vers Belfort et Vesoul. Luxeuil-les-Bains à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
-      en: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
+      fr: "Audit IA à Lure : diagnostic adapté aux PME et ETI industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
+      en: "Audit IA à Lure : diagnostic adapté aux PME et ETI industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lure : formats adaptés à l'atelier industriel, cabinet médical, commerce, bureau artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const LURE_COPY: VilleCopy = {
       en: "Implémentation IA à Lure : automatisation devis BTP, gestion stocks commerce, prédiction maintenance industrielle, agents conversationnels, optimisation planning santé. Pays de Lure et nord Haute-Saône.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lure : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants TPE/PME, artisans, commerçants et professions libérales du Pays de Lure souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Lure : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants TPE/PME, artisans, commerçants et professions libérales du Pays de Lure souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Lure : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants PME et ETI, artisans, commerçants et professions libérales du Pays de Lure souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Lure : sessions dans votre atelier, cabinet, commerce ou en visio. Dirigeants PME et ETI, artisans, commerçants et professions libérales du Pays de Lure souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LURE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lure  ?",
-      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME du Pays de Lure. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux PME et ETI du Pays de Lure. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Lure ?",

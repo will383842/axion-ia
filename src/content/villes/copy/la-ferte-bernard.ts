@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_FERTE_BERNARD_COPY: VilleCopy = {
   pitchFr:
-    "La Ferté-Bernard (72), bourg du Perche sarthois au patrimoine Renaissance remarquable (église Notre-Dame-des-Marais), concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne tout le tissu professionnel local.",
+    "La Ferté-Bernard (72), bourg du Perche sarthois au patrimoine Renaissance remarquable (église Notre-Dame-des-Marais), concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Ferté-Bernard (72), bourg du Perche sarthois au patrimoine Renaissance remarquable (église Notre-Dame-des-Marais), concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne tout le tissu professionnel local.",
+    "La Ferté-Bernard (72), bourg du Perche sarthois au patrimoine Renaissance remarquable (église Notre-Dame-des-Marais), concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Bernard (72). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires (volaille, charcuterie) et industrielles, commerçants, professions libérales, prestataires de services et acteurs touristiques du Perche sarthois.",
   seoHook: "agroalimentaire & industrie fabrication",
   ecosystemFr:
     "La Ferté-Bernard est un bourg du Perche sarthois, au patrimoine Renaissance exceptionnel (église Notre-Dame-des-Marais, portes fortifiées). Pôle agroalimentaire (volaille, charcuterie, plats préparés), industrie, artisanat, commerces de centre-ville. Carrefour A11/RN23 entre Le Mans et Chartres.",
@@ -30,8 +30,8 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-Bernard : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du Perche sarthois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Ferté-Bernard : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du Perche sarthois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Ferté-Bernard : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et commerçants du Perche sarthois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Ferté-Bernard : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et commerçants du Perche sarthois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-Bernard : formations adaptées aux PME agroalimentaires (volaille, charcuterie), industriels, artisans et commerçants du Perche sarthois. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
       en: "Implémentation IA à La Ferté-Bernard : traçabilité filière volaille, contrôle qualité charcuterie/plats préparés, automatisation processus industriels, agents conversationnels commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Ferté-Bernard : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, artisans, commerçants.",
-      en: "Coaching 1-to-1 à La Ferté-Bernard : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, artisans, commerçants.",
+      fr: "Coaching 1-to-1 à La Ferté-Bernard : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, artisans, commerçants.",
+      en: "Coaching 1-to-1 à La Ferté-Bernard : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, artisans, commerçants.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_FERTE_BERNARD_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de La Ferté-Bernard sur leurs cas IA : traçabilité filière volaille, contrôle qualité charcuterie, optimisation lignes plats préparés, automatisation logistique froide.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à La Ferté-Bernard ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du Perche sarthois. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à La Ferté-Bernard ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agroalimentaires et industriels du Perche sarthois. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour la filière volaille ?",

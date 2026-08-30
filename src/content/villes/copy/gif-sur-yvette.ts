@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GIF_SUR_YVETTE_COPY: VilleCopy = {
   pitchFr:
-    "À Gif-sur-Yvette, au cœur du plateau de Saclay, Axion-IA accompagne les TPE et PME de la deeptech, de la recherche, des services scientifiques et des startups. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leurs opérations, sans complexité inutile.",
+    "À Gif-sur-Yvette, au cœur du plateau de Saclay, Axion-IA accompagne les PME et ETI de la deeptech, de la recherche, des services scientifiques et des startups. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leurs opérations, sans complexité inutile.",
   pitchEn:
-    "À Gif-sur-Yvette, au cœur du plateau de Saclay, Axion-IA accompagne les TPE et PME de la deeptech, de la recherche, des services scientifiques et des startups. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leurs opérations, sans complexité inutile.",
+    "À Gif-sur-Yvette, au cœur du plateau de Saclay, Axion-IA accompagne les PME et ETI de la deeptech, de la recherche, des services scientifiques et des startups. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leurs opérations, sans complexité inutile.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gif-sur-Yvette pour accompagner les TPE et PME locales. Située sur le plateau de Saclay, la commune accueille le CNRS, le CEA et fait partie de l'université Paris-Saclay, un écosystème deeptech parmi les plus denses d'Europe. Auprès des startups, spin-offs, laboratoires et prestataires de services scientifiques, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gif-sur-Yvette pour accompagner les PME et ETI locales. Située sur le plateau de Saclay, la commune accueille le CNRS, le CEA et fait partie de l'université Paris-Saclay, un écosystème deeptech parmi les plus denses d'Europe. Auprès des startups, spin-offs, laboratoires et prestataires de services scientifiques, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gif-sur-Yvette pour accompagner les TPE et PME locales. Située sur le plateau de Saclay, la commune accueille le CNRS, le CEA et fait partie de l'université Paris-Saclay, un écosystème deeptech parmi les plus denses d'Europe. Auprès des startups, spin-offs, laboratoires et prestataires de services scientifiques, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gif-sur-Yvette pour accompagner les PME et ETI locales. Située sur le plateau de Saclay, la commune accueille le CNRS, le CEA et fait partie de l'université Paris-Saclay, un écosystème deeptech parmi les plus denses d'Europe. Auprès des startups, spin-offs, laboratoires et prestataires de services scientifiques, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle.",
   seoHook: "deeptech, recherche & Saclay",
   ecosystemFr:
-    "Gif-sur-Yvette occupe une place stratégique sur le plateau de Saclay, l'un des principaux clusters scientifiques d'Europe. La commune accueille des centres du CNRS et du CEA et s'inscrit dans le périmètre de l'université Paris-Saclay, qui rassemble laboratoires, grandes écoles et programmes de recherche de premier plan. Cet environnement génère un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires de services scientifiques. Ce tissu de TPE et de jeunes PME innovantes, souvent à court de ressources sur les fonctions support, trouve dans Axion-IA un partenaire pour automatiser son administratif et fiabiliser ses opérations.",
+    "Gif-sur-Yvette occupe une place stratégique sur le plateau de Saclay, l'un des principaux clusters scientifiques d'Europe. La commune accueille des centres du CNRS et du CEA et s'inscrit dans le périmètre de l'université Paris-Saclay, qui rassemble laboratoires, grandes écoles et programmes de recherche de premier plan. Cet environnement génère un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires de services scientifiques. Ce tissu de PME et de jeunes PME innovantes, souvent à court de ressources sur les fonctions support, trouve dans Axion-IA un partenaire pour automatiser son administratif et fiabiliser ses opérations.",
   ecosystemEn:
-    "Gif-sur-Yvette occupe une place stratégique sur le plateau de Saclay, l'un des principaux clusters scientifiques d'Europe. La commune accueille des centres du CNRS et du CEA et s'inscrit dans le périmètre de l'université Paris-Saclay, qui rassemble laboratoires, grandes écoles et programmes de recherche de premier plan. Cet environnement génère un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires de services scientifiques. Ce tissu de TPE et de jeunes PME innovantes, souvent à court de ressources sur les fonctions support, trouve dans Axion-IA un partenaire pour automatiser son administratif et fiabiliser ses opérations.",
+    "Gif-sur-Yvette occupe une place stratégique sur le plateau de Saclay, l'un des principaux clusters scientifiques d'Europe. La commune accueille des centres du CNRS et du CEA et s'inscrit dans le périmètre de l'université Paris-Saclay, qui rassemble laboratoires, grandes écoles et programmes de recherche de premier plan. Cet environnement génère un écosystème dense de startups deeptech, de spin-offs académiques et de prestataires de services scientifiques. Ce tissu de PME et de jeunes PME innovantes, souvent à court de ressources sur les fonctions support, trouve dans Axion-IA un partenaire pour automatiser son administratif et fiabiliser ses opérations.",
   distancesFr:
     "Gif-sur-Yvette est reliée au centre de Paris en environ 40 minutes par le RER B, qui dessert directement la commune. L'aéroport Paris-Orly se situe à une trentaine de minutes de route, et Paris-Charles-de-Gaulle à environ 1 heure. Le pôle scientifique de Saclay, ses grandes écoles et ses laboratoires sont accessibles en quelques minutes. Cette desserte place Gif au contact direct de l'écosystème d'innovation francilien et facilite les déplacements de nos consultants vers les acteurs du plateau.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Un audit IA à Gif-sur-Yvette analyse sur site les processus d'une startup ou d'un laboratoire, pour identifier les automatisations à plus fort ROI : gestion de projet, reporting, traitement documentaire et fonctions support, adaptées aux ressources d'une TPE ou PME.",
-      en: "Un audit IA à Gif-sur-Yvette analyse sur site les processus d'une startup ou d'un laboratoire, pour identifier les automatisations à plus fort ROI : gestion de projet, reporting, traitement documentaire et fonctions support, adaptées aux ressources d'une TPE ou PME.",
+      fr: "Un audit IA à Gif-sur-Yvette analyse sur site les processus d'une startup ou d'un laboratoire, pour identifier les automatisations à plus fort ROI : gestion de projet, reporting, traitement documentaire et fonctions support, adaptées aux ressources d'une PME ou ETI.",
+      en: "Un audit IA à Gif-sur-Yvette analyse sur site les processus d'une startup ou d'un laboratoire, pour identifier les automatisations à plus fort ROI : gestion de projet, reporting, traitement documentaire et fonctions support, adaptées aux ressources d'une PME ou ETI.",
     },
     interventions: {
       fr: "Nos interventions à Gif-sur-Yvette automatisent les tâches répétitives des jeunes PME deeptech : reporting, gestion administrative, suivi des financements et relation client, sans bouleverser vos outils existants.",
@@ -42,8 +42,8 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
       en: "L'implémentation à Gif-sur-Yvette déploie des solutions IA durables pour les startups et acteurs de la recherche, avec une attention forte à la confidentialité des travaux scientifiques et à la conformité RGPD des données traitées.",
     },
     unAUn: {
-      fr: "Nos sessions un-à-un à Gif-sur-Yvette forment les fondateurs et dirigeants de TPE et PME innovantes à intégrer l'IA dans leur quotidien, avec des cas concrets issus de la deeptech, de la recherche et des services scientifiques.",
-      en: "Nos sessions un-à-un à Gif-sur-Yvette forment les fondateurs et dirigeants de TPE et PME innovantes à intégrer l'IA dans leur quotidien, avec des cas concrets issus de la deeptech, de la recherche et des services scientifiques.",
+      fr: "Nos sessions un-à-un à Gif-sur-Yvette forment les fondateurs et dirigeants de PME et d'ETI innovantes à intégrer l'IA dans leur quotidien, avec des cas concrets issus de la deeptech, de la recherche et des services scientifiques.",
+      en: "Nos sessions un-à-un à Gif-sur-Yvette forment les fondateurs et dirigeants de PME et d'ETI innovantes à intégrer l'IA dans leur quotidien, avec des cas concrets issus de la deeptech, de la recherche et des services scientifiques.",
     },
     sitesWeb: {
       fr: "Pour les acteurs de Gif-sur-Yvette, nous concevons des sites web et plateformes augmentés par l'IA : portails de présentation deeptech, prise de contact qualifiée pour investisseurs et partenaires, et assistants traitant les demandes entrantes.",
@@ -88,12 +88,6 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG sur vos publications, recherche sémantique, qualification des demandes investisseurs) sur le site existant d'une startup deeptech, d'un cabinet d'ingénierie ou d'un laboratoire de Gif, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG sur vos publications, recherche sémantique, qualification des demandes investisseurs) sur le site existant d'une startup deeptech, d'un cabinet d'ingénierie ou d'un laboratoire de Gif, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -234,7 +222,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Gif-sur-Yvette ?",
-      a: "Nous accompagnons en priorité les TPE et PME : startups deeptech, spin-offs, laboratoires, sociétés d'ingénierie et de conseil, prestataires de services scientifiques. Les ETI restent un cas marginal. Notre approche s'adapte aux structures innovantes aux ressources support limitées.",
+      a: "Nous accompagnons en priorité les PME et ETI : startups deeptech, spin-offs, laboratoires, sociétés d'ingénierie et de conseil, prestataires de services scientifiques. Les grands groupes complètent ce socle. Notre approche s'adapte aux structures innovantes aux ressources support limitées.",
     },
     {
       q: "L'IA Axion-IA est-elle adaptée à un environnement deeptech exigeant ?",

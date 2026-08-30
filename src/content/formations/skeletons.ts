@@ -246,7 +246,7 @@ export const FORMATION_SKELETONS: ReadonlyArray<FormationSkeleton> = [
     summaryDurationFr: "Demi-journée (4 h) sur site",
     summaryDurationEn: "Half-day (4 h) on site",
     publicViseFr:
-      "TPE/PME et équipes souhaitant découvrir l'IA ou cadrer un cas d'usage métier précis.",
+      "PME/ETI et équipes souhaitant découvrir l'IA ou cadrer un cas d'usage métier précis.",
     modalites: PRESENTIEL_DISTANCIEL,
   },
   {

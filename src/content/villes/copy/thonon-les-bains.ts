@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const THONON_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Thonon-les-Bains (74), sous-préfecture de la Haute-Savoie sur les rives du lac Léman, est célèbre pour son eau minérale, son thermalisme et son attractivité touristique. Ville frontalière de la Suisse, elle combine une économie de tourisme et d'hôtellerie, un tissu de PME de services et de commerces, des artisans du bâtiment et des activités liées au travail frontalier vers Genève et Lausanne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME chablaisiennes dans l'adoption concrète de l'intelligence artificielle.",
+    "Thonon-les-Bains (74), sous-préfecture de la Haute-Savoie sur les rives du lac Léman, est célèbre pour son eau minérale, son thermalisme et son attractivité touristique. Ville frontalière de la Suisse, elle combine une économie de tourisme et d'hôtellerie, un tissu de PME de services et de commerces, des artisans du bâtiment et des activités liées au travail frontalier vers Genève et Lausanne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI chablaisiennes dans l'adoption concrète de l'intelligence artificielle.",
   pitchEn:
-    "Thonon-les-Bains (74), sous-préfecture de la Haute-Savoie sur les rives du lac Léman, est célèbre pour son eau minérale, son thermalisme et son attractivité touristique. Ville frontalière de la Suisse, elle combine une économie de tourisme et d'hôtellerie, un tissu de PME de services et de commerces, des artisans du bâtiment et des activités liées au travail frontalier vers Genève et Lausanne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME chablaisiennes dans l'adoption concrète de l'intelligence artificielle.",
+    "Thonon-les-Bains (74), sous-préfecture de la Haute-Savoie sur les rives du lac Léman, est célèbre pour son eau minérale, son thermalisme et son attractivité touristique. Ville frontalière de la Suisse, elle combine une économie de tourisme et d'hôtellerie, un tissu de PME de services et de commerces, des artisans du bâtiment et des activités liées au travail frontalier vers Genève et Lausanne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI chablaisiennes dans l'adoption concrète de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thonon-les-Bains et dans le Chablais. Nous accompagnons en priorité les TPE puis les PME : hôtellerie, restauration et acteurs du tourisme lacustre et thermal, commerces de proximité, artisans du bâtiment, professions de santé et PME de services frontalières du Léman. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de la relation client, ainsi que l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thonon-les-Bains et dans le Chablais. Nous accompagnons en priorité les PME puis les ETI : hôtellerie, restauration et acteurs du tourisme lacustre et thermal, commerces de proximité, artisans du bâtiment, professions de santé et PME de services frontalières du Léman. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de la relation client, ainsi que l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thonon-les-Bains et dans le Chablais. Nous accompagnons en priorité les TPE puis les PME : hôtellerie, restauration et acteurs du tourisme lacustre et thermal, commerces de proximité, artisans du bâtiment, professions de santé et PME de services frontalières du Léman. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de la relation client, ainsi que l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Thonon-les-Bains et dans le Chablais. Nous accompagnons en priorité les PME puis les ETI : hôtellerie, restauration et acteurs du tourisme lacustre et thermal, commerces de proximité, artisans du bâtiment, professions de santé et PME de services frontalières du Léman. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de la relation client, ainsi que l'accompagnement individuel des dirigeants, avec des livrables concrets et des tarifs publics.",
   seoHook: "tourisme lacustre & thermalisme",
   ecosystemFr:
     "Thonon-les-Bains tire son identité de l'eau : eau minérale réputée, thermalisme et tourisme sur les rives du lac Léman façonnent une économie où l'hôtellerie, la restauration et les loisirs occupent une place centrale. Ville frontalière, elle profite aussi du dynamisme du bassin lémanique et du travail frontalier vers Genève et Lausanne, qui soutient un commerce de proximité actif et des PME de services. Les artisans du bâtiment et les professions de santé complètent ce tissu, où l'IA peut optimiser la gestion saisonnière, les réservations et la relation client.",
@@ -42,8 +42,8 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Thonon-les-Bains : agents conversationnels multilingues pour la clientèle touristique, automatisation des réservations et des devis, classification documentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Thonon-les-Bains : sessions sur site ou en visio pour dirigeants de TPE/PME, hôteliers, restaurateurs, artisans et gérants souhaitant piloter l'IA.",
-      en: "Coaching 1-to-1 à Thonon-les-Bains : sessions sur site ou en visio pour dirigeants de TPE/PME, hôteliers, restaurateurs, artisans et gérants souhaitant piloter l'IA.",
+      fr: "Coaching 1-to-1 à Thonon-les-Bains : sessions sur site ou en visio pour dirigeants de PME et ETI, hôteliers, restaurateurs, artisans et gérants souhaitant piloter l'IA.",
+      en: "Coaching 1-to-1 à Thonon-les-Bains : sessions sur site ou en visio pour dirigeants de PME et ETI, hôteliers, restaurateurs, artisans et gérants souhaitant piloter l'IA.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Thonon-les-Bains : plateformes multilingues pour hôtels, acteurs du tourisme et commerces, avec réservation intelligente, recherche IA et devis automatisés.",
@@ -88,12 +88,6 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les indépendants, commerces du centre-ville, restaurants du Port de Rives et artisans chablaisiens : site multilingue mobile-first avec réservation ou e-commerce simple et formulaire de devis assisté par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase or augmented e-commerce site",
-            detail:
-              "For freelancers, town-centre shops, Port de Rives restaurants and Chablais craftsmen: mobile-first multilingual site with booking or simple e-commerce and AI-assisted quote form.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -230,7 +218,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thonon-les-Bains et dans le Chablais ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thonon-les-Bains, Évian, Annemasse et tout le Chablais. Nos consultants se déplacent depuis Lyon, Annecy et Genève pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Thonon-les-Bains, Évian, Annemasse et tout le Chablais. Nos consultants se déplacent depuis Lyon, Annecy et Genève pour les missions sur site.",
     },
     {
       q: "Travaillez-vous avec l'hôtellerie et les acteurs du tourisme ?",
@@ -241,7 +229,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, nous déployons des agents conversationnels multilingues adaptés à la clientèle touristique internationale et aux partenaires du bassin lémanique suisse.",
     },
     {
-      q: "Quels services proposez-vous aux TPE et artisans du Chablais ?",
+      q: "Quels services proposez-vous aux PME et artisans du Chablais ?",
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {

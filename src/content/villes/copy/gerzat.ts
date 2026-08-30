@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GERZAT_COPY: VilleCopy = {
   pitchFr:
-    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services. Axion-IA collabore avec toutes les structures locales.",
+    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, PME du BTP, commerces de proximité, services. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services. Axion-IA collabore avec toutes les structures locales.",
+    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, PME du BTP, commerces de proximité, services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gerzat (63). Nous accompagnons TPE et PME : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gerzat (63). Nous accompagnons PME et ETI : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gerzat (63). Nous accompagnons TPE et PME : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gerzat (63). Nous accompagnons PME et ETI : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
   seoHook: "logistique entreposage & industrielles",
   ecosystemFr:
-    "Gerzat est une commune du nord-est de Clermont Auvergne Métropole, avec une zone d'activités logistique importante côté nord. Tissu logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
+    "Gerzat est une commune du nord-est de Clermont Auvergne Métropole, avec une zone d'activités logistique importante côté nord. Tissu logistique et entreposage, PME industrielles, PME du BTP, commerces de proximité, services aux entreprises.",
   ecosystemEn:
-    "Gerzat est une commune du nord-est de Clermont Auvergne Métropole, avec une zone d'activités logistique importante côté nord. Tissu logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
+    "Gerzat est une commune du nord-est de Clermont Auvergne Métropole, avec une zone d'activités logistique importante côté nord. Tissu logistique et entreposage, PME industrielles, PME du BTP, commerces de proximité, services aux entreprises.",
   distancesFr:
     "Clermont-Ferrand à 10 min. Cébazat à 5 min. Riom à 15 min. Aéroport Clermont-Ferrand Auvergne à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GERZAT_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique / entreposage zone nord",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, PME du BTP, commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, PME du BTP, commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gerzat : formats adaptés entrepôt, usine, chantier, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -60,7 +60,7 @@ export const GERZAT_COPY: VilleCopy = {
       a: "Oui, maintenance prédictive machines, contrôle qualité automatisé, optimisation production, gestion commandes IA, planification ressources.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

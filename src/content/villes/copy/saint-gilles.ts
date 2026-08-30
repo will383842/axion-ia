@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GILLES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
+    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu PME et ETI agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
   pitchEn:
-    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
+    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu PME et ETI agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les PME, ETI et grands groupes locaux : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les PME, ETI et grands groupes locaux : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit sur place sur mesure.",
   seoHook: "agriculture camargue & viticulture costières",
   ecosystemFr:
     "Saint-Gilles (~14 700 hab) est la porte de la Petite Camargue gardoise, à 20 min de Nîmes. Agriculture camarguaise (riziculture, élevage taureau/cheval), viticulture Costières de Nîmes, tourisme patrimonial (abbatiale UNESCO), commerces et artisanat. Économie agri-touristique structurante.",
@@ -30,8 +30,8 @@ export const SAINT_GILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Gilles : diagnostic adapté aux PME et ETI agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Gilles : diagnostic adapté aux PME et ETI agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gilles : formats adaptés aux exploitations agricoles, caves viticoles, commerces et structures touristiques Petite Camargue.",
@@ -42,8 +42,8 @@ export const SAINT_GILLES_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Gilles : prédiction rendements riziculture, classification parcelles viticoles, automatisation réservations tourisme, gestion stocks commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Gilles : sessions dirigeants TPE/PME agricoles, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Petite Camargue.",
-      en: "Coaching 1-to-1 à Saint-Gilles : sessions dirigeants TPE/PME agricoles, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Petite Camargue.",
+      fr: "Coaching 1-to-1 à Saint-Gilles : sessions dirigeants de PME et d'ETI agricoles, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Petite Camargue.",
+      en: "Coaching 1-to-1 à Saint-Gilles : sessions dirigeants de PME et d'ETI agricoles, viticulteurs, commerçants souhaitant intégrer l'IA dans leur activité Petite Camargue.",
     },
   },
   faqGeolocalisee: [

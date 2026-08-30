@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   pitchFr:
-    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. PME de l'artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. PME de l'artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons PME et ETI : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons PME et ETI : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-ville",
   ecosystemFr:
-    "Condé-sur-l'Escaut est une ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge. Patrimoine historique remarquable et tissu TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration.",
+    "Condé-sur-l'Escaut est une ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge. Patrimoine historique remarquable et tissu PME de l'artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration.",
   ecosystemEn:
-    "Condé-sur-l'Escaut est une ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge. Patrimoine historique remarquable et tissu TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration.",
+    "Condé-sur-l'Escaut est une ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge. Patrimoine historique remarquable et tissu PME de l'artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration.",
   distancesFr:
     "Valenciennes à 15 min en voiture. Frontière belge à 5 min. Lille à 50 min. Paris-Nord à 1h45 via TGV Valenciennes.",
   distancesEn:
     "Valenciennes à 15 min en voiture. Frontière belge à 5 min. Lille à 50 min. Paris-Nord à 1h45 via TGV Valenciennes.",
   topSectorsNaf: [
-    "TPE artisanat et services",
+    "PME de l'artisanat et services",
     "Commerce de centre-ville",
     "Professions libérales",
     "PME tertiaires",
@@ -30,8 +30,8 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux PME artisanales, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux PME artisanales, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condé-sur-l'Escaut : formats adaptés commerce, cabinet, bureau, restaurant. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
       en: "Implémentation IA à Condé-sur-l'Escaut : automatisation gestion clients PME, CRM augmenté commerces, prise de rendez-vous IA professions libérales, commandes et réservations restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Condé-sur-l'Escaut : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants TPE/PME condéens, artisans, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Condé-sur-l'Escaut : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants TPE/PME condéens, artisans, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 à Condé-sur-l'Escaut : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants PME et ETI condéens, artisans, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 à Condé-sur-l'Escaut : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants PME et ETI condéens, artisans, commerçants, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Condé-sur-l'Escaut et toute l'agglomération de Valenciennes (15 min en voiture, frontière belge à 5 min, Lille à 50 min).",
     },
     {
-      q: "Travaillez-vous avec les TPE et artisans de Condé-sur-l'Escaut ?",
+      q: "Travaillez-vous avec les PME et artisans de Condé-sur-l'Escaut ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
     },
     {

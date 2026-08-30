@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de PME et ETI touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de PME et ETI touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : PME et ETI touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : PME et ETI touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Hilaire-de-Riez est une station balnéaire majeure du littoral vendéen, entre la corniche vendéenne et le marais breton. Forte densité de campings, résidences de tourisme, hôtels-restaurants. Population multipliée par 5 en été. Saint-Jean-de-Monts à 10 min, Saint-Gilles-Croix-de-Vie à 5 min.",
@@ -30,20 +30,20 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux PME campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux PME campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Hilaire-de-Riez : formats adaptés aux campings, hôtels-restaurants, commerces saisonniers et activités touristiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Saint-Hilaire-de-Riez : formats adaptés aux campings, hôtels-restaurants, commerces saisonniers et activités touristiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Saint-Hilaire-de-Riez : pricing dynamique campings, agents réservation multilingues, prédiction affluence saisonnière, automatisation avis clients. Adapté TPE/PME tourisme vendéen.",
-      en: "Implémentation IA à Saint-Hilaire-de-Riez : pricing dynamique campings, agents réservation multilingues, prédiction affluence saisonnière, automatisation avis clients. Adapté TPE/PME tourisme vendéen.",
+      fr: "Implémentation IA à Saint-Hilaire-de-Riez : pricing dynamique campings, agents réservation multilingues, prédiction affluence saisonnière, automatisation avis clients. Adapté PME et ETI tourisme vendéen.",
+      en: "Implémentation IA à Saint-Hilaire-de-Riez : pricing dynamique campings, agents réservation multilingues, prédiction affluence saisonnière, automatisation avis clients. Adapté PME et ETI tourisme vendéen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Hilaire-de-Riez : sessions dans votre camping, hôtel, restaurant ou en visio. Dirigeants TPE/PME tourisme, commerce saisonnier, loisirs littoral vendéen.",
-      en: "Coaching 1-to-1 à Saint-Hilaire-de-Riez : sessions dans votre camping, hôtel, restaurant ou en visio. Dirigeants TPE/PME tourisme, commerce saisonnier, loisirs littoral vendéen.",
+      fr: "Coaching 1-to-1 à Saint-Hilaire-de-Riez : sessions dans votre camping, hôtel, restaurant ou en visio. Dirigeants PME et ETI tourisme, commerce saisonnier, loisirs littoral vendéen.",
+      en: "Coaching 1-to-1 à Saint-Hilaire-de-Riez : sessions dans votre camping, hôtel, restaurant ou en visio. Dirigeants PME et ETI tourisme, commerce saisonnier, loisirs littoral vendéen.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Hilaire-de-Riez  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Hilaire-de-Riez ?",

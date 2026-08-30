@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DARDILLY_COPY: VilleCopy = {
   pitchFr:
-    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
+    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, PME du BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
+    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, PME du BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
   seoHook: "technologiques techlid & tertiaires sièges",
   ecosystemFr:
-    "Dardilly est intégrée à la Métropole de Lyon, en banlieue NO (accès A6 péage nord Lyon). Position stratégique : proximité du technopôle Techlid (pôle tertiaire et technologique majeur ouest lyonnais, sièges sociaux et centres R&D). Tissu PME tertiaires et technologiques, TPE artisanat BTP, commerces.",
+    "Dardilly est intégrée à la Métropole de Lyon, en banlieue NO (accès A6 péage nord Lyon). Position stratégique : proximité du technopôle Techlid (pôle tertiaire et technologique majeur ouest lyonnais, sièges sociaux et centres R&D). Tissu PME tertiaires et technologiques, PME du BTP, commerces.",
   ecosystemEn:
-    "Dardilly est intégrée à la Métropole de Lyon, en banlieue NO (accès A6 péage nord Lyon). Position stratégique : proximité du technopôle Techlid (pôle tertiaire et technologique majeur ouest lyonnais, sièges sociaux et centres R&D). Tissu PME tertiaires et technologiques, TPE artisanat BTP, commerces.",
+    "Dardilly est intégrée à la Métropole de Lyon, en banlieue NO (accès A6 péage nord Lyon). Position stratégique : proximité du technopôle Techlid (pôle tertiaire et technologique majeur ouest lyonnais, sièges sociaux et centres R&D). Tissu PME tertiaires et technologiques, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 15 min. Aéroport Lyon-Saint-Exupéry à 40 min. Écully à 5 min. Limonest à 5 min. Péage A6 nord Lyon sur place.",
   distancesEn:
@@ -25,13 +25,13 @@ export const DARDILLY_COPY: VilleCopy = {
     "PME technologiques Techlid",
     "PME tertiaires & sièges sociaux",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dardilly : formats adaptés au siège social Techlid, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DARDILLY_COPY: VilleCopy = {
       en: "Implémentation IA à Dardilly : agents conversationnels B2B tech, automatisation workflow R&D, classification documents, CRM augmentés. Techlid Métropole Lyon NO.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Dardilly : sessions dans votre siège Techlid, bureau, commerce ou en visio. Dirigeants tech/tertiaires, professions libérales, artisans, gérants TPE/PME dardillois.",
-      en: "Coaching 1-to-1 à Dardilly : sessions dans votre siège Techlid, bureau, commerce ou en visio. Dirigeants tech/tertiaires, professions libérales, artisans, gérants TPE/PME dardillois.",
+      fr: "Coaching 1-to-1 à Dardilly : sessions dans votre siège Techlid, bureau, commerce ou en visio. Dirigeants tech/tertiaires, professions libérales, artisans, gérants PME et ETI dardillois.",
+      en: "Coaching 1-to-1 à Dardilly : sessions dans votre siège Techlid, bureau, commerce ou en visio. Dirigeants tech/tertiaires, professions libérales, artisans, gérants PME et ETI dardillois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const DARDILLY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Dardilly sur leurs cas IA respectueux du secret professionnel : agents conversationnels, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Dardilly, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Dardilly, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

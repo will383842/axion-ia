@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Carrières-sur-Seine (78), commune résidentielle des Yvelines à 6 km de Paris, ancien site de carrières de pierre devenu quartier prisé en bord de Seine. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Carrières-sur-Seine (78), commune résidentielle des Yvelines à 6 km de Paris, ancien site de carrières de pierre devenu quartier prisé en bord de Seine. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, immobilier, restauration. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Carrières-sur-Seine (78), commune résidentielle des Yvelines à 6 km de Paris, ancien site de carrières de pierre devenu quartier prisé en bord de Seine. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Carrières-sur-Seine (78), commune résidentielle des Yvelines à 6 km de Paris, ancien site de carrières de pierre devenu quartier prisé en bord de Seine. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, immobilier, restauration. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carrières-sur-Seine (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carrières-sur-Seine (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit sur place sur mesure.",
   seoHook: "commerce détail & services conseil",
   ecosystemFr:
-    "Carrières-sur-Seine est une commune résidentielle des Yvelines à 6 km de Paris, en bord de Seine, connue pour ses anciennes carrières de pierre calcaire reconverties. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration.",
+    "Carrières-sur-Seine est une commune résidentielle des Yvelines à 6 km de Paris, en bord de Seine, connue pour ses anciennes carrières de pierre calcaire reconverties. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, immobilier, restauration.",
   ecosystemEn:
-    "Carrières-sur-Seine est une commune résidentielle des Yvelines à 6 km de Paris, en bord de Seine, connue pour ses anciennes carrières de pierre calcaire reconverties. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration.",
+    "Carrières-sur-Seine est une commune résidentielle des Yvelines à 6 km de Paris, en bord de Seine, connue pour ses anciennes carrières de pierre calcaire reconverties. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, immobilier, restauration.",
   distancesFr:
     "Chatou à 3 min. Nanterre à 5 min. Paris La Défense à 10 min. Gare Transilien Houilles–Carrières-sur-Seine (ligne J/L). Paris Saint-Lazare à 15 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Carrières-sur-Seine : CRM augmenté commerçants, automatisation back-office PME conseil, gestion cabinet, outils estimation immobilière IA, réservation restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Carrières-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME carriérois, professions libérales, agents immobiliers.",
-      en: "Coaching 1-to-1 à Carrières-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME carriérois, professions libérales, agents immobiliers.",
+      fr: "Coaching 1-to-1 à Carrières-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI carriérois, professions libérales, agents immobiliers.",
+      en: "Coaching 1-to-1 à Carrières-sur-Seine : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI carriérois, professions libérales, agents immobiliers.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, CRM clients, facturation automatisée, outils de pilotage activité, tableaux de bord IA, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE et agences immobilières ?",
+      q: "Quels services pour les PME et agences immobilières ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
     },
     {

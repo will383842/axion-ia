@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const DRANCY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Drancy, commune de 72 390 habitants en Seine-Saint-Denis, dans l'adoption raisonnée de l'intelligence artificielle. Située à 14 km au nord-est de Paris, Drancy bénéficie d'une desserte RER B directe vers la Gare du Nord en 15 minutes et de la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle (8 km). Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, transporteurs, artisans du bâtiment et restaurateurs locaux, en complément des grands voisins du Bourget et de La Courneuve.",
+    "Axion-IA accompagne les PME et ETI de Drancy, commune de 72 390 habitants en Seine-Saint-Denis, dans l'adoption raisonnée de l'intelligence artificielle. Située à 14 km au nord-est de Paris, Drancy bénéficie d'une desserte RER B directe vers la Gare du Nord en 15 minutes et de la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle (8 km). Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, transporteurs, artisans du bâtiment et restaurateurs locaux, en complément des grands voisins du Bourget et de La Courneuve.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Drancy, commune de 72 390 habitants en Seine-Saint-Denis, dans l'adoption raisonnée de l'intelligence artificielle. Située à 14 km au nord-est de Paris, Drancy bénéficie d'une desserte RER B directe vers la Gare du Nord en 15 minutes et de la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle (8 km). Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, transporteurs, artisans du bâtiment et restaurateurs locaux, en complément des grands voisins du Bourget et de La Courneuve.",
+    "Axion-IA accompagne les PME et ETI de Drancy, commune de 72 390 habitants en Seine-Saint-Denis, dans l'adoption raisonnée de l'intelligence artificielle. Située à 14 km au nord-est de Paris, Drancy bénéficie d'une desserte RER B directe vers la Gare du Nord en 15 minutes et de la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle (8 km). Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, transporteurs, artisans du bâtiment et restaurateurs locaux, en complément des grands voisins du Bourget et de La Courneuve.",
   directAnswerFr:
-    "Axion-IA intervient à Drancy pour les TPE, PME et plus rarement ETI implantées en Seine-Saint-Denis. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces de détail, transporteurs terrestres et entreprises du BTP nombreuses dans le secteur. Notre équipe se déplace depuis Paris en 25 minutes via le RER B (arrêt Drancy) pour couvrir aussi les communes limitrophes de Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve.",
+    "Axion-IA intervient à Drancy pour les PME, ETI et plus rarement les grands groupes implantés en Seine-Saint-Denis. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces de détail, transporteurs terrestres et entreprises du BTP nombreuses dans le secteur. Notre équipe se déplace depuis Paris en 25 minutes via le RER B (arrêt Drancy) pour couvrir aussi les communes limitrophes de Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve.",
   directAnswerEn:
-    "Axion-IA intervient à Drancy pour les TPE, PME et plus rarement ETI implantées en Seine-Saint-Denis. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces de détail, transporteurs terrestres et entreprises du BTP nombreuses dans le secteur. Notre équipe se déplace depuis Paris en 25 minutes via le RER B (arrêt Drancy) pour couvrir aussi les communes limitrophes de Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve.",
+    "Axion-IA intervient à Drancy pour les PME, ETI et plus rarement les grands groupes implantés en Seine-Saint-Denis. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces de détail, transporteurs terrestres et entreprises du BTP nombreuses dans le secteur. Notre équipe se déplace depuis Paris en 25 minutes via le RER B (arrêt Drancy) pour couvrir aussi les communes limitrophes de Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve.",
   seoHook: "commerce détail, logistique & BTP",
   ecosystemFr:
     "Drancy s'inscrit dans le tissu économique dense de la Seine-Saint-Denis, marqué par la logistique liée au pôle aéroportuaire de Roissy-CDG (8 km), le commerce de proximité et le BTP. La ville est desservie par la gare RER B Drancy et le Tramway T1, et bordée par Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve, ce qui en fait un point d'ancrage pertinent pour servir le nord-est francilien.",
@@ -33,20 +33,20 @@ export const DRANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À Drancy, nos audits IA s'adressent aux dirigeants de TPE/PME du commerce, du BTP et de la logistique souhaitant identifier 2 à 3 cas d'usage prioritaires avant tout investissement.",
-      en: "À Drancy, nos audits IA s'adressent aux dirigeants de TPE/PME du commerce, du BTP et de la logistique souhaitant identifier 2 à 3 cas d'usage prioritaires avant tout investissement.",
+      fr: "À Drancy, nos audits IA s'adressent aux dirigeants de PME et ETI du commerce, du BTP et de la logistique souhaitant identifier 2 à 3 cas d'usage prioritaires avant tout investissement.",
+      en: "À Drancy, nos audits IA s'adressent aux dirigeants de PME et ETI du commerce, du BTP et de la logistique souhaitant identifier 2 à 3 cas d'usage prioritaires avant tout investissement.",
     },
     interventions: {
       fr: "Nos interventions à Drancy ciblent typiquement les tâches répétitives des PME locales : traitement de devis BTP, suivi de tournées de livraison, ou réponses aux demandes clients commerce.",
       en: "Nos interventions à Drancy ciblent typiquement les tâches répétitives des PME locales : traitement de devis BTP, suivi de tournées de livraison, ou réponses aux demandes clients commerce.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Drancy, nous implémentons des solutions IA en code custom, intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
-      en: "Pour les TPE et PME de Drancy, nous implémentons des solutions IA en code custom, intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
+      fr: "Pour les PME et ETI de Drancy, nous implémentons des solutions IA en code custom, intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
+      en: "Pour les PME et ETI de Drancy, nous implémentons des solutions IA en code custom, intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Drancy permet aux dirigeants de TPE/PME de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
-      en: "L'accompagnement un-à-un à Drancy permet aux dirigeants de TPE/PME de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
+      fr: "L'accompagnement un-à-un à Drancy permet aux dirigeants de PME et ETI de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
+      en: "L'accompagnement un-à-un à Drancy permet aux dirigeants de PME et ETI de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const DRANCY_COPY: VilleCopy = {
           "Tissu industriel thermique et automobile dominant : elm.leblanc (chaudières gaz, site historique 1932) intégré à Bosch Thermotechnologie, Robert Bosch France et Hitachi Astemo France structurent la demande locale — portails fournisseurs, configurateurs produits, documentation technique chaudières/freinage indexée par IA.",
           "Grande distribution et distribution pharmaceutique concentrées dans la ZAC L'Avenir : Carrefour Hypermarchés, Lidl, Alliance Healthcare Répartition — des acteurs pour qui nous construisons sites e-commerce multi-CMS, suivi de commandes et moteurs de recherche produits sémantiques.",
           "Logistique aéroportuaire à 8 km de Roissy-CDG et adossée au fret du Bourget : les transporteurs et plateformes logistiques de Drancy ont besoin de portails clients, de suivi de tournées et d'agents conversationnels qui parlent leur métier, pas de vitrines génériques.",
-          "Mutation Grand Paris Express : la gare Drancy-Bobigny (ligne 15 Est, ~70 000 voyageurs/jour visés à l'ouverture) et le pôle-gare Le Bourget-Drancy amènent des programmes de bureaux neufs — un terrain de jeu pour les TPE/PME et startups qui s'y implantent et veulent une plateforme IA-native dès le départ.",
+          "Mutation Grand Paris Express : la gare Drancy-Bobigny (ligne 15 Est, ~70 000 voyageurs/jour visés à l'ouverture) et le pôle-gare Le Bourget-Drancy amènent des programmes de bureaux neufs — un terrain de jeu pour les PME et ETI et startups qui s'y implantent et veulent une plateforme IA-native dès le départ.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const DRANCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-assisté",
-            detail:
-              "Pour les commerces, artisans du BTP et restaurateurs de Drancy et du centre-ville : site vitrine ou boutique en ligne sur CMS, avec recherche intelligente et assistant de réponse aux demandes clients. Idéal pour les indépendants accompagnés par l'ADEL ou la CCI 93.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
             detail:
@@ -123,7 +117,7 @@ export const DRANCY_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi autour du futur pôle-gare Le Bourget-Drancy et de la gare Drancy-Bobigny ?",
-            a: "Oui. La gare Drancy-Bobigny de la ligne 15 Est, en chantier depuis septembre 2025, et le pôle-gare Le Bourget-Drancy (futures lignes 16/17) amènent des programmes de bureaux neufs. Nous accompagnons les TPE, PME et startups qui s'y implantent pour bâtir dès le départ un site ou un SaaS IA-native, et nous couvrons aussi Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve.",
+            a: "Oui. La gare Drancy-Bobigny de la ligne 15 Est, en chantier depuis septembre 2025, et le pôle-gare Le Bourget-Drancy (futures lignes 16/17) amènent des programmes de bureaux neufs. Nous accompagnons les PME, ETI et startups qui s'y implantent pour bâtir dès le départ un site ou un SaaS IA-native, et nous couvrons aussi Bobigny, Bondy, Le Blanc-Mesnil, Le Bourget et La Courneuve.",
           },
           {
             q: "Sous quel délai obtient-on un devis pour un projet de site ou de SaaS à Drancy ?",
@@ -173,12 +167,6 @@ export const DRANCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI-assisted showcase or e-commerce site",
-            detail:
-              "For Drancy shops, building-trade artisans and restaurateurs and the town center: showcase site or online store on a CMS, with smart search and a customer-request assistant. Ideal for freelancers supported by the ADEL or the CCI 93.",
-          },
           {
             sizeLabel: "PME",
             price: "Custom business platform",
@@ -245,11 +233,11 @@ export const DRANCY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques de Drancy travaillez-vous le plus ?",
-      a: "À Drancy, nos clients sont majoritairement des TPE et PME du commerce de détail, du BTP, de la logistique (proximité Roissy-CDG) et de la restauration. Nous accompagnons plus rarement les ETI du secteur.",
+      a: "À Drancy, nos clients sont majoritairement des PME et ETI du commerce de détail, du BTP, de la logistique (proximité Roissy-CDG) et de la restauration. Nous accompagnons plus rarement les grands groupes du secteur.",
     },
     {
       q: "Proposez-vous du code custom ou du no-code à Drancy ?",
-      a: "Axion-IA conçoit exclusivement du code IA sur mesure pour les TPE/PME de Drancy. Pas de plateforme no-code : nos livrables sont des intégrations pérennes auditables et maintenables.",
+      a: "Axion-IA conçoit exclusivement du code IA sur mesure pour les PME et ETI de Drancy. Pas de plateforme no-code : nos livrables sont des intégrations pérennes auditables et maintenables.",
     },
   ],
 };

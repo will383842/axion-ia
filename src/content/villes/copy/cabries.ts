@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CABRIES_COPY: VilleCopy = {
   pitchFr:
-    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
+    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). PME du commerce, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
+    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). PME du commerce, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabriès (13). Nous accompagnons PME du commerce, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabriès (13). Nous accompagnons PME du commerce, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration franchises",
   ecosystemFr:
-    "Cabriès est à mi-chemin entre Marseille et Aix-en-Provence, à proximité de l'aéroport Marseille-Provence. La zone commerciale Plan de Campagne (à cheval Cabriès / Les Pennes-Mirabeau) rassemble plus de 350 enseignes : prêt-à-porter, équipement maison, restauration, automobile, loisirs. Tissu dense de TPE commerçants franchisés, restaurateurs, PME de services et artisans BTP.",
+    "Cabriès est à mi-chemin entre Marseille et Aix-en-Provence, à proximité de l'aéroport Marseille-Provence. La zone commerciale Plan de Campagne (à cheval Cabriès / Les Pennes-Mirabeau) rassemble plus de 350 enseignes : prêt-à-porter, équipement maison, restauration, automobile, loisirs. Tissu dense de PME du commerce franchisés, restaurateurs, PME de services et artisans BTP.",
   ecosystemEn:
-    "Cabriès est à mi-chemin entre Marseille et Aix-en-Provence, à proximité de l'aéroport Marseille-Provence. La zone commerciale Plan de Campagne (à cheval Cabriès / Les Pennes-Mirabeau) rassemble plus de 350 enseignes : prêt-à-porter, équipement maison, restauration, automobile, loisirs. Tissu dense de TPE commerçants franchisés, restaurateurs, PME de services et artisans BTP.",
+    "Cabriès est à mi-chemin entre Marseille et Aix-en-Provence, à proximité de l'aéroport Marseille-Provence. La zone commerciale Plan de Campagne (à cheval Cabriès / Les Pennes-Mirabeau) rassemble plus de 350 enseignes : prêt-à-porter, équipement maison, restauration, automobile, loisirs. Tissu dense de PME du commerce franchisés, restaurateurs, PME de services et artisans BTP.",
   distancesFr:
     "Aix-en-Provence à 15 min. Marseille centre à 20 min via A51. Aéroport Marseille-Provence à 15 min. Vitrolles à 10 min. Gare TGV Aix à 20 min. Marignane à 15 min. Accès A51 et A7.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CABRIES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce de détail (Plan de Campagne)",
     "Restauration & franchises",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME services aux entreprises",
     "Professions libérales & conseil",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cabriès : diagnostic adapté aux TPE commerçants Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Cabriès : diagnostic adapté aux TPE commerçants Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Cabriès : diagnostic adapté aux PME du commerce Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cabriès : diagnostic adapté aux PME du commerce Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cabriès : ateliers pour commerçants Plan de Campagne, restaurateurs, franchisés, PME services et équipes BTP. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const CABRIES_COPY: VilleCopy = {
       en: "Implémentation IA à Cabriès : prévision affluence et stocks retail, optimisation planning équipes, agents conversationnels SAV, automatisation devis BTP, marketing local géolocalisé. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cabriès : sessions pour gérants TPE commerçants, franchisés, restaurateurs et dirigeants PME du nord aixois souhaitant maîtriser l'IA opérationnelle.",
-      en: "Coaching 1-to-1 à Cabriès : sessions pour gérants TPE commerçants, franchisés, restaurateurs et dirigeants PME du nord aixois souhaitant maîtriser l'IA opérationnelle.",
+      fr: "Coaching 1-to-1 à Cabriès : sessions pour gérants PME du commerce, franchisés, restaurateurs et dirigeants PME du nord aixois souhaitant maîtriser l'IA opérationnelle.",
+      en: "Coaching 1-to-1 à Cabriès : sessions pour gérants PME du commerce, franchisés, restaurateurs et dirigeants PME du nord aixois souhaitant maîtriser l'IA opérationnelle.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CABRIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cabriès  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE commerçants, franchisés, restaurateurs et PME cabriésiens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME du commerce, franchisés, restaurateurs et PME cabriésiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les commerçants et franchisés de Plan de Campagne ?",

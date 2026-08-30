@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHALLANS_COPY: VilleCopy = {
   pitchFr:
-    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses PME et ETI : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI challandaises, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses PME et ETI : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI challandaises, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challans (85) auprès des PME et ETI : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Challans (85) auprès des PME et ETI : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   seoHook: "volaille & agroalimentaire vendéen",
   ecosystemFr:
-    "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de TPE et PME, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
+    "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de PME et ETI, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
   ecosystemEn:
-    "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de TPE et PME, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
+    "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de PME et ETI, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
   distancesFr:
     "Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-Monts). La gare de Nantes est à environ 1 h, l'aéroport Nantes-Atlantique à 50 min.",
   distancesEn:
@@ -38,12 +38,12 @@ export const CHALLANS_COPY: VilleCopy = {
       en: "Interventions IA sur site à Challans : ateliers pratiques pour exploitations avicoles, ateliers agroalimentaires, commerces et BTP, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Challans : traçabilité de la filière volaille, prévision de la demande, automatisation des devis et stocks, e-boutique terroir et CRM augmenté pour TPE et PME.",
-      en: "Implémentation IA à Challans : traçabilité de la filière volaille, prévision de la demande, automatisation des devis et stocks, e-boutique terroir et CRM augmenté pour TPE et PME.",
+      fr: "Implémentation IA à Challans : traçabilité de la filière volaille, prévision de la demande, automatisation des devis et stocks, e-boutique terroir et CRM augmenté pour PME et ETI.",
+      en: "Implémentation IA à Challans : traçabilité de la filière volaille, prévision de la demande, automatisation des devis et stocks, e-boutique terroir et CRM augmenté pour PME et ETI.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Challans : sessions sur site ou en visio pour dirigeants de TPE et PME avicoles, agroalimentaires, commerciales et touristiques, ciblées sur vos priorités.",
-      en: "Accompagnement un-à-un à Challans : sessions sur site ou en visio pour dirigeants de TPE et PME avicoles, agroalimentaires, commerciales et touristiques, ciblées sur vos priorités.",
+      fr: "Accompagnement un-à-un à Challans : sessions sur site ou en visio pour dirigeants de PME et d'ETI avicoles, agroalimentaires, commerciales et touristiques, ciblées sur vos priorités.",
+      en: "Accompagnement un-à-un à Challans : sessions sur site ou en visio pour dirigeants de PME et d'ETI avicoles, agroalimentaires, commerciales et touristiques, ciblées sur vos priorités.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Challans : e-boutique terroir, plateforme de réservation ou vitrine avec IA intégrée (vente, recommandation, réservation) pour producteurs, commerces et hébergeurs.",
@@ -58,7 +58,7 @@ export const CHALLANS_COPY: VilleCopy = {
           "Filière canard de Challans et agroalimentaire avicole, portés par l'appellation Label Rouge et des transformateurs reconnus du nord-vendéen : éleveurs, abatteurs et conserveurs ont besoin de traçabilité fine et de vente directe. On construit des e-boutiques terroir et des portails B2B avec recommandation, étiquetage et suivi de lots automatisés, branchés sur vos outils existants, sans refonte du SI.",
           "Commerce de centre-ville rythmé par le marché traditionnel hebdomadaire et l'affluence du festival Autrefois Challans : pour les boutiques, primeurs, conserveurs et artisans, on greffe une vitrine e-commerce click-and-collect multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et un chatbot RAG qui répond stocks, horaires de marché et disponibilités produits, le tout pensé mobile-first.",
           "Tourisme saisonnier vers le littoral nord-vendéen (Saint-Jean-de-Monts, Noirmoutier, Saint-Gilles-Croix-de-Vie) : hébergeurs, campings, loueurs de vélos et restaurateurs gagnent à un moteur de réservation directe sans commission et des agents conversationnels multilingues calibrés sur le pic estival de juillet-août et les ponts de printemps.",
-          "Tissu dense de TPE/PME du BTP, de l'artisanat et de la logistique installées dans les parcs d'activités de la périphérie challandaise : on automatise devis, plannings de chantier et suivis de tournées via une brique IA et des agents greffés sur le site ou l'ERP déjà en place, avec recherche sémantique sur vos documents métier.",
+          "Tissu dense de PME et ETI du BTP, de l'artisanat et de la logistique installées dans les parcs d'activités de la périphérie challandaise : on automatise devis, plannings de chantier et suivis de tournées via une brique IA et des agents greffés sur le site ou l'ERP déjà en place, avec recherche sémantique sur vos documents métier.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const CHALLANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de réservation, click-and-collect) sur le site existant d'un producteur de canard, d'un conserveur, d'un commerçant du centre-ville ou d'un hébergeur du littoral challandais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -128,7 +122,7 @@ export const CHALLANS_COPY: VilleCopy = {
           },
           {
             q: "Comment l'IA aide-t-elle les artisans, le BTP et la logistique challandais ?",
-            a: "Pour les TPE/PME des parcs d'activités de Challans, on greffe une brique IA sur le site ou l'ERP existant : génération et suivi de devis, plannings de chantier, optimisation de tournées et recherche sémantique sur vos documents métier (devis, fiches techniques, normes). Pas de refonte coûteuse, déploiement par étapes maîtrisées.",
+            a: "Pour les PME et ETI des parcs d'activités de Challans, on greffe une brique IA sur le site ou l'ERP existant : génération et suivi de devis, plannings de chantier, optimisation de tournées et recherche sémantique sur vos documents métier (devis, fiches techniques, normes). Pas de refonte coûteuse, déploiement par étapes maîtrisées.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -144,7 +138,7 @@ export const CHALLANS_COPY: VilleCopy = {
           "Filière canard de Challans et agroalimentaire avicole, portés par l'appellation Label Rouge et des transformateurs reconnus du nord-vendéen : éleveurs, abatteurs et conserveurs ont besoin de traçabilité fine et de vente directe. On construit des e-boutiques terroir et des portails B2B avec recommandation, étiquetage et suivi de lots automatisés, branchés sur vos outils existants, sans refonte du SI.",
           "Commerce de centre-ville rythmé par le marché traditionnel hebdomadaire et l'affluence du festival Autrefois Challans : pour les boutiques, primeurs, conserveurs et artisans, on greffe une vitrine e-commerce click-and-collect multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) et un chatbot RAG qui répond stocks, horaires de marché et disponibilités produits, le tout pensé mobile-first.",
           "Tourisme saisonnier vers le littoral nord-vendéen (Saint-Jean-de-Monts, Noirmoutier, Saint-Gilles-Croix-de-Vie) : hébergeurs, campings, loueurs de vélos et restaurateurs gagnent à un moteur de réservation directe sans commission et des agents conversationnels multilingues calibrés sur le pic estival de juillet-août et les ponts de printemps.",
-          "Tissu dense de TPE/PME du BTP, de l'artisanat et de la logistique installées dans les parcs d'activités de la périphérie challandaise : on automatise devis, plannings de chantier et suivis de tournées via une brique IA et des agents greffés sur le site ou l'ERP déjà en place, avec recherche sémantique sur vos documents métier.",
+          "Tissu dense de PME et ETI du BTP, de l'artisanat et de la logistique installées dans les parcs d'activités de la périphérie challandaise : on automatise devis, plannings de chantier et suivis de tournées via une brique IA et des agents greffés sur le site ou l'ERP déjà en place, avec recherche sémantique sur vos documents métier.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const CHALLANS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de réservation, click-and-collect) sur le site existant d'un producteur de canard, d'un conserveur, d'un commerçant du centre-ville ou d'un hébergeur du littoral challandais, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -214,7 +202,7 @@ export const CHALLANS_COPY: VilleCopy = {
           },
           {
             q: "Comment l'IA aide-t-elle les artisans, le BTP et la logistique challandais ?",
-            a: "Pour les TPE/PME des parcs d'activités de Challans, on greffe une brique IA sur le site ou l'ERP existant : génération et suivi de devis, plannings de chantier, optimisation de tournées et recherche sémantique sur vos documents métier (devis, fiches techniques, normes). Pas de refonte coûteuse, déploiement par étapes maîtrisées.",
+            a: "Pour les PME et ETI des parcs d'activités de Challans, on greffe une brique IA sur le site ou l'ERP existant : génération et suivi de devis, plannings de chantier, optimisation de tournées et recherche sémantique sur vos documents métier (devis, fiches techniques, normes). Pas de refonte coûteuse, déploiement par étapes maîtrisées.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -234,7 +222,7 @@ export const CHALLANS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Challans ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME challandaises : filière volaille, agroalimentaire, commerce, artisanat et tourisme.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux PME et ETI challandaises : filière volaille, agroalimentaire, commerce, artisanat et tourisme.",
     },
     {
       q: "Comment l'IA aide-t-elle la filière volaille de Challans ?",
@@ -246,7 +234,7 @@ export const CHALLANS_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous priorisons les TPE puis les PME de Challans ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+      a: "Non. Nous priorisons les PME puis les ETI de Challans ; les grands groupes sont accompagnés en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
     },
     {
       q: "Comment se déroule une mission à Challans ?",

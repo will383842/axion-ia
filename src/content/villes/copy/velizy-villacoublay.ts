@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Vélizy-Villacoublay, dans les Yvelines — sous-traitants de l'aéronautique et de la défense gravitant autour de Dassault Aviation et Thales, services aux entreprises et commerce. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Vélizy-Villacoublay, dans les Yvelines — sous-traitants de l'aéronautique et de la défense gravitant autour de Dassault Aviation et Thales, services aux entreprises et commerce. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Vélizy-Villacoublay, dans les Yvelines — sous-traitants de l'aéronautique et de la défense gravitant autour de Dassault Aviation et Thales, services aux entreprises et commerce. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Vélizy-Villacoublay, dans les Yvelines — sous-traitants de l'aéronautique et de la défense gravitant autour de Dassault Aviation et Thales, services aux entreprises et commerce. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Vélizy-Villacoublay, pôle aéronautique et défense des Yvelines qui abrite le siège de Dassault Aviation et de grands acteurs comme Thales. Au sein du technopôle Inovel Parc et autour du centre commercial Vélizy 2, nous nous déplaçons sur site auprès des sous-traitants, bureaux d'études et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Vélizy-Villacoublay, pôle aéronautique et défense des Yvelines qui abrite le siège de Dassault Aviation et de grands acteurs comme Thales. Au sein du technopôle Inovel Parc et autour du centre commercial Vélizy 2, nous nous déplaçons sur site auprès des sous-traitants, bureaux d'études et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Vélizy-Villacoublay, pôle aéronautique et défense des Yvelines qui abrite le siège de Dassault Aviation et de grands acteurs comme Thales. Au sein du technopôle Inovel Parc et autour du centre commercial Vélizy 2, nous nous déplaçons sur site auprès des sous-traitants, bureaux d'études et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Vélizy-Villacoublay, pôle aéronautique et défense des Yvelines qui abrite le siège de Dassault Aviation et de grands acteurs comme Thales. Au sein du technopôle Inovel Parc et autour du centre commercial Vélizy 2, nous nous déplaçons sur site auprès des sous-traitants, bureaux d'études et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   seoHook: "aéronautique, défense & tech",
   ecosystemFr:
-    "Vélizy-Villacoublay est l'un des pôles aéronautiques et de défense majeurs d'Île-de-France : siège de Dassault Aviation, forte présence de Thales et d'un dense réseau de sous-traitants et de bureaux d'études techniques au sein du technopôle Inovel Parc. Le centre commercial Vélizy 2 et un tissu de services aux entreprises complètent cette économie très qualifiée. Pour les TPE et PME qui gravitent autour de ces donneurs d'ordre, l'IA opérationnelle fiabilise les devis, la documentation technique et le suivi de projet sans surdimensionner les outils.",
+    "Vélizy-Villacoublay est l'un des pôles aéronautiques et de défense majeurs d'Île-de-France : siège de Dassault Aviation, forte présence de Thales et d'un dense réseau de sous-traitants et de bureaux d'études techniques au sein du technopôle Inovel Parc. Le centre commercial Vélizy 2 et un tissu de services aux entreprises complètent cette économie très qualifiée. Pour les PME et ETI qui gravitent autour de ces donneurs d'ordre, l'IA opérationnelle fiabilise les devis, la documentation technique et le suivi de projet sans surdimensionner les outils.",
   ecosystemEn:
-    "Vélizy-Villacoublay est l'un des pôles aéronautiques et de défense majeurs d'Île-de-France : siège de Dassault Aviation, forte présence de Thales et d'un dense réseau de sous-traitants et de bureaux d'études techniques au sein du technopôle Inovel Parc. Le centre commercial Vélizy 2 et un tissu de services aux entreprises complètent cette économie très qualifiée. Pour les TPE et PME qui gravitent autour de ces donneurs d'ordre, l'IA opérationnelle fiabilise les devis, la documentation technique et le suivi de projet sans surdimensionner les outils.",
+    "Vélizy-Villacoublay est l'un des pôles aéronautiques et de défense majeurs d'Île-de-France : siège de Dassault Aviation, forte présence de Thales et d'un dense réseau de sous-traitants et de bureaux d'études techniques au sein du technopôle Inovel Parc. Le centre commercial Vélizy 2 et un tissu de services aux entreprises complètent cette économie très qualifiée. Pour les PME et ETI qui gravitent autour de ces donneurs d'ordre, l'IA opérationnelle fiabilise les devis, la documentation technique et le suivi de projet sans surdimensionner les outils.",
   distancesFr:
     "Vélizy-Villacoublay est reliée au cœur de Paris par le tramway T6 et le réseau express régional via Massy, plaçant Paris-Montparnasse à une trentaine de minutes. L'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres et les autoroutes A86 et A12 desservent l'agglomération. Nos experts se déplacent sur site dans tout le sud des Yvelines et l'ouest francilien.",
   distancesEn:
@@ -34,16 +34,16 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
       en: "Auditer à Vélizy-Villacoublay les processus d'un sous-traitant aéronautique ou d'un bureau d'études — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir sur site à Vélizy-Villacoublay pour automatiser devis, documentation technique et suivi de projet des TPE/PME, sans bouleverser les équipes.",
-      en: "Intervenir sur site à Vélizy-Villacoublay pour automatiser devis, documentation technique et suivi de projet des TPE/PME, sans bouleverser les équipes.",
+      fr: "Intervenir sur site à Vélizy-Villacoublay pour automatiser devis, documentation technique et suivi de projet des PME et ETI, sans bouleverser les équipes.",
+      en: "Intervenir sur site à Vélizy-Villacoublay pour automatiser devis, documentation technique et suivi de projet des PME et ETI, sans bouleverser les équipes.",
     },
     implementation: {
       fr: "Implémenter à Vélizy-Villacoublay des outils IA durables, intégrés aux logiciels métier et de gestion documentaire existants et documentés pour rester maîtrisés en interne.",
       en: "Implémenter à Vélizy-Villacoublay des outils IA durables, intégrés aux logiciels métier et de gestion documentaire existants et documentés pour rester maîtrisés en interne.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE/PME de Vélizy-Villacoublay pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
-      en: "Accompagner en un-à-un les dirigeants de TPE/PME de Vélizy-Villacoublay pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et ETI de Vélizy-Villacoublay pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de PME et ETI de Vélizy-Villacoublay pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
     },
     sitesWeb: {
       fr: "Concevoir à Vélizy-Villacoublay un site ou une plateforme web augmentée par l'IA pour une PME technique ou de services — catalogue, demandes de devis et espace client enrichis intelligemment.",
@@ -57,7 +57,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
         whyHere: [
           "Donneurs d'ordre exigeants : autour de Dassault Aviation, de Thales et de Safran Landing Systems gravite un réseau dense de sous-traitants et de bureaux d'études techniques. Terrain idéal pour des portails de demande de devis, des espaces fournisseurs et des parcours documentaires augmentés à l'IA, qui qualifient les pièces, normes et délais et fluidifient les réponses aux appels d'offres aéronautiques.",
           "Documentation technique volumineuse : entre les éditeurs comme Dassault Systèmes et les bureaux d'études d'Inovel Parc, la matière documentaire est partout. Nos moteurs de recherche sémantique et chatbots RAG s'ancrent sur vos référentiels — cahiers des charges, normes EN/AS, fiches procédés, manuels de maintenance — pour répondre vite et juste, en français comme à l'export.",
-          "Deuxième pôle tertiaire de France : Inovel Parc concentre près de 1 000 structures et 50 000 emplois, des TPE et PME de services jusqu'aux sièges de Bouygues Telecom et d'Eiffage. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on construit une plateforme métier sur mesure branchée sur votre SI.",
+          "Deuxième pôle tertiaire de France : Inovel Parc concentre près de 1 000 structures et 50 000 emplois, des PME et ETI de services jusqu'aux sièges de Bouygues Telecom et d'Eiffage. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on construit une plateforme métier sur mesure branchée sur votre SI.",
           "Confidentialité critique en aéronautique, défense et medtech : aux côtés de la base aérienne 107 et d'acteurs comme Carmat, les données projet sont sensibles. Toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act — vos données projet, fournisseurs, brevets et clients restent strictement maîtrisées, sans transit hors UE sans DPA.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur votre documentation, formulaire de devis intelligent — sur le site existant d'un artisan, d'un commerçant de Vélizy 2 ou d'un prestataire de services d'Inovel Parc, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
         whyHere: [
           "Donneurs d'ordre exigeants : autour de Dassault Aviation, de Thales et de Safran Landing Systems gravite un réseau dense de sous-traitants et de bureaux d'études techniques. Terrain idéal pour des portails de demande de devis, des espaces fournisseurs et des parcours documentaires augmentés à l'IA, qui qualifient les pièces, normes et délais et fluidifient les réponses aux appels d'offres aéronautiques.",
           "Documentation technique volumineuse : entre les éditeurs comme Dassault Systèmes et les bureaux d'études d'Inovel Parc, la matière documentaire est partout. Nos moteurs de recherche sémantique et chatbots RAG s'ancrent sur vos référentiels — cahiers des charges, normes EN/AS, fiches procédés, manuels de maintenance — pour répondre vite et juste, en français comme à l'export.",
-          "Deuxième pôle tertiaire de France : Inovel Parc concentre près de 1 000 structures et 50 000 emplois, des TPE et PME de services jusqu'aux sièges de Bouygues Telecom et d'Eiffage. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on construit une plateforme métier sur mesure branchée sur votre SI.",
+          "Deuxième pôle tertiaire de France : Inovel Parc concentre près de 1 000 structures et 50 000 emplois, des PME et ETI de services jusqu'aux sièges de Bouygues Telecom et d'Eiffage. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) sans refonte coûteuse, ou on construit une plateforme métier sur mesure branchée sur votre SI.",
           "Confidentialité critique en aéronautique, défense et medtech : aux côtés de la base aérienne 107 et d'acteurs comme Carmat, les données projet sont sensibles. Toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act — vos données projet, fournisseurs, brevets et clients restent strictement maîtrisées, sans transit hors UE sans DPA.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur votre documentation, formulaire de devis intelligent — sur le site existant d'un artisan, d'un commerçant de Vélizy 2 ou d'un prestataire de services d'Inovel Parc, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -237,8 +225,8 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
       a: "Oui. Nous aidons les sous-traitants et bureaux d'études à fiabiliser leurs devis, leur documentation technique et leur suivi de projet, avec des outils proportionnés à la taille de leur structure.",
     },
     {
-      q: "L'IA est-elle accessible à une TPE de Vélizy-Villacoublay ?",
-      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
+      q: "L'IA est-elle accessible à une PME de Vélizy-Villacoublay ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les PME, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
       q: "Connaît-on les tarifs avant de s'engager ?",

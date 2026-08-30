@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LIMAY_COPY: VilleCopy = {
   pitchFr:
-    "Limay (78), commune des bords de Seine face à Mantes-la-Jolie, allie zone industrielle active et tissu de TPE/PME diversifié. Industrie, logistique, BTP, commerces, services aux entreprises et professions libérales. Axion-IA accompagne tout le tissu professionnel local du Mantois.",
+    "Limay (78), commune des bords de Seine face à Mantes-la-Jolie, allie zone industrielle active et tissu de PME et ETI diversifié. Industrie, logistique, BTP, commerces, services aux entreprises et professions libérales. Axion-IA accompagne tout le tissu professionnel local du Mantois.",
   pitchEn:
-    "Limay (78), commune des bords de Seine face à Mantes-la-Jolie, allie zone industrielle active et tissu de TPE/PME diversifié. Industrie, logistique, BTP, commerces, services aux entreprises et professions libérales. Axion-IA accompagne tout le tissu professionnel local du Mantois.",
+    "Limay (78), commune des bords de Seine face à Mantes-la-Jolie, allie zone industrielle active et tissu de PME et ETI diversifié. Industrie, logistique, BTP, commerces, services aux entreprises et professions libérales. Axion-IA accompagne tout le tissu professionnel local du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limay (78). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limay (78). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limay (78). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Limay (78). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles et logistiques de la zone d'activités, entreprises BTP, professions libérales, prestataires de services du Mantois.",
   seoHook: "industrie matériaux & logistique transport",
   ecosystemFr:
-    "Limay est située sur la rive droite de la Seine, face à Mantes-la-Jolie, au cœur du Mantois. Tissu économique dynamique : zones d'activités industrielles et logistiques (carrières, matériaux, recyclage), TPE artisanat et BTP, commerces de proximité, PME de services, professions libérales. La commune bénéficie de l'axe Paris-Normandie et de la proximité de la gare de Mantes-la-Jolie.",
+    "Limay est située sur la rive droite de la Seine, face à Mantes-la-Jolie, au cœur du Mantois. Tissu économique dynamique : zones d'activités industrielles et logistiques (carrières, matériaux, recyclage), PME de l'artisanat et BTP, commerces de proximité, PME de services, professions libérales. La commune bénéficie de l'axe Paris-Normandie et de la proximité de la gare de Mantes-la-Jolie.",
   ecosystemEn:
-    "Limay est située sur la rive droite de la Seine, face à Mantes-la-Jolie, au cœur du Mantois. Tissu économique dynamique : zones d'activités industrielles et logistiques (carrières, matériaux, recyclage), TPE artisanat et BTP, commerces de proximité, PME de services, professions libérales. La commune bénéficie de l'axe Paris-Normandie et de la proximité de la gare de Mantes-la-Jolie.",
+    "Limay est située sur la rive droite de la Seine, face à Mantes-la-Jolie, au cœur du Mantois. Tissu économique dynamique : zones d'activités industrielles et logistiques (carrières, matériaux, recyclage), PME de l'artisanat et BTP, commerces de proximité, PME de services, professions libérales. La commune bénéficie de l'axe Paris-Normandie et de la proximité de la gare de Mantes-la-Jolie.",
   distancesFr:
     "Mantes-la-Jolie centre à 5 min voiture (pont sur Seine). Gare de Mantes-la-Jolie (Transilien J + TER Normandie, Paris-Saint-Lazare 50 min). Aéroport Roissy-CDG à 1h15. Accès A13/N13 axe Paris-Normandie.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LIMAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limay : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
-      en: "Audit IA à Limay : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      fr: "Audit IA à Limay : diagnostic adapté aux PME artisanales, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA à Limay : diagnostic adapté aux PME artisanales, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Limay : formats adaptés aux PME industrielles, ateliers artisans, commerces et cabinets. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -42,8 +42,8 @@ export const LIMAY_COPY: VilleCopy = {
       en: "Implémentation IA à Limay : automatisation chaînes logistiques, contrôle qualité industriel, agents conversationnels client, gestion stocks, CRM augmentés. Adapté au tissu industriel et commercial du Mantois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Limay : sessions dans votre entreprise, commerce, atelier ou en visio. Gérants TPE/PME, dirigeants industriels et commerçants du Mantois souhaitant maîtriser l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à Limay : sessions dans votre entreprise, commerce, atelier ou en visio. Gérants TPE/PME, dirigeants industriels et commerçants du Mantois souhaitant maîtriser l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à Limay : sessions dans votre entreprise, commerce, atelier ou en visio. Gérants PME et ETI, dirigeants industriels et commerçants du Mantois souhaitant maîtriser l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à Limay : sessions dans votre entreprise, commerce, atelier ou en visio. Gérants PME et ETI, dirigeants industriels et commerçants du Mantois souhaitant maîtriser l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -64,8 +64,8 @@ export const LIMAY_COPY: VilleCopy = {
       a: "Nos consultants viennent sur site à Limay (gare de Mantes-la-Jolie, Transilien J depuis Paris-Saint-Lazare, 50 min). Format journée ou demi-journée adapté à votre activité.",
     },
     {
-      q: "Quels services IA pour les TPE artisans et commerçants de Limay ?",
-      a: "Pour les TPE artisans et commerçants de Limay, nous proposons Audit sur place {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA fidélité client, gestion RDV, CRM augmentés.",
+      q: "Quels services IA pour les PME de l'artisanat et du commerce de Limay ?",
+      a: "Pour les PME de l'artisanat et du commerce de Limay, nous proposons Audit sur place {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA fidélité client, gestion RDV, CRM augmentés.",
     },
   ],
 };

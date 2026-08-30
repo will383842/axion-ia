@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
   pitchFr:
-    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu PME et ETI commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu PME et ETI commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : PME et ETI commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : PME et ETI commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   ecosystemFr:
-    "Behren-lès-Forbach est une commune mosellane du Bassin houiller, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat. Dynamique transfrontalière vers Sarrebruck et le Land de Sarre.",
+    "Behren-lès-Forbach est une commune mosellane du Bassin houiller, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu PME et ETI commerce, services, BTP, artisanat. Dynamique transfrontalière vers Sarrebruck et le Land de Sarre.",
   ecosystemEn:
-    "Behren-lès-Forbach est une commune mosellane du Bassin houiller, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat. Dynamique transfrontalière vers Sarrebruck et le Land de Sarre.",
+    "Behren-lès-Forbach est une commune mosellane du Bassin houiller, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu PME et ETI commerce, services, BTP, artisanat. Dynamique transfrontalière vers Sarrebruck et le Land de Sarre.",
   distancesFr:
     "Forbach à 3 min. Sarrebruck (Allemagne) à 15 min. Saint-Avold à 20 min. Metz à 55 min. Gare SNCF Forbach (TER Lorraine + ICE vers Allemagne). Autoroute A320 accès direct. Aéroport Sarrebruck-Ensheim à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux PME et ETI commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux PME et ETI commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Behren-lès-Forbach : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
       en: "Implémentation IA à Behren-lès-Forbach : automatisation gestion transfrontalière, agents conversationnels multilingues FR/DE, optimisation logistique, devis BTP automatisés.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Behren-lès-Forbach : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants TPE/PME, entrepreneurs frontaliers.",
-      en: "Coaching 1-to-1 à Behren-lès-Forbach : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants TPE/PME, entrepreneurs frontaliers.",
+      fr: "Coaching 1-to-1 à Behren-lès-Forbach : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants PME et ETI, entrepreneurs frontaliers.",
+      en: "Coaching 1-to-1 à Behren-lès-Forbach : sessions dans votre bureau, commerce ou en visio. Commerçants, artisans BTP, gérants PME et ETI, entrepreneurs frontaliers.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Behren-lès-Forbach ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans ?",

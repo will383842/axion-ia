@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLENOY_COPY: VilleCopy = {
   pitchFr:
-    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
+    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. PME et ETI artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
   pitchEn:
-    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
+    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. PME et ETI artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et PME industrielles locales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et PME industrielles locales.",
   seoHook: "artisanat & logistique petite",
   ecosystemFr:
-    "Villenoy est une commune résidentielle limitrophe de Meaux, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique local : TPE artisanat et BTP, commerces de centre-ville, professions libérales, PME de services, activités liées à la logistique briarde et à la proximité de Meaux. Cadre semi-rural attractif entre campagne et ville.",
+    "Villenoy est une commune résidentielle limitrophe de Meaux, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique local : PME de l'artisanat et BTP, commerces de centre-ville, professions libérales, PME de services, activités liées à la logistique briarde et à la proximité de Meaux. Cadre semi-rural attractif entre campagne et ville.",
   ecosystemEn:
-    "Villenoy est une commune résidentielle limitrophe de Meaux, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique local : TPE artisanat et BTP, commerces de centre-ville, professions libérales, PME de services, activités liées à la logistique briarde et à la proximité de Meaux. Cadre semi-rural attractif entre campagne et ville.",
+    "Villenoy est une commune résidentielle limitrophe de Meaux, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique local : PME de l'artisanat et BTP, commerces de centre-ville, professions libérales, PME de services, activités liées à la logistique briarde et à la proximité de Meaux. Cadre semi-rural attractif entre campagne et ville.",
   distancesFr:
     "Meaux centre à 5 min voiture. Gare de Meaux (Transilien ligne P, Paris-Est 25 min express). Aéroport Roissy-CDG à 35 min voiture. Accès N3/A140 à proximité immédiate.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VILLENOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villenoy : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME du Pays de Meaux. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures du bassin meldois.",
-      en: "Audit IA à Villenoy : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME du Pays de Meaux. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures du bassin meldois.",
+      fr: "Audit IA à Villenoy : diagnostic adapté aux PME artisanales, commerçants, professions libérales et PME du Pays de Meaux. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures du bassin meldois.",
+      en: "Audit IA à Villenoy : diagnostic adapté aux PME artisanales, commerçants, professions libérales et PME du Pays de Meaux. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures du bassin meldois.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villenoy : formats adaptés aux commerces, ateliers artisans, cabinets et PME de services. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -42,8 +42,8 @@ export const VILLENOY_COPY: VilleCopy = {
       en: "Implémentation IA à Villenoy : agents conversationnels client, automatisation devis BTP, gestion RDV, CRM augmentés, outils logistiques. Adapté au tissu économique résidentiel et commercial du bassin de Meaux.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villenoy : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants TPE/PME du bassin meldois souhaitant maîtriser l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à Villenoy : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants TPE/PME du bassin meldois souhaitant maîtriser l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à Villenoy : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants PME et ETI du bassin meldois souhaitant maîtriser l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à Villenoy : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants PME et ETI du bassin meldois souhaitant maîtriser l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const VILLENOY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villenoy et dans toute l'agglomération du Pays de Meaux (Meaux, Trilport, Nanteuil-lès-Meaux, Crégy-lès-Meaux). Nos consultants se déplacent depuis Paris-Est en 25 min express via le Transilien ligne P.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Villenoy ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux TPE artisans, commerçants et professions libérales de Villenoy. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Villenoy ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux PME artisanales, commerçants et professions libérales de Villenoy. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les PME de services du bassin de Meaux ?",

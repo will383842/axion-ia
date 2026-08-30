@@ -1,22 +1,22 @@
 // MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
-// Villemomble (93, Seine-Saint-Denis) — banlieue est de Paris, commune résidentielle, tissu TPE/PME de proximité, Île-de-France.
+// Villemomble (93, Seine-Saint-Denis) — banlieue est de Paris, commune résidentielle, tissu PME et ETI de proximité, Île-de-France.
 
 import type { VilleCopy } from "./types";
 
 export const VILLEMOMBLE_COPY: VilleCopy = {
   pitchFr:
-    "Villemomble (93), commune résidentielle de la banlieue est de Paris en Seine-Saint-Denis, bénéficie d'un accès rapide à la capitale et à ses pôles d'affaires. Son tissu mêle TPE artisanales du BTP, commerces de proximité, professions libérales, santé et PME de services. Axion-IA accompagne en priorité les TPE puis les PME villemomboises.",
+    "Villemomble (93), commune résidentielle de la banlieue est de Paris en Seine-Saint-Denis, bénéficie d'un accès rapide à la capitale et à ses pôles d'affaires. Son tissu mêle PME artisanales du BTP, commerces de proximité, professions libérales, santé et PME de services. Axion-IA accompagne en priorité les PME puis les ETI villemomboises.",
   pitchEn:
-    "Villemomble (93), commune résidentielle de la banlieue est de Paris en Seine-Saint-Denis, bénéficie d'un accès rapide à la capitale et à ses pôles d'affaires. Son tissu mêle TPE artisanales du BTP, commerces de proximité, professions libérales, santé et PME de services. Axion-IA accompagne en priorité les TPE puis les PME villemomboises.",
+    "Villemomble (93), commune résidentielle de la banlieue est de Paris en Seine-Saint-Denis, bénéficie d'un accès rapide à la capitale et à ses pôles d'affaires. Son tissu mêle PME artisanales du BTP, commerces de proximité, professions libérales, santé et PME de services. Axion-IA accompagne en priorité les PME puis les ETI villemomboises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemomble (93) auprès des TPE en priorité, puis des PME : artisans du BTP, commerces de proximité, professions de santé, professions libérales et PME de services de l'est parisien. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemomble (93) auprès des PME en priorité, puis des PME : artisans du BTP, commerces de proximité, professions de santé, professions libérales et PME de services de l'est parisien. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemomble (93) auprès des TPE en priorité, puis des PME : artisans du BTP, commerces de proximité, professions de santé, professions libérales et PME de services de l'est parisien. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
-  seoHook: "tpe & pme est parisien",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemomble (93) auprès des PME en priorité, puis des PME : artisans du BTP, commerces de proximité, professions de santé, professions libérales et PME de services de l'est parisien. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
+  seoHook: "pme & eti est parisien",
   ecosystemFr:
-    "Villemomble est une commune résidentielle de l'est francilien, à la frontière de la Seine-Saint-Denis et de la Seine-et-Marne. Son économie repose sur un tissu de proximité : TPE artisanales du bâtiment, commerces de centre-ville, professions de santé, professions libérales et PME de services aux particuliers et aux entreprises. La proximité immédiate de Paris ouvre l'accès à un large bassin de donneurs d'ordre.",
+    "Villemomble est une commune résidentielle de l'est francilien, à la frontière de la Seine-Saint-Denis et de la Seine-et-Marne. Son économie repose sur un tissu de proximité : PME artisanales du bâtiment, commerces de centre-ville, professions de santé, professions libérales et PME de services aux particuliers et aux entreprises. La proximité immédiate de Paris ouvre l'accès à un large bassin de donneurs d'ordre.",
   ecosystemEn:
-    "Villemomble est une commune résidentielle de l'est francilien, à la frontière de la Seine-Saint-Denis et de la Seine-et-Marne. Son économie repose sur un tissu de proximité : TPE artisanales du bâtiment, commerces de centre-ville, professions de santé, professions libérales et PME de services aux particuliers et aux entreprises. La proximité immédiate de Paris ouvre l'accès à un large bassin de donneurs d'ordre.",
+    "Villemomble est une commune résidentielle de l'est francilien, à la frontière de la Seine-Saint-Denis et de la Seine-et-Marne. Son économie repose sur un tissu de proximité : PME artisanales du bâtiment, commerces de centre-ville, professions de santé, professions libérales et PME de services aux particuliers et aux entreprises. La proximité immédiate de Paris ouvre l'accès à un large bassin de donneurs d'ordre.",
   distancesFr:
     "Paris centre à 25 min. Gare de Paris-Est à 20 min (RER E / Transilien). Aéroport Roissy-Charles-de-Gaulle à 30 min. Bobigny à 15 min. A3 immédiate.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villemomble : diagnostic pour TPE artisanes, commerces, professions de santé et libérales. Repérage des tâches automatisables (RDV, devis, relances) et ROI chiffré avant tout déploiement.",
-      en: "Audit IA à Villemomble : diagnostic pour TPE artisanes, commerces, professions de santé et libérales. Repérage des tâches automatisables (RDV, devis, relances) et ROI chiffré avant tout déploiement.",
+      fr: "Audit IA à Villemomble : diagnostic pour PME artisanales, commerces, professions de santé et libérales. Repérage des tâches automatisables (RDV, devis, relances) et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Villemomble : diagnostic pour PME artisanales, commerces, professions de santé et libérales. Repérage des tâches automatisables (RDV, devis, relances) et ROI chiffré avant tout déploiement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villemomble : formats courts adaptés au cabinet, au commerce ou au bureau. Vos équipes prennent ensuite la main sur les outils déployés en autonomie.",
@@ -42,8 +42,8 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
       en: "Implémentation IA à Villemomble : agents conversationnels de prise de RDV, automatisation administrative, classification de dossiers patients, CRM augmentés et relances clients.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villemomble : sessions dans votre cabinet, commerce, bureau ou en visio. Pour gérants de TPE, artisans, professionnels de santé et dirigeants de PME villemomboises.",
-      en: "Coaching 1-to-1 à Villemomble : sessions dans votre cabinet, commerce, bureau ou en visio. Pour gérants de TPE, artisans, professionnels de santé et dirigeants de PME villemomboises.",
+      fr: "Coaching 1-to-1 à Villemomble : sessions dans votre cabinet, commerce, bureau ou en visio. Pour dirigeants de PME, artisans, professionnels de santé et dirigeants de PME villemomboises.",
+      en: "Coaching 1-to-1 à Villemomble : sessions dans votre cabinet, commerce, bureau ou en visio. Pour dirigeants de PME, artisans, professionnels de santé et dirigeants de PME villemomboises.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Villemomble : plateformes et outils SaaS IA sur mesure — prise de RDV intelligente santé, devis en ligne BTP, portails clients et boutiques connectés à vos process.",
@@ -55,7 +55,7 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Villemomble (93), pour le tissu réel de la commune : artisans du BTP, commerçants de l'avenue Outrebon et des marchés Outrebon (Place de la Résistance) et Époque (Grande Rue), professionnels de santé de la Maison de Santé du 25 avenue du Raincy, et PME de services installées en ZA La Garenne ou à l'Hôtel d'entreprises près de l'A3/A86. Devis à partir de 24-48 h selon la complexité, hébergement en Union européenne et conformité RGPD, code et données qui restent les vôtres.",
         whyHere: [
-          "Tissu de TPE-PME de proximité dense — environ une entreprise pour treize habitants : nos chantiers à Villemomble partent des besoins concrets d'un artisan BTP qui veut un devis en ligne, d'un commerçant Outrebon qui veut une vitrine connectée à la carte 'Cœurs de ville', ou d'un cabinet de la Maison de Santé qui veut une prise de RDV intelligente.",
+          "Tissu de PME et ETI de proximité dense — environ une entreprise pour treize habitants : nos chantiers à Villemomble partent des besoins concrets d'un artisan BTP qui veut un devis en ligne, d'un commerçant Outrebon qui veut une vitrine connectée à la carte 'Cœurs de ville', ou d'un cabinet de la Maison de Santé qui veut une prise de RDV intelligente.",
           "La ZA La Garenne (environ 12,29 ha, près de 125 entreprises) et l'Hôtel d'entreprises près de l'A3/A86 concentrent des PME de services et ateliers artisanaux : portails clients, devis automatisés et outils SaaS métier sur mesure y répondent à des process réels.",
           "Commerce de proximité fort autour de l'avenue Outrebon et des deux marchés municipaux : nous construisons boutiques e-commerce multi-CMS, click-and-collect et fidélité numérique adossés au dynamisme commerçant animé par l'ADEEV (121 avenue de Rosny).",
           "Accessibilité RER E (gare Le Raincy-Villemomble-Montfermeil, à environ 3 min à pied du marché Outrebon) : nos consultants se déplacent depuis Paris pour les ateliers de cadrage et la recette, puis itèrent à distance sur vos données.",
@@ -88,12 +88,6 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou prise de RDV augmentée",
-            detail:
-              "Pour les artisans BTP, commerçants de l'avenue Outrebon et praticiens libéraux de la Maison de Santé : vitrine mobile-first, demande de devis ou prise de RDV intelligente connectée à votre agenda.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail client sur mesure",
@@ -175,12 +169,6 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Storefront or augmented appointment booking",
-            detail:
-              "For building-trade craftspeople, avenue Outrebon retailers and Maison de Santé practitioners: mobile-first storefront, quote request or smart appointment booking connected to your calendar.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or bespoke client portal",
             detail:
@@ -233,8 +221,8 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villemomble et tout l'est francilien (Rosny-sous-Bois, Le Raincy, Gagny, Montfermeil, Neuilly-Plaisance). Nos consultants viennent de Paris, à 25 minutes.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces de Villemomble ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Villemomble ?",
+      a: "Oui, les PME sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Travaillez-vous avec les professions de santé et libérales ?",

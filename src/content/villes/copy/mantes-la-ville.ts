@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MANTES_LA_VILLE_COPY: VilleCopy = {
   pitchFr:
-    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte TPE/PME tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
+    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte PME et ETI tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   pitchEn:
-    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte TPE/PME tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
+    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte PME et ETI tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), TPE artisans BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), PME du BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), TPE artisans BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), PME du BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
   seoHook: "industrie automobile & aéronautique r&d",
   ecosystemFr:
-    "Mantes-la-Ville s'intègre au bassin industriel mantois : proximité immédiate site Renault Flins-Aubergenville (4 000 emplois, usine reconvertie batteries-recyclage), Safran Buchelay (R&D moteurs), tissu dense de sous-traitants automobile/aéronautique. Activité commerce centre-ville, TPE artisans BTP, PME tertiaires, services aux entreprises industrielles.",
+    "Mantes-la-Ville s'intègre au bassin industriel mantois : proximité immédiate site Renault Flins-Aubergenville (4 000 emplois, usine reconvertie batteries-recyclage), Safran Buchelay (R&D moteurs), tissu dense de sous-traitants automobile/aéronautique. Activité commerce centre-ville, PME du BTP, PME tertiaires, services aux entreprises industrielles.",
   ecosystemEn:
-    "Mantes-la-Ville s'intègre au bassin industriel mantois : proximité immédiate site Renault Flins-Aubergenville (4 000 emplois, usine reconvertie batteries-recyclage), Safran Buchelay (R&D moteurs), tissu dense de sous-traitants automobile/aéronautique. Activité commerce centre-ville, TPE artisans BTP, PME tertiaires, services aux entreprises industrielles.",
+    "Mantes-la-Ville s'intègre au bassin industriel mantois : proximité immédiate site Renault Flins-Aubergenville (4 000 emplois, usine reconvertie batteries-recyclage), Safran Buchelay (R&D moteurs), tissu dense de sous-traitants automobile/aéronautique. Activité commerce centre-ville, PME du BTP, PME tertiaires, services aux entreprises industrielles.",
   distancesFr:
     "Gare Mantes-la-Jolie (Transilien J + N + RER E récente, 35 min Saint-Lazare/Gare du Nord). Axe A13 vers Paris (45 min) et Rouen. La Défense à 35 min voiture (heures creuses).",
   distancesEn:
@@ -24,14 +24,14 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie automobile & sous-traitants (Renault Flins)",
     "Aéronautique & R&D (Safran Buchelay)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "PME tertiaires & services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, PME artisanales, commerçants, PME tertiaires mantois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, PME artisanales, commerçants, PME tertiaires mantois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mantes-la-Ville : formats adaptés à l'atelier industriel, au commerce ou au bureau. Vos équipes terrain et back-office repartent autonomes sur des outils IA opérationnels.",
@@ -42,8 +42,8 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Mantes-la-Ville : prédiction maintenance industrielle, contrôle qualité par vision, automatisation supply chain, agents conversationnels, classification documents. Tous secteurs Mantois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mantes-la-Ville : sessions dans votre atelier industriel, commerce, cabinet ou en visio. Dirigeants industriels, artisans, commerçants, gérants TPE/PME mantois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Mantes-la-Ville : sessions dans votre atelier industriel, commerce, cabinet ou en visio. Dirigeants industriels, artisans, commerçants, gérants TPE/PME mantois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Mantes-la-Ville : sessions dans votre atelier industriel, commerce, cabinet ou en visio. Dirigeants industriels, artisans, commerçants, gérants PME et ETI mantois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Mantes-la-Ville : sessions dans votre atelier industriel, commerce, cabinet ou en visio. Dirigeants industriels, artisans, commerçants, gérants PME et ETI mantois souhaitant maîtriser l'IA.",
     },
   },
   services: {
@@ -52,7 +52,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
         whyHere: [
           "Bassin industriel automobile et aéronautique : autour du site Renault Flins-Aubergenville (reconversion batteries-recyclage, plusieurs milliers d'emplois) et de la R&D moteurs Safran à Buchelay gravite un réseau dense de sous-traitants. Terrain idéal pour des portails fournisseurs, des plateformes de suivi qualité et des agents d'automatisation branchés sur l'ERP ou le MES, avec confidentialité industrielle stricte et hébergement UE.",
-          "Tissu mixte de TPE artisans BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
+          "Tissu mixte de PME du BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
           "Commerces de proximité et PME tertiaires mantevillois : sites vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec chatbot multilingue et recherche sémantique pour capter une clientèle du centre-ville et de tout le bassin Mantois (Mantes-la-Jolie, Buchelay, Limay, Aubergenville), du click-and-collect au catalogue complet.",
           "Connexion francilienne forte — RER E récent et Transilien J/N en gare de Mantes-la-Jolie (environ 35 min de Saint-Lazare et de la Gare du Nord), A13 vers Paris et Rouen, La Défense à 35 min — mais hébergement UE strict : toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act, vos données clients et industrielles restant maîtrisées sans transfert hors UE.",
         ],
@@ -84,12 +84,6 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis — sur le site d'un artisan BTP du Mantois (plomberie, électricité, menuiserie) ou d'un commerce du centre-ville mantevillois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -138,7 +132,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Mantes-la-Ville des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le bassin industriel mantois, à deux pas du site Renault Flins-Aubergenville reconverti aux batteries et au recyclage et de la R&D moteurs Safran à Buchelay, avec son tissu dense de sous-traitants automobile-aéronautique, d'artisans BTP et de commerces du centre-ville mantevillois. Que vous soyez sur la zone d'activité du Mantois, en atelier ou en boutique, on greffe l'IA sur votre existant ou on construit IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Mantes-la-Ville, itérations à distance.",
         whyHere: [
           "Bassin industriel automobile et aéronautique : autour du site Renault Flins-Aubergenville (reconversion batteries-recyclage, plusieurs milliers d'emplois) et de la R&D moteurs Safran à Buchelay gravite un réseau dense de sous-traitants. Terrain idéal pour des portails fournisseurs, des plateformes de suivi qualité et des agents d'automatisation branchés sur l'ERP ou le MES, avec confidentialité industrielle stricte et hébergement UE.",
-          "Tissu mixte de TPE artisans BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
+          "Tissu mixte de PME du BTP du Mantois — plombiers, électriciens, menuisiers, peintres autour du centre-ville mantevillois et des zones d'activité : on greffe l'IA sur l'existant (agent de prise de RDV, devis chantier automatisé, classification de photos de chantier) ou on construit une vitrine claire mobile-first sans refonte coûteuse, pensée pour des artisans souvent sur le terrain.",
           "Commerces de proximité et PME tertiaires mantevillois : sites vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec chatbot multilingue et recherche sémantique pour capter une clientèle du centre-ville et de tout le bassin Mantois (Mantes-la-Jolie, Buchelay, Limay, Aubergenville), du click-and-collect au catalogue complet.",
           "Connexion francilienne forte — RER E récent et Transilien J/N en gare de Mantes-la-Jolie (environ 35 min de Saint-Lazare et de la Gare du Nord), A13 vers Paris et Rouen, La Défense à 35 min — mais hébergement UE strict : toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act, vos données clients et industrielles restant maîtrisées sans transfert hors UE.",
         ],
@@ -170,12 +164,6 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation de devis — sur le site d'un artisan BTP du Mantois (plomberie, électricité, menuiserie) ou d'un commerce du centre-ville mantevillois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,8 +221,8 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les sous-traitants automobiles (bassin Renault Flins-Aubergenville en reconversion batteries-recyclage) et aéronautiques (Safran Buchelay) sur leurs cas IA opérationnels : automatisation contrôle qualité, prédiction maintenance, optimisation supply chain. Confidentialité industrielle garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP du Mantois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Mantes-la-Ville (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME du BTP du Mantois ?",
+      a: "Oui, nous accompagnons les PME du BTP à Mantes-la-Ville (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",

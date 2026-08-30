@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHESSY_COPY: VilleCopy = {
   pitchFr:
-    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y travaille avec les organisations du territoire.",
+    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu PME et ETI tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y travaille avec les organisations du territoire.",
+    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu PME et ETI tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chessy (77). Nous accompagnons PME et ETI : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chessy (77). Nous accompagnons PME et ETI : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit sur place sur mesure.",
   seoHook: "tourisme loisirs & hôtellerie-restauration",
   ecosystemFr:
-    "Chessy est la commune d'implantation de Disneyland Paris et de la gare internationale Marne-la-Vallée-Chessy (TGV + RER A + Eurostar). Le pôle touristique génère un écosystème dense : hôtellerie-restauration, commerce Val d'Europe, prestataires événementiels, services aux visiteurs et logistique. TPE et PME constituent le tissu économique local.",
+    "Chessy est la commune d'implantation de Disneyland Paris et de la gare internationale Marne-la-Vallée-Chessy (TGV + RER A + Eurostar). Le pôle touristique génère un écosystème dense : hôtellerie-restauration, commerce Val d'Europe, prestataires événementiels, services aux visiteurs et logistique. PME et ETI constituent le tissu économique local.",
   ecosystemEn:
-    "Chessy est la commune d'implantation de Disneyland Paris et de la gare internationale Marne-la-Vallée-Chessy (TGV + RER A + Eurostar). Le pôle touristique génère un écosystème dense : hôtellerie-restauration, commerce Val d'Europe, prestataires événementiels, services aux visiteurs et logistique. TPE et PME constituent le tissu économique local.",
+    "Chessy est la commune d'implantation de Disneyland Paris et de la gare internationale Marne-la-Vallée-Chessy (TGV + RER A + Eurostar). Le pôle touristique génère un écosystème dense : hôtellerie-restauration, commerce Val d'Europe, prestataires événementiels, services aux visiteurs et logistique. PME et ETI constituent le tissu économique local.",
   distancesFr:
     "Gare Marne-la-Vallée-Chessy (TGV + RER A) sur place. Paris-Gare de Lyon à 40 min RER A. Aéroport Roissy-CDG à 35 min. Meaux à 25 min. A4 accès direct.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CHESSY_COPY: VilleCopy = {
       en: "Implémentation IA à Chessy : revenue management hôtelier, chatbot multilingue touristes, automatisation réservations, optimisation stocks commerce Val d'Europe.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chessy : sessions dans votre hôtel, restaurant, boutique ou en visio. Dirigeants TPE/PME tourisme, hôtellerie, commerce et événementiel.",
-      en: "Coaching 1-to-1 à Chessy : sessions dans votre hôtel, restaurant, boutique ou en visio. Dirigeants TPE/PME tourisme, hôtellerie, commerce et événementiel.",
+      fr: "Coaching 1-to-1 à Chessy : sessions dans votre hôtel, restaurant, boutique ou en visio. Dirigeants PME et ETI tourisme, hôtellerie, commerce et événementiel.",
+      en: "Coaching 1-to-1 à Chessy : sessions dans votre hôtel, restaurant, boutique ou en visio. Dirigeants PME et ETI tourisme, hôtellerie, commerce et événementiel.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHESSY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Chessy  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME du secteur tourisme et hôtellerie-restauration, nous proposons des audits approfondis adaptés aux enjeux saisonniers et multilingues.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI du secteur tourisme et hôtellerie-restauration, nous proposons des audits approfondis adaptés aux enjeux saisonniers et multilingues.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du pôle Disneyland ?",
@@ -61,7 +61,7 @@ export const CHESSY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants du Val d'Europe ?",
-      a: "Oui, nous accompagnons les TPE et PME commerçantes du Val d'Europe : automatisation stocks, agents IA relation client, optimisation caisse et planning, analyse données ventes.",
+      a: "Oui, nous accompagnons les PME et ETI commerçantes du Val d'Europe : automatisation stocks, agents IA relation client, optimisation caisse et planning, analyse données ventes.",
     },
     {
       q: "Proposez-vous des formations IA à Chessy ?",

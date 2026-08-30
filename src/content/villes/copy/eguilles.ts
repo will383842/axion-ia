@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const EGUILLES_COPY: VilleCopy = {
   pitchFr:
-    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de PME indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de PME indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éguilles (13). Nous accompagnons PME indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Éguilles (13). Nous accompagnons PME indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   seoHook: "bassin aixois",
   ecosystemFr:
-    "Éguilles est un village perché typiquement provençal à 10 km au nord d'Aix-en-Provence. Population résidentielle aisée, nombreuses professions libérales (avocats, médecins, consultants), TPE indépendants (télétravail), artisans et commerces de proximité. Proximité immédiate du technopôle de l'Arbois et du pôle d'activités des Milles.",
+    "Éguilles est un village perché typiquement provençal à 10 km au nord d'Aix-en-Provence. Population résidentielle aisée, nombreuses professions libérales (avocats, médecins, consultants), PME indépendants (télétravail), artisans et commerces de proximité. Proximité immédiate du technopôle de l'Arbois et du pôle d'activités des Milles.",
   ecosystemEn:
-    "Éguilles est un village perché typiquement provençal à 10 km au nord d'Aix-en-Provence. Population résidentielle aisée, nombreuses professions libérales (avocats, médecins, consultants), TPE indépendants (télétravail), artisans et commerces de proximité. Proximité immédiate du technopôle de l'Arbois et du pôle d'activités des Milles.",
+    "Éguilles est un village perché typiquement provençal à 10 km au nord d'Aix-en-Provence. Population résidentielle aisée, nombreuses professions libérales (avocats, médecins, consultants), PME indépendants (télétravail), artisans et commerces de proximité. Proximité immédiate du technopôle de l'Arbois et du pôle d'activités des Milles.",
   distancesFr:
     "Aix-en-Provence centre à 10 min. Gare TGV Aix-en-Provence à 15 min. Aéroport Marseille-Provence à 25 min. Accès A8 vers Marseille (30 min) et A51 vers Manosque. Technopôle de l'Arbois à 5 min.",
   distancesEn:
     "Aix-en-Provence centre à 10 min. Gare TGV Aix-en-Provence à 15 min. Aéroport Marseille-Provence à 25 min. Accès A8 vers Marseille (30 min) et A51 vers Manosque. Technopôle de l'Arbois à 5 min.",
   topSectorsNaf: [
     "Professions libérales (avocats, médecins, consultants)",
-    "TPE indépendants & télétravail",
+    "PME indépendants & télétravail",
     "Commerce de proximité",
     "PME tertiaires & services",
     "Artisanat BTP & rénovation",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, PME indépendants et PME tertiaires du bassin nord-aixois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, PME indépendants et PME tertiaires du bassin nord-aixois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Éguilles : ateliers adaptés aux cabinets libéraux, bureaux PME ou en visio pour indépendants en télétravail. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const EGUILLES_COPY: VilleCopy = {
       en: "Implémentation IA à Éguilles : automatisation gestion cabinet, agents conversationnels clients, rédaction assistée, classification dossiers, CRM augmentés. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Éguilles : sessions confidentielles pour avocats, médecins, consultants, gérants TPE/PME du nord-aixois souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Éguilles : sessions confidentielles pour avocats, médecins, consultants, gérants TPE/PME du nord-aixois souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Éguilles : sessions confidentielles pour avocats, médecins, consultants, gérants PME et ETI du nord-aixois souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Éguilles : sessions confidentielles pour avocats, médecins, consultants, gérants PME et ETI du nord-aixois souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const EGUILLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un cabinet libéral à Éguilles ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux professions libérales et TPE indépendants éguillens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux professions libérales et PME indépendants éguillens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les indépendants en télétravail à Éguilles ?",
-      a: "Oui, nous accompagnons les TPE indépendants et freelances en télétravail sur des cas IA concrets : automatisation administrative, rédaction assistée, gestion projets augmentée, agents IA veille sectorielle. Sessions en visio ou présentiel.",
+      a: "Oui, nous accompagnons les PME indépendants et freelances en télétravail sur des cas IA concrets : automatisation administrative, rédaction assistée, gestion projets augmentée, agents IA veille sectorielle. Sessions en visio ou présentiel.",
     },
     {
       q: "Comment se passe une mission à Éguilles depuis Aix ou Marseille ?",

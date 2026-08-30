@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const TAVERNY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Taverny, commune de 27 593 habitants du Val-d'Oise, à 20 km au nord-ouest de Paris. La zone industrielle de Taverny s'étend sur 70 hectares et regroupe environ 170 entreprises (mécanique de précision, transport, chimie, électronique) pour 3 000 emplois — un tissu dense de TPE et PME sous-traitantes parfaitement aligné avec notre cœur de cible. Nous automatisons en code custom les devis, relances, reporting qualité et gestion documentaire. Les ETI sont également servies en complément.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Taverny, commune de 27 593 habitants du Val-d'Oise, à 20 km au nord-ouest de Paris. La zone industrielle de Taverny s'étend sur 70 hectares et regroupe environ 170 entreprises (mécanique de précision, transport, chimie, électronique) pour 3 000 emplois — un tissu dense de PME et ETI sous-traitantes parfaitement aligné avec notre cœur de cible. Nous automatisons en code custom les devis, relances, reporting qualité et gestion documentaire. Les ETI sont également servies en complément.",
   pitchEn:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Taverny, commune de 27 593 habitants du Val-d'Oise, à 20 km au nord-ouest de Paris. La zone industrielle de Taverny s'étend sur 70 hectares et regroupe environ 170 entreprises (mécanique de précision, transport, chimie, électronique) pour 3 000 emplois — un tissu dense de TPE et PME sous-traitantes parfaitement aligné avec notre cœur de cible. Nous automatisons en code custom les devis, relances, reporting qualité et gestion documentaire. Les ETI sont également servies en complément.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Taverny, commune de 27 593 habitants du Val-d'Oise, à 20 km au nord-ouest de Paris. La zone industrielle de Taverny s'étend sur 70 hectares et regroupe environ 170 entreprises (mécanique de précision, transport, chimie, électronique) pour 3 000 emplois — un tissu dense de PME et ETI sous-traitantes parfaitement aligné avec notre cœur de cible. Nous automatisons en code custom les devis, relances, reporting qualité et gestion documentaire. Les ETI sont également servies en complément.",
   directAnswerFr:
-    "Axion-IA accompagne les TPE et PME de Taverny (Val-d'Oise, 27 593 habitants) — mécanique de précision, chimie, électronique, transport, services BtoB — implantées dans la zone industrielle de 70 hectares ou sur le reste de la commune. Nous automatisons en code custom (Python, Node.js, jamais no-code) les devis, relances, reporting qualité, ordres de fabrication et qualification de leads. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais TPE et PME de moins de 50 salariés restent notre cœur de cible.",
+    "Axion-IA accompagne les PME et ETI de Taverny (Val-d'Oise, 27 593 habitants) — mécanique de précision, chimie, électronique, transport, services BtoB — implantées dans la zone industrielle de 70 hectares ou sur le reste de la commune. Nous automatisons en code custom (Python, Node.js, jamais no-code) les devis, relances, reporting qualité, ordres de fabrication et qualification de leads. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les grands groupes sont également servis, mais PME et ETI de moins de 50 salariés restent notre cœur de cible.",
   directAnswerEn:
-    "Axion-IA accompagne les TPE et PME de Taverny (Val-d'Oise, 27 593 habitants) — mécanique de précision, chimie, électronique, transport, services BtoB — implantées dans la zone industrielle de 70 hectares ou sur le reste de la commune. Nous automatisons en code custom (Python, Node.js, jamais no-code) les devis, relances, reporting qualité, ordres de fabrication et qualification de leads. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais TPE et PME de moins de 50 salariés restent notre cœur de cible.",
+    "Axion-IA accompagne les PME et ETI de Taverny (Val-d'Oise, 27 593 habitants) — mécanique de précision, chimie, électronique, transport, services BtoB — implantées dans la zone industrielle de 70 hectares ou sur le reste de la commune. Nous automatisons en code custom (Python, Node.js, jamais no-code) les devis, relances, reporting qualité, ordres de fabrication et qualification de leads. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les grands groupes sont également servis, mais PME et ETI de moins de 50 salariés restent notre cœur de cible.",
   seoHook: "mécanique de précision & électronique",
   ecosystemFr:
     "Taverny abrite une zone industrielle de 70 hectares regroupant environ 170 entreprises de tailles variées pour 3 000 emplois, spécialisées en mécanique de précision, transport, chimie et électronique. La commune accueille également la base aérienne 921 « Frères Mahé » (rouverte en septembre 2024). Le tissu économique mêle PME industrielles sous-traitantes, commerces de détail, restauration et services aux entreprises — un terrain dense pour les automatisations Axion-IA.",
@@ -36,16 +36,16 @@ export const TAVERNY_COPY: VilleCopy = {
       en: "Audit sur place IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
     },
     interventions: {
-      fr: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
-      en: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
+      fr: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des PME et ETI industrielles — code custom.",
+      en: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des PME et ETI industrielles — code custom.",
     },
     implementation: {
       fr: "Implémentation IA à Taverny dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP industriels, GMAO et CRM, conformité RGPD garantie.",
       en: "Implémentation IA à Taverny dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP industriels, GMAO et CRM, conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Taverny dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main des outils IA déployés, sessions sur site ou en visio.",
-      en: "Accompagnement un-à-un à Taverny dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main des outils IA déployés, sessions sur site ou en visio.",
+      fr: "Accompagnement un-à-un à Taverny dès {{price:intervention-dirigeants|flat}} pour dirigeants PME et ETI : prise en main des outils IA déployés, sessions sur site ou en visio.",
+      en: "Accompagnement un-à-un à Taverny dès {{price:intervention-dirigeants|flat}} pour dirigeants PME et ETI : prise en main des outils IA déployés, sessions sur site ou en visio.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const TAVERNY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine technique + IA essentielle",
-            detail:
-              "Pour les artisans et petits ateliers de Taverny (mécanique, métallerie, négoce, commerce du centre-ville) : site vitrine responsive, référencement local, formulaire de demande de prix qualifié par IA et chatbot FAQ. Mise en ligne rapide, contenu structuré pour être cité par les moteurs et assistants IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail client/fournisseur SaaS sur-mesure",
@@ -173,12 +167,6 @@ export const TAVERNY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Technical showcase site + essential AI",
-            detail:
-              "For Taverny craftspeople and small workshops (engineering, metalwork, trade, town-centre retail): responsive showcase site, local SEO, AI-qualified price-request form and FAQ chatbot. Fast go-live, content structured to be cited by search engines and AI assistants.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke customer/supplier SaaS portal",
             detail:
@@ -244,7 +232,7 @@ export const TAVERNY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA cible-t-elle à Taverny ?",
-      a: "Nous accompagnons en priorité les TPE et PME de Taverny : mécanique de précision, électronique, chimie, transport, commerce de détail et restauration. Les 170 entreprises de la zone industrielle constituent notre cible principale. Les ETI restent marginales.",
+      a: "Nous accompagnons en priorité les PME et ETI de Taverny : mécanique de précision, électronique, chimie, transport, commerce de détail et restauration. Les 170 entreprises de la zone industrielle constituent notre cible principale. Les grands groupes complètent ce socle.",
     },
     {
       q: "Proposez-vous des solutions no-code à Taverny ?",

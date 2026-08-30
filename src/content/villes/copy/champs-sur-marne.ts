@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Champs-sur-Marne, commune de Marne-la-Vallée en Seine-et-Marne, abrite la Cité Descartes, l'un des grands clusters franciliens de recherche et d'enseignement supérieur autour de l'Université Gustave Eiffel. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME de l'est francilien pour automatiser sans recruter.",
+    "Champs-sur-Marne, commune de Marne-la-Vallée en Seine-et-Marne, abrite la Cité Descartes, l'un des grands clusters franciliens de recherche et d'enseignement supérieur autour de l'Université Gustave Eiffel. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI de l'est francilien pour automatiser sans recruter.",
   pitchEn:
-    "Champs-sur-Marne, commune de Marne-la-Vallée en Seine-et-Marne, abrite la Cité Descartes, l'un des grands clusters franciliens de recherche et d'enseignement supérieur autour de l'Université Gustave Eiffel. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME de l'est francilien pour automatiser sans recruter.",
+    "Champs-sur-Marne, commune de Marne-la-Vallée en Seine-et-Marne, abrite la Cité Descartes, l'un des grands clusters franciliens de recherche et d'enseignement supérieur autour de l'Université Gustave Eiffel. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI de l'est francilien pour automatiser sans recruter.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Champs-sur-Marne (77) et dans tout Marne-la-Vallée. Nous accompagnons en priorité les TPE puis les PME de la Cité Descartes et de l'est francilien : jeunes pousses issues de la recherche, bureaux d'études, sociétés d'ingénierie et de services, commerces. Audit, interventions et implémentation pour automatiser devis, reporting, gestion documentaire et relances, avec des livrables documentés et sans dépendance technique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Champs-sur-Marne (77) et dans tout Marne-la-Vallée. Nous accompagnons en priorité les PME puis les ETI de la Cité Descartes et de l'est francilien : jeunes pousses issues de la recherche, bureaux d'études, sociétés d'ingénierie et de services, commerces. Audit, interventions et implémentation pour automatiser devis, reporting, gestion documentaire et relances, avec des livrables documentés et sans dépendance technique imposée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Champs-sur-Marne (77) et dans tout Marne-la-Vallée. Nous accompagnons en priorité les TPE puis les PME de la Cité Descartes et de l'est francilien : jeunes pousses issues de la recherche, bureaux d'études, sociétés d'ingénierie et de services, commerces. Audit, interventions et implémentation pour automatiser devis, reporting, gestion documentaire et relances, avec des livrables documentés et sans dépendance technique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Champs-sur-Marne (77) et dans tout Marne-la-Vallée. Nous accompagnons en priorité les PME puis les ETI de la Cité Descartes et de l'est francilien : jeunes pousses issues de la recherche, bureaux d'études, sociétés d'ingénierie et de services, commerces. Audit, interventions et implémentation pour automatiser devis, reporting, gestion documentaire et relances, avec des livrables documentés et sans dépendance technique imposée.",
   seoHook: "recherche, ingénierie & services",
   ecosystemFr:
-    "Champs-sur-Marne est le cœur de la Cité Descartes, cluster de recherche et d'innovation de Marne-la-Vallée. On y trouve l'Université Gustave Eiffel, l'ESIEE Paris, l'École des Ponts et de nombreux laboratoires, ce qui irrigue le territoire en TPE et PME technologiques : ingénierie, bureaux d'études, numérique, services aux entreprises. Le château de Champs-sur-Marne et un cadre résidentiel verdoyant complètent ce profil. Axion-IA y adapte ses chantiers IA à des structures jeunes et à des PME de services qui veulent industrialiser leurs process sans alourdir leurs équipes.",
+    "Champs-sur-Marne est le cœur de la Cité Descartes, cluster de recherche et d'innovation de Marne-la-Vallée. On y trouve l'Université Gustave Eiffel, l'ESIEE Paris, l'École des Ponts et de nombreux laboratoires, ce qui irrigue le territoire en PME et ETI technologiques : ingénierie, bureaux d'études, numérique, services aux entreprises. Le château de Champs-sur-Marne et un cadre résidentiel verdoyant complètent ce profil. Axion-IA y adapte ses chantiers IA à des structures jeunes et à des PME de services qui veulent industrialiser leurs process sans alourdir leurs équipes.",
   ecosystemEn:
-    "Champs-sur-Marne est le cœur de la Cité Descartes, cluster de recherche et d'innovation de Marne-la-Vallée. On y trouve l'Université Gustave Eiffel, l'ESIEE Paris, l'École des Ponts et de nombreux laboratoires, ce qui irrigue le territoire en TPE et PME technologiques : ingénierie, bureaux d'études, numérique, services aux entreprises. Le château de Champs-sur-Marne et un cadre résidentiel verdoyant complètent ce profil. Axion-IA y adapte ses chantiers IA à des structures jeunes et à des PME de services qui veulent industrialiser leurs process sans alourdir leurs équipes.",
+    "Champs-sur-Marne est le cœur de la Cité Descartes, cluster de recherche et d'innovation de Marne-la-Vallée. On y trouve l'Université Gustave Eiffel, l'ESIEE Paris, l'École des Ponts et de nombreux laboratoires, ce qui irrigue le territoire en PME et ETI technologiques : ingénierie, bureaux d'études, numérique, services aux entreprises. Le château de Champs-sur-Marne et un cadre résidentiel verdoyant complètent ce profil. Axion-IA y adapte ses chantiers IA à des structures jeunes et à des PME de services qui veulent industrialiser leurs process sans alourdir leurs équipes.",
   distancesFr:
     "RER A (station Noisy-Champs) vers Paris en 30 min, à proximité immédiate de la Cité Descartes. Gare TGV de Marne-la-Vallée - Chessy à 15 km. Aéroport de Paris-Charles-de-Gaulle à 25 km. Disneyland Paris à 15 min, Paris-Bercy à 25 min par l'A4.",
   distancesEn:
@@ -30,20 +30,20 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champs-sur-Marne : diagnostic pour TPE technologiques et PME de services de la Cité Descartes. On repère les automatisations à fort levier — reporting, devis, gestion documentaire — sans recruter.",
-      en: "Audit IA à Champs-sur-Marne : diagnostic pour TPE technologiques et PME de services de la Cité Descartes. On repère les automatisations à fort levier — reporting, devis, gestion documentaire — sans recruter.",
+      fr: "Audit IA à Champs-sur-Marne : diagnostic pour PME technologiques et PME de services de la Cité Descartes. On repère les automatisations à fort levier — reporting, devis, gestion documentaire — sans recruter.",
+      en: "Audit IA à Champs-sur-Marne : diagnostic pour PME technologiques et PME de services de la Cité Descartes. On repère les automatisations à fort levier — reporting, devis, gestion documentaire — sans recruter.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champs-sur-Marne : ateliers pour jeunes pousses, bureaux d'études et PME de services. Vos équipes deviennent autonomes sur des outils IA configurés pour leur activité.",
       en: "Interventions IA sur site à Champs-sur-Marne : ateliers pour jeunes pousses, bureaux d'études et PME de services. Vos équipes deviennent autonomes sur des outils IA configurés pour leur activité.",
     },
     implementation: {
-      fr: "Implémentation IA à Champs-sur-Marne : automatisation des devis, du reporting projet, de la gestion documentaire et des relances pour TPE et PME de l'écosystème Descartes.",
-      en: "Implémentation IA à Champs-sur-Marne : automatisation des devis, du reporting projet, de la gestion documentaire et des relances pour TPE et PME de l'écosystème Descartes.",
+      fr: "Implémentation IA à Champs-sur-Marne : automatisation des devis, du reporting projet, de la gestion documentaire et des relances pour PME et ETI de l'écosystème Descartes.",
+      en: "Implémentation IA à Champs-sur-Marne : automatisation des devis, du reporting projet, de la gestion documentaire et des relances pour PME et ETI de l'écosystème Descartes.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Champs-sur-Marne : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de Marne-la-Vallée souhaitant maximiser l'impact de l'IA.",
-      en: "Accompagnement un-à-un à Champs-sur-Marne : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de Marne-la-Vallée souhaitant maximiser l'impact de l'IA.",
+      fr: "Accompagnement un-à-un à Champs-sur-Marne : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de Marne-la-Vallée souhaitant maximiser l'impact de l'IA.",
+      en: "Accompagnement un-à-un à Champs-sur-Marne : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de Marne-la-Vallée souhaitant maximiser l'impact de l'IA.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Champs-sur-Marne : plateforme dotée d'IA pour jeunes pousses et bureaux d'études — qualification automatique des leads, espace client, réponses instantanées aux demandes techniques.",
@@ -88,12 +88,6 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté IA",
-            detail:
-              "Pour indépendants, jeunes pousses de l'Incubateur Descartes et micro-structures du campus : site vitrine mobile-first avec chatbot de qualification et formulaire intelligent, pensé pour amorcer la visibilité d'une deep-tech issue d'ESIEE ou de l'Université Gustave Eiffel.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web ou SaaS IA-native",
@@ -175,12 +169,6 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase site",
-            detail:
-              "For freelancers, Incubateur Descartes startups and campus micro-structures: mobile-first showcase site with qualification chatbot and smart form, designed to launch the visibility of a deep-tech born from ESIEE or Université Gustave Eiffel.",
-          },
-          {
             sizeLabel: "SME",
             price: "AI-native web platform or SaaS",
             detail:
@@ -234,7 +222,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les jeunes pousses de la Cité Descartes ?",
-      a: "Oui. Pour les TPE technologiques issues de l'Université Gustave Eiffel et de l'ESIEE, nous mettons en place des automatisations de qualification de leads, de reporting et de gestion documentaire adaptées à leur croissance.",
+      a: "Oui. Pour les PME technologiques issues de l'Université Gustave Eiffel et de l'ESIEE, nous mettons en place des automatisations de qualification de leads, de reporting et de gestion documentaire adaptées à leur croissance.",
     },
     {
       q: "Quels services pour les bureaux d'études et PME d'ingénierie ?",

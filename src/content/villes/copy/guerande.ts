@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GUERANDE_COPY: VilleCopy = {
   pitchFr:
-    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu TPE artisans, PME touristiques et agroalimentaires, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du bassin guérandais.",
+    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu PME artisanales, PME touristiques et agroalimentaires, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du bassin guérandais.",
   pitchEn:
-    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu TPE artisans, PME touristiques et agroalimentaires, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du bassin guérandais.",
+    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu PME artisanales, PME touristiques et agroalimentaires, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du bassin guérandais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guérande (44), cité médiévale et capitale du sel. Nous accompagnons TPE artisans paludiers, PME agroalimentaires et touristiques, commerçants et professions libérales de la presqu'île guérandaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guérande (44), cité médiévale et capitale du sel. Nous accompagnons PME artisanales paludiers, PME agroalimentaires et touristiques, commerçants et professions libérales de la presqu'île guérandaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guérande (44), cité médiévale et capitale du sel. Nous accompagnons TPE artisans paludiers, PME agroalimentaires et touristiques, commerçants et professions libérales de la presqu'île guérandaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guérande (44), cité médiévale et capitale du sel. Nous accompagnons PME artisanales paludiers, PME agroalimentaires et touristiques, commerçants et professions libérales de la presqu'île guérandaise. Audit sur place sur mesure.",
   seoHook: "agroalimentaire sel & tourisme patrimonial",
   ecosystemFr:
     "Guérande (16 804 hab) est une cité médiévale fortifiée, capitale du sel de Guérande et de ses marais salants classés. Tourisme patrimonial, agroalimentaire (sel, fleur de sel, confiserie), artisanat d'art, commerces de bouche et professions libérales. Proximité La Baule (10 min), Saint-Nazaire (20 min), Nantes (1h15). Pôle IGP sel de Guérande reconnu mondialement.",
@@ -30,8 +30,8 @@ export const GUERANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guérande : diagnostic adapté aux TPE paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Guérande : diagnostic adapté aux TPE paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Guérande : diagnostic adapté aux PME paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guérande : diagnostic adapté aux PME paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guérande : formats adaptés à l'agroalimentaire du sel, tourisme patrimonial, artisanat d'art et commerces de bouche. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const GUERANDE_COPY: VilleCopy = {
       en: "Implémentation IA à Guérande : traçabilité sel IGP, gestion qualité agroalimentaire, CRM clients tourisme, automatisation facturation et agents conversationnels pour les PME de la presqu'île.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Guérande : sessions dans vos locaux ou en visio. Dirigeants TPE paludiers, gérants PME agroalimentaires, commerçants et artisans d'art de la cité médiévale.",
-      en: "Coaching 1-to-1 à Guérande : sessions dans vos locaux ou en visio. Dirigeants TPE paludiers, gérants PME agroalimentaires, commerçants et artisans d'art de la cité médiévale.",
+      fr: "Coaching 1-to-1 à Guérande : sessions dans vos locaux ou en visio. Dirigeants PME paludiers, gérants PME agroalimentaires, commerçants et artisans d'art de la cité médiévale.",
+      en: "Coaching 1-to-1 à Guérande : sessions dans vos locaux ou en visio. Dirigeants PME paludiers, gérants PME agroalimentaires, commerçants et artisans d'art de la cité médiévale.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const GUERANDE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Guérande  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Guérande. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur artisanal ou agroalimentaire.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Guérande. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur artisanal ou agroalimentaire.",
     },
     {
       q: "Accompagnez-vous les producteurs de sel de Guérande ?",
@@ -65,7 +65,7 @@ export const GUERANDE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Guérande ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Guérande. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Guérande. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

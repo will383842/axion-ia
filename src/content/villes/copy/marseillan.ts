@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MARSEILLAN_COPY: VilleCopy = {
   pitchFr:
-    "Marseillan (34), commune héraultaise entre l'étang de Thau et la Méditerranée, berceau du Noilly Prat. Vignoble AOC Languedoc, port ostréicole, Marseillan-Plage (tourisme balnéaire). Tissu TPE commerçants, PME viticoles et ostréicoles, artisans, hôtellerie-restauration. Axion-IA collabore avec toutes les structures locales.",
+    "Marseillan (34), commune héraultaise entre l'étang de Thau et la Méditerranée, berceau du Noilly Prat. Vignoble AOC Languedoc, port ostréicole, Marseillan-Plage (tourisme balnéaire). Tissu PME du commerce, PME viticoles et ostréicoles, artisans, hôtellerie-restauration. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Marseillan (34), commune héraultaise entre l'étang de Thau et la Méditerranée, berceau du Noilly Prat. Vignoble AOC Languedoc, port ostréicole, Marseillan-Plage (tourisme balnéaire). Tissu TPE commerçants, PME viticoles et ostréicoles, artisans, hôtellerie-restauration. Axion-IA collabore avec toutes les structures locales.",
+    "Marseillan (34), commune héraultaise entre l'étang de Thau et la Méditerranée, berceau du Noilly Prat. Vignoble AOC Languedoc, port ostréicole, Marseillan-Plage (tourisme balnéaire). Tissu PME du commerce, PME viticoles et ostréicoles, artisans, hôtellerie-restauration. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseillan (34). Nous accompagnons TPE commerçants, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseillan (34). Nous accompagnons PME du commerce, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseillan (34). Nous accompagnons TPE commerçants, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marseillan (34). Nous accompagnons PME du commerce, PME viticoles et ostréicoles de l'étang de Thau, artisans, acteurs du tourisme balnéaire et hôtellerie-restauration.",
   ecosystemFr:
-    "Marseillan est une commune entre l'étang de Thau et la Méditerranée, berceau historique du vermouth Noilly Prat. Port ostréicole sur l'étang de Thau (conchyliculture), vignoble AOC Languedoc, Marseillan-Plage (tourisme balnéaire, campings). Tissu TPE commerçants, PME viticoles et ostréicoles, artisans, hôtellerie-restauration saisonnière.",
+    "Marseillan est une commune entre l'étang de Thau et la Méditerranée, berceau historique du vermouth Noilly Prat. Port ostréicole sur l'étang de Thau (conchyliculture), vignoble AOC Languedoc, Marseillan-Plage (tourisme balnéaire, campings). Tissu PME du commerce, PME viticoles et ostréicoles, artisans, hôtellerie-restauration saisonnière.",
   ecosystemEn:
-    "Marseillan est une commune entre l'étang de Thau et la Méditerranée, berceau historique du vermouth Noilly Prat. Port ostréicole sur l'étang de Thau (conchyliculture), vignoble AOC Languedoc, Marseillan-Plage (tourisme balnéaire, campings). Tissu TPE commerçants, PME viticoles et ostréicoles, artisans, hôtellerie-restauration saisonnière.",
+    "Marseillan est une commune entre l'étang de Thau et la Méditerranée, berceau historique du vermouth Noilly Prat. Port ostréicole sur l'étang de Thau (conchyliculture), vignoble AOC Languedoc, Marseillan-Plage (tourisme balnéaire, campings). Tissu PME du commerce, PME viticoles et ostréicoles, artisans, hôtellerie-restauration saisonnière.",
   distancesFr:
     "Agde à 10 min. Sète à 20 min. Béziers à 25 min. Montpellier à 50 min par A9. Aéroport Béziers-Cap d'Agde à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MARSEILLAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, TPE commerçants, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, TPE commerçants, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, PME du commerce, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, PME du commerce, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marseillan : ateliers adaptés exploitation ostréicole, domaine viticole, camping, restaurant ou commerce. Équipes autonomes sur outils IA métier.",

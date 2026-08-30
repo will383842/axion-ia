@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DOURDAN_COPY: VilleCopy = {
   pitchFr:
-    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu PME de l'artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu PME de l'artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dourdan (91). Nous accompagnons PME et ETI : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dourdan (91). Nous accompagnons PME et ETI : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat métiers",
   ecosystemFr:
-    "Dourdan est une sous-préfecture de l'Essonne, cité historique du Hurepoix dominée par un château royal du XIIIe siècle classé monument historique. Terminus RER C, porte sud de l'Île-de-France vers la Beauce. Tissu TPE commerces centre historique, artisanat, PME services, professions libérales, tourisme patrimonial et agriculture céréalière.",
+    "Dourdan est une sous-préfecture de l'Essonne, cité historique du Hurepoix dominée par un château royal du XIIIe siècle classé monument historique. Terminus RER C, porte sud de l'Île-de-France vers la Beauce. Tissu PME du commerce centre historique, artisanat, PME services, professions libérales, tourisme patrimonial et agriculture céréalière.",
   ecosystemEn:
-    "Dourdan est une sous-préfecture de l'Essonne, cité historique du Hurepoix dominée par un château royal du XIIIe siècle classé monument historique. Terminus RER C, porte sud de l'Île-de-France vers la Beauce. Tissu TPE commerces centre historique, artisanat, PME services, professions libérales, tourisme patrimonial et agriculture céréalière.",
+    "Dourdan est une sous-préfecture de l'Essonne, cité historique du Hurepoix dominée par un château royal du XIIIe siècle classé monument historique. Terminus RER C, porte sud de l'Île-de-France vers la Beauce. Tissu PME du commerce centre historique, artisanat, PME services, professions libérales, tourisme patrimonial et agriculture céréalière.",
   distancesFr:
     "Gare RER C Dourdan (terminus). Paris centre à 50 min. Étampes à 15 min. Arpajon à 20 min. Aéroport Paris-Orly à 35 min. N20 et A10 accès via Arpajon/Dourdan-la-Forêt.",
   distancesEn:
@@ -42,8 +42,8 @@ export const DOURDAN_COPY: VilleCopy = {
       en: "Implémentation IA à Dourdan : CRM augmenté commerçants, gestion cabinet professions libérales, outils réservation tourisme patrimonial, automatisation gestion exploitation agricole Beauce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Dourdan : sessions dans votre commerce, cabinet ou en visio. Dirigeants TPE/PME dourdannais, professions libérales, artisans, gérants tourisme et exploitants agricoles.",
-      en: "Coaching 1-to-1 à Dourdan : sessions dans votre commerce, cabinet ou en visio. Dirigeants TPE/PME dourdannais, professions libérales, artisans, gérants tourisme et exploitants agricoles.",
+      fr: "Coaching 1-to-1 à Dourdan : sessions dans votre commerce, cabinet ou en visio. Dirigeants PME et ETI dourdannais, professions libérales, artisans, gérants tourisme et exploitants agricoles.",
+      en: "Coaching 1-to-1 à Dourdan : sessions dans votre commerce, cabinet ou en visio. Dirigeants PME et ETI dourdannais, professions libérales, artisans, gérants tourisme et exploitants agricoles.",
     },
   },
   faqGeolocalisee: [

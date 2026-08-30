@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
+    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu PME et ETI industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
+    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu PME et ETI industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
   ecosystemFr:
-    "Moyeuvre-Grande est une commune mosellane de la Vallée de l'Orne, marquée par un héritage sidérurgique reconverti vers le tertiaire et la sous-traitance. Tissu TPE/PME industrie, BTP, commerces de proximité, services, artisanat. Proximité immédiate de Rombas et de l'agglomération de Metz.",
+    "Moyeuvre-Grande est une commune mosellane de la Vallée de l'Orne, marquée par un héritage sidérurgique reconverti vers le tertiaire et la sous-traitance. Tissu PME et ETI industrie, BTP, commerces de proximité, services, artisanat. Proximité immédiate de Rombas et de l'agglomération de Metz.",
   ecosystemEn:
-    "Moyeuvre-Grande est une commune mosellane de la Vallée de l'Orne, marquée par un héritage sidérurgique reconverti vers le tertiaire et la sous-traitance. Tissu TPE/PME industrie, BTP, commerces de proximité, services, artisanat. Proximité immédiate de Rombas et de l'agglomération de Metz.",
+    "Moyeuvre-Grande est une commune mosellane de la Vallée de l'Orne, marquée par un héritage sidérurgique reconverti vers le tertiaire et la sous-traitance. Tissu PME et ETI industrie, BTP, commerces de proximité, services, artisanat. Proximité immédiate de Rombas et de l'agglomération de Metz.",
   distancesFr:
     "Metz à 25 min. Thionville à 20 min. Rombas à 5 min. Briey à 15 min. Gare SNCF Moyeuvre-Grande (ligne Metz–Conflans). Autoroute A4/A31 accès proche. Aéroport Metz-Nancy-Lorraine à 35 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux PME et ETI industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux PME et ETI industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moyeuvre-Grande : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
       en: "Implémentation IA à Moyeuvre-Grande : contrôle qualité production, traçabilité sous-traitance, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Moyeuvre-Grande : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants TPE/PME moyeuvriens.",
-      en: "Coaching 1-to-1 à Moyeuvre-Grande : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants TPE/PME moyeuvriens.",
+      fr: "Coaching 1-to-1 à Moyeuvre-Grande : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants PME et ETI moyeuvriens.",
+      en: "Coaching 1-to-1 à Moyeuvre-Grande : sessions dans votre atelier, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, gérants PME et ETI moyeuvriens.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants de la Vallée de l'Orne ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et sous-traitants moyeuvriens : contrôle qualité, traçabilité production, automatisation workflow, optimisation relations donneurs d'ordres.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et sous-traitants moyeuvriens : contrôle qualité, traçabilité production, automatisation workflow, optimisation relations donneurs d'ordres.",
     },
     {
       q: "Quels tarifs pour un audit IA à Moyeuvre-Grande ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants ?",

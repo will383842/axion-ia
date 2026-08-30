@@ -70,7 +70,7 @@ interface ExtractOptions {
  *   extractMentionedCitiesFromText("Notre intervention à Paris et Lyon...")
  *   // → ["paris", "lyon"]
  *
- *   extractMentionedCitiesFromText("Audit IA TPE", { forceInclude: "marseille" })
+ *   extractMentionedCitiesFromText("Audit IA PME", { forceInclude: "marseille" })
  *   // → ["marseille"] (pas de match dans le body mais forceInclude)
  */
 export function extractMentionedCitiesFromText(text: string, options?: ExtractOptions): string[] {

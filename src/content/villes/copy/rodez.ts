@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RODEZ_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Rodez (12), préfecture de l'Aveyron. Ville du musée Soulages et de la cathédrale de grès rose, Rodez vit de l'agroalimentaire (RAGT semences), du commerce, de la santé et du tourisme culturel. Nous y apportons une IA concrète et utile aux petites structures du plateau aveyronnais.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Rodez (12), préfecture de l'Aveyron. Ville du musée Soulages et de la cathédrale de grès rose, Rodez vit de l'agroalimentaire (RAGT semences), du commerce, de la santé et du tourisme culturel. Nous y apportons une IA concrète et utile aux PME du plateau aveyronnais.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Rodez (12), préfecture de l'Aveyron. Ville du musée Soulages et de la cathédrale de grès rose, Rodez vit de l'agroalimentaire (RAGT semences), du commerce, de la santé et du tourisme culturel. Nous y apportons une IA concrète et utile aux petites structures du plateau aveyronnais.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Rodez (12), préfecture de l'Aveyron. Ville du musée Soulages et de la cathédrale de grès rose, Rodez vit de l'agroalimentaire (RAGT semences), du commerce, de la santé et du tourisme culturel. Nous y apportons une IA concrète et utile aux PME du plateau aveyronnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les TPE puis les PME : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les PME puis les ETI : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les TPE puis les PME : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les PME puis les ETI : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   seoHook: "agroalimentaire & semences",
   ecosystemFr:
-    "Rodez, capitale de l'Aveyron, mêle patrimoine et économie productive : autour de la cathédrale de grès rose et du musée Soulages, dédié à Pierre Soulages né dans la ville, gravite un tourisme culturel actif. L'agroalimentaire structure le bassin, porté par la filière semencière RAGT, aux côtés du commerce, de la santé et d'un artisanat dense. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
+    "Rodez, capitale de l'Aveyron, mêle patrimoine et économie productive : autour de la cathédrale de grès rose et du musée Soulages, dédié à Pierre Soulages né dans la ville, gravite un tourisme culturel actif. L'agroalimentaire structure le bassin, porté par la filière semencière RAGT, aux côtés du commerce, de la santé et d'un artisanat dense. Ce tissu de PME et ETI est un terrain idéal pour des automatisations IA pragmatiques.",
   ecosystemEn:
-    "Rodez, capitale de l'Aveyron, mêle patrimoine et économie productive : autour de la cathédrale de grès rose et du musée Soulages, dédié à Pierre Soulages né dans la ville, gravite un tourisme culturel actif. L'agroalimentaire structure le bassin, porté par la filière semencière RAGT, aux côtés du commerce, de la santé et d'un artisanat dense. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
+    "Rodez, capitale de l'Aveyron, mêle patrimoine et économie productive : autour de la cathédrale de grès rose et du musée Soulages, dédié à Pierre Soulages né dans la ville, gravite un tourisme culturel actif. L'agroalimentaire structure le bassin, porté par la filière semencière RAGT, aux côtés du commerce, de la santé et d'un artisanat dense. Ce tissu de PME et ETI est un terrain idéal pour des automatisations IA pragmatiques.",
   distancesFr:
     "Aéroport de Rodez-Aveyron à 10 km (liaisons Paris, vols saisonniers). Gare de Rodez (liaison Toulouse ~2h30, Paris via correspondance). Toulouse à 150 km par la RN88. Montpellier et l'A75 accessibles vers l'est.",
   distancesEn:
@@ -42,8 +42,8 @@ export const RODEZ_COPY: VilleCopy = {
       en: "Implémentation IA à Rodez : traçabilité agroalimentaire, gestion documentaire, agents conversationnels multilingues pour le tourisme et automatisation des devis pour les artisans du plateau.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rodez : sessions individuelles pour dirigeants de TPE et PME aveyronnaises, en entreprise ou en visio, pour piloter l'IA sans dépendre d'un prestataire extérieur.",
-      en: "Coaching 1-to-1 à Rodez : sessions individuelles pour dirigeants de TPE et PME aveyronnaises, en entreprise ou en visio, pour piloter l'IA sans dépendre d'un prestataire extérieur.",
+      fr: "Coaching 1-to-1 à Rodez : sessions individuelles pour dirigeants de PME et d'ETI aveyronnaises, en entreprise ou en visio, pour piloter l'IA sans dépendre d'un prestataire extérieur.",
+      en: "Coaching 1-to-1 à Rodez : sessions individuelles pour dirigeants de PME et d'ETI aveyronnaises, en entreprise ou en visio, pour piloter l'IA sans dépendre d'un prestataire extérieur.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Rodez : plateformes et SaaS IA sur mesure pour commerces, producteurs et sites touristiques — boutiques en ligne, réservations, agents IA d'accueil autour du musée Soulages.",
@@ -57,7 +57,7 @@ export const RODEZ_COPY: VilleCopy = {
         whyHere: [
           "Filière semencière et agroalimentaire structurante : RAGT et son écosystème de coopératives, la coopérative Unicor (dont le siège est sur l'agglomération), Lactalis-Valmont et Sodiaal forment un terrain idéal pour des plateformes de traçabilité, des portails producteurs et de la gestion documentaire augmentée à l'IA, branchés sur vos ERP et votre SI existants.",
           "Tourisme culturel autour du musée Soulages, dédié à Pierre Soulages né à Rodez, et de la cathédrale de grès rose : hôtels, restaurants et lieux d'accueil ruthénois gagnent à un chatbot RAG multilingue, à la réservation directe et à la gestion d'avis, calibrés pour une clientèle française et internationale en pleine saison.",
-          "Pôle industriel et artisanal des zones de Cantaranne et Bel-Air à Onet-le-Château (équipementier automobile Bosch, plus de 6 800 emplois cumulés sur l'agglo) : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine e-commerce et un SaaS métier sur mesure, sans imposer de refonte lourde aux TPE du plateau aveyronnais.",
+          "Pôle industriel et artisanal des zones de Cantaranne et Bel-Air à Onet-le-Château (équipementier automobile Bosch, plus de 6 800 emplois cumulés sur l'agglo) : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine e-commerce et un SaaS métier sur mesure, sans imposer de refonte lourde aux PME du plateau aveyronnais.",
           "Préfecture éloignée des grands centres (Toulouse à 150 km par la RN88, aéroport de Rodez-Aveyron à 10 km) : un site rapide, bien référencé en local et autonome compte double. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et vos commerces du centre-ville comme vos producteurs ruraux pilotent leur outil sans dépendre d'un prestataire lointain.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const RODEZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue d'accueil, recherche sémantique, moteur de réservation — sur le site existant d'un commerce du Foirail, d'un restaurant ou d'un hébergeur touristique ruthénois gravitant autour du musée Soulages, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -147,7 +141,7 @@ export const RODEZ_COPY: VilleCopy = {
         whyHere: [
           "Filière semencière et agroalimentaire structurante : RAGT et son écosystème de coopératives, la coopérative Unicor (dont le siège est sur l'agglomération), Lactalis-Valmont et Sodiaal forment un terrain idéal pour des plateformes de traçabilité, des portails producteurs et de la gestion documentaire augmentée à l'IA, branchés sur vos ERP et votre SI existants.",
           "Tourisme culturel autour du musée Soulages, dédié à Pierre Soulages né à Rodez, et de la cathédrale de grès rose : hôtels, restaurants et lieux d'accueil ruthénois gagnent à un chatbot RAG multilingue, à la réservation directe et à la gestion d'avis, calibrés pour une clientèle française et internationale en pleine saison.",
-          "Pôle industriel et artisanal des zones de Cantaranne et Bel-Air à Onet-le-Château (équipementier automobile Bosch, plus de 6 800 emplois cumulés sur l'agglo) : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine e-commerce et un SaaS métier sur mesure, sans imposer de refonte lourde aux TPE du plateau aveyronnais.",
+          "Pôle industriel et artisanal des zones de Cantaranne et Bel-Air à Onet-le-Château (équipementier automobile Bosch, plus de 6 800 emplois cumulés sur l'agglo) : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine e-commerce et un SaaS métier sur mesure, sans imposer de refonte lourde aux PME du plateau aveyronnais.",
           "Préfecture éloignée des grands centres (Toulouse à 150 km par la RN88, aéroport de Rodez-Aveyron à 10 km) : un site rapide, bien référencé en local et autonome compte double. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et vos commerces du centre-ville comme vos producteurs ruraux pilotent leur outil sans dépendre d'un prestataire lointain.",
         ],
         methodology: [
@@ -178,12 +172,6 @@ export const RODEZ_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue d'accueil, recherche sémantique, moteur de réservation — sur le site existant d'un commerce du Foirail, d'un restaurant ou d'un hébergeur touristique ruthénois gravitant autour du musée Soulages, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -238,11 +226,11 @@ export const RODEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rodez ?",
-      a: "Oui, Axion-IA intervient à Rodez et dans tout l'Aveyron. Nos consultants se déplacent par avion (aéroport de Rodez-Aveyron à 10 km) ou par la route depuis Toulouse pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Rodez et dans tout l'Aveyron. Nos consultants se déplacent par avion (aéroport de Rodez-Aveyron à 10 km) ou par la route depuis Toulouse pour rencontrer PME et ETI sur site.",
     },
     {
       q: "Combien coûte un audit IA à Rodez ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME aveyronnaises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux PME et ETI aveyronnaises, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire et la filière semencière ?",

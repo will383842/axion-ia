@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_FERTE_MACE_COPY: VilleCopy = {
   pitchFr:
-    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
+    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu PME artisanales, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
   pitchEn:
-    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
+    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu PME artisanales, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit sur place sur mesure.",
   seoHook: "bocage normand, tourisme & agroalimentaire",
   ecosystemFr:
-    "La Ferté-Macé est au coeur du bocage normand ornais, labellisée Station Verte. Tradition gastronomique (tripes ferthoises), tissu PME agroalimentaires, acteurs tourisme vert, TPE artisans BTP, commerces de proximité et professions libérales.",
+    "La Ferté-Macé est au coeur du bocage normand ornais, labellisée Station Verte. Tradition gastronomique (tripes ferthoises), tissu PME agroalimentaires, acteurs tourisme vert, PME du BTP, commerces de proximité et professions libérales.",
   ecosystemEn:
-    "La Ferté-Macé est au coeur du bocage normand ornais, labellisée Station Verte. Tradition gastronomique (tripes ferthoises), tissu PME agroalimentaires, acteurs tourisme vert, TPE artisans BTP, commerces de proximité et professions libérales.",
+    "La Ferté-Macé est au coeur du bocage normand ornais, labellisée Station Verte. Tradition gastronomique (tripes ferthoises), tissu PME agroalimentaires, acteurs tourisme vert, PME du BTP, commerces de proximité et professions libérales.",
   distancesFr:
     "Gare de Briouze à 10 km (TER Caen-Argentan). Flers à 20 km. Argentan à 35 km. Bagnoles-de-l'Orne à 8 km. Alençon à 55 km.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire bocage normand",
     "Tourisme vert & Station Verte",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-Macé : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à La Ferté-Macé : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à La Ferté-Macé : diagnostic adapté aux PME artisanales, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ferté-Macé : diagnostic adapté aux PME artisanales, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-Macé : formats adaptés au bureau, atelier, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
       en: "Implémentation IA à La Ferté-Macé : automatisation gestion hébergement touristique, agents conversationnels B2B, traçabilité agroalimentaire, classification documents. Bocage normand.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Ferté-Macé : sessions dans votre bureau, commerce ou en visio. Dirigeants PME, artisans, commerçants, gérants TPE ferthois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à La Ferté-Macé : sessions dans votre bureau, commerce ou en visio. Dirigeants PME, artisans, commerçants, gérants TPE ferthois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à La Ferté-Macé : sessions dans votre bureau, commerce ou en visio. Dirigeants PME, artisans, commerçants, gérants PME ferthois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à La Ferté-Macé : sessions dans votre bureau, commerce ou en visio. Dirigeants PME, artisans, commerçants, gérants PME ferthois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs touristiques de La Ferté-Macé (hébergements, restaurants, activités plein air) sur des cas IA : automatisation réservations, agents conversationnels, gestion avis clients, optimisation planning.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans ferthois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de La Ferté-Macé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans ferthois ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce de La Ferté-Macé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",
@@ -65,7 +65,7 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à La Ferté-Macé ?",
-      a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME agroalimentaires et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité pour les PME. Pour les PME agroalimentaires et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

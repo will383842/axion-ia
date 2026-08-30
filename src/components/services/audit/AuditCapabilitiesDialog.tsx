@@ -86,7 +86,7 @@ export function AuditCapabilitiesDialog({ isFr }: AuditCapabilitiesDialogProps):
             </DialogTitle>
             <DialogDescription className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
               {isFr
-                ? "De la TPE à la grande entreprise, mono-site ou multi-sites / réseau / franchises : l'IA et l'automatisation touchent toute l'entreprise — de la stratégie globale à chaque fonction. Vous n'avez pas besoin de tout : l'audit IA détermine ce qui s'applique à vous, et ce qui rapporte le plus vite."
+                ? "De la PME au grand groupe, mono-site ou multi-sites / réseau / franchises : l'IA et l'automatisation touchent toute l'entreprise — de la stratégie globale à chaque fonction. Vous n'avez pas besoin de tout : l'audit IA détermine ce qui s'applique à vous, et ce qui rapporte le plus vite."
                 : "From micro-business to large enterprise, single-site or multi-site / network / franchises: AI and automation touch the whole company — from the global strategy down to every function. You don't need all of it: the AI audit determines what applies to you, and what pays off fastest."}
             </DialogDescription>
           </div>

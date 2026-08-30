@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const ALLAUCH_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Allauch, commune de 21 443 habitants située à 12 km de Marseille dans les Bouches-du-Rhône. Nous intervenons auprès des artisans, commerçants et petites industries de la zone d'activités de Fontvieille (agro-alimentaire, nougats, cafés, petite industrie de pointe) ainsi que des laboratoires pharmaceutiques type Laphal. Nos consultants se déplacent sur site pour auditer vos processus, automatiser vos tâches administratives et former vos équipes à l'IA opérationnelle.",
+    "Axion-IA accompagne les PME et ETI d'Allauch, commune de 21 443 habitants située à 12 km de Marseille dans les Bouches-du-Rhône. Nous intervenons auprès des artisans, commerçants et petites industries de la zone d'activités de Fontvieille (agro-alimentaire, nougats, cafés, petite industrie de pointe) ainsi que des laboratoires pharmaceutiques type Laphal. Nos consultants se déplacent sur site pour auditer vos processus, automatiser vos tâches administratives et former vos équipes à l'IA opérationnelle.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Allauch, commune de 21 443 habitants située à 12 km de Marseille dans les Bouches-du-Rhône. Nous intervenons auprès des artisans, commerçants et petites industries de la zone d'activités de Fontvieille (agro-alimentaire, nougats, cafés, petite industrie de pointe) ainsi que des laboratoires pharmaceutiques type Laphal. Nos consultants se déplacent sur site pour auditer vos processus, automatiser vos tâches administratives et former vos équipes à l'IA opérationnelle.",
+    "Axion-IA accompagne les PME et ETI d'Allauch, commune de 21 443 habitants située à 12 km de Marseille dans les Bouches-du-Rhône. Nous intervenons auprès des artisans, commerçants et petites industries de la zone d'activités de Fontvieille (agro-alimentaire, nougats, cafés, petite industrie de pointe) ainsi que des laboratoires pharmaceutiques type Laphal. Nos consultants se déplacent sur site pour auditer vos processus, automatiser vos tâches administratives et former vos équipes à l'IA opérationnelle.",
   directAnswerFr:
-    "À Allauch, Axion-IA intervient directement sur site pour les TPE et PME locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès {{price:audit-flash|flat}}, des interventions d'automatisation dès {{price:intervention-4h|flat}} et des formations dirigeants dès {{price:intervention-dirigeants|flat}}. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
+    "À Allauch, Axion-IA intervient directement sur site pour les PME et ETI locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès {{price:audit-flash|flat}}, des interventions d'automatisation dès {{price:intervention-4h|flat}} et des formations dirigeants dès {{price:intervention-dirigeants|flat}}. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
   directAnswerEn:
-    "À Allauch, Axion-IA intervient directement sur site pour les TPE et PME locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès {{price:audit-flash|flat}}, des interventions d'automatisation dès {{price:intervention-4h|flat}} et des formations dirigeants dès {{price:intervention-dirigeants|flat}}. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
+    "À Allauch, Axion-IA intervient directement sur site pour les PME et ETI locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès {{price:audit-flash|flat}}, des interventions d'automatisation dès {{price:intervention-4h|flat}} et des formations dirigeants dès {{price:intervention-dirigeants|flat}}. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
   seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Le tissu économique d'Allauch s'appuie sur la zone d'activités de Fontvieille spécialisée en agro-alimentaire et petite industrie de pointe, le laboratoire pharmaceutique Laphal (plus de 130 emplois) ainsi que des entreprises complémentaires comme Irex et IPP Pharma. La commune compte environ 100 commerces répartis sur trois centres urbains, et un artisanat dynamique autour du nougat provençal, de La Chips d'Allauch (depuis 1976) et des fromages de chèvre. La majorité des actifs travaille sur l'agglomération Aix-Marseille.",
@@ -45,8 +45,8 @@ export const ALLAUCH_COPY: VilleCopy = {
       en: "Implémenter des solutions IA en code source à Allauch, adaptées aux PME pharma (Laphal, IPP Pharma) ou aux producteurs locaux — à partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour TPE/PME — à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour TPE/PME — à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour PME et ETI — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour PME et ETI — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const ALLAUCH_COPY: VilleCopy = {
         whyHere: [
           "Artisanat agro-alimentaire à forte identité — nougat provençal, confiserie Moulin Bleu (dernier confiseur du village), La Chips d'Allauch depuis 1976, fromages de la chèvrerie d'Allauch : on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify ou code dédié) pour vendre ces produits du terroir en ligne, avec fiches produits, traçabilité, gestion des stocks et expédition au-delà du marché local.",
           "Une centaine de commerces dispersés sur trois centres urbains (le village historique et ses ruelles, Logis-Neuf, Pas-de-Trets) et une fréquentation touristique tirée par l'esplanade des moulins à vent et Notre-Dame du Château : nos vitrines mobile-first et nos chatbots multilingues calibrés pour le commerce de détail et la restauration captent une clientèle qui cherche en ligne avant de monter au village.",
-          "Parc d'Activités de Fontvieille (créé en 1981, 5 hectares, une trentaine d'entreprises, environ 300 emplois) regroupant l'agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et la petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie) : on greffe l'IA sur l'existant — widget, API, plugin — ou on bâtit un portail métier branché sur votre ERP, sans refonte coûteuse pour les TPE/PME du secteur.",
+          "Parc d'Activités de Fontvieille (créé en 1981, 5 hectares, une trentaine d'entreprises, environ 300 emplois) regroupant l'agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et la petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie) : on greffe l'IA sur l'existant — widget, API, plugin — ou on bâtit un portail métier branché sur votre ERP, sans refonte coûteuse pour les PME et ETI du secteur.",
           "Présence de laboratoires pharmaceutiques et de spécialistes des arômes (type Laphal, IPP Pharma, Fontarome) traitant des données sensibles de qualité et de production : toute la chaîne IA — recherche sémantique documentaire, agents, automatisations — est hébergeable en UE et conforme RGPD/AI Act, vos données restent maîtrisées et auditables.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const ALLAUCH_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande en ligne) sur le site d'un artisan nougatier, de la confiserie Moulin Bleu, d'un fromager ou d'un commerce du village, en quelques semaines et sans refonte de l'existant.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -123,7 +117,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises du Parc d'Activités de Fontvieille ?",
-            a: "Oui. Le Parc de Fontvieille regroupe une trentaine d'entreprises et environ 300 emplois en agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie). Pour ces TPE/PME, on greffe l'IA sur l'existant — widget, API, plugin, portail métier — ou on développe une plateforme branchée sur votre ERP, sans imposer de refonte coûteuse ni de migration brutale.",
+            a: "Oui. Le Parc de Fontvieille regroupe une trentaine d'entreprises et environ 300 emplois en agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie). Pour ces PME et ETI, on greffe l'IA sur l'existant — widget, API, plugin, portail métier — ou on développe une plateforme branchée sur votre ERP, sans imposer de refonte coûteuse ni de migration brutale.",
           },
           {
             q: "Mes données sensibles restent-elles en Europe ?",
@@ -142,7 +136,7 @@ export const ALLAUCH_COPY: VilleCopy = {
         whyHere: [
           "Artisanat agro-alimentaire à forte identité — nougat provençal, confiserie Moulin Bleu (dernier confiseur du village), La Chips d'Allauch depuis 1976, fromages de la chèvrerie d'Allauch : on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify ou code dédié) pour vendre ces produits du terroir en ligne, avec fiches produits, traçabilité, gestion des stocks et expédition au-delà du marché local.",
           "Une centaine de commerces dispersés sur trois centres urbains (le village historique et ses ruelles, Logis-Neuf, Pas-de-Trets) et une fréquentation touristique tirée par l'esplanade des moulins à vent et Notre-Dame du Château : nos vitrines mobile-first et nos chatbots multilingues calibrés pour le commerce de détail et la restauration captent une clientèle qui cherche en ligne avant de monter au village.",
-          "Parc d'Activités de Fontvieille (créé en 1981, 5 hectares, une trentaine d'entreprises, environ 300 emplois) regroupant l'agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et la petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie) : on greffe l'IA sur l'existant — widget, API, plugin — ou on bâtit un portail métier branché sur votre ERP, sans refonte coûteuse pour les TPE/PME du secteur.",
+          "Parc d'Activités de Fontvieille (créé en 1981, 5 hectares, une trentaine d'entreprises, environ 300 emplois) regroupant l'agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et la petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie) : on greffe l'IA sur l'existant — widget, API, plugin — ou on bâtit un portail métier branché sur votre ERP, sans refonte coûteuse pour les PME et ETI du secteur.",
           "Présence de laboratoires pharmaceutiques et de spécialistes des arômes (type Laphal, IPP Pharma, Fontarome) traitant des données sensibles de qualité et de production : toute la chaîne IA — recherche sémantique documentaire, agents, automatisations — est hébergeable en UE et conforme RGPD/AI Act, vos données restent maîtrisées et auditables.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const ALLAUCH_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de commande en ligne) sur le site d'un artisan nougatier, de la confiserie Moulin Bleu, d'un fromager ou d'un commerce du village, en quelques semaines et sans refonte de l'existant.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -209,7 +197,7 @@ export const ALLAUCH_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises du Parc d'Activités de Fontvieille ?",
-            a: "Oui. Le Parc de Fontvieille regroupe une trentaine d'entreprises et environ 300 emplois en agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie). Pour ces TPE/PME, on greffe l'IA sur l'existant — widget, API, plugin, portail métier — ou on développe une plateforme branchée sur votre ERP, sans imposer de refonte coûteuse ni de migration brutale.",
+            a: "Oui. Le Parc de Fontvieille regroupe une trentaine d'entreprises et environ 300 emplois en agro-alimentaire (Sofac, Sud Cafés, Nougats d'Allauch) et petite industrie de pointe (Technico Flor, Fontarome, Profil Papeterie). Pour ces PME et ETI, on greffe l'IA sur l'existant — widget, API, plugin, portail métier — ou on développe une plateforme branchée sur votre ERP, sans imposer de refonte coûteuse ni de migration brutale.",
           },
           {
             q: "Mes données sensibles restent-elles en Europe ?",
@@ -249,7 +237,7 @@ export const ALLAUCH_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les équipes à Allauch ?",
-      a: "Oui, nous proposons des formations sur site à Allauch en format 1-to-1 dirigeants (dès {{price:intervention-dirigeants|flat}}) ou en sessions collectives pour équipes opérationnelles, adaptées aux PME et TPE locales.",
+      a: "Oui, nous proposons des formations sur site à Allauch en format 1-to-1 dirigeants (dès {{price:intervention-dirigeants|flat}}) ou en sessions collectives pour équipes opérationnelles, adaptées aux PME et ETI locales.",
     },
   ],
 };

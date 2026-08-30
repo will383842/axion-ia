@@ -4,7 +4,7 @@
 //   - Aucun délai chiffré.
 //   - Aucun prix en dur : libellés contextuels uniquement (pricing.ts SSOT).
 //   - Durée minimale = 1 journée. Pas de demi-journée.
-//   - Tailles entreprises en langage INSEE : TPE / PME / ETI / GE.
+//   - Tailles entreprises en langage INSEE : PME/ETI/GE.
 //   - ~95 % Axion-IA-centric, ~5 % data économique locale anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn (non demandés pour cette ville pilote).
 //
@@ -53,7 +53,7 @@ export const ANNECY_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annecy (74) sur site dans le bassin annécien, la Vallée de l'Arve et le secteur transfrontalier jusqu'à Genève. Nous accompagnons les TPE, PME, ETI et grandes entreprises savoyardes — équipementiers outdoor, industries de précision, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Tarifs publics, aucun lock-in technologique, vos équipes restent autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annecy (74) sur site dans le bassin annécien, la Vallée de l'Arve et le secteur transfrontalier jusqu'à Genève. Nous accompagnons les PME, ETI et grands groupes savoyards — équipementiers outdoor, industries de précision, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Tarifs publics, aucun lock-in technologique, vos équipes restent autonomes.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Annecy (74) on site across the Annecy basin, the Vallée de l'Arve and the cross-border area up to Geneva. We support micro-businesses, SMEs, mid-caps and large enterprises in Savoie — outdoor equipment makers, precision industry, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Public pricing, no tech lock-in, your teams stay autonomous.",
 
@@ -82,7 +82,7 @@ export const ANNECY_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales savoyardes aux sites industriels des grands groupes implantés dans le bassin annécien.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME artisanales savoyardes aux sites industriels des grands groupes implantés dans le bassin annécien.",
         whyHere: [
           "Le tissu industriel d'Annecy est en forte demande d'IA : automatisation qualité, optimisation logistique, R&D accélérée chez les équipementiers outdoor et les sous-traitants de précision.",
           "Nos consultants maîtrisent les enjeux spécifiques du secteur outdoor/montagne (cycles de développement produit, gestion saisonnière, contraintes normes EN/ISO) et de la mécanique de précision (traçabilité, contrôle qualité, maintenance prédictive).",
@@ -119,12 +119,6 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux artisans, indépendants, TPE industrielles et commerciales du bassin annécien jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME (10-249 collab)",
             price: "Audit Ciblé ou Stratégique PME",
@@ -188,7 +182,7 @@ export const ANNECY_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Savoie artisanal micro-businesses to large-group industrial sites across the Annecy basin.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Savoie artisanal micro-businesses to large-group industrial sites across the Annecy basin.",
         whyHere: [
           "Annecy's industrial fabric has strong AI demand: quality automation, logistics optimization, accelerated R&D at outdoor equipment makers and precision sub-contractors.",
           "Our consultants know the specific challenges of the outdoor/mountain sector (product development cycles, seasonal management, EN/ISO standards) and precision engineering (traceability, quality control, predictive maintenance).",
@@ -225,12 +219,6 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Sur place audit",
-            detail:
-              "Suited to craftspeople, freelancers, industrial and commercial micro-businesses in the Annecy basin up to about ten staff.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "Targeted or SME Strategic audit",
@@ -335,12 +323,6 @@ export const ANNECY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Formation collective",
-            detail:
-              "Idéal pour artisans, indépendants, petites structures industrielles ou de services du bassin annécien jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME (10-249 collab)",
             price: "Formation collective ou Équipes",
             detail:
@@ -440,12 +422,6 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Group format",
-            detail:
-              "Ideal for craftspeople, freelancers, small industrial or service businesses in the Annecy basin up to about ten staff.",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "Group or Teams format",
@@ -550,12 +526,6 @@ export const ANNECY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines (rédaction automatique de rapports qualité, réponse aux emails clients, qualification d'offres).",
-          },
-          {
             sizeLabel: "PME (10-249 collab)",
             price: "Mission PME",
             detail:
@@ -591,7 +561,7 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Annecy ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME sur quelques mois, une mission ETI sur plusieurs mois, un grand programme sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME sur quelques mois, une mission ETI sur plusieurs mois, un grand programme sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -655,12 +625,6 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business (< 10 staff)",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks (automatic quality report writing, client email response, offer qualification).",
-          },
           {
             sizeLabel: "SME (10-249 staff)",
             price: "SME mission",
@@ -726,7 +690,7 @@ export const ANNECY_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Annecy accompagne individuellement les dirigeants et cadres des PME outdoor/sport, de la mécanique de précision et du tissu industriel de Haute-Savoie. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — gestion de catalogues produits outdoor, documentation technique de précision, développement commercial grand compte ou pilotage RH en PME. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Annecy accompagne individuellement les dirigeants et cadres des PME outdoor/sport, de la mécanique de précision et du tissu industriel de Haute-Savoie. À partir de {{price:intervention-dirigeants|flat}} pour les PME, chaque programme est bâti autour de vos cas d'usage réels — gestion de catalogues produits outdoor, documentation technique de précision, développement commercial grand compte ou pilotage RH en PME. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Annecy concentre des PME et ETI industrielles de précision (décolletage, mécatronique) dont les dirigeants ont des agendas très contraints : le coaching 1-to-1 s'adapte à leur rythme, en visio ou en présentiel à Annecy ou dans la Vallée de l'Arve.",
           "Les acteurs du cluster Outdoor Sports Valley (Salomon, Mavic, sous-traitants) ont des besoins IA spécifiques sur la documentation produit, la gestion supply chain et le marketing B2B à l'international — le coaching individuel cible ces enjeux précisément.",
@@ -763,12 +727,6 @@ export const ANNECY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Programme d'entrée pour les gérants de TPE, artisans et indépendants du bassin annécien souhaitant intégrer l'IA dans leur activité quotidienne.",
-          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -870,12 +828,6 @@ export const ANNECY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry programme for micro-business owners, craft firms and freelancers in the Annecy basin wishing to integrate AI into their daily activity.",
-          },
-          {
             sizeLabel: "SME",
             price: "On quote",
             detail:
@@ -976,12 +928,6 @@ export const ANNECY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
             detail:
@@ -1062,12 +1008,6 @@ export const ANNECY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / shop",
             detail:
@@ -1117,7 +1057,7 @@ export const ANNECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Annecy ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Annecy et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Annecy et partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans le bassin industriel d'Annecy et la Vallée de l'Arve ?",

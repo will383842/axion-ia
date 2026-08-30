@@ -425,7 +425,7 @@ export const BORDEAUX_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : Bordeaux/Gironde compte plusieurs labellisés (vignobles,
   // tonnellerie, gastronomie). Sans annuaire officiel par entreprise

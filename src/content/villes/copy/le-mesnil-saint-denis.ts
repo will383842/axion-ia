@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA accompagne tout le tissu professionnel local du sud Yvelines.",
+    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA accompagne tout le tissu professionnel local du sud Yvelines.",
   pitchEn:
-    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA accompagne tout le tissu professionnel local du sud Yvelines.",
+    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA accompagne tout le tissu professionnel local du sud Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons TPE et PME : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons PME et ETI : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons TPE et PME : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons PME et ETI : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
   seoHook: "informatique conseil & artisanat bâtiment",
   ecosystemFr:
-    "Le Mesnil-Saint-Denis est une commune résidentielle verdoyante du sud des Yvelines, entre Trappes et la vallée de Chevreuse. Cadre de vie prisé à 28 km de Paris. Tissu économique : TPE artisanat et services, PME informatique et conseil (proximité Technocentre Renault et Saint-Quentin-en-Yvelines), commerces de centre-bourg, professions libérales santé et juridique, entreprises de services à la personne.",
+    "Le Mesnil-Saint-Denis est une commune résidentielle verdoyante du sud des Yvelines, entre Trappes et la vallée de Chevreuse. Cadre de vie prisé à 28 km de Paris. Tissu économique : PME de l'artisanat et services, PME informatique et conseil (proximité Technocentre Renault et Saint-Quentin-en-Yvelines), commerces de centre-bourg, professions libérales santé et juridique, entreprises de services à la personne.",
   ecosystemEn:
-    "Le Mesnil-Saint-Denis est une commune résidentielle verdoyante du sud des Yvelines, entre Trappes et la vallée de Chevreuse. Cadre de vie prisé à 28 km de Paris. Tissu économique : TPE artisanat et services, PME informatique et conseil (proximité Technocentre Renault et Saint-Quentin-en-Yvelines), commerces de centre-bourg, professions libérales santé et juridique, entreprises de services à la personne.",
+    "Le Mesnil-Saint-Denis est une commune résidentielle verdoyante du sud des Yvelines, entre Trappes et la vallée de Chevreuse. Cadre de vie prisé à 28 km de Paris. Tissu économique : PME de l'artisanat et services, PME informatique et conseil (proximité Technocentre Renault et Saint-Quentin-en-Yvelines), commerces de centre-bourg, professions libérales santé et juridique, entreprises de services à la personne.",
   distancesFr:
     "Saint-Quentin-en-Yvelines à 10 min, Trappes à 8 min, Versailles à 20 min. Gare de La Verrière (RER C + Transilien N) à 10 min. Paris Montparnasse à 40 min par N10/A12. Aéroport Paris-Orly à 30 min.",
   distancesEn:
     "Saint-Quentin-en-Yvelines à 10 min, Trappes à 8 min, Versailles à 20 min. Gare de La Verrière (RER C + Transilien N) à 10 min. Paris Montparnasse à 40 min par N10/A12. Aéroport Paris-Orly à 30 min.",
   topSectorsNaf: [
     "PME informatique & conseil IT",
-    "TPE artisanat bâtiment & rénovation",
+    "PME de l'artisanat bâtiment & rénovation",
     "Commerce de proximité & centre-bourg",
     "Professions libérales santé & juridique",
     "Services à la personne & bien-être",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, PME artisanales, commerces et professions libérales du sud Yvelines. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, PME artisanales, commerces et professions libérales du sud Yvelines. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mesnil-Saint-Denis : formats adaptés au bureau IT, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Mesnil-Saint-Denis ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (IT, artisanat, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du sud Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (IT, artisanat, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants du Mesnil-Saint-Denis ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants du Mesnil-Saint-Denis : devis automatisé, gestion planning IA, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples adaptées aux petites structures.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce du Mesnil-Saint-Denis : devis automatisé, gestion planning IA, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples adaptées aux PME.",
     },
     {
       q: "Comment se déroule une mission au Mesnil-Saint-Denis ?",

@@ -4733,9 +4733,9 @@ const IA_POUR_LE_BTP: FormationV2 = {
   ],
   faqs: [
     {
-      question: "Est-ce adapté à une petite entreprise du bâtiment ?",
+      question: "Est-ce adapté à une PME du bâtiment ?",
       reponse:
-        "Oui : la journée est conçue pour les entreprises de toutes tailles — de l'artisan avec un conducteur de travaux aux PME du BTP. Les ateliers portent sur vos chantiers et documents réels.",
+        "Oui : la journée est conçue pour les PME et ETI du BTP — du chef d'équipe au conducteur de travaux. Les ateliers portent sur vos chantiers et documents réels.",
     },
     {
       question: "Peut-on vraiment gagner du temps sur les appels d'offres ?",
@@ -6620,7 +6620,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
         "La journée est construite pour le cadre du secteur : secret professionnel, RGPD, validation humaine systématique avant diffusion. L'IA prépare le travail ; les décisions et le conseil restent humains et conformes à vos procédures.",
     },
     {
-      question: "Est-ce adapté aux courtiers et petites structures ?",
+      question: "Est-ce adapté aux courtiers et PME ?",
       reponse:
         "Oui : conseillers, gestionnaires et courtiers y trouvent les mêmes gains — synthèses de dossiers, courriers, réponses types — avec des ateliers adaptés à la taille et aux outils de la structure.",
     },

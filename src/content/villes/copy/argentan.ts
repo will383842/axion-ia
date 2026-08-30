@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ARGENTAN_COPY: VilleCopy = {
   pitchFr:
-    "Argentan (61), sous-préfecture de l'Orne en Normandie, est réputée pour sa dentelle au Point d'Argentan et sa proximité avec le Haras national du Pin. Tissu TPE artisans, PME agroalimentaires et équines, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités de la plaine d'Argentan.",
+    "Argentan (61), sous-préfecture de l'Orne en Normandie, est réputée pour sa dentelle au Point d'Argentan et sa proximité avec le Haras national du Pin. Tissu PME artisanales, PME agroalimentaires et équines, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités de la plaine d'Argentan.",
   pitchEn:
-    "Argentan (61), sous-préfecture de l'Orne en Normandie, est réputée pour sa dentelle au Point d'Argentan et sa proximité avec le Haras national du Pin. Tissu TPE artisans, PME agroalimentaires et équines, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités de la plaine d'Argentan.",
+    "Argentan (61), sous-préfecture de l'Orne en Normandie, est réputée pour sa dentelle au Point d'Argentan et sa proximité avec le Haras national du Pin. Tissu PME artisanales, PME agroalimentaires et équines, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités de la plaine d'Argentan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argentan (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argentan (61). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argentan (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Argentan (61). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agroalimentaires, filière équine (Haras du Pin), professions libérales, services aux entreprises de la plaine d'Argentan. Audit sur place sur mesure.",
   seoHook: "agroalimentaire, filière équine & patrimoine",
   ecosystemFr:
-    "Argentan est sous-préfecture de l'Orne, positionnée dans la plaine normande entre Caen et Alençon. Tissu PME agroalimentaires, filière équine (proximité Haras national du Pin), TPE artisans, commerces de centre-ville et professions libérales installées.",
+    "Argentan est sous-préfecture de l'Orne, positionnée dans la plaine normande entre Caen et Alençon. Tissu PME agroalimentaires, filière équine (proximité Haras national du Pin), PME artisanales, commerces de centre-ville et professions libérales installées.",
   ecosystemEn:
-    "Argentan est sous-préfecture de l'Orne, positionnée dans la plaine normande entre Caen et Alençon. Tissu PME agroalimentaires, filière équine (proximité Haras national du Pin), TPE artisans, commerces de centre-ville et professions libérales installées.",
+    "Argentan est sous-préfecture de l'Orne, positionnée dans la plaine normande entre Caen et Alençon. Tissu PME agroalimentaires, filière équine (proximité Haras national du Pin), PME artisanales, commerces de centre-ville et professions libérales installées.",
   distancesFr:
     "Gare d'Argentan (TER Caen-Tours). Caen à 60 km (50 min). Alençon à 50 km. Flers à 40 km. Haras du Pin à 15 km.",
   distancesEn:
@@ -24,14 +24,14 @@ export const ARGENTAN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire plaine normande",
     "Filière équine & Haras du Pin",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de centre-ville",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Argentan : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Argentan : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Argentan : diagnostic adapté aux PME artisanales, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Argentan : diagnostic adapté aux PME artisanales, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Argentan : formats adaptés au bureau, atelier, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const ARGENTAN_COPY: VilleCopy = {
       en: "Implémentation IA à Argentan : automatisation supply chain agroalimentaire, gestion exploitation équine, agents conversationnels, classification documents. Plaine d'Argentan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Argentan : sessions dans votre bureau, exploitation ou en visio. Dirigeants PME agroalimentaires, filière équine, artisans, gérants TPE argentanais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Argentan : sessions dans votre bureau, exploitation ou en visio. Dirigeants PME agroalimentaires, filière équine, artisans, gérants TPE argentanais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Argentan : sessions dans votre bureau, exploitation ou en visio. Dirigeants PME agroalimentaires, filière équine, artisans, gérants PME argentanais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Argentan : sessions dans votre bureau, exploitation ou en visio. Dirigeants PME agroalimentaires, filière équine, artisans, gérants PME argentanais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const ARGENTAN_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Argentan ?",
-      a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME agroalimentaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité pour les PME. Pour les PME agroalimentaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Caen ?",

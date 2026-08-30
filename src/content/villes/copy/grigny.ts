@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const GRIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. Williams se déplace sur site pour des automatisations IA en code custom, sans no-code.",
+    "Axion-IA accompagne les PME et ETI de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. Williams se déplace sur site pour des automatisations IA en code custom, sans no-code.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. Williams se déplace sur site pour des automatisations IA en code custom, sans no-code.",
+    "Axion-IA accompagne les PME et ETI de Grigny (91350, Essonne, 26 842 habitants en 2023), commune située à environ 8 km au sud de l'aéroport de Paris-Orly et bordée par la Seine. Structurée autour de quartiers comme La Grande Borne et Grigny 2 (deuxième plus grande copropriété de France), la ville accueille un tissu majoritairement résidentiel avec des zones industrielles près de la Seine, des commerces de détail, du transport et de la construction. Williams se déplace sur site pour des automatisations IA en code custom, sans no-code.",
   directAnswerFr:
-    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les TPE et PME locales — commerces de détail, transport, construction, restauration et services. Williams se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
+    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les PME et ETI locales — commerces de détail, transport, construction, restauration et services. Williams se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
   directAnswerEn:
-    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les TPE et PME locales — commerces de détail, transport, construction, restauration et services. Williams se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
+    "À Grigny (Essonne, 91350), Axion-IA déploie des automatisations IA sur mesure en code custom pour les PME et ETI locales — commerces de détail, transport, construction, restauration et services. Williams se déplace depuis Paris via la ligne D du RER (gare Grigny-Centre) ou par l'A6 pour un Audit sur place dès {{price:audit-flash|flat}}, une Formation 4 h dès {{price:intervention-4h|flat}} ou un accompagnement un-à-un dirigeant dès {{price:intervention-dirigeants|flat}}. Nous excluons le no-code : chaque solution est développée sur mesure et RGPD by design.",
   seoHook: "commerce détail & transport",
   ecosystemFr:
-    "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de TPE et PME des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
+    "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de PME et ETI des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
   ecosystemEn:
-    "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de TPE et PME des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
+    "Grigny, 26 842 habitants en 2023 dans l'Essonne, présente un tissu économique majoritairement composé de PME et ETI des secteurs commerce de détail, transport, construction et restauration, avec des zones industrielles le long de la Seine. La ville est limitrophe de Draveil, Fleury-Mérogis, Ris-Orangis et Viry-Châtillon, et bénéficie de la proximité du pôle économique d'Évry-Courcouronnes ainsi que des axes A6 et RN7.",
   distancesFr:
     "Grigny est à environ 8 km de l'aéroport de Paris-Orly, 27 km au sud de Paris, accessible via la ligne D du RER (gare Grigny-Centre) et l'autoroute A6.",
   distancesEn:
@@ -41,18 +41,18 @@ export const GRIGNY_COPY: VilleCopy = {
       en: "Formation collective à Grigny dès {{price:intervention-4h|flat}} — Williams se déplace sur site via le RER D ou l'A6 pour automatiser facturation, planning ou suivi clients.",
     },
     implementation: {
-      fr: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les TPE et PME de l'Essonne.",
-      en: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les TPE et PME de l'Essonne.",
+      fr: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les PME et ETI de l'Essonne.",
+      en: "Implémentation IA en code custom à Grigny dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et RGPD by design pour les PME et ETI de l'Essonne.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un dirigeant à Grigny dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans la gouvernance de votre TPE ou PME.",
-      en: "Accompagnement un-à-un dirigeant à Grigny dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans la gouvernance de votre TPE ou PME.",
+      fr: "Accompagnement un-à-un dirigeant à Grigny dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans la gouvernance de votre PME ou ETI.",
+      en: "Accompagnement un-à-un dirigeant à Grigny dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans la gouvernance de votre PME ou ETI.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
+        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des PME du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
         whyHere: [
           "Le centre commercial Grigny 2 (deuxième plus grande copropriété de France) et ses enseignes comme le Casino et Le Fournil de Grigny structurent la chalandise locale : pour ces commerces de détail et artisans, on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec click-and-collect, paiement en ligne et zone de chalandise géolocalisée jusqu'à Viry-Châtillon et Ris-Orangis.",
           "La Z.A.E. des Noues de Seine, 41,68 ha au nord entre Seine et RN7, concentre une soixantaine d'entreprises du BTP et des fondations (SEFI-INTRAFOR, Franki Fondation, Jean Lefebvre Île-de-France) : pour ces acteurs de la construction et du transport, nos plateformes SaaS et agents automatisent suivi de chantiers, planning de tournées et portails de réservation, branchés sur vos ERP et TMS existants.",
@@ -87,12 +87,6 @@ export const GRIGNY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce de Grigny 2, d'un artisan du BTP ou d'un restaurant de Grigny, sans refonte ni interruption.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -138,7 +132,7 @@ export const GRIGNY_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en période de forte activité à Grigny 2 ou sur les axes A6 / RN7. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. Solution documentée et transférable à tout prestataire de l'Essonne ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des TPE du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
+        hero: "Axion-IA conçoit et augmente à Grigny (Essonne, 91350) des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 26 842 habitants à 8 km au sud d'Orly, bordée par la Seine et intégrée depuis 2016 à l'agglomération Grand Paris Sud Seine-Essonne-Sénart (plus de 357 000 habitants). Le tissu local mêle la Z.A.E. des Noues de Seine au nord, le centre commercial Grigny 2, des PME du commerce de détail, du transport, du BTP et de la restauration. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur site à Grigny, itérations à distance via le RER D ou l'A6.",
         whyHere: [
           "Le centre commercial Grigny 2 (deuxième plus grande copropriété de France) et ses enseignes comme le Casino et Le Fournil de Grigny structurent la chalandise locale : pour ces commerces de détail et artisans, on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop) avec click-and-collect, paiement en ligne et zone de chalandise géolocalisée jusqu'à Viry-Châtillon et Ris-Orangis.",
           "La Z.A.E. des Noues de Seine, 41,68 ha au nord entre Seine et RN7, concentre une soixantaine d'entreprises du BTP et des fondations (SEFI-INTRAFOR, Franki Fondation, Jean Lefebvre Île-de-France) : pour ces acteurs de la construction et du transport, nos plateformes SaaS et agents automatisent suivi de chantiers, planning de tournées et portails de réservation, branchés sur vos ERP et TMS existants.",
@@ -173,12 +167,6 @@ export const GRIGNY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce de Grigny 2, d'un artisan du BTP ou d'un restaurant de Grigny, sans refonte ni interruption.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -245,7 +233,7 @@ export const GRIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Grigny ?",
-      a: "À Grigny, nous accompagnons en priorité les TPE et PME du commerce de détail, du transport et de la logistique, de la construction, de la restauration et des services aux entreprises ou associatifs.",
+      a: "À Grigny, nous accompagnons en priorité les PME et ETI du commerce de détail, du transport et de la logistique, de la construction, de la restauration et des services aux entreprises ou associatifs.",
     },
     {
       q: "Pourquoi Axion-IA refuse le no-code pour les entreprises de Grigny ?",

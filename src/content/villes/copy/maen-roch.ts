@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MAEN_ROCH_COPY: VilleCopy = {
   pitchFr:
-    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. PME artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. PME artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maen Roch (35). Nous accompagnons PME et ETI du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maen Roch (35). Nous accompagnons PME et ETI du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit sur place sur mesure.",
   ecosystemFr:
     "Maen Roch est une commune nouvelle du Pays de Fougères (Ille-et-Vilaine), créée en 2019. Située au carrefour Bretagne-Normandie, elle s'appuie sur un tissu rural dynamique : agriculture laitière et bovine, agroalimentaire, artisanat BTP, commerces de bourg et PME de services en lien avec Fougères et Rennes.",
   ecosystemEn:
@@ -24,7 +24,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture laitière & élevage bovin",
     "Agroalimentaire & transformation",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce rural & services de proximité",
     "PME services & logistique",
   ],
@@ -42,8 +42,8 @@ export const MAEN_ROCH_COPY: VilleCopy = {
       en: "Implémentation IA à Maen Roch : traçabilité agroalimentaire, gestion troupeau augmentée, automatisation devis artisans, agents conversationnels PME, optimisation logistique rurale.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Maen Roch : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, exploitants agricoles, artisans et commerçants du Pays de Fougères souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Maen Roch : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, exploitants agricoles, artisans et commerçants du Pays de Fougères souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Maen Roch : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, exploitants agricoles, artisans et commerçants du Pays de Fougères souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Maen Roch : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, exploitants agricoles, artisans et commerçants du Pays de Fougères souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Maen Roch  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Maen Roch et du bassin de Fougères. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Maen Roch et du bassin de Fougères. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et PME agroalimentaires ?",
@@ -61,7 +61,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants ruraux ?",
-      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures rurales.",
+      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit sur place {{price:audit-flash|flat}} adapté aux PME rurales.",
     },
     {
       q: "Comment se déroule une mission IA à Maen Roch depuis Rennes ?",

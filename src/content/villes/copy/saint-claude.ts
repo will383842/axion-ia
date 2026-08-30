@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CLAUDE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Claude (39), sous-préfecture du Jura nichée dans le Haut-Jura, est historiquement la capitale française des pipes et du diamant, avec un savoir-faire reconnu en tournerie et plasturgie. TPE artisans, PME de tournerie et plasturgie, commerçants, professions libérales, acteurs du tourisme de montagne et indépendants composent son tissu économique. Axion-IA y déploie son expertise pour toutes les organisations du Haut-Jura.",
+    "Saint-Claude (39), sous-préfecture du Jura nichée dans le Haut-Jura, est historiquement la capitale française des pipes et du diamant, avec un savoir-faire reconnu en tournerie et plasturgie. PME artisanales, PME de tournerie et plasturgie, commerçants, professions libérales, acteurs du tourisme de montagne et indépendants composent son tissu économique. Axion-IA y déploie son expertise pour toutes les organisations du Haut-Jura.",
   pitchEn:
-    "Saint-Claude (39), sous-préfecture du Jura nichée dans le Haut-Jura, est historiquement la capitale française des pipes et du diamant, avec un savoir-faire reconnu en tournerie et plasturgie. TPE artisans, PME de tournerie et plasturgie, commerçants, professions libérales, acteurs du tourisme de montagne et indépendants composent son tissu économique. Axion-IA y déploie son expertise pour toutes les organisations du Haut-Jura.",
+    "Saint-Claude (39), sous-préfecture du Jura nichée dans le Haut-Jura, est historiquement la capitale française des pipes et du diamant, avec un savoir-faire reconnu en tournerie et plasturgie. PME artisanales, PME de tournerie et plasturgie, commerçants, professions libérales, acteurs du tourisme de montagne et indépendants composent son tissu économique. Axion-IA y déploie son expertise pour toutes les organisations du Haut-Jura.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Claude (39), sous-préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME de tournerie et plasturgie, pipiers, commerçants, acteurs du tourisme de montagne du Haut-Jura, professions libérales et indépendants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Claude (39), sous-préfecture du Jura. Nous accompagnons tous types d'activités : PME artisanales, PME de tournerie et plasturgie, pipiers, commerçants, acteurs du tourisme de montagne du Haut-Jura, professions libérales et indépendants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Claude (39), sous-préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME de tournerie et plasturgie, pipiers, commerçants, acteurs du tourisme de montagne du Haut-Jura, professions libérales et indépendants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Claude (39), sous-préfecture du Jura. Nous accompagnons tous types d'activités : PME artisanales, PME de tournerie et plasturgie, pipiers, commerçants, acteurs du tourisme de montagne du Haut-Jura, professions libérales et indépendants.",
   seoHook: "tournerie plasturgie & artisanat d'art",
   ecosystemFr:
     "Saint-Claude est la capitale historique de la pipe et du diamant, au coeur du Haut-Jura. L'économie locale repose sur la tournerie (bois, plastique, corne), la plasturgie, l'artisanat d'art, le commerce de centre-ville et le tourisme de montagne (ski de fond, randonnée, Parc naturel régional du Haut-Jura). La commune est un pôle de services pour les villages du Haut-Jura environnant.",
@@ -23,27 +23,27 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
     "Gare de Saint-Claude (TER Oyonnax-Saint-Claude). Lons-le-Saunier à 1h. Oyonnax à 30 min. Genève à 1h15. Lyon à 1h50 via A40. Bourg-en-Bresse à 1h15.",
   topSectorsNaf: [
     "Tournerie & plasturgie",
-    "TPE artisanat d'art & pipes",
+    "PME de l'artisanat d'art & pipes",
     "Tourisme de montagne & hôtellerie-restauration",
     "Commerce de centre-ville & professions libérales",
     "PME industrie & sous-traitance",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Claude : diagnostic adapté aux TPE artisans, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Saint-Claude : diagnostic adapté aux TPE artisans, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Saint-Claude : diagnostic adapté aux PME artisanales, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Claude : diagnostic adapté aux PME artisanales, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Claude : formats adaptés à l'atelier de tournerie, plasturgie, TPE artisan d'art ou commerce de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
-      en: "Interventions IA sur site à Saint-Claude : formats adaptés à l'atelier de tournerie, plasturgie, TPE artisan d'art ou commerce de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
+      fr: "Interventions IA sur site à Saint-Claude : formats adaptés à l'atelier de tournerie, plasturgie, PME artisanale d'art ou commerce de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Saint-Claude : formats adaptés à l'atelier de tournerie, plasturgie, PME artisanale d'art ou commerce de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Claude : agents conversationnels catalogue produits tournerie, automatisation contrôle qualité plasturgie, gestion stocks matières premières, classification documents techniques. Adapté tissu Haut-Jura.",
       en: "Implémentation IA à Saint-Claude : agents conversationnels catalogue produits tournerie, automatisation contrôle qualité plasturgie, gestion stocks matières premières, classification documents techniques. Adapté tissu Haut-Jura.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Claude : sessions sur site, atelier ou en visio. Dirigeants PME tournerie et plasturgie, artisans d'art, gérants TPE et indépendants du Haut-Jura souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Claude : sessions sur site, atelier ou en visio. Dirigeants PME tournerie et plasturgie, artisans d'art, gérants TPE et indépendants du Haut-Jura souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Claude : sessions sur site, atelier ou en visio. Dirigeants PME tournerie et plasturgie, artisans d'art, gérants PME et indépendants du Haut-Jura souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Claude : sessions sur site, atelier ou en visio. Dirigeants PME tournerie et plasturgie, artisans d'art, gérants PME et indépendants du Haut-Jura souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de tournerie et plasturgie du Haut-Jura sur leurs cas IA : automatisation contrôle qualité pièces, agents conversationnels catalogue produits, classification documentation technique, optimisation gestion stocks matières premières et planification production.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans d'art et commerçants sanclaudiens ?",
-      a: "Oui, nous accompagnons les TPE artisans d'art (pipiers, diamantaires, tourneurs) et commerçants de Saint-Claude sur des cas IA pratiques : automatisation devis, agents IA prise de commande, gestion stocks, mise en valeur savoir-faire en ligne. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME artisanales d'art et commerçants sanclaudiens ?",
+      a: "Oui, nous accompagnons les PME artisanales d'art (pipiers, diamantaires, tourneurs) et commerçants de Saint-Claude sur des cas IA pratiques : automatisation devis, agents IA prise de commande, gestion stocks, mise en valeur savoir-faire en ligne. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour le tourisme de montagne du Haut-Jura ?",

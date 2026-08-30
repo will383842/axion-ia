@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
   pitchFr:
-    "Charleville-Mézières (08), préfecture des Ardennes et patrie de Rimbaud, est mondialement connue pour son Festival des marionnettes et son héritage de métallurgie et de forge. Son tissu économique repose sur la sous-traitance industrielle, la fonderie, le commerce et une majorité de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME carolomacériennes pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Charleville-Mézières (08), préfecture des Ardennes et patrie de Rimbaud, est mondialement connue pour son Festival des marionnettes et son héritage de métallurgie et de forge. Son tissu économique repose sur la sous-traitance industrielle, la fonderie, le commerce et une majorité de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI carolomacériennes pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Charleville-Mézières (08), préfecture des Ardennes et patrie de Rimbaud, est mondialement connue pour son Festival des marionnettes et son héritage de métallurgie et de forge. Son tissu économique repose sur la sous-traitance industrielle, la fonderie, le commerce et une majorité de TPE et PME. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME carolomacériennes pour automatiser leurs processus et déployer une IA sobre et souveraine.",
+    "Charleville-Mézières (08), préfecture des Ardennes et patrie de Rimbaud, est mondialement connue pour son Festival des marionnettes et son héritage de métallurgie et de forge. Son tissu économique repose sur la sous-traitance industrielle, la fonderie, le commerce et une majorité de PME et ETI. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI carolomacériennes pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charleville-Mézières (08, Ardennes). Nous accompagnons en priorité les TPE, puis les PME du bassin ardennais : sous-traitants de la métallurgie et de la forge, fonderies, ateliers d'usinage, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charleville-Mézières (08, Ardennes). Nous accompagnons en priorité les PME, puis les PME du bassin ardennais : sous-traitants de la métallurgie et de la forge, fonderies, ateliers d'usinage, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charleville-Mézières (08, Ardennes). Nous accompagnons en priorité les TPE, puis les PME du bassin ardennais : sous-traitants de la métallurgie et de la forge, fonderies, ateliers d'usinage, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charleville-Mézières (08, Ardennes). Nous accompagnons en priorité les PME, puis les PME du bassin ardennais : sous-traitants de la métallurgie et de la forge, fonderies, ateliers d'usinage, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "métallurgie, forge & industrie",
   ecosystemFr:
-    "Charleville-Mézières est le cœur de la vallée industrielle des Ardennes, héritière d'une longue tradition de métallurgie, de forge et de fonderie. Le tissu local concentre une dense sous-traitance mécanique et automobile, des ateliers d'usinage et de production de pièces métalliques, ainsi qu'un secteur logistique en appui. Autour, le commerce de centre-ville, l'artisanat et les services aux entreprises forment un réseau de TPE et PME confronté à la nécessité de moderniser ses processus pour rester compétitif.",
+    "Charleville-Mézières est le cœur de la vallée industrielle des Ardennes, héritière d'une longue tradition de métallurgie, de forge et de fonderie. Le tissu local concentre une dense sous-traitance mécanique et automobile, des ateliers d'usinage et de production de pièces métalliques, ainsi qu'un secteur logistique en appui. Autour, le commerce de centre-ville, l'artisanat et les services aux entreprises forment un réseau de PME et ETI confronté à la nécessité de moderniser ses processus pour rester compétitif.",
   ecosystemEn:
-    "Charleville-Mézières est le cœur de la vallée industrielle des Ardennes, héritière d'une longue tradition de métallurgie, de forge et de fonderie. Le tissu local concentre une dense sous-traitance mécanique et automobile, des ateliers d'usinage et de production de pièces métalliques, ainsi qu'un secteur logistique en appui. Autour, le commerce de centre-ville, l'artisanat et les services aux entreprises forment un réseau de TPE et PME confronté à la nécessité de moderniser ses processus pour rester compétitif.",
+    "Charleville-Mézières est le cœur de la vallée industrielle des Ardennes, héritière d'une longue tradition de métallurgie, de forge et de fonderie. Le tissu local concentre une dense sous-traitance mécanique et automobile, des ateliers d'usinage et de production de pièces métalliques, ainsi qu'un secteur logistique en appui. Autour, le commerce de centre-ville, l'artisanat et les services aux entreprises forment un réseau de PME et ETI confronté à la nécessité de moderniser ses processus pour rester compétitif.",
   distancesFr:
     "Reims à environ 1h par l'A34, et sa gare TGV (Paris en 45 min). Aéroport de Charleroi Bruxelles-Sud à 1h. Sedan à 25 min, Rethel à 35 min, frontière belge à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charleville-Mézières : diagnostic adapté aux TPE et PME ardennaises — sous-traitants métallurgie, ateliers d'usinage, commerces et services. Nous ciblons les automatisations à fort ROI.",
-      en: "Audit IA à Charleville-Mézières : diagnostic adapté aux TPE et PME ardennaises — sous-traitants métallurgie, ateliers d'usinage, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      fr: "Audit IA à Charleville-Mézières : diagnostic adapté aux PME et ETI ardennaises — sous-traitants métallurgie, ateliers d'usinage, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Charleville-Mézières : diagnostic adapté aux PME et ETI ardennaises — sous-traitants métallurgie, ateliers d'usinage, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charleville-Mézières : formats courts pour automatiser devis, planning d'atelier et tâches administratives. Vos équipes reprennent la main en autonomie.",
@@ -42,8 +42,8 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
       en: "Implémentation IA à Charleville-Mézières : agents conversationnels, automatisation des flux de production et classification documentaire pour l'industrie métallurgique. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Charleville-Mézières : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME industrielles et commerçantes ardennaises.",
-      en: "Coaching un-à-un à Charleville-Mézières : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME industrielles et commerçantes ardennaises.",
+      fr: "Coaching un-à-un à Charleville-Mézières : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI industrielles et commerçantes ardennaises.",
+      en: "Coaching un-à-un à Charleville-Mézières : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI industrielles et commerçantes ardennaises.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Charleville-Mézières : plateformes et outils sur mesure pour sous-traitants industriels, artisans et commerces des Ardennes, avec automatisations et SEO local.",
@@ -58,7 +58,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           "La sous-traitance de la fonderie Stellantis des Ayvelles impose des portails métier exigeants : cotation de pièces fonte/aluminium, configurateurs de devis usinage, suivi qualité fournisseur et traçabilité — nous bâtissons ces plateformes avec recherche sémantique sur catalogues techniques et génération de devis assistée par IA.",
           "L'écosystème mondial de la marionnette (Festival biennal, ~155 000 visiteurs, ESNAM, Pôle Jacques Félix) a des besoins web spécifiques que nous adressons : billetterie, programmation multilingue, archives de spectacles consultables par IA, gestion de résidences et boutiques en ligne d'éditeurs spécialisés.",
           "Les fabricants ardennais à forte identité produit — Maroquinerie des Ardennes (Bogny-sur-Meuse), poêles en fonte Invicta (Vivier-au-Court), biscuiterie Mondelez — ont besoin de vitrines e-commerce multi-CMS et de catalogues B2B/B2C que nous augmentons d'agents conversationnels et de recommandation produit.",
-          "Le commerce de centre-ville, l'artisanat et les services autour de la Place Ducale et du patrimoine Rimbaud sont majoritairement des TPE : nous livrons des sites mobile-first rapides, avec prise de rendez-vous, devis et relances automatisés, sans dépendance technique durable.",
+          "Le commerce de centre-ville, l'artisanat et les services autour de la Place Ducale et du patrimoine Rimbaud sont majoritairement des PME : nous livrons des sites mobile-first rapides, avec prise de rendez-vous, devis et relances automatisés, sans dépendance technique durable.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour artisans, commerces du centre-ville et fonderie d'art autour de la Place Ducale : site mobile-first, prise de rendez-vous et devis automatisés, chatbot de premier contact, SEO local Ardennes.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
@@ -175,12 +169,6 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Augmented showcase site",
-            detail:
-              "For craftspeople, town-centre shops and cast-iron craft around the Place Ducale: mobile-first site, automated booking and quoting, first-contact chatbot, Ardennes local SEO.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce platform or business portal",
             detail:
@@ -230,11 +218,11 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Charleville-Mézières et dans les Ardennes ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Charleville-Mézières et des communes voisines : Nouzonville, Bogny-sur-Meuse, Villers-Semeuse, Sedan. Nous nous déplaçons sur site et travaillons en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Charleville-Mézières et des communes voisines : Nouzonville, Bogny-sur-Meuse, Villers-Semeuse, Sedan. Nous nous déplaçons sur site et travaillons en visio.",
     },
     {
       q: "Travaillez-vous avec la filière métallurgie et forge ?",
-      a: "Oui. Beaucoup de TPE et PME ardennaises sont sous-traitantes de la mécanique et de la fonderie. Nous automatisons leurs devis, leurs flux de production, leur planning d'atelier et leur classification documentaire.",
+      a: "Oui. Beaucoup de PME et ETI ardennaises sont sous-traitantes de la mécanique et de la fonderie. Nous automatisons leurs devis, leurs flux de production, leur planning d'atelier et leur classification documentaire.",
     },
     {
       q: "Accompagnez-vous les commerces et les artisans du centre-ville ?",

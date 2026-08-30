@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   pitchFr:
-    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie son expertise pour toutes les organisations du sud-Essonne.",
+    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie son expertise pour toutes les organisations du sud-Essonne.",
   pitchEn:
-    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie son expertise pour toutes les organisations du sud-Essonne.",
+    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie son expertise pour toutes les organisations du sud-Essonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marolles-en-Hurepoix (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marolles-en-Hurepoix (91). Nous accompagnons tous types d'activités : PME artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marolles-en-Hurepoix (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marolles-en-Hurepoix (91). Nous accompagnons tous types d'activités : PME artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   seoHook: "artisanat commerce & tertiaires sud-essonne",
   ecosystemFr:
-    "Marolles-en-Hurepoix est une commune résidentielle du Hurepoix (Essonne), à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Arpajon et Évry-Courcouronnes.",
+    "Marolles-en-Hurepoix est une commune résidentielle du Hurepoix (Essonne), à 33 km au sud de Paris. Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Arpajon et Évry-Courcouronnes.",
   ecosystemEn:
-    "Marolles-en-Hurepoix est une commune résidentielle du Hurepoix (Essonne), à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Arpajon et Évry-Courcouronnes.",
+    "Marolles-en-Hurepoix est une commune résidentielle du Hurepoix (Essonne), à 33 km au sud de Paris. Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Arpajon et Évry-Courcouronnes.",
   distancesFr:
     "Gare de Marolles-en-Hurepoix (RER C, 40 min Gare d'Austerlitz). Brétigny-sur-Orge à 10 min. Arpajon à 10 min. Évry-Courcouronnes à 20 min. Aéroport Orly à 30 min. Paris centre à 45 min par N20/A6.",
   distancesEn:
     "Gare de Marolles-en-Hurepoix (RER C, 40 min Gare d'Austerlitz). Brétigny-sur-Orge à 10 min. Arpajon à 10 min. Évry-Courcouronnes à 20 min. Aéroport Orly à 30 min. Paris centre à 45 min par N20/A6.",
   topSectorsNaf: [
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
     "PME tertiaires sud-Essonne",
     "Professions libérales & indépendants",
     "BTP & rénovation résidentielle",
@@ -30,20 +30,20 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux PME artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux PME artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marolles-en-Hurepoix : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Marolles-en-Hurepoix : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Marolles-en-Hurepoix : formats adaptés aux PME et ETI. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Marolles-en-Hurepoix : formats adaptés aux PME et ETI. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Marolles-en-Hurepoix : agents conversationnels, automatisation devis BTP, CRM augmentés, classification documents. Adapté aux TPE/PME résidentielles du Hurepoix.",
-      en: "Implémentation IA à Marolles-en-Hurepoix : agents conversationnels, automatisation devis BTP, CRM augmentés, classification documents. Adapté aux TPE/PME résidentielles du Hurepoix.",
+      fr: "Implémentation IA à Marolles-en-Hurepoix : agents conversationnels, automatisation devis BTP, CRM augmentés, classification documents. Adapté aux PME et ETI résidentielles du Hurepoix.",
+      en: "Implémentation IA à Marolles-en-Hurepoix : agents conversationnels, automatisation devis BTP, CRM augmentés, classification documents. Adapté aux PME et ETI résidentielles du Hurepoix.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marolles-en-Hurepoix : sessions dans vos bureaux ou en visio. Artisans, gérants TPE/PME, professions libérales marollais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Marolles-en-Hurepoix : sessions dans vos bureaux ou en visio. Artisans, gérants TPE/PME, professions libérales marollais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Marolles-en-Hurepoix : sessions dans vos bureaux ou en visio. Artisans, gérants PME et ETI, professions libérales marollais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Marolles-en-Hurepoix : sessions dans vos bureaux ou en visio. Artisans, gérants PME et ETI, professions libérales marollais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Marolles-en-Hurepoix et tout le Hurepoix (Brétigny-sur-Orge, Arpajon, La Ville-du-Bois, Linas). Consultants depuis Paris (40 min RER C).",
     },
     {
-      q: "Quels services pour les TPE et artisans marollais ?",
+      q: "Quels services pour les PME et artisans marollais ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {

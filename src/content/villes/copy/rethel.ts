@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const RETHEL_COPY: VilleCopy = {
   pitchFr:
-    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
+    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. PME artisanales, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
   pitchEn:
-    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
+    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. PME artisanales, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
   seoHook: "agroalimentaire & filière agricole ardennaise",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rethel (08). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rethel (08). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Rethel (environ 7 400 habitants) est sous-préfecture des Ardennes et carrefour de la plaine agricole champenoise. La ville est célèbre pour le boudin blanc de Rethel IGP, fleuron de son patrimoine agroalimentaire. L'économie locale repose sur l'agroalimentaire (charcuterie, transformation viande), l'agriculture céréalière, le commerce de proximité, l'artisanat et les services tertiaires. Située en bord d'Aisne, la commune bénéficie d'un axe ferroviaire Reims-Charleville stratégique.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const RETHEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rethel : diagnostic adapté aux PME artisanales, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rethel : diagnostic adapté aux PME artisanales, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rethel : formations pratiques pour équipes agroalimentaires, exploitations agricoles, commerce et services du Rethélois. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const RETHEL_COPY: VilleCopy = {
       en: "Implémentation IA à Rethel : traçabilité IGP boudin blanc, contrôle qualité agroalimentaire, optimisation rendement cultures, gestion documentaire exploitations, agents conversationnels commerce. Adapté au tissu agroalimentaire rural.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rethel : sessions individuelles pour dirigeants TPE/PME agroalimentaires, artisans, exploitants agricoles, commerçants et professions libérales du Rethélois souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Rethel : sessions individuelles pour dirigeants TPE/PME agroalimentaires, artisans, exploitants agricoles, commerçants et professions libérales du Rethélois souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Rethel : sessions individuelles pour dirigeants de PME et d'ETI agroalimentaires, artisans, exploitants agricoles, commerçants et professions libérales du Rethélois souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Rethel : sessions individuelles pour dirigeants de PME et d'ETI agroalimentaires, artisans, exploitants agricoles, commerçants et professions libérales du Rethélois souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const RETHEL_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Rethel  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles du Rethélois ?",

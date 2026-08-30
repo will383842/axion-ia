@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PERIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
+    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de PME artisanales, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
   pitchEn:
-    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
+    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de PME artisanales, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Périgny (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Périgny (17). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Périgny (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Périgny (17). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
   seoHook: "services aux & technologiques",
   ecosystemFr:
-    "Périgny est une commune résidentielle et tertiaire de l'agglomération de La Rochelle, avec des zones d'activités accueillant PME technologiques et tertiaires. TPE artisans BTP, commerces de proximité, professions libérales, services aux entreprises. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",
+    "Périgny est une commune résidentielle et tertiaire de l'agglomération de La Rochelle, avec des zones d'activités accueillant PME technologiques et tertiaires. PME du BTP, commerces de proximité, professions libérales, services aux entreprises. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",
   ecosystemEn:
-    "Périgny est une commune résidentielle et tertiaire de l'agglomération de La Rochelle, avec des zones d'activités accueillant PME technologiques et tertiaires. TPE artisans BTP, commerces de proximité, professions libérales, services aux entreprises. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",
+    "Périgny est une commune résidentielle et tertiaire de l'agglomération de La Rochelle, avec des zones d'activités accueillant PME technologiques et tertiaires. PME du BTP, commerces de proximité, professions libérales, services aux entreprises. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",
   distancesFr:
     "Périgny est à 8 min de La Rochelle centre (sud-est). Gare TGV de La Rochelle à 12 min (Paris Montparnasse 2h50, Bordeaux 2h). Aéroport La Rochelle-Île de Ré à 15 min. Axe N137/A10.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PERIGNY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises & tertiaire",
     "PME technologiques",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, PME artisanales, prestataires de services et commerces de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, PME artisanales, prestataires de services et commerces de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Périgny : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const PERIGNY_COPY: VilleCopy = {
       en: "Implémentation IA à Périgny : automatisation gestion administrative PME, agents conversationnels accueil client, classification documents, développement outils IA sur mesure pour PME technologiques.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Périgny : sessions dans vos locaux ou en visio. Dirigeants TPE/PME tertiaires, artisans, commerçants et professions libérales de l'agglomération rochelaise souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Périgny : sessions dans vos locaux ou en visio. Dirigeants TPE/PME tertiaires, artisans, commerçants et professions libérales de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Périgny : sessions dans vos locaux ou en visio. Dirigeants PME et ETI tertiaires, artisans, commerçants et professions libérales de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Périgny : sessions dans vos locaux ou en visio. Dirigeants PME et ETI tertiaires, artisans, commerçants et professions libérales de l'agglomération rochelaise souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const PERIGNY_COPY: VilleCopy = {
       a: "Nous accompagnons les PME technologiques de Périgny : développement outils IA sur mesure, automatisation processus métier, agents conversationnels, analyse données prédictive et optimisation workflows numériques.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans à Périgny ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Périgny : automatisation devis et facturation, gestion planning chantiers, agents IA relation client et optimisation gestion stocks.",
+      q: "Accompagnez-vous les PME artisanales à Périgny ?",
+      a: "Oui, nous accompagnons les PME du BTP, commerçants et indépendants de Périgny : automatisation devis et facturation, gestion planning chantiers, agents IA relation client et optimisation gestion stocks.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Périgny ?",

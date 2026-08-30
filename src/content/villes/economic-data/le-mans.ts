@@ -329,7 +329,7 @@ export const LE_MANS_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Annuaire EPV : entreprises labellisées en Sarthe (filières gastronomie,
   // bois, etc.). Sans extraction CSV vérifiée par entreprise, champ vide

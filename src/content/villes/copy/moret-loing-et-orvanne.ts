@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
   pitchFr:
-    "Moret-Loing-et-Orvanne (77), commune nouvelle creee en 2017, reunit la cite medievale de Moret-sur-Loing (ville des impressionnistes, Sisley) et les bourgs d'Ecuelles, Episy et Orvanne. Tissu TPE/PME tourisme patrimonial, artisanat d'art, commerce, agriculture, services. Axion-IA y intervient pour tous types d'activites.",
+    "Moret-Loing-et-Orvanne (77), commune nouvelle creee en 2017, reunit la cite medievale de Moret-sur-Loing (ville des impressionnistes, Sisley) et les bourgs d'Ecuelles, Episy et Orvanne. Tissu PME et ETI tourisme patrimonial, artisanat d'art, commerce, agriculture, services. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Moret-Loing-et-Orvanne (77), commune nouvelle creee en 2017, reunit la cite medievale de Moret-sur-Loing (ville des impressionnistes, Sisley) et les bourgs d'Ecuelles, Episy et Orvanne. Tissu TPE/PME tourisme patrimonial, artisanat d'art, commerce, agriculture, services. Axion-IA y intervient pour tous types d'activites.",
+    "Moret-Loing-et-Orvanne (77), commune nouvelle creee en 2017, reunit la cite medievale de Moret-sur-Loing (ville des impressionnistes, Sisley) et les bourgs d'Ecuelles, Episy et Orvanne. Tissu PME et ETI tourisme patrimonial, artisanat d'art, commerce, agriculture, services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons PME et ETI : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons PME et ETI : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "tourisme patrimonial & artisanat d'art",
   ecosystemFr:
     "Moret-Loing-et-Orvanne est une commune nouvelle (2017) du sud Seine-et-Marne, dont le coeur historique est la cite medievale de Moret-sur-Loing, celebre pour les peintres impressionnistes (Alfred Sisley). Tourisme patrimonial, artisanat d'art (sucre d'orge de Moret), commerce de proximite, agriculture et services composent le tissu economique local.",
@@ -42,8 +42,8 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
       en: "Implementation IA a Moret-Loing-et-Orvanne : billetterie et accueil IA tourisme, e-commerce artisanat d'art, gestion stocks commerce, precision agriculture et automatisation administrative.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Moret-Loing-et-Orvanne : sessions dans votre structure touristique, atelier, commerce ou en visio. Dirigeants TPE/PME du sud Seine-et-Marne.",
-      en: "Coaching 1-to-1 a Moret-Loing-et-Orvanne : sessions dans votre structure touristique, atelier, commerce ou en visio. Dirigeants TPE/PME du sud Seine-et-Marne.",
+      fr: "Coaching 1-to-1 a Moret-Loing-et-Orvanne : sessions dans votre structure touristique, atelier, commerce ou en visio. Dirigeants PME et ETI du sud Seine-et-Marne.",
+      en: "Coaching 1-to-1 a Moret-Loing-et-Orvanne : sessions dans votre structure touristique, atelier, commerce ou en visio. Dirigeants PME et ETI du sud Seine-et-Marne.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Moret-Loing-et-Orvanne ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Moret-Loing-et-Orvanne, nous proposons des audits approfondis adaptes aux enjeux tourisme, artisanat ou commerce.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Moret-Loing-et-Orvanne, nous proposons des audits approfondis adaptes aux enjeux tourisme, artisanat ou commerce.",
     },
     {
       q: "Accompagnez-vous les artisans d'art et commercants de proximite ?",

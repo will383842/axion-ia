@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu PME professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu PME professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : PME professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : PME professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
   seoHook: "services, professions libérales & horticulture",
   ecosystemFr:
-    "Saint-Denis-en-Val est une commune résidentielle de l'agglo Orléans Métropole (7 766 hab.), en rive sud de Loire à 8 km du centre d'Orléans. Tissu TPE professions libérales (santé, juridique, conseil), commerçants de proximité, PME services aux entreprises, artisans BTP, maraîchers et horticulteurs tirant parti des sols fertiles du Val de Loire. Cadre semi-rural prisé des cadres orléanais.",
+    "Saint-Denis-en-Val est une commune résidentielle de l'agglo Orléans Métropole (7 766 hab.), en rive sud de Loire à 8 km du centre d'Orléans. Tissu PME professions libérales (santé, juridique, conseil), commerçants de proximité, PME services aux entreprises, artisans BTP, maraîchers et horticulteurs tirant parti des sols fertiles du Val de Loire. Cadre semi-rural prisé des cadres orléanais.",
   ecosystemEn:
-    "Saint-Denis-en-Val est une commune résidentielle de l'agglo Orléans Métropole (7 766 hab.), en rive sud de Loire à 8 km du centre d'Orléans. Tissu TPE professions libérales (santé, juridique, conseil), commerçants de proximité, PME services aux entreprises, artisans BTP, maraîchers et horticulteurs tirant parti des sols fertiles du Val de Loire. Cadre semi-rural prisé des cadres orléanais.",
+    "Saint-Denis-en-Val est une commune résidentielle de l'agglo Orléans Métropole (7 766 hab.), en rive sud de Loire à 8 km du centre d'Orléans. Tissu PME professions libérales (santé, juridique, conseil), commerçants de proximité, PME services aux entreprises, artisans BTP, maraîchers et horticulteurs tirant parti des sols fertiles du Val de Loire. Cadre semi-rural prisé des cadres orléanais.",
   distancesFr:
     "Orléans centre à 8 km (15 min). Gare Orléans (TER Paris-Austerlitz 1h10, Intercités Tours-Paris). Aéroport Paris-Orly à 1h20. A71 vers Bourges/Clermont, A10 vers Paris/Tours.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux PME professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
+      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux PME professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-en-Val : formats adaptés au cabinet libéral, au commerce de proximité ou à la PME tertiaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Saint-Denis-en-Val : formats adaptés au cabinet libéral, au commerce de proximité ou à la PME tertiaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Saint-Denis-en-Val : agents conversationnels patients/clients, automatisation secrétariat médical, CRM augmentés, gestion documentaire cabinets. Adapté aux TPE/PME de l'agglo Orléans Métropole.",
-      en: "Implémentation IA à Saint-Denis-en-Val : agents conversationnels patients/clients, automatisation secrétariat médical, CRM augmentés, gestion documentaire cabinets. Adapté aux TPE/PME de l'agglo Orléans Métropole.",
+      fr: "Implémentation IA à Saint-Denis-en-Val : agents conversationnels patients/clients, automatisation secrétariat médical, CRM augmentés, gestion documentaire cabinets. Adapté aux PME et ETI de l'agglo Orléans Métropole.",
+      en: "Implémentation IA à Saint-Denis-en-Val : agents conversationnels patients/clients, automatisation secrétariat médical, CRM augmentés, gestion documentaire cabinets. Adapté aux PME et ETI de l'agglo Orléans Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Denis-en-Val : sessions dans votre cabinet, commerce ou bureau PME. Professions libérales, commerçants et gérants TPE/PME dionysiens souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Saint-Denis-en-Val : sessions dans votre cabinet, commerce ou bureau PME. Professions libérales, commerçants et gérants TPE/PME dionysiens souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Saint-Denis-en-Val : sessions dans votre cabinet, commerce ou bureau PME. Professions libérales, commerçants et gérants PME et ETI dionysiens souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Saint-Denis-en-Val : sessions dans votre cabinet, commerce ou bureau PME. Professions libérales, commerçants et gérants PME et ETI dionysiens souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [

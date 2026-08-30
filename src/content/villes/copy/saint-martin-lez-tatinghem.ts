@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_LEZ_TATINGHEM_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-lez-Tatinghem (62), commune de l'agglomeration de Saint-Omer dans le Pas-de-Calais, reunit pres de 5 840 habitants. Son economie beneficie de la proximite de Saint-Omer : TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Axion-IA y intervient pour tous types d'activites.",
+    "Saint-Martin-lez-Tatinghem (62), commune de l'agglomeration de Saint-Omer dans le Pas-de-Calais, reunit pres de 5 840 habitants. Son economie beneficie de la proximite de Saint-Omer : PME de services, PME tertiaires, commerces, professions liberales et artisanat. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Saint-Martin-lez-Tatinghem (62), commune de l'agglomeration de Saint-Omer dans le Pas-de-Calais, reunit pres de 5 840 habitants. Son economie beneficie de la proximite de Saint-Omer : TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Axion-IA y intervient pour tous types d'activites.",
+    "Saint-Martin-lez-Tatinghem (62), commune de l'agglomeration de Saint-Omer dans le Pas-de-Calais, reunit pres de 5 840 habitants. Son economie beneficie de la proximite de Saint-Omer : PME de services, PME tertiaires, commerces, professions liberales et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Saint-Omer, tertiaire & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Martin-lez-Tatinghem (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration audomaroise : entreprises tertiaires, commercants, professions liberales et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Saint-Martin-lez-Tatinghem jouxte Saint-Omer (3 km), au bord du marais audomarois. Tissu economique mixte : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Cadre de vie attractif avec le marais UNESCO a proximite.",
+    "Saint-Martin-lez-Tatinghem jouxte Saint-Omer (3 km), au bord du marais audomarois. Tissu economique mixte : PME tertiaires, PME de services, professions liberales, commerces et artisanat. Cadre de vie attractif avec le marais UNESCO a proximite.",
   ecosystemEn:
-    "Saint-Martin-lez-Tatinghem jouxte Saint-Omer (3 km), au bord du marais audomarois. Tissu economique mixte : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Cadre de vie attractif avec le marais UNESCO a proximite.",
+    "Saint-Martin-lez-Tatinghem jouxte Saint-Omer (3 km), au bord du marais audomarois. Tissu economique mixte : PME tertiaires, PME de services, professions liberales, commerces et artisanat. Cadre de vie attractif avec le marais UNESCO a proximite.",
   distancesFr:
     "Gare de Saint-Omer a 5 min. Calais a 30 min. Lille Europe (TGV) a 1h en TER. Aeroport Lille-Lesquin a 1h15. Tunnel sous la Manche (Calais-Frethun) a 35 min.",
   distancesEn:
     "Gare de Saint-Omer a 5 min. Calais a 30 min. Lille Europe (TGV) a 1h en TER. Aeroport Lille-Lesquin a 1h15. Tunnel sous la Manche (Calais-Frethun) a 35 min.",
   topSectorsNaf: [
     "PME tertiaires & conseil",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Professions liberales",
     "Commerce de proximite",
     "Artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Martin-lez-Tatinghem : diagnostic adapte aux PME tertiaires, professions liberales et TPE de services de l'agglo de Saint-Omer. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Saint-Martin-lez-Tatinghem : diagnostic adapte aux PME tertiaires, professions liberales et TPE de services de l'agglo de Saint-Omer. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Saint-Martin-lez-Tatinghem : diagnostic adapte aux PME tertiaires, professions liberales et PME de services de l'agglo de Saint-Omer. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Martin-lez-Tatinghem : diagnostic adapte aux PME tertiaires, professions liberales et PME de services de l'agglo de Saint-Omer. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Martin-lez-Tatinghem : formations adaptees aux bureaux tertiaires, cabinets liberaux, commerces et ateliers. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_MARTIN_LEZ_TATINGHEM_COPY: VilleCopy = {
       en: "Implementation IA a Saint-Martin-lez-Tatinghem : automatisation processus tertiaires, agents conversationnels cabinet, CRM augmentes pour PME de l'Audomarois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Saint-Martin-lez-Tatinghem : accompagnement personnalise dirigeants PME, professions liberales et gerants TPE de l'agglomeration audomaroise.",
-      en: "Coaching 1-to-1 a Saint-Martin-lez-Tatinghem : accompagnement personnalise dirigeants PME, professions liberales et gerants TPE de l'agglomeration audomaroise.",
+      fr: "Coaching 1-to-1 a Saint-Martin-lez-Tatinghem : accompagnement personnalise dirigeants PME, professions liberales et gerants PME de l'agglomeration audomaroise.",
+      en: "Coaching 1-to-1 a Saint-Martin-lez-Tatinghem : accompagnement personnalise dirigeants PME, professions liberales et gerants PME de l'agglomeration audomaroise.",
     },
   },
   faqGeolocalisee: [

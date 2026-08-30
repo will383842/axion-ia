@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_MULATIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Mulatière (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position à la confluence Saône-Rhône (rive droite). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "La Mulatière (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position à la confluence Saône-Rhône (rive droite). Tissu PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
   pitchEn:
-    "La Mulatière (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position à la confluence Saône-Rhône (rive droite). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "La Mulatière (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position à la confluence Saône-Rhône (rive droite). Tissu PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Mulatière (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires sud",
   ecosystemFr:
-    "La Mulatière est intégrée à la Métropole de Lyon, en banlieue sud immédiate (confluence Saône-Rhône, rive droite). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "La Mulatière est intégrée à la Métropole de Lyon, en banlieue sud immédiate (confluence Saône-Rhône, rive droite). Tissu péri-urbain : PME tertiaires, PME du BTP, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "La Mulatière est intégrée à la Métropole de Lyon, en banlieue sud immédiate (confluence Saône-Rhône, rive droite). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "La Mulatière est intégrée à la Métropole de Lyon, en banlieue sud immédiate (confluence Saône-Rhône, rive droite). Tissu péri-urbain : PME tertiaires, PME du BTP, commerces de proximité, professions libérales.",
   distancesFr:
     "Lyon centre à 10 min. Aéroport Lyon-Saint-Exupéry à 35 min. Oullins limitrophe à 5 min. Sainte-Foy-lès-Lyon à 5 min. Pierre-Bénite à 5 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LA_MULATIERE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires sud lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Mulatière : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LA_MULATIERE_COPY: VilleCopy = {
       en: "Implémentation IA à La Mulatière : agents conversationnels B2B/patient, automatisation workflow, classification dossiers, CRM augmentés. Métropole Lyon sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Mulatière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME mulatins.",
-      en: "Coaching 1-to-1 à La Mulatière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME mulatins.",
+      fr: "Coaching 1-to-1 à La Mulatière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI mulatins.",
+      en: "Coaching 1-to-1 à La Mulatière : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI mulatins.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LA_MULATIERE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires Métropole Lyon sud sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à La Mulatière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à La Mulatière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

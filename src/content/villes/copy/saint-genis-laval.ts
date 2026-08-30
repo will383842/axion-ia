@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Genis-Laval : acteurs de la santé et de la recherche du sud lyonnais, PME de la ZI de Sacuny, commerces et artisans. On structure des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Genis-Laval : acteurs de la santé et de la recherche du sud lyonnais, PME de la ZI de Sacuny, commerces et artisans. On structure des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Genis-Laval : acteurs de la santé et de la recherche du sud lyonnais, PME de la ZI de Sacuny, commerces et artisans. On structure des automatisations concrètes, pas des promesses de plateforme.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Genis-Laval : acteurs de la santé et de la recherche du sud lyonnais, PME de la ZI de Sacuny, commerces et artisans. On structure des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Genis-Laval, dans le Rhône, pour les TPE et PME de la banlieue sud de Lyon : acteurs de la santé et de la recherche (Observatoire de Lyon, campus et établissements de soins du sud lyonnais), PME industrielles et de services de la ZI de Sacuny, commerces et artisans de proximité. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, prises de rendez-vous, comptes rendus, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Genis-Laval, dans le Rhône, pour les PME et ETI de la banlieue sud de Lyon : acteurs de la santé et de la recherche (Observatoire de Lyon, campus et établissements de soins du sud lyonnais), PME industrielles et de services de la ZI de Sacuny, commerces et artisans de proximité. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, prises de rendez-vous, comptes rendus, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Genis-Laval, dans le Rhône, pour les TPE et PME de la banlieue sud de Lyon : acteurs de la santé et de la recherche (Observatoire de Lyon, campus et établissements de soins du sud lyonnais), PME industrielles et de services de la ZI de Sacuny, commerces et artisans de proximité. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, prises de rendez-vous, comptes rendus, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Genis-Laval, dans le Rhône, pour les PME et ETI de la banlieue sud de Lyon : acteurs de la santé et de la recherche (Observatoire de Lyon, campus et établissements de soins du sud lyonnais), PME industrielles et de services de la ZI de Sacuny, commerces et artisans de proximité. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, prises de rendez-vous, comptes rendus, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "santé, recherche & industrie sud lyonnais",
   ecosystemFr:
-    "Saint-Genis-Laval, dans le sud de la métropole de Lyon, conjugue une forte présence de la santé et de la recherche — l'Observatoire de Lyon y est installé, aux côtés d'établissements de soins et de campus — et une activité industrielle structurée par la zone d'activités de Sacuny. Ce profil mêle PME scientifiques et médicales, sous-traitants industriels, commerces et artisans de proximité. Pour ces petites structures, souvent submergées par la gestion administrative et la prise de rendez-vous, l'IA bien cadrée libère un temps précieux.",
+    "Saint-Genis-Laval, dans le sud de la métropole de Lyon, conjugue une forte présence de la santé et de la recherche — l'Observatoire de Lyon y est installé, aux côtés d'établissements de soins et de campus — et une activité industrielle structurée par la zone d'activités de Sacuny. Ce profil mêle PME scientifiques et médicales, sous-traitants industriels, commerces et artisans de proximité. Pour ces PME, souvent submergées par la gestion administrative et la prise de rendez-vous, l'IA bien cadrée libère un temps précieux.",
   ecosystemEn:
-    "Saint-Genis-Laval, dans le sud de la métropole de Lyon, conjugue une forte présence de la santé et de la recherche — l'Observatoire de Lyon y est installé, aux côtés d'établissements de soins et de campus — et une activité industrielle structurée par la zone d'activités de Sacuny. Ce profil mêle PME scientifiques et médicales, sous-traitants industriels, commerces et artisans de proximité. Pour ces petites structures, souvent submergées par la gestion administrative et la prise de rendez-vous, l'IA bien cadrée libère un temps précieux.",
+    "Saint-Genis-Laval, dans le sud de la métropole de Lyon, conjugue une forte présence de la santé et de la recherche — l'Observatoire de Lyon y est installé, aux côtés d'établissements de soins et de campus — et une activité industrielle structurée par la zone d'activités de Sacuny. Ce profil mêle PME scientifiques et médicales, sous-traitants industriels, commerces et artisans de proximité. Pour ces PME, souvent submergées par la gestion administrative et la prise de rendez-vous, l'IA bien cadrée libère un temps précieux.",
   distancesFr:
     "Saint-Genis-Laval est reliée au centre de Lyon par le tramway T2 et le prolongement du métro B vers les Hôpitaux Sud, plaçant la Part-Dieu à une vingtaine de minutes. L'A450 et le périphérique sud desservent directement la commune. L'aéroport de Lyon-Saint-Exupéry se trouve à environ 35 km via la rocade est, et la gare de Lyon-Part-Dieu, hub TGV, à une douzaine de kilomètres. Cette accessibilité facilite nos déplacements sur site dans tout le sud lyonnais.",
   distancesEn:
@@ -88,12 +88,6 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (prise de rendez-vous, chatbot multilingue, recherche sémantique, vitrine click-and-collect) sur le site existant d'un cabinet de santé, d'un commerce du centre-ville ou d'un artisan de Saint-Genis-Laval, sans refonte ni changement de CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (prise de rendez-vous, chatbot multilingue, recherche sémantique, vitrine click-and-collect) sur le site existant d'un cabinet de santé, d'un commerce du centre-ville ou d'un artisan de Saint-Genis-Laval, sans refonte ni changement de CMS.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -238,7 +226,7 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
-      a: "En priorité les TPE puis les PME du sud lyonnais : santé, recherche, sous-traitants industriels, commerces et services. Les ETI sont accompagnées en complément, chaque mission étant ajustée à la taille et aux outils de la structure.",
+      a: "En priorité les PME puis les ETI du sud lyonnais : santé, recherche, sous-traitants industriels, commerces et services. Les grands groupes sont accompagnés en complément, chaque mission étant ajustée à la taille et aux outils de la structure.",
     },
     {
       q: "Quel délai pour une première intervention à Saint-Genis-Laval ?",

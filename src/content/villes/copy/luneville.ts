@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LUNEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
+    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu PME artisanales, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
   pitchEn:
-    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
+    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu PME artisanales, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : PME artisanales faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
-  seoHook: "TPE & PME Meurthe-et-Moselle",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : PME artisanales faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
+  seoHook: "PME & PME Meurthe-et-Moselle",
   ecosystemFr:
-    "Lunéville est sous-préfecture de Meurthe-et-Moselle, connue pour son château (Versailles lorrain) et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics.",
+    "Lunéville est sous-préfecture de Meurthe-et-Moselle, connue pour son château (Versailles lorrain) et sa faïencerie historique. Tissu PME artisanales, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics.",
   ecosystemEn:
-    "Lunéville est sous-préfecture de Meurthe-et-Moselle, connue pour son château (Versailles lorrain) et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics.",
+    "Lunéville est sous-préfecture de Meurthe-et-Moselle, connue pour son château (Versailles lorrain) et sa faïencerie historique. Tissu PME artisanales, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics.",
   distancesFr:
     "Nancy à 30 min. Strasbourg à 1h20. Metz à 1h10. Gare SNCF Lunéville (TER Nancy-Strasbourg). Aéroport Metz-Nancy-Lorraine à 45 min.",
   distancesEn:
     "Nancy à 30 min. Strasbourg à 1h20. Metz à 1h10. Gare SNCF Lunéville (TER Nancy-Strasbourg). Aéroport Metz-Nancy-Lorraine à 45 min.",
   topSectorsNaf: [
-    "TPE artisanat & faïencerie",
+    "PME de l'artisanat & faïencerie",
     "PME industrielles lorraines",
     "Tourisme patrimonial (château)",
     "Commerce de proximité",
@@ -30,8 +30,8 @@ export const LUNEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Lunéville : diagnostic adapté aux PME artisanales faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lunéville : diagnostic adapté aux PME artisanales faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lunéville : formats adaptés à l'atelier faïencier, usine, office de tourisme, commerce ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA.",
@@ -53,14 +53,14 @@ export const LUNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans faïenciers de Lunéville ?",
-      a: "Oui, nous accompagnons les TPE artisans faïenciers sur des cas IA concrets : classification photos collections, catalogue e-commerce intelligent, automatisation devis, gestion stocks et agents conversationnels B2C.",
+      a: "Oui, nous accompagnons les PME artisanales faïenciers sur des cas IA concrets : classification photos collections, catalogue e-commerce intelligent, automatisation devis, gestion stocks et agents conversationnels B2C.",
     },
     {
       q: "Accompagnez-vous les PME industrielles lorraines ?",
       a: "Oui, prédiction maintenance, contrôle qualité par vision, optimisation production, classification documents techniques et automatisation workflow.",
     },
     {
-      q: "Quels services pour les TPE et commerces de Lunéville ?",
+      q: "Quels services pour les PME et commerces de Lunéville ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {

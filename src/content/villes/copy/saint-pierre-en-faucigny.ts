@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-en-Faucigny (74), commune du Faucigny en Haute-Savoie, est positionnée sur l'axe stratégique Annecy-Genève à proximité de Bonneville. Tissu diversifié de PME industrielles, entreprises de décolletage, TPE artisans BTP, agriculteurs et commerces. Axion-IA y intervient pour tous types d'activités du Faucigny.",
+    "Saint-Pierre-en-Faucigny (74), commune du Faucigny en Haute-Savoie, est positionnée sur l'axe stratégique Annecy-Genève à proximité de Bonneville. Tissu diversifié de PME industrielles, entreprises de décolletage, PME du BTP, agriculteurs et commerces. Axion-IA y intervient pour tous types d'activités du Faucigny.",
   pitchEn:
-    "Saint-Pierre-en-Faucigny (74), commune du Faucigny en Haute-Savoie, est positionnée sur l'axe stratégique Annecy-Genève à proximité de Bonneville. Tissu diversifié de PME industrielles, entreprises de décolletage, TPE artisans BTP, agriculteurs et commerces. Axion-IA y intervient pour tous types d'activités du Faucigny.",
+    "Saint-Pierre-en-Faucigny (74), commune du Faucigny en Haute-Savoie, est positionnée sur l'axe stratégique Annecy-Genève à proximité de Bonneville. Tissu diversifié de PME industrielles, entreprises de décolletage, PME du BTP, agriculteurs et commerces. Axion-IA y intervient pour tous types d'activités du Faucigny.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons TPE et PME : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons PME et ETI : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons TPE et PME : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-en-Faucigny (74). Nous accompagnons PME et ETI : industriels du décolletage et de la mécanique, artisans BTP, agriculteurs, commerçants et prestataires de services du bassin de Bonneville.",
   seoHook: "vallée arve",
   ecosystemFr:
-    "Saint-Pierre-en-Faucigny est située dans la province historique du Faucigny, à 5 min de Bonneville et sur l'axe autoroutier Annecy-Genève. Issue de la fusion de trois communes en 1965, elle accueille un tissu économique diversifié : PME industrielles héritières du décolletage, TPE artisanat BTP dynamiques, exploitations agricoles périurbaines et commerces de proximité bénéficiant de la croissance résidentielle du bassin.",
+    "Saint-Pierre-en-Faucigny est située dans la province historique du Faucigny, à 5 min de Bonneville et sur l'axe autoroutier Annecy-Genève. Issue de la fusion de trois communes en 1965, elle accueille un tissu économique diversifié : PME industrielles héritières du décolletage, PME du BTP dynamiques, exploitations agricoles périurbaines et commerces de proximité bénéficiant de la croissance résidentielle du bassin.",
   ecosystemEn:
-    "Saint-Pierre-en-Faucigny est située dans la province historique du Faucigny, à 5 min de Bonneville et sur l'axe autoroutier Annecy-Genève. Issue de la fusion de trois communes en 1965, elle accueille un tissu économique diversifié : PME industrielles héritières du décolletage, TPE artisanat BTP dynamiques, exploitations agricoles périurbaines et commerces de proximité bénéficiant de la croissance résidentielle du bassin.",
+    "Saint-Pierre-en-Faucigny est située dans la province historique du Faucigny, à 5 min de Bonneville et sur l'axe autoroutier Annecy-Genève. Issue de la fusion de trois communes en 1965, elle accueille un tissu économique diversifié : PME industrielles héritières du décolletage, PME du BTP dynamiques, exploitations agricoles périurbaines et commerces de proximité bénéficiant de la croissance résidentielle du bassin.",
   distancesFr:
     "Bonneville à 5 min. Annecy à 30 min A41. Genève à 35 min A40/A41. Aéroport Genève-Cointrin à 45 min. Accès direct autoroutes A40 (vallée de l'Arve) et A41 (Annecy-Genève).",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles & décolletage Faucigny",
     "Décolletage & mécanique de précision",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Agriculture périurbaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, PME du BTP, agriculteurs et commerçants du bassin de Bonneville. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, PME du BTP, agriculteurs et commerçants du bassin de Bonneville. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-en-Faucigny : formats adaptés à l'atelier industriel, chantier BTP, exploitation agricole ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Pierre-en-Faucigny : contrôle qualité vision industrielle, automatisation devis BTP, prédiction maintenance machines, agents conversationnels client, agriculture de précision. Tissu Faucigny.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Pierre-en-Faucigny : sessions dans votre atelier, sur chantier ou en visio. Dirigeants industriels, gérants TPE BTP, exploitants agricoles et commerçants du bassin de Bonneville.",
-      en: "Coaching 1-to-1 à Saint-Pierre-en-Faucigny : sessions dans votre atelier, sur chantier ou en visio. Dirigeants industriels, gérants TPE BTP, exploitants agricoles et commerçants du bassin de Bonneville.",
+      fr: "Coaching 1-to-1 à Saint-Pierre-en-Faucigny : sessions dans votre atelier, sur chantier ou en visio. Dirigeants industriels, gérants PME BTP, exploitants agricoles et commerçants du bassin de Bonneville.",
+      en: "Coaching 1-to-1 à Saint-Pierre-en-Faucigny : sessions dans votre atelier, sur chantier ou en visio. Dirigeants industriels, gérants PME BTP, exploitants agricoles et commerçants du bassin de Bonneville.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles du Faucigny sur leurs cas IA : contrôle qualité par vision, prédiction maintenance machines-outils, optimisation production, classification documents techniques et automatisation gestion commandes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Pierre-en-Faucigny ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME de Saint-Pierre-en-Faucigny. Diagnostic complet des opportunités IA dans votre activité (industrie, BTP, agriculture, commerce), ROI chiffré sous 5 jours ouvrés.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Saint-Pierre-en-Faucigny ?",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux PME et ETI de Saint-Pierre-en-Faucigny. Diagnostic complet des opportunités IA dans votre activité (industrie, BTP, agriculture, commerce), ROI chiffré sous 5 jours ouvrés.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Pierre-en-Faucigny ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Pierre-en-Faucigny sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes et suivi de chantier.",
+      a: "Oui, nous accompagnons les PME du BTP à Saint-Pierre-en-Faucigny sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes et suivi de chantier.",
     },
     {
       q: "Comment se déroule une mission depuis Annecy ou Genève ?",

@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saint-Ouen-l'Aumône (Val-d'Oise), commune intégrée à la ville nouvelle de Cergy-Pontoise. Le Parc d'activités des Béthunes, l'un des plus importants pôles d'activités d'Europe depuis le milieu des années 1980, structure le tissu économique local autour de la logistique, du commerce de gros, de la fabrication mécanique et des services aux entreprises. Notre cabinet déploie des solutions d'intelligence artificielle pragmatiques pour les dirigeants du Vexin et de l'ouest francilien.",
+    "Axion-IA accompagne les PME et ETI de Saint-Ouen-l'Aumône (Val-d'Oise), commune intégrée à la ville nouvelle de Cergy-Pontoise. Le Parc d'activités des Béthunes, l'un des plus importants pôles d'activités d'Europe depuis le milieu des années 1980, structure le tissu économique local autour de la logistique, du commerce de gros, de la fabrication mécanique et des services aux entreprises. Notre cabinet déploie des solutions d'intelligence artificielle pragmatiques pour les dirigeants du Vexin et de l'ouest francilien.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saint-Ouen-l'Aumône (Val-d'Oise), commune intégrée à la ville nouvelle de Cergy-Pontoise. Le Parc d'activités des Béthunes, l'un des plus importants pôles d'activités d'Europe depuis le milieu des années 1980, structure le tissu économique local autour de la logistique, du commerce de gros, de la fabrication mécanique et des services aux entreprises. Notre cabinet déploie des solutions d'intelligence artificielle pragmatiques pour les dirigeants du Vexin et de l'ouest francilien.",
+    "Axion-IA accompagne les PME et ETI de Saint-Ouen-l'Aumône (Val-d'Oise), commune intégrée à la ville nouvelle de Cergy-Pontoise. Le Parc d'activités des Béthunes, l'un des plus importants pôles d'activités d'Europe depuis le milieu des années 1980, structure le tissu économique local autour de la logistique, du commerce de gros, de la fabrication mécanique et des services aux entreprises. Notre cabinet déploie des solutions d'intelligence artificielle pragmatiques pour les dirigeants du Vexin et de l'ouest francilien.",
   directAnswerFr:
-    "À Saint-Ouen-l'Aumône, Axion-IA propose aux TPE et PME du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et {{price:intervention-4h|flat}} pour une intervention sur site, avec un interlocuteur unique pour la mission.",
+    "À Saint-Ouen-l'Aumône, Axion-IA propose aux PME et ETI du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et {{price:intervention-4h|flat}} pour une intervention sur site, avec un interlocuteur unique pour la mission.",
   directAnswerEn:
-    "À Saint-Ouen-l'Aumône, Axion-IA propose aux TPE et PME du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et {{price:intervention-4h|flat}} pour une intervention sur site, avec un interlocuteur unique pour la mission.",
+    "À Saint-Ouen-l'Aumône, Axion-IA propose aux PME et ETI du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et {{price:intervention-4h|flat}} pour une intervention sur site, avec un interlocuteur unique pour la mission.",
   seoHook: "commerce gros & transport entreposage",
   ecosystemFr:
     "Saint-Ouen-l'Aumône concentre une partie majeure de l'activité économique de l'agglomération de Cergy-Pontoise grâce au Parc d'activités des Béthunes et aux zones d'Épluches et de Maubuisson. L'héritage industriel local (distilleries, fabrication mécanique des XIXe et XXe siècles) s'est mué en un pôle logistique, de commerce de gros et de services aux entreprises, alimenté par l'accès direct à l'A15, à l'ancienne RN14 et à la Francilienne, ainsi qu'aux liaisons ferroviaires vers Paris, Creil et Argenteuil.",
@@ -33,8 +33,8 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ouen-l'Aumône pour TPE et PME : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Ouen-l'Aumône pour TPE et PME : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Ouen-l'Aumône pour PME et ETI : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Ouen-l'Aumône pour PME et ETI : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site dans le Parc d'activités des Béthunes et à Saint-Ouen-l'Aumône : automatisation administrative, suivi de flux, devis intelligent — dès {{price:intervention-4h|flat}}.",
@@ -55,7 +55,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Saint-Ouen-l'Aumône des sites web, applications, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le tissu du Parc d'activités des Béthunes — l'un des plus grands pôles logistiques d'Europe — comme pour les zones d'Épluches et de Maubuisson : logistique, commerce de gros, ateliers mécaniques et services aux entreprises au cœur de l'agglomération de Cergy-Pontoise. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Ouen-l'Aumône, le long de l'A15 et de la Francilienne, itérations à distance.",
         whyHere: [
           "Le Parc d'activités des Béthunes, l'un des plus grands pôles d'Europe, concentre logistique et commerce de gros le long de l'A15 et de la Francilienne : on construit des portails B2B mobile-first, des catalogues e-commerce multi-CMS et des espaces clients connectés à vos WMS et ERP pour fluidifier la prise de commande, le suivi de flux et la relation transporteurs à l'échelle de Cergy-Pontoise.",
-          "Tissu de TPE/PME industrielles — fabrication de produits métalliques, de machines et d'équipements — hérité des distilleries et ateliers des Béthunes des XIXe et XXe siècles : on greffe l'IA sur l'existant, sans refonte coûteuse, via devis intelligent, recherche sémantique de pièces et configurateur produit, branchés sur vos outils métier dans les zones d'Épluches et de Maubuisson.",
+          "Tissu de PME et ETI industrielles — fabrication de produits métalliques, de machines et d'équipements — hérité des distilleries et ateliers des Béthunes des XIXe et XXe siècles : on greffe l'IA sur l'existant, sans refonte coûteuse, via devis intelligent, recherche sémantique de pièces et configurateur produit, branchés sur vos outils métier dans les zones d'Épluches et de Maubuisson.",
           "Position de carrefour francilien (A15, ancienne RN14, Francilienne, gares Saint-Ouen-l'Aumône, Liesse et Quartier de l'Église sur RER C et Transilien H/J, Paris en 40 min) : vos sites doivent performer en mobilité pour des acheteurs et logisticiens souvent sur la route — d'où une exigence stricte sur les Web Vitals, le mobile-first et la recherche sémantique embarquée.",
           "Services aux entreprises, négoce et construction du Vexin et de l'ouest francilien : chatbots multilingues, agents d'automatisation administrative et plateformes SaaS IA-native calibrés pour des équipes qui traitent fournisseurs, transporteurs et clients de Cergy, Pontoise, Osny ou Éragny-sur-Oise jusqu'à Creil et Argenteuil.",
         ],
@@ -88,12 +88,6 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de catalogue, devis intelligent) sur le site existant d'un artisan, d'un négociant en gros ou d'un atelier mécanique des Béthunes, en quelques semaines et sans refonte. Idéal pour un commerce du Vexin ou un prestataire de services aux entreprises.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -122,7 +116,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
             a: "Oui. Pour le commerce de gros, le transport et l'entreposage du Parc des Béthunes, on branche le site, le portail B2B ou l'espace client sur vos outils métier (ERP, WMS, CRM) via API, avec synchronisation des stocks, des commandes et du suivi de flux en temps réel. Recherche sémantique de catalogue et agents de devis en option.",
           },
           {
-            q: "Travaillez-vous avec les TPE/PME industrielles d'Épluches et de Maubuisson ?",
+            q: "Travaillez-vous avec les PME et ETI industrielles d'Épluches et de Maubuisson ?",
             a: "Oui. Pour les ateliers de fabrication de produits métalliques, de machines et d'équipements hérités du passé industriel local, on greffe l'IA sur l'existant : configurateur produit, recherche sémantique de pièces, devis intelligent et automatisations administratives, sans refonte coûteuse et sans interrompre votre production.",
           },
           {
@@ -141,7 +135,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Saint-Ouen-l'Aumône des sites web, applications, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour le tissu du Parc d'activités des Béthunes — l'un des plus grands pôles logistiques d'Europe — comme pour les zones d'Épluches et de Maubuisson : logistique, commerce de gros, ateliers mécaniques et services aux entreprises au cœur de l'agglomération de Cergy-Pontoise. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Ouen-l'Aumône, le long de l'A15 et de la Francilienne, itérations à distance.",
         whyHere: [
           "Le Parc d'activités des Béthunes, l'un des plus grands pôles d'Europe, concentre logistique et commerce de gros le long de l'A15 et de la Francilienne : on construit des portails B2B mobile-first, des catalogues e-commerce multi-CMS et des espaces clients connectés à vos WMS et ERP pour fluidifier la prise de commande, le suivi de flux et la relation transporteurs à l'échelle de Cergy-Pontoise.",
-          "Tissu de TPE/PME industrielles — fabrication de produits métalliques, de machines et d'équipements — hérité des distilleries et ateliers des Béthunes des XIXe et XXe siècles : on greffe l'IA sur l'existant, sans refonte coûteuse, via devis intelligent, recherche sémantique de pièces et configurateur produit, branchés sur vos outils métier dans les zones d'Épluches et de Maubuisson.",
+          "Tissu de PME et ETI industrielles — fabrication de produits métalliques, de machines et d'équipements — hérité des distilleries et ateliers des Béthunes des XIXe et XXe siècles : on greffe l'IA sur l'existant, sans refonte coûteuse, via devis intelligent, recherche sémantique de pièces et configurateur produit, branchés sur vos outils métier dans les zones d'Épluches et de Maubuisson.",
           "Position de carrefour francilien (A15, ancienne RN14, Francilienne, gares Saint-Ouen-l'Aumône, Liesse et Quartier de l'Église sur RER C et Transilien H/J, Paris en 40 min) : vos sites doivent performer en mobilité pour des acheteurs et logisticiens souvent sur la route — d'où une exigence stricte sur les Web Vitals, le mobile-first et la recherche sémantique embarquée.",
           "Services aux entreprises, négoce et construction du Vexin et de l'ouest francilien : chatbots multilingues, agents d'automatisation administrative et plateformes SaaS IA-native calibrés pour des équipes qui traitent fournisseurs, transporteurs et clients de Cergy, Pontoise, Osny ou Éragny-sur-Oise jusqu'à Creil et Argenteuil.",
         ],
@@ -174,12 +168,6 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de catalogue, devis intelligent) sur le site existant d'un artisan, d'un négociant en gros ou d'un atelier mécanique des Béthunes, en quelques semaines et sans refonte. Idéal pour un commerce du Vexin ou un prestataire de services aux entreprises.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -208,7 +196,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
             a: "Oui. Pour le commerce de gros, le transport et l'entreposage du Parc des Béthunes, on branche le site, le portail B2B ou l'espace client sur vos outils métier (ERP, WMS, CRM) via API, avec synchronisation des stocks, des commandes et du suivi de flux en temps réel. Recherche sémantique de catalogue et agents de devis en option.",
           },
           {
-            q: "Travaillez-vous avec les TPE/PME industrielles d'Épluches et de Maubuisson ?",
+            q: "Travaillez-vous avec les PME et ETI industrielles d'Épluches et de Maubuisson ?",
             a: "Oui. Pour les ateliers de fabrication de produits métalliques, de machines et d'équipements hérités du passé industriel local, on greffe l'IA sur l'existant : configurateur produit, recherche sémantique de pièces, devis intelligent et automatisations administratives, sans refonte coûteuse et sans interrompre votre production.",
           },
           {
@@ -229,7 +217,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Ouen-l'Aumône ?",
-      a: "À Saint-Ouen-l'Aumône, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
+      a: "À Saint-Ouen-l'Aumône, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un dédié aux dirigeants de PME et d'ETI.",
     },
     {
       q: "Combien de temps pour une intervention sur site à Saint-Ouen-l'Aumône ?",
@@ -245,7 +233,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux servez-vous à Saint-Ouen-l'Aumône ?",
-      a: "Nous accompagnons en priorité les TPE et PME du Parc d'activités des Béthunes et des zones voisines : logistique, commerce de gros, fabrication de produits métalliques et de machines, construction et services aux entreprises.",
+      a: "Nous accompagnons en priorité les PME et ETI du Parc d'activités des Béthunes et des zones voisines : logistique, commerce de gros, fabrication de produits métalliques et de machines, construction et services aux entreprises.",
     },
     {
       q: "Proposez-vous des formations IA pour les entreprises à Saint-Ouen-l'Aumône ?",

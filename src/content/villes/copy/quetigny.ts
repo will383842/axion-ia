@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const QUETIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, TPE/PME commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
+    "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, PME et ETI commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
   pitchEn:
-    "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, TPE/PME commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
+    "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, PME et ETI commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
   seoHook: "commerce, services & zones d'activités",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quetigny (21). Nous accompagnons PME, ETI et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quetigny (21). Nous accompagnons PME, ETI et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
-    "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de TPE/PME : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
+    "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de PME et ETI : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
   ecosystemEn:
-    "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de TPE/PME : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
+    "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de PME et ETI : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
   distancesFr:
     "Dijon centre à 10 min (tram T1). Gare Dijon-Ville TGV à 15 min. Chevigny-Saint-Sauveur limitrophe. Autoroute A39 (Dole/Jura) à 5 min. Aéroport Dijon-Bourgogne à 15 min.",
   distancesEn:
@@ -26,24 +26,24 @@ export const QUETIGNY_COPY: VilleCopy = {
     "Restauration & hôtellerie",
     "Services aux entreprises B2B",
     "Artisanat & BTP",
-    "TPE commerces de proximité",
+    "PME du commerce",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, PME et ETI services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, PME et ETI services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quetigny : formations pratiques pour commerçants, restaurateurs, prestataires B2B et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Quetigny : formations pratiques pour commerçants, restaurateurs, prestataires B2B et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Quetigny : agents conversationnels clients, automatisation stocks et commandes, gestion planning restauration, CRM augmenté commerce. Solutions adaptées au tissu TPE/PME commercial.",
-      en: "Implémentation IA à Quetigny : agents conversationnels clients, automatisation stocks et commandes, gestion planning restauration, CRM augmenté commerce. Solutions adaptées au tissu TPE/PME commercial.",
+      fr: "Implémentation IA à Quetigny : agents conversationnels clients, automatisation stocks et commandes, gestion planning restauration, CRM augmenté commerce. Solutions adaptées au tissu PME et ETI commercial.",
+      en: "Implémentation IA à Quetigny : agents conversationnels clients, automatisation stocks et commandes, gestion planning restauration, CRM augmenté commerce. Solutions adaptées au tissu PME et ETI commercial.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Quetigny : sessions individuelles pour gérants commerces, restaurateurs, dirigeants TPE/PME souhaitant maîtriser l'IA dans leur gestion quotidienne.",
-      en: "Coaching 1-to-1 à Quetigny : sessions individuelles pour gérants commerces, restaurateurs, dirigeants TPE/PME souhaitant maîtriser l'IA dans leur gestion quotidienne.",
+      fr: "Coaching 1-to-1 à Quetigny : sessions individuelles pour gérants commerces, restaurateurs, dirigeants de PME et d'ETI souhaitant maîtriser l'IA dans leur gestion quotidienne.",
+      en: "Coaching 1-to-1 à Quetigny : sessions individuelles pour gérants commerces, restaurateurs, dirigeants de PME et d'ETI souhaitant maîtriser l'IA dans leur gestion quotidienne.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const QUETIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Quetigny  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les commerçants et restaurateurs de Quetigny ?",

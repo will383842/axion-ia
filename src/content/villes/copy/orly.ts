@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ORLY_COPY: VilleCopy = {
   pitchFr:
-    "Orly, dans le Val-de-Marne, est indissociable de l'aéroport Paris-Orly, deuxième plateforme aéroportuaire de France, qui structure une vaste économie de logistique, de transport, de maintenance aéronautique et de services. Intégrée au Grand Paris, la ville concentre entrepôts, transitaires, sous-traitants aéroportuaires, commerces et TPE de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs processus avec un ROI mesurable.",
+    "Orly, dans le Val-de-Marne, est indissociable de l'aéroport Paris-Orly, deuxième plateforme aéroportuaire de France, qui structure une vaste économie de logistique, de transport, de maintenance aéronautique et de services. Intégrée au Grand Paris, la ville concentre entrepôts, transitaires, sous-traitants aéroportuaires, commerces et PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de ce territoire pour automatiser leurs processus avec un ROI mesurable.",
   pitchEn:
-    "Orly, dans le Val-de-Marne, est indissociable de l'aéroport Paris-Orly, deuxième plateforme aéroportuaire de France, qui structure une vaste économie de logistique, de transport, de maintenance aéronautique et de services. Intégrée au Grand Paris, la ville concentre entrepôts, transitaires, sous-traitants aéroportuaires, commerces et TPE de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs processus avec un ROI mesurable.",
+    "Orly, dans le Val-de-Marne, est indissociable de l'aéroport Paris-Orly, deuxième plateforme aéroportuaire de France, qui structure une vaste économie de logistique, de transport, de maintenance aéronautique et de services. Intégrée au Grand Paris, la ville concentre entrepôts, transitaires, sous-traitants aéroportuaires, commerces et PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de ce territoire pour automatiser leurs processus avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orly (94, Val-de-Marne). Nous accompagnons en priorité les TPE puis les PME de la plateforme aéroportuaire Paris-Orly : transitaires, logisticiens, sous-traitants de maintenance aéronautique, commerces et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orly (94, Val-de-Marne). Nous accompagnons en priorité les PME puis les ETI de la plateforme aéroportuaire Paris-Orly : transitaires, logisticiens, sous-traitants de maintenance aéronautique, commerces et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orly (94, Val-de-Marne). Nous accompagnons en priorité les TPE puis les PME de la plateforme aéroportuaire Paris-Orly : transitaires, logisticiens, sous-traitants de maintenance aéronautique, commerces et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orly (94, Val-de-Marne). Nous accompagnons en priorité les PME puis les ETI de la plateforme aéroportuaire Paris-Orly : transitaires, logisticiens, sous-traitants de maintenance aéronautique, commerces et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   seoHook: "logistique & aéroport Paris-Orly",
   ecosystemFr:
-    "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre TPE de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
+    "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre PME de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
   ecosystemEn:
-    "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre TPE de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
+    "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre PME de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
   distancesFr:
     "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Cette position de carrefour facilite nos interventions sur tout le Grand Paris Sud-Est.",
   distancesEn:
@@ -34,16 +34,16 @@ export const ORLY_COPY: VilleCopy = {
       en: "Audit IA à Orly : diagnostic des processus pour transitaires, logisticiens et sous-traitants aéroportuaires. Nous repérons les automatisations à fort ROI dans des flux à forte contrainte de délais.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Orly : automatisation des devis, bordereaux et relances pour les TPE et PME logistiques et de services, avec montée en autonomie des équipes.",
-      en: "Interventions IA sur site à Orly : automatisation des devis, bordereaux et relances pour les TPE et PME logistiques et de services, avec montée en autonomie des équipes.",
+      fr: "Interventions IA sur site à Orly : automatisation des devis, bordereaux et relances pour les PME et ETI logistiques et de services, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Orly : automatisation des devis, bordereaux et relances pour les PME et ETI logistiques et de services, avec montée en autonomie des équipes.",
     },
     implementation: {
       fr: "Implémentation IA à Orly : agents conversationnels, classification de documents de transport et automatisation des flux entre WMS, transitaires et donneurs d'ordres aéroportuaires.",
       en: "Implémentation IA à Orly : agents conversationnels, classification de documents de transport et automatisation des flux entre WMS, transitaires et donneurs d'ordres aéroportuaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Orly : sessions dans vos entrepôts ou bureaux, ou en visio, pour les dirigeants de TPE et PME de la plateforme aéroportuaire et du Grand Paris Sud-Est.",
-      en: "Coaching 1-to-1 à Orly : sessions dans vos entrepôts ou bureaux, ou en visio, pour les dirigeants de TPE et PME de la plateforme aéroportuaire et du Grand Paris Sud-Est.",
+      fr: "Coaching 1-to-1 à Orly : sessions dans vos entrepôts ou bureaux, ou en visio, pour les dirigeants de PME et d'ETI de la plateforme aéroportuaire et du Grand Paris Sud-Est.",
+      en: "Coaching 1-to-1 à Orly : sessions dans vos entrepôts ou bureaux, ou en visio, pour les dirigeants de PME et d'ETI de la plateforme aéroportuaire et du Grand Paris Sud-Est.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Orly : plateformes sur mesure avec IA intégrée pour transitaires, logisticiens et commerces souhaitant capter et qualifier leurs clients B2B.",
@@ -53,11 +53,11 @@ export const ORLY_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de TPE de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de PME de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Économie aéroportuaire à forte contrainte de délais : transitaires et logisticiens autour de la plateforme Paris-Orly et de la zone fret de SOGARIS au sud francilien ont besoin de portails clients B2B, de suivis d'expédition en temps réel et d'agents qui qualifient les demandes 24/7 — exactement le type de site augmenté, branché sur le WMS, que nous construisons.",
           "Maintenance et services aéronautiques pointus : pour les sous-traitants techniques qui gravitent autour d'Air France Industries et des ateliers de la plateforme, nous bâtissons des plateformes métier sur mesure et des moteurs de recherche sémantique branchés sur la documentation, les catalogues de pièces et les procédures réglementaires.",
-          "Tissu majoritairement TPE/PME — commerces, messagerie, services aux entreprises des zones d'activités du territoire Grand-Orly Seine Bièvre et du quartier d'affaires Cœur d'Orly : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce sur Shopify ou WooCommerce, sans refonte coûteuse imposée.",
+          "Tissu majoritairement PME et ETI — commerces, messagerie, services aux entreprises des zones d'activités du territoire Grand-Orly Seine Bièvre et du quartier d'affaires Cœur d'Orly : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce sur Shopify ou WooCommerce, sans refonte coûteuse imposée.",
           "Flux documentaires sensibles (bordereaux, déclarations en douane, traçabilité fret) et clientèle internationale via l'aéroport, à deux pas du MIN de Rungis : nos chatbots sont multilingues par défaut, notre recherche sémantique fouille vos archives, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const ORLY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, formulaire de devis intelligent) sur le site existant d'un commerce, artisan, restaurateur ou prestataire de services orlysien, en quelques semaines et sans refonte. Idéal pour les TPE des abords de l'aéroport et du centre-ville.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const ORLY_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris sur des outils opérés en flux tendu jour et nuit autour de la plateforme Paris-Orly. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Outil transférable à tout prestataire francilien ou repris en interne par vos équipes orlysiennes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de TPE de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Orly des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, portails B2B, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie soudée à l'aéroport Paris-Orly, deuxième plateforme de France opérée par le Groupe ADP, où s'entremêlent fret, transitaires, maintenance aéronautique et un tissu dense de PME de services et de commerces du territoire Grand-Orly Seine Bièvre. Du quartier d'affaires Cœur d'Orly aux entrepôts de la zone SENIA, nous bâtissons des outils utiles dès le premier sprint. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Orly, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Économie aéroportuaire à forte contrainte de délais : transitaires et logisticiens autour de la plateforme Paris-Orly et de la zone fret de SOGARIS au sud francilien ont besoin de portails clients B2B, de suivis d'expédition en temps réel et d'agents qui qualifient les demandes 24/7 — exactement le type de site augmenté, branché sur le WMS, que nous construisons.",
           "Maintenance et services aéronautiques pointus : pour les sous-traitants techniques qui gravitent autour d'Air France Industries et des ateliers de la plateforme, nous bâtissons des plateformes métier sur mesure et des moteurs de recherche sémantique branchés sur la documentation, les catalogues de pièces et les procédures réglementaires.",
-          "Tissu majoritairement TPE/PME — commerces, messagerie, services aux entreprises des zones d'activités du territoire Grand-Orly Seine Bièvre et du quartier d'affaires Cœur d'Orly : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce sur Shopify ou WooCommerce, sans refonte coûteuse imposée.",
+          "Tissu majoritairement PME et ETI — commerces, messagerie, services aux entreprises des zones d'activités du territoire Grand-Orly Seine Bièvre et du quartier d'affaires Cœur d'Orly : on greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce sur Shopify ou WooCommerce, sans refonte coûteuse imposée.",
           "Flux documentaires sensibles (bordereaux, déclarations en douane, traçabilité fret) et clientèle internationale via l'aéroport, à deux pas du MIN de Rungis : nos chatbots sont multilingues par défaut, notre recherche sémantique fouille vos archives, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const ORLY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, formulaire de devis intelligent) sur le site existant d'un commerce, artisan, restaurateur ou prestataire de services orlysien, en quelques semaines et sans refonte. Idéal pour les TPE des abords de l'aéroport et du centre-ville.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -237,8 +225,8 @@ export const ORLY_COPY: VilleCopy = {
       a: "Oui. La filière logistique et de fret autour de l'aéroport Paris-Orly est notre cœur de cible. Nous automatisons devis, bordereaux, relances et flux de documents de transport, dans des environnements à forte contrainte de délais.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME d'Orly en priorité ?",
-      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Orly. Nous adaptons les formats aux entrepôts, ateliers et commerces. Les ETI restent un public marginal de notre activité.",
+      q: "Accompagnez-vous les PME et ETI d'Orly en priorité ?",
+      a: "Oui. Les les PME puis les ETI sont notre public prioritaire à Orly. Nous adaptons les formats aux entrepôts, ateliers et commerces. Les grands groupes complètent ce socle.",
     },
     {
       q: "Quels services pour les commerces et services d'Orly ?",

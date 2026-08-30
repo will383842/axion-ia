@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BOUILLARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Bouillargues (30), commune résidentielle de l'agglomération nîmoise sud, proche de l'aéroport Nîmes-Garons. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et viticulture Costières. Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise sud.",
+    "Bouillargues (30), commune résidentielle de l'agglomération nîmoise sud, proche de l'aéroport Nîmes-Garons. Tissu PME et ETI services aux entreprises, commerces, artisanat BTP, professions libérales et viticulture Costières. Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise sud.",
   pitchEn:
-    "Bouillargues (30), commune résidentielle de l'agglomération nîmoise sud, proche de l'aéroport Nîmes-Garons. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et viticulture Costières. Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise sud.",
+    "Bouillargues (30), commune résidentielle de l'agglomération nîmoise sud, proche de l'aéroport Nîmes-Garons. Tissu PME et ETI services aux entreprises, commerces, artisanat BTP, professions libérales et viticulture Costières. Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
   seoHook: "artisanat & viticulture costières",
   ecosystemFr:
     "Bouillargues (~6 100 hab) est une commune résidentielle de l'agglo nîmoise sud, à proximité de l'aéroport Nîmes-Garons. Services aux entreprises, commerces, artisanat BTP, professions libérales, viticulture Costières de Nîmes. Croissance démographique soutenue, accès A9.",
@@ -30,8 +30,8 @@ export const BOUILLARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouillargues : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bouillargues : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bouillargues : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouillargues : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouillargues : formats adaptés aux entreprises de services, commerces, cabinets et artisans de l'agglo nîmoise sud.",
@@ -42,8 +42,8 @@ export const BOUILLARGUES_COPY: VilleCopy = {
       en: "Implémentation IA à Bouillargues : automatisation CRM, agents conversationnels commerce, classification documents, optimisation devis BTP, gestion planning.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bouillargues : sessions dirigeants TPE/PME, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes sud.",
-      en: "Coaching 1-to-1 à Bouillargues : sessions dirigeants TPE/PME, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes sud.",
+      fr: "Coaching 1-to-1 à Bouillargues : sessions dirigeants de PME et d'ETI, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes sud.",
+      en: "Coaching 1-to-1 à Bouillargues : sessions dirigeants de PME et d'ETI, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes sud.",
     },
   },
   faqGeolocalisee: [

@@ -85,12 +85,6 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte — idéal pour indépendants, commerces et cabinets de Montigny-le-Bretonneux et du centre SQY.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -170,12 +164,6 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Grafted AI module",
-            detail:
-              "Adding an AI module (RAG chatbot, semantic search) onto an existing site within a few weeks, no rebuild — ideal for freelancers, shops and firms in Montigny-le-Bretonneux and central SQY.",
-          },
           {
             sizeLabel: "PME",
             price: "Bespoke site / application",

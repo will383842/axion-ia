@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const WISSEMBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y travaille avec les organisations du territoire.",
+    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu PME et ETI industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y travaille avec les organisations du territoire.",
+    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu PME et ETI industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : PME et ETI industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : PME et ETI industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
   ecosystemFr:
-    "Wissembourg est une sous-préfecture bas-rhinoise frontalière de l'Allemagne (Palatinat), cité médiévale au patrimoine remarquable. Tissu TPE/PME industrie, viticulture, tourisme transfrontalier, BTP, commerces, services, artisanat. Dynamique économique portée par le bilinguisme franco-allemand et l'attractivité patrimoniale.",
+    "Wissembourg est une sous-préfecture bas-rhinoise frontalière de l'Allemagne (Palatinat), cité médiévale au patrimoine remarquable. Tissu PME et ETI industrie, viticulture, tourisme transfrontalier, BTP, commerces, services, artisanat. Dynamique économique portée par le bilinguisme franco-allemand et l'attractivité patrimoniale.",
   ecosystemEn:
-    "Wissembourg est une sous-préfecture bas-rhinoise frontalière de l'Allemagne (Palatinat), cité médiévale au patrimoine remarquable. Tissu TPE/PME industrie, viticulture, tourisme transfrontalier, BTP, commerces, services, artisanat. Dynamique économique portée par le bilinguisme franco-allemand et l'attractivité patrimoniale.",
+    "Wissembourg est une sous-préfecture bas-rhinoise frontalière de l'Allemagne (Palatinat), cité médiévale au patrimoine remarquable. Tissu PME et ETI industrie, viticulture, tourisme transfrontalier, BTP, commerces, services, artisanat. Dynamique économique portée par le bilinguisme franco-allemand et l'attractivité patrimoniale.",
   distancesFr:
     "Haguenau à 30 min. Strasbourg à 1h. Karlsruhe (Allemagne) à 45 min. Gare SNCF Wissembourg (ligne Strasbourg–Neustadt). Autoroute A35 puis D263. Aéroport Karlsruhe-Baden-Baden à 35 min. Aéroport Strasbourg-Entzheim à 1h10.",
   distancesEn:
@@ -30,8 +30,8 @@ export const WISSEMBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Wissembourg : diagnostic adapté aux PME et ETI industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Wissembourg : diagnostic adapté aux PME et ETI industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wissembourg : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos équipes repartent autonomes. Sessions bilingues franco-allemandes possibles.",
@@ -42,8 +42,8 @@ export const WISSEMBOURG_COPY: VilleCopy = {
       en: "Implémentation IA à Wissembourg : automatisation réservations tourisme multilingue (FR/DE), gestion vendanges et stocks viticoles, contrôle qualité industrie, agents conversationnels B2B et B2C transfrontaliers.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Wissembourg : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, hôteliers-restaurateurs, artisans, gérants TPE/PME wissembourgeois et frontaliers.",
-      en: "Coaching 1-to-1 à Wissembourg : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, hôteliers-restaurateurs, artisans, gérants TPE/PME wissembourgeois et frontaliers.",
+      fr: "Coaching 1-to-1 à Wissembourg : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, hôteliers-restaurateurs, artisans, gérants PME et ETI wissembourgeois et frontaliers.",
+      en: "Coaching 1-to-1 à Wissembourg : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, hôteliers-restaurateurs, artisans, gérants PME et ETI wissembourgeois et frontaliers.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const WISSEMBOURG_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Wissembourg ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Wissembourg ?",

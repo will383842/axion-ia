@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
+    "Axion-IA accompagne les PME et ETI de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
+    "Axion-IA accompagne les PME et ETI de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
   directAnswerFr:
-    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès {{price:audit-flash|flat}}. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
+    "À Chemillé-en-Anjou, Axion-IA propose aux PME et ETI des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès {{price:audit-flash|flat}}. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
   directAnswerEn:
-    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès {{price:audit-flash|flat}}. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
+    "À Chemillé-en-Anjou, Axion-IA propose aux PME et ETI des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès {{price:audit-flash|flat}}. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
   seoHook: "horticulture & agroalimentaire Mauges",
   ecosystemFr:
-    "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les TPE et PME familiales réparties sur 13 communes déléguées.",
+    "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les PME et ETI familiales réparties sur 13 communes déléguées.",
   ecosystemEn:
-    "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les TPE et PME familiales réparties sur 13 communes déléguées.",
+    "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les PME et ETI familiales réparties sur 13 communes déléguées.",
   distancesFr:
     "Chemillé-en-Anjou est à ~30 km au sud d'Angers (gare TGV Angers-Saint-Laud), ~25 km au nord de Cholet et ~85 km à l'est de l'aéroport Nantes-Atlantique. Accès A87 (sortie Chemillé) à 5 min.",
   distancesEn:
@@ -32,8 +32,8 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur place 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
-      en: "Audit IA sur place 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
+      fr: "Audit IA sur place 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour PME et ETI des Mauges (horticulture, agroalimentaire, artisanat).",
+      en: "Audit IA sur place 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour PME et ETI des Mauges (horticulture, agroalimentaire, artisanat).",
     },
     interventions: {
       fr: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
@@ -44,18 +44,18 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
       en: "Implémentation code custom à Chemillé-en-Anjou dès {{price:impl-poc|entry}} — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès {{price:intervention-dirigeants|flat}} — feuille de route IA réaliste, ROI mesurable, formation interne.",
-      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès {{price:intervention-dirigeants|flat}} — feuille de route IA réaliste, ROI mesurable, formation interne.",
+      fr: "Accompagnement 1-to-1 dirigeants de PME et d'ETI de Chemillé-en-Anjou dès {{price:intervention-dirigeants|flat}} — feuille de route IA réaliste, ROI mesurable, formation interne.",
+      en: "Accompagnement 1-to-1 dirigeants de PME et d'ETI de Chemillé-en-Anjou dès {{price:intervention-dirigeants|flat}} — feuille de route IA réaliste, ROI mesurable, formation interne.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de TPE et PME familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de PME et ETI familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
         whyHere: [
           "Capitale historique des plantes médicinales et des semences, Chemillé concentre une filière végétale rare en France : pour les horticulteurs, pépiniéristes et producteurs de simples des Mauges, on bâtit des catalogues en ligne avec recherche sémantique par variété, fiches culture, calendrier de plantation et gestion de stocks de plants — bien au-delà d'une simple vitrine, jusqu'à la vente directe e-commerce.",
           "Agroalimentaire dense et exigeant en traçabilité autour de Cholet : nos plateformes sur mesure relient production, planification et étiquetage, avec des agents IA qui automatisent devis, bons de livraison, étiquetage par lot et suivi qualité pour les ateliers, coopératives et conserveries locales, branchés sur leur ERP existant.",
-          "Tissu 100 % TPE/PME réparti sur 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Jumellière, La Tourlandry) : on greffe une brique IA sur l'existant — widget, plugin WordPress, API — ou on conçoit une boutique e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni dépendance no-code pour des structures souvent à un ou deux salariés.",
+          "Tissu 100 % PME et ETI réparti sur 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Jumellière, La Tourlandry) : on greffe une brique IA sur l'existant — widget, plugin WordPress, API — ou on conçoit une boutique e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni dépendance no-code pour des structures souvent à un ou deux salariés.",
           "Vignobles AOC Anjou et Coteaux du Layon en bordure et clientèle œnotouristique reliée à Angers (~30 km) : nos chatbots et parcours de vente directe sont multilingues par défaut, calibrés pour les domaines viticoles, caveaux, gîtes et commerces de proximité du bourg qui accueillent une clientèle de passage et internationale.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisés) sur le site existant d'un artisan, d'un commerce du bourg de Chemillé, d'un pépiniériste ou d'un domaine viticole du Layon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,11 +131,11 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison de plantation ou de vendanges. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé, projet transférable à tout prestataire des Mauges ou du Choletais, ou repris en interne par vos équipes à Chemillé.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de TPE et PME familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Chemillé-en-Anjou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune nouvelle de près de 22 000 habitants, l'une des plus vastes de France métropolitaine (323,98 km²), née en 2015 du regroupement de 13 communes déléguées au sein de Mauges Communauté, dans l'arrondissement de Cholet. Le tissu y est fait de PME et ETI familiales de l'horticulture et des plantes médicinales, de l'agroalimentaire, de l'artisanat et de la viticulture AOC Anjou et Coteaux du Layon. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Chemillé, à 5 min de la sortie A87, itérations à distance.",
         whyHere: [
           "Capitale historique des plantes médicinales et des semences, Chemillé concentre une filière végétale rare en France : pour les horticulteurs, pépiniéristes et producteurs de simples des Mauges, on bâtit des catalogues en ligne avec recherche sémantique par variété, fiches culture, calendrier de plantation et gestion de stocks de plants — bien au-delà d'une simple vitrine, jusqu'à la vente directe e-commerce.",
           "Agroalimentaire dense et exigeant en traçabilité autour de Cholet : nos plateformes sur mesure relient production, planification et étiquetage, avec des agents IA qui automatisent devis, bons de livraison, étiquetage par lot et suivi qualité pour les ateliers, coopératives et conserveries locales, branchés sur leur ERP existant.",
-          "Tissu 100 % TPE/PME réparti sur 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Jumellière, La Tourlandry) : on greffe une brique IA sur l'existant — widget, plugin WordPress, API — ou on conçoit une boutique e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni dépendance no-code pour des structures souvent à un ou deux salariés.",
+          "Tissu 100 % PME et ETI réparti sur 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Jumellière, La Tourlandry) : on greffe une brique IA sur l'existant — widget, plugin WordPress, API — ou on conçoit une boutique e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni dépendance no-code pour des structures souvent à un ou deux salariés.",
           "Vignobles AOC Anjou et Coteaux du Layon en bordure et clientèle œnotouristique reliée à Angers (~30 km) : nos chatbots et parcours de vente directe sont multilingues par défaut, calibrés pour les domaines viticoles, caveaux, gîtes et commerces de proximité du bourg qui accueillent une clientèle de passage et internationale.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis automatisés) sur le site existant d'un artisan, d'un commerce du bourg de Chemillé, d'un pépiniériste ou d'un domaine viticole du Layon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -247,8 +235,8 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
       a: "L'horticulture (gestion stocks plants/semences), l'agroalimentaire (traçabilité, planification production), l'artisanat (devis automatisés) et les exploitations viticoles AOC Anjou / Coteaux du Layon (suivi parcellaire, étiquetage).",
     },
     {
-      q: "Travaillez-vous aussi avec les TPE artisanales ou seulement les PME industrielles ?",
-      a: "Axion-IA cible en priorité les TPE (1-9 salariés) puis les PME (10-249 salariés) francophones. Les ETI sont l'exception, pas la cible. Notre forfait {{price:intervention-4h|flat}} est calibré pour les structures artisanales et familiales.",
+      q: "Travaillez-vous aussi avec les PME artisanales ou seulement les PME industrielles ?",
+      a: "Axion-IA cible en priorité les PME (1-9 salariés) puis les PME (10-249 salariés) francophones. Les ETI sont l'exception, pas la cible. Notre forfait {{price:intervention-4h|flat}} est calibré pour les structures artisanales et familiales.",
     },
   ],
 };

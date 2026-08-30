@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -23,13 +23,13 @@ import type { VilleCopy } from "./types";
 
 export const NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Nancy rassemble 4 334 établissements actifs, le premier pôle universitaire du Grand Est (Université de Lorraine, Mines Nancy, ICN, Sciences Po Campus Européen, ~52 000 étudiants), le Technopôle Henri Poincaré Brabois (santé, IA, robotique chirurgicale), le CHRU et des groupes industriels majeurs (Saint-Gobain PAM). Axion-IA y intervient sur site, des TPE nancéiennes aux ETI industrielles du bassin lorrain.",
+    "Nancy rassemble 4 334 établissements actifs, le premier pôle universitaire du Grand Est (Université de Lorraine, Mines Nancy, ICN, Sciences Po Campus Européen, ~52 000 étudiants), le Technopôle Henri Poincaré Brabois (santé, IA, robotique chirurgicale), le CHRU et des groupes industriels majeurs (Saint-Gobain PAM). Axion-IA y intervient sur site, des PME nancéiennes aux ETI industrielles du bassin lorrain.",
   pitchEn:
     "Nancy brings together 4,334 active businesses, the Grand Est's leading university cluster (Université de Lorraine, Mines Nancy, ICN, Sciences Po European Campus, ~52,000 students), the Henri Poincaré Brabois Technopole (health, AI, surgical robotics), the CHRU and major industrial groups (Saint-Gobain PAM). Axion-IA delivers on site, from Nancy micro-businesses to industrial mid-caps across the Lorraine basin.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nancy : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les TPE du centre-ville, les ETI industrielles du bassin lorrain et les organisations de santé du Brabois.",
+      fr: "Audit IA opérationnel à Nancy : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les PME du centre-ville, les ETI industrielles du bassin lorrain et les organisations de santé du Brabois.",
       en: "Operational AI audit in Nancy: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Nancy city-centre micro-businesses, Lorraine basin industrial mid-caps and Brabois health organisations.",
     },
     interventions: {
@@ -51,7 +51,7 @@ export const NANCY_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nancy (54) sur site — centre-ville, Technopôle Henri Poincaré Brabois (Vandœuvre-lès-Nancy), campus Artem et communes du Grand Nancy. Nous accompagnons les TPE, PME, ETI et grandes entreprises nancéiennes (industrie, santé, recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nancy (54) sur site — centre-ville, Technopôle Henri Poincaré Brabois (Vandœuvre-lès-Nancy), campus Artem et communes du Grand Nancy. Nous accompagnons les PME, ETI et grands groupes nancéiens (industrie, santé, recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Nancy (54) on site — city centre, Henri Poincaré Brabois Technopole (Vandœuvre-lès-Nancy), Artem campus and Grand Nancy communes. We support Nancy micro-businesses, SMEs, mid-caps and large enterprises (industry, health, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -80,7 +80,7 @@ export const NANCY_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation nancéienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI industrielles du bassin lorrain et aux directions des organisations de santé du Technopôle Brabois.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation nancéienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre-ville aux ETI industrielles du bassin lorrain et aux directions des organisations de santé du Technopôle Brabois.",
         whyHere: [
           "Nancy est un carrefour B2B singulier : tissu académique et de recherche dense (Université de Lorraine, Mines Nancy, Inria, CHRU) coexistant avec une industrie lorraine robuste (Saint-Gobain PAM, Materalia) — chaque type d'organisation a ses cas IA propres que nous maîtrisons.",
           "Pôle santé-recherche Brabois de rang national : CHRU, robotique chirurgicale, Inria Nancy Grand Est, CNRS Centre-Est, INRAE Grand Est-Nancy — secteur R&D intense où l'IA accélère la gestion documentaire, l'analyse de données cliniques et la veille réglementaire.",
@@ -117,12 +117,6 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et petites structures nancéiennes — centre-ville, quartier Charles III, Rives de Meurthe.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -186,7 +180,7 @@ export const NANCY_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Nancy organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Nancy micro-businesses to Lorraine basin industrial mid-caps and Brabois Technopole health organisations.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Nancy organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Nancy micro-businesses to Lorraine basin industrial mid-caps and Brabois Technopole health organisations.",
         whyHere: [
           "Nancy is a distinctive B2B junction: dense academic and research fabric (Université de Lorraine, Mines Nancy, Inria, CHRU) coexisting with robust Lorraine industry (Saint-Gobain PAM, Materalia) — each type of organisation has its own AI use cases we master.",
           "National-level Brabois health-research hub: CHRU, surgical robotics, Inria Nancy Grand Est, CNRS Centre-Est, INRAE Grand Est-Nancy — R&D-intensive sector where AI accelerates document management, clinical data analysis and regulatory monitoring.",
@@ -223,12 +217,6 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Nancy freelancers, micro-firms and small structures — city centre, Charles III district, Rives de Meurthe.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -332,12 +320,6 @@ export const NANCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, petits cabinets et structures nancéiennes jusqu'à une dizaine de collaborateurs — centre-ville, quartier Rives de Meurthe, communes proches.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -437,12 +419,6 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Nancy freelancers, small practices and structures up to about ten staff — city centre, Rives de Meurthe district, nearby communes.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -546,12 +522,6 @@ export const NANCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants nancéiens.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -587,7 +557,7 @@ export const NANCY_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Nancy ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -651,12 +621,6 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Nancy micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -760,12 +724,6 @@ export const NANCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pack individuel",
-            detail:
-              "Pour indépendants, artisans et micro-entrepreneurs nancéiens souhaitant intégrer l'IA dans leur quotidien professionnel — centre-ville, activités tertiaires, artisanat.",
-          },
-          {
             sizeLabel: "PME",
             price: "Pack dirigeant ou cadre clé",
             detail:
@@ -865,12 +823,6 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Individual pack",
-            detail:
-              "For Nancy freelancers, artisans and micro-entrepreneurs wishing to integrate AI into their professional daily life — city centre, services, crafts.",
-          },
           {
             sizeLabel: "SME",
             price: "Executive or key manager pack",
@@ -972,12 +924,6 @@ export const NANCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1058,12 +1004,6 @@ export const NANCY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1113,7 +1053,7 @@ export const NANCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nancy ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Nancy et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Nancy et partout en France.",
     },
     {
       q: "Avez-vous des cas clients dans le Grand Nancy ?",

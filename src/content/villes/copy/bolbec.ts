@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const BOLBEC_COPY: VilleCopy = {
   pitchFr:
-    "Bolbec (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 11 600 habitants. Ancienne ville textile reconvertie, elle accueille des TPE artisanales, des PME de services et commerciales, des professions liberales et des acteurs de la sante. Axion-IA y intervient pour tous types d'activites.",
+    "Bolbec (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 11 600 habitants. Ancienne ville textile reconvertie, elle accueille des PME artisanales, des PME de services et commerciales, des professions liberales et des acteurs de la sante. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Bolbec (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 11 600 habitants. Ancienne ville textile reconvertie, elle accueille des TPE artisanales, des PME de services et commerciales, des professions liberales et des acteurs de la sante. Axion-IA y intervient pour tous types d'activites.",
+    "Bolbec (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 11 600 habitants. Ancienne ville textile reconvertie, elle accueille des PME artisanales, des PME de services et commerciales, des professions liberales et des acteurs de la sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "textile reconverti, commerce & sante",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bolbec (76). Nous accompagnons les PME, ETI et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bolbec (76). Nous accompagnons les PME, ETI et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Bolbec est situee dans la vallee du Commerce, entre Rouen et Le Havre. Ancienne cite textile normande, la ville dispose d'un tissu de TPE artisanales, PME de services, commerces de proximite, professions liberales et etablissements de sante. Acces A29 vers Le Havre et Amiens.",
+    "Bolbec est situee dans la vallee du Commerce, entre Rouen et Le Havre. Ancienne cite textile normande, la ville dispose d'un tissu de PME artisanales, PME de services, commerces de proximite, professions liberales et etablissements de sante. Acces A29 vers Le Havre et Amiens.",
   ecosystemEn:
-    "Bolbec est situee dans la vallee du Commerce, entre Rouen et Le Havre. Ancienne cite textile normande, la ville dispose d'un tissu de TPE artisanales, PME de services, commerces de proximite, professions liberales et etablissements de sante. Acces A29 vers Le Havre et Amiens.",
+    "Bolbec est situee dans la vallee du Commerce, entre Rouen et Le Havre. Ancienne cite textile normande, la ville dispose d'un tissu de PME artisanales, PME de services, commerces de proximite, professions liberales et etablissements de sante. Acces A29 vers Le Havre et Amiens.",
   distancesFr:
     "Gare de Bolbec-Nointot (TER Le Havre 25 min, Rouen 45 min). A29 Le Havre-Amiens a 10 min. Le Havre a 30 min. Rouen a 50 min. Paris Saint-Lazare a 2h via Rouen.",
   distancesEn:
     "Gare de Bolbec-Nointot (TER Le Havre 25 min, Rouen 45 min). A29 Le Havre-Amiens a 10 min. Le Havre a 30 min. Rouen a 50 min. Paris Saint-Lazare a 2h via Rouen.",
   topSectorsNaf: [
     "Commerce de proximite & detail",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "Sante & action sociale",
     "Professions liberales",
     "PME industrie legere",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Bolbec : diagnostic adapte aux TPE artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Bolbec : diagnostic adapte aux TPE artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Bolbec : diagnostic adapte aux PME artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Bolbec : diagnostic adapte aux PME artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Bolbec : formations adaptees aux commerces, cabinets de sante, ateliers artisanaux et PME de services. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BOLBEC_COPY: VilleCopy = {
       en: "Implementation IA a Bolbec : automatisation administrative, agents IA accueil patients, CRM augmentes pour commercants et PME de la vallee du Commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Bolbec : accompagnement personnalise dirigeants TPE, gerants PME, professions liberales et professionnels de sante de la vallee du Commerce.",
-      en: "Coaching 1-to-1 a Bolbec : accompagnement personnalise dirigeants TPE, gerants PME, professions liberales et professionnels de sante de la vallee du Commerce.",
+      fr: "Coaching 1-to-1 a Bolbec : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME, professions liberales et professionnels de sante de la vallee du Commerce.",
+      en: "Coaching 1-to-1 a Bolbec : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME, professions liberales et professionnels de sante de la vallee du Commerce.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BOLBEC_COPY: VilleCopy = {
       a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
-      q: "Accompagnez-vous les TPE artisanales de Bolbec ?",
-      a: "Oui, nous accompagnons les TPE artisanales de Bolbec : automatisation devis, gestion planning IA, agents conversationnels, comptabilite augmentee. Solutions adaptees aux petites structures.",
+      q: "Accompagnez-vous les PME artisanales de Bolbec ?",
+      a: "Oui, nous accompagnons les PME artisanales de Bolbec : automatisation devis, gestion planning IA, agents conversationnels, comptabilite augmentee. Solutions adaptees aux PME.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Bolbec ?",

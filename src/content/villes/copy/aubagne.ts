@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AUBAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Aubagne (13), patrie de Marcel Pagnol et capitale du santon d'argile, prolonge sa tradition céramique et tuilière par un tissu dense de TPE et PME : artisanat d'art, agroalimentaire, commerce de proximité et logistique de l'est marseillais. La ville accueille aussi le commandement de la Légion étrangère. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Aubagne (13), patrie de Marcel Pagnol et capitale du santon d'argile, prolonge sa tradition céramique et tuilière par un tissu dense de PME et ETI : artisanat d'art, agroalimentaire, commerce de proximité et logistique de l'est marseillais. La ville accueille aussi le commandement de la Légion étrangère. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Aubagne (13), patrie de Marcel Pagnol et capitale du santon d'argile, prolonge sa tradition céramique et tuilière par un tissu dense de TPE et PME : artisanat d'art, agroalimentaire, commerce de proximité et logistique de l'est marseillais. La ville accueille aussi le commandement de la Légion étrangère. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Aubagne (13), patrie de Marcel Pagnol et capitale du santon d'argile, prolonge sa tradition céramique et tuilière par un tissu dense de PME et ETI : artisanat d'art, agroalimentaire, commerce de proximité et logistique de l'est marseillais. La ville accueille aussi le commandement de la Légion étrangère. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubagne (13) auprès des TPE et PME : santonniers et céramistes, agroalimentaire, commerces de proximité, artisans BTP et logistique de l'est marseillais. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubagne (13) auprès des PME et ETI : santonniers et céramistes, agroalimentaire, commerces de proximité, artisans BTP et logistique de l'est marseillais. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubagne (13) auprès des TPE et PME : santonniers et céramistes, agroalimentaire, commerces de proximité, artisans BTP et logistique de l'est marseillais. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubagne (13) auprès des PME et ETI : santonniers et céramistes, agroalimentaire, commerces de proximité, artisans BTP et logistique de l'est marseillais. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   seoHook: "santons, céramique & agroalimentaire",
   ecosystemFr:
-    "Aubagne, dans la vallée de l'Huveaune entre Marseille et la Sainte-Baume, conjugue artisanat d'art (santons, céramique, tuilerie historique), agroalimentaire, commerce de détail et activités logistiques de l'est marseillais. Les zones d'activité Napollon et des Paluds concentrent des TPE et PME industrielles et de services. La présence du commandement de la Légion étrangère et un tourisme culturel autour de Marcel Pagnol nourrissent un écosystème local diversifié, propice à une IA appliquée aux métiers réels.",
+    "Aubagne, dans la vallée de l'Huveaune entre Marseille et la Sainte-Baume, conjugue artisanat d'art (santons, céramique, tuilerie historique), agroalimentaire, commerce de détail et activités logistiques de l'est marseillais. Les zones d'activité Napollon et des Paluds concentrent des PME et ETI industrielles et de services. La présence du commandement de la Légion étrangère et un tourisme culturel autour de Marcel Pagnol nourrissent un écosystème local diversifié, propice à une IA appliquée aux métiers réels.",
   ecosystemEn:
-    "Aubagne, dans la vallée de l'Huveaune entre Marseille et la Sainte-Baume, conjugue artisanat d'art (santons, céramique, tuilerie historique), agroalimentaire, commerce de détail et activités logistiques de l'est marseillais. Les zones d'activité Napollon et des Paluds concentrent des TPE et PME industrielles et de services. La présence du commandement de la Légion étrangère et un tourisme culturel autour de Marcel Pagnol nourrissent un écosystème local diversifié, propice à une IA appliquée aux métiers réels.",
+    "Aubagne, dans la vallée de l'Huveaune entre Marseille et la Sainte-Baume, conjugue artisanat d'art (santons, céramique, tuilerie historique), agroalimentaire, commerce de détail et activités logistiques de l'est marseillais. Les zones d'activité Napollon et des Paluds concentrent des PME et ETI industrielles et de services. La présence du commandement de la Légion étrangère et un tourisme culturel autour de Marcel Pagnol nourrissent un écosystème local diversifié, propice à une IA appliquée aux métiers réels.",
   distancesFr:
     "Aubagne est reliée à Marseille en 20 min (A50) et au centre par sa gare. L'aéroport Marseille-Provence est à 45 min, la gare TGV Aix-en-Provence à 40 min, et Toulon à 50 min par l'A50.",
   distancesEn:
@@ -38,12 +38,12 @@ export const AUBAGNE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Aubagne : ateliers pratiques pour ateliers céramique, lignes agroalimentaires et commerces, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Aubagne : automatisation devis et stocks, agents conversationnels boutique, CRM augmenté et traçabilité agroalimentaire pour TPE et PME locales.",
-      en: "Implémentation IA à Aubagne : automatisation devis et stocks, agents conversationnels boutique, CRM augmenté et traçabilité agroalimentaire pour TPE et PME locales.",
+      fr: "Implémentation IA à Aubagne : automatisation devis et stocks, agents conversationnels boutique, CRM augmenté et traçabilité agroalimentaire pour PME et ETI locales.",
+      en: "Implémentation IA à Aubagne : automatisation devis et stocks, agents conversationnels boutique, CRM augmenté et traçabilité agroalimentaire pour PME et ETI locales.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Aubagne : sessions en atelier ou en visio pour dirigeants de TPE et PME, ciblées sur vos priorités métier dans la vallée de l'Huveaune.",
-      en: "Accompagnement un-à-un à Aubagne : sessions en atelier ou en visio pour dirigeants de TPE et PME, ciblées sur vos priorités métier dans la vallée de l'Huveaune.",
+      fr: "Accompagnement un-à-un à Aubagne : sessions en atelier ou en visio pour dirigeants de PME et d'ETI, ciblées sur vos priorités métier dans la vallée de l'Huveaune.",
+      en: "Accompagnement un-à-un à Aubagne : sessions en atelier ou en visio pour dirigeants de PME et d'ETI, ciblées sur vos priorités métier dans la vallée de l'Huveaune.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Aubagne : vitrine ou e-boutique avec IA intégrée (recherche, devis, oenotourisme culturel Pagnol) pour artisans d'art, agroalimentaire et commerces.",
@@ -53,11 +53,11 @@ export const AUBAGNE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Aubagne (13) conjugue un ancrage industriel high-tech — Sartorius Stedim, équipementier biopharmaceutique dont le nouveau campus technologique et industriel a été inauguré en juin 2025 sur la ZI des Paluds — et un tissu dense de TPE/PME de la vallée de l'Huveaune : artisanat d'art du santon d'argile (Santons Escoffier), céramique et tuilerie, agroalimentaire, logistique et commerce des Paluds (117 ha, plus de 1 000 entreprises) et du parc de Napollon, au pied du Garlaban. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA pour ces acteurs aubagnais, du santonnier qui veut une e-boutique à l'industriel biopharma qui veut un portail métier — UX/UI, mobile, e-commerce multi-CMS et IA, hébergement UE/RGPD, sans dépendance technique.",
+        hero: "Aubagne (13) conjugue un ancrage industriel high-tech — Sartorius Stedim, équipementier biopharmaceutique dont le nouveau campus technologique et industriel a été inauguré en juin 2025 sur la ZI des Paluds — et un tissu dense de PME et ETI de la vallée de l'Huveaune : artisanat d'art du santon d'argile (Santons Escoffier), céramique et tuilerie, agroalimentaire, logistique et commerce des Paluds (117 ha, plus de 1 000 entreprises) et du parc de Napollon, au pied du Garlaban. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA pour ces acteurs aubagnais, du santonnier qui veut une e-boutique à l'industriel biopharma qui veut un portail métier — UX/UI, mobile, e-commerce multi-CMS et IA, hébergement UE/RGPD, sans dépendance technique.",
         whyHere: [
           "Aubagne accueille des industriels exigeants comme Sartorius Stedim (bioprocédés biopharmaceutiques, campus 200 M€ inauguré en 2025 aux Paluds) et a longtemps hébergé le site sonars de Thales DMS : pour ces filières et leurs sous-traitants, nous construisons des portails documentaires, configurateurs et plateformes SaaS métier avec recherche sémantique sur données techniques.",
           "Capitale du santon d'argile et de la céramique provençale (Santons Escoffier et les ateliers de la vallée de l'Huveaune), Aubagne a besoin d'e-boutiques saisonnières robustes : catalogue santons, crèches sur mesure, expéditions de fin d'année — nous livrons des sites e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec recherche et recommandations IA.",
-          "Les zones Les Paluds (117 ha, ~10 000 emplois) et Napollon (27 ha, une centaine d'entreprises au pied du Garlaban) concentrent agroalimentaire, BTP, logistique et services : nous y déployons des sites vitrines générateurs de devis, des espaces clients et des chatbots de qualification adaptés à des TPE/PME sans service informatique.",
+          "Les zones Les Paluds (117 ha, ~10 000 emplois) et Napollon (27 ha, une centaine d'entreprises au pied du Garlaban) concentrent agroalimentaire, BTP, logistique et services : nous y déployons des sites vitrines générateurs de devis, des espaces clients et des chatbots de qualification adaptés à des PME et ETI sans service informatique.",
           "Le tourisme culturel Marcel Pagnol (né à Aubagne), le Garlaban et le Festival international du film, desservis par le tramway gratuit et le futur Val'Tram, nourrissent une demande d'hôtellerie, restauration et boutiques locales : nous créons des sites de réservation et des e-boutiques de terroir avec assistant IA multilingue.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const AUBAGNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-boutique essentielle",
-            detail:
-              "Pour santonniers, céramistes, artisans BTP, commerces du centre ancien et indépendants de la vallée de l'Huveaune : vitrine ou petite e-boutique CMS (Shopify/WooCommerce) avec recherche IA, formulaire de devis et fiche Google optimisée.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou plateforme métier",
@@ -175,12 +169,6 @@ export const AUBAGNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential online store",
-            detail:
-              "For santon makers, ceramists, construction craftspeople, old-town shops and Huveaune valley freelancers: a showcase or small CMS store (Shopify/WooCommerce) with AI search, a quote form and an optimized Google listing.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce site or business platform",
             detail:
@@ -234,7 +222,7 @@ export const AUBAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aubagne ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME aubagnaises : artisanat d'art, agroalimentaire et commerces de proximité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux PME et ETI aubagnaises : artisanat d'art, agroalimentaire et commerces de proximité.",
     },
     {
       q: "Accompagnez-vous les santonniers et céramistes d'Aubagne ?",
@@ -242,11 +230,11 @@ export const AUBAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour l'agroalimentaire local ?",
-      a: "Pour les TPE et PME agroalimentaires de la vallée de l'Huveaune : traçabilité, prévision de la demande, automatisation administrative et qualité, avec audit puis implémentation progressive.",
+      a: "Pour les PME et ETI agroalimentaires de la vallée de l'Huveaune : traçabilité, prévision de la demande, automatisation administrative et qualité, avec audit puis implémentation progressive.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous priorisons les TPE puis les PME d'Aubagne ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+      a: "Non. Nous priorisons les PME puis les ETI d'Aubagne ; les grands groupes sont accompagnés en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
     },
     {
       q: "Comment se déroule une mission à Aubagne ?",

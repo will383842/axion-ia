@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const LANESTER_COPY: VilleCopy = {
   pitchFr:
-    "Lanester (56), 3e commune du Morbihan (23 263 habitants), forme avec Lorient une agglomération naval et portuaire majeure de Bretagne sud. Tissu économique structuré autour de la construction navale (Naval Group, Kership, Chantiers Piriou), de l'arsenal militaire et des zones d'activités Kerpont-Kerrous et Kerpont-Manebos. Axion-IA accompagne en priorité TPE et PME lanestériennes — commerce, artisanat, sous-traitance navale, services — puis les ETI.",
+    "Lanester (56), 3e commune du Morbihan (23 263 habitants), forme avec Lorient une agglomération naval et portuaire majeure de Bretagne sud. Tissu économique structuré autour de la construction navale (Naval Group, Kership, Chantiers Piriou), de l'arsenal militaire et des zones d'activités Kerpont-Kerrous et Kerpont-Manebos. Axion-IA accompagne en priorité PME et ETI lanestériennes — commerce, artisanat, sous-traitance navale, services — puis les ETI.",
   pitchEn:
-    "Lanester (56), 3e commune du Morbihan (23 263 habitants), forme avec Lorient une agglomération naval et portuaire majeure de Bretagne sud. Tissu économique structuré autour de la construction navale (Naval Group, Kership, Chantiers Piriou), de l'arsenal militaire et des zones d'activités Kerpont-Kerrous et Kerpont-Manebos. Axion-IA accompagne en priorité TPE et PME lanestériennes — commerce, artisanat, sous-traitance navale, services — puis les ETI.",
+    "Lanester (56), 3e commune du Morbihan (23 263 habitants), forme avec Lorient une agglomération naval et portuaire majeure de Bretagne sud. Tissu économique structuré autour de la construction navale (Naval Group, Kership, Chantiers Piriou), de l'arsenal militaire et des zones d'activités Kerpont-Kerrous et Kerpont-Manebos. Axion-IA accompagne en priorité PME et ETI lanestériennes — commerce, artisanat, sous-traitance navale, services — puis les ETI.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les PME et ETI lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les PME et ETI lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit sur place {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
   seoHook: "construction navale, commerce & artisanat",
   ecosystemFr:
-    "Lanester est séparée de Lorient par le Scorff et structurée autour de plusieurs pôles : le port militaire du Rohu, l'arsenal, les zones commerciales et artisanales Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec, ainsi qu'un grand centre commercial proche de Caudan. La construction navale civile et militaire (Naval Group, Kership Lorient construisant 12 navires anti-mines, Chantiers Piriou) tire un écosystème dense de sous-traitants TPE-PME.",
+    "Lanester est séparée de Lorient par le Scorff et structurée autour de plusieurs pôles : le port militaire du Rohu, l'arsenal, les zones commerciales et artisanales Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec, ainsi qu'un grand centre commercial proche de Caudan. La construction navale civile et militaire (Naval Group, Kership Lorient construisant 12 navires anti-mines, Chantiers Piriou) tire un écosystème dense de sous-traitants PME et ETI.",
   ecosystemEn:
-    "Lanester est séparée de Lorient par le Scorff et structurée autour de plusieurs pôles : le port militaire du Rohu, l'arsenal, les zones commerciales et artisanales Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec, ainsi qu'un grand centre commercial proche de Caudan. La construction navale civile et militaire (Naval Group, Kership Lorient construisant 12 navires anti-mines, Chantiers Piriou) tire un écosystème dense de sous-traitants TPE-PME.",
+    "Lanester est séparée de Lorient par le Scorff et structurée autour de plusieurs pôles : le port militaire du Rohu, l'arsenal, les zones commerciales et artisanales Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec, ainsi qu'un grand centre commercial proche de Caudan. La construction navale civile et militaire (Naval Group, Kership Lorient construisant 12 navires anti-mines, Chantiers Piriou) tire un écosystème dense de sous-traitants PME et ETI.",
   distancesFr:
     "Lanester est mitoyenne de Lorient (séparée par le Scorff). Gare de Lorient (ligne Paris-Montparnasse-Quimper) à ~2 km. Voie rapide RN 165 traverse la commune. Aéroport Lorient Bretagne Sud à ~12 km. Vannes à 55 km, Rennes à 150 km, Nantes à 165 km.",
   distancesEn:
@@ -32,8 +32,8 @@ export const LANESTER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lanester : diagnostic 4h pour PME et ETI locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lanester : diagnostic 4h pour PME et ETI locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Formation 4 h {{price:intervention-4h|flat}}.",
@@ -44,16 +44,16 @@ export const LANESTER_COPY: VilleCopy = {
       en: "Implémentation IA à Lanester : intégration ERP/CRM, automatisation flux qualité sous-traitance navale, classification documents fournisseurs, agents IA support multilingue (commerce portuaire). Code sur mesure dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lanester : sessions sur site ou en visio pour dirigeants TPE-PME, artisans BTP, gérants commerces et chefs d'atelier sous-traitants navals de l'agglo lorientaise.",
-      en: "Coaching 1-to-1 à Lanester : sessions sur site ou en visio pour dirigeants TPE-PME, artisans BTP, gérants commerces et chefs d'atelier sous-traitants navals de l'agglo lorientaise.",
+      fr: "Coaching 1-to-1 à Lanester : sessions sur site ou en visio pour dirigeants PME et ETI, artisans BTP, gérants commerces et chefs d'atelier sous-traitants navals de l'agglo lorientaise.",
+      en: "Coaching 1-to-1 à Lanester : sessions sur site ou en visio pour dirigeants PME et ETI, artisans BTP, gérants commerces et chefs d'atelier sous-traitants navals de l'agglo lorientaise.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de TPE du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
+        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de PME du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
         whyHere: [
-          "Écosystème naval structurant : autour de Naval Group, des Chantiers Piriou et de Kership Lorient — coentreprise Piriou/Naval Group qui construit coques de FREMM et navires jusqu'à 120 m — gravite une nuée de sous-traitants TPE-PME. Terrain idéal pour des portails fournisseurs, de la gestion documentaire qualité et des agents qui digèrent vos dossiers techniques sur la zone du Rohu.",
+          "Écosystème naval structurant : autour de Naval Group, des Chantiers Piriou et de Kership Lorient — coentreprise Piriou/Naval Group qui construit coques de FREMM et navires jusqu'à 120 m — gravite une nuée de sous-traitants PME et ETI. Terrain idéal pour des portails fournisseurs, de la gestion documentaire qualité et des agents qui digèrent vos dossiers techniques sur la zone du Rohu.",
           "Zones d'activités Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec : commerces de détail et artisans BTP y sont concentrés, à deux pas du grand centre commercial proche de Caudan. On greffe l'IA sur l'existant — chatbot, devis automatisés, boutique WooCommerce ou Shopify — sans refonte coûteuse, ou on bâtit une vitrine mobile-first sur mesure pour capter le flux local.",
           "Agglomération mitoyenne de Lorient via le Scorff, irriguée par la RN 165 et la gare de Lorient (ligne Paris-Quimper) à ~2 km : nos plateformes connectent vos sites multi-établissements de Caudan à Hennebont, Kervignac ou Locmiquélic sans friction. Recherche sémantique et espaces clients unifiés pour piloter plusieurs points de vente.",
           "Sensibilité défense liée à la sous-traitance navale militaire et au port militaire du Rohu : toute la chaîne IA est hébergeable en UE (OVH, Scaleway), conforme RGPD et AI Act, avec confidentialité, traçabilité et déploiement on-premise possible. Vos données techniques et plans fournisseurs restent maîtrisés, jamais exposés à un cloud hors UE.",
@@ -86,12 +86,6 @@ export const LANESTER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot, recherche sémantique, prise de devis automatisée — sur le site existant d'un commerce des zones Kerpont, d'un artisan BTP de Lann-Gazec ou d'un restaurateur du centre, en quelques semaines et sans refonte coûteuse.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,9 +131,9 @@ export const LANESTER_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant. Web Vitals, accessibilité et performance mobile-first contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible, on-premise pour les données défense), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. Projet transférable à tout prestataire web de Lorient ou de Bretagne sud, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de TPE du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
+        hero: "Axion-IA conçoit et augmente à Lanester des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la 3e commune du Morbihan (23 263 habitants), tournée vers la construction navale civile et militaire — Naval Group, Kership Lorient (ex-chantier STX, repris en 2016) et Chantiers Piriou — et un tissu dense de PME du commerce et de l'artisanat des zones Kerpont. La zone industrielle du Rohu, face au site Naval Group, structure une filière de sous-traitants à digitaliser, tandis que le grand centre commercial proche de Caudan irrigue le commerce local. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou propriétaire. Kick-off en présentiel à Lanester, itérations à distance avec l'agglomération lorientaise.",
         whyHere: [
-          "Écosystème naval structurant : autour de Naval Group, des Chantiers Piriou et de Kership Lorient — coentreprise Piriou/Naval Group qui construit coques de FREMM et navires jusqu'à 120 m — gravite une nuée de sous-traitants TPE-PME. Terrain idéal pour des portails fournisseurs, de la gestion documentaire qualité et des agents qui digèrent vos dossiers techniques sur la zone du Rohu.",
+          "Écosystème naval structurant : autour de Naval Group, des Chantiers Piriou et de Kership Lorient — coentreprise Piriou/Naval Group qui construit coques de FREMM et navires jusqu'à 120 m — gravite une nuée de sous-traitants PME et ETI. Terrain idéal pour des portails fournisseurs, de la gestion documentaire qualité et des agents qui digèrent vos dossiers techniques sur la zone du Rohu.",
           "Zones d'activités Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec : commerces de détail et artisans BTP y sont concentrés, à deux pas du grand centre commercial proche de Caudan. On greffe l'IA sur l'existant — chatbot, devis automatisés, boutique WooCommerce ou Shopify — sans refonte coûteuse, ou on bâtit une vitrine mobile-first sur mesure pour capter le flux local.",
           "Agglomération mitoyenne de Lorient via le Scorff, irriguée par la RN 165 et la gare de Lorient (ligne Paris-Quimper) à ~2 km : nos plateformes connectent vos sites multi-établissements de Caudan à Hennebont, Kervignac ou Locmiquélic sans friction. Recherche sémantique et espaces clients unifiés pour piloter plusieurs points de vente.",
           "Sensibilité défense liée à la sous-traitance navale militaire et au port militaire du Rohu : toute la chaîne IA est hébergeable en UE (OVH, Scaleway), conforme RGPD et AI Act, avec confidentialité, traçabilité et déploiement on-premise possible. Vos données techniques et plans fournisseurs restent maîtrisés, jamais exposés à un cloud hors UE.",
@@ -172,12 +166,6 @@ export const LANESTER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot, recherche sémantique, prise de devis automatisée — sur le site existant d'un commerce des zones Kerpont, d'un artisan BTP de Lann-Gazec ou d'un restaurateur du centre, en quelques semaines et sans refonte coûteuse.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs lanestériens tirent le plus de bénéfice de l'IA ?",
-      a: "À Lanester : commerces des zones Kerpont (chatbot, gestion stocks), sous-traitants navals (documents qualité, devis), artisans BTP de Lann-Gazec (devis, planning), restaurateurs et professions libérales. TPE et PME prioritaires, ETI navales complémentaires.",
+      a: "À Lanester : commerces des zones Kerpont (chatbot, gestion stocks), sous-traitants navals (documents qualité, devis), artisans BTP de Lann-Gazec (devis, planning), restaurateurs et professions libérales. PME et ETI prioritaires, grands groupes navals complémentaires.",
     },
     {
       q: "Faites-vous du no-code ou du code sur mesure ?",

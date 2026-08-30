@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const DOULLENS_COPY: VilleCopy = {
   pitchFr:
-    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
+    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de PME du BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
   pitchEn:
-    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
+    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de PME du BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Doullens (80). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
-  seoHook: "TPE & PME Somme",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Doullens (80). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+  seoHook: "PME & PME Somme",
   ecosystemFr:
-    "Doullens est sous-préfecture historique de la Somme, bourg picard au nord du département marqué par sa citadelle classée et le souvenir de 1918 (commandement unifié Foch). Tissu agricole (grandes cultures, élevage), TPE artisans BTP, PME industrielles, commerces de centre-ville, services de santé et médico-social.",
+    "Doullens est sous-préfecture historique de la Somme, bourg picard au nord du département marqué par sa citadelle classée et le souvenir de 1918 (commandement unifié Foch). Tissu agricole (grandes cultures, élevage), PME du BTP, PME industrielles, commerces de centre-ville, services de santé et médico-social.",
   ecosystemEn:
-    "Doullens est sous-préfecture historique de la Somme, bourg picard au nord du département marqué par sa citadelle classée et le souvenir de 1918 (commandement unifié Foch). Tissu agricole (grandes cultures, élevage), TPE artisans BTP, PME industrielles, commerces de centre-ville, services de santé et médico-social.",
+    "Doullens est sous-préfecture historique de la Somme, bourg picard au nord du département marqué par sa citadelle classée et le souvenir de 1918 (commandement unifié Foch). Tissu agricole (grandes cultures, élevage), PME du BTP, PME industrielles, commerces de centre-ville, services de santé et médico-social.",
   distancesFr:
     "Doullens est à 30 min d'Amiens centre (RN25). Arras à 30 min (D939). Abbeville à 40 min. Paris à 1h50 voiture (A1/A16). Gare TGV Haute-Picardie (TGV Nord) à 45 min. Aéroport Beauvais-Tillé à 1h10.",
   distancesEn:
     "Doullens est à 30 min d'Amiens centre (RN25). Arras à 30 min (D939). Abbeville à 40 min. Paris à 1h50 voiture (A1/A16). Gare TGV Haute-Picardie (TGV Nord) à 45 min. Aéroport Beauvais-Tillé à 1h10.",
   topSectorsNaf: [
     "Agriculture grandes cultures & élevage",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME industrielles Doullennais",
     "Commerce de centre-ville",
     "Santé & médico-social",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, PME du BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, PME du BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Doullens : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce ou le cabinet de santé. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const DOULLENS_COPY: VilleCopy = {
       en: "Implémentation IA à Doullens : optimisation rendements agricoles, automatisation gestion stocks PME, agents conversationnels commerces centre-ville, outils IA gestion cabinet médical et planning soins.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Doullens : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans BTP, commerçants, gérants TPE/PME et professionnels de santé du Doullennais souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Doullens : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans BTP, commerçants, gérants TPE/PME et professionnels de santé du Doullennais souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Doullens : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans BTP, commerçants, gérants PME et ETI et professionnels de santé du Doullennais souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Doullens : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans BTP, commerçants, gérants PME et ETI et professionnels de santé du Doullennais souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const DOULLENS_COPY: VilleCopy = {
       a: "Nous accompagnons les exploitations grandes cultures et élevage autour de Doullens : prédiction rendements céréales, optimisation intrants, classification photos parcellaire, automatisation comptabilité exploitation, gestion sanitaire troupeau et traçabilité récoltes.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans BTP à Doullens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP du Doullennais : automatisation devis et facturation, agents IA prise de rendez-vous clients, classification photos chantier, optimisation planning équipes et gestion stocks matériaux. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans BTP à Doullens ?",
+      a: "Oui, nous accompagnons les PME du BTP du Doullennais : automatisation devis et facturation, agents IA prise de rendez-vous clients, classification photos chantier, optimisation planning équipes et gestion stocks matériaux. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Doullens ?",

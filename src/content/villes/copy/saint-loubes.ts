@@ -9,14 +9,14 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Loubès (33), commune au nord-est de Bordeaux Métropole aux portes de l'Entre-deux-Mers, combine zones d'activités logistiques, vignoble, artisanat BTP et tissu résidentiel en croissance. Axion-IA opère pour toutes les structures économiques de la commune du bassin nord-est bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Loubès (33). Nous accompagnons PME et ETI du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Loubès (33). Nous accompagnons PME et ETI du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "bassin nord-est bordelais",
   ecosystemFr:
-    "Saint-Loubès se situe au carrefour entre Bordeaux Métropole nord-est et l'Entre-deux-Mers viticole. Zones d'activités logistiques (plateforme multimodale), vignoble bordelais, tissu TPE artisanat BTP et commerces en croissance résidentielle. Accès A10 et A89.",
+    "Saint-Loubès se situe au carrefour entre Bordeaux Métropole nord-est et l'Entre-deux-Mers viticole. Zones d'activités logistiques (plateforme multimodale), vignoble bordelais, tissu PME du BTP et commerces en croissance résidentielle. Accès A10 et A89.",
   ecosystemEn:
-    "Saint-Loubès se situe au carrefour entre Bordeaux Métropole nord-est et l'Entre-deux-Mers viticole. Zones d'activités logistiques (plateforme multimodale), vignoble bordelais, tissu TPE artisanat BTP et commerces en croissance résidentielle. Accès A10 et A89.",
+    "Saint-Loubès se situe au carrefour entre Bordeaux Métropole nord-est et l'Entre-deux-Mers viticole. Zones d'activités logistiques (plateforme multimodale), vignoble bordelais, tissu PME du BTP et commerces en croissance résidentielle. Accès A10 et A89.",
   distancesFr:
     "Bordeaux centre à 20 min (rocade/A10). Libourne à 20 min. Gare Bordeaux Saint-Jean à 25 min. Aéroport Bordeaux-Mérignac à 30 min. Accès A10 et A89.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique & transport",
     "Viticulture Entre-deux-Mers",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, TPE artisans et commerces du nord-est bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, TPE artisans et commerces du nord-est bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, PME de l'artisanat et du commerce du nord-est bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, PME de l'artisanat et du commerce du nord-est bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Loubès : ateliers adaptés aux entrepôts logistiques, chais, ateliers BTP et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Loubès  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME logistiques et TPE artisans du nord-est Bordeaux.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME logistiques et PME artisanales du nord-est Bordeaux.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques à Saint-Loubès ?",

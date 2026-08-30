@@ -64,7 +64,7 @@ export function repli(
   // On déclenche si l'effectif demandé est celui d'une ETI/grande entreprise
   // (≥ 250, seuil INSEE PME→ETI) OU si des offres dimensionnées existent mais
   // qu'aucune ne couvre l'effectif. Dans ces cas on n'affiche PAS une offre
-  // sous-calibrée (ex. audit TPE 1 j pour 1200 salariés) → on oriente vers un
+  // sous-calibrée (ex. audit PME 1 j pour 1200 salariés) → on oriente vers un
   // échange (RDV) avec un message « sur mesure » côté orchestrateur.
   if (criteria.effectif !== undefined) {
     const ETI_THRESHOLD = 250;

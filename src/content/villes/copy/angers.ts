@@ -5,7 +5,7 @@
 //   - Aucune mention de frais de déplacement, logement, repas ou trajet.
 //   - Aucune demi-journée : durée minimale = 1 journée.
 //   - Aucun prix hardcodé : libellés seuls, tarifs depuis pricing.ts.
-//   - Tailles d'entreprise INSEE uniquement : TPE / PME / ETI / GE.
+//   - Tailles d'entreprise INSEE uniquement : PME/ETI/GE.
 //   - ~95 % Axion-IA-centric + ~5 % data locale anti-doorway HCU 2024.
 //   - PAS de heroSchema, PAS de unAUn (non demandés pour cette ville).
 //
@@ -27,7 +27,7 @@ import type { VilleCopy } from "./types";
 
 export const ANGERS_COPY: VilleCopy = {
   pitchFr:
-    "Angers concentre 12 222 établissements actifs, le siège mondial de Vegepolys Valley (1er pôle végétal au monde), les usines Scania et Eviden/Atos, et un tissu B2B industriel et tertiaire dense. Axion-IA y intervient sur site, des TPE de la French Tech Angers aux ETI industrielles et aux grandes entreprises implantées dans la métropole.",
+    "Angers concentre 12 222 établissements actifs, le siège mondial de Vegepolys Valley (1er pôle végétal au monde), les usines Scania et Eviden/Atos, et un tissu B2B industriel et tertiaire dense. Axion-IA y intervient sur site, des PME de la French Tech Angers aux ETI industrielles et aux grandes entreprises implantées dans la métropole.",
   pitchEn:
     "Angers hosts 12,222 active businesses, the global HQ of Vegepolys Valley (world's #1 plant-industry cluster), Scania and Eviden/Atos plants, and a dense industrial and services B2B fabric. Axion-IA delivers on site, from French Tech Angers micro-businesses to industrial mid-caps and large enterprises established in the greater area.",
 
@@ -55,7 +55,7 @@ export const ANGERS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Angers (49) sur site dans toute la métropole Angers Loire Métropole et le bassin Maine-et-Loire. Nous accompagnons les TPE, PME, ETI et grandes entreprises angevines — filière végétale (Vegepolys Valley), industrie (Scania, Eviden/Atos, Thales), agroalimentaire (Cointreau), tertiaire et French Tech Angers — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Angers (49) sur site dans toute la métropole Angers Loire Métropole et le bassin Maine-et-Loire. Nous accompagnons les PME, ETI et grands groupes angevins — filière végétale (Vegepolys Valley), industrie (Scania, Eviden/Atos, Thales), agroalimentaire (Cointreau), tertiaire et French Tech Angers — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Angers (49) on site across the Angers Loire Métropole and the Maine-et-Loire area. We support Angers micro-businesses, SMEs, mid-caps and large enterprises — plant industry (Vegepolys Valley), manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau), services and French Tech Angers — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in.",
 
@@ -85,13 +85,13 @@ export const ANGERS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Angers cartographie ce qui peut être automatisé dans votre organisation — qu'il s'agisse d'une ETI de la filière végétale, d'une PME industrielle ou d'une TPE du tertiaire — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles d'entreprise de la métropole angevine.",
+        hero: "L'audit IA Axion-IA à Angers cartographie ce qui peut être automatisé dans votre organisation — qu'il s'agisse d'une ETI de la filière végétale, d'une PME industrielle ou d'une PME du tertiaire — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle d'entreprise de la métropole angevine.",
         whyHere: [
           "Angers est un pôle industriel et agroalimentaire majeur du Grand Ouest : filière végétale, industrie automobile (Scania), informatique haute performance (Eviden/Atos), défense (Thales), spiritueux (Cointreau). Nos audits adressent ces secteurs avec des cas d'usage IA spécifiques à chacun.",
           "Le tissu PME/ETI angevin est dense et sous-exploite encore l'IA opérationnelle : sous-traitants industriels, prestataires de services végétaux, cabinets de conseil Maine-et-Loire, acteurs du négoce de vins Anjou. Axion-IA y intervient directement sur site.",
           "French Tech Angers (labellisée 2015) et Angers Technopole constituent un écosystème startup IoT / numérique avec des besoins IA distincts de l'industrie traditionnelle — nos consultants connaissent les deux.",
           "Restitutions toujours en présentiel à Angers ou dans la métropole : ateliers d'idéation dans vos locaux, livrable PDF remis en main propre, plan d'action calibré à votre réalité locale.",
-          "Tarifs publics affichés, pas de devis opaque : vous savez ce que vous payez avant de signer, que vous soyez dirigeant d'une TPE de Belle-Beille ou DG d'une ETI de Beaucouzé.",
+          "Tarifs publics affichés, pas de devis opaque : vous savez ce que vous payez avant de signer, que vous soyez dirigeant d'une PME de Belle-Beille ou DG d'une ETI de Beaucouzé.",
           "Votre plan d'action reste le vôtre : exécutable avec n'importe quel prestataire ou en interne, aucun lock-in Axion-IA.",
         ],
         methodology: [
@@ -122,12 +122,6 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et PME angevines jusqu'à une dizaine de collaborateurs — startups French Tech Angers, artisans, prestataires végétaux.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -229,12 +223,6 @@ export const ANGERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to freelancers, micro-firms and small Angers businesses up to about ten staff — French Tech Angers startups, craft producers, plant-sector service providers.",
-          },
-          {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
             detail:
@@ -302,7 +290,7 @@ export const ANGERS_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Angers se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel dans la filière végétale, l'industrie, l'agroalimentaire ou le tertiaire angevin.",
         whyHere: [
-          "Angers couvre des secteurs variés avec des besoins IA très différents : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, commerciaux TPE tertiaire, équipes viticulture Anjou. Nos sessions sont calibrées pour chacun de ces profils — pas de format générique recyclé.",
+          "Angers couvre des secteurs variés avec des besoins IA très différents : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, commerciaux PME tertiaire, équipes viticulture Anjou. Nos sessions sont calibrées pour chacun de ces profils — pas de format générique recyclé.",
           "L'ensemble de la métropole Angers Loire Métropole est couvert en présentiel : centre-ville, Belle-Beille (Eviden/Atos, ESEO), Saint-Barthélemy-d'Anjou (Cointreau, ESAIP), Beaucouzé, zone Scania, et les communes du bassin.",
           "Le format collectif (1 journée) est particulièrement adapté aux PME et ETI industrielles angevines souhaitant former plusieurs équipes en parallèle (production, commercial, R&D, support).",
           "Le format Conférence convient aux grandes plénières d'entreprise dans les salles de réunion de la métropole ou au Parc des expositions d'Angers (SIVAL et événements B2B).",
@@ -337,12 +325,6 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour les indépendants, TPE numériques, startups French Tech Angers et petits prestataires de la filière végétale jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
@@ -443,12 +425,6 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for freelancers, digital micro-firms, French Tech Angers startups and small plant-sector providers up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -553,12 +529,6 @@ export const ANGERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture de factures, comptes-rendus, qualification leads) pour une TPE ou startup angevine.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -594,7 +564,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Angers ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Pouvez-vous intégrer l'IA dans un ERP industriel ou un PLM existant ?",
@@ -658,12 +628,6 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) for an Angers micro-business or startup.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -729,7 +693,7 @@ export const ANGERS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Angers accompagne individuellement les dirigeants et cadres de la filière végétale, de l'industrie (Scania, Eviden/Atos, Thales), de l'agroalimentaire (Cointreau) et des startups de la French Tech Angers. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — rapports R&D végétal, données industrielles, gestion commerciale Anjou. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Angers accompagne individuellement les dirigeants et cadres de la filière végétale, de l'industrie (Scania, Eviden/Atos, Thales), de l'agroalimentaire (Cointreau) et des startups de la French Tech Angers. À partir de {{price:intervention-dirigeants|flat}} pour les PME, chaque programme est bâti autour de vos cas d'usage réels — rapports R&D végétal, données industrielles, gestion commerciale Anjou. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Angers est un écosystème plurisectoriel unique : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, fondateurs French Tech Angers, viticulteurs Anjou. Le coaching 1-to-1 est le seul format qui s'adapte précisément à chacun de ces profils très différents.",
           "Les dirigeants de PME de la filière végétale (semenciers, producteurs, prestataires phytosanitaires) ont des besoins IA très spécifiques — documentation réglementaire, suivi R&D, reporting export. Le coaching individuel cible ces enjeux directement.",
@@ -766,12 +730,6 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Programme d'entrée pour les gérants de TPE, artisans, startups French Tech Angers et indépendants de la filière végétale ou du tertiaire angevin.",
-          },
           {
             sizeLabel: "PME",
             price: "Sur devis",
@@ -873,12 +831,6 @@ export const ANGERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry programme for micro-business owners, craft firms, French Tech Angers startups and freelancers in the plant sector or Angers services.",
-          },
-          {
             sizeLabel: "SME",
             price: "On quote",
             detail:
@@ -979,12 +931,6 @@ export const ANGERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1065,12 +1011,6 @@ export const ANGERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1120,7 +1060,7 @@ export const ANGERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Angers ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est le même à Angers que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est le même à Angers que partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans la filière végétale angevine (Vegepolys Valley) ?",

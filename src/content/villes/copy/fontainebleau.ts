@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FONTAINEBLEAU_COPY: VilleCopy = {
   pitchFr:
-    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, PME artisanales, PME services, commerçants et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, PME artisanales, PME services, commerçants et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), PME artisanales, PME services, commerçants et professions libérales bellifontaines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), PME artisanales, PME services, commerçants et professions libérales bellifontaines. Audit sur place sur mesure.",
   seoHook: "tourisme patrimoine & hôtellerie restauration",
   ecosystemFr:
-    "Fontainebleau est une ville à rayonnement international grâce à son château classé au patrimoine mondial UNESCO et sa forêt domaniale de 25 000 hectares. L'INSEAD, l'une des premières business schools mondiales, et le campus Mines ParisTech y attirent cadres et entrepreneurs internationaux. Tissu TPE artisans, PME hôtellerie-restauration haut de gamme, tourisme, commerces centre-ville, professions libérales. Communes voisines : Avon, Samois-sur-Seine, Thomery, Bourron-Marlotte.",
+    "Fontainebleau est une ville à rayonnement international grâce à son château classé au patrimoine mondial UNESCO et sa forêt domaniale de 25 000 hectares. L'INSEAD, l'une des premières business schools mondiales, et le campus Mines ParisTech y attirent cadres et entrepreneurs internationaux. Tissu PME artisanales, PME hôtellerie-restauration haut de gamme, tourisme, commerces centre-ville, professions libérales. Communes voisines : Avon, Samois-sur-Seine, Thomery, Bourron-Marlotte.",
   ecosystemEn:
-    "Fontainebleau est une ville à rayonnement international grâce à son château classé au patrimoine mondial UNESCO et sa forêt domaniale de 25 000 hectares. L'INSEAD, l'une des premières business schools mondiales, et le campus Mines ParisTech y attirent cadres et entrepreneurs internationaux. Tissu TPE artisans, PME hôtellerie-restauration haut de gamme, tourisme, commerces centre-ville, professions libérales. Communes voisines : Avon, Samois-sur-Seine, Thomery, Bourron-Marlotte.",
+    "Fontainebleau est une ville à rayonnement international grâce à son château classé au patrimoine mondial UNESCO et sa forêt domaniale de 25 000 hectares. L'INSEAD, l'une des premières business schools mondiales, et le campus Mines ParisTech y attirent cadres et entrepreneurs internationaux. Tissu PME artisanales, PME hôtellerie-restauration haut de gamme, tourisme, commerces centre-ville, professions libérales. Communes voisines : Avon, Samois-sur-Seine, Thomery, Bourron-Marlotte.",
   distancesFr:
     "Gare de Fontainebleau-Avon (Transilien R) à 40 min de Paris Gare de Lyon. A6 sortie Fontainebleau à 60 km de Paris. Aéroport Orly à 55 min. Melun à 20 min. Forêt domaniale accessible à pied depuis le centre-ville.",
   distancesEn:
@@ -30,8 +30,8 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, TPE artisans, PME services et professions libérales bellifontaines. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, TPE artisans, PME services et professions libérales bellifontaines. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, PME artisanales, PME services et professions libérales bellifontaines. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, PME artisanales, PME services et professions libérales bellifontaines. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontainebleau : formats adaptés à l'hôtel, au restaurant, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
       en: "Implémentation IA à Fontainebleau : agents conversationnels multilingues tourisme, automatisation réservations hôtelières, gestion flux visiteurs château, prédiction saisonnalité, outils IA pour PME services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fontainebleau : sessions dans vos locaux ou en visio. Dirigeants hôtellerie-restauration, gérants TPE/PME, professions libérales, entrepreneurs du sud Seine-et-Marne.",
-      en: "Coaching 1-to-1 à Fontainebleau : sessions dans vos locaux ou en visio. Dirigeants hôtellerie-restauration, gérants TPE/PME, professions libérales, entrepreneurs du sud Seine-et-Marne.",
+      fr: "Coaching 1-to-1 à Fontainebleau : sessions dans vos locaux ou en visio. Dirigeants hôtellerie-restauration, gérants PME et ETI, professions libérales, entrepreneurs du sud Seine-et-Marne.",
+      en: "Coaching 1-to-1 à Fontainebleau : sessions dans vos locaux ou en visio. Dirigeants hôtellerie-restauration, gérants PME et ETI, professions libérales, entrepreneurs du sud Seine-et-Marne.",
     },
   },
   faqGeolocalisee: [

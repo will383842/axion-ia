@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const VALOGNES_COPY: VilleCopy = {
   pitchFr:
-    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu PME du commerce et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu PME du commerce et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valognes (50). Nous accompagnons tous types d'activités : PME du commerce et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
-  seoHook: "TPE & PME Manche",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valognes (50). Nous accompagnons tous types d'activités : PME du commerce et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
+  seoHook: "PME & PME Manche",
   ecosystemFr:
     "Valognes, le « Versailles normand », conserve un patrimoine d'hôtels particuliers XVIIe-XVIIIe et un centre historique animé. L'économie locale repose sur le commerce de centre-ville, l'artisanat, l'agroalimentaire cidricole (cidreries, calvados, poiré), l'élevage normand, les services de proximité et le tourisme patrimonial. Carrefour routier du Cotentin, entre Cherbourg (20 min) et Carentan (25 min).",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const VALOGNES_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME agroalimentaire cidricole (cidre, calvados, poiré)",
     "Commerce de centre-ville et artisanat",
-    "TPE élevage normand (bovin laitier)",
+    "PME élevage normand (bovin laitier)",
     "Tourisme patrimonial (hôtels particuliers)",
     "Services de proximité et professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Valognes : diagnostic adapté aux PME du commerce et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Valognes : diagnostic adapté aux PME du commerce et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valognes : formats adaptés à la cidrerie, au commerce, à l'exploitation d'élevage, au site patrimonial. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const VALOGNES_COPY: VilleCopy = {
       en: "Implémentation IA à Valognes : automatisation traçabilité cidre AOC, prédiction fermentation, agents IA accueil tourisme patrimonial, gestion stocks commerces, CRM éleveurs normands.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valognes : sessions dans votre cidrerie, commerce, exploitation ou en visio. Dirigeants TPE/PME, producteurs cidricoles, commerçants, éleveurs et indépendants du Cotentin.",
-      en: "Coaching 1-to-1 à Valognes : sessions dans votre cidrerie, commerce, exploitation ou en visio. Dirigeants TPE/PME, producteurs cidricoles, commerçants, éleveurs et indépendants du Cotentin.",
+      fr: "Coaching 1-to-1 à Valognes : sessions dans votre cidrerie, commerce, exploitation ou en visio. Dirigeants PME et ETI, producteurs cidricoles, commerçants, éleveurs et indépendants du Cotentin.",
+      en: "Coaching 1-to-1 à Valognes : sessions dans votre cidrerie, commerce, exploitation ou en visio. Dirigeants PME et ETI, producteurs cidricoles, commerçants, éleveurs et indépendants du Cotentin.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const VALOGNES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Valognes ?",
-      a: "Pour les TPE commerçants et artisans du centre historique de Valognes, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA accueil, fidélisation client, automatisation comptabilité.",
+      a: "Pour les PME du commerce et artisans du centre historique de Valognes, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA accueil, fidélisation client, automatisation comptabilité.",
     },
     {
       q: "Travaillez-vous avec les éleveurs normands ?",
-      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers du Cotentin : traçabilité troupeau, prédiction rendements laitiers, automatisation PAC, suivi sanitaire IA, optimisation alimentation. ROI chiffré contractuel.",
+      a: "Oui, nous accompagnons les PME éleveurs bovins laitiers du Cotentin : traçabilité troupeau, prédiction rendements laitiers, automatisation PAC, suivi sanitaire IA, optimisation alimentation. ROI chiffré contractuel.",
     },
     {
       q: "Comment se passe une mission à Valognes ?",

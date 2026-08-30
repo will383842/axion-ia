@@ -118,7 +118,7 @@ export const CLIENT_LOGOS: ClientLogo[] = [
 // Section conditionnelle (blueprint §10) : si tableau vide → section masquée
 // dans la home. Will fournira les youtubeId + thumbnail au fur et à mesure
 // que les vidéos seront tournées. Format recommandé : 60-90 s, profils
-// contrastés (1 TPE + 1 PME + 1 ETI ou 3 secteurs différents).
+// contrastés (1 PME + 1 ETI + 1 grand groupe ou 3 secteurs différents).
 export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
   // Exemple structure (décommenter et remplir quand la vidéo sera prête) :
   // {
@@ -134,7 +134,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
 ];
 
 // ─── SECTEURS D'ACTIVITÉ ───────────────────────────────────────────────────
-// Tags affichés sous les 4 segments cible (TPE/PME/ETI/Grande). Sert au
+// Tags affichés sous les 3 segments cible (PME/ETI/grands groupes). Sert au
 // signal AEO "Axion-IA intervient dans tous les secteurs" + indexation
 // LLM des entités sectorielles. Ordre = pertinence business observée.
 export const SECTORS = [

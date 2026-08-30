@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   pitchFr:
-    "La Ferté-Saint-Aubin (45), porte d'entrée de la Sologne entre Orléans et Lamotte-Beuvron, est connue pour son château XVIIe classé, ses forêts giboyeuses et ses étangs solognots. Tissu TPE artisans, commerçants de proximité, PME forestières et agro-alimentaires, hébergeurs tourisme nature, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Ferté-Saint-Aubin (45), porte d'entrée de la Sologne entre Orléans et Lamotte-Beuvron, est connue pour son château XVIIe classé, ses forêts giboyeuses et ses étangs solognots. Tissu PME artisanales, commerçants de proximité, PME forestières et agro-alimentaires, hébergeurs tourisme nature, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "La Ferté-Saint-Aubin (45), porte d'entrée de la Sologne entre Orléans et Lamotte-Beuvron, est connue pour son château XVIIe classé, ses forêts giboyeuses et ses étangs solognots. Tissu TPE artisans, commerçants de proximité, PME forestières et agro-alimentaires, hébergeurs tourisme nature, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Ferté-Saint-Aubin (45), porte d'entrée de la Sologne entre Orléans et Lamotte-Beuvron, est connue pour son château XVIIe classé, ses forêts giboyeuses et ses étangs solognots. Tissu PME artisanales, commerçants de proximité, PME forestières et agro-alimentaires, hébergeurs tourisme nature, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Ferté-Saint-Aubin (45). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME forestières et agro-alimentaires, hébergeurs et restaurateurs tourisme Sologne, professions libérales, exploitants agricoles. Audit sur place sur mesure.",
   seoHook: "forêt, tourisme Sologne & agro-alimentaire",
   ecosystemFr:
-    "La Ferté-Saint-Aubin est la porte nord de la Sologne (7 284 hab.), à 20 km au sud d'Orléans sur la RN20. Tissu TPE artisans et commerçants de centre-bourg, PME filière bois-forêt et agro-alimentaires, hébergeurs et restaurateurs tourisme nature (château classé, chasse, pêche, étangs solognots). Proximité Orléans Métropole favorise les navetteurs et professions libérales.",
+    "La Ferté-Saint-Aubin est la porte nord de la Sologne (7 284 hab.), à 20 km au sud d'Orléans sur la RN20. Tissu PME de l'artisanat et du commerce de centre-bourg, PME filière bois-forêt et agro-alimentaires, hébergeurs et restaurateurs tourisme nature (château classé, chasse, pêche, étangs solognots). Proximité Orléans Métropole favorise les navetteurs et professions libérales.",
   ecosystemEn:
-    "La Ferté-Saint-Aubin est la porte nord de la Sologne (7 284 hab.), à 20 km au sud d'Orléans sur la RN20. Tissu TPE artisans et commerçants de centre-bourg, PME filière bois-forêt et agro-alimentaires, hébergeurs et restaurateurs tourisme nature (château classé, chasse, pêche, étangs solognots). Proximité Orléans Métropole favorise les navetteurs et professions libérales.",
+    "La Ferté-Saint-Aubin est la porte nord de la Sologne (7 284 hab.), à 20 km au sud d'Orléans sur la RN20. Tissu PME de l'artisanat et du commerce de centre-bourg, PME filière bois-forêt et agro-alimentaires, hébergeurs et restaurateurs tourisme nature (château classé, chasse, pêche, étangs solognots). Proximité Orléans Métropole favorise les navetteurs et professions libérales.",
   distancesFr:
     "Gare de La Ferté-Saint-Aubin (TER Orléans-Vierzon, 15 min Orléans). Aéroport Paris-Orly à 1h30. RN20 vers Orléans (20 min) et Vierzon (50 min). A71 accessible à Olivet (15 min).",
   distancesEn:
@@ -30,20 +30,20 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux petites structures.",
-      en: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      fr: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux PME artisanales, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux PME.",
+      en: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux PME artisanales, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à La Ferté-Saint-Aubin : agents conversationnels tourisme, automatisation réservations hébergement, gestion stocks forestiers, CRM augmentés. Adapté aux TPE/PME et acteurs tourisme nature Sologne.",
-      en: "Implémentation IA à La Ferté-Saint-Aubin : agents conversationnels tourisme, automatisation réservations hébergement, gestion stocks forestiers, CRM augmentés. Adapté aux TPE/PME et acteurs tourisme nature Sologne.",
+      fr: "Implémentation IA à La Ferté-Saint-Aubin : agents conversationnels tourisme, automatisation réservations hébergement, gestion stocks forestiers, CRM augmentés. Adapté aux PME et ETI et acteurs tourisme nature Sologne.",
+      en: "Implémentation IA à La Ferté-Saint-Aubin : agents conversationnels tourisme, automatisation réservations hébergement, gestion stocks forestiers, CRM augmentés. Adapté aux PME et ETI et acteurs tourisme nature Sologne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Ferté-Saint-Aubin : sessions dans votre commerce, exploitation forestière, gîte ou cabinet. Artisans, commerçants, hébergeurs et gérants TPE/PME fertésiennes souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à La Ferté-Saint-Aubin : sessions dans votre commerce, exploitation forestière, gîte ou cabinet. Artisans, commerçants, hébergeurs et gérants TPE/PME fertésiennes souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à La Ferté-Saint-Aubin : sessions dans votre commerce, exploitation forestière, gîte ou cabinet. Artisans, commerçants, hébergeurs et gérants PME et ETI fertésiennes souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à La Ferté-Saint-Aubin : sessions dans votre commerce, exploitation forestière, gîte ou cabinet. Artisans, commerçants, hébergeurs et gérants PME et ETI fertésiennes souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Ferté-Saint-Aubin et dans toute la Sologne nord (Lamotte-Beuvron, Nouan-le-Fuzelier, Ligny-le-Ribault, Marcilly-en-Villette). Couverture nationale, déplacement sur site inclus dans le forfait mission.",
     },
     {
-      q: "Travaillez-vous avec les TPE et artisans de La Ferté-Saint-Aubin ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de La Ferté-Saint-Aubin sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier, facturation automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Travaillez-vous avec les PME et artisans de La Ferté-Saint-Aubin ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de La Ferté-Saint-Aubin sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier, facturation automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Accompagnez-vous les PME de la filière bois-forêt solognote ?",

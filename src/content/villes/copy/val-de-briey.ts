@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VAL_DE_BRIEY_COPY: VilleCopy = {
   pitchFr:
-    "Val de Briey (54), commune nouvelle du Pays Haut en Meurthe-et-Moselle issue de la fusion de Briey, Mance et Mancieulles, conjugue héritage sidérurgique reconverti et tissu PME industriel actif. Tissu TPE/PME industrie, sous-traitance mécanique, BTP, commerce, services. Axion-IA y intervient pour tous types d'activités.",
+    "Val de Briey (54), commune nouvelle du Pays Haut en Meurthe-et-Moselle issue de la fusion de Briey, Mance et Mancieulles, conjugue héritage sidérurgique reconverti et tissu PME industriel actif. Tissu PME et ETI industrie, sous-traitance mécanique, BTP, commerce, services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Val de Briey (54), commune nouvelle du Pays Haut en Meurthe-et-Moselle issue de la fusion de Briey, Mance et Mancieulles, conjugue héritage sidérurgique reconverti et tissu PME industriel actif. Tissu TPE/PME industrie, sous-traitance mécanique, BTP, commerce, services. Axion-IA y intervient pour tous types d'activités.",
+    "Val de Briey (54), commune nouvelle du Pays Haut en Meurthe-et-Moselle issue de la fusion de Briey, Mance et Mancieulles, conjugue héritage sidérurgique reconverti et tissu PME industriel actif. Tissu PME et ETI industrie, sous-traitance mécanique, BTP, commerce, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : TPE/PME industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : PME et ETI industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : TPE/PME industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val de Briey (54). Nous accompagnons tous types d'activités : PME et ETI industrie, sous-traitants mécanique, artisans BTP, commerçants et services du Pays Haut.",
   ecosystemFr:
     "Val de Briey est une commune nouvelle du Pays Haut nord-meurthe-et-mosellan, créée par fusion de Briey, Mance et Mancieulles. Son tissu économique mêle héritage sidérurgique reconverti, PME industrielles, sous-traitance mécanique, BTP, commerce de proximité et services. Sous-préfecture, lac de la Sangsue, zones d'activités du Pays Haut.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Val de Briey : diagnostic adapté aux PME et ETI industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Val de Briey : diagnostic adapté aux PME et ETI industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Val de Briey : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
       en: "Implémentation IA à Val de Briey : automatisation devis & ERP industriel, maintenance prédictive atelier, gestion documentaire chantier BTP, agents IA relation client, classification documentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Val de Briey : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, sous-traitants, artisans BTP et commerçants du Pays Haut nord-meurthe-et-mosellan.",
-      en: "Coaching 1-to-1 à Val de Briey : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, sous-traitants, artisans BTP et commerçants du Pays Haut nord-meurthe-et-mosellan.",
+      fr: "Coaching 1-to-1 à Val de Briey : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, sous-traitants, artisans BTP et commerçants du Pays Haut nord-meurthe-et-mosellan.",
+      en: "Coaching 1-to-1 à Val de Briey : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, sous-traitants, artisans BTP et commerçants du Pays Haut nord-meurthe-et-mosellan.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrie et sous-traitants mécanique de Val de Briey ?",
-      a: "Oui, nous accompagnons les TPE/PME industrie et sous-traitants mécanique : automatisation devis & ERP, maintenance prédictive atelier, gestion documentaire, agents IA relation client, classification documentaire.",
+      a: "Oui, nous accompagnons les PME et ETI industrie et sous-traitants mécanique : automatisation devis & ERP, maintenance prédictive atelier, gestion documentaire, agents IA relation client, classification documentaire.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerçants de Val de Briey ?",
@@ -61,7 +61,7 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Val de Briey  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Val de Briey et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Val de Briey et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Val de Briey ?",

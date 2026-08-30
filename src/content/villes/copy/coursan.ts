@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COURSAN_COPY: VilleCopy = {
   pitchFr:
-    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, PME artisanales, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, PME artisanales, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coursan (11). Nous accompagnons PME viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Coursan (11). Nous accompagnons PME viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit sur place sur mesure.",
   seoHook: "viticulture vinification & négoce commerce",
   ecosystemFr:
     "Coursan est une commune viticole de l'agglomération narbonnaise, traversée par le canal de la Robine (classé UNESCO). Économie dominée par la viticulture (AOC Corbières, Coteaux de Narbonne), le négoce vinicole, les services à la personne et les commerces de proximité. Proximité immédiate de Narbonne (5 km) avec son bassin d'emploi tertiaire.",
@@ -30,8 +30,8 @@ export const COURSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Coursan : diagnostic adapté aux PME viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coursan : diagnostic adapté aux PME viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coursan : formats adaptés au domaine viticole, au négoce, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const COURSAN_COPY: VilleCopy = {
       en: "Implémentation IA à Coursan : automatisation traçabilité viticole, gestion stocks négoce, agents conversationnels clients, classification documents pour les entreprises narbonnaises.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Coursan : sessions dans vos locaux, au domaine ou en visio. Dirigeants TPE viticoles, gérants PME négoce, professions libérales de l'agglo Narbonne.",
-      en: "Coaching 1-to-1 à Coursan : sessions dans vos locaux, au domaine ou en visio. Dirigeants TPE viticoles, gérants PME négoce, professions libérales de l'agglo Narbonne.",
+      fr: "Coaching 1-to-1 à Coursan : sessions dans vos locaux, au domaine ou en visio. Dirigeants PME viticoles, gérants PME négoce, professions libérales de l'agglo Narbonne.",
+      en: "Coaching 1-to-1 à Coursan : sessions dans vos locaux, au domaine ou en visio. Dirigeants PME viticoles, gérants PME négoce, professions libérales de l'agglo Narbonne.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const COURSAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les domaines viticoles autour de Coursan ?",
-      a: "Oui, nous accompagnons les TPE et PME viticoles du Narbonnais sur leurs cas IA : traçabilité parcellaire, automatisation gestion cave, prédiction vendanges, classification qualité, gestion relation clients B2B négoce.",
+      a: "Oui, nous accompagnons les PME et ETI viticoles du Narbonnais sur leurs cas IA : traçabilité parcellaire, automatisation gestion cave, prédiction vendanges, classification qualité, gestion relation clients B2B négoce.",
     },
     {
       q: "Tarifs audit IA à Coursan  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME négoce ou viticoles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME négoce ou viticoles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels formats d'intervention proposez-vous à Coursan ?",
@@ -65,7 +65,7 @@ export const COURSAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Coursan ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Coursan. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Coursan. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

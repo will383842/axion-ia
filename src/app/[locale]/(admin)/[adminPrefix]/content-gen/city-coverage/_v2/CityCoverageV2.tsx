@@ -231,13 +231,13 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
         <ul className="flex flex-col gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
           <li>
             <strong>8 dimensions × 18 critères</strong> : identité INSEE (1), économie (2),
-            innovation & talents (3), tissu entreprises TPE→GE (3), patrimoine & terroir (4),
+            innovation & talents (3), tissu entreprises PME→GE (3), patrimoine & terroir (4),
             rayonnement local (2), infrastructure transport (2), KB sectorielle (1).
           </li>
           <li>
-            <strong>Multi-taille TPE/PME/ETI/GE</strong> : chaque taille d&apos;entreprise trouve au
-            moins 2 champs qui lui parlent directement (EPV pour TPE/artisans, zones d&apos;activité
-            pour PME, grandes écoles pour ETI, grands groupes pour GE).
+            <strong>Multi-taille PME/ETI/GE</strong> : chaque taille d&apos;entreprise trouve au
+            moins 2 champs qui lui parlent directement (EPV pour PME industrielles, zones
+            d&apos;activité pour PME, grandes écoles pour ETI, grands groupes pour GE).
           </li>
           <li>
             <strong>Indexable Google</strong> = secteurs NAF sourcés présents (matière métier

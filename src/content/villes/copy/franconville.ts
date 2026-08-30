@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FRANCONVILLE_COPY: VilleCopy = {
   pitchFr:
-    "À Franconville, dans le Val-d'Oise, Axion-IA accompagne les TPE et PME du commerce, de la distribution, des services et de l'artisanat. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
+    "À Franconville, dans le Val-d'Oise, Axion-IA accompagne les PME et ETI du commerce, de la distribution, des services et de l'artisanat. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "À Franconville, dans le Val-d'Oise, Axion-IA accompagne les TPE et PME du commerce, de la distribution, des services et de l'artisanat. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
+    "À Franconville, dans le Val-d'Oise, Axion-IA accompagne les PME et ETI du commerce, de la distribution, des services et de l'artisanat. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Franconville pour accompagner les TPE et PME locales. Dans cette commune résidentielle et commerçante du nord-ouest francilien, dotée d'un pôle commercial actif, nous travaillons avec les commerces, les enseignes de distribution, les artisans et les sociétés de services. Nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Franconville pour accompagner les PME et ETI locales. Dans cette commune résidentielle et commerçante du nord-ouest francilien, dotée d'un pôle commercial actif, nous travaillons avec les commerces, les enseignes de distribution, les artisans et les sociétés de services. Nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Franconville pour accompagner les TPE et PME locales. Dans cette commune résidentielle et commerçante du nord-ouest francilien, dotée d'un pôle commercial actif, nous travaillons avec les commerces, les enseignes de distribution, les artisans et les sociétés de services. Nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Franconville pour accompagner les PME et ETI locales. Dans cette commune résidentielle et commerçante du nord-ouest francilien, dotée d'un pôle commercial actif, nous travaillons avec les commerces, les enseignes de distribution, les artisans et les sociétés de services. Nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   seoHook: "commerce, distribution & services",
   ecosystemFr:
-    "Franconville est une commune résidentielle dynamique du Val-d'Oise, marquée par un pôle commercial important qui draine la clientèle du nord-ouest francilien. Son économie repose largement sur le commerce et la distribution, les services aux particuliers et aux entreprises, l'artisanat du bâtiment et la restauration. À cela s'ajoutent les professions libérales et de santé qui accompagnent une population nombreuse. Ce tissu dense de TPE et de petites PME, fortement exposé à la concurrence commerciale, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA concrète pour gagner du temps et fidéliser leur clientèle.",
+    "Franconville est une commune résidentielle dynamique du Val-d'Oise, marquée par un pôle commercial important qui draine la clientèle du nord-ouest francilien. Son économie repose largement sur le commerce et la distribution, les services aux particuliers et aux entreprises, l'artisanat du bâtiment et la restauration. À cela s'ajoutent les professions libérales et de santé qui accompagnent une population nombreuse. Ce tissu dense de PME et de petites PME, fortement exposé à la concurrence commerciale, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA concrète pour gagner du temps et fidéliser leur clientèle.",
   ecosystemEn:
-    "Franconville est une commune résidentielle dynamique du Val-d'Oise, marquée par un pôle commercial important qui draine la clientèle du nord-ouest francilien. Son économie repose largement sur le commerce et la distribution, les services aux particuliers et aux entreprises, l'artisanat du bâtiment et la restauration. À cela s'ajoutent les professions libérales et de santé qui accompagnent une population nombreuse. Ce tissu dense de TPE et de petites PME, fortement exposé à la concurrence commerciale, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA concrète pour gagner du temps et fidéliser leur clientèle.",
+    "Franconville est une commune résidentielle dynamique du Val-d'Oise, marquée par un pôle commercial important qui draine la clientèle du nord-ouest francilien. Son économie repose largement sur le commerce et la distribution, les services aux particuliers et aux entreprises, l'artisanat du bâtiment et la restauration. À cela s'ajoutent les professions libérales et de santé qui accompagnent une population nombreuse. Ce tissu dense de PME et de petites PME, fortement exposé à la concurrence commerciale, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA concrète pour gagner du temps et fidéliser leur clientèle.",
   distancesFr:
     "Franconville est reliée à Paris en environ 25 à 30 minutes par le Transilien depuis la gare de Franconville-Le Plessis-Bouchard. L'autoroute A15 et la Francilienne placent le centre de Paris et le quartier d'affaires de La Défense à une trentaine de minutes en voiture, hors heures de pointe. L'aéroport Paris-Charles-de-Gaulle se situe à environ 30 km. Cette bonne desserte permet à nos consultants d'intervenir rapidement sur place et facilite les échanges avec l'ensemble du bassin parisien.",
   distancesEn:
@@ -30,20 +30,20 @@ export const FRANCONVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Un audit IA à Franconville commence par une rencontre sur site, dans votre commerce ou votre entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une petite PME francilienne.",
-      en: "Un audit IA à Franconville commence par une rencontre sur site, dans votre commerce ou votre entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une petite PME francilienne.",
+      fr: "Un audit IA à Franconville commence par une rencontre sur site, dans votre commerce ou votre entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une PME ou une petite PME francilienne.",
+      en: "Un audit IA à Franconville commence par une rencontre sur site, dans votre commerce ou votre entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une PME ou une petite PME francilienne.",
     },
     interventions: {
       fr: "Nos interventions à Franconville automatisent les tâches répétitives des commerces et services locaux : gestion des commandes, relances clients, devis et traitement administratif, sans bouleverser vos outils existants.",
       en: "Nos interventions à Franconville automatisent les tâches répétitives des commerces et services locaux : gestion des commandes, relances clients, devis et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "L'implémentation à Franconville déploie des solutions IA durables pour les TPE et PME du commerce et des services, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
-      en: "L'implémentation à Franconville déploie des solutions IA durables pour les TPE et PME du commerce et des services, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
+      fr: "L'implémentation à Franconville déploie des solutions IA durables pour les PME et ETI du commerce et des services, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
+      en: "L'implémentation à Franconville déploie des solutions IA durables pour les PME et ETI du commerce et des services, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
     },
     unAUn: {
-      fr: "Nos sessions un-à-un à Franconville forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets issus du commerce, de la distribution ou de l'artisanat local.",
-      en: "Nos sessions un-à-un à Franconville forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets issus du commerce, de la distribution ou de l'artisanat local.",
+      fr: "Nos sessions un-à-un à Franconville forment les dirigeants de PME et d'ETI à utiliser l'IA au quotidien, avec des cas concrets issus du commerce, de la distribution ou de l'artisanat local.",
+      en: "Nos sessions un-à-un à Franconville forment les dirigeants de PME et d'ETI à utiliser l'IA au quotidien, avec des cas concrets issus du commerce, de la distribution ou de l'artisanat local.",
     },
     sitesWeb: {
       fr: "Pour les entreprises de Franconville, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous en ligne, click and collect, devis automatisés et assistants qui qualifient les demandes des clients locaux.",
@@ -56,7 +56,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
         hero: "À Franconville, l'économie est d'abord commerciale : la ville concentre un pôle régional structuré autour d'IKEA, d'E.Leclerc et du centre de déstockage Quai des Marques (outlet exploité par Marques Avenue Groupe, près de 95 boutiques pour environ 1,4 million de visiteurs par an), trois zones d'activité gérées par Val Parisis — Porte du Parisis (environ 2 000 emplois), Ermitage et Montfrais — et quatre pôles de proximité du centre-ville à la gare. Axion-IA conçoit pour ces commerçants, enseignes, artisans et sociétés de services des sites web et plateformes SaaS augmentés par l'IA, déployés sur place, dans le Val-d'Oise.",
         whyHere: [
           "Le retail domine le tissu local : pôle régional IKEA / E.Leclerc / Quai des Marques et quatre pôles de proximité (centre-ville autour de la place Charles de Gaulle, pôle Gare le long de la Chaussée Jules César, Cadet de Vaux côté Bel Air, Épine-Guyon–Montédour). Nous concevons des sites e-commerce, du click & collect et des programmes de fidélité pensés pour cette concurrence commerciale dense.",
-          "Les artisans et PME des ZAE de l'Ermitage (Bealas Energie Services, Gourmalliance, Imprimerie du Centaure et la vingtaine d'autres entreprises) et de la Porte du Parisis ont besoin de sites vitrines et de portails de devis automatisés, pas de plateformes surdimensionnées : nous calibrons le scope à une TPE/PME francilienne.",
+          "Les artisans et PME des ZAE de l'Ermitage (Bealas Energie Services, Gourmalliance, Imprimerie du Centaure et la vingtaine d'autres entreprises) et de la Porte du Parisis ont besoin de sites vitrines et de portails de devis automatisés, pas de plateformes surdimensionnées : nous calibrons le scope à une PME et ETI francilienne.",
           "Nos développeurs se déplacent dans tout Franconville et Val Parisis — du centre-ville au pôle Gare, des ZAE de l'Ermitage et des Montfrais au pôle commercial de la Porte du Parisis (accès A15 et RD14).",
           "UX/UI, mobile, e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) et IA sont assemblés sous un même toit : un commerce du marché du centre ou de l'Épine-Guyon comme une enseigne du Quai des Marques repart avec une plateforme complète, pas un assemblage de prestataires.",
         ],
@@ -88,12 +88,6 @@ export const FRANCONVILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté par l'IA",
-            detail:
-              "Pour les commerçants de proximité, artisans et indépendants de Franconville — boutiques du centre-ville et du pôle Gare, artisans de la ZAE de l'Ermitage, exposants des marchés du centre et de l'Épine-Guyon : site mobile-first, prise de rendez-vous ou click & collect, assistant de qualification des demandes.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce multi-CMS avec automatisations IA",
@@ -175,12 +169,6 @@ export const FRANCONVILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or essential e-commerce site",
-            detail:
-              "For Franconville's neighbourhood merchants, tradespeople and freelancers — town-centre and station-cluster shops, ZAE de l'Ermitage tradespeople, stallholders of the town and Épine-Guyon markets: mobile-first site, booking or click & collect, request-qualification assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Multi-CMS e-commerce platform with AI automations",
             detail:
@@ -234,7 +222,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Franconville ?",
-      a: "Nous accompagnons en priorité les TPE et PME : commerces, enseignes de distribution, artisans, restauration, professions libérales et sociétés de services. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées.",
+      a: "Nous accompagnons en priorité les PME et ETI : commerces, enseignes de distribution, artisans, restauration, professions libérales et sociétés de services. Les grands groupes complètent ce socle. Notre approche est calibrée pour des structures aux ressources limitées.",
     },
     {
       q: "Comment l'IA aide-t-elle un commerce de Franconville face à la concurrence ?",

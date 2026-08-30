@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants.",
+    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu PME et ETI services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants.",
+    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu PME et ETI services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : PME et ETI du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : PME et ETI du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
   ecosystemFr:
-    "Villers-lès-Nancy est une commune résidentielle de l'agglomération Nancy dotée du campus faculté des sciences (Université de Lorraine), du Technopôle Brabois et de zones d'activités tertiaires. Tissu TPE/PME recherche, santé, services aux entreprises, commerces, artisanat.",
+    "Villers-lès-Nancy est une commune résidentielle de l'agglomération Nancy dotée du campus faculté des sciences (Université de Lorraine), du Technopôle Brabois et de zones d'activités tertiaires. Tissu PME et ETI recherche, santé, services aux entreprises, commerces, artisanat.",
   ecosystemEn:
-    "Villers-lès-Nancy est une commune résidentielle de l'agglomération Nancy dotée du campus faculté des sciences (Université de Lorraine), du Technopôle Brabois et de zones d'activités tertiaires. Tissu TPE/PME recherche, santé, services aux entreprises, commerces, artisanat.",
+    "Villers-lès-Nancy est une commune résidentielle de l'agglomération Nancy dotée du campus faculté des sciences (Université de Lorraine), du Technopôle Brabois et de zones d'activités tertiaires. Tissu PME et ETI recherche, santé, services aux entreprises, commerces, artisanat.",
   distancesFr:
     "Nancy centre à 10 min. Campus Brabois à 5 min. Gare Nancy-Ville TGV Est (Paris 1h30) à 15 min. Aéroport Metz-Nancy-Lorraine à 40 min. Metz à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux PME et ETI campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux PME et ETI campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-lès-Nancy : formats adaptés au bureau, cabinet, labo ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
       en: "Implémentation IA à Villers-lès-Nancy : automatisation documentaire recherche, gestion cabinet santé, agents conversationnels B2B, workflow PME tertiaires campus Brabois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villers-lès-Nancy : sessions dans vos locaux campus, cabinet, bureau ou en visio. Chercheurs, professions de santé, gérants TPE/PME villarois.",
-      en: "Coaching 1-to-1 à Villers-lès-Nancy : sessions dans vos locaux campus, cabinet, bureau ou en visio. Chercheurs, professions de santé, gérants TPE/PME villarois.",
+      fr: "Coaching 1-to-1 à Villers-lès-Nancy : sessions dans vos locaux campus, cabinet, bureau ou en visio. Chercheurs, professions de santé, gérants PME et ETI villarois.",
+      en: "Coaching 1-to-1 à Villers-lès-Nancy : sessions dans vos locaux campus, cabinet, bureau ou en visio. Chercheurs, professions de santé, gérants PME et ETI villarois.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Villers-lès-Nancy ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Villers-lès-Nancy ?",

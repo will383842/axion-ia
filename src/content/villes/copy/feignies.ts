@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const FEIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu PME du BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu PME du BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feignies (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Feignies (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
   ecosystemFr:
-    "Feignies est une commune de l'agglomération Maubeuge-Val de Sambre, proche de la frontière belge et des fortifications Vauban classées UNESCO. Tissu TPE/PME artisanat BTP, industrie métallurgique, sous-traitance automobile (filière historique Sambre-Avesnois), commerces de proximité, services. Accès N2 vers Maubeuge (5 min), Valenciennes (30 min), Mons (Belgique, 20 min).",
+    "Feignies est une commune de l'agglomération Maubeuge-Val de Sambre, proche de la frontière belge et des fortifications Vauban classées UNESCO. Tissu PME et ETI artisanat BTP, industrie métallurgique, sous-traitance automobile (filière historique Sambre-Avesnois), commerces de proximité, services. Accès N2 vers Maubeuge (5 min), Valenciennes (30 min), Mons (Belgique, 20 min).",
   ecosystemEn:
-    "Feignies est une commune de l'agglomération Maubeuge-Val de Sambre, proche de la frontière belge et des fortifications Vauban classées UNESCO. Tissu TPE/PME artisanat BTP, industrie métallurgique, sous-traitance automobile (filière historique Sambre-Avesnois), commerces de proximité, services. Accès N2 vers Maubeuge (5 min), Valenciennes (30 min), Mons (Belgique, 20 min).",
+    "Feignies est une commune de l'agglomération Maubeuge-Val de Sambre, proche de la frontière belge et des fortifications Vauban classées UNESCO. Tissu PME et ETI artisanat BTP, industrie métallurgique, sous-traitance automobile (filière historique Sambre-Avesnois), commerces de proximité, services. Accès N2 vers Maubeuge (5 min), Valenciennes (30 min), Mons (Belgique, 20 min).",
   distancesFr:
     "Maubeuge à 5 min, Mons (Belgique) à 20 min, Valenciennes à 30 min, Lille à 1h15 A2/A23, Charleroi (Belgique) à 45 min, gare de Maubeuge (TER vers Lille/Paris) à 5 min, aéroport Lille-Lesquin à 1h15, aéroport Charleroi à 50 min.",
   distancesEn:
@@ -23,15 +23,15 @@ export const FEIGNIES_COPY: VilleCopy = {
   seoHook: "industrie Sambre & transfrontalier belge",
   topSectorsNaf: [
     "Industrie métallurgique et sous-traitance automobile",
-    "TPE artisanat BTP et second œuvre",
+    "PME du BTP et second œuvre",
     "Commerce de proximité",
     "Services aux entreprises",
     "Logistique et transport transfrontalier",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Feignies : diagnostic adapté aux PME du BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Feignies : diagnostic adapté aux PME du BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feignies : formats adaptés à l'atelier industriel, chantier BTP, commerce, bureau. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -42,8 +42,8 @@ export const FEIGNIES_COPY: VilleCopy = {
       en: "Implémentation IA à Feignies : contrôle qualité production métallurgique, traçabilité sous-traitance automobile, automatisation devis BTP, agents IA service client, outils transfrontaliers FR/BE.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Feignies : sessions dans votre atelier, chantier, commerce ou en visio. Dirigeants TPE/PME industrie, artisans BTP, commerçants et entrepreneurs du Val de Sambre transfrontalier.",
-      en: "Coaching 1-to-1 à Feignies : sessions dans votre atelier, chantier, commerce ou en visio. Dirigeants TPE/PME industrie, artisans BTP, commerçants et entrepreneurs du Val de Sambre transfrontalier.",
+      fr: "Coaching 1-to-1 à Feignies : sessions dans votre atelier, chantier, commerce ou en visio. Dirigeants PME et ETI industrie, artisans BTP, commerçants et entrepreneurs du Val de Sambre transfrontalier.",
+      en: "Coaching 1-to-1 à Feignies : sessions dans votre atelier, chantier, commerce ou en visio. Dirigeants PME et ETI industrie, artisans BTP, commerçants et entrepreneurs du Val de Sambre transfrontalier.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const FEIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Feignies ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les PME industrie métallurgique et sous-traitance auto ?",
       a: "Oui, nous accompagnons les PME industrielles de Feignies et du Val de Sambre : contrôle qualité par vision artificielle, traçabilité production, prédiction maintenance, optimisation planning sous-traitance automobile, gestion documentaire fournisseurs.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP de Feignies ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP feignois : automatisation devis et factures, agents IA prise de rendez-vous, classification photos chantiers, gestion stocks matériaux, planification tournées.",
+      q: "Travaillez-vous avec les PME du BTP de Feignies ?",
+      a: "Oui, nous accompagnons les PME du BTP feignois : automatisation devis et factures, agents IA prise de rendez-vous, classification photos chantiers, gestion stocks matériaux, planification tournées.",
     },
     {
       q: "Comment se déroule une mission transfrontalière depuis Feignies ?",

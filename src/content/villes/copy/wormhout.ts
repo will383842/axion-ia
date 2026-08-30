@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const WORMHOUT_COPY: VilleCopy = {
   pitchFr:
-    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu TPE artisans, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu PME artisanales, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu TPE artisans, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu PME artisanales, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wormhout (59). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wormhout (59). Nous accompagnons PME artisanales, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wormhout (59). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wormhout (59). Nous accompagnons PME artisanales, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
-    "Wormhout est un bourg flamand de Flandre intérieure entre Dunkerque et Cassel. Patrimoine flamand riche (moulin Deschodt classé, musée Jeanne-Devos des arts et traditions populaires flamands). Économie agricole (grandes cultures, élevage), agroalimentaire, TPE artisans et commerces de proximité au service du bassin rural Flandre intérieure.",
+    "Wormhout est un bourg flamand de Flandre intérieure entre Dunkerque et Cassel. Patrimoine flamand riche (moulin Deschodt classé, musée Jeanne-Devos des arts et traditions populaires flamands). Économie agricole (grandes cultures, élevage), agroalimentaire, PME de l'artisanat et du commerce au service du bassin rural Flandre intérieure.",
   ecosystemEn:
-    "Wormhout est un bourg flamand de Flandre intérieure entre Dunkerque et Cassel. Patrimoine flamand riche (moulin Deschodt classé, musée Jeanne-Devos des arts et traditions populaires flamands). Économie agricole (grandes cultures, élevage), agroalimentaire, TPE artisans et commerces de proximité au service du bassin rural Flandre intérieure.",
+    "Wormhout est un bourg flamand de Flandre intérieure entre Dunkerque et Cassel. Patrimoine flamand riche (moulin Deschodt classé, musée Jeanne-Devos des arts et traditions populaires flamands). Économie agricole (grandes cultures, élevage), agroalimentaire, PME de l'artisanat et du commerce au service du bassin rural Flandre intérieure.",
   distancesFr:
     "Dunkerque à 25 min via D916. Cassel à 15 min. Hazebrouck à 20 min. Lille centre à 1h via A25. Aéroport Lille-Lesquin à 1h10.",
   distancesEn:
@@ -24,26 +24,26 @@ export const WORMHOUT_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & grandes cultures",
     "Agroalimentaire (transformation, négoce)",
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de proximité & services",
     "Professions libérales & santé rurale",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wormhout : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Wormhout : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Wormhout : diagnostic adapté aux PME artisanales, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Wormhout : diagnostic adapté aux PME artisanales, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wormhout : formats adaptés aux exploitations agricoles, ateliers artisans, commerces et cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
       en: "Interventions IA sur site à Wormhout : formats adaptés aux exploitations agricoles, ateliers artisans, commerces et cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Wormhout : prédiction rendements agricoles, automatisation gestion parcelles, agents IA prise de RDV artisans et commerces, classification documents. Adapté TPE/PME Flandre intérieure.",
-      en: "Implémentation IA à Wormhout : prédiction rendements agricoles, automatisation gestion parcelles, agents IA prise de RDV artisans et commerces, classification documents. Adapté TPE/PME Flandre intérieure.",
+      fr: "Implémentation IA à Wormhout : prédiction rendements agricoles, automatisation gestion parcelles, agents IA prise de RDV artisans et commerces, classification documents. Adapté PME et ETI Flandre intérieure.",
+      en: "Implémentation IA à Wormhout : prédiction rendements agricoles, automatisation gestion parcelles, agents IA prise de RDV artisans et commerces, classification documents. Adapté PME et ETI Flandre intérieure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Wormhout : sessions dans vos locaux (exploitation, atelier, commerce) ou en visio. Dirigeants TPE/PME, agriculteurs, artisans et commerçants de Flandre intérieure.",
-      en: "Coaching 1-to-1 à Wormhout : sessions dans vos locaux (exploitation, atelier, commerce) ou en visio. Dirigeants TPE/PME, agriculteurs, artisans et commerçants de Flandre intérieure.",
+      fr: "Coaching 1-to-1 à Wormhout : sessions dans vos locaux (exploitation, atelier, commerce) ou en visio. Dirigeants PME et ETI, agriculteurs, artisans et commerçants de Flandre intérieure.",
+      en: "Coaching 1-to-1 à Wormhout : sessions dans vos locaux (exploitation, atelier, commerce) ou en visio. Dirigeants PME et ETI, agriculteurs, artisans et commerçants de Flandre intérieure.",
     },
   },
   faqGeolocalisee: [
@@ -65,7 +65,7 @@ export const WORMHOUT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Wormhout ?",
-      a: "Nous accompagnons tous types d'activités à Wormhout : agriculture et grandes cultures, agroalimentaire, TPE artisanat BTP, commerces de proximité, professions libérales et santé rurale. Aucune restriction sectorielle.",
+      a: "Nous accompagnons tous types d'activités à Wormhout : agriculture et grandes cultures, agroalimentaire, PME du BTP, commerces de proximité, professions libérales et santé rurale. Aucune restriction sectorielle.",
     },
   ],
 };

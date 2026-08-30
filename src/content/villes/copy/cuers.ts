@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CUERS_COPY: VilleCopy = {
   pitchFr:
-    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de PME artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de PME artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuers (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuers (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuers (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cuers (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
   seoHook: "viticulture côtes & agriculture coopératives",
   ecosystemFr:
-    "Cuers est un pôle viticole et agricole du centre-Var, capitale informelle du vignoble Côtes de Provence local. Tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces de proximité. Toulon à 25 min, Hyères à 25 min, A57 directe.",
+    "Cuers est un pôle viticole et agricole du centre-Var, capitale informelle du vignoble Côtes de Provence local. Tissu de PME artisanales, PME viticoles et agroalimentaires, commerces de proximité. Toulon à 25 min, Hyères à 25 min, A57 directe.",
   ecosystemEn:
-    "Cuers est un pôle viticole et agricole du centre-Var, capitale informelle du vignoble Côtes de Provence local. Tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces de proximité. Toulon à 25 min, Hyères à 25 min, A57 directe.",
+    "Cuers est un pôle viticole et agricole du centre-Var, capitale informelle du vignoble Côtes de Provence local. Tissu de PME artisanales, PME viticoles et agroalimentaires, commerces de proximité. Toulon à 25 min, Hyères à 25 min, A57 directe.",
   distancesFr:
     "Toulon à 25 min. Hyères à 25 min. Brignoles à 25 min. Marseille à 1 h 15. A57 directe.",
   distancesEn:
@@ -30,20 +30,20 @@ export const CUERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cuers : diagnostic adapté aux TPE artisans, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cuers : diagnostic adapté aux TPE artisans, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cuers : diagnostic adapté aux PME artisanales, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cuers : diagnostic adapté aux PME artisanales, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cuers : formats adaptés aux domaines viticoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Cuers : formats adaptés aux domaines viticoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Cuers : traçabilité viticole Côtes de Provence, gestion vendanges, optimisation cave, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté TPE/PME centre-Var.",
-      en: "Implémentation IA à Cuers : traçabilité viticole Côtes de Provence, gestion vendanges, optimisation cave, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté TPE/PME centre-Var.",
+      fr: "Implémentation IA à Cuers : traçabilité viticole Côtes de Provence, gestion vendanges, optimisation cave, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté PME et ETI centre-Var.",
+      en: "Implémentation IA à Cuers : traçabilité viticole Côtes de Provence, gestion vendanges, optimisation cave, automatisation devis artisans, outils prédictifs PME agroalimentaires. Adapté PME et ETI centre-Var.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cuers : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agroalimentaire, artisanat et commerce centre-Var.",
-      en: "Coaching 1-to-1 à Cuers : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agroalimentaire, artisanat et commerce centre-Var.",
+      fr: "Coaching 1-to-1 à Cuers : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agroalimentaire, artisanat et commerce centre-Var.",
+      en: "Coaching 1-to-1 à Cuers : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agroalimentaire, artisanat et commerce centre-Var.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const CUERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cuers  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Cuers ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de La Chapelle-sur-Erdre, commune résidentielle de la banlieue nord de Nantes au bord de l'Erdre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des services, commerces et artisans du territoire nantais.",
+    "Axion-IA accompagne les PME et ETI de La Chapelle-sur-Erdre, commune résidentielle de la banlieue nord de Nantes au bord de l'Erdre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des services, commerces et artisans du territoire nantais.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de La Chapelle-sur-Erdre, commune résidentielle de la banlieue nord de Nantes au bord de l'Erdre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des services, commerces et artisans du territoire nantais.",
+    "Axion-IA accompagne les PME et ETI de La Chapelle-sur-Erdre, commune résidentielle de la banlieue nord de Nantes au bord de l'Erdre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des services, commerces et artisans du territoire nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de La Chapelle-sur-Erdre à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle au nord de Nantes, bordée par l'Erdre, le tissu économique mêle services aux entreprises, commerces de proximité, artisanat et activités tertiaires liées à la métropole nantaise. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de La Chapelle-sur-Erdre à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle au nord de Nantes, bordée par l'Erdre, le tissu économique mêle services aux entreprises, commerces de proximité, artisanat et activités tertiaires liées à la métropole nantaise. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de La Chapelle-sur-Erdre à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle au nord de Nantes, bordée par l'Erdre, le tissu économique mêle services aux entreprises, commerces de proximité, artisanat et activités tertiaires liées à la métropole nantaise. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de La Chapelle-sur-Erdre à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune résidentielle au nord de Nantes, bordée par l'Erdre, le tissu économique mêle services aux entreprises, commerces de proximité, artisanat et activités tertiaires liées à la métropole nantaise. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   seoHook: "tertiaire nantais & services",
   ecosystemFr:
-    "La Chapelle-sur-Erdre est une commune résidentielle prisée de la métropole nantaise, traversée par l'Erdre et bien reliée au centre de Nantes. Son économie s'appuie sur des zones d'activités, un tissu de services aux entreprises, des commerces de proximité, de l'artisanat du bâtiment et des professions libérales. Ces TPE et PME, proches des pôles d'innovation de Nantes, profitent de l'IA pour automatiser devis, plannings, relances et reporting. Axion-IA cible en priorité ces TPE de services et commerçantes, puis les PME tertiaires du nord de l'agglomération nantaise.",
+    "La Chapelle-sur-Erdre est une commune résidentielle prisée de la métropole nantaise, traversée par l'Erdre et bien reliée au centre de Nantes. Son économie s'appuie sur des zones d'activités, un tissu de services aux entreprises, des commerces de proximité, de l'artisanat du bâtiment et des professions libérales. Ces PME et ETI, proches des pôles d'innovation de Nantes, profitent de l'IA pour automatiser devis, plannings, relances et reporting. Axion-IA cible en priorité ces PME de services et commerçantes, puis les PME tertiaires du nord de l'agglomération nantaise.",
   ecosystemEn:
-    "La Chapelle-sur-Erdre est une commune résidentielle prisée de la métropole nantaise, traversée par l'Erdre et bien reliée au centre de Nantes. Son économie s'appuie sur des zones d'activités, un tissu de services aux entreprises, des commerces de proximité, de l'artisanat du bâtiment et des professions libérales. Ces TPE et PME, proches des pôles d'innovation de Nantes, profitent de l'IA pour automatiser devis, plannings, relances et reporting. Axion-IA cible en priorité ces TPE de services et commerçantes, puis les PME tertiaires du nord de l'agglomération nantaise.",
+    "La Chapelle-sur-Erdre est une commune résidentielle prisée de la métropole nantaise, traversée par l'Erdre et bien reliée au centre de Nantes. Son économie s'appuie sur des zones d'activités, un tissu de services aux entreprises, des commerces de proximité, de l'artisanat du bâtiment et des professions libérales. Ces PME et ETI, proches des pôles d'innovation de Nantes, profitent de l'IA pour automatiser devis, plannings, relances et reporting. Axion-IA cible en priorité ces PME de services et commerçantes, puis les PME tertiaires du nord de l'agglomération nantaise.",
   distancesFr:
     "La Chapelle-sur-Erdre est reliée au centre de Nantes par le tram-train et le réseau de bus en une vingtaine de minutes. La gare de Nantes est à environ 10 km, l'aéroport de Nantes-Atlantique à 22 km et l'axe routier vers Rennes tout proche, ce qui facilite nos déplacements sur site dans toute la métropole.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE de services ou un artisan de La Chapelle-sur-Erdre pour repérer les automatisations utiles : devis, plannings, relances, reporting.",
-      en: "Auditer une TPE de services ou un artisan de La Chapelle-sur-Erdre pour repérer les automatisations utiles : devis, plannings, relances, reporting.",
+      fr: "Auditer une PME de services ou un artisan de La Chapelle-sur-Erdre pour repérer les automatisations utiles : devis, plannings, relances, reporting.",
+      en: "Auditer une PME de services ou un artisan de La Chapelle-sur-Erdre pour repérer les automatisations utiles : devis, plannings, relances, reporting.",
     },
     interventions: {
       fr: "Intervenir sur site à La Chapelle-sur-Erdre pour automatiser les tâches administratives des commerces et professions libérales, sans bouleverser vos outils.",
@@ -42,8 +42,8 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME tertiaires de La Chapelle-sur-Erdre : suivi client, devis automatisés, intégration à vos logiciels métiers.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de La Chapelle-sur-Erdre pour piloter leur adoption de l'IA en confiance et à leur rythme.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de La Chapelle-sur-Erdre pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de La Chapelle-sur-Erdre pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de La Chapelle-sur-Erdre pour piloter leur adoption de l'IA en confiance et à leur rythme.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les services et commerces de La Chapelle-sur-Erdre : prise de rendez-vous en ligne, devis instantané, assistant client.",
@@ -53,7 +53,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle TPE de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle PME de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
         whyHere: [
           "Commune résidentielle tournée vers les services et les professions libérales, avec un centre-bourg actif et des cabinets installés autour de la Maison de santé : nous construisons des sites vitrines et des portails de prise de rendez-vous en ligne avec devis instantané, agenda synchronisé et assistant client, taillés pour les praticiens, agences et prestataires du nord nantais qui consultent surtout au téléphone.",
           "Artisanat du bâtiment dense sur les zones d'activités de la Pelousière et de la Bérangerais : on greffe sur l'existant un assistant de chiffrage, un suivi de chantier photo et des relances automatiques de devis, sans imposer de refonte ni changer vos logiciels métiers, pour une filière artisanale très représentée dans la commune.",
@@ -88,12 +88,6 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (prise de rendez-vous intelligente, chatbot, recherche sémantique, devis automatisé) sur le site d'un artisan des zones de la Pelousière, d'un commerçant du centre-bourg ou d'une profession libérale, en quelques semaines et sans refonte du site existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, redirections et référencement local préservés. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Tout le projet est transférable à un prestataire local des Pays de la Loire ou de la métropole nantaise, ou repris en interne, avec documentation et passation.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle TPE de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Chapelle-sur-Erdre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, prise de rendez-vous en ligne, devis instantané, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune résidentielle de près de 20 000 habitants au nord de la métropole nantaise, bordée par l'Erdre navigable et reliée au centre de Nantes par le tram-train depuis la halte de la Babinière, où le tissu mêle PME de services, commerces du centre-bourg, artisans du bâtiment des zones de la Pelousière et de la Bérangerais, et professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Chapelle-sur-Erdre, itérations à distance.",
         whyHere: [
           "Commune résidentielle tournée vers les services et les professions libérales, avec un centre-bourg actif et des cabinets installés autour de la Maison de santé : nous construisons des sites vitrines et des portails de prise de rendez-vous en ligne avec devis instantané, agenda synchronisé et assistant client, taillés pour les praticiens, agences et prestataires du nord nantais qui consultent surtout au téléphone.",
           "Artisanat du bâtiment dense sur les zones d'activités de la Pelousière et de la Bérangerais : on greffe sur l'existant un assistant de chiffrage, un suivi de chantier photo et des relances automatiques de devis, sans imposer de refonte ni changer vos logiciels métiers, pour une filière artisanale très représentée dans la commune.",
@@ -174,12 +168,6 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (prise de rendez-vous intelligente, chatbot, recherche sémantique, devis automatisé) sur le site d'un artisan des zones de la Pelousière, d'un commerçant du centre-bourg ou d'une profession libérale, en quelques semaines et sans refonte du site existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,12 +221,12 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
       a: "Oui. Notre cabinet d'experts IA se déplace directement dans vos locaux à La Chapelle-sur-Erdre et dans la métropole nantaise, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
-      q: "Quels gains l'IA apporte-t-elle à une TPE de services de La Chapelle-sur-Erdre ?",
-      a: "L'IA automatise les devis, plannings, relances et le reporting. Une TPE de services y gagne plusieurs heures par semaine et améliore sa réactivité commerciale sans recruter.",
+      q: "Quels gains l'IA apporte-t-elle à une PME de services de La Chapelle-sur-Erdre ?",
+      a: "L'IA automatise les devis, plannings, relances et le reporting. Une PME de services y gagne plusieurs heures par semaine et améliore sa réactivité commerciale sans recruter.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME de La Chapelle-sur-Erdre. Les commerces et artisans de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI de La Chapelle-sur-Erdre. Les commerces et artisans de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se déroule un audit IA à La Chapelle-sur-Erdre ?",

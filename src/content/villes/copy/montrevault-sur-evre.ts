@@ -9,9 +9,9 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   pitchEn:
     "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, industrie locale, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les PME, ETI et exploitants agricoles des Mauges dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les PME, ETI et exploitants agricoles des Mauges dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Montrevault-sur-Èvre est née de la fusion de 11 communes déléguées dans les Mauges. Territoire à dominante agricole (élevage bovin, polyculture) avec un tissu d'artisanat BTP, de PME industrielles (agroalimentaire, métallurgie) et de commerces de bourg. Proximité Beaupréau-en-Mauges et Cholet.",
@@ -30,8 +30,8 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, PME artisanales et PME industrielles des Mauges. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, PME artisanales et PME industrielles des Mauges. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montrevault-sur-Èvre : formations pratiques pour équipes agricoles, artisanales et industrielles. Ateliers métier adaptés au contexte rural des Mauges.",
@@ -42,8 +42,8 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
       en: "Implémentation IA à Montrevault-sur-Èvre : automatisation traçabilité agricole, gestion troupeaux, devis artisans, CRM commerces de bourg. Solutions adaptées au territoire Mauges.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Montrevault-sur-Èvre : sessions pour dirigeants TPE/PME, exploitants agricoles et commerçants des Mauges souhaitant intégrer l'IA dans leur quotidien.",
-      en: "Coaching IA 1-to-1 à Montrevault-sur-Èvre : sessions pour dirigeants TPE/PME, exploitants agricoles et commerçants des Mauges souhaitant intégrer l'IA dans leur quotidien.",
+      fr: "Coaching IA 1-to-1 à Montrevault-sur-Èvre : sessions pour dirigeants de PME et d'ETI, exploitants agricoles et commerçants des Mauges souhaitant intégrer l'IA dans leur quotidien.",
+      en: "Coaching IA 1-to-1 à Montrevault-sur-Èvre : sessions pour dirigeants de PME et d'ETI, exploitants agricoles et commerçants des Mauges souhaitant intégrer l'IA dans leur quotidien.",
     },
   },
   faqGeolocalisee: [

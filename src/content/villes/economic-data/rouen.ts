@@ -349,7 +349,7 @@ export const ROUEN_ECONOMIC_DATA: VilleEconomicData = {
   // Loire, Champagne) sont à >150 km. Champ honnêtement vide.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : sans source individuelle confirmée par entreprise de Rouen,
   // champ honnêtement vide pour respecter zéro invention. Annuaire officiel :

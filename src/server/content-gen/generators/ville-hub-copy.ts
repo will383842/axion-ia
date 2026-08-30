@@ -414,7 +414,7 @@ function computeQualityScore(output: VilleHubCopyOutput): {
  */
 const AUDIENCE_PERSONAS = `## Personas cibles — écris COMME SI tu leur parles directement
 
-1. **TPE / Artisan** (1-10 salariés) — Dirigeant débordé, pragmatique. Pain point : pas de temps, pas de budget pour expérimenter. Veut : premier outil IA rentable sous 4 semaines, ROI immédiat sur tâches admin/relance/devis.
+1. **PME / Artisan** (1-10 salariés) — Dirigeant débordé, pragmatique. Pain point : pas de temps, pas de budget pour expérimenter. Veut : premier outil IA rentable sous 4 semaines, ROI immédiat sur tâches admin/relance/devis.
 
 2. **PME** (10-250 salariés) — DG ou Dir.Opérations. Pain point : processus métier manuels coûteux, équipes saturées, pas de DSI. Veut : audit clair, 3 chantiers prioritaires chiffrés, implémentation clés en main, ROI mesurable trimestre.
 

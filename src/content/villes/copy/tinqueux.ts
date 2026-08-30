@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const TINQUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de PME commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de PME commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   seoHook: "zones commerciales & services agglo Reims",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tinqueux (51). Nous accompagnons PME et ETI de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tinqueux (51). Nous accompagnons PME et ETI de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit sur place sur mesure.",
   ecosystemFr:
     "Tinqueux est une commune de l'agglomération de Reims dans la Marne, connue pour ses zones commerciales (centres commerciaux, grandes enseignes, retail). L'économie locale repose sur le commerce de détail et de gros, la distribution, les services aux entreprises, l'artisanat et les professions libérales. Proximité du vignoble champenois et du pôle économique rémois.",
   ecosystemEn:
@@ -25,17 +25,17 @@ export const TINQUEUX_COPY: VilleCopy = {
     "Commerce de détail & grandes enseignes",
     "Distribution & logistique",
     "Services aux entreprises & tertiaire",
-    "TPE artisanat & professions libérales",
+    "PME de l'artisanat & professions libérales",
     "Champagne & oenotourisme (proximité vignoble)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, PME artisanales et professions libérales de l'agglo rémoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, PME artisanales et professions libérales de l'agglo rémoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
-      en: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      fr: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la PME artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la PME artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Tinqueux : prévision de stocks retail, personnalisation parcours client enseignes, automatisation gestion cabinets libéraux, agents conversationnels services aux entreprises.",
@@ -53,7 +53,7 @@ export const TINQUEUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Tinqueux  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Tinqueux et de l'agglo rémoise, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Tinqueux et de l'agglo rémoise, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les enseignes commerciales et le retail ?",

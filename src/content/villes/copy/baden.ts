@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BADEN_COPY: VilleCopy = {
   pitchFr:
-    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. PME artisanales, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. PME artisanales, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baden (56). Nous accompagnons PME artisanales, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Baden (56). Nous accompagnons PME artisanales, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit sur place sur mesure.",
   seoHook: "tourisme nautique & ostréiculture golfe",
   ecosystemFr:
-    "Baden est une commune résidentielle et touristique du golfe du Morbihan, point de départ vers l'île Gavrinis (cairn néolithique). Tissu de TPE artisans, PME tertiaires, ostréiculture, tourisme nautique et patrimonial, commerces de proximité. Proximité immédiate Vannes et Auray.",
+    "Baden est une commune résidentielle et touristique du golfe du Morbihan, point de départ vers l'île Gavrinis (cairn néolithique). Tissu de PME artisanales, PME tertiaires, ostréiculture, tourisme nautique et patrimonial, commerces de proximité. Proximité immédiate Vannes et Auray.",
   ecosystemEn:
-    "Baden est une commune résidentielle et touristique du golfe du Morbihan, point de départ vers l'île Gavrinis (cairn néolithique). Tissu de TPE artisans, PME tertiaires, ostréiculture, tourisme nautique et patrimonial, commerces de proximité. Proximité immédiate Vannes et Auray.",
+    "Baden est une commune résidentielle et touristique du golfe du Morbihan, point de départ vers l'île Gavrinis (cairn néolithique). Tissu de PME artisanales, PME tertiaires, ostréiculture, tourisme nautique et patrimonial, commerces de proximité. Proximité immédiate Vannes et Auray.",
   distancesFr:
     "Vannes centre à 15 min. Auray à 15 min. Gare SNCF Vannes à 20 min. Lorient à 50 min. Embarcadère île Gavrinis à Baden port.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BADEN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme nautique & patrimonial",
     "Ostréiculture golfe du Morbihan",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "PME tertiaires",
     "Commerces de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Baden : diagnostic adapté aux PME artisanales, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Baden : diagnostic adapté aux PME artisanales, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baden : formats adaptés aux professionnels du tourisme nautique, ostréiculteurs, commerçants du golfe du Morbihan. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const BADEN_COPY: VilleCopy = {
       en: "Implémentation IA à Baden : automatisation réservations nautiques, gestion saisonnalité ostréicole, agents conversationnels multilingue touristes, billetterie Gavrinis optimisée.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Baden : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, ostréiculteurs, professionnels du tourisme nautique et patrimonial du golfe du Morbihan.",
-      en: "Coaching 1-to-1 à Baden : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, ostréiculteurs, professionnels du tourisme nautique et patrimonial du golfe du Morbihan.",
+      fr: "Coaching 1-to-1 à Baden : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, ostréiculteurs, professionnels du tourisme nautique et patrimonial du golfe du Morbihan.",
+      en: "Coaching 1-to-1 à Baden : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, ostréiculteurs, professionnels du tourisme nautique et patrimonial du golfe du Morbihan.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const BADEN_COPY: VilleCopy = {
       a: "Pour les ostréiculteurs du golfe du Morbihan à Baden : audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas IA : traçabilité produits, gestion stocks, automatisation commandes, vente directe en ligne.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME locales ?",
-      a: "Oui, nous accompagnons toutes les TPE artisans et PME tertiaires de Baden et environs. Audit IA, interventions sur site, implémentation d'outils IA, coaching dirigeant. Tous secteurs d'activité.",
+      q: "Accompagnez-vous les PME et ETI locales ?",
+      a: "Oui, nous accompagnons toutes les PME artisanales et PME tertiaires de Baden et environs. Audit IA, interventions sur site, implémentation d'outils IA, coaching dirigeant. Tous secteurs d'activité.",
     },
     {
       q: "Comment se déroule une mission à Baden ?",

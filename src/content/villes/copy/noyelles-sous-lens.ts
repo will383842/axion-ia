@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
   pitchFr:
-    "Noyelles-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 850 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Noyelles-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 850 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les PME de services, les PME commerciales, l'artisanat et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Noyelles-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 850 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Noyelles-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 850 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les PME de services, les PME commerciales, l'artisanat et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, commerce & tertiaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Noyelles-sous-Lens est situee dans l'agglomeration de Lens (3 km), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et activites tertiaires liees a la proximite du Louvre-Lens.",
+    "Noyelles-sous-Lens est situee dans l'agglomeration de Lens (3 km), au coeur du bassin minier. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions liberales et activites tertiaires liees a la proximite du Louvre-Lens.",
   ecosystemEn:
-    "Noyelles-sous-Lens est situee dans l'agglomeration de Lens (3 km), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et activites tertiaires liees a la proximite du Louvre-Lens.",
+    "Noyelles-sous-Lens est situee dans l'agglomeration de Lens (3 km), au coeur du bassin minier. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions liberales et activites tertiaires liees a la proximite du Louvre-Lens.",
   distancesFr:
     "Gare de Lens a 5 min. Lille Europe (TGV) a 45 min en TER. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 1h10 via TGV Lens.",
   distancesEn:
     "Gare de Lens a 5 min. Lille Europe (TGV) a 45 min en TER. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 1h10 via TGV Lens.",
   topSectorsNaf: [
     "Commerce de proximite",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Artisanat BTP",
     "Professions liberales",
     "Activites tertiaires",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux PME de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux PME de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Noyelles-sous-Lens : formations adaptees aux commerces, bureaux tertiaires, cabinets et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
       en: "Implementation IA a Noyelles-sous-Lens : automatisation administrative, agents conversationnels clients, CRM augmentes pour PME de l'agglomeration lensoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Noyelles-sous-Lens : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales du bassin lensois.",
-      en: "Coaching 1-to-1 a Noyelles-sous-Lens : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales du bassin lensois.",
+      fr: "Coaching 1-to-1 a Noyelles-sous-Lens : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales du bassin lensois.",
+      en: "Coaching 1-to-1 a Noyelles-sous-Lens : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales du bassin lensois.",
     },
   },
   faqGeolocalisee: [

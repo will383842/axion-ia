@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const FLOIRAC_COPY: VilleCopy = {
   pitchFr:
-    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie son expertise pour toutes les organisations : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
+    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie son expertise pour toutes les organisations : PME artisanales, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
   pitchEn:
-    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie son expertise pour toutes les organisations : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
+    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie son expertise pour toutes les organisations : PME artisanales, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Floirac (33). Nous accompagnons PME et ETI de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Floirac (33). Nous accompagnons PME et ETI de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit sur place sur mesure.",
   seoHook: "bassin rive droite",
   ecosystemFr:
-    "Floirac bénéficie de la dynamique de reconversion de la rive droite de Bordeaux Métropole (770 000 hab). Nouveaux quartiers mixtes (résidentiel, tertiaire, commercial), proximité immédiate du centre de Bordeaux via le pont François-Mitterrand et le tramway A. Tissu TPE/PME en croissance, professions libérales et commerces de proximité.",
+    "Floirac bénéficie de la dynamique de reconversion de la rive droite de Bordeaux Métropole (770 000 hab). Nouveaux quartiers mixtes (résidentiel, tertiaire, commercial), proximité immédiate du centre de Bordeaux via le pont François-Mitterrand et le tramway A. Tissu PME et ETI en croissance, professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Floirac bénéficie de la dynamique de reconversion de la rive droite de Bordeaux Métropole (770 000 hab). Nouveaux quartiers mixtes (résidentiel, tertiaire, commercial), proximité immédiate du centre de Bordeaux via le pont François-Mitterrand et le tramway A. Tissu TPE/PME en croissance, professions libérales et commerces de proximité.",
+    "Floirac bénéficie de la dynamique de reconversion de la rive droite de Bordeaux Métropole (770 000 hab). Nouveaux quartiers mixtes (résidentiel, tertiaire, commercial), proximité immédiate du centre de Bordeaux via le pont François-Mitterrand et le tramway A. Tissu PME et ETI en croissance, professions libérales et commerces de proximité.",
   distancesFr:
     "Tramway A vers Bordeaux centre (15 min). Gare Bordeaux Saint-Jean à 20 min. Aéroport Bordeaux-Mérignac à 35 min. Rocade A630 accès direct.",
   distancesEn:
     "Tramway A vers Bordeaux centre (15 min). Gare Bordeaux Saint-Jean à 20 min. Aéroport Bordeaux-Mérignac à 35 min. Rocade A630 accès direct.",
   topSectorsNaf: [
     "PME tertiaires reconversion urbaine",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales (santé, juridique)",
     "Services aux entreprises rive droite",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Floirac : diagnostic adapté aux PME artisanales, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Floirac : diagnostic adapté aux PME artisanales, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Floirac : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -56,12 +56,12 @@ export const FLOIRAC_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP à Floirac ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Floirac sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning.",
+      q: "Accompagnez-vous les PME du BTP à Floirac ?",
+      a: "Oui, nous accompagnons les PME du BTP à Floirac sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning.",
     },
     {
       q: "Quels secteurs bénéficient le plus de l'IA à Floirac ?",
-      a: "Les PME tertiaires des nouveaux quartiers, les TPE artisans BTP, les commerces de proximité et les professions libérales de Floirac bénéficient particulièrement de nos solutions IA adaptées.",
+      a: "Les PME tertiaires des nouveaux quartiers, les PME du BTP, les commerces de proximité et les professions libérales de Floirac bénéficient particulièrement de nos solutions IA adaptées.",
     },
     {
       q: "Comment se déroule une mission à Floirac ?",

@@ -9,29 +9,29 @@ export const CADAUJAC_COPY: VilleCopy = {
   pitchEn:
     "Cadaujac (33), commune viticole des Graves au sud immédiat de Bordeaux, allie vignoble AOC Pessac-Léognan, artisanat BTP, commerces et professions libérales dans un cadre résidentiel en croissance. Axion-IA couvre les activités professionnelles du bassin du sud bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cadaujac (33). Nous accompagnons TPE et PME du sud bordelais : vignerons des Graves et Pessac-Léognan, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cadaujac (33). Nous accompagnons PME et ETI du sud bordelais : vignerons des Graves et Pessac-Léognan, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cadaujac (33). Nous accompagnons TPE et PME du sud bordelais : vignerons des Graves et Pessac-Léognan, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cadaujac (33). Nous accompagnons PME et ETI du sud bordelais : vignerons des Graves et Pessac-Léognan, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture graves & services personne",
   ecosystemFr:
-    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu TPE artisanat BTP en croissance, commerces et professions libérales. Proximité Léognan, Villenave-d'Ornon et A62.",
+    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu PME du BTP en croissance, commerces et professions libérales. Proximité Léognan, Villenave-d'Ornon et A62.",
   ecosystemEn:
-    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu TPE artisanat BTP en croissance, commerces et professions libérales. Proximité Léognan, Villenave-d'Ornon et A62.",
+    "Cadaujac est une commune viticole des Graves, en limite sud de Bordeaux Métropole. Vignoble AOC Pessac-Léognan et Graves, tissu PME du BTP en croissance, commerces et professions libérales. Proximité Léognan, Villenave-d'Ornon et A62.",
   distancesFr:
     "Bordeaux centre à 20 min (A62/rocade). Léognan à 10 min. Gare Bordeaux Saint-Jean à 25 min. Aéroport Bordeaux-Mérignac à 30 min.",
   distancesEn:
     "Bordeaux centre à 20 min (A62/rocade). Léognan à 10 min. Gare Bordeaux Saint-Jean à 25 min. Aéroport Bordeaux-Mérignac à 30 min.",
   topSectorsNaf: [
     "Viticulture AOC Graves & Pessac-Léognan",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
     "Services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, TPE artisans BTP, commerçants et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, TPE artisans BTP, commerçants et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, PME du BTP, commerçants et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, PME du BTP, commerçants et professions libérales du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cadaujac : ateliers adaptés aux chais, ateliers BTP et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CADAUJAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cadaujac  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et TPE artisans des Graves.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et PME artisanales des Graves.",
     },
     {
       q: "Accompagnez-vous les vignerons des Graves ?",
@@ -61,7 +61,7 @@ export const CADAUJAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les PME du BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Cadaujac ?",

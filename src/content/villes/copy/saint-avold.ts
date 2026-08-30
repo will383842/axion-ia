@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AVOLD_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu PME et ETI industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu PME et ETI industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
   ecosystemFr:
-    "Saint-Avold est une sous-préfecture mosellane du bassin houiller, reconvertie autour de la plateforme chimique Carling–Saint-Avold (pétrochimie, polymères). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces, services, artisanat. Position stratégique frontalière Sarre.",
+    "Saint-Avold est une sous-préfecture mosellane du bassin houiller, reconvertie autour de la plateforme chimique Carling–Saint-Avold (pétrochimie, polymères). Tissu PME et ETI industrie, sous-traitance chimie, logistique, BTP, commerces, services, artisanat. Position stratégique frontalière Sarre.",
   ecosystemEn:
-    "Saint-Avold est une sous-préfecture mosellane du bassin houiller, reconvertie autour de la plateforme chimique Carling–Saint-Avold (pétrochimie, polymères). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces, services, artisanat. Position stratégique frontalière Sarre.",
+    "Saint-Avold est une sous-préfecture mosellane du bassin houiller, reconvertie autour de la plateforme chimique Carling–Saint-Avold (pétrochimie, polymères). Tissu PME et ETI industrie, sous-traitance chimie, logistique, BTP, commerces, services, artisanat. Position stratégique frontalière Sarre.",
   distancesFr:
     "Metz à 45 min. Forbach à 20 min. Sarrebruck (Allemagne) à 35 min. Luxembourg à 1h15. Gare SNCF Saint-Avold (ligne Metz–Forbach). Autoroute A4 accès direct. Aéroport Metz-Nancy-Lorraine à 55 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Avold : diagnostic adapté aux PME et ETI industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Avold : diagnostic adapté aux PME et ETI industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Avold : formats adaptés à l'atelier industriel, plateforme chimique, entrepôt logistique, chantier, bureau. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Avold : maintenance prédictive industrielle, contrôle qualité chimie, traçabilité supply chain, automatisation devis BTP, agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Avold : sessions sur votre site industriel, plateforme chimique, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants chimie, artisans BTP, gérants TPE/PME naboriens.",
-      en: "Coaching 1-to-1 à Saint-Avold : sessions sur votre site industriel, plateforme chimique, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants chimie, artisans BTP, gérants TPE/PME naboriens.",
+      fr: "Coaching 1-to-1 à Saint-Avold : sessions sur votre site industriel, plateforme chimique, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants chimie, artisans BTP, gérants PME et ETI naboriens.",
+      en: "Coaching 1-to-1 à Saint-Avold : sessions sur votre site industriel, plateforme chimique, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants chimie, artisans BTP, gérants PME et ETI naboriens.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants chimie ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et sous-traitants chimie/pétrochimie naboriens : maintenance prédictive, contrôle qualité, traçabilité production, automatisation administrative.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et sous-traitants chimie/pétrochimie naboriens : maintenance prédictive, contrôle qualité, traçabilité production, automatisation administrative.",
     },
     {
       q: "Accompagnez-vous les commerces, artisans BTP et acteurs logistique ?",
@@ -61,7 +61,7 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Saint-Avold ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Saint-Avold ?",

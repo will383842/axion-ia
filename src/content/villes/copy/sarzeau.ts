@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const SARZEAU_COPY: VilleCopy = {
   pitchFr:
-    "Sarzeau (56), commune touristique de la presqu'île de Rhuys entre Golfe du Morbihan et océan Atlantique, est un pôle balnéaire majeur du sud Bretagne. TPE touristiques, PME de l'hébergement et restauration, artisans, commerces saisonniers et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la presqu'île de Rhuys.",
+    "Sarzeau (56), commune touristique de la presqu'île de Rhuys entre Golfe du Morbihan et océan Atlantique, est un pôle balnéaire majeur du sud Bretagne. PME touristiques, PME de l'hébergement et restauration, artisans, commerces saisonniers et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la presqu'île de Rhuys.",
   pitchEn:
-    "Sarzeau (56), commune touristique de la presqu'île de Rhuys entre Golfe du Morbihan et océan Atlantique, est un pôle balnéaire majeur du sud Bretagne. TPE touristiques, PME de l'hébergement et restauration, artisans, commerces saisonniers et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la presqu'île de Rhuys.",
+    "Sarzeau (56), commune touristique de la presqu'île de Rhuys entre Golfe du Morbihan et océan Atlantique, est un pôle balnéaire majeur du sud Bretagne. PME touristiques, PME de l'hébergement et restauration, artisans, commerces saisonniers et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la presqu'île de Rhuys.",
   seoHook: "tourisme balnéaire, hôtellerie & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : TPE touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : PME touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : TPE touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : PME touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Sarzeau est la commune principale de la presqu'île de Rhuys, entre le Golfe du Morbihan et l'océan Atlantique. L'économie locale est fortement saisonnière, tirée par le tourisme balnéaire (campings, hôtels, locations), la restauration, le nautisme, l'ostréiculture et l'artisanat d'art. Le château de Suscinio et les plages attirent plus de 500 000 visiteurs par an. En arrière-saison, les services de proximité et les professions libérales stabilisent l'activité.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const SARZEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sarzeau : diagnostic adapté aux TPE touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sarzeau : diagnostic adapté aux TPE touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sarzeau : diagnostic adapté aux PME touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sarzeau : diagnostic adapté aux PME touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sarzeau : formations pratiques pour équipes hôtelières, restaurateurs, commerçants saisonniers et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Sarzeau : formations pratiques pour équipes hôtelières, restaurateurs, commerçants saisonniers et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Sarzeau : yield management hébergement, chatbot accueil multilingue, automatisation réservations, gestion stocks saisonniers et CRM tourisme. Adapté au tissu TPE/PME presqu'île de Rhuys.",
-      en: "Implémentation IA à Sarzeau : yield management hébergement, chatbot accueil multilingue, automatisation réservations, gestion stocks saisonniers et CRM tourisme. Adapté au tissu TPE/PME presqu'île de Rhuys.",
+      fr: "Implémentation IA à Sarzeau : yield management hébergement, chatbot accueil multilingue, automatisation réservations, gestion stocks saisonniers et CRM tourisme. Adapté au tissu PME et ETI presqu'île de Rhuys.",
+      en: "Implémentation IA à Sarzeau : yield management hébergement, chatbot accueil multilingue, automatisation réservations, gestion stocks saisonniers et CRM tourisme. Adapté au tissu PME et ETI presqu'île de Rhuys.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sarzeau : sessions individuelles pour dirigeants TPE/PME, hébergeurs, restaurateurs et commerçants de la presqu'île de Rhuys souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Sarzeau : sessions individuelles pour dirigeants TPE/PME, hébergeurs, restaurateurs et commerçants de la presqu'île de Rhuys souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Sarzeau : sessions individuelles pour dirigeants de PME et d'ETI, hébergeurs, restaurateurs et commerçants de la presqu'île de Rhuys souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Sarzeau : sessions individuelles pour dirigeants de PME et d'ETI, hébergeurs, restaurateurs et commerçants de la presqu'île de Rhuys souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SARZEAU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sarzeau  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sarzeautines, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI sarzeautines, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "L'IA peut-elle aider à gérer la saisonnalité à Sarzeau ?",

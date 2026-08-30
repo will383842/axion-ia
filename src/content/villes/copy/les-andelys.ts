@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LES_ANDELYS_COPY: VilleCopy = {
   pitchFr:
-    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
+    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu PME artisanales, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
+    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu PME artisanales, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   seoHook: "tourisme patrimonial & agriculture boucles",
   ecosystemFr:
-    "Les Andelys est une commune de l'Eure sur les bords de Seine, dominée par les ruines du Château-Gaillard édifié par Richard Cœur de Lion en 1196. Économie portée par le tourisme patrimonial et fluvial, l'agriculture des boucles de Seine, les commerces, les professions libérales et un tissu TPE/PME diversifié. Seine Normandie Agglomération.",
+    "Les Andelys est une commune de l'Eure sur les bords de Seine, dominée par les ruines du Château-Gaillard édifié par Richard Cœur de Lion en 1196. Économie portée par le tourisme patrimonial et fluvial, l'agriculture des boucles de Seine, les commerces, les professions libérales et un tissu PME et ETI diversifié. Seine Normandie Agglomération.",
   ecosystemEn:
-    "Les Andelys est une commune de l'Eure sur les bords de Seine, dominée par les ruines du Château-Gaillard édifié par Richard Cœur de Lion en 1196. Économie portée par le tourisme patrimonial et fluvial, l'agriculture des boucles de Seine, les commerces, les professions libérales et un tissu TPE/PME diversifié. Seine Normandie Agglomération.",
+    "Les Andelys est une commune de l'Eure sur les bords de Seine, dominée par les ruines du Château-Gaillard édifié par Richard Cœur de Lion en 1196. Économie portée par le tourisme patrimonial et fluvial, l'agriculture des boucles de Seine, les commerces, les professions libérales et un tissu PME et ETI diversifié. Seine Normandie Agglomération.",
   distancesFr:
     "Gare Gaillon-Aubevoye à 15 min. Rouen à 40 min. Évreux à 40 min. Paris à 1h30 A13. Vernon-Giverny à 20 min.",
   distancesEn:
@@ -26,12 +26,12 @@ export const LES_ANDELYS_COPY: VilleCopy = {
     "Agriculture boucles de Seine",
     "Commerce de proximité et artisanat",
     "Services aux entreprises et professions libérales",
-    "TPE BTP et rénovation patrimoine",
+    "PME BTP et rénovation patrimoine",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Andelys : diagnostic adapté aux PME artisanales, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Andelys : diagnostic adapté aux PME artisanales, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Andelys : formats adaptés au site touristique, à l'exploitation agricole, au cabinet, au commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LES_ANDELYS_COPY: VilleCopy = {
       en: "Implémentation IA aux Andelys : chatbot tourisme multilingue Château-Gaillard, agriculture de précision bords de Seine, automatisation comptabilité, gestion réservations. Seine Normandie Agglo.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Andelys : sessions dans votre exploitation, bureau, commerce ou en visio. Dirigeants TPE/PME tourisme, agriculture, artisans, commerçants bords de Seine.",
-      en: "Coaching 1-to-1 aux Andelys : sessions dans votre exploitation, bureau, commerce ou en visio. Dirigeants TPE/PME tourisme, agriculture, artisans, commerçants bords de Seine.",
+      fr: "Coaching 1-to-1 aux Andelys : sessions dans votre exploitation, bureau, commerce ou en visio. Dirigeants PME et ETI tourisme, agriculture, artisans, commerçants bords de Seine.",
+      en: "Coaching 1-to-1 aux Andelys : sessions dans votre exploitation, bureau, commerce ou en visio. Dirigeants PME et ETI tourisme, agriculture, artisans, commerçants bords de Seine.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LES_ANDELYS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles des boucles de Seine sur leurs cas IA : agriculture de précision, prédiction rendements, surveillance parcelles drone, traçabilité récoltes, optimisation intrants.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants andélysiens ?",
-      a: "Pour les TPE artisans et commerçants aux Andelys, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
+      q: "Quels services pour les PME de l'artisanat et du commerce andélysiens ?",
+      a: "Pour les PME de l'artisanat et du commerce aux Andelys, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

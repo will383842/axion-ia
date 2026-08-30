@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CASTRES_COPY: VilleCopy = {
   pitchFr:
-    "Castres (81), deuxième ville du Tarn, abrite le siège mondial du groupe Pierre Fabre, pilier de l'industrie pharmaceutique et cosmétique, dans une tradition textile et un tissu solide de TPE et PME locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME castraises pour automatiser leurs processus métier et déployer une IA souveraine, sobre et réellement utile au quotidien.",
+    "Castres (81), deuxième ville du Tarn, abrite le siège mondial du groupe Pierre Fabre, pilier de l'industrie pharmaceutique et cosmétique, dans une tradition textile et un tissu solide de PME et ETI locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI castraises pour automatiser leurs processus métier et déployer une IA souveraine, sobre et réellement utile au quotidien.",
   pitchEn:
-    "Castres (81), deuxième ville du Tarn, abrite le siège mondial du groupe Pierre Fabre, pilier de l'industrie pharmaceutique et cosmétique, dans une tradition textile et un tissu solide de TPE et PME locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME castraises pour automatiser leurs processus métier et déployer une IA souveraine, sobre et réellement utile au quotidien.",
+    "Castres (81), deuxième ville du Tarn, abrite le siège mondial du groupe Pierre Fabre, pilier de l'industrie pharmaceutique et cosmétique, dans une tradition textile et un tissu solide de PME et ETI locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI castraises pour automatiser leurs processus métier et déployer une IA souveraine, sobre et réellement utile au quotidien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castres (81, Tarn). Nous accompagnons en priorité les TPE, puis les PME du territoire — sous-traitants et fournisseurs de la filière pharmaceutique et cosmétique gravitant autour de Pierre Fabre, artisans, commerçants, cabinets de services et PME textile ou agroalimentaires. Audit, interventions sur site, implémentation et coaching un-à-un : nous concevons des automatisations concrètes et conformes RGPD, avec un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castres (81, Tarn). Nous accompagnons en priorité les PME, puis les PME du territoire — sous-traitants et fournisseurs de la filière pharmaceutique et cosmétique gravitant autour de Pierre Fabre, artisans, commerçants, cabinets de services et PME textile ou agroalimentaires. Audit, interventions sur site, implémentation et coaching un-à-un : nous concevons des automatisations concrètes et conformes RGPD, avec un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castres (81, Tarn). Nous accompagnons en priorité les TPE, puis les PME du territoire — sous-traitants et fournisseurs de la filière pharmaceutique et cosmétique gravitant autour de Pierre Fabre, artisans, commerçants, cabinets de services et PME textile ou agroalimentaires. Audit, interventions sur site, implémentation et coaching un-à-un : nous concevons des automatisations concrètes et conformes RGPD, avec un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castres (81, Tarn). Nous accompagnons en priorité les PME, puis les PME du territoire — sous-traitants et fournisseurs de la filière pharmaceutique et cosmétique gravitant autour de Pierre Fabre, artisans, commerçants, cabinets de services et PME textile ou agroalimentaires. Audit, interventions sur site, implémentation et coaching un-à-un : nous concevons des automatisations concrètes et conformes RGPD, avec un transfert d'autonomie à vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "pharma, cosmétique & textile",
   ecosystemFr:
-    "Castres structure son économie autour du groupe Pierre Fabre, dont le siège mondial irrigue toute une filière pharmaceutique et cosmétique : laboratoires, sous-traitants, logistique santé et services associés. La ville conserve un héritage textile vivace (mégisserie, confection) et un tissu agroalimentaire de proximité. La zone industrielle de Mélou et le pôle Cancer-Bio-Santé concentrent l'activité, tandis que les TPE artisanales, les commerces du centre et les cabinets de services composent le quotidien économique local.",
+    "Castres structure son économie autour du groupe Pierre Fabre, dont le siège mondial irrigue toute une filière pharmaceutique et cosmétique : laboratoires, sous-traitants, logistique santé et services associés. La ville conserve un héritage textile vivace (mégisserie, confection) et un tissu agroalimentaire de proximité. La zone industrielle de Mélou et le pôle Cancer-Bio-Santé concentrent l'activité, tandis que les PME artisanales, les commerces du centre et les cabinets de services composent le quotidien économique local.",
   ecosystemEn:
-    "Castres structure son économie autour du groupe Pierre Fabre, dont le siège mondial irrigue toute une filière pharmaceutique et cosmétique : laboratoires, sous-traitants, logistique santé et services associés. La ville conserve un héritage textile vivace (mégisserie, confection) et un tissu agroalimentaire de proximité. La zone industrielle de Mélou et le pôle Cancer-Bio-Santé concentrent l'activité, tandis que les TPE artisanales, les commerces du centre et les cabinets de services composent le quotidien économique local.",
+    "Castres structure son économie autour du groupe Pierre Fabre, dont le siège mondial irrigue toute une filière pharmaceutique et cosmétique : laboratoires, sous-traitants, logistique santé et services associés. La ville conserve un héritage textile vivace (mégisserie, confection) et un tissu agroalimentaire de proximité. La zone industrielle de Mélou et le pôle Cancer-Bio-Santé concentrent l'activité, tandis que les PME artisanales, les commerces du centre et les cabinets de services composent le quotidien économique local.",
   distancesFr:
     "Toulouse-Matabiau à environ 1h15 par l'autoroute A680. Aéroport Toulouse-Blagnac à 1h20. Albi à 45 min, Mazamet à 20 min, Castelnaudary à 50 min. L'autoroute Castres-Toulouse améliore désormais l'accès au bassin toulousain.",
   distancesEn:
@@ -30,20 +30,20 @@ export const CASTRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castres : diagnostic adapté aux TPE et PME du Tarn — sous-traitants de la filière Pierre Fabre, artisans textile, commerces et services. Nous identifions les automatisations à fort ROI sans jargon.",
-      en: "Audit IA à Castres : diagnostic adapté aux TPE et PME du Tarn — sous-traitants de la filière Pierre Fabre, artisans textile, commerces et services. Nous identifions les automatisations à fort ROI sans jargon.",
+      fr: "Audit IA à Castres : diagnostic adapté aux PME et ETI du Tarn — sous-traitants de la filière Pierre Fabre, artisans textile, commerces et services. Nous identifions les automatisations à fort ROI sans jargon.",
+      en: "Audit IA à Castres : diagnostic adapté aux PME et ETI du Tarn — sous-traitants de la filière Pierre Fabre, artisans textile, commerces et services. Nous identifions les automatisations à fort ROI sans jargon.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Castres : formats courts pensés pour les équipes de PME et de TPE de la zone de Mélou. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
-      en: "Interventions IA sur site à Castres : formats courts pensés pour les équipes de PME et de TPE de la zone de Mélou. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      fr: "Interventions IA sur site à Castres : formats courts pensés pour les équipes de PME et de PME de la zone de Mélou. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Castres : formats courts pensés pour les équipes de PME et de PME de la zone de Mélou. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Castres : agents conversationnels, automatisation des devis et relances, classification documentaire pour la santé et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
       en: "Implémentation IA à Castres : agents conversationnels, automatisation des devis et relances, classification documentaire pour la santé et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Castres : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME castraises. On part de vos cas réels — pas de théorie hors-sol.",
-      en: "Coaching un-à-un à Castres : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME castraises. On part de vos cas réels — pas de théorie hors-sol.",
+      fr: "Coaching un-à-un à Castres : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI castraises. On part de vos cas réels — pas de théorie hors-sol.",
+      en: "Coaching un-à-un à Castres : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI castraises. On part de vos cas réels — pas de théorie hors-sol.",
     },
     sitesWeb: {
       fr: "Sites web augmentés par l'IA à Castres : plateformes et outils sur mesure pour commerces, artisans et PME de services du Tarn, avec automatisations intégrées et SEO local.",
@@ -53,7 +53,7 @@ export const CASTRES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Castres (81, Tarn) abrite le siège mondial du groupe Pierre Fabre — premier employeur privé du Tarn, environ 10 200 collaborateurs, 3,2 Md€ de chiffre d'affaires dont 71 % à l'international — dont le nouveau Campus Chartreuse de 10 000 m² ancre durablement la filière pharma et dermo-cosmétique sur le territoire. Autour gravite un écosystème numérique structuré par le Castres-Mazamet Technopole (e-santé, chimie fine, services IT) et un tissu dense de TPE et PME réparties sur les zones de Mélou et de la Chartreuse. Axion-IA conçoit pour ces acteurs des sites web et plateformes SaaS augmentés par l'IA — code sur mesure, UX/UI, mobile, e-commerce multi-CMS — hébergés en Union européenne et conformes au RGPD.",
+        hero: "Castres (81, Tarn) abrite le siège mondial du groupe Pierre Fabre — premier employeur privé du Tarn, environ 10 200 collaborateurs, 3,2 Md€ de chiffre d'affaires dont 71 % à l'international — dont le nouveau Campus Chartreuse de 10 000 m² ancre durablement la filière pharma et dermo-cosmétique sur le territoire. Autour gravite un écosystème numérique structuré par le Castres-Mazamet Technopole (e-santé, chimie fine, services IT) et un tissu dense de PME et ETI réparties sur les zones de Mélou et de la Chartreuse. Axion-IA conçoit pour ces acteurs des sites web et plateformes SaaS augmentés par l'IA — code sur mesure, UX/UI, mobile, e-commerce multi-CMS — hébergés en Union européenne et conformes au RGPD.",
         whyHere: [
           "La filière dermo-cosmétique et pharmaceutique de l'écosystème Pierre Fabre (marques Avène, Klorane, Ducray) génère un besoin de portails B2B, d'espaces revendeurs et de catalogues produits e-commerce que nous bâtissons avec recherche sémantique et assistants IA, dans le respect des exigences réglementaires du secteur santé.",
           "Le Castres-Mazamet Technopole concentre environ 500 emplois numériques (infogérance, cloud, hébergement, conception web) et des acteurs comme Albiant IT, Thales ou Consort NT : nous outillons leurs équipes avec des chatbots RAG, des copilotes et des intégrations IA sur leurs propres plateformes.",
@@ -88,12 +88,6 @@ export const CASTRES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique augmentée",
-            detail:
-              "Pour les artisans, commerces de centre-ville et indépendants castrais : site rapide, mobile-first, avec formulaire intelligent, prise de contact assistée par IA et SEO local sur Castres et le sud du Tarn.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou métier",
@@ -175,12 +169,6 @@ export const CASTRES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or augmented store",
-            detail:
-              "For Castres artisans, town-centre shops and freelancers: fast, mobile-first site with smart forms, AI-assisted contact and local SEO across Castres and the southern Tarn.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or business platform",
             detail:
@@ -230,14 +218,14 @@ export const CASTRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castres et dans le Tarn ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Castres et de tout le sud du Tarn (Mazamet, Labruguière, Aussillon, Saïx). Nous nous déplaçons sur site et travaillons aussi en visio.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Castres et de tout le sud du Tarn (Mazamet, Labruguière, Aussillon, Saïx). Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
       q: "Travaillez-vous avec la filière pharmaceutique et cosmétique locale ?",
-      a: "Oui. Beaucoup de TPE et PME castraises sont sous-traitants ou prestataires de l'écosystème Pierre Fabre. Nous automatisons leurs flux documentaires, devis, relances et processus qualité, dans le respect des exigences du secteur santé.",
+      a: "Oui. Beaucoup de PME et ETI castraises sont sous-traitants ou prestataires de l'écosystème Pierre Fabre. Nous automatisons leurs flux documentaires, devis, relances et processus qualité, dans le respect des exigences du secteur santé.",
     },
     {
-      q: "Accompagnez-vous les TPE artisanales et les commerces ?",
+      q: "Accompagnez-vous les PME artisanales et les commerces ?",
       a: "Absolument — c'est notre priorité. Audit ciblé, automatisation de la relation client, devis et planning : nous adaptons les formats aux petites équipes du textile, de l'artisanat et du commerce de centre-ville.",
     },
     {

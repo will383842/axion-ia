@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   pitchFr:
-    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu PME de l'artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu PME de l'artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-le-Monial (71). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-le-Monial (71). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   ecosystemFr:
-    "Paray-le-Monial est la cité du Sacré-Cœur en Charolais-Brionnais, célèbre pour sa basilique romane et son pèlerinage international attirant des visiteurs du monde entier. Tissu TPE commerce et artisanat, tourisme religieux et culturel, hébergement, restauration, PME tertiaires.",
+    "Paray-le-Monial est la cité du Sacré-Cœur en Charolais-Brionnais, célèbre pour sa basilique romane et son pèlerinage international attirant des visiteurs du monde entier. Tissu PME du commerce et artisanat, tourisme religieux et culturel, hébergement, restauration, PME tertiaires.",
   ecosystemEn:
-    "Paray-le-Monial est la cité du Sacré-Cœur en Charolais-Brionnais, célèbre pour sa basilique romane et son pèlerinage international attirant des visiteurs du monde entier. Tissu TPE commerce et artisanat, tourisme religieux et culturel, hébergement, restauration, PME tertiaires.",
+    "Paray-le-Monial est la cité du Sacré-Cœur en Charolais-Brionnais, célèbre pour sa basilique romane et son pèlerinage international attirant des visiteurs du monde entier. Tissu PME du commerce et artisanat, tourisme religieux et culturel, hébergement, restauration, PME tertiaires.",
   distancesFr:
     "Moulins à 50 min. Mâcon à 1h. Le Creusot-TGV à 50 min. Roanne à 45 min. Lyon à 1h45.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme religieux et culturel",
     "Hébergement et restauration",
-    "TPE artisanat et commerce",
+    "PME de l'artisanat et du commerce",
     "PME tertiaires",
     "Services aux pèlerins",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux PME du commerce et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux PME du commerce et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paray-le-Monial : formats adaptés commerce, hébergement pèlerins, site religieux, restaurant. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
       en: "Implémentation IA à Paray-le-Monial : chatbot accueil pèlerins multilingue, gestion réservations hébergement, automatisation flux visiteurs basilique, CRM commerçants centre-ville.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Paray-le-Monial : sessions dans votre commerce, hôtel, restaurant ou en visio. Dirigeants TPE/PME, hébergeurs, restaurateurs, gérants tourisme religieux.",
-      en: "Coaching 1-to-1 à Paray-le-Monial : sessions dans votre commerce, hôtel, restaurant ou en visio. Dirigeants TPE/PME, hébergeurs, restaurateurs, gérants tourisme religieux.",
+      fr: "Coaching 1-to-1 à Paray-le-Monial : sessions dans votre commerce, hôtel, restaurant ou en visio. Dirigeants PME et ETI, hébergeurs, restaurateurs, gérants tourisme religieux.",
+      en: "Coaching 1-to-1 à Paray-le-Monial : sessions dans votre commerce, hôtel, restaurant ou en visio. Dirigeants PME et ETI, hébergeurs, restaurateurs, gérants tourisme religieux.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
       a: "Oui, automatisation réservations, gestion avis clients, yield management saisonnier (pics pèlerinage), CRM fidélisation. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
-      q: "Quels services pour les TPE commerçants de Paray-le-Monial ?",
+      q: "Quels services pour les PME du commerce de Paray-le-Monial ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
     },
     {

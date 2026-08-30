@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BONDOUFLE_COPY: VilleCopy = {
   pitchFr:
-    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu PME et ETI logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu PME et ETI logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons PME et ETI : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bondoufle (91). Nous accompagnons PME et ETI : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit sur place sur mesure.",
   seoHook: "logistique transport & commerce gros",
   ecosystemFr:
-    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
+    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, PME du BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
   ecosystemEn:
-    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
+    "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, PME du BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
   distancesFr:
     "Paris centre à 40 min via A6. Évry-Courcouronnes à 10 min. Aéroport Orly à 20 min. Gare RER D Évry-Courcouronnes à 10 min. Francilienne N104 à 5 min.",
   distancesEn:
@@ -38,12 +38,12 @@ export const BONDOUFLE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Bondoufle : formats adaptés entrepôt logistique, bureau, commerce ou atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Bondoufle : optimisation supply chain, automatisation préparation commandes, prédiction flux logistiques, CRM commercial. Adapté logistique, commerce, TPE services.",
-      en: "Implémentation IA à Bondoufle : optimisation supply chain, automatisation préparation commandes, prédiction flux logistiques, CRM commercial. Adapté logistique, commerce, TPE services.",
+      fr: "Implémentation IA à Bondoufle : optimisation supply chain, automatisation préparation commandes, prédiction flux logistiques, CRM commercial. Adapté logistique, commerce, PME services.",
+      en: "Implémentation IA à Bondoufle : optimisation supply chain, automatisation préparation commandes, prédiction flux logistiques, CRM commercial. Adapté logistique, commerce, PME services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bondoufle : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants TPE/PME bondouflois, gérants logistique, commerçants, artisans.",
-      en: "Coaching 1-to-1 à Bondoufle : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants TPE/PME bondouflois, gérants logistique, commerçants, artisans.",
+      fr: "Coaching 1-to-1 à Bondoufle : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants PME et ETI bondouflois, gérants logistique, commerçants, artisans.",
+      en: "Coaching 1-to-1 à Bondoufle : sessions dans vos locaux, entrepôt, bureau ou en visio. Dirigeants PME et ETI bondouflois, gérants logistique, commerçants, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const BONDOUFLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistique et transport sur leurs cas IA : optimisation tournées, prédiction flux, automatisation préparation commandes, classification documents transport, suivi temps réel.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants bondouflois ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce bondouflois ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {

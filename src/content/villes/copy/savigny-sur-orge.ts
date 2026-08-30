@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Savigny-sur-Orge, commune résidentielle de l'Essonne dans la vallée de l'Orge, desservie par le RER C, vit d'un tissu de TPE et de PME de proximité : artisans, commerces, professions libérales et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME du sud francilien pour automatiser sans recruter.",
+    "Savigny-sur-Orge, commune résidentielle de l'Essonne dans la vallée de l'Orge, desservie par le RER C, vit d'un tissu de PME et de PME de proximité : artisans, commerces, professions libérales et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI du sud francilien pour automatiser sans recruter.",
   pitchEn:
-    "Savigny-sur-Orge, commune résidentielle de l'Essonne dans la vallée de l'Orge, desservie par le RER C, vit d'un tissu de TPE et de PME de proximité : artisans, commerces, professions libérales et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME du sud francilien pour automatiser sans recruter.",
+    "Savigny-sur-Orge, commune résidentielle de l'Essonne dans la vallée de l'Orge, desservie par le RER C, vit d'un tissu de PME et de PME de proximité : artisans, commerces, professions libérales et services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI du sud francilien pour automatiser sans recruter.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Savigny-sur-Orge (91) et dans la vallée de l'Orge. Nous accompagnons en priorité les TPE puis les PME de cette commune résidentielle de l'Essonne : artisans du bâtiment, commerces, professions libérales de santé et de droit, PME de services. Audit, interventions et implémentation pour automatiser devis, prise de rendez-vous, relances et gestion administrative, avec des livrables documentés et sans dépendance technique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Savigny-sur-Orge (91) et dans la vallée de l'Orge. Nous accompagnons en priorité les PME puis les ETI de cette commune résidentielle de l'Essonne : artisans du bâtiment, commerces, professions libérales de santé et de droit, PME de services. Audit, interventions et implémentation pour automatiser devis, prise de rendez-vous, relances et gestion administrative, avec des livrables documentés et sans dépendance technique imposée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Savigny-sur-Orge (91) et dans la vallée de l'Orge. Nous accompagnons en priorité les TPE puis les PME de cette commune résidentielle de l'Essonne : artisans du bâtiment, commerces, professions libérales de santé et de droit, PME de services. Audit, interventions et implémentation pour automatiser devis, prise de rendez-vous, relances et gestion administrative, avec des livrables documentés et sans dépendance technique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Savigny-sur-Orge (91) et dans la vallée de l'Orge. Nous accompagnons en priorité les PME puis les ETI de cette commune résidentielle de l'Essonne : artisans du bâtiment, commerces, professions libérales de santé et de droit, PME de services. Audit, interventions et implémentation pour automatiser devis, prise de rendez-vous, relances et gestion administrative, avec des livrables documentés et sans dépendance technique imposée.",
   seoHook: "artisanat, commerce & libéral",
   ecosystemFr:
-    "Savigny-sur-Orge est une commune résidentielle de l'Essonne, étendue le long de la vallée de l'Orge et reliée à Paris par le RER C. Son économie repose sur un tissu dense de TPE et de PME de proximité : artisans du bâtiment, commerces de centre-ville et de quartier, professions libérales de santé et de droit, PME de services. La commune s'inscrit dans le pôle économique du sud francilien, à proximité de Massy, de l'aéroport d'Orly et du plateau de Saclay. Axion-IA y adapte ses chantiers IA aux réalités d'entreprises de proximité, souvent de moins de dix salariés.",
+    "Savigny-sur-Orge est une commune résidentielle de l'Essonne, étendue le long de la vallée de l'Orge et reliée à Paris par le RER C. Son économie repose sur un tissu dense de PME et de PME de proximité : artisans du bâtiment, commerces de centre-ville et de quartier, professions libérales de santé et de droit, PME de services. La commune s'inscrit dans le pôle économique du sud francilien, à proximité de Massy, de l'aéroport d'Orly et du plateau de Saclay. Axion-IA y adapte ses chantiers IA aux réalités d'entreprises de proximité, souvent de moins de dix salariés.",
   ecosystemEn:
-    "Savigny-sur-Orge est une commune résidentielle de l'Essonne, étendue le long de la vallée de l'Orge et reliée à Paris par le RER C. Son économie repose sur un tissu dense de TPE et de PME de proximité : artisans du bâtiment, commerces de centre-ville et de quartier, professions libérales de santé et de droit, PME de services. La commune s'inscrit dans le pôle économique du sud francilien, à proximité de Massy, de l'aéroport d'Orly et du plateau de Saclay. Axion-IA y adapte ses chantiers IA aux réalités d'entreprises de proximité, souvent de moins de dix salariés.",
+    "Savigny-sur-Orge est une commune résidentielle de l'Essonne, étendue le long de la vallée de l'Orge et reliée à Paris par le RER C. Son économie repose sur un tissu dense de PME et de PME de proximité : artisans du bâtiment, commerces de centre-ville et de quartier, professions libérales de santé et de droit, PME de services. La commune s'inscrit dans le pôle économique du sud francilien, à proximité de Massy, de l'aéroport d'Orly et du plateau de Saclay. Axion-IA y adapte ses chantiers IA aux réalités d'entreprises de proximité, souvent de moins de dix salariés.",
   distancesFr:
     "Gare de Savigny-sur-Orge (RER C) vers Paris en environ 30 min. Massy-TGV à 10 km. Aéroport de Paris-Orly à 10 km. Plateau de Saclay à 20 min, Évry-Courcouronnes à 20 min par la N7 et l'A6.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Savigny-sur-Orge : diagnostic pour TPE et PME de proximité de la vallée de l'Orge. On repère les tâches répétitives — devis, rendez-vous, relances, saisie — automatisables sans recruter.",
-      en: "Audit IA à Savigny-sur-Orge : diagnostic pour TPE et PME de proximité de la vallée de l'Orge. On repère les tâches répétitives — devis, rendez-vous, relances, saisie — automatisables sans recruter.",
+      fr: "Audit IA à Savigny-sur-Orge : diagnostic pour PME et ETI de proximité de la vallée de l'Orge. On repère les tâches répétitives — devis, rendez-vous, relances, saisie — automatisables sans recruter.",
+      en: "Audit IA à Savigny-sur-Orge : diagnostic pour PME et ETI de proximité de la vallée de l'Orge. On repère les tâches répétitives — devis, rendez-vous, relances, saisie — automatisables sans recruter.",
     },
     interventions: {
       fr: "Interventions IA sur site à Savigny-sur-Orge : ateliers pour artisans, commerces et professions libérales. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Savigny-sur-Orge : ateliers pour artisans, commerces et professions libérales. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Savigny-sur-Orge : automatisation des devis, de la prise de rendez-vous, des relances et du classement documentaire pour TPE et petites PME de services.",
-      en: "Implémentation IA à Savigny-sur-Orge : automatisation des devis, de la prise de rendez-vous, des relances et du classement documentaire pour TPE et petites PME de services.",
+      fr: "Implémentation IA à Savigny-sur-Orge : automatisation des devis, de la prise de rendez-vous, des relances et du classement documentaire pour PME et petites PME de services.",
+      en: "Implémentation IA à Savigny-sur-Orge : automatisation des devis, de la prise de rendez-vous, des relances et du classement documentaire pour PME et petites PME de services.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Savigny-sur-Orge : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de la vallée de l'Orge souhaitant intégrer l'IA à leur rythme.",
-      en: "Accompagnement un-à-un à Savigny-sur-Orge : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de la vallée de l'Orge souhaitant intégrer l'IA à leur rythme.",
+      fr: "Accompagnement un-à-un à Savigny-sur-Orge : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de la vallée de l'Orge souhaitant intégrer l'IA à leur rythme.",
+      en: "Accompagnement un-à-un à Savigny-sur-Orge : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI de la vallée de l'Orge souhaitant intégrer l'IA à leur rythme.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Savigny-sur-Orge : vitrine ou plateforme dotée d'IA pour artisans, commerces et cabinets — devis en ligne, prise de rendez-vous automatisée, réponses clients instantanées.",
@@ -53,7 +53,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Savigny-sur-Orge (91, ~37 973 habitants, 4e commune de l'Essonne) concentre son activité économique entre la Z.A.C. Les Gâtines route de Morangis — près de 190 entreprises de commerce, de services et de petite industrie, dont LPCR Groupe (réseau de crèches People&Baby), FISA France et SRAMAG — le pôle tertiaire de l'avenue du Garigliano (conseil et logiciels informatiques) et les commerces de proximité du centre-ville autour de la gare RER C. Axion-IA conçoit pour ces TPE et PME savigniennes des sites web et plateformes SaaS augmentés par l'IA — vitrines, e-commerce multi-CMS, prise de rendez-vous, devis en ligne, agents conversationnels — avec UX/UI mobile-first, hébergement Union européenne conforme RGPD et zéro verrou éditeur.",
+        hero: "Savigny-sur-Orge (91, ~37 973 habitants, 4e commune de l'Essonne) concentre son activité économique entre la Z.A.C. Les Gâtines route de Morangis — près de 190 entreprises de commerce, de services et de petite industrie, dont LPCR Groupe (réseau de crèches People&Baby), FISA France et SRAMAG — le pôle tertiaire de l'avenue du Garigliano (conseil et logiciels informatiques) et les commerces de proximité du centre-ville autour de la gare RER C. Axion-IA conçoit pour ces PME et ETI savigniennes des sites web et plateformes SaaS augmentés par l'IA — vitrines, e-commerce multi-CMS, prise de rendez-vous, devis en ligne, agents conversationnels — avec UX/UI mobile-first, hébergement Union européenne conforme RGPD et zéro verrou éditeur.",
         whyHere: [
           "Le centre-ville de Savigny et la ZAC « Cœur de Ville – Gare » portée par l'EPT Grand-Orly Seine Bièvre repositionnent les commerces de proximité autour de la gare RER C : pour ces commerçants et artisans, nous construisons des vitrines et boutiques e-commerce mobile-first (click-and-collect, réservation, paiement) reliées à la fréquentation locale.",
           "Les ~190 entreprises de la Z.A.C. Les Gâtines (route de Morangis) — services aux entreprises, distribution, petite industrie comme FISA France ou SRAMAG — ont besoin de portails clients, de configurateurs de devis et de catalogues B2B : nous développons des plateformes web sur mesure connectées à leurs ERP et CRM existants.",
@@ -88,12 +88,6 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Vitrine IA + prise de rendez-vous",
-            detail:
-              "Pour les artisans BTP, commerces de centre-ville et professions libérales de Savigny : site vitrine mobile-first, devis ou réservation en ligne, agent IA de premier contact, fiche Google optimisée.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce multi-CMS ou portail métier",
@@ -175,12 +169,6 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI storefront + online booking",
-            detail:
-              "For Savigny's BTP craftspeople, town-centre shops and liberal professions: mobile-first showcase site, online quote or booking, first-contact AI agent, optimised Google listing.",
-          },
-          {
             sizeLabel: "PME",
             price: "Multi-CMS e-commerce or business portal",
             detail:
@@ -234,7 +222,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Savigny ?",
-      a: "Oui, c'est un cœur de cible TPE. Pour les artisans du bâtiment de Savigny-sur-Orge, nous automatisons la création de devis, les relances clients, la gestion du planning et le suivi de chantier.",
+      a: "Oui, c'est un cœur de cible PME. Pour les artisans du bâtiment de Savigny-sur-Orge, nous automatisons la création de devis, les relances clients, la gestion du planning et le suivi de chantier.",
     },
     {
       q: "Quels services pour les professions libérales de santé ?",

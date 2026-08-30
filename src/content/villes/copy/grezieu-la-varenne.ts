@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
   pitchFr:
-    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'ouest lyonnais.",
+    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'ouest lyonnais.",
   pitchEn:
-    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'ouest lyonnais.",
+    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'ouest lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   seoHook: "tertiaires ouest",
   ecosystemFr:
-    "Grézieu-la-Varenne est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",
+    "Grézieu-la-Varenne est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Grézieu-la-Varenne est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",
+    "Grézieu-la-Varenne est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, PME du BTP, commerces de proximité.",
   distancesFr:
     "Lyon centre à 20 min. Aéroport Lyon-Saint-Exupéry à 45 min. Craponne à 5 min. Vaugneray à 5 min. Francheville à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires ouest lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grézieu-la-Varenne : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
       en: "Implémentation IA à Grézieu-la-Varenne : agents conversationnels B2B/patient, automatisation workflow, classification dossiers, CRM augmentés. Ouest lyonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Grézieu-la-Varenne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME grézillons.",
-      en: "Coaching 1-to-1 à Grézieu-la-Varenne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants TPE/PME grézillons.",
+      fr: "Coaching 1-to-1 à Grézieu-la-Varenne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI grézillons.",
+      en: "Coaching 1-to-1 à Grézieu-la-Varenne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants tertiaires, professions libérales, artisans, gérants PME et ETI grézillons.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires ouest lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Grézieu-la-Varenne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Grézieu-la-Varenne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

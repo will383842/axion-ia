@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SARAN_COPY: VilleCopy = {
   pitchFr:
-    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
+    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de PME, ETI et grands groupes entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
   pitchEn:
-    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
+    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de PME, ETI et grands groupes entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons PME du commerce, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons PME du commerce, PME logistique et services, ETI industrie. Audit sur place sur mesure, démarrage sous 10 jours.",
   ecosystemFr:
-    "Saran est un pôle économique majeur du nord orléanais avec de grandes zones commerciales et logistiques (Saran-Nord, Cap Saran). Entrepôts logistique, commerces grande distribution, PME services aux entreprises, TPE artisanat.",
+    "Saran est un pôle économique majeur du nord orléanais avec de grandes zones commerciales et logistiques (Saran-Nord, Cap Saran). Entrepôts logistique, commerces grande distribution, PME services aux entreprises, PME de l'artisanat.",
   ecosystemEn:
-    "Saran est un pôle économique majeur du nord orléanais avec de grandes zones commerciales et logistiques (Saran-Nord, Cap Saran). Entrepôts logistique, commerces grande distribution, PME services aux entreprises, TPE artisanat.",
+    "Saran est un pôle économique majeur du nord orléanais avec de grandes zones commerciales et logistiques (Saran-Nord, Cap Saran). Entrepôts logistique, commerces grande distribution, PME services aux entreprises, PME de l'artisanat.",
   distancesFr:
     "Orléans centre à 10 min. Gare d'Orléans à 15 min. Paris Austerlitz à 1 h 10 en train. Autoroute A10 à 5 min. Aéroport Paris-Orly à 1 h 15.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SARAN_COPY: VilleCopy = {
     "Commerce grande distribution",
     "Services aux entreprises",
     "Industrie légère nord orléanais",
-    "TPE artisanat et BTP",
+    "PME de l'artisanat et BTP",
   ],
   seoHook: "logistique, commerce & services",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saran : diagnostic adapté aux TPE commerces, PME logistique et services, ETI industrie du nord orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saran : diagnostic adapté aux TPE commerces, PME logistique et services, ETI industrie du nord orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saran : diagnostic adapté aux PME du commerce, PME logistique et services, ETI industrie du nord orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saran : diagnostic adapté aux PME du commerce, PME logistique et services, ETI industrie du nord orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saran : formations en entrepôt logistique, bureau PME ou surface commerciale. Vos équipes repartent autonomes.",

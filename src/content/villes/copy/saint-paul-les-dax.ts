@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, PME santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, PME santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Paul-lès-Dax (40). Nous accompagnons TPE et PME du thermalisme et du bien-être, commerces de la zone Grand Dax, professions de santé, artisans BTP, hébergeurs et prestataires touristiques de l'agglomération dacquoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Paul-lès-Dax (40). Nous accompagnons PME et ETI du thermalisme et du bien-être, commerces de la zone Grand Dax, professions de santé, artisans BTP, hébergeurs et prestataires touristiques de l'agglomération dacquoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Paul-lès-Dax (40). Nous accompagnons TPE et PME du thermalisme et du bien-être, commerces de la zone Grand Dax, professions de santé, artisans BTP, hébergeurs et prestataires touristiques de l'agglomération dacquoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Paul-lès-Dax (40). Nous accompagnons PME et ETI du thermalisme et du bien-être, commerces de la zone Grand Dax, professions de santé, artisans BTP, hébergeurs et prestataires touristiques de l'agglomération dacquoise.",
   seoHook: "thermalisme, bien-être & Grand Dax",
   ecosystemFr:
-    "Saint-Paul-lès-Dax fait partie de l'agglomération du Grand Dax, premier pôle thermal de France. La commune accueille plusieurs établissements thermaux et centres de bien-être. Zone commerciale dynamique (Grand Dax), tissu TPE santé et bien-être, PME services aux entreprises, artisans BTP, hébergeurs, restaurateurs. Complémentarité économique forte avec Dax (préfecture voisine).",
+    "Saint-Paul-lès-Dax fait partie de l'agglomération du Grand Dax, premier pôle thermal de France. La commune accueille plusieurs établissements thermaux et centres de bien-être. Zone commerciale dynamique (Grand Dax), tissu PME santé et bien-être, PME services aux entreprises, artisans BTP, hébergeurs, restaurateurs. Complémentarité économique forte avec Dax (préfecture voisine).",
   ecosystemEn:
-    "Saint-Paul-lès-Dax fait partie de l'agglomération du Grand Dax, premier pôle thermal de France. La commune accueille plusieurs établissements thermaux et centres de bien-être. Zone commerciale dynamique (Grand Dax), tissu TPE santé et bien-être, PME services aux entreprises, artisans BTP, hébergeurs, restaurateurs. Complémentarité économique forte avec Dax (préfecture voisine).",
+    "Saint-Paul-lès-Dax fait partie de l'agglomération du Grand Dax, premier pôle thermal de France. La commune accueille plusieurs établissements thermaux et centres de bien-être. Zone commerciale dynamique (Grand Dax), tissu PME santé et bien-être, PME services aux entreprises, artisans BTP, hébergeurs, restaurateurs. Complémentarité économique forte avec Dax (préfecture voisine).",
   distancesFr:
     "Dax centre à 5 min. Bayonne à 45 min par A63. Bordeaux à 1h30 par A63. Pau à 1h par A64. Gare SNCF Dax (TGV Paris 4h). Aéroport Biarritz-Pays Basque à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux PME du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux PME du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Paul-lès-Dax : formations adaptées aux établissements thermaux, centres bien-être, commerces, professions de santé. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Paul-lès-Dax : automatisation réservations thermales, chatbot curistes multilingue, classification retours patients, prédiction affluence saisonnière, optimisation planning soins et gestion stocks commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Paul-lès-Dax : sessions dans votre établissement thermal, centre bien-être, cabinet ou en visio. Dirigeants thermalisme, gérants TPE/PME santé, commerçants et artisans du Grand Dax.",
-      en: "Coaching 1-to-1 à Saint-Paul-lès-Dax : sessions dans votre établissement thermal, centre bien-être, cabinet ou en visio. Dirigeants thermalisme, gérants TPE/PME santé, commerçants et artisans du Grand Dax.",
+      fr: "Coaching 1-to-1 à Saint-Paul-lès-Dax : sessions dans votre établissement thermal, centre bien-être, cabinet ou en visio. Dirigeants thermalisme, gérants PME et ETI santé, commerçants et artisans du Grand Dax.",
+      en: "Coaching 1-to-1 à Saint-Paul-lès-Dax : sessions dans votre établissement thermal, centre bien-être, cabinet ou en visio. Dirigeants thermalisme, gérants PME et ETI santé, commerçants et artisans du Grand Dax.",
     },
   },
   faqGeolocalisee: [

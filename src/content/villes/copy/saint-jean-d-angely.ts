@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA répond aux besoins des activités professionnelles présentes du bassin angérien.",
+    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de PME artisanales, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA répond aux besoins des activités professionnelles présentes du bassin angérien.",
   pitchEn:
-    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA répond aux besoins des activités professionnelles présentes du bassin angérien.",
+    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de PME artisanales, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA répond aux besoins des activités professionnelles présentes du bassin angérien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
   seoHook: "bassin angérien",
   ecosystemFr:
-    "Saint-Jean-d'Angély est sous-préfecture de Charente-Maritime, étape du chemin de Compostelle (abbaye royale classée UNESCO). Pôle agroalimentaire (céréales, élevage, distillation), PME transformation alimentaire, TPE artisans BTP, commerces de centre-ville, services publics et de santé. Patrimoine médiéval attractif.",
+    "Saint-Jean-d'Angély est sous-préfecture de Charente-Maritime, étape du chemin de Compostelle (abbaye royale classée UNESCO). Pôle agroalimentaire (céréales, élevage, distillation), PME transformation alimentaire, PME du BTP, commerces de centre-ville, services publics et de santé. Patrimoine médiéval attractif.",
   ecosystemEn:
-    "Saint-Jean-d'Angély est sous-préfecture de Charente-Maritime, étape du chemin de Compostelle (abbaye royale classée UNESCO). Pôle agroalimentaire (céréales, élevage, distillation), PME transformation alimentaire, TPE artisans BTP, commerces de centre-ville, services publics et de santé. Patrimoine médiéval attractif.",
+    "Saint-Jean-d'Angély est sous-préfecture de Charente-Maritime, étape du chemin de Compostelle (abbaye royale classée UNESCO). Pôle agroalimentaire (céréales, élevage, distillation), PME transformation alimentaire, PME du BTP, commerces de centre-ville, services publics et de santé. Patrimoine médiéval attractif.",
   distancesFr:
     "Saint-Jean-d'Angély est à 30 min de Saintes (N150) et 50 min de La Rochelle (N137/N150). Cognac à 35 min. Niort à 40 min. Gare de Saintes à 30 min (TER vers La Rochelle, Bordeaux). Aéroport Bordeaux-Mérignac à 1h30.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire & transformation",
     "Agriculture & élevage",
-    "TPE artisanat BTP & patrimoine",
+    "PME du BTP & patrimoine",
     "Commerce de centre-ville",
     "Services publics & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, PME artisanales patrimoine et commerces du bassin angérien. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, PME artisanales patrimoine et commerces du bassin angérien. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-d'Angély : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Jean-d'Angély : traçabilité production agroalimentaire, prédiction rendements agricoles, automatisation gestion coopérative, agents conversationnels accueil touristique Compostelle.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Jean-d'Angély : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME agroalimentaires, exploitants agricoles et commerçants du bassin angérien souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Jean-d'Angély : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME agroalimentaires, exploitants agricoles et commerçants du bassin angérien souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Jean-d'Angély : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI agroalimentaires, exploitants agricoles et commerçants du bassin angérien souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Jean-d'Angély : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI agroalimentaires, exploitants agricoles et commerçants du bassin angérien souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

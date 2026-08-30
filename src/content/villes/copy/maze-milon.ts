@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MAZE_MILON_COPY: VilleCopy = {
   pitchFr:
-    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de PME horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de PME horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : PME horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : PME horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
   seoHook: "horticulture pépinières & maraîchage semences",
   ecosystemFr:
     "Mazé-Milon est une commune nouvelle issue de la fusion de Mazé et Fontaine-Milon, dans le val d'Authion (plaine fertile entre Angers et Saumur). Économie horticole et maraîchère de premier plan (pôle semencier Anjou), pépinières, artisanat, commerces de bourg et services aux entreprises.",
@@ -30,8 +30,8 @@ export const MAZE_MILON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazé-Milon : diagnostic adapté aux TPE horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mazé-Milon : diagnostic adapté aux TPE horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mazé-Milon : diagnostic adapté aux PME horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazé-Milon : diagnostic adapté aux PME horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazé-Milon : formations adaptées aux pépinières, exploitations maraîchères, semenciers et commerces du val d'Authion. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const MAZE_MILON_COPY: VilleCopy = {
       en: "Implémentation IA à Mazé-Milon : prédiction cycles culturaux, traçabilité lots semences, automatisation planning récoltes maraîchères, agents conversationnels pépinières.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mazé-Milon : sessions dans votre exploitation horticole, pépinière, commerce ou en visio. Dirigeants TPE/PME maraîchères, semenciers, artisans, gérants.",
-      en: "Coaching 1-to-1 à Mazé-Milon : sessions dans votre exploitation horticole, pépinière, commerce ou en visio. Dirigeants TPE/PME maraîchères, semenciers, artisans, gérants.",
+      fr: "Coaching 1-to-1 à Mazé-Milon : sessions dans votre exploitation horticole, pépinière, commerce ou en visio. Dirigeants PME et ETI maraîchères, semenciers, artisans, gérants.",
+      en: "Coaching 1-to-1 à Mazé-Milon : sessions dans votre exploitation horticole, pépinière, commerce ou en visio. Dirigeants PME et ETI maraîchères, semenciers, artisans, gérants.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const MAZE_MILON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les horticulteurs, maraîchers et semenciers du val d'Authion sur leurs cas IA : prédiction cycles culturaux, traçabilité lots, optimisation irrigation, classification photos parcelles, automatisation administratif.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE horticole à Mazé-Milon ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE horticoles, PME maraîchères et semenciers du val d'Authion. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME horticole à Mazé-Milon ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME horticoles, PME maraîchères et semenciers du val d'Authion. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME semencières ?",

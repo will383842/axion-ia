@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
   pitchFr:
-    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu TPE artisans, commerces, PME services, professions libérales, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu PME artisanales, commerces, PME services, professions libérales, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu TPE artisans, commerces, PME services, professions libérales, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu PME artisanales, commerces, PME services, professions libérales, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bons-en-Chablais (74). Nous accompagnons TPE et PME : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bons-en-Chablais (74). Nous accompagnons PME et ETI : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bons-en-Chablais (74). Nous accompagnons TPE et PME : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bons-en-Chablais (74). Nous accompagnons PME et ETI : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
   seoHook: "commerce proximité & agriculture élevage",
   ecosystemFr:
-    "Bons-en-Chablais est une commune en croissance du Chablais, positionnée au carrefour entre Thonon-les-Bains (15 min) et Annemasse (20 min). La ZAC commerciale concentre enseignes et services. L'agriculture (élevage laitier, maraîchage) reste présente. Commune résidentielle attractrice de frontaliers suisses. TPE artisans, commerces, PME services, professions libérales, exploitants agricoles.",
+    "Bons-en-Chablais est une commune en croissance du Chablais, positionnée au carrefour entre Thonon-les-Bains (15 min) et Annemasse (20 min). La ZAC commerciale concentre enseignes et services. L'agriculture (élevage laitier, maraîchage) reste présente. Commune résidentielle attractrice de frontaliers suisses. PME artisanales, commerces, PME services, professions libérales, exploitants agricoles.",
   ecosystemEn:
-    "Bons-en-Chablais est une commune en croissance du Chablais, positionnée au carrefour entre Thonon-les-Bains (15 min) et Annemasse (20 min). La ZAC commerciale concentre enseignes et services. L'agriculture (élevage laitier, maraîchage) reste présente. Commune résidentielle attractrice de frontaliers suisses. TPE artisans, commerces, PME services, professions libérales, exploitants agricoles.",
+    "Bons-en-Chablais est une commune en croissance du Chablais, positionnée au carrefour entre Thonon-les-Bains (15 min) et Annemasse (20 min). La ZAC commerciale concentre enseignes et services. L'agriculture (élevage laitier, maraîchage) reste présente. Commune résidentielle attractrice de frontaliers suisses. PME artisanales, commerces, PME services, professions libérales, exploitants agricoles.",
   distancesFr:
     "Thonon-les-Bains à 15 min (D903). Annemasse à 20 min. Genève à 30 min (A40). Évian-les-Bains à 25 min. Aéroport Genève-Cointrin à 35 min. Gare Annemasse (Léman Express) à 20 min.",
   distancesEn:
     "Thonon-les-Bains à 15 min (D903). Annemasse à 20 min. Genève à 30 min (A40). Évian-les-Bains à 25 min. Aéroport Genève-Cointrin à 35 min. Gare Annemasse (Léman Express) à 20 min.",
   topSectorsNaf: [
     "Commerce de proximité & ZAC commerciale",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & élevage laitier (Chablais)",
     "PME services aux entreprises",
     "Professions libérales (santé, conseil)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, PME artisanales, PME services, professions libérales et exploitants agricoles du Chablais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, PME artisanales, PME services, professions libérales et exploitants agricoles du Chablais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bons-en-Chablais : formats adaptés commerce, atelier artisan, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -60,7 +60,7 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles du Chablais (élevage laitier, maraîchage) : suivi parcellaire, prédiction rendements, automatisation traçabilité, gestion administrative PAC, classification documents vétérinaires.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
     },
     {

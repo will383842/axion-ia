@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
   pitchFr:
-    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu PME du commerce saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu PME du commerce saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Palavas-les-Flots (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire, pêcheurs professionnels et professions libérales du littoral montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Palavas-les-Flots (34). Nous accompagnons PME du commerce, PME hôtellerie-restauration, acteurs du tourisme balnéaire, pêcheurs professionnels et professions libérales du littoral montpelliérain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Palavas-les-Flots (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire, pêcheurs professionnels et professions libérales du littoral montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Palavas-les-Flots (34). Nous accompagnons PME du commerce, PME hôtellerie-restauration, acteurs du tourisme balnéaire, pêcheurs professionnels et professions libérales du littoral montpelliérain.",
   ecosystemFr:
-    "Palavas-les-Flots est la station balnéaire mythique de Montpellier, immortalisée par le dessinateur Albert Dubout. Port de pêche et de plaisance, casino, tourisme estival intense. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, pêcheurs professionnels, artisans, professions libérales.",
+    "Palavas-les-Flots est la station balnéaire mythique de Montpellier, immortalisée par le dessinateur Albert Dubout. Port de pêche et de plaisance, casino, tourisme estival intense. Tissu PME du commerce saisonniers, PME hôtellerie-restauration, pêcheurs professionnels, artisans, professions libérales.",
   ecosystemEn:
-    "Palavas-les-Flots est la station balnéaire mythique de Montpellier, immortalisée par le dessinateur Albert Dubout. Port de pêche et de plaisance, casino, tourisme estival intense. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, pêcheurs professionnels, artisans, professions libérales.",
+    "Palavas-les-Flots est la station balnéaire mythique de Montpellier, immortalisée par le dessinateur Albert Dubout. Port de pêche et de plaisance, casino, tourisme estival intense. Tissu PME du commerce saisonniers, PME hôtellerie-restauration, pêcheurs professionnels, artisans, professions libérales.",
   distancesFr:
     "Montpellier centre à 12 min par tramway T3 ou voiture. La Grande-Motte à 15 min. Pérols à 5 min. Gare TGV Montpellier Sud de France à 15 min. Aéroport Montpellier-Méditerranée à 10 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, TPE commerçants saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, TPE commerçants saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, PME du commerce saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, PME du commerce saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Palavas-les-Flots : ateliers adaptés hôtel, restaurant, commerce saisonnier ou port. Équipes autonomes sur outils IA métier.",

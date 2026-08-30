@@ -67,7 +67,7 @@ async function seedSettings() {
     {
       key: "pricing.audit.flash",
       value: { remote: 29000, onsite: 49000 } as object,
-      description: "Audit flash TPE/Artisan en cents HT",
+      description: "Audit flash sur place en cents HT",
     },
     {
       key: "cta.central",
@@ -558,7 +558,7 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Combien coûte un audit ?",
       qEn: "How much does an audit cost?",
-      aFr: "De 290 € HT (TPE distance) à 1 990 € HT (moyenne entreprise sur site). Grandes entreprises sur devis.",
+      aFr: "De 290 € HT (à distance) à 1 990 € HT (sur site). Grands groupes sur devis.",
       aEn: "From €290 excl. VAT (small business remote) to €1,990 (mid-sized on-site). Large companies on request.",
     },
     {

@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Plaisance-du-Touch, commune de 21 079 habitants de la Haute-Garonne située à 13 km à l'ouest de Toulouse. Siège du Grand Ouest Toulousain Agglomération, la ville concentre 25,8 % de ses entreprises dans le commerce, le transport et l'hôtellerie-restauration, 18,4 % dans l'administration publique, la santé et l'éducation, et 16,7 % dans les services spécialisés. Nous y intervenons en code custom auprès des TPE et PME locales pour automatiser leurs process métier.",
+    "Axion-IA accompagne les PME et ETI de Plaisance-du-Touch, commune de 21 079 habitants de la Haute-Garonne située à 13 km à l'ouest de Toulouse. Siège du Grand Ouest Toulousain Agglomération, la ville concentre 25,8 % de ses entreprises dans le commerce, le transport et l'hôtellerie-restauration, 18,4 % dans l'administration publique, la santé et l'éducation, et 16,7 % dans les services spécialisés. Nous y intervenons en code custom auprès des PME et ETI locales pour automatiser leurs process métier.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Plaisance-du-Touch, commune de 21 079 habitants de la Haute-Garonne située à 13 km à l'ouest de Toulouse. Siège du Grand Ouest Toulousain Agglomération, la ville concentre 25,8 % de ses entreprises dans le commerce, le transport et l'hôtellerie-restauration, 18,4 % dans l'administration publique, la santé et l'éducation, et 16,7 % dans les services spécialisés. Nous y intervenons en code custom auprès des TPE et PME locales pour automatiser leurs process métier.",
+    "Axion-IA accompagne les PME et ETI de Plaisance-du-Touch, commune de 21 079 habitants de la Haute-Garonne située à 13 km à l'ouest de Toulouse. Siège du Grand Ouest Toulousain Agglomération, la ville concentre 25,8 % de ses entreprises dans le commerce, le transport et l'hôtellerie-restauration, 18,4 % dans l'administration publique, la santé et l'éducation, et 16,7 % dans les services spécialisés. Nous y intervenons en code custom auprès des PME et ETI locales pour automatiser leurs process métier.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA qui se déplace à Plaisance-du-Touch (Haute-Garonne, 21 079 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Siège du Grand Ouest Toulousain Agglomération, la commune compte 4 497 emplois et un tissu dominé par le commerce, les services et la santé. Nous y servons en priorité les TPE et PME du commerce de détail (autour de l'hypermarché Corail), de la restauration, de la construction et des services administratifs, avec un audit sur place dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet IA qui se déplace à Plaisance-du-Touch (Haute-Garonne, 21 079 habitants) pour auditer, intervenir et implémenter du code custom chez les PME et ETI locales. Siège du Grand Ouest Toulousain Agglomération, la commune compte 4 497 emplois et un tissu dominé par le commerce, les services et la santé. Nous y servons en priorité les PME et ETI du commerce de détail (autour de l'hypermarché Corail), de la restauration, de la construction et des services administratifs, avec un audit sur place dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA qui se déplace à Plaisance-du-Touch (Haute-Garonne, 21 079 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Siège du Grand Ouest Toulousain Agglomération, la commune compte 4 497 emplois et un tissu dominé par le commerce, les services et la santé. Nous y servons en priorité les TPE et PME du commerce de détail (autour de l'hypermarché Corail), de la restauration, de la construction et des services administratifs, avec un audit sur place dès {{price:audit-flash|flat}}.",
-  seoHook: "TPE & PME · commerce, services, santé",
+    "Axion-IA est un cabinet IA qui se déplace à Plaisance-du-Touch (Haute-Garonne, 21 079 habitants) pour auditer, intervenir et implémenter du code custom chez les PME et ETI locales. Siège du Grand Ouest Toulousain Agglomération, la commune compte 4 497 emplois et un tissu dominé par le commerce, les services et la santé. Nous y servons en priorité les PME et ETI du commerce de détail (autour de l'hypermarché Corail), de la restauration, de la construction et des services administratifs, avec un audit sur place dès {{price:audit-flash|flat}}.",
+  seoHook: "PME & PME · commerce, services, santé",
   ecosystemFr:
-    "Plaisance-du-Touch siège du Grand Ouest Toulousain Agglomération, à 13 km de Toulouse. Le tissu économique compte 4 497 emplois, un taux de chômage de 7,4 % (inférieur à la moyenne nationale) et un taux d'emploi de 69 %. L'hypermarché Corail est un employeur majeur, et les TPE/PME du commerce, du transport, de la restauration et des services représentent plus de 60 % des établissements actifs de la commune.",
+    "Plaisance-du-Touch siège du Grand Ouest Toulousain Agglomération, à 13 km de Toulouse. Le tissu économique compte 4 497 emplois, un taux de chômage de 7,4 % (inférieur à la moyenne nationale) et un taux d'emploi de 69 %. L'hypermarché Corail est un employeur majeur, et les PME et ETI du commerce, du transport, de la restauration et des services représentent plus de 60 % des établissements actifs de la commune.",
   ecosystemEn:
-    "Plaisance-du-Touch siège du Grand Ouest Toulousain Agglomération, à 13 km de Toulouse. Le tissu économique compte 4 497 emplois, un taux de chômage de 7,4 % (inférieur à la moyenne nationale) et un taux d'emploi de 69 %. L'hypermarché Corail est un employeur majeur, et les TPE/PME du commerce, du transport, de la restauration et des services représentent plus de 60 % des établissements actifs de la commune.",
+    "Plaisance-du-Touch siège du Grand Ouest Toulousain Agglomération, à 13 km de Toulouse. Le tissu économique compte 4 497 emplois, un taux de chômage de 7,4 % (inférieur à la moyenne nationale) et un taux d'emploi de 69 %. L'hypermarché Corail est un employeur majeur, et les PME et ETI du commerce, du transport, de la restauration et des services représentent plus de 60 % des établissements actifs de la commune.",
   distancesFr:
     "Plaisance-du-Touch est à 13 km à l'ouest de Toulouse, à environ 15 km de la gare Toulouse-Matabiau et 10 km de l'aéroport Toulouse-Blagnac. La ligne Linéo 3 (bus à haut niveau de service) la relie à la station Arènes ; les lignes 55, 67 et 116 complètent la desserte régionale.",
   distancesEn:
@@ -32,30 +32,30 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place chez les TPE et PME de Plaisance-du-Touch dès {{price:audit-flash|flat}} : diagnostic des process commerce, restauration, construction et services, avec plan d'automatisation priorisé.",
-      en: "Audit sur place chez les TPE et PME de Plaisance-du-Touch dès {{price:audit-flash|flat}} : diagnostic des process commerce, restauration, construction et services, avec plan d'automatisation priorisé.",
+      fr: "Audit sur place chez les PME et ETI de Plaisance-du-Touch dès {{price:audit-flash|flat}} : diagnostic des process commerce, restauration, construction et services, avec plan d'automatisation priorisé.",
+      en: "Audit sur place chez les PME et ETI de Plaisance-du-Touch dès {{price:audit-flash|flat}} : diagnostic des process commerce, restauration, construction et services, avec plan d'automatisation priorisé.",
     },
     interventions: {
-      fr: "Intervention sur site à Plaisance-du-Touch dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, plannings, relances et facturation des TPE/PME locales.",
-      en: "Intervention sur site à Plaisance-du-Touch dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, plannings, relances et facturation des TPE/PME locales.",
+      fr: "Intervention sur site à Plaisance-du-Touch dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, plannings, relances et facturation des PME et ETI locales.",
+      en: "Intervention sur site à Plaisance-du-Touch dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, plannings, relances et facturation des PME et ETI locales.",
     },
     implementation: {
       fr: "Implémentation IA à Plaisance-du-Touch : connecteurs code custom entre votre caisse, votre CRM, votre logiciel de gestion et vos outils RH, sans no-code.",
       en: "Implémentation IA à Plaisance-du-Touch : connecteurs code custom entre votre caisse, votre CRM, votre logiciel de gestion et vos outils RH, sans no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
+        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de PME et ETI du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
         whyHere: [
           "Commerce de détail dominant autour de l'hypermarché Corail et des zones commerçantes du centre : c'est le terrain idéal pour une vitrine e-commerce multi-CMS, du click-and-collect et un chatbot produit qui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en heures de pointe.",
-          "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des TPE plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
-          "Construction et artisanat structurants sur la commune, portés par la croissance résidentielle de la Haute-Garonne : on greffe l'IA sur l'existant — chiffrage de devis, suivi de chantier, relances de paiement, recherche sémantique dans les pièces techniques — via widget, API ou plugin, sans imposer de refonte coûteuse aux petites structures de Cugnaux ou Fonsorbes.",
+          "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des PME plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
+          "Construction et artisanat structurants sur la commune, portés par la croissance résidentielle de la Haute-Garonne : on greffe l'IA sur l'existant — chiffrage de devis, suivi de chantier, relances de paiement, recherche sémantique dans les pièces techniques — via widget, API ou plugin, sans imposer de refonte coûteuse aux PME de Cugnaux ou Fonsorbes.",
           "Proximité immédiate de l'aéroport Toulouse-Blagnac (10 km) et de la métropole toulousaine : on construit des portails clients et des plateformes SaaS IA-native pour les sous-traitants aéronautiques et PME tech qui gravitent autour de ce pôle, avec recherche sémantique documentaire et agents d'automatisation, hébergeables en UE et conformes RGPD et AI Act.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous ou de commande — sur le site existant d'un commerçant, restaurateur ou artisan plaisançois (par exemple un restaurant du centre ou un artisan du bâtiment), en quelques semaines et sans refonte ni changement de caisse.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,11 +131,11 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, même en pleine saison commerciale autour du secteur Corail. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire toulousain ou repris en interne par vos équipes plaisançoises.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de TPE et PME du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
+        hero: "Axion-IA conçoit et augmente à Plaisance-du-Touch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville de 21 079 habitants, siège du Grand Ouest Toulousain Agglomération à 13 km à l'ouest de Toulouse, où les 4 497 emplois reposent sur un tissu de PME et ETI du commerce, de la restauration, de la construction et des services autour de l'hypermarché Corail. Reliés à Toulouse par la ligne Linéo 3 jusqu'aux Arènes, nous tenons le kick-off en présentiel à Plaisance-du-Touch puis itérons à distance. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous.",
         whyHere: [
           "Commerce de détail dominant autour de l'hypermarché Corail et des zones commerçantes du centre : c'est le terrain idéal pour une vitrine e-commerce multi-CMS, du click-and-collect et un chatbot produit qui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en heures de pointe.",
-          "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des TPE plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
-          "Construction et artisanat structurants sur la commune, portés par la croissance résidentielle de la Haute-Garonne : on greffe l'IA sur l'existant — chiffrage de devis, suivi de chantier, relances de paiement, recherche sémantique dans les pièces techniques — via widget, API ou plugin, sans imposer de refonte coûteuse aux petites structures de Cugnaux ou Fonsorbes.",
+          "Restauration et services de proximité très présents le long de la commune et de la desserte Linéo 3 : nos modules de réservation directe, de prise de commande en ligne et d'agents conversationnels multilingues allègent l'accueil téléphonique des PME plaisançoises sans toucher à leur logiciel de caisse ni à leur abonnement de livraison existant.",
+          "Construction et artisanat structurants sur la commune, portés par la croissance résidentielle de la Haute-Garonne : on greffe l'IA sur l'existant — chiffrage de devis, suivi de chantier, relances de paiement, recherche sémantique dans les pièces techniques — via widget, API ou plugin, sans imposer de refonte coûteuse aux PME de Cugnaux ou Fonsorbes.",
           "Proximité immédiate de l'aéroport Toulouse-Blagnac (10 km) et de la métropole toulousaine : on construit des portails clients et des plateformes SaaS IA-native pour les sous-traitants aéronautiques et PME tech qui gravitent autour de ce pôle, avec recherche sémantique documentaire et agents d'automatisation, hébergeables en UE et conformes RGPD et AI Act.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous ou de commande — sur le site existant d'un commerçant, restaurateur ou artisan plaisançois (par exemple un restaurant du centre ou un artisan du bâtiment), en quelques semaines et sans refonte ni changement de caisse.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -240,7 +228,7 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Plaisance-du-Touch ?",
-      a: "Principalement les TPE et PME du commerce de détail (25,8 % du tissu local avec transport et hôtellerie), de la restauration, de la construction, des transports terrestres et des services administratifs et de santé.",
+      a: "Principalement les PME et ETI du commerce de détail (25,8 % du tissu local avec transport et hôtellerie), de la restauration, de la construction, des transports terrestres et des services administratifs et de santé.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Plaisance-du-Touch ?",

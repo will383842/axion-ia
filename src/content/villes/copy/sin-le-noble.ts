@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SIN_LE_NOBLE_COPY: VilleCopy = {
   pitchFr:
-    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants.",
+    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. PME, ETI, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants.",
+    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. PME, ETI, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sin-le-Noble (59). Nous accompagnons PME et ETI : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sin-le-Noble (59). Nous accompagnons PME et ETI : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit sur place sur mesure.",
   seoHook: "bassin minier reconverti",
   ecosystemFr:
-    "Sin-le-Noble est une commune périurbaine de Douai, ancienne cité minière reconvertie après la fermeture des charbonnages. Économie portée par les ZAC, la sous-traitance automobile et ferroviaire (proximité Renault Douai et Alstom), la logistique, l'artisanat BTP et un tissu de TPE/PME de services. Patrimoine minier UNESCO et terrils reconvertis en espaces verts.",
+    "Sin-le-Noble est une commune périurbaine de Douai, ancienne cité minière reconvertie après la fermeture des charbonnages. Économie portée par les ZAC, la sous-traitance automobile et ferroviaire (proximité Renault Douai et Alstom), la logistique, l'artisanat BTP et un tissu de PME et ETI de services. Patrimoine minier UNESCO et terrils reconvertis en espaces verts.",
   ecosystemEn:
-    "Sin-le-Noble est une commune périurbaine de Douai, ancienne cité minière reconvertie après la fermeture des charbonnages. Économie portée par les ZAC, la sous-traitance automobile et ferroviaire (proximité Renault Douai et Alstom), la logistique, l'artisanat BTP et un tissu de TPE/PME de services. Patrimoine minier UNESCO et terrils reconvertis en espaces verts.",
+    "Sin-le-Noble est une commune périurbaine de Douai, ancienne cité minière reconvertie après la fermeture des charbonnages. Économie portée par les ZAC, la sous-traitance automobile et ferroviaire (proximité Renault Douai et Alstom), la logistique, l'artisanat BTP et un tissu de PME et ETI de services. Patrimoine minier UNESCO et terrils reconvertis en espaces verts.",
   distancesFr:
     "Douai à 5 min. Lille à 35 min via A1. Cambrai à 25 min. Valenciennes à 30 min. Aéroport Lille-Lesquin à 30 min. Paris à 1h10 en TGV depuis Douai.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
       en: "Implémentation IA à Sin-le-Noble : maintenance prédictive industrielle, contrôle qualité par vision, optimisation tournées logistiques, automatisation devis, chatbot SAV et accueil pour sous-traitants, PME et artisans du Douaisis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sin-le-Noble : sessions dans vos locaux, à l'atelier ou en visio. Dirigeants TPE/PME, sous-traitants industriels, artisans et commerçants du Douaisis souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Sin-le-Noble : sessions dans vos locaux, à l'atelier ou en visio. Dirigeants TPE/PME, sous-traitants industriels, artisans et commerçants du Douaisis souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Sin-le-Noble : sessions dans vos locaux, à l'atelier ou en visio. Dirigeants PME et ETI, sous-traitants industriels, artisans et commerçants du Douaisis souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Sin-le-Noble : sessions dans vos locaux, à l'atelier ou en visio. Dirigeants PME et ETI, sous-traitants industriels, artisans et commerçants du Douaisis souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sin-le-Noble  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Sin-le-Noble et du Nord, il identifie les cas d'usage IA à fort ROI pour votre atelier sous-traitant, PME logistique, artisan BTP ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Sin-le-Noble et du Nord, il identifie les cas d'usage IA à fort ROI pour votre atelier sous-traitant, PME logistique, artisan BTP ou commerce.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile et ferroviaire du Douaisis ?",

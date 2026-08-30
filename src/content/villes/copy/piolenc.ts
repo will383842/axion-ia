@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PIOLENC_COPY: VilleCopy = {
   pitchFr:
-    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
+    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de PME artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
+    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de PME artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : PME artisanales et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : PME artisanales et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit sur place sur mesure.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Piolenc est un pôle agricole de la vallée du Rhône, capitale de l'ail (Foire à l'ail annuelle). Agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, coopératives agricoles. Tissu de TPE artisans, exploitations agricoles familiales, PME agroalimentaires et commerces. Orange à 10 min, Avignon à 35 min, A7 directe.",
+    "Piolenc est un pôle agricole de la vallée du Rhône, capitale de l'ail (Foire à l'ail annuelle). Agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, coopératives agricoles. Tissu de PME artisanales, exploitations agricoles familiales, PME agroalimentaires et commerces. Orange à 10 min, Avignon à 35 min, A7 directe.",
   ecosystemEn:
-    "Piolenc est un pôle agricole de la vallée du Rhône, capitale de l'ail (Foire à l'ail annuelle). Agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, coopératives agricoles. Tissu de TPE artisans, exploitations agricoles familiales, PME agroalimentaires et commerces. Orange à 10 min, Avignon à 35 min, A7 directe.",
+    "Piolenc est un pôle agricole de la vallée du Rhône, capitale de l'ail (Foire à l'ail annuelle). Agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, coopératives agricoles. Tissu de PME artisanales, exploitations agricoles familiales, PME agroalimentaires et commerces. Orange à 10 min, Avignon à 35 min, A7 directe.",
   distancesFr:
     "Orange à 10 min via A7. Avignon à 35 min. Gare TGV Avignon à 40 min. Aéroport Marseille-Provence à 1 h 20. Bollène à 15 min. A7 sortie Orange-Centre à 10 min.",
   distancesEn:
@@ -25,25 +25,25 @@ export const PIOLENC_COPY: VilleCopy = {
     "Agriculture & maraîchage (ail, fruits)",
     "Viticulture Côtes-du-Rhône",
     "PME agroalimentaires & coopératives",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce & services de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Piolenc : diagnostic adapté aux PME artisanales, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Piolenc : diagnostic adapté aux PME artisanales, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Piolenc : traçabilité parcellaire ail et maraîchage, gestion vendanges, automatisation devis exploitants, outils prédictifs coopératives, gestion commerciale B2B circuits courts. Adapté TPE/PME vallée du Rhône.",
-      en: "Implémentation IA à Piolenc : traçabilité parcellaire ail et maraîchage, gestion vendanges, automatisation devis exploitants, outils prédictifs coopératives, gestion commerciale B2B circuits courts. Adapté TPE/PME vallée du Rhône.",
+      fr: "Implémentation IA à Piolenc : traçabilité parcellaire ail et maraîchage, gestion vendanges, automatisation devis exploitants, outils prédictifs coopératives, gestion commerciale B2B circuits courts. Adapté PME et ETI vallée du Rhône.",
+      en: "Implémentation IA à Piolenc : traçabilité parcellaire ail et maraîchage, gestion vendanges, automatisation devis exploitants, outils prédictifs coopératives, gestion commerciale B2B circuits courts. Adapté PME et ETI vallée du Rhône.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Piolenc : sessions dans vos locaux ou en visio. Dirigeants TPE/PME agriculture, viticulture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
-      en: "Coaching 1-to-1 à Piolenc : sessions dans vos locaux ou en visio. Dirigeants TPE/PME agriculture, viticulture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
+      fr: "Coaching 1-to-1 à Piolenc : sessions dans vos locaux ou en visio. Dirigeants PME et ETI agriculture, viticulture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
+      en: "Coaching 1-to-1 à Piolenc : sessions dans vos locaux ou en visio. Dirigeants PME et ETI agriculture, viticulture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const PIOLENC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Piolenc  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Piolenc ?",

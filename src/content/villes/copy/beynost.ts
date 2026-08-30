@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BEYNOST_COPY: VilleCopy = {
   pitchFr:
-    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME beynostaines, les ETI en complément.",
+    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI beynostaines, les grands groupes en complément.",
   pitchEn:
-    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME beynostaines, les ETI en complément.",
+    "Beynost (01), commune de la Côtière de l'Ain aux portes nord-est de Lyon, concentre zones logistiques, PMI de la Plaine de l'Ain, artisans BTP, commerces et professions libérales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI beynostaines, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les TPE et PME locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les PME et ETI locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les TPE et PME locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Beynost et sur toute la Côtière de l'Ain. Nous accompagnons en priorité les PME et ETI locales — plateformes logistiques, PMI de la Plaine de l'Ain, artisans du BTP, commerces de proximité et professions libérales — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "logistique, PMI & artisanat",
   ecosystemFr:
-    "Beynost s'inscrit dans la dynamique logistique et industrielle de la Côtière et de la Plaine de l'Ain, dopée par la proximité de Lyon. Le tissu est fait de TPE et PME : entrepôts, PMI, artisans du BTP, commerces et professions libérales.",
+    "Beynost s'inscrit dans la dynamique logistique et industrielle de la Côtière et de la Plaine de l'Ain, dopée par la proximité de Lyon. Le tissu est fait de PME et ETI : entrepôts, PMI, artisans du BTP, commerces et professions libérales.",
   ecosystemEn:
-    "Beynost s'inscrit dans la dynamique logistique et industrielle de la Côtière et de la Plaine de l'Ain, dopée par la proximité de Lyon. Le tissu est fait de TPE et PME : entrepôts, PMI, artisans du BTP, commerces et professions libérales.",
+    "Beynost s'inscrit dans la dynamique logistique et industrielle de la Côtière et de la Plaine de l'Ain, dopée par la proximité de Lyon. Le tissu est fait de PME et ETI : entrepôts, PMI, artisans du BTP, commerces et professions libérales.",
   distancesFr:
     "Gare de Beynost sur la ligne Lyon-Ambérieu. Lyon Part-Dieu à 20 min, aéroport Lyon-Saint-Exupéry à 20 min. Miribel à 5 min, Montluel à 10 min, Meximieux à 20 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BEYNOST_COPY: VilleCopy = {
       en: "Implémentation IA à Beynost : optimisation des flux et de la préparation de commandes en logistique, maintenance prédictive en PMI, automatisation administrative pour artisans et libéraux de la Côtière.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Beynost : sessions dans votre entrepôt, atelier, cabinet ou en visio pour les dirigeants de TPE/PME — logisticiens, industriels, artisans, libéraux et commerçants de la Côtière de l'Ain.",
-      en: "Coaching un-à-un à Beynost : sessions dans votre entrepôt, atelier, cabinet ou en visio pour les dirigeants de TPE/PME — logisticiens, industriels, artisans, libéraux et commerçants de la Côtière de l'Ain.",
+      fr: "Coaching un-à-un à Beynost : sessions dans votre entrepôt, atelier, cabinet ou en visio pour les dirigeants de PME et ETI — logisticiens, industriels, artisans, libéraux et commerçants de la Côtière de l'Ain.",
+      en: "Coaching un-à-un à Beynost : sessions dans votre entrepôt, atelier, cabinet ou en visio pour les dirigeants de PME et ETI — logisticiens, industriels, artisans, libéraux et commerçants de la Côtière de l'Ain.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Beynost : portails clients et espaces de suivi avec IA intégrée pour logisticiens, PMI et artisans de la Côtière — suivi de commandes, devis assisté, base documentaire interrogeable.",
@@ -53,7 +53,7 @@ export const BEYNOST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beynost et sur la Côtière de l'Ain ?",
-      a: "Oui, Axion-IA se déplace sur site à Beynost, Miribel, Montluel, Meximieux et toute la Côtière. Consultants venant de Lyon (20 min). Priorité aux TPE et PME, ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Beynost, Miribel, Montluel, Meximieux et toute la Côtière. Consultants venant de Lyon (20 min). Priorité aux PME et ETI, grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les plateformes logistiques de la Côtière ?",
@@ -61,7 +61,7 @@ export const BEYNOST_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PMI de la Plaine de l'Ain ?",
-      a: "Oui, c'est un secteur prioritaire. Maintenance prédictive, contrôle qualité assisté et automatisation des devis, adaptés aux ateliers de TPE/PME industrielles de la Plaine de l'Ain.",
+      a: "Oui, c'est un secteur prioritaire. Maintenance prédictive, contrôle qualité assisté et automatisation des devis, adaptés aux ateliers de PME et ETI industrielles de la Plaine de l'Ain.",
     },
     {
       q: "Aidez-vous les artisans et professions libérales beynostains ?",
@@ -69,7 +69,7 @@ export const BEYNOST_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une grande structure pour travailler avec Axion-IA à Beynost ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME de la Côtière. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les PME et ETI de la Côtière. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

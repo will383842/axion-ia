@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROYAN_COPY: VilleCopy = {
   pitchFr:
-    "Royan (17), station balnéaire emblématique de la Côte de Beauté en Charente-Maritime, architecture moderniste des années 50, estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, conchyliculture, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin royannais.",
+    "Royan (17), station balnéaire emblématique de la Côte de Beauté en Charente-Maritime, architecture moderniste des années 50, estuaire de la Gironde. Tissu de PME artisanales, PME tourisme et hôtellerie, commerces saisonniers, conchyliculture, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin royannais.",
   pitchEn:
-    "Royan (17), station balnéaire emblématique de la Côte de Beauté en Charente-Maritime, architecture moderniste des années 50, estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, conchyliculture, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin royannais.",
+    "Royan (17), station balnéaire emblématique de la Côte de Beauté en Charente-Maritime, architecture moderniste des années 50, estuaire de la Gironde. Tissu de PME artisanales, PME tourisme et hôtellerie, commerces saisonniers, conchyliculture, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin royannais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Royan (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Royan (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Royan (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Royan (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professionnels de la conchyliculture, indépendants et services de la Côte de Beauté.",
   seoHook: "bassin royannais",
   ecosystemFr:
-    "Royan est une station balnéaire majeure de la Côte de Beauté, classée pour son architecture moderniste des années 50. Économie touristique (hôtellerie, restauration, plages), conchyliculture estuaire de la Gironde, commerces saisonniers, TPE artisans BTP, PME services, professions libérales. Bac Royan-Le Verdon reliant la Gironde.",
+    "Royan est une station balnéaire majeure de la Côte de Beauté, classée pour son architecture moderniste des années 50. Économie touristique (hôtellerie, restauration, plages), conchyliculture estuaire de la Gironde, commerces saisonniers, PME du BTP, PME services, professions libérales. Bac Royan-Le Verdon reliant la Gironde.",
   ecosystemEn:
-    "Royan est une station balnéaire majeure de la Côte de Beauté, classée pour son architecture moderniste des années 50. Économie touristique (hôtellerie, restauration, plages), conchyliculture estuaire de la Gironde, commerces saisonniers, TPE artisans BTP, PME services, professions libérales. Bac Royan-Le Verdon reliant la Gironde.",
+    "Royan est une station balnéaire majeure de la Côte de Beauté, classée pour son architecture moderniste des années 50. Économie touristique (hôtellerie, restauration, plages), conchyliculture estuaire de la Gironde, commerces saisonniers, PME du BTP, PME services, professions libérales. Bac Royan-Le Verdon reliant la Gironde.",
   distancesFr:
     "Gare de Royan (TER Nouvelle-Aquitaine, Saintes 35 min). Saintes à 35 min voiture. La Rochelle à 1h10 (A837/N137). Bordeaux à 1h40 (bac Le Verdon ou A10). Aéroport Bordeaux-Mérignac à 1h40.",
   distancesEn:
@@ -25,13 +25,13 @@ export const ROYAN_COPY: VilleCopy = {
     "Tourisme & hôtellerie-restauration",
     "Commerce saisonnier & de centre-ville",
     "Conchyliculture & produits de la mer",
-    "TPE artisanat BTP & patrimoine",
+    "PME du BTP & patrimoine",
     "Services & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et PME et ETI de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et PME et ETI de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Royan : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier, au parc ostréicole ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const ROYAN_COPY: VilleCopy = {
       en: "Implémentation IA à Royan : automatisation yield management hôtelier, agents conversationnels accueil touristique multilingue, prédiction fréquentation plages, gestion stocks restauration saisonnière.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Royan : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE/PME tourisme, hôteliers, restaurateurs et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Royan : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE/PME tourisme, hôteliers, restaurateurs et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Royan : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME et ETI tourisme, hôteliers, restaurateurs et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Royan : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME et ETI tourisme, hôteliers, restaurateurs et commerçants de la Côte de Beauté souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

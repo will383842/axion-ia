@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NORT_SUR_ERDRE_COPY: VilleCopy = {
   pitchFr:
-    "Nort-sur-Erdre (44), commune de Loire-Atlantique sur les bords de l'Erdre (« plus belle rivière de France » selon François Ier) et le canal de Nantes à Brest, est un bourg dynamique au nord de Nantes. Tissu de TPE artisans BTP, PME agroalimentaires, exploitations agricoles, commerces et tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
+    "Nort-sur-Erdre (44), commune de Loire-Atlantique sur les bords de l'Erdre (« plus belle rivière de France » selon François Ier) et le canal de Nantes à Brest, est un bourg dynamique au nord de Nantes. Tissu de PME du BTP, PME agroalimentaires, exploitations agricoles, commerces et tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Nort-sur-Erdre (44), commune de Loire-Atlantique sur les bords de l'Erdre (« plus belle rivière de France » selon François Ier) et le canal de Nantes à Brest, est un bourg dynamique au nord de Nantes. Tissu de TPE artisans BTP, PME agroalimentaires, exploitations agricoles, commerces et tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
+    "Nort-sur-Erdre (44), commune de Loire-Atlantique sur les bords de l'Erdre (« plus belle rivière de France » selon François Ier) et le canal de Nantes à Brest, est un bourg dynamique au nord de Nantes. Tissu de PME du BTP, PME agroalimentaires, exploitations agricoles, commerces et tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nort-sur-Erdre (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles (élevage, polyculture), commerçants de centre-bourg, professions libérales, acteurs du tourisme fluvial Erdre et services aux entreprises du nord nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nort-sur-Erdre (44). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, exploitants agricoles (élevage, polyculture), commerçants de centre-bourg, professions libérales, acteurs du tourisme fluvial Erdre et services aux entreprises du nord nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nort-sur-Erdre (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles (élevage, polyculture), commerçants de centre-bourg, professions libérales, acteurs du tourisme fluvial Erdre et services aux entreprises du nord nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nort-sur-Erdre (44). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, exploitants agricoles (élevage, polyculture), commerçants de centre-bourg, professions libérales, acteurs du tourisme fluvial Erdre et services aux entreprises du nord nantais.",
   seoHook: "agroalimentaire élevage & tourisme fluvial",
   ecosystemFr:
     "Nort-sur-Erdre est un bourg-centre du nord Loire-Atlantique positionné au confluent de l'Erdre et du canal de Nantes à Brest. L'Erdre, surnommée « plus belle rivière de France » par François Ier, attire un tourisme fluvial notable. Gare TER sur la ligne Nantes-Châteaubriant. Économie : agroalimentaire, élevage bovin/laitier, artisanat BTP, commerces de bourg, services.",
@@ -23,15 +23,15 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
     "Gare Nort-sur-Erdre (TER Nantes-Châteaubriant, 25 min Nantes). Aéroport Nantes-Atlantique à 40 min. Nantes centre à 30 min (D178). Châteaubriant à 30 min.",
   topSectorsNaf: [
     "Agroalimentaire & élevage bovin/laitier",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Tourisme fluvial Erdre & canal Nantes-Brest",
     "Commerce de centre-bourg",
     "Services & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux PME artisanales, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux PME artisanales, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nort-sur-Erdre : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou base nautique Erdre. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
       en: "Implémentation IA à Nort-sur-Erdre : traçabilité élevage/laitier, optimisation planning récoltes, agents conversationnels tourisme fluvial Erdre, automatisation devis BTP, gestion réservations nautiques.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Nort-sur-Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME agroalimentaires, éleveurs, artisans BTP, acteurs tourisme Erdre, gérants TPE.",
-      en: "Coaching 1-to-1 à Nort-sur-Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME agroalimentaires, éleveurs, artisans BTP, acteurs tourisme Erdre, gérants TPE.",
+      fr: "Coaching 1-to-1 à Nort-sur-Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME agroalimentaires, éleveurs, artisans BTP, acteurs tourisme Erdre, gérants PME.",
+      en: "Coaching 1-to-1 à Nort-sur-Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME agroalimentaires, éleveurs, artisans BTP, acteurs tourisme Erdre, gérants PME.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme fluvial sur l'Erdre et le canal de Nantes à Brest à Nort-sur-Erdre sur leurs cas IA : agents conversationnels réservations, automatisation planning locations bateaux, classification feedback visiteurs.",
     },
     {
-      q: "Quels services pour les TPE artisans et agriculteurs ?",
-      a: "Pour les TPE artisans BTP et agriculteurs à Nort-sur-Erdre, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion planning et stocks.",
+      q: "Quels services pour les PME artisanales et agriculteurs ?",
+      a: "Pour les PME du BTP et agriculteurs à Nort-sur-Erdre, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion planning et stocks.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

@@ -8,7 +8,7 @@
 //   - Aucun prix hardcodé : tous les tarifs viennent de `src/content/pricing.ts`
 //     (source de vérité unique, futur admin Sprint 20).
 //   - Pas de mention de métier-type (plombier, comptable, etc.) — on parle
-//     systématiquement en tailles d'entreprise INSEE (TPE / PME / ETI / GE).
+//     systématiquement en tailles d'entreprise INSEE (PME/ETI/GE).
 //   - Blocs longs cassés en bullets, vocabulaire accessible non technique.
 //
 // Doctrine page mère + pages dédiées :
@@ -24,7 +24,7 @@ export const PARIS_COPY: VilleCopy = {
   pitchFr:
     "Paris concentre 215 000 entreprises actives toutes tailles confondues, l'écosystème IA français (Mistral, Hugging Face, Station F) et le tissu B2B le plus dense du pays. Axion-IA y intervient sur site, des indépendants parisiens aux directions IA des grandes entreprises de La Défense.",
   pitchEn:
-    "Paris hosts 215,000 active businesses of every size, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. Axion-IA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
+    "Paris hosts 215,000 active businesses of the full range, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. Axion-IA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
 
   seoHook: "finance, conseil & deeptech",
 
@@ -52,7 +52,7 @@ export const PARIS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack après notre mission — aucun verrou technologique ni dépendance contractuelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les PME, ETI et grands groupes parisiens (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack après notre mission — aucun verrou technologique ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -82,7 +82,7 @@ export const PARIS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
         whyHere: [
           "Paris est notre premier pôle d'intervention : la majorité de nos audits y sont déclenchés.",
           "Tissu B2B parisien sur-représenté chez nos clients : cabinets d'expertise comptable, family offices, asset managers, conseil 8e/9e/16e, scale-ups Sentier-République, maisons de mode Marais.",
@@ -121,12 +121,6 @@ export const PARIS_COPY: VilleCopy = {
         // Pricing référence pricing.ts via la page de rendu — ici uniquement
         // les libellés contextuels, sans valeurs chiffrées en dur.
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets parisiens jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -190,7 +184,7 @@ export const PARIS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est exécutable par vos équipes en interne ou par tout prestataire de votre choix — pas de verrou Axion-IA, pas de prestation continue obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
         whyHere: [
           "Paris is our top engagement hub: most of our audits originate there.",
           "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, 8th/9th/16th consulting, Sentier-République scale-ups, Marais fashion houses.",
@@ -227,11 +221,6 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail: "Suited to Paris freelancers, micro-firms and practices up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -334,12 +323,6 @@ export const PARIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, cabinets, agences parisiennes jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -439,11 +422,6 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail: "Ideal Paris freelancers, firms, agencies up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -547,12 +525,6 @@ export const PARIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines (lecture factures, comptes-rendus, qualification leads).",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -588,7 +560,7 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Paris ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -652,12 +624,6 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks (invoice reading, meeting minutes, lead qualification).",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -761,12 +727,6 @@ export const PARIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Pour les indépendants, consultants et dirigeants de micro-entreprises parisiennes souhaitant gagner en efficacité IA sur leurs tâches quotidiennes.",
-          },
-          {
             sizeLabel: "PME",
             price: "Forfait PME 1-to-1",
             detail:
@@ -867,12 +827,6 @@ export const PARIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
-            detail:
-              "For Paris freelancers, consultants and micro-business owners who want to gain AI efficiency on their daily tasks.",
-          },
-          {
             sizeLabel: "SME",
             price: "SME 1-to-1 package",
             detail:
@@ -942,7 +896,7 @@ export const PARIS_COPY: VilleCopy = {
           "Projets web & SaaS parisiens : éditeurs de logiciel, scale-ups du Sentier, conseil 8e/9e, e-commerce et mode du Marais.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA.",
           "Augmentation de l'existant (widget, API, plugin) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois.",
-          "De la TPE qui greffe un chatbot à l'ETI qui refond sa plateforme métier : on s'adapte à votre échelle.",
+          "De la PME qui greffe un chatbot à l'ETI qui refond sa plateforme métier : on s'adapte à votre échelle.",
         ],
         methodology: [
           {
@@ -972,12 +926,6 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -1059,12 +1007,6 @@ export const PARIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1114,7 +1056,7 @@ export const PARIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Paris ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Sur place pour les TPE indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour La Défense et les groupes du CAC 40. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Sur place pour les PME indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour La Défense et les groupes du CAC 40. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
     },
     {
       q: "Avez-vous des cas clients à Paris ?",

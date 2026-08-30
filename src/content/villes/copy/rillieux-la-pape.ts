@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
   pitchFr:
-    "Rillieux-la-Pape (69), commune du plateau nord-est de la Métropole de Lyon, mêle zones industrielles, logistique et tissu résidentiel. Son économie repose sur des PME industrielles et logistiques, des TPE artisanales du BTP, des commerces et des services aux entreprises. Axion-IA accompagne en priorité les TPE puis les PME rilliardes.",
+    "Rillieux-la-Pape (69), commune du plateau nord-est de la Métropole de Lyon, mêle zones industrielles, logistique et tissu résidentiel. Son économie repose sur des PME industrielles et logistiques, des PME artisanales du BTP, des commerces et des services aux entreprises. Axion-IA accompagne en priorité les PME puis les ETI rilliardes.",
   pitchEn:
-    "Rillieux-la-Pape (69), commune du plateau nord-est de la Métropole de Lyon, mêle zones industrielles, logistique et tissu résidentiel. Son économie repose sur des PME industrielles et logistiques, des TPE artisanales du BTP, des commerces et des services aux entreprises. Axion-IA accompagne en priorité les TPE puis les PME rilliardes.",
+    "Rillieux-la-Pape (69), commune du plateau nord-est de la Métropole de Lyon, mêle zones industrielles, logistique et tissu résidentiel. Son économie repose sur des PME industrielles et logistiques, des PME artisanales du BTP, des commerces et des services aux entreprises. Axion-IA accompagne en priorité les PME puis les ETI rilliardes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rillieux-la-Pape (69) auprès des TPE en priorité, puis des PME : industrie et sous-traitance, logistique et transport, artisans du BTP, commerces et services aux entreprises du nord-est lyonnais. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rillieux-la-Pape (69) auprès des PME en priorité, puis des PME : industrie et sous-traitance, logistique et transport, artisans du BTP, commerces et services aux entreprises du nord-est lyonnais. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rillieux-la-Pape (69) auprès des TPE en priorité, puis des PME : industrie et sous-traitance, logistique et transport, artisans du BTP, commerces et services aux entreprises du nord-est lyonnais. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rillieux-la-Pape (69) auprès des PME en priorité, puis des PME : industrie et sous-traitance, logistique et transport, artisans du BTP, commerces et services aux entreprises du nord-est lyonnais. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   seoHook: "industrie & logistique nord lyon",
   ecosystemFr:
-    "Rillieux-la-Pape s'inscrit dans la Métropole de Lyon, sur le plateau nord-est, avec des zones d'activités industrielles et logistiques structurantes. Le tissu local mêle PME industrielles et de transport, sous-traitance mécanique, TPE artisanales du bâtiment, commerces de proximité et services aux entreprises. Proximité immédiate de Lyon offrant un accès direct aux donneurs d'ordre métropolitains.",
+    "Rillieux-la-Pape s'inscrit dans la Métropole de Lyon, sur le plateau nord-est, avec des zones d'activités industrielles et logistiques structurantes. Le tissu local mêle PME industrielles et de transport, sous-traitance mécanique, PME artisanales du bâtiment, commerces de proximité et services aux entreprises. Proximité immédiate de Lyon offrant un accès direct aux donneurs d'ordre métropolitains.",
   ecosystemEn:
-    "Rillieux-la-Pape s'inscrit dans la Métropole de Lyon, sur le plateau nord-est, avec des zones d'activités industrielles et logistiques structurantes. Le tissu local mêle PME industrielles et de transport, sous-traitance mécanique, TPE artisanales du bâtiment, commerces de proximité et services aux entreprises. Proximité immédiate de Lyon offrant un accès direct aux donneurs d'ordre métropolitains.",
+    "Rillieux-la-Pape s'inscrit dans la Métropole de Lyon, sur le plateau nord-est, avec des zones d'activités industrielles et logistiques structurantes. Le tissu local mêle PME industrielles et de transport, sous-traitance mécanique, PME artisanales du bâtiment, commerces de proximité et services aux entreprises. Proximité immédiate de Lyon offrant un accès direct aux donneurs d'ordre métropolitains.",
   distancesFr:
     "Lyon centre à 20 min. Gare TGV Lyon Part-Dieu à 15 min. Aéroport Lyon-Saint-Exupéry à 30 min. Caluire-et-Cuire à 10 min. Périphérique nord immédiat.",
   distancesEn:
@@ -30,8 +30,8 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rillieux-la-Pape : diagnostic pour PME industrielles, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
-      en: "Audit IA à Rillieux-la-Pape : diagnostic pour PME industrielles, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      fr: "Audit IA à Rillieux-la-Pape : diagnostic pour PME industrielles, acteurs logistiques et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Rillieux-la-Pape : diagnostic pour PME industrielles, acteurs logistiques et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rillieux-la-Pape : formats adaptés à l'atelier, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
@@ -42,8 +42,8 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
       en: "Implémentation IA à Rillieux-la-Pape : optimisation logistique et tournées, prédiction de maintenance, contrôle qualité par vision, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rillieux-la-Pape : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME rilliardes.",
-      en: "Coaching 1-to-1 à Rillieux-la-Pape : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME rilliardes.",
+      fr: "Coaching 1-to-1 à Rillieux-la-Pape : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME rilliardes.",
+      en: "Coaching 1-to-1 à Rillieux-la-Pape : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME rilliardes.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Rillieux-la-Pape : plateformes et outils SaaS IA sur mesure — portails clients, suivi de livraison, devis en ligne et catalogues connectés à vos process.",
@@ -53,12 +53,12 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Rillieux-la-Pape, sur le plateau nord-est de la Métropole de Lyon, est un territoire de production : quatre zones d'activité — PERICA (près de 300 entreprises et 5 000 emplois, industrie et services aux entreprises), Sermenaz (PME et services près de l'A46), Champ du Roy (commerce et artisanat, dont Castorama) et le futur quartier Ostérode (15 ha sur ancienne friche militaire, environ 1 000 emplois visés d'ici 2028). Axion-IA y conçoit des sites web et des plateformes SaaS augmentées par l'IA pour ce tissu de TPE et PME industrielles, logistiques et artisanales — sous-traitance mécanique, transport, BTP, commerce de proximité — avec un code sur mesure, un hébergement en Union européenne conforme au RGPD et zéro verrou éditeur.",
+        hero: "Rillieux-la-Pape, sur le plateau nord-est de la Métropole de Lyon, est un territoire de production : quatre zones d'activité — PERICA (près de 300 entreprises et 5 000 emplois, industrie et services aux entreprises), Sermenaz (PME et services près de l'A46), Champ du Roy (commerce et artisanat, dont Castorama) et le futur quartier Ostérode (15 ha sur ancienne friche militaire, environ 1 000 emplois visés d'ici 2028). Axion-IA y conçoit des sites web et des plateformes SaaS augmentées par l'IA pour ce tissu de PME et ETI industrielles, logistiques et artisanales — sous-traitance mécanique, transport, BTP, commerce de proximité — avec un code sur mesure, un hébergement en Union européenne conforme au RGPD et zéro verrou éditeur.",
         whyHere: [
           "Le tissu rilliard est dominé par la production et la sous-traitance : des ateliers de mécanique de précision comme Monin Mécanique (armement, hydraulique, aéronautique, spatial) aux industriels de PERICA (Cotelle, Gravotech Marking, Petavit). Pour eux, un site web n'est pas une vitrine décorative mais un portail de devis, de suivi de commande et de catalogue technique connecté à l'atelier.",
           "La logistique et le transport structurent le plateau, à l'intersection de l'A46, l'A6 et l'A42 avec le périphérique nord immédiat. Nous construisons des outils SaaS de suivi de livraison, de planification de tournées et de portail transporteur, calibrés pour les flux d'entrepôt de la zone (Champ du Roy, Castorama).",
           "Le quartier Ostérode (Pro Urba, Axesspack, Xefi, Monin Mécanique actés, desserte ligne C5 et Voie Lyonnaise n°7) fait émerger une nouvelle génération de locaux mixtes artisanat–bureaux–services. Les jeunes structures qui s'y implantent ont besoin d'un site et d'outils numériques dès leur arrivée, pas dans deux ans.",
-          "Les commerces et artisans de proximité de Rillieux (plus de 200 enseignes, BTP, services) cherchent une présence en ligne simple : prise de rendez-vous, devis automatisé, fiche Google et e-commerce léger. Nous livrons des sites multi-CMS (WordPress, Shopify, ou code sur mesure) adaptés à une TPE, pas une usine à gaz.",
+          "Les commerces et artisans de proximité de Rillieux (plus de 200 enseignes, BTP, services) cherchent une présence en ligne simple : prise de rendez-vous, devis automatisé, fiche Google et e-commerce léger. Nous livrons des sites multi-CMS (WordPress, Shopify, ou code sur mesure) adaptés à une PME, pas une usine à gaz.",
         ],
         methodology: [
           {
@@ -69,7 +69,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           {
             step: "Maquette UX/UI et arborescence",
             detail:
-              "Conception des écrans mobiles d'abord (vos clients et vos équipes terrain consultent au téléphone), parcours de devis ou de catalogue, et choix de la stack : multi-CMS pour une vitrine de TPE, code sur mesure pour un portail métier connecté à votre gestion.",
+              "Conception des écrans mobiles d'abord (vos clients et vos équipes terrain consultent au téléphone), parcours de devis ou de catalogue, et choix de la stack : multi-CMS pour une vitrine de PME, code sur mesure pour un portail métier connecté à votre gestion.",
           },
           {
             step: "Développement et intégration IA",
@@ -88,12 +88,6 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce léger",
-            detail:
-              "Pour les artisans du BTP, commerces de proximité et indépendants de Rillieux : site mobile-first, prise de rendez-vous, devis en ligne, fiche Google et e-commerce léger multi-CMS, avec une brique IA simple (chatbot, génération de devis).",
-          },
           {
             sizeLabel: "PME",
             price: "Portail métier ou plateforme SaaS",
@@ -127,8 +121,8 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
             a: "Oui. Sur un plateau structuré par la logistique (A46/A6/A42, zones Champ du Roy avec Castorama), nous développons des SaaS de suivi de livraison, de planification de tournées, des portails transporteurs et de l'e-commerce multi-CMS (WordPress, Shopify ou code sur mesure) connectés à vos flux d'entrepôt.",
           },
           {
-            q: "Travaillez-vous avec les TPE, artisans et commerces de proximité de Rillieux ?",
-            a: "Oui, les TPE sont une priorité. Rillieux compte plus de 200 commerçants et artisans. Nous livrons des sites mobile-first simples — prise de rendez-vous, devis automatisé par IA, fiche Google, e-commerce léger — adaptés à une petite structure du BTP ou du commerce, sans complexité inutile.",
+            q: "Travaillez-vous avec les PME, artisans et commerces de proximité de Rillieux ?",
+            a: "Oui, les PME sont une priorité. Rillieux compte plus de 200 commerçants et artisans. Nous livrons des sites mobile-first simples — prise de rendez-vous, devis automatisé par IA, fiche Google, e-commerce léger — adaptés à une PME du BTP ou du commerce, sans complexité inutile.",
           },
           {
             q: "Où sont hébergées les données et qui garde la main après la livraison ?",
@@ -174,12 +168,6 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or light e-commerce",
-            detail:
-              "For Rillieux tradespeople, local shops and freelancers: mobile-first site, booking, online quotes, Google listing and light multi-CMS e-commerce, with a simple AI block (chatbot, quote generation).",
-          },
           {
             sizeLabel: "SME",
             price: "Business portal or SaaS platform",
@@ -237,8 +225,8 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
       a: "Oui, optimisation des tournées, prédiction de maintenance, contrôle qualité par vision et automatisation administrative pour l'industrie et la logistique du plateau nord.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans et commerces de Rillieux ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      q: "Travaillez-vous avec les PME de l'artisanat et du commerce de Rillieux ?",
+      a: "Oui, les PME sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour les prestataires de services aux entreprises ?",

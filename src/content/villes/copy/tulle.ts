@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TULLE_COPY: VilleCopy = {
   pitchFr:
-    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu PME et ETI commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu PME et ETI commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tulle (19). Nous accompagnons PME et ETI du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tulle (19). Nous accompagnons PME et ETI du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Tulle, préfecture de la Corrèze, est connue pour sa dentelle (manufacture historique), sa manufacture d'armes (GIAT/Nexter) et son festival de l'accordéon (Nuits de Nacre). Économie diversifiée : services publics (préfecture, hôpital), commerce de proximité, artisanat, agroalimentaire (élevage limousin, noix, pommes) et tourisme vert en vallée de la Corrèze.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const TULLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Tulle : diagnostic adapté aux PME et ETI du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tulle : diagnostic adapté aux PME et ETI du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tulle : formations pratiques adaptées au commerce, à l'artisanat et aux services publics corréziens. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const TULLE_COPY: VilleCopy = {
       en: "Implémentation IA à Tulle : automatisation administrative, gestion stock commerce, traçabilité agroalimentaire, optimisation accueil tourisme vert, outils IA sur mesure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tulle : sessions adaptées dirigeants TPE/PME, commerçants, artisans et gérants d'exploitations agroalimentaires corréziennes.",
-      en: "Coaching 1-to-1 à Tulle : sessions adaptées dirigeants TPE/PME, commerçants, artisans et gérants d'exploitations agroalimentaires corréziennes.",
+      fr: "Coaching 1-to-1 à Tulle : sessions adaptées dirigeants de PME et d'ETI, commerçants, artisans et gérants d'exploitations agroalimentaires corréziennes.",
+      en: "Coaching 1-to-1 à Tulle : sessions adaptées dirigeants de PME et d'ETI, commerçants, artisans et gérants d'exploitations agroalimentaires corréziennes.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const TULLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Tulle  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME corréziennes. Tarifs publics et transparents.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI corréziennes. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les entreprises agroalimentaires à Tulle ?",

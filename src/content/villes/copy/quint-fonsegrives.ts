@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
   pitchFr:
-    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y travaille avec les organisations du territoire de la couronne est de Toulouse.",
+    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu PME de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y travaille avec les organisations du territoire de la couronne est de Toulouse.",
   pitchEn:
-    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y travaille avec les organisations du territoire de la couronne est de Toulouse.",
+    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu PME de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y travaille avec les organisations du territoire de la couronne est de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quint-Fonsegrives (31). Nous accompagnons PME de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quint-Fonsegrives (31). Nous accompagnons PME de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil gestion",
   ecosystemFr:
-    "Quint-Fonsegrives est une commune résidentielle verdoyante de l'est de Toulouse. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie prisé, proximité Balma et Saint-Orens.",
+    "Quint-Fonsegrives est une commune résidentielle verdoyante de l'est de Toulouse. Tissu PME de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie prisé, proximité Balma et Saint-Orens.",
   ecosystemEn:
-    "Quint-Fonsegrives est une commune résidentielle verdoyante de l'est de Toulouse. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie prisé, proximité Balma et Saint-Orens.",
+    "Quint-Fonsegrives est une commune résidentielle verdoyante de l'est de Toulouse. Tissu PME de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie prisé, proximité Balma et Saint-Orens.",
   distancesFr:
     "Toulouse centre à 12 min (D2). Gare Matabiau à 18 min. Aéroport Toulouse-Blagnac à 28 min. Balma à 5 min. Saint-Orens à 8 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux PME de services, PME tertiaires et professions libérales de l'est Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux PME de services, PME tertiaires et professions libérales de l'est Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quint-Fonsegrives : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
       en: "Implémentation IA à Quint-Fonsegrives : automatisation gestion documentaire, agents conversationnels, classification courriers, reporting pour PME de l'est Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Quint-Fonsegrives : sessions dirigeants TPE et PME de l'est toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Quint-Fonsegrives : sessions dirigeants TPE et PME de l'est toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Quint-Fonsegrives : sessions dirigeants PME et ETI de l'est toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Quint-Fonsegrives : sessions dirigeants PME et ETI de l'est toulousain, dans vos locaux ou en visio.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Quint-Fonsegrives ?",
-      a: "Nous accompagnons tous types d'activités : professions libérales, TPE de services, PME tertiaires, commerces, artisans. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : professions libérales, PME de services, PME tertiaires, commerces, artisans. Aucun secteur exclu.",
     },
     {
       q: "Combien coûte un audit IA à Quint-Fonsegrives  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Quint-Fonsegrives ?",
@@ -65,7 +65,7 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Quint-Fonsegrives ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

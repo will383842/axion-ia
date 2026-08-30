@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_COLOMBES_COPY: VilleCopy = {
   pitchFr:
-    "Bois-Colombes (92), commune résidentielle et tertiaire des Hauts-de-Seine, abrite sièges sociaux, services financiers et numériques, professions libérales et commerces de proximité, à deux pas de La Défense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME locales, les ETI en complément.",
+    "Bois-Colombes (92), commune résidentielle et tertiaire des Hauts-de-Seine, abrite sièges sociaux, services financiers et numériques, professions libérales et commerces de proximité, à deux pas de La Défense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI locales, les grands groupes en complément.",
   pitchEn:
-    "Bois-Colombes (92), commune résidentielle et tertiaire des Hauts-de-Seine, abrite sièges sociaux, services financiers et numériques, professions libérales et commerces de proximité, à deux pas de La Défense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME locales, les ETI en complément.",
+    "Bois-Colombes (92), commune résidentielle et tertiaire des Hauts-de-Seine, abrite sièges sociaux, services financiers et numériques, professions libérales et commerces de proximité, à deux pas de La Défense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI locales, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bois-Colombes et dans tout l'ouest francilien. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services financiers, agences numériques, professions libérales, commerces et services de proximité — puis les ETI et sièges en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bois-Colombes et dans tout l'ouest francilien. Nous accompagnons en priorité les PME et ETI locales — cabinets de conseil et services financiers, agences numériques, professions libérales, commerces et services de proximité — puis les ETI et sièges en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bois-Colombes et dans tout l'ouest francilien. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services financiers, agences numériques, professions libérales, commerces et services de proximité — puis les ETI et sièges en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bois-Colombes et dans tout l'ouest francilien. Nous accompagnons en priorité les PME et ETI locales — cabinets de conseil et services financiers, agences numériques, professions libérales, commerces et services de proximité — puis les ETI et sièges en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "tertiaire, services & proximité 92",
   ecosystemFr:
-    "Bois-Colombes combine fonctions tertiaires (sièges, services financiers, numérique) et économie résidentielle de proximité, portée par la proximité de La Défense et de Paris. Le tissu est dominé par les TPE/PME de services et les professions libérales.",
+    "Bois-Colombes combine fonctions tertiaires (sièges, services financiers, numérique) et économie résidentielle de proximité, portée par la proximité de La Défense et de Paris. Le tissu est dominé par les PME et ETI de services et les professions libérales.",
   ecosystemEn:
-    "Bois-Colombes combine fonctions tertiaires (sièges, services financiers, numérique) et économie résidentielle de proximité, portée par la proximité de La Défense et de Paris. Le tissu est dominé par les TPE/PME de services et les professions libérales.",
+    "Bois-Colombes combine fonctions tertiaires (sièges, services financiers, numérique) et économie résidentielle de proximité, portée par la proximité de La Défense et de Paris. Le tissu est dominé par les PME et ETI de services et les professions libérales.",
   distancesFr:
     "Gare de Bois-Colombes (Transilien J) à 12 min de Paris-Saint-Lazare. La Défense à 10 min, Paris à 7 km, aéroport Paris-Charles-de-Gaulle à 27 km. Courbevoie et Asnières à 5 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
       en: "Implémentation IA à Bois-Colombes : automatisation des reportings et de la production documentaire, agents de support et de qualification, traitement des e-mails et des dossiers pour les services tertiaires.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Bois-Colombes : sessions dans vos bureaux ou en visio pour les dirigeants de TPE/PME — consultants, gérants de cabinet, professions libérales et commerçants de l'ouest francilien.",
-      en: "Coaching un-à-un à Bois-Colombes : sessions dans vos bureaux ou en visio pour les dirigeants de TPE/PME — consultants, gérants de cabinet, professions libérales et commerçants de l'ouest francilien.",
+      fr: "Coaching un-à-un à Bois-Colombes : sessions dans vos bureaux ou en visio pour les dirigeants de PME et ETI — consultants, gérants de cabinet, professions libérales et commerçants de l'ouest francilien.",
+      en: "Coaching un-à-un à Bois-Colombes : sessions dans vos bureaux ou en visio pour les dirigeants de PME et ETI — consultants, gérants de cabinet, professions libérales et commerçants de l'ouest francilien.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bois-Colombes : sites vitrines, espaces clients et portails avec IA intégrée pour cabinets de conseil, services financiers et professions libérales — prise de RDV, qualification, base documentaire interrogeable.",
@@ -53,11 +53,11 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Bois-Colombes (92), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu singulier : les sièges tertiaires de la ZAC des Bruyères — IBM France et son campus « Europe Avenue » avenue de l'Europe, Colgate-Palmolive France, Abeille Assurances (ex-Aviva), Coface, et le pôle gazier GRTgaz/NaTran avec Storengy et Elengy autour des immeubles Cityzen — autant que les TPE/PME de services, professions libérales et commerces de cette commune résidentielle aux portes de La Défense. Portails clients, espaces partenaires, applications métier IA-native : code sur mesure, hébergement en UE conforme RGPD, zéro verrou éditeur. Devis à partir de 24-48 h selon la complexité.",
+        hero: "À Bois-Colombes (92), Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu singulier : les sièges tertiaires de la ZAC des Bruyères — IBM France et son campus « Europe Avenue » avenue de l'Europe, Colgate-Palmolive France, Abeille Assurances (ex-Aviva), Coface, et le pôle gazier GRTgaz/NaTran avec Storengy et Elengy autour des immeubles Cityzen — autant que les PME et ETI de services, professions libérales et commerces de cette commune résidentielle aux portes de La Défense. Portails clients, espaces partenaires, applications métier IA-native : code sur mesure, hébergement en UE conforme RGPD, zéro verrou éditeur. Devis à partir de 24-48 h selon la complexité.",
         whyHere: [
           "Bois-Colombes concentre des sièges et DSI de grands groupes sur l'avenue de l'Europe et la ZAC des Bruyères — IBM France, Colgate-Palmolive, Abeille Assurances, Coface (env. 1 300 collaborateurs), GRTgaz/NaTran, Storengy, Elengy — qui ont des besoins de portails internes, extranets partenaires et applications métier à interfacer avec leurs systèmes existants.",
           "La ZAC des Bruyères, née sur les friches de l'ancienne usine Hispano-Suiza et desservie par la gare de Bécon-les-Bruyères, héberge des fonctions tertiaires (énergie/gaz, assurance, crédit-export, biens de grande consommation) où la production documentaire et le reporting sont des cas d'usage IA prioritaires pour un site ou une plateforme.",
-          "Au pied des sièges, un tissu résidentiel dense de TPE/PME — cabinets de conseil, services financiers, agences numériques, professions libérales (santé, droit, expertise) et commerces de proximité — pour qui un site vitrine ou e-commerce avec prise de RDV, qualification et base documentaire interrogeable change l'acquisition.",
+          "Au pied des sièges, un tissu résidentiel dense de PME et ETI — cabinets de conseil, services financiers, agences numériques, professions libérales (santé, droit, expertise) et commerces de proximité — pour qui un site vitrine ou e-commerce avec prise de RDV, qualification et base documentaire interrogeable change l'acquisition.",
           "Nous intervenons sur site à Bois-Colombes et dans l'ouest francilien (Courbevoie, Asnières, La Défense à env. 10 min, Paris à env. 7 km) : ateliers de conception en présentiel, puis itérations à distance, sans nous substituer à vos équipes.",
         ],
         methodology: [
@@ -69,7 +69,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           {
             step: "Architecture & maquettes",
             detail:
-              "Conception UX/UI mobile-first et choix de stack : site vitrine, e-commerce multi-CMS, espace client ou plateforme SaaS sur mesure. Pour un siège (assurance, énergie/gaz, crédit-export), priorité aux portails partenaires et à la production documentaire ; pour une TPE/PME locale, à l'acquisition et à la prise de RDV.",
+              "Conception UX/UI mobile-first et choix de stack : site vitrine, e-commerce multi-CMS, espace client ou plateforme SaaS sur mesure. Pour un siège (assurance, énergie/gaz, crédit-export), priorité aux portails partenaires et à la production documentaire ; pour une PME et ETI locale, à l'acquisition et à la prise de RDV.",
           },
           {
             step: "Développement & intégration IA",
@@ -88,12 +88,6 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-ready",
-            detail:
-              "Pour les indépendants, cabinets libéraux, agences et commerces de proximité de Bois-Colombes : site vitrine ou boutique multi-CMS avec prise de RDV, formulaire qualifié et premier assistant IA sur votre base documentaire.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou espace client sur mesure",
@@ -123,7 +117,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
             a: "Oui. Pour les métiers du gaz et de l'énergie (à l'image de GRTgaz/NaTran, Storengy, Elengy) comme pour l'assurance et le crédit-export (Abeille Assurances, Coface), nous développons des portails, agents de support et outils de production documentaire interfacés avec vos applications, avec validation humaine sur les cas sensibles et données traitées sur votre infrastructure.",
           },
           {
-            q: "Faites-vous des sites e-commerce et vitrines pour les TPE et commerces de Bois-Colombes ?",
+            q: "Faites-vous des sites e-commerce et vitrines pour les PME et commerces de Bois-Colombes ?",
             a: "Oui, c'est une part importante de notre activité locale. Pour les cabinets libéraux, agences et commerces de proximité de la commune, nous concevons des sites vitrines ou boutiques multi-CMS, en UX/UI mobile-first, avec prise de RDV, qualification et un assistant IA sur votre base documentaire. Devis à partir de 24-48 h selon la complexité.",
           },
           {
@@ -175,12 +169,6 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase or e-commerce site",
-            detail:
-              "For Bois-Colombes freelancers, liberal-profession practices, agencies and local shops: showcase site or multi-CMS store with booking, qualified forms and a first AI assistant on your knowledge base.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom business platform or client area",
             detail:
@@ -230,7 +218,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-Colombes et dans le 92 ?",
-      a: "Oui, Axion-IA se déplace sur site à Bois-Colombes, Courbevoie, Asnières, La Défense et dans tout l'ouest francilien. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Bois-Colombes, Courbevoie, Asnières, La Défense et dans tout l'ouest francilien. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil et services financiers ?",
@@ -246,7 +234,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être un grand siège pour travailler avec Axion-IA à Bois-Colombes ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME locales. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les PME et ETI locales. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Bois-Colombes ?",

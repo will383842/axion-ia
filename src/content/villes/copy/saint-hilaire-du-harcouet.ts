@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu PME agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu PME agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : PME éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : PME éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
   seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Saint-Hilaire-du-Harcouët est un bourg-centre du bocage sud-manchois, historiquement connu pour son marché aux bestiaux parmi les plus importants de Normandie. L'économie repose sur l'élevage bovin (laitier et allaitant), l'agroalimentaire (laiteries coopératives, transformation viande), l'artisanat BTP, les commerces de proximité et les services ruraux. Carrefour vers Avranches (25 min), Fougères (25 min) et Mortain (15 min).",
@@ -22,7 +22,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   distancesEn:
     "Avranches à 25 min. Fougères à 25 min. Mortain à 15 min. Rennes à 1 h (A84). Saint-Lô à 1 h. Caen à 1 h 30. Gare la plus proche : Avranches ou Fougères (TER). Aéroport Rennes à 1 h 10.",
   topSectorsNaf: [
-    "TPE élevage bovin laitier et allaitant",
+    "PME élevage bovin laitier et allaitant",
     "PME agroalimentaire (laiteries, viande)",
     "Artisanat BTP et mécanique agricole",
     "Commerce de bourg et marché",
@@ -30,8 +30,8 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux PME éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux PME éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Hilaire-du-Harcouët : formats adaptés à l'exploitation d'élevage, la laiterie, l'atelier BTP, le commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Hilaire-du-Harcouët : automatisation traçabilité troupeau, prédiction rendements laitiers, gestion planning abattoir, agents IA devis BTP, CRM commerces de bourg.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Hilaire-du-Harcouët : sessions dans votre exploitation, laiterie, atelier ou en visio. Dirigeants TPE/PME, éleveurs, artisans BTP, commerçants et indépendants du bocage sud-manchois.",
-      en: "Coaching 1-to-1 à Saint-Hilaire-du-Harcouët : sessions dans votre exploitation, laiterie, atelier ou en visio. Dirigeants TPE/PME, éleveurs, artisans BTP, commerçants et indépendants du bocage sud-manchois.",
+      fr: "Coaching 1-to-1 à Saint-Hilaire-du-Harcouët : sessions dans votre exploitation, laiterie, atelier ou en visio. Dirigeants PME et ETI, éleveurs, artisans BTP, commerçants et indépendants du bocage sud-manchois.",
+      en: "Coaching 1-to-1 à Saint-Hilaire-du-Harcouët : sessions dans votre exploitation, laiterie, atelier ou en visio. Dirigeants PME et ETI, éleveurs, artisans BTP, commerçants et indépendants du bocage sud-manchois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs bovins du bocage manchois ?",
-      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers et allaitants du bocage : traçabilité troupeau, prédiction rendements, automatisation PAC, suivi sanitaire IA, optimisation alimentation. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME éleveurs bovins laitiers et allaitants du bocage : traçabilité troupeau, prédiction rendements, automatisation PAC, suivi sanitaire IA, optimisation alimentation. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME agroalimentaires locales ?",
@@ -61,7 +61,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans BTP du sud Manche ?",
-      a: "Oui, nous accompagnons les artisans BTP et mécanique agricole du sud Manche : automatisation devis, gestion planning chantier, classification photos, agents IA prise de RDV. Formats demi-journée adaptés TPE.",
+      a: "Oui, nous accompagnons les artisans BTP et mécanique agricole du sud Manche : automatisation devis, gestion planning chantier, classification photos, agents IA prise de RDV. Formats demi-journée adaptés PME.",
     },
     {
       q: "Comment se passe une mission à Saint-Hilaire-du-Harcouët ?",

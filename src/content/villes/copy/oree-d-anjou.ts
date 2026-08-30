@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const OREE_D_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA collabore avec toutes les structures locales.",
+    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, PME artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA collabore avec toutes les structures locales.",
+    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, PME artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, PME du BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, PME du BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit sur place accessible.",
   seoHook: "vallée loire",
   ecosystemFr:
     "Orée d'Anjou est une commune nouvelle aux confins du Maine-et-Loire et de la Loire-Atlantique, face à Ancenis. L'économie locale s'appuie sur la viticulture (coteaux-d'ancenis, muscadet), le tissu industriel et logistique hérité de la vallée de la Loire, l'artisanat BTP, les commerces et les services. Patrimoine remarquable avec le belvédère de Champtoceaux et la maison natale de Joachim du Bellay à Liré.",
@@ -30,8 +30,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, PME de l'artisanat et du commerce du val de Loire Ancenis–Nantes. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, PME de l'artisanat et du commerce du val de Loire Ancenis–Nantes. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orée d'Anjou : formations viticulteurs, ateliers PME industrielles, sessions artisans BTP et commerçants. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
       en: "Implémentation IA à Orée d'Anjou : traçabilité viticole, automatisation logistique val de Loire, prédiction maintenance industrielle, agents IA commerciaux et digitalisation PME Ancenis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Orée d'Anjou : sessions sur votre domaine, usine ou commerce. Vignerons, industriels, artisans et gérants TPE/PME du val de Loire souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Orée d'Anjou : sessions sur votre domaine, usine ou commerce. Vignerons, industriels, artisans et gérants TPE/PME du val de Loire souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Orée d'Anjou : sessions sur votre domaine, usine ou commerce. Vignerons, industriels, artisans et gérants PME et ETI du val de Loire souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Orée d'Anjou : sessions sur votre domaine, usine ou commerce. Vignerons, industriels, artisans et gérants PME et ETI du val de Loire souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
       a: "Absolument. Pour les viticulteurs d'Orée d'Anjou, l'IA optimise la traçabilité parcellaire, la prédiction de maturité et de rendement, la gestion commerciale (export, vente directe), et automatise la comptabilité et les déclarations viticoles.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Champtoceaux ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE et petits domaines viticoles de toutes les communes déléguées d'Orée d'Anjou (Champtoceaux, Drain, Liré, Bouzillé). Diagnostic concret avec ROI chiffré.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Champtoceaux ?",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux PME et petits domaines viticoles de toutes les communes déléguées d'Orée d'Anjou (Champtoceaux, Drain, Liré, Bouzillé). Diagnostic concret avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME industrielles entre Ancenis et Nantes ?",

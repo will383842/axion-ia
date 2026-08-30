@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const BEZIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
+    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux PME et ETI francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
   pitchEn:
-    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
+    "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux PME et ETI francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
   directAnswerFr:
-    "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
+    "À Béziers, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
+    "À Béziers, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
   seoHook: "viticulture, tourisme & Canal du Midi",
   ecosystemFr:
-    "Le tissu économique biterrois s'appuie sur la viticulture (environ 2 000 hectares), l'agriculture (69,3 % de la surface communale), le tourisme patrimonial (cathédrale Saint-Nazaire, Feria d'août, écluses de Fonseranes inscrites UNESCO via le Canal du Midi) et les services aux particuliers. Béziers Méditerranée fédère 17 communes et 131 383 habitants. La formation locale repose sur l'antenne Université Paul-Valéry, l'IUT de Béziers et le CIRDOC, ce qui alimente un vivier TPE/PME en hôtellerie-restauration, commerce de détail, construction et services aux entreprises.",
+    "Le tissu économique biterrois s'appuie sur la viticulture (environ 2 000 hectares), l'agriculture (69,3 % de la surface communale), le tourisme patrimonial (cathédrale Saint-Nazaire, Feria d'août, écluses de Fonseranes inscrites UNESCO via le Canal du Midi) et les services aux particuliers. Béziers Méditerranée fédère 17 communes et 131 383 habitants. La formation locale repose sur l'antenne Université Paul-Valéry, l'IUT de Béziers et le CIRDOC, ce qui alimente un vivier PME et ETI en hôtellerie-restauration, commerce de détail, construction et services aux entreprises.",
   ecosystemEn:
-    "Le tissu économique biterrois s'appuie sur la viticulture (environ 2 000 hectares), l'agriculture (69,3 % de la surface communale), le tourisme patrimonial (cathédrale Saint-Nazaire, Feria d'août, écluses de Fonseranes inscrites UNESCO via le Canal du Midi) et les services aux particuliers. Béziers Méditerranée fédère 17 communes et 131 383 habitants. La formation locale repose sur l'antenne Université Paul-Valéry, l'IUT de Béziers et le CIRDOC, ce qui alimente un vivier TPE/PME en hôtellerie-restauration, commerce de détail, construction et services aux entreprises.",
+    "Le tissu économique biterrois s'appuie sur la viticulture (environ 2 000 hectares), l'agriculture (69,3 % de la surface communale), le tourisme patrimonial (cathédrale Saint-Nazaire, Feria d'août, écluses de Fonseranes inscrites UNESCO via le Canal du Midi) et les services aux particuliers. Béziers Méditerranée fédère 17 communes et 131 383 habitants. La formation locale repose sur l'antenne Université Paul-Valéry, l'IUT de Béziers et le CIRDOC, ce qui alimente un vivier PME et ETI en hôtellerie-restauration, commerce de détail, construction et services aux entreprises.",
   distancesFr:
     "Béziers est desservie par l'aéroport Béziers Cap d'Agde (15 km), sa gare sur la ligne Montpellier-Perpignan, et les autoroutes A9 (vallée du Rhône / Espagne) et A75 (Massif Central). Montpellier est à 61 km, Narbonne à 25 km.",
   distancesEn:
@@ -31,20 +31,20 @@ export const BEZIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des TPE et PME biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
-      en: "Audit sur place IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des TPE et PME biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
+      fr: "Audit sur place IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des PME et ETI biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
+      en: "Audit sur place IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des PME et ETI biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
     },
     interventions: {
       fr: "Interventions IA à Béziers dès {{price:intervention-4h|flat}} : automatisation devis-relances pour le commerce de détail, gestion des réservations touristiques autour du Canal du Midi, outils sur mesure pour le secteur viticole. Code custom déployé chez le client.",
       en: "Interventions IA à Béziers dès {{price:intervention-4h|flat}} : automatisation devis-relances pour le commerce de détail, gestion des réservations touristiques autour du Canal du Midi, outils sur mesure pour le secteur viticole. Code custom déployé chez le client.",
     },
     implementation: {
-      fr: "Implémentation IA à Béziers dès {{price:impl-poc|entry}} : nous codons et intégrons des assistants métiers chez les TPE/PME biterroises (cavistes, restaurateurs Feria, agents immobiliers de l'aire 205 841 hab), connectés à leurs outils existants.",
-      en: "Implémentation IA à Béziers dès {{price:impl-poc|entry}} : nous codons et intégrons des assistants métiers chez les TPE/PME biterroises (cavistes, restaurateurs Feria, agents immobiliers de l'aire 205 841 hab), connectés à leurs outils existants.",
+      fr: "Implémentation IA à Béziers dès {{price:impl-poc|entry}} : nous codons et intégrons des assistants métiers chez les PME et ETI biterroises (cavistes, restaurateurs Feria, agents immobiliers de l'aire 205 841 hab), connectés à leurs outils existants.",
+      en: "Implémentation IA à Béziers dès {{price:impl-poc|entry}} : nous codons et intégrons des assistants métiers chez les PME et ETI biterroises (cavistes, restaurateurs Feria, agents immobiliers de l'aire 205 841 hab), connectés à leurs outils existants.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Béziers dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME biterroises : montée en compétences IA sans jargon, en présentiel sur site ou en hybride, ciblé viticulture, tourisme ou services locaux.",
-      en: "Accompagnement 1-à-1 à Béziers dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME biterroises : montée en compétences IA sans jargon, en présentiel sur site ou en hybride, ciblé viticulture, tourisme ou services locaux.",
+      fr: "Accompagnement 1-à-1 à Béziers dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI biterroises : montée en compétences IA sans jargon, en présentiel sur site ou en hybride, ciblé viticulture, tourisme ou services locaux.",
+      en: "Accompagnement 1-à-1 à Béziers dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI biterroises : montée en compétences IA sans jargon, en présentiel sur site ou en hybride, ciblé viticulture, tourisme ou services locaux.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const BEZIERS_COPY: VilleCopy = {
           "Pôle cleantech Capiscol : la dynamique Genvia (électrolyseurs SOEC, jusqu'à ~250 emplois visés à l'horizon 2032 sur le site Cameron) et son écosystème de sous-traitants mécanique/emballage des ~300 entreprises du parc appellent des plateformes techniques exigeantes — portails fournisseurs, configurateurs, documentation produit indexée par IA.",
           "Filière viti-logistique : pour les caves, négociants et embouteilleurs du bassin biterrois (Owens-Illinois et la verrerie/bouteille à Béziers Ouest, SBM au Capiscol), nous construisons des boutiques e-commerce multi-CMS, des portails B2B vrac/CHR et des fiches produit générées et traduites par IA pour l'export.",
           "Tourisme ultra-saisonnier : autour du Canal du Midi, des écluses de Fonseranes et de la Feria (~90 000 lits, pic mi-août), les hébergeurs, loueurs et offices ont besoin de sites mobile-first avec réservation, multilingue automatisé et chatbots de pré-réservation qui encaissent la pointe d'août sans tomber.",
-          "TPE/PME de proximité : l'agglo Béziers Méditerranée compte ~15 000 établissements à ~95 % TPE/PME (commerce, services, BTP, silver économie comme la Clinique Saint-Privat au parc Le Monestié) — pour eux, des sites vitrine et e-commerce performants, avec assistant IA de devis et de prise de contact.",
+          "PME et ETI de proximité : l'agglo Béziers Méditerranée compte ~15 000 établissements à ~95 % PME et ETI (commerce, services, BTP, silver économie comme la Clinique Saint-Privat au parc Le Monestié) — pour eux, des sites vitrine et e-commerce performants, avec assistant IA de devis et de prise de contact.",
         ],
         methodology: [
           {
@@ -85,12 +85,6 @@ export const BEZIERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-boutique IA",
-            detail:
-              "Pour les indépendants, cavistes, restaurateurs Feria, loueurs autour du Canal du Midi et artisans biterrois : site mobile-first ou petite boutique e-commerce avec assistant IA de devis et de prise de contact.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce / métier sur mesure",
@@ -172,12 +166,6 @@ export const BEZIERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI showcase site or e-shop",
-            detail:
-              "For freelancers, wine merchants, Feria restaurateurs, Canal du Midi rental operators and Béziers craftspeople: mobile-first site or small e-commerce store with an AI quoting and contact assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom e-commerce / business platform",
             detail:
@@ -243,7 +231,7 @@ export const BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux bénéficient le plus de l'IA à Béziers ?",
-      a: "Les TPE et PME viticoles (environ 2 000 ha autour de Béziers), l'hôtellerie-restauration touristique autour du Canal du Midi et de Fonseranes, le commerce de détail et la construction tirent un bénéfice direct des automatisations IA en code custom.",
+      a: "Les PME et ETI viticoles (environ 2 000 ha autour de Béziers), l'hôtellerie-restauration touristique autour du Canal du Midi et de Fonseranes, le commerce de détail et la construction tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
       q: "Williams se déplace-t-il vraiment chez les clients à Béziers ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
   pitchFr:
-    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de TPE viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de PME viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de TPE viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de PME viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : TPE viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : PME viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : TPE viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : PME viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
   seoHook: "agglomération cru",
   ecosystemFr:
     "Bellevigne-en-Layon est une commune nouvelle née de la fusion de Thouarcé, Faye-d'Anjou, Rablay-sur-Layon et Champ-sur-Layon, au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume Grand Cru). Économie rurale : viticulture, œnotourisme, agroalimentaire, artisanat, commerces de bourg.",
@@ -30,8 +30,8 @@ export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellevigne-en-Layon : diagnostic adapté aux TPE viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bellevigne-en-Layon : diagnostic adapté aux TPE viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bellevigne-en-Layon : diagnostic adapté aux PME viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bellevigne-en-Layon : diagnostic adapté aux PME viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellevigne-en-Layon : formations adaptées aux exploitations viticoles, caves, hébergements œnotouristiques et commerces du Layon. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
       en: "Implémentation IA à Bellevigne-en-Layon : traçabilité parcellaire viticole, prédiction vendanges, agents conversationnels œnotourisme, automatisation gestion cave et stocks.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bellevigne-en-Layon : sessions dans votre exploitation viticole, cave, commerce ou en visio. Dirigeants TPE/PME viticoles, hébergeurs, artisans, gérants.",
-      en: "Coaching 1-to-1 à Bellevigne-en-Layon : sessions dans votre exploitation viticole, cave, commerce ou en visio. Dirigeants TPE/PME viticoles, hébergeurs, artisans, gérants.",
+      fr: "Coaching 1-to-1 à Bellevigne-en-Layon : sessions dans votre exploitation viticole, cave, commerce ou en visio. Dirigeants PME et ETI viticoles, hébergeurs, artisans, gérants.",
+      en: "Coaching 1-to-1 à Bellevigne-en-Layon : sessions dans votre exploitation viticole, cave, commerce ou en visio. Dirigeants PME et ETI viticoles, hébergeurs, artisans, gérants.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les viticulteurs du Layon sur leurs cas IA : traçabilité parcellaire, prédiction vendanges, optimisation vinification, gestion stocks cave, automatisation administratif et relation client œnotouristique.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE viticole à Bellevigne-en-Layon ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME viticole à Bellevigne-en-Layon ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME du Layon ?",

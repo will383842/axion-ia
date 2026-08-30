@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LA_RICHE_COPY: VilleCopy = {
   pitchFr:
-    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y travaille avec les organisations du territoire.",
+    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu PME du BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y travaille avec les organisations du territoire.",
+    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu PME du BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Riche (37). Nous accompagnons tous types d'activités : PME du BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Riche (37). Nous accompagnons tous types d'activités : PME du BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
   seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
-    "La Riche est une commune de l'agglomération tourangelle, connue pour le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
+    "La Riche est une commune de l'agglomération tourangelle, connue pour le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu PME du BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
   ecosystemEn:
-    "La Riche est une commune de l'agglomération tourangelle, connue pour le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
+    "La Riche est une commune de l'agglomération tourangelle, connue pour le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu PME du BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
   distancesFr:
     "Tours centre à 5 min. Gare TGV Saint-Pierre-des-Corps à 15 min. Fondettes à 5 min. Aéroport Tours Val de Loire à 25 min. Villandry à 15 min.",
   distancesEn:
     "Tours centre à 5 min. Gare TGV Saint-Pierre-des-Corps à 15 min. Fondettes à 5 min. Aéroport Tours Val de Loire à 25 min. Villandry à 15 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "PME tertiaires & services aux entreprises",
     "Commerce de proximité",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const LA_RICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Riche : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à La Riche : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à La Riche : diagnostic adapté aux PME du BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Riche : diagnostic adapté aux PME du BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Riche : formats adaptés au bureau tertiaire, atelier artisan, commerce, cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LA_RICHE_COPY: VilleCopy = {
       en: "Implémentation IA à La Riche : automatisation gestion administrative PME, agents conversationnels visiteurs prieuré, classification documents, optimisation planning artisans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Riche : sessions dans votre bureau, atelier, commerce ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants TPE/PME larichois.",
-      en: "Coaching 1-to-1 à La Riche : sessions dans votre bureau, atelier, commerce ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants TPE/PME larichois.",
+      fr: "Coaching 1-to-1 à La Riche : sessions dans votre bureau, atelier, commerce ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants de PME et d'ETI larichois.",
+      en: "Coaching 1-to-1 à La Riche : sessions dans votre bureau, atelier, commerce ou en visio. Artisans BTP, gérants PME tertiaires, commerçants, professions libérales, dirigeants de PME et d'ETI larichois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const LA_RICHE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels visiteurs multilingue, automatisation billetterie, classification retours visiteurs, recommandations parcours culturel.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

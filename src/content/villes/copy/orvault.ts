@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ORVAULT_COPY: VilleCopy = {
   pitchFr:
-    "Orvault, ville de Loire-Atlantique (44) en banlieue nord-ouest de Nantes, mêle résidentiel familial, zones d'activités tertiaires et tissu de TPE/PME locales. Axion-IA y intervient pour les TPE, indépendants, PME tertiaires et entreprises de la zone d'activité nord nantaise.",
+    "Orvault, ville de Loire-Atlantique (44) en banlieue nord-ouest de Nantes, mêle résidentiel familial, zones d'activités tertiaires et tissu de PME et ETI locales. Axion-IA y intervient pour les PME, indépendants, PME tertiaires et entreprises de la zone d'activité nord nantaise.",
   pitchEn:
-    "Orvault, ville de Loire-Atlantique (44) en banlieue nord-ouest de Nantes, mêle résidentiel familial, zones d'activités tertiaires et tissu de TPE/PME locales. Axion-IA y intervient pour les TPE, indépendants, PME tertiaires et entreprises de la zone d'activité nord nantaise.",
+    "Orvault, ville de Loire-Atlantique (44) en banlieue nord-ouest de Nantes, mêle résidentiel familial, zones d'activités tertiaires et tissu de PME et ETI locales. Axion-IA y intervient pour les PME, indépendants, PME tertiaires et entreprises de la zone d'activité nord nantaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orvault (44) en banlieue nantaise. Nous accompagnons les TPE artisanales, indépendants, PME tertiaires orvaltaises et entreprises des zones d'activités (parc tertiaire d'Ar Mor, zone Nantes-Atlantis) sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orvault (44) en banlieue nantaise. Nous accompagnons les PME artisanales, indépendants, PME tertiaires orvaltaises et entreprises des zones d'activités (parc tertiaire d'Ar Mor, zone Nantes-Atlantis) sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orvault (44) en banlieue nantaise. Nous accompagnons les TPE artisanales, indépendants, PME tertiaires orvaltaises et entreprises des zones d'activités (parc tertiaire d'Ar Mor, zone Nantes-Atlantis) sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Orvault (44) en banlieue nantaise. Nous accompagnons les PME artisanales, indépendants, PME tertiaires orvaltaises et entreprises des zones d'activités (parc tertiaire d'Ar Mor, zone Nantes-Atlantis) sur leurs cas IA opérationnels.",
   seoHook: "artisanat & tertiaires",
   ecosystemFr:
-    "Orvault concentre une part importante du tissu tertiaire nord de Nantes Métropole : parc d'activités tertiaires Ar Mor, zone Nantes-Atlantis avec sièges PME, hôtel d'entreprises. Tissu TPE artisanales, commerces de proximité, cabinets professionnels. Proximité Nantes centre (15 min) et écosystème tech nantais.",
+    "Orvault concentre une part importante du tissu tertiaire nord de Nantes Métropole : parc d'activités tertiaires Ar Mor, zone Nantes-Atlantis avec sièges PME, hôtel d'entreprises. Tissu PME artisanales, commerces de proximité, cabinets professionnels. Proximité Nantes centre (15 min) et écosystème tech nantais.",
   ecosystemEn:
-    "Orvault concentre une part importante du tissu tertiaire nord de Nantes Métropole : parc d'activités tertiaires Ar Mor, zone Nantes-Atlantis avec sièges PME, hôtel d'entreprises. Tissu TPE artisanales, commerces de proximité, cabinets professionnels. Proximité Nantes centre (15 min) et écosystème tech nantais.",
+    "Orvault concentre une part importante du tissu tertiaire nord de Nantes Métropole : parc d'activités tertiaires Ar Mor, zone Nantes-Atlantis avec sièges PME, hôtel d'entreprises. Tissu PME artisanales, commerces de proximité, cabinets professionnels. Proximité Nantes centre (15 min) et écosystème tech nantais.",
   distancesFr:
     "Tramway ligne 3 vers Nantes centre (15 min). Aéroport Nantes-Atlantique 25 min. Gare Nantes (TGV Paris 2h) à 20 min. Axe N137 vers Rennes et A11 vers Paris.",
   distancesEn:
     "Tramway ligne 3 vers Nantes centre (15 min). Aéroport Nantes-Atlantique 25 min. Gare Nantes (TGV Paris 2h) à 20 min. Axe N137 vers Rennes et A11 vers Paris.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME tertiaires (parc Ar Mor, Atlantis)",
     "Commerce & services proximité",
     "Cabinets professionnels (santé, conseil)",
@@ -30,20 +30,20 @@ export const ORVAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Orvault : diagnostic adapté aux PME artisanales et PME tertiaires des zones d'activités nantaises. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
+      en: "Audit IA à Orvault : diagnostic adapté aux PME artisanales et PME tertiaires des zones d'activités nantaises. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Orvault : sessions adaptées TPE/PME. Formats demi-journée à 2 jours, vos équipes (commerciaux, assistants, ouvriers BTP) repartent autonomes sur des outils IA.",
-      en: "Interventions IA sur site à Orvault : sessions adaptées TPE/PME. Formats demi-journée à 2 jours, vos équipes (commerciaux, assistants, ouvriers BTP) repartent autonomes sur des outils IA.",
+      fr: "Interventions IA sur site à Orvault : sessions adaptées PME et ETI. Formats demi-journée à 2 jours, vos équipes (commerciaux, assistants, ouvriers BTP) repartent autonomes sur des outils IA.",
+      en: "Interventions IA sur site à Orvault : sessions adaptées PME et ETI. Formats demi-journée à 2 jours, vos équipes (commerciaux, assistants, ouvriers BTP) repartent autonomes sur des outils IA.",
     },
     implementation: {
       fr: "Implémentation IA à Orvault : agents conversationnels, automatisation devis/facturation, classification documents, planification interventions. Adapté aux PME du parc Ar Mor et Atlantis.",
       en: "Implémentation IA à Orvault : agents conversationnels, automatisation devis/facturation, classification documents, planification interventions. Adapté aux PME du parc Ar Mor et Atlantis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Orvault : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants TPE/PME nantaises souhaitant maîtriser l'IA dans leur pilotage quotidien.",
-      en: "Coaching 1-to-1 à Orvault : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants TPE/PME nantaises souhaitant maîtriser l'IA dans leur pilotage quotidien.",
+      fr: "Coaching 1-to-1 à Orvault : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants PME et ETI nantaises souhaitant maîtriser l'IA dans leur pilotage quotidien.",
+      en: "Coaching 1-to-1 à Orvault : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants PME et ETI nantaises souhaitant maîtriser l'IA dans leur pilotage quotidien.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const ORVAULT_COPY: VilleCopy = {
           "Orvault est une ville de commerce et de distribution avant tout : la Z.A. Le Forum (~52 entreprises) concentre l'équipement de la maison et le retail autour de Castorama, Jardiplay, La Parqueterie-Nantes, Atlantic BBQ et Motorland — des activités où une vitrine e-commerce, un configurateur produit et une recherche catalogue IA changent directement le chiffre d'affaires.",
           "La Z.A. de Pentecôte (52,88 ha, ~285 entreprises) en fait un pôle logistique majeur du nord nantais : pour des transporteurs comme Atlantique Camion, nous construisons des portails de suivi de tournées, de devis automatisés et d'extraction de documents de transport pilotés par IA.",
           "Le débordement du parc tertiaire d'Ar Mor (Sopra Steria, Altran, Conserto, dynaMIPS) à deux pas de la commune nous met en contact direct avec des PME et éditeurs numériques qui ont besoin de plateformes SaaS IA-native — chatbot RAG, agents conversationnels, copilotes — au-delà du simple site vitrine.",
-          "Le mix résidentiel/tertiaire d'Orvault (ZAC Vallon des Garettes en cœur de bourg, Parc Tertiaire Grand Val) génère une demande de TPE artisanales, commerces de proximité et cabinets professionnels pour des sites mobiles-first avec prise de RDV et devis IA, là où un site générique ne convertit pas.",
+          "Le mix résidentiel/tertiaire d'Orvault (ZAC Vallon des Garettes en cœur de bourg, Parc Tertiaire Grand Val) génère une demande de PME artisanales, commerces de proximité et cabinets professionnels pour des sites mobiles-first avec prise de RDV et devis IA, là où un site générique ne convertit pas.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const ORVAULT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce mono-CMS avec brique IA",
-            detail:
-              "Pour artisans, commerces de proximité et cabinets d'Orvault (Vallon des Garettes, bourg) : site mobile-first avec prise de RDV, formulaire de devis IA et chatbot FAQ, branché sur un CMS standard.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail B2B avec recherche IA",
@@ -171,12 +165,6 @@ export const ORVAULT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or single-CMS e-commerce site with an AI block",
-            detail:
-              "For Orvault craftspeople, local shops and practices (Vallon des Garettes, town centre): mobile-first site with booking, AI quote form and FAQ chatbot, on a standard CMS.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or B2B portal with AI search",
             detail:
@@ -229,8 +217,8 @@ export const ORVAULT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Orvault et toute Nantes Métropole (Nantes, Saint-Herblain, Sautron, Carquefou, Couëron). Couverture nord nantaise complète et accès TGV Paris (2h) ou voiture (4h).",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans d'Orvault ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Orvault sur des cas IA pragmatiques : automatisation devis, agents IA prise de RDV, planification interventions, gestion administrative. Audit sur place à {{price:audit-flash|flat}} accessible aux artisans et petits commerces.",
+      q: "Accompagnez-vous les PME et artisans d'Orvault ?",
+      a: "Oui, nous accompagnons les PME artisanales et indépendants à Orvault sur des cas IA pragmatiques : automatisation devis, agents IA prise de RDV, planification interventions, gestion administrative. Audit sur place à {{price:audit-flash|flat}} accessible aux artisans et petits commerces.",
     },
     {
       q: "Quels services pour les PME des zones d'activités Ar Mor et Atlantis ?",

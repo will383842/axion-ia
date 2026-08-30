@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LAON_COPY: VilleCopy = {
   pitchFr:
-    "Laon (02), 24 220 habitants, préfecture de l'Aisne (Hauts-de-France). Cité médiévale perchée sur une butte-témoin à 183 m, célèbre pour sa cathédrale Notre-Dame et ses remparts du XIVe siècle. Plus grand secteur sauvegardé de France (370 ha). Économie tournée vers l'administration préfectorale, le commerce de centre-ville, l'agriculture (57,7 % du territoire) et le tourisme patrimonial. Axion-IA accompagne TPE, PME et artisans laonnois.",
+    "Laon (02), 24 220 habitants, préfecture de l'Aisne (Hauts-de-France). Cité médiévale perchée sur une butte-témoin à 183 m, célèbre pour sa cathédrale Notre-Dame et ses remparts du XIVe siècle. Plus grand secteur sauvegardé de France (370 ha). Économie tournée vers l'administration préfectorale, le commerce de centre-ville, l'agriculture (57,7 % du territoire) et le tourisme patrimonial. Axion-IA accompagne PME, ETI et artisans laonnois.",
   pitchEn:
-    "Laon (02), 24 220 habitants, préfecture de l'Aisne (Hauts-de-France). Cité médiévale perchée sur une butte-témoin à 183 m, célèbre pour sa cathédrale Notre-Dame et ses remparts du XIVe siècle. Plus grand secteur sauvegardé de France (370 ha). Économie tournée vers l'administration préfectorale, le commerce de centre-ville, l'agriculture (57,7 % du territoire) et le tourisme patrimonial. Axion-IA accompagne TPE, PME et artisans laonnois.",
+    "Laon (02), 24 220 habitants, préfecture de l'Aisne (Hauts-de-France). Cité médiévale perchée sur une butte-témoin à 183 m, célèbre pour sa cathédrale Notre-Dame et ses remparts du XIVe siècle. Plus grand secteur sauvegardé de France (370 ha). Économie tournée vers l'administration préfectorale, le commerce de centre-ville, l'agriculture (57,7 % du territoire) et le tourisme patrimonial. Axion-IA accompagne PME, ETI et artisans laonnois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons PME, ETI, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
-  seoHook: "TPE/PME laonnoises & artisanat patrimoine",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Laon (02). Nous accompagnons PME, ETI, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
+  seoHook: "PME et ETI laonnoises & artisanat patrimoine",
   ecosystemFr:
-    "Tissu économique de Laon structuré autour de la préfecture de l'Aisne et de la Communauté d'agglomération du Pays de Laon. Forte présence de l'administration publique, du commerce de centre-ville (ville haute médiévale), de l'artisanat (bâtiment, restauration de patrimoine), du tourisme culturel (cathédrale, remparts) et de l'agriculture céréalière (49,7 % de terres arables). Tissu de TPE professions libérales et services.",
+    "Tissu économique de Laon structuré autour de la préfecture de l'Aisne et de la Communauté d'agglomération du Pays de Laon. Forte présence de l'administration publique, du commerce de centre-ville (ville haute médiévale), de l'artisanat (bâtiment, restauration de patrimoine), du tourisme culturel (cathédrale, remparts) et de l'agriculture céréalière (49,7 % de terres arables). Tissu de PME professions libérales et services.",
   ecosystemEn:
-    "Tissu économique de Laon structuré autour de la préfecture de l'Aisne et de la Communauté d'agglomération du Pays de Laon. Forte présence de l'administration publique, du commerce de centre-ville (ville haute médiévale), de l'artisanat (bâtiment, restauration de patrimoine), du tourisme culturel (cathédrale, remparts) et de l'agriculture céréalière (49,7 % de terres arables). Tissu de TPE professions libérales et services.",
+    "Tissu économique de Laon structuré autour de la préfecture de l'Aisne et de la Communauté d'agglomération du Pays de Laon. Forte présence de l'administration publique, du commerce de centre-ville (ville haute médiévale), de l'artisanat (bâtiment, restauration de patrimoine), du tourisme culturel (cathédrale, remparts) et de l'agriculture céréalière (49,7 % de terres arables). Tissu de PME professions libérales et services.",
   distancesFr:
     "Paris Gare du Nord à 1h35 en TER depuis Gare de Laon. Reims à 50 km via A26. Saint-Quentin à 45 km. Soissons à 38 km. Autoroute A26 sortie 13. Route Nationale 2 (axe Paris-Bruxelles).",
   distancesEn:
@@ -30,8 +30,8 @@ export const LAON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laon : diagnostic pour TPE, PME, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
-      en: "Audit IA à Laon : diagnostic pour TPE, PME, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      fr: "Audit IA à Laon : diagnostic pour PME, ETI, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Laon : diagnostic pour PME, ETI, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laon : ateliers adaptés commerce, artisan, professionnel du tourisme ou exploitant agricole. Équipes formées et autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const LAON_COPY: VilleCopy = {
       en: "Implémentation IA à Laon : automatisation devis artisans, chatbot tourisme/hébergement, classification dossiers cabinet, optimisation logistique pour PME du pays de Laon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Laon : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, commerçants et professions libérales de la cité laonnoise.",
-      en: "Coaching 1-to-1 à Laon : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, commerçants et professions libérales de la cité laonnoise.",
+      fr: "Coaching 1-to-1 à Laon : sessions sur site ou en visio pour dirigeants de PME et d'ETI, artisans, commerçants et professions libérales de la cité laonnoise.",
+      en: "Coaching 1-to-1 à Laon : sessions sur site ou en visio pour dirigeants de PME et d'ETI, artisans, commerçants et professions libérales de la cité laonnoise.",
     },
   },
   services: {
@@ -53,7 +53,7 @@ export const LAON_COPY: VilleCopy = {
         whyHere: [
           "Tourisme patrimonial structurant autour de la cathédrale Notre-Dame, des remparts du XIVe siècle et du plus grand secteur sauvegardé de France (370 ha) : nous bâtissons des sites de réservation directe et des chatbots RAG multilingues pour les hébergeurs, gîtes et restaurants de la ville haute qui accueillent des visiteurs venus de Paris en 1h35 de TER, avec moteurs de disponibilité, paiement en ligne et fiches patrimoine traduites automatiquement.",
           "Commerce de la ville haute et professions libérales : sur cette butte-témoin difficile d'accès en voiture, où le stationnement est rare entre la place du Général-Leclerc et le rempart Saint-Marcel, une vitrine e-commerce mobile-first et le click-and-collect compensent les contraintes et élargissent la zone de chalandise au-delà du pays de Laon vers Athies-sous-Laon, Chambry et le plateau, recherche sémantique de catalogue incluse.",
-          "Artisanat de restauration du patrimoine et BTP au cœur du secteur sauvegardé classé : nous greffons une brique IA sur l'existant — devis automatisés, suivi de chantier, prise de RDV, recherche dans les normes ABF — sans imposer de refonte coûteuse à des TPE déjà chargées par les contraintes des Architectes des Bâtiments de France et la saisonnalité des chantiers.",
+          "Artisanat de restauration du patrimoine et BTP au cœur du secteur sauvegardé classé : nous greffons une brique IA sur l'existant — devis automatisés, suivi de chantier, prise de RDV, recherche dans les normes ABF — sans imposer de refonte coûteuse à des PME déjà chargées par les contraintes des Architectes des Bâtiments de France et la saisonnalité des chantiers.",
           "Préfecture de l'Aisne, Communauté d'agglomération du Pays de Laon et agriculture céréalière dominante (57,7 % du territoire, 49,7 % de terres arables) : portails métier, dématérialisation de dossiers, agents d'automatisation et outils de gestion sur mesure pour les services publics, coopératives céréalières et exploitations du plateau, branchés sur vos référentiels et conformes RGPD.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const LAON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de RDV) sur le site existant d'un commerce de la ville haute, d'un gîte de la cité médiévale, d'un restaurant du parvis ou d'un artisan de restauration du patrimoine, sans refonte ni interruption.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -120,7 +114,7 @@ export const LAON_COPY: VilleCopy = {
           },
           {
             q: "Comment gérez-vous les contraintes du secteur sauvegardé et des Architectes des Bâtiments de France ?",
-            a: "On greffe des outils IA sur l'activité des artisans de restauration du patrimoine et du BTP du centre médiéval : devis automatisés, suivi de chantier, prise de RDV et recherche sémantique dans les normes ABF et les prescriptions du secteur sauvegardé. Pas de refonte imposée à une TPE déjà chargée — on augmente l'existant, on ne le remplace pas.",
+            a: "On greffe des outils IA sur l'activité des artisans de restauration du patrimoine et du BTP du centre médiéval : devis automatisés, suivi de chantier, prise de RDV et recherche sémantique dans les normes ABF et les prescriptions du secteur sauvegardé. Pas de refonte imposée à une PME déjà chargée — on augmente l'existant, on ne le remplace pas.",
           },
           {
             q: "Accompagnez-vous les coopératives et exploitations agricoles du plateau laonnois ?",
@@ -139,7 +133,7 @@ export const LAON_COPY: VilleCopy = {
         whyHere: [
           "Tourisme patrimonial structurant autour de la cathédrale Notre-Dame, des remparts du XIVe siècle et du plus grand secteur sauvegardé de France (370 ha) : nous bâtissons des sites de réservation directe et des chatbots RAG multilingues pour les hébergeurs, gîtes et restaurants de la ville haute qui accueillent des visiteurs venus de Paris en 1h35 de TER, avec moteurs de disponibilité, paiement en ligne et fiches patrimoine traduites automatiquement.",
           "Commerce de la ville haute et professions libérales : sur cette butte-témoin difficile d'accès en voiture, où le stationnement est rare entre la place du Général-Leclerc et le rempart Saint-Marcel, une vitrine e-commerce mobile-first et le click-and-collect compensent les contraintes et élargissent la zone de chalandise au-delà du pays de Laon vers Athies-sous-Laon, Chambry et le plateau, recherche sémantique de catalogue incluse.",
-          "Artisanat de restauration du patrimoine et BTP au cœur du secteur sauvegardé classé : nous greffons une brique IA sur l'existant — devis automatisés, suivi de chantier, prise de RDV, recherche dans les normes ABF — sans imposer de refonte coûteuse à des TPE déjà chargées par les contraintes des Architectes des Bâtiments de France et la saisonnalité des chantiers.",
+          "Artisanat de restauration du patrimoine et BTP au cœur du secteur sauvegardé classé : nous greffons une brique IA sur l'existant — devis automatisés, suivi de chantier, prise de RDV, recherche dans les normes ABF — sans imposer de refonte coûteuse à des PME déjà chargées par les contraintes des Architectes des Bâtiments de France et la saisonnalité des chantiers.",
           "Préfecture de l'Aisne, Communauté d'agglomération du Pays de Laon et agriculture céréalière dominante (57,7 % du territoire, 49,7 % de terres arables) : portails métier, dématérialisation de dossiers, agents d'automatisation et outils de gestion sur mesure pour les services publics, coopératives céréalières et exploitations du plateau, branchés sur vos référentiels et conformes RGPD.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const LAON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de RDV) sur le site existant d'un commerce de la ville haute, d'un gîte de la cité médiévale, d'un restaurant du parvis ou d'un artisan de restauration du patrimoine, sans refonte ni interruption.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -206,7 +194,7 @@ export const LAON_COPY: VilleCopy = {
           },
           {
             q: "Comment gérez-vous les contraintes du secteur sauvegardé et des Architectes des Bâtiments de France ?",
-            a: "On greffe des outils IA sur l'activité des artisans de restauration du patrimoine et du BTP du centre médiéval : devis automatisés, suivi de chantier, prise de RDV et recherche sémantique dans les normes ABF et les prescriptions du secteur sauvegardé. Pas de refonte imposée à une TPE déjà chargée — on augmente l'existant, on ne le remplace pas.",
+            a: "On greffe des outils IA sur l'activité des artisans de restauration du patrimoine et du BTP du centre médiéval : devis automatisés, suivi de chantier, prise de RDV et recherche sémantique dans les normes ABF et les prescriptions du secteur sauvegardé. Pas de refonte imposée à une PME déjà chargée — on augmente l'existant, on ne le remplace pas.",
           },
           {
             q: "Accompagnez-vous les coopératives et exploitations agricoles du plateau laonnois ?",

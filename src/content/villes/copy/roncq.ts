@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RONCQ_COPY: VilleCopy = {
   pitchFr:
-    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
+    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. PME, ETI et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
   pitchEn:
-    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
+    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. PME, ETI et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roncq (59). Nous accompagnons PME et ETI : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roncq (59). Nous accompagnons PME et ETI : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
   seoHook: "commerce grande & logistique entreposage",
   ecosystemFr:
     "Roncq est une commune de la métropole lilloise nord, entre Tourcoing et la frontière belge (Mouscron), sur l'axe stratégique Lille-Bruges. L'économie locale est dominée par d'importantes zones commerciales (Grand Roncq, Roncq Retail Park) attirant des enseignes et commerçants de toute la métropole, complétées par des prestataires logistiques (entrepôts et plateformes), des artisans, professions libérales et des PME B2B transfrontalières franco-belges profitant de la proximité immédiate de la Belgique (Mouscron, Menin).",
@@ -30,8 +30,8 @@ export const RONCQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Roncq : diagnostic adapté aux PME et ETI du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Roncq : diagnostic adapté aux PME et ETI du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roncq : formats adaptés à l'enseigne commerciale, au prestataire logistique, à l'artisan ou au professionnel libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const RONCQ_COPY: VilleCopy = {
       en: "Implémentation IA à Roncq : optimisation stock et pricing zones commerciales, automatisation logistique entrepôts, agents IA accueil client multilingues FR-NL transfrontaliers, CRM augmenté PME B2B, copilotes devis-facturation artisans et prestataires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roncq : sessions dans vos locaux commerciaux, entrepôt ou en visio. Dirigeants TPE/PME de la métropole lilloise nord et transfrontaliers belges souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Roncq : sessions dans vos locaux commerciaux, entrepôt ou en visio. Dirigeants TPE/PME de la métropole lilloise nord et transfrontaliers belges souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Roncq : sessions dans vos locaux commerciaux, entrepôt ou en visio. Dirigeants PME et ETI de la métropole lilloise nord et transfrontaliers belges souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Roncq : sessions dans vos locaux commerciaux, entrepôt ou en visio. Dirigeants PME et ETI de la métropole lilloise nord et transfrontaliers belges souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const RONCQ_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Roncq  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Roncq et de la métropole lilloise nord, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, logistique, B2B transfrontalier, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Roncq et de la métropole lilloise nord, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, logistique, B2B transfrontalier, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les enseignes des zones commerciales de Roncq ?",

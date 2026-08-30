@@ -295,7 +295,7 @@ export const TOULON_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : annuaire officiel ne fournit pas d'extraction par commune
   // confirmée pour Toulon en mai 2026. Champ vide pour respecter zéro

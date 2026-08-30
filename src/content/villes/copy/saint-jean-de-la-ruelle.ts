@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
+    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre PME artisanales, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
   pitchEn:
-    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
+    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre PME artisanales, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons PME artisanales, PME industrielles et de services, commerces et professions libérales. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons PME artisanales, PME industrielles et de services, commerces et professions libérales. Audit sur place sur mesure, démarrage sous 10 jours.",
   ecosystemFr:
-    "Saint-Jean-de-la-Ruelle est une commune urbaine de l'ouest orléanais avec zones d'activités économiques, PME industrielles et tertiaires, commerces de quartier, TPE artisanat BTP et services aux entreprises. Tramway ligne B vers Orléans centre.",
+    "Saint-Jean-de-la-Ruelle est une commune urbaine de l'ouest orléanais avec zones d'activités économiques, PME industrielles et tertiaires, commerces de quartier, PME du BTP et services aux entreprises. Tramway ligne B vers Orléans centre.",
   ecosystemEn:
-    "Saint-Jean-de-la-Ruelle est une commune urbaine de l'ouest orléanais avec zones d'activités économiques, PME industrielles et tertiaires, commerces de quartier, TPE artisanat BTP et services aux entreprises. Tramway ligne B vers Orléans centre.",
+    "Saint-Jean-de-la-Ruelle est une commune urbaine de l'ouest orléanais avec zones d'activités économiques, PME industrielles et tertiaires, commerces de quartier, PME du BTP et services aux entreprises. Tramway ligne B vers Orléans centre.",
   distancesFr:
     "Orléans centre à 10 min. Tramway ligne B direct. Gare d'Orléans à 15 min. Paris Austerlitz à 1 h 10 en train. Autoroute A10 à 10 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
   seoHook: "industrie, services & commerce urbain",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux PME artisanales, PME industrielles et de services de l'ouest orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux PME artisanales, PME industrielles et de services de l'ouest orléanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-la-Ruelle : formations en atelier industriel, bureau PME ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Jean-de-la-Ruelle : automatisation production, agents conversationnels, classification documents, optimisation workflow PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Jean-de-la-Ruelle : sessions sur site ou en visio pour dirigeants PME industrielles, gérants TPE, commerçants et professions libérales.",
-      en: "Coaching 1-to-1 à Saint-Jean-de-la-Ruelle : sessions sur site ou en visio pour dirigeants PME industrielles, gérants TPE, commerçants et professions libérales.",
+      fr: "Coaching 1-to-1 à Saint-Jean-de-la-Ruelle : sessions sur site ou en visio pour dirigeants PME industrielles, gérants PME, commerçants et professions libérales.",
+      en: "Coaching 1-to-1 à Saint-Jean-de-la-Ruelle : sessions sur site ou en visio pour dirigeants PME industrielles, gérants PME, commerçants et professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Saint-Jean-de-la-Ruelle ?",
-      a: "TPE artisans, PME industrielles et de services, commerces de quartier, professions libérales, associations.",
+      a: "PME artisanales, PME industrielles et de services, commerces de quartier, professions libérales, associations.",
     },
     {
       q: "Proposez-vous des formations IA sur site à Saint-Jean-de-la-Ruelle ?",

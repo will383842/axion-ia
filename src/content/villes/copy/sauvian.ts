@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SAUVIAN_COPY: VilleCopy = {
   pitchFr:
-    "Sauvian (34), commune résidentielle de l'agglomération de Béziers, entre vignoble et littoral. Forte croissance démographique, proximité Sérignan et Valras-Plage. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Sauvian (34), commune résidentielle de l'agglomération de Béziers, entre vignoble et littoral. Forte croissance démographique, proximité Sérignan et Valras-Plage. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Sauvian (34), commune résidentielle de l'agglomération de Béziers, entre vignoble et littoral. Forte croissance démographique, proximité Sérignan et Valras-Plage. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Sauvian (34), commune résidentielle de l'agglomération de Béziers, entre vignoble et littoral. Forte croissance démographique, proximité Sérignan et Valras-Plage. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sauvian (34). Nous accompagnons PME du commerce, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sauvian (34). Nous accompagnons PME du commerce, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
   ecosystemFr:
-    "Sauvian est une commune résidentielle en forte croissance de l'agglomération de Béziers, entre vignoble et littoral (Sérignan-Plage et Valras-Plage à 10 min). Vignoble AOC Languedoc, tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
+    "Sauvian est une commune résidentielle en forte croissance de l'agglomération de Béziers, entre vignoble et littoral (Sérignan-Plage et Valras-Plage à 10 min). Vignoble AOC Languedoc, tissu PME du commerce, PME viticoles, artisans BTP, professions libérales.",
   ecosystemEn:
-    "Sauvian est une commune résidentielle en forte croissance de l'agglomération de Béziers, entre vignoble et littoral (Sérignan-Plage et Valras-Plage à 10 min). Vignoble AOC Languedoc, tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
+    "Sauvian est une commune résidentielle en forte croissance de l'agglomération de Béziers, entre vignoble et littoral (Sérignan-Plage et Valras-Plage à 10 min). Vignoble AOC Languedoc, tissu PME du commerce, PME viticoles, artisans BTP, professions libérales.",
   distancesFr:
     "Béziers à 10 min. Sérignan à 5 min. Valras-Plage à 10 min. Narbonne à 30 min. Aéroport Béziers-Cap d'Agde à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAUVIAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sauvian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Sauvian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Sauvian : diagnostic pour PME viticoles, PME du commerce, artisans BTP et professions libérales de l'agglomération biterroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sauvian : diagnostic pour PME viticoles, PME du commerce, artisans BTP et professions libérales de l'agglomération biterroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sauvian : ateliers adaptés domaine viticole, atelier artisan, commerce ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAUVIAN_COPY: VilleCopy = {
       en: "Implémentation IA à Sauvian : automatisation gestion vignoble, devis artisans BTP, chatbot client, classification documents agglomération Béziers.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sauvian : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants TPE/PME de l'agglomération biterroise.",
-      en: "Coaching 1-to-1 à Sauvian : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants TPE/PME de l'agglomération biterroise.",
+      fr: "Coaching 1-to-1 à Sauvian : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants PME et ETI de l'agglomération biterroise.",
+      en: "Coaching 1-to-1 à Sauvian : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants PME et ETI de l'agglomération biterroise.",
     },
   },
   faqGeolocalisee: [

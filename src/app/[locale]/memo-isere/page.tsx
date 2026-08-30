@@ -116,14 +116,14 @@ const SECTEURS = [
 // ── Tailles d'entreprise ────────────────────────────────────────────────────
 //
 // Retour Will 2026-08-22 : la page nommait « PME, ETI et grands groupes » sans
-// jamais parler des TPE autrement qu'en fin de phrase, et sans jamais dire À
+// jamais parler des PME autrement qu'en fin de phrase, et sans jamais dire À
 // QUOI ressemble une entreprise de chaque taille. Un lecteur d'annonce locale
 // ne se projette pas sur un sigle : il se projette sur « le cabinet d'avocats
 // de la place » ou « l'atelier de mécanique de la zone ».
 //
 // Les seuils d'effectif sont ceux de la nomenclature officielle française
 // (décret n° 2008-1354 d'application de la LME, catégories INSEE : micro-
-// entreprise/TPE, PME, ETI, grande entreprise). On ne cite QUE l'effectif :
+// entreprise/PME, ETI, grande entreprise). On ne cite QUE l'effectif :
 // les seuils de chiffre d'affaires ajouteraient des montants en euros sans
 // rien apprendre à un commercial qui prospecte au téléphone.
 //
@@ -149,23 +149,6 @@ interface TailleCible {
 }
 
 const TAILLES_CIBLES: readonly TailleCible[] = [
-  {
-    emoji: "🧑‍💼",
-    sigle: "TPE",
-    effectif: "moins de 10 salariés",
-    exemples: [
-      "Cabinet d’avocats, notaire, huissier",
-      "Expert-comptable, paie, conseil",
-      "Cabinet infirmier, dentaire, kiné, vétérinaire",
-      "Agence immobilière, courtier, assureur",
-      "Garage, carrosserie, artisan du bâtiment",
-      "Restaurant, boulangerie, commerce de centre-ville",
-      "Agence web, studio de com’, photographe",
-      "Domaine viticole, exploitation agricole",
-    ],
-    ceQueCaVaut:
-      "Le dirigeant décide seul, souvent dans le rendez-vous. Une seule journée forme toute l’équipe : c’est la vente la plus rapide à signer, et le meilleur terrain pour tes premières références.",
-  },
   {
     emoji: "🏢",
     sigle: "PME",
@@ -349,7 +332,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/memo-isere",
       title,
       description: isFr
-        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux TPE, PME, ETI et grands groupes : 474 communes au choix." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
         : "€500 for you per AI training day sold, uncapped. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups: 474 towns to pick from." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     })),
     title: { absolute: title },
@@ -664,13 +647,13 @@ export default async function MemoIserePage({ params }: Props) {
       id: "quelles-entreprises",
       question: "Quelles entreprises est-ce que je démarche ?",
       answer:
-        "Les quatre tailles, sans exception. Les TPE de moins de 10 salariés — cabinet d'avocats, expert-comptable, cabinet infirmier ou dentaire, agence immobilière, garage, restaurant, artisan du bâtiment, agence de com' : le dirigeant décide seul et une seule journée forme toute l'équipe, ce sont tes ventes les plus rapides. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
+        "Les trois tailles, sans exception. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
     },
     {
       id: "pourquoi-ca-se-vend",
       question: "Pourquoi les entreprises achètent-elles ces formations ?",
       answer:
-        "Trois raisons. L'AI Act européen impose désormais aux entreprises de former leurs équipes qui utilisent l'IA (article 4, en vigueur depuis février 2025). Les formations sont finançables par les OPCO, donc le coût réel pour le client est faible, voire nul. Et la demande explose : toutes les TPE-PME parlent d'IA, très peu ont été démarchées.",
+        "Trois raisons. L'AI Act européen impose désormais aux entreprises de former leurs équipes qui utilisent l'IA (article 4, en vigueur depuis février 2025). Les formations sont finançables par les OPCO, donc le coût réel pour le client est faible, voire nul. Et la demande explose : toutes les PME et ETI parlent d'IA, très peu ont été démarchées.",
     },
     {
       id: "demarrage",
@@ -704,7 +687,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
-    description: `Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des TPE, PME, ETI et grands groupes locaux — artisans et commerçants compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. ${commission(1)} par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie.`,
+    description: `Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — artisans et commerçants compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. ${commission(1)} par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie.`,
     // Date RÉELLE de mise en ligne de l'annonce (règle Google for Jobs : jamais
     // une date antérieure à l'existence de l'URL). À rafraîchir UNIQUEMENT lors
     // d'une vraie republication de l'offre (contenu revu, offre toujours ouverte).
@@ -715,7 +698,7 @@ export default async function MemoIserePage({ params }: Props) {
     qualifications:
       "Aisance relationnelle et motivation. Débutants acceptés : formation complète à l'offre IA fournie.",
     responsibilities:
-      "Prospecter les TPE, PME, ETI et grands groupes de sa zone (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité — cabinets d'avocats et d'expertise comptable, santé et laboratoires, sites industriels, BTP, transport, agroalimentaire, commerce, hôtellerie ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
+      "Prospecter les PME, ETI et grands groupes de sa zone (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité — cabinets d'avocats et d'expertise comptable, santé et laboratoires, sites industriels, BTP, transport, agroalimentaire, commerce, hôtellerie ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, activité évolutive (responsable de secteur).",
     incentiveCompensation: `Rémunération 100 % à la commission, comptée en journées de formation vendues : ${commission(1)} par journée, sans plafond. Une formation de 2 journées rapporte ${commission(2)}, un programme de 3 journées ${commission(3)}. Pourcentage de la facture en plus sur les audits et intégrations IA.`,
@@ -788,7 +771,7 @@ export default async function MemoIserePage({ params }: Props) {
                   chiffres-clés — la répéter ici coûtait deux lignes et
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Tu proposes aux <strong>TPE, PME, ETI et grands groupes</strong> de ta zone des
+                Tu proposes aux <strong>PME, ETI et grands groupes</strong> de ta zone des
                 formations IA — l’AI Act les rend incontournables, l’OPCO les finance. Toi, tu
                 touches <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
                 Lyon, tu choisis ton secteur.
@@ -1134,7 +1117,7 @@ export default async function MemoIserePage({ params }: Props) {
         title="Ton prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le cabinet d'avocats d'en face"
-        description="De la TPE de trois personnes au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs, l'OPCO non plus. Les petites structures signent vite, les grandes rapportent gros — les quatre se prospectent, et voici à quoi elles ressemblent sur ta zone."
+        description="De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs, l'OPCO non plus. Les PME signent vite, les grandes rapportent gros — les quatre se prospectent, et voici à quoi elles ressemblent sur ta zone."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1156,7 +1139,7 @@ export default async function MemoIserePage({ params }: Props) {
               {
                 slot: "secteur-commerce" as const,
                 titre: "Commerces",
-                alt: "Commerçant servant un client derrière son comptoir : les TPE et artisans de ta zone, excellentes premières ventes.",
+                alt: "Commerçant servant un client derrière son comptoir : les PME et ETI de ta zone, excellentes premières ventes.",
               },
             ].map((c) => (
               <li key={c.slot}>
@@ -1192,7 +1175,7 @@ export default async function MemoIserePage({ params }: Props) {
 
           {/* ── Les quatre tailles, avec des exemples concrets ────────────────
               Une carte par taille, listée de la plus petite à la plus grande :
-              un lecteur d'annonce locale se reconnaît d'abord dans la TPE
+              un lecteur d'annonce locale se reconnaît d'abord dans la PME
               qu'il connaît, pas dans le sigle « ETI ». Chaque carte dit trois
               choses — combien de salariés, à quoi ça ressemble chez lui, et ce
               que ça change POUR LUI (cycle de vente, volume de journées).
@@ -1275,8 +1258,8 @@ export default async function MemoIserePage({ params }: Props) {
             Et dans quels secteurs ?
           </h3>
           <p className="text-fg-muted mx-auto mt-2 mb-6 max-w-2xl text-center text-sm">
-            Tous, à toutes les tailles. Là encore, les cases ci-dessous sont des exemples : seul le
-            nombre de groupes à former change d’une TPE à un grand groupe.
+            Tous, de la PME au grand groupe. Là encore, les cases ci-dessous sont des exemples :
+            seul le nombre de groupes à former change d’une PME à un grand groupe.
           </p>
 
           <ul
@@ -1298,8 +1281,8 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </ul>
           <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
-            … et tous les autres, du grand groupe à la TPE du coin : si une entreprise de ta zone a
-            des équipes et des dossiers à traiter, elle est concernée.
+            … et tous les autres, de la PME au grand groupe : si une entreprise de ta zone a des
+            équipes et des dossiers à traiter, elle est concernée.
           </p>
         </>
       </Section>
@@ -1454,7 +1437,7 @@ export default async function MemoIserePage({ params }: Props) {
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                 Un audit IA, c’est simple à expliquer : on cartographie les process de l’entreprise,
                 on chiffre où l’IA fait gagner du temps et de l’argent, et le dirigeant repart avec
-                un plan d’action priorisé. Quatre niveaux selon la taille (TPE → ETI) — ta
+                un plan d’action priorisé. Quatre niveaux selon la taille (PME → ETI) — ta
                 commission suit le niveau vendu, et elle s’ajoute aux journées de formation.
               </p>
             </div>

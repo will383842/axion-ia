@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   pitchFr:
-    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu PME artisanales, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu PME artisanales, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : PME artisanales, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : PME artisanales, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
   seoHook: "agriculture grandes & élevage productions",
   ecosystemFr:
     "Vexin-sur-Epte est une commune nouvelle de l'Eure issue de la fusion de plusieurs communes le long de la vallée de l'Epte, au cœur du Vexin normand. Territoire rural dynamique, grandes cultures céréalières, élevage, artisanat, commerces de proximité. Proximité Gisors (sous-préfecture) et frontière Île-de-France.",
@@ -24,14 +24,14 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture grandes cultures céréalières Vexin",
     "Élevage et productions animales",
-    "TPE artisanat et métiers du bâtiment",
+    "PME de l'artisanat et métiers du bâtiment",
     "Commerce rural et services de proximité",
     "Professions libérales et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux PME artisanales, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux PME artisanales, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vexin-sur-Epte : formats adaptés à l'exploitation agricole, l'élevage, l'atelier, le commerce rural. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
       en: "Implémentation IA à Vexin-sur-Epte : agriculture de précision Vexin, surveillance troupeaux, traçabilité récoltes, automatisation comptabilité exploitations. Commune nouvelle Eure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vexin-sur-Epte : sessions dans votre exploitation, élevage, atelier ou en visio. Dirigeants TPE/PME agriculture, élevage, artisans, commerçants Vexin normand.",
-      en: "Coaching 1-to-1 à Vexin-sur-Epte : sessions dans votre exploitation, élevage, atelier ou en visio. Dirigeants TPE/PME agriculture, élevage, artisans, commerçants Vexin normand.",
+      fr: "Coaching 1-to-1 à Vexin-sur-Epte : sessions dans votre exploitation, élevage, atelier ou en visio. Dirigeants PME et ETI agriculture, élevage, artisans, commerçants Vexin normand.",
+      en: "Coaching 1-to-1 à Vexin-sur-Epte : sessions dans votre exploitation, élevage, atelier ou en visio. Dirigeants PME et ETI agriculture, élevage, artisans, commerçants Vexin normand.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les éleveurs de la vallée de l'Epte sur leurs cas IA : surveillance troupeaux par capteurs, prédiction santé animale, traçabilité viande et lait, automatisation déclarations PAC, gestion reproduction.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ruraux ?",
-      a: "Pour les TPE artisans et commerçants ruraux à Vexin-sur-Epte, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ruraux ?",
+      a: "Pour les PME de l'artisanat et du commerce ruraux à Vexin-sur-Epte, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Gisors ?",

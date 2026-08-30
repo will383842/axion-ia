@@ -3,7 +3,7 @@
  * fonction d'entreprise, exposé dans la popup de la section bénéfices `/audit`.
  *
  * Refonte 2026-05-31 (Will) — version exhaustive : tout ce que l'IA et
- * l'automatisation peuvent apporter à une entreprise, de la TPE à la grande
+ * l'automatisation peuvent apporter à une entreprise, de la PME à la grande
  * entreprise, mono-site comme multi-sites / succursales / réseau / franchises.
  * Chaque domaine = titre + accroche (bénéfice 1 ligne) + liste d'usages IA
  * concrets. Couverture sémantique très large (AEO/SEO).

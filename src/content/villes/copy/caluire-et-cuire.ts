@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
   pitchFr:
-    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
+    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI caluirardes, les grands groupes en complément.",
   pitchEn:
-    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
+    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI caluirardes, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les PME et ETI locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les PME et ETI locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "services, santé & numérique nord Lyon",
   ecosystemFr:
-    "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les TPE/PME de services et les indépendants.",
+    "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les PME et ETI de services et les indépendants.",
   ecosystemEn:
-    "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les TPE/PME de services et les indépendants.",
+    "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les PME et ETI de services et les indépendants.",
   distancesFr:
     "Lyon Part-Dieu à 5 km (10 min), aéroport Lyon-Saint-Exupéry à 25 km. Croix-Rousse limitrophe, Rillieux-la-Pape à 5 min, métro et bus TCL desservent la commune.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Caluire-et-Cuire : prise de RDV et relation patient automatisées pour la santé, agents de support et production documentaire pour les services, automatisation administrative pour les commerces.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Caluire-et-Cuire : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — consultants, professionnels de santé, libéraux, commerçants et artisans du nord lyonnais.",
-      en: "Coaching un-à-un à Caluire-et-Cuire : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — consultants, professionnels de santé, libéraux, commerçants et artisans du nord lyonnais.",
+      fr: "Coaching un-à-un à Caluire-et-Cuire : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — consultants, professionnels de santé, libéraux, commerçants et artisans du nord lyonnais.",
+      en: "Coaching un-à-un à Caluire-et-Cuire : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — consultants, professionnels de santé, libéraux, commerçants et artisans du nord lyonnais.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Caluire-et-Cuire : sites vitrines, prise de RDV en ligne et espaces clients avec IA intégrée pour professions de santé, libéraux et commerces — qualification, FAQ intelligente, multilingue FR/EN.",
@@ -88,12 +88,6 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les commerces de proximité, artisans et professions libérales de Caluire : site vitrine ou boutique multi-CMS (Shopify, WooCommerce, PrestaShop) avec prise de RDV, FAQ intelligente et relation client assistée.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Augmented brochure or e-commerce site",
-            detail:
-              "For Caluire neighbourhood shops, craftspeople and liberal professions: brochure site or multi-CMS store (Shopify, WooCommerce, PrestaShop) with booking, smart FAQ and AI-assisted customer relations.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -230,7 +218,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caluire-et-Cuire et dans la Métropole de Lyon ?",
-      a: "Oui, Axion-IA se déplace sur site à Caluire-et-Cuire et dans toute la Métropole (Lyon Part-Dieu à 10 min). Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Caluire-et-Cuire et dans toute la Métropole (Lyon Part-Dieu à 10 min). Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les professions de santé et libérales ?",
@@ -246,7 +234,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Caluire-et-Cuire ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les PME et ETI locales. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Caluire-et-Cuire ?",

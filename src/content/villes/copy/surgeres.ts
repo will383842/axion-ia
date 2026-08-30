@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SURGERES_COPY: VilleCopy = {
   pitchFr:
-    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du bassin de Surgères.",
+    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de PME artisanales, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du bassin de Surgères.",
   pitchEn:
-    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du bassin de Surgères.",
+    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de PME artisanales, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du bassin de Surgères.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surgères (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et laitières, coopératives agricoles, commerçants et indépendants de cette capitale du beurre AOP Charentes-Poitou.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surgères (17). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et laitières, coopératives agricoles, commerçants et indépendants de cette capitale du beurre AOP Charentes-Poitou.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surgères (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et laitières, coopératives agricoles, commerçants et indépendants de cette capitale du beurre AOP Charentes-Poitou.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Surgères (17). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et laitières, coopératives agricoles, commerçants et indépendants de cette capitale du beurre AOP Charentes-Poitou.",
   seoHook: "bassin de surgères",
   ecosystemFr:
-    "Surgères est la capitale du beurre Charentes-Poitou AOP, pôle agroalimentaire laitier majeur de Charente-Maritime. Coopératives laitières, PME agroalimentaires, industrie de transformation, agriculture (élevage laitier, céréales), TPE artisans, commerces de centre-ville. Nœud ferroviaire entre La Rochelle et Niort.",
+    "Surgères est la capitale du beurre Charentes-Poitou AOP, pôle agroalimentaire laitier majeur de Charente-Maritime. Coopératives laitières, PME agroalimentaires, industrie de transformation, agriculture (élevage laitier, céréales), PME artisanales, commerces de centre-ville. Nœud ferroviaire entre La Rochelle et Niort.",
   ecosystemEn:
-    "Surgères est la capitale du beurre Charentes-Poitou AOP, pôle agroalimentaire laitier majeur de Charente-Maritime. Coopératives laitières, PME agroalimentaires, industrie de transformation, agriculture (élevage laitier, céréales), TPE artisans, commerces de centre-ville. Nœud ferroviaire entre La Rochelle et Niort.",
+    "Surgères est la capitale du beurre Charentes-Poitou AOP, pôle agroalimentaire laitier majeur de Charente-Maritime. Coopératives laitières, PME agroalimentaires, industrie de transformation, agriculture (élevage laitier, céréales), PME artisanales, commerces de centre-ville. Nœud ferroviaire entre La Rochelle et Niort.",
   distancesFr:
     "Gare de Surgères (TER La Rochelle-Niort, La Rochelle 30 min, Niort 30 min). La Rochelle à 30 min voiture (N11). Niort à 40 min. Rochefort à 25 min. Axe N11 La Rochelle-Niort.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SURGERES_COPY: VilleCopy = {
     "Agroalimentaire laitier & beurre AOP",
     "Coopératives agricoles",
     "Agriculture & élevage laitier",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de centre-ville & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, PME de l'artisanat et du commerce du bassin de Surgères. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, PME de l'artisanat et du commerce du bassin de Surgères. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Surgères : formats adaptés à la laiterie, à la coopérative, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const SURGERES_COPY: VilleCopy = {
       en: "Implémentation IA à Surgères : traçabilité lait-beurre AOP, contrôle qualité production laitière, optimisation logistique coopérative, prédiction rendements élevage, automatisation gestion stocks.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Surgères : sessions dans votre laiterie, coopérative, exploitation ou en visio. Dirigeants TPE/PME agroalimentaires, éleveurs et commerçants du bassin souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Surgères : sessions dans votre laiterie, coopérative, exploitation ou en visio. Dirigeants TPE/PME agroalimentaires, éleveurs et commerçants du bassin souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Surgères : sessions dans votre laiterie, coopérative, exploitation ou en visio. Dirigeants PME et ETI agroalimentaires, éleveurs et commerçants du bassin souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Surgères : sessions dans votre laiterie, coopérative, exploitation ou en visio. Dirigeants PME et ETI agroalimentaires, éleveurs et commerçants du bassin souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
   pitchFr:
-    "Flines-lez-Râches (59), commune de la Pévèle au sud-est de Douai, entre Orchies et Marchiennes. Tissu économique : TPE et PME agricoles et agroalimentaires de la plaine pévéloise, artisanat, commerce de proximité, services aux entreprises du Douaisis, logistique liée à l'axe autoroutier A23. Axion-IA y intervient pour tous types d'activités du bassin douaisien et de la Pévèle.",
+    "Flines-lez-Râches (59), commune de la Pévèle au sud-est de Douai, entre Orchies et Marchiennes. Tissu économique : PME et ETI agricoles et agroalimentaires de la plaine pévéloise, artisanat, commerce de proximité, services aux entreprises du Douaisis, logistique liée à l'axe autoroutier A23. Axion-IA y intervient pour tous types d'activités du bassin douaisien et de la Pévèle.",
   pitchEn:
-    "Flines-lez-Râches (59), commune de la Pévèle au sud-est de Douai, entre Orchies et Marchiennes. Tissu économique : TPE et PME agricoles et agroalimentaires de la plaine pévéloise, artisanat, commerce de proximité, services aux entreprises du Douaisis, logistique liée à l'axe autoroutier A23. Axion-IA y intervient pour tous types d'activités du bassin douaisien et de la Pévèle.",
+    "Flines-lez-Râches (59), commune de la Pévèle au sud-est de Douai, entre Orchies et Marchiennes. Tissu économique : PME et ETI agricoles et agroalimentaires de la plaine pévéloise, artisanat, commerce de proximité, services aux entreprises du Douaisis, logistique liée à l'axe autoroutier A23. Axion-IA y intervient pour tous types d'activités du bassin douaisien et de la Pévèle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Flines-lez-Râches (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires de la Pévèle, artisans, commerçants, prestataires de services B2B du bassin douaisien et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Flines-lez-Râches (59). Nous accompagnons PME et ETI : exploitations agricoles et PME agroalimentaires de la Pévèle, artisans, commerçants, prestataires de services B2B du bassin douaisien et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Flines-lez-Râches (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires de la Pévèle, artisans, commerçants, prestataires de services B2B du bassin douaisien et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Flines-lez-Râches (59). Nous accompagnons PME et ETI : exploitations agricoles et PME agroalimentaires de la Pévèle, artisans, commerçants, prestataires de services B2B du bassin douaisien et professions libérales.",
   seoHook: "bassin douaisien et",
   ecosystemFr:
     "Flines-lez-Râches est une commune rurale de la Pévèle, entre Douai (15 min) et Orchies (10 min). L'économie locale est portée par les exploitations agricoles et PME agroalimentaires de la plaine pévéloise (cultures céréalières, betteraves, maraîchage), l'artisanat du bâtiment, le commerce de bourg et les services aux entreprises irriguant le Douaisis. L'axe autoroutier A23 (Lille-Valenciennes) favorise la logistique et les échanges régionaux.",
@@ -30,8 +30,8 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Flines-lez-Râches : diagnostic adapté aux PME et ETI agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Flines-lez-Râches : diagnostic adapté aux PME et ETI agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flines-lez-Râches : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
       en: "Implémentation IA à Flines-lez-Râches : prévision rendements et planification assolements agricoles, traçabilité agroalimentaire automatisée, gestion stocks et approvisionnements PME, CRM augmenté artisans-commerçants, automatisation devis-facturation prestataires Douaisis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Flines-lez-Râches : sessions dans votre exploitation agricole, atelier, bureau ou en visio. Dirigeants TPE/PME de la Pévèle et du Douaisis souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Flines-lez-Râches : sessions dans votre exploitation agricole, atelier, bureau ou en visio. Dirigeants TPE/PME de la Pévèle et du Douaisis souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Flines-lez-Râches : sessions dans votre exploitation agricole, atelier, bureau ou en visio. Dirigeants PME et ETI de la Pévèle et du Douaisis souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Flines-lez-Râches : sessions dans votre exploitation agricole, atelier, bureau ou en visio. Dirigeants PME et ETI de la Pévèle et du Douaisis souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et PME agroalimentaires ?",
-      a: "Oui, nous accompagnons les TPE et PME agricoles et agroalimentaires de la Pévèle sur leurs cas IA : prévision rendements et planification assolements, traçabilité et normes sanitaires automatisées, détection maladies cultures par imagerie, gestion optimisée stocks et approvisionnements, copilotes administratifs PAC et réglementation.",
+      a: "Oui, nous accompagnons les PME et ETI agricoles et agroalimentaires de la Pévèle sur leurs cas IA : prévision rendements et planification assolements, traçabilité et normes sanitaires automatisées, détection maladies cultures par imagerie, gestion optimisée stocks et approvisionnements, copilotes administratifs PAC et réglementation.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Flines-lez-Râches  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle et du Douaisis, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services B2B). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de la Pévèle et du Douaisis, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services B2B). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de la Pévèle ?",

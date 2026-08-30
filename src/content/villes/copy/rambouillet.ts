@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const RAMBOUILLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Rambouillet (27 724 habitants, 78120), sous-préfecture des Yvelines à 45 km au sud-ouest de Paris. Clairière forestière dans le massif de Rambouillet (50 % du territoire boisé) et partiellement intégrée au Parc naturel régional de la Haute Vallée de Chevreuse, la ville mêle commerces, services, tourisme patrimonial (château) et activités liées à la forêt. Notre équipe se déplace pour automatiser devis, relances et processus métiers, avec du code custom, pas de no-code.",
+    "Axion-IA accompagne les PME et ETI de Rambouillet (27 724 habitants, 78120), sous-préfecture des Yvelines à 45 km au sud-ouest de Paris. Clairière forestière dans le massif de Rambouillet (50 % du territoire boisé) et partiellement intégrée au Parc naturel régional de la Haute Vallée de Chevreuse, la ville mêle commerces, services, tourisme patrimonial (château) et activités liées à la forêt. Notre équipe se déplace pour automatiser devis, relances et processus métiers, avec du code custom, pas de no-code.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Rambouillet (27 724 habitants, 78120), sous-préfecture des Yvelines à 45 km au sud-ouest de Paris. Clairière forestière dans le massif de Rambouillet (50 % du territoire boisé) et partiellement intégrée au Parc naturel régional de la Haute Vallée de Chevreuse, la ville mêle commerces, services, tourisme patrimonial (château) et activités liées à la forêt. Notre équipe se déplace pour automatiser devis, relances et processus métiers, avec du code custom, pas de no-code.",
+    "Axion-IA accompagne les PME et ETI de Rambouillet (27 724 habitants, 78120), sous-préfecture des Yvelines à 45 km au sud-ouest de Paris. Clairière forestière dans le massif de Rambouillet (50 % du territoire boisé) et partiellement intégrée au Parc naturel régional de la Haute Vallée de Chevreuse, la ville mêle commerces, services, tourisme patrimonial (château) et activités liées à la forêt. Notre équipe se déplace pour automatiser devis, relances et processus métiers, avec du code custom, pas de no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les TPE et PME locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
+    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les PME et ETI locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les TPE et PME locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
-  seoHook: "TPE & PME Rambouillet · commerce, tourisme, services",
+    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les PME et ETI locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
+  seoHook: "PME & PME Rambouillet · commerce, tourisme, services",
   ecosystemFr:
-    "Rambouillet est sous-préfecture des Yvelines et chef-lieu d'arrondissement. Sa densité modérée (788 hab/km² sur 35,19 km²) et son insertion dans le massif forestier orientent l'économie locale vers les commerces de centre-ville, l'hôtellerie-restauration autour du château présidentiel, les services et professions libérales, l'artisanat du bâtiment et les filières liées à la forêt et au tourisme du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu dominé par les TPE et PME.",
+    "Rambouillet est sous-préfecture des Yvelines et chef-lieu d'arrondissement. Sa densité modérée (788 hab/km² sur 35,19 km²) et son insertion dans le massif forestier orientent l'économie locale vers les commerces de centre-ville, l'hôtellerie-restauration autour du château présidentiel, les services et professions libérales, l'artisanat du bâtiment et les filières liées à la forêt et au tourisme du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu dominé par les PME et ETI.",
   ecosystemEn:
-    "Rambouillet est sous-préfecture des Yvelines et chef-lieu d'arrondissement. Sa densité modérée (788 hab/km² sur 35,19 km²) et son insertion dans le massif forestier orientent l'économie locale vers les commerces de centre-ville, l'hôtellerie-restauration autour du château présidentiel, les services et professions libérales, l'artisanat du bâtiment et les filières liées à la forêt et au tourisme du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu dominé par les TPE et PME.",
+    "Rambouillet est sous-préfecture des Yvelines et chef-lieu d'arrondissement. Sa densité modérée (788 hab/km² sur 35,19 km²) et son insertion dans le massif forestier orientent l'économie locale vers les commerces de centre-ville, l'hôtellerie-restauration autour du château présidentiel, les services et professions libérales, l'artisanat du bâtiment et les filières liées à la forêt et au tourisme du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu dominé par les PME et ETI.",
   distancesFr:
     "Rambouillet est à 45 km au sud-ouest de Paris. La gare de Rambouillet est desservie par le Transilien N (Paris-Montparnasse en 28 à 65 min) et le TER Centre-Val de Loire. La RN10 relie la ville à Paris et à Chartres.",
   distancesEn:
@@ -37,16 +37,16 @@ export const RAMBOUILLET_COPY: VilleCopy = {
       en: "Auditer à Rambouillet les processus d'un commerce de centre-ville, d'un hôtel-restaurant ou d'un artisan du bâtiment — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une TPE/PME — Formation 4 h à partir de {{price:intervention-4h|flat}}, code custom sans no-code.",
-      en: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une TPE/PME — Formation 4 h à partir de {{price:intervention-4h|flat}}, code custom sans no-code.",
+      fr: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une PME et ETI — Formation 4 h à partir de {{price:intervention-4h|flat}}, code custom sans no-code.",
+      en: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une PME et ETI — Formation 4 h à partir de {{price:intervention-4h|flat}}, code custom sans no-code.",
     },
     implementation: {
       fr: "Implémenter à Rambouillet des outils IA opérationnels (classification emails, extraction documents, suivi client) — déploiement sur site dès {{price:impl-poc|entry}}.",
       en: "Implémenter à Rambouillet des outils IA opérationnels (classification emails, extraction documents, suivi client) — déploiement sur site dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Rambouillet un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner en un-à-un à Rambouillet un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner en un-à-un à Rambouillet un dirigeants de PME et d'ETI pour cadrer une feuille de route IA réaliste — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en un-à-un à Rambouillet un dirigeants de PME et d'ETI pour cadrer une feuille de route IA réaliste — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
       fr: {
         hero: "Rambouillet n'est pas qu'une sous-préfecture forestière des Yvelines : la ville héberge le siège d'EBP, éditeur de logiciels de gestion (comptabilité, paie, facturation, plateforme SaaS Hubbix) intégré au groupe Cegid depuis 2024, et concentre dans les zones d'activités Bel Air–La Forêt et Le Pâtis un tissu de PME industrielles (Rehau, Schüco, SNEF) et de commerces de centre-ville. Axion-IA conçoit pour ces acteurs des sites web et des plateformes SaaS augmentés par l'IA — vitrines, portails clients, e-commerce, chatbots métier — en code custom, hébergés en UE, sans dépendance éditeur.",
         whyHere: [
-          "Tissu numérique local réel : avec le siège d'EBP Informatique (éditeur SaaS de gestion racheté par Cegid en 2024) implanté sur Rambouillet–Gazeran, le bassin connaît déjà l'édition logicielle ; nous concevons sites et SaaS IA-native pour les TPE/PME qui veulent un portail ou une vitrine au même niveau d'exigence.",
+          "Tissu numérique local réel : avec le siège d'EBP Informatique (éditeur SaaS de gestion racheté par Cegid en 2024) implanté sur Rambouillet–Gazeran, le bassin connaît déjà l'édition logicielle ; nous concevons sites et SaaS IA-native pour les PME et ETI qui veulent un portail ou une vitrine au même niveau d'exigence.",
           "Tourisme patrimonial à fort volume : le château présidentiel et la Bergerie Nationale — Conservatoire du Mérinos de Rambouillet, plus de 120 000 visiteurs/an — appellent des sites de billetterie, réservation et e-commerce (laine, produits fermiers, ateliers pédagogiques) avec recherche et assistance IA multilingues.",
           "PME et artisans des ZA Bel Air–La Forêt, Le Pâtis et du Technoparc Jean Moulin : sites vitrines, configurateurs de devis et portails clients connectés à leurs outils de gestion (souvent EBP/Cegid), avec automatisation IA des relances et des demandes entrantes.",
           "Commerces et services du centre-ville et professions libérales : refonte mobile-first, prise de rendez-vous en ligne, fiches produits et chatbots de pré-qualification, calibrés pour des structures de quelques personnes plutôt que pour des budgets grands comptes.",
@@ -87,12 +87,6 @@ export const RAMBOUILLET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-boutique essentielle",
-            detail:
-              "Pour commerces du centre-ville de Rambouillet, artisans des ZA, hôtels-restaurants autour du château et professions libérales : site mobile-first, prise de rendez-vous ou petite boutique, avec un assistant IA de pré-qualification.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail client ou e-commerce avancé",
@@ -174,12 +168,6 @@ export const RAMBOUILLET_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Storefront site or essential e-shop",
-            detail:
-              "For Rambouillet town-centre retailers, tradespeople in the business zones, hotels and restaurants around the château and independent professionals: mobile-first site, online booking or a small shop, with a pre-qualification AI assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Customer portal or advanced e-commerce",
             detail:
@@ -245,7 +233,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous principalement à Rambouillet ?",
-      a: "Commerces du centre-ville, hôtellerie-restauration autour du château, artisans du bâtiment, professions libérales, services aux entreprises et filières liées à la forêt et au Parc naturel régional — l'IA est ajustée à l'usage TPE/PME.",
+      a: "Commerces du centre-ville, hôtellerie-restauration autour du château, artisans du bâtiment, professions libérales, services aux entreprises et filières liées à la forêt et au Parc naturel régional — l'IA est ajustée à l'usage PME et ETI.",
     },
     {
       q: "Faites-vous du no-code à Rambouillet ?",

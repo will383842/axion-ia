@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BEAUNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes seniors en intelligence artificielle intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
+    "Axion-IA accompagne les PME et ETI de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes seniors en intelligence artificielle intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes seniors en intelligence artificielle intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
+    "Axion-IA accompagne les PME et ETI de Beaune, sous-préfecture de la Côte-d'Or et capitale mondiale des vins de Bourgogne, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes seniors en intelligence artificielle intervient sur site auprès des maisons de négoce et domaines viticoles de la Côte de Beaune (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), des hôteliers-restaurateurs de prestige, des acteurs de l'oenotourisme, des PME agroalimentaires et des artisans du BTP de rénovation patrimoniale pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE et PME viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les PME et ETI de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux PME et ETI viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE et PME viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les PME et ETI de Beaune (Côte-d'Or, 22 000 habitants) et de son vignoble de Bourgogne. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux PME et ETI viticoles et négoce, hôtellerie-restauration de prestige, oenotourisme, agroalimentaire bourguignon et BTP patrimonial. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   seoHook: "viticulture & oenotourisme prestige",
   ecosystemFr:
-    "Beaune concentre un tissu de TPE et PME unique en France, structuré autour de la viticulture et du négoce : plus de 100 maisons de négoce (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), 8 000 hectares d'AOC Côte de Beaune (Meursault, Puligny-Montrachet, Pommard, Volnay, Aloxe-Corton), siège du BIVB (Bureau Interprofessionnel des Vins de Bourgogne), Cité des Climats et Vins de Bourgogne (2023), Hospices de Beaune (Hôtel-Dieu 1443, vente aux enchères mondiale Christie's 3e dimanche de novembre) et Climats de Bourgogne inscrits à l'UNESCO depuis 2015. Filière agroalimentaire bourguignonne associée (cassis, pain d'épices, moutarde) et hôtellerie-restauration étoilée Michelin.",
+    "Beaune concentre un tissu de PME et ETI unique en France, structuré autour de la viticulture et du négoce : plus de 100 maisons de négoce (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), 8 000 hectares d'AOC Côte de Beaune (Meursault, Puligny-Montrachet, Pommard, Volnay, Aloxe-Corton), siège du BIVB (Bureau Interprofessionnel des Vins de Bourgogne), Cité des Climats et Vins de Bourgogne (2023), Hospices de Beaune (Hôtel-Dieu 1443, vente aux enchères mondiale Christie's 3e dimanche de novembre) et Climats de Bourgogne inscrits à l'UNESCO depuis 2015. Filière agroalimentaire bourguignonne associée (cassis, pain d'épices, moutarde) et hôtellerie-restauration étoilée Michelin.",
   ecosystemEn:
-    "Beaune concentre un tissu de TPE et PME unique en France, structuré autour de la viticulture et du négoce : plus de 100 maisons de négoce (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), 8 000 hectares d'AOC Côte de Beaune (Meursault, Puligny-Montrachet, Pommard, Volnay, Aloxe-Corton), siège du BIVB (Bureau Interprofessionnel des Vins de Bourgogne), Cité des Climats et Vins de Bourgogne (2023), Hospices de Beaune (Hôtel-Dieu 1443, vente aux enchères mondiale Christie's 3e dimanche de novembre) et Climats de Bourgogne inscrits à l'UNESCO depuis 2015. Filière agroalimentaire bourguignonne associée (cassis, pain d'épices, moutarde) et hôtellerie-restauration étoilée Michelin.",
+    "Beaune concentre un tissu de PME et ETI unique en France, structuré autour de la viticulture et du négoce : plus de 100 maisons de négoce (Bouchard, Joseph Drouhin, Louis Latour, Patriarche, Albert Bichot, Maison Champy), 8 000 hectares d'AOC Côte de Beaune (Meursault, Puligny-Montrachet, Pommard, Volnay, Aloxe-Corton), siège du BIVB (Bureau Interprofessionnel des Vins de Bourgogne), Cité des Climats et Vins de Bourgogne (2023), Hospices de Beaune (Hôtel-Dieu 1443, vente aux enchères mondiale Christie's 3e dimanche de novembre) et Climats de Bourgogne inscrits à l'UNESCO depuis 2015. Filière agroalimentaire bourguignonne associée (cassis, pain d'épices, moutarde) et hôtellerie-restauration étoilée Michelin.",
   distancesFr:
     "Beaune est un carrefour autoroutier majeur de Bourgogne, à l'intersection de l'A6 et de l'A36 : Dijon à 45 km (A31), Lyon à 195 km (A6), Paris à 320 km (A6, 2h en TGV via Dijon), Mulhouse à 200 km (A36), Genève à 220 km. La gare SNCF de Beaune dessert Dijon en 25 minutes et Paris en 2h15 via la LGV. L'aéroport de Dole-Jura est à 55 km, Lyon-Saint-Exupéry à 175 km. Le vignoble de la Côte de Beaune et de la Côte de Nuits s'étend de part et d'autre de la ville sur la route des Grands Crus.",
   distancesEn:
@@ -30,24 +30,24 @@ export const BEAUNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place sur mesure à Beaune pour TPE et PME : cartographie des cas d'usage IA chez les maisons de négoce de la Côte de Beaune, les hôteliers-restaurateurs de prestige et les acteurs de l'oenotourisme, avec ROI chiffré sur 90 jours.",
-      en: "Audit sur place sur mesure à Beaune pour TPE et PME : cartographie des cas d'usage IA chez les maisons de négoce de la Côte de Beaune, les hôteliers-restaurateurs de prestige et les acteurs de l'oenotourisme, avec ROI chiffré sur 90 jours.",
+      fr: "Audit sur place sur mesure à Beaune pour PME et ETI : cartographie des cas d'usage IA chez les maisons de négoce de la Côte de Beaune, les hôteliers-restaurateurs de prestige et les acteurs de l'oenotourisme, avec ROI chiffré sur 90 jours.",
+      en: "Audit sur place sur mesure à Beaune pour PME et ETI : cartographie des cas d'usage IA chez les maisons de négoce de la Côte de Beaune, les hôteliers-restaurateurs de prestige et les acteurs de l'oenotourisme, avec ROI chiffré sur 90 jours.",
     },
     interventions: {
-      fr: "Interventions sur site à Beaune et dans le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) pour automatiser les processus commerciaux, logistiques export et administratifs des TPE et PME viticoles, hôtelières et agroalimentaires.",
-      en: "Interventions sur site à Beaune et dans le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) pour automatiser les processus commerciaux, logistiques export et administratifs des TPE et PME viticoles, hôtelières et agroalimentaires.",
+      fr: "Interventions sur site à Beaune et dans le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) pour automatiser les processus commerciaux, logistiques export et administratifs des PME et ETI viticoles, hôtelières et agroalimentaires.",
+      en: "Interventions sur site à Beaune et dans le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) pour automatiser les processus commerciaux, logistiques export et administratifs des PME et ETI viticoles, hôtelières et agroalimentaires.",
     },
     implementation: {
       fr: "Implémentation de solutions IA générative à Beaune pour les maisons de négoce, domaines viticoles et acteurs de l'oenotourisme : CRM, gestion d'allocations, traduction multilingue export, assistants clients haut de gamme, en lien avec le BIVB et la Cité des Climats et Vins de Bourgogne.",
       en: "Implémentation de solutions IA générative à Beaune pour les maisons de négoce, domaines viticoles et acteurs de l'oenotourisme : CRM, gestion d'allocations, traduction multilingue export, assistants clients haut de gamme, en lien avec le BIVB et la Cité des Climats et Vins de Bourgogne.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Beaune pour dirigeants de TPE et PME bourguignonnes : prise en main concrète de l'IA générative appliquée à leur métier (viticulture, négoce, oenotourisme, hôtellerie de prestige, agroalimentaire, BTP patrimonial).",
-      en: "Coaching un-à-un à Beaune pour dirigeants de TPE et PME bourguignonnes : prise en main concrète de l'IA générative appliquée à leur métier (viticulture, négoce, oenotourisme, hôtellerie de prestige, agroalimentaire, BTP patrimonial).",
+      fr: "Coaching un-à-un à Beaune pour dirigeants de PME et d'ETI bourguignonnes : prise en main concrète de l'IA générative appliquée à leur métier (viticulture, négoce, oenotourisme, hôtellerie de prestige, agroalimentaire, BTP patrimonial).",
+      en: "Coaching un-à-un à Beaune pour dirigeants de PME et d'ETI bourguignonnes : prise en main concrète de l'IA générative appliquée à leur métier (viticulture, négoce, oenotourisme, hôtellerie de prestige, agroalimentaire, BTP patrimonial).",
     },
     sitesWeb: {
-      fr: "Conception de sites web augmentés et plateformes SaaS IA sur mesure pour les TPE et PME de Beaune : maisons de négoce et domaines viticoles, hôteliers-restaurateurs étoilés, oenotourisme premium, artisans du patrimoine et commerçants du centre historique.",
-      en: "Conception de sites web augmentés et plateformes SaaS IA sur mesure pour les TPE et PME de Beaune : maisons de négoce et domaines viticoles, hôteliers-restaurateurs étoilés, oenotourisme premium, artisans du patrimoine et commerçants du centre historique.",
+      fr: "Conception de sites web augmentés et plateformes SaaS IA sur mesure pour les PME et ETI de Beaune : maisons de négoce et domaines viticoles, hôteliers-restaurateurs étoilés, oenotourisme premium, artisans du patrimoine et commerçants du centre historique.",
+      en: "Conception de sites web augmentés et plateformes SaaS IA sur mesure pour les PME et ETI de Beaune : maisons de négoce et domaines viticoles, hôteliers-restaurateurs étoilés, oenotourisme premium, artisans du patrimoine et commerçants du centre historique.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const BEAUNE_COPY: VilleCopy = {
         whyHere: [
           "Négoce et export viticole bourguignon (près de 2 milliards d'euros par an) vers les États-Unis, le Royaume-Uni, le Japon et la Chine : pour des maisons comme Bouchard, Joseph Drouhin ou Albert Bichot, on bâtit des boutiques e-commerce et portails B2B multilingues sous WooCommerce, Shopify ou code sur mesure, avec gestion d'allocations clients, ventes en primeur et fiches AOC Côte de Beaune (Meursault, Pommard, Volnay) traduites automatiquement par l'IA, branchées sur votre gestion de cave et vos stocks de millésimes.",
           "Oenotourisme et patrimoine UNESCO — Hospices de Beaune et leur Hôtel-Dieu de 1443, Cité des Climats et Vins de Bourgogne ouverte en 2023, route des Grands Crus reliant la Côte de Beaune à la Côte de Nuits : nos chatbots RAG et agents conversationnels sont multilingues par défaut et taillés pour la réservation de visites, de dégustations et de séjours haut de gamme, avec recherche sémantique sur vos cuvées et un UX/UI premium pour l'hôtellerie étoilée Michelin et les domaines ouverts au public.",
-          "Tissu dense de TPE et PME viticoles, hôtelières et agroalimentaires bourguignonnes (cassis, pain d'épices, moutarde) souvent déjà installées sur WordPress, PrestaShop ou Magento : on greffe l'IA sur la stack existante via widget, plugin ou API sans refonte coûteuse, ou on rebâtit une vitrine mobile-first quand le site a vieilli, en respectant le calendrier des cavistes, des domaines de la Côte de Beaune et des artisans du centre historique intra-muros.",
+          "Tissu dense de PME et ETI viticoles, hôtelières et agroalimentaires bourguignonnes (cassis, pain d'épices, moutarde) souvent déjà installées sur WordPress, PrestaShop ou Magento : on greffe l'IA sur la stack existante via widget, plugin ou API sans refonte coûteuse, ou on rebâtit une vitrine mobile-first quand le site a vieilli, en respectant le calendrier des cavistes, des domaines de la Côte de Beaune et des artisans du centre historique intra-muros.",
           "Saisonnalité très marquée — vendanges de septembre-octobre, vente aux enchères Christie's des Hospices le 3e dimanche de novembre, inter-saisons touristiques rythmées par le BIVB et la Cité des Climats et Vins : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et chaque mise en production est planifiée hors pics commerciaux pour ne jamais perturber une vente en primeur, une enchère ou un afflux de visiteurs sur la route des Grands Crus.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const BEAUNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur vos millésimes, assistant de réservation — sur le site existant d'un domaine de la Côte de Beaune, d'un caviste, d'une chambre d'hôtes ou d'un artisan du pain d'épices et du cassis, sans refonte ni changement de CMS. Idéal pour tester un cas d'usage à coût maîtrisé avant d'aller plus loin.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const BEAUNE_COPY: VilleCopy = {
         whyHere: [
           "Négoce et export viticole bourguignon (près de 2 milliards d'euros par an) vers les États-Unis, le Royaume-Uni, le Japon et la Chine : pour des maisons comme Bouchard, Joseph Drouhin ou Albert Bichot, on bâtit des boutiques e-commerce et portails B2B multilingues sous WooCommerce, Shopify ou code sur mesure, avec gestion d'allocations clients, ventes en primeur et fiches AOC Côte de Beaune (Meursault, Pommard, Volnay) traduites automatiquement par l'IA, branchées sur votre gestion de cave et vos stocks de millésimes.",
           "Oenotourisme et patrimoine UNESCO — Hospices de Beaune et leur Hôtel-Dieu de 1443, Cité des Climats et Vins de Bourgogne ouverte en 2023, route des Grands Crus reliant la Côte de Beaune à la Côte de Nuits : nos chatbots RAG et agents conversationnels sont multilingues par défaut et taillés pour la réservation de visites, de dégustations et de séjours haut de gamme, avec recherche sémantique sur vos cuvées et un UX/UI premium pour l'hôtellerie étoilée Michelin et les domaines ouverts au public.",
-          "Tissu dense de TPE et PME viticoles, hôtelières et agroalimentaires bourguignonnes (cassis, pain d'épices, moutarde) souvent déjà installées sur WordPress, PrestaShop ou Magento : on greffe l'IA sur la stack existante via widget, plugin ou API sans refonte coûteuse, ou on rebâtit une vitrine mobile-first quand le site a vieilli, en respectant le calendrier des cavistes, des domaines de la Côte de Beaune et des artisans du centre historique intra-muros.",
+          "Tissu dense de PME et ETI viticoles, hôtelières et agroalimentaires bourguignonnes (cassis, pain d'épices, moutarde) souvent déjà installées sur WordPress, PrestaShop ou Magento : on greffe l'IA sur la stack existante via widget, plugin ou API sans refonte coûteuse, ou on rebâtit une vitrine mobile-first quand le site a vieilli, en respectant le calendrier des cavistes, des domaines de la Côte de Beaune et des artisans du centre historique intra-muros.",
           "Saisonnalité très marquée — vendanges de septembre-octobre, vente aux enchères Christie's des Hospices le 3e dimanche de novembre, inter-saisons touristiques rythmées par le BIVB et la Cité des Climats et Vins : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et chaque mise en production est planifiée hors pics commerciaux pour ne jamais perturber une vente en primeur, une enchère ou un afflux de visiteurs sur la route des Grands Crus.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const BEAUNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique sur vos millésimes, assistant de réservation — sur le site existant d'un domaine de la Côte de Beaune, d'un caviste, d'une chambre d'hôtes ou d'un artisan du pain d'épices et du cassis, sans refonte ni changement de CMS. Idéal pour tester un cas d'usage à coût maîtrisé avant d'aller plus loin.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,11 +218,11 @@ export const BEAUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il sur site à Beaune et dans le vignoble bourguignon ?",
-      a: "Oui, nos experts IA seniors se déplacent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise à 45 km pour auditer, intégrer et former les équipes des TPE et PME locales directement sur leur site de production.",
+      a: "Oui, nos experts IA seniors se déplacent à Beaune, dans tout le vignoble de la Côte de Beaune et de la Côte de Nuits (Meursault, Pommard, Volnay, Nuits-Saint-Georges) ainsi que dans l'agglomération dijonnaise à 45 km pour auditer, intégrer et former les équipes des PME et ETI locales directement sur leur site de production.",
     },
     {
       q: "Quels secteurs accompagnez-vous prioritairement à Beaune ?",
-      a: "Nous priorisons les TPE et PME viticoles et de négoce de la Côte de Beaune, les hôteliers-restaurateurs de prestige et étoilés Michelin, les acteurs de l'oenotourisme, l'agroalimentaire bourguignon (cassis, pain d'épices, moutarde) et le BTP de rénovation patrimoniale. Les ETI viticoles sont accompagnées plus marginalement.",
+      a: "Nous priorisons les PME et ETI viticoles et de négoce de la Côte de Beaune, les hôteliers-restaurateurs de prestige et étoilés Michelin, les acteurs de l'oenotourisme, l'agroalimentaire bourguignon (cassis, pain d'épices, moutarde) et le BTP de rénovation patrimoniale. Les ETI viticoles sont accompagnées plus marginalement.",
     },
     {
       q: "Comment Axion-IA s'adapte-t-il à la saisonnalité viticole et touristique de Beaune ?",
@@ -250,7 +238,7 @@ export const BEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Beaune ?",
-      a: "Oui, toutes nos interventions à Beaune intègrent par défaut la conformité RGPD et le règlement européen AI Act. Nos experts IA seniors documentent les traitements, les fournisseurs de modèles et les risques, avec une traçabilité auditable pour les TPE et PME viticoles, hôtelières et agroalimentaires de Côte-d'Or.",
+      a: "Oui, toutes nos interventions à Beaune intègrent par défaut la conformité RGPD et le règlement européen AI Act. Nos experts IA seniors documentent les traitements, les fournisseurs de modèles et les risques, avec une traçabilité auditable pour les PME et ETI viticoles, hôtelières et agroalimentaires de Côte-d'Or.",
     },
   ],
 };

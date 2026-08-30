@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Gournay-sur-Marne (93), commune résidentielle des bords de la Marne à l'extrême est de la Seine-Saint-Denis, conjugue cadre verdoyant et proximité parisienne. Tissu de TPE commerçantes, artisans, PME de services, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales.",
+    "Gournay-sur-Marne (93), commune résidentielle des bords de la Marne à l'extrême est de la Seine-Saint-Denis, conjugue cadre verdoyant et proximité parisienne. Tissu de PME du commerce, artisans, PME de services, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Gournay-sur-Marne (93), commune résidentielle des bords de la Marne à l'extrême est de la Seine-Saint-Denis, conjugue cadre verdoyant et proximité parisienne. Tissu de TPE commerçantes, artisans, PME de services, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales.",
+    "Gournay-sur-Marne (93), commune résidentielle des bords de la Marne à l'extrême est de la Seine-Saint-Denis, conjugue cadre verdoyant et proximité parisienne. Tissu de PME du commerce, artisans, PME de services, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : PME du commerce et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : PME du commerce et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Gournay-sur-Marne, nichée sur les bords de la Marne à la frontière de la Seine-et-Marne, est une commune résidentielle prisée du Grand Paris est. Tissu économique de TPE commerçantes et artisanales, professions libérales, PME tertiaires et restaurateurs. Proximité de Chelles, Noisy-le-Grand (cité Descartes) et de la zone commerciale de Champs-sur-Marne.",
+    "Gournay-sur-Marne, nichée sur les bords de la Marne à la frontière de la Seine-et-Marne, est une commune résidentielle prisée du Grand Paris est. Tissu économique de PME du commerce et artisanales, professions libérales, PME tertiaires et restaurateurs. Proximité de Chelles, Noisy-le-Grand (cité Descartes) et de la zone commerciale de Champs-sur-Marne.",
   ecosystemEn:
-    "Gournay-sur-Marne, nichée sur les bords de la Marne à la frontière de la Seine-et-Marne, est une commune résidentielle prisée du Grand Paris est. Tissu économique de TPE commerçantes et artisanales, professions libérales, PME tertiaires et restaurateurs. Proximité de Chelles, Noisy-le-Grand (cité Descartes) et de la zone commerciale de Champs-sur-Marne.",
+    "Gournay-sur-Marne, nichée sur les bords de la Marne à la frontière de la Seine-et-Marne, est une commune résidentielle prisée du Grand Paris est. Tissu économique de PME du commerce et artisanales, professions libérales, PME tertiaires et restaurateurs. Proximité de Chelles, Noisy-le-Grand (cité Descartes) et de la zone commerciale de Champs-sur-Marne.",
   distancesFr:
     "Gare de Chelles-Gournay (RER E / Transilien P) à 10 min. Paris Gare de l'Est à 25 min en RER E. Aéroport Paris-Charles de Gaulle à 30 min. Noisy-le-Grand (RER A) à 10 min en voiture. A4/A104 à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce de détail & proximité",
     "Services aux entreprises & professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Restauration & hôtellerie (bords de Marne)",
     "Immobilier & gestion de patrimoine",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gournay-sur-Marne : diagnostic adapté aux TPE commerçantes, PME de services, professions libérales et restaurateurs des bords de Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Gournay-sur-Marne : diagnostic adapté aux TPE commerçantes, PME de services, professions libérales et restaurateurs des bords de Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Gournay-sur-Marne : diagnostic adapté aux PME du commerce, PME de services, professions libérales et restaurateurs des bords de Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Gournay-sur-Marne : diagnostic adapté aux PME du commerce, PME de services, professions libérales et restaurateurs des bords de Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gournay-sur-Marne : formats adaptés au commerce de centre-bourg, au cabinet libéral ou au restaurant. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
       en: "Implémentation IA à Gournay-sur-Marne : automatisation gestion commerciale, agents conversationnels, outils IA immobilier et patrimoine, classification documents comptables. Tous secteurs Grand Paris est.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gournay-sur-Marne : sessions dans vos locaux ou en visio. Commerçants, gérants TPE/PME, professions libérales et dirigeants du Grand Paris est souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Gournay-sur-Marne : sessions dans vos locaux ou en visio. Commerçants, gérants TPE/PME, professions libérales et dirigeants du Grand Paris est souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Gournay-sur-Marne : sessions dans vos locaux ou en visio. Commerçants, gérants PME et ETI, professions libérales et dirigeants du Grand Paris est souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Gournay-sur-Marne : sessions dans vos locaux ou en visio. Commerçants, gérants PME et ETI, professions libérales et dirigeants du Grand Paris est souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [

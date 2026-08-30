@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const HARNES_COPY: VilleCopy = {
   pitchFr:
-    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu PME du BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu PME du BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Harnes (62). Nous accompagnons tous types d'activités : PME du BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Harnes (62). Nous accompagnons tous types d'activités : PME du BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
   seoHook: "artisanat & logistique transport",
   ecosystemFr:
-    "Harnes est intégrée à l'agglomération Lens-Liévin, au cœur du bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique mixte : TPE artisanat BTP, PME logistique et industrie reconvertie, commerces de proximité, services tertiaires. Proximité immédiate de Lens et du Louvre-Lens. Accès A21 vers Lille (25 min) et Douai (15 min).",
+    "Harnes est intégrée à l'agglomération Lens-Liévin, au cœur du bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique mixte : PME du BTP, PME logistique et industrie reconvertie, commerces de proximité, services tertiaires. Proximité immédiate de Lens et du Louvre-Lens. Accès A21 vers Lille (25 min) et Douai (15 min).",
   ecosystemEn:
-    "Harnes est intégrée à l'agglomération Lens-Liévin, au cœur du bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique mixte : TPE artisanat BTP, PME logistique et industrie reconvertie, commerces de proximité, services tertiaires. Proximité immédiate de Lens et du Louvre-Lens. Accès A21 vers Lille (25 min) et Douai (15 min).",
+    "Harnes est intégrée à l'agglomération Lens-Liévin, au cœur du bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique mixte : PME du BTP, PME logistique et industrie reconvertie, commerces de proximité, services tertiaires. Proximité immédiate de Lens et du Louvre-Lens. Accès A21 vers Lille (25 min) et Douai (15 min).",
   distancesFr:
     "Lens à 5 min. Liévin à 10 min. Douai à 15 min. Lille à 25 min A21/A1. Arras à 20 min. Aéroport Lille-Lesquin à 25 min. Gare TGV Lille-Europe à 30 min.",
   distancesEn:
     "Lens à 5 min. Liévin à 10 min. Douai à 15 min. Lille à 25 min A21/A1. Arras à 20 min. Aéroport Lille-Lesquin à 25 min. Gare TGV Lille-Europe à 30 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP (bassin minier reconverti)",
+    "PME du BTP (bassin minier reconverti)",
     "PME logistique et transport",
     "Commerce de proximité",
     "Services tertiaires et prestataires péri-urbains",
@@ -30,8 +30,8 @@ export const HARNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Harnes : diagnostic adapté aux PME du BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Harnes : diagnostic adapté aux PME du BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Harnes : formats adaptés à l'atelier BTP, à l'entrepôt logistique, au commerce, au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const HARNES_COPY: VilleCopy = {
       en: "Implémentation IA à Harnes : automatisation devis BTP, optimisation tournées logistiques, agents IA service client, gestion stocks, CRM augmentés pour PME du bassin minier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Harnes : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME logistique, commerçants, prestataires tertiaires de Lens-Liévin.",
-      en: "Coaching 1-to-1 à Harnes : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME logistique, commerçants, prestataires tertiaires de Lens-Liévin.",
+      fr: "Coaching 1-to-1 à Harnes : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants PME du BTP, gérants PME logistique, commerçants, prestataires tertiaires de Lens-Liévin.",
+      en: "Coaching 1-to-1 à Harnes : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants PME du BTP, gérants PME logistique, commerçants, prestataires tertiaires de Lens-Liévin.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const HARNES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Harnes et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Sallaumines, Avion, Noyelles-sous-Lens). Nos consultants viennent de Lille (25 min A21) ou Douai (15 min).",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Harnes sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME du BTP du bassin minier ?",
+      a: "Oui, nous accompagnons les PME du BTP de Harnes sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les PME logistique et industrie reconvertie ?",

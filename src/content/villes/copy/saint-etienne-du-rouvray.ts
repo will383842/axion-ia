@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Étienne-du-Rouvray : sous-traitants industriels de la vallée de la Seine, PME du technopôle du Madrillet, artisans et négoces de l'agglomération rouennaise. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Étienne-du-Rouvray : sous-traitants industriels de la vallée de la Seine, PME du technopôle du Madrillet, artisans et négoces de l'agglomération rouennaise. On déploie des automatisations utiles, pas des effets d'annonce.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Étienne-du-Rouvray : sous-traitants industriels de la vallée de la Seine, PME du technopôle du Madrillet, artisans et négoces de l'agglomération rouennaise. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Étienne-du-Rouvray : sous-traitants industriels de la vallée de la Seine, PME du technopôle du Madrillet, artisans et négoces de l'agglomération rouennaise. On déploie des automatisations utiles, pas des effets d'annonce.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Étienne-du-Rouvray, en Seine-Maritime, pour les TPE et PME de la banlieue sud de Rouen : sous-traitants de l'industrie lourde et de la pétrochimie de la vallée de la Seine, PME innovantes du technopôle du Madrillet, artisans et négoces du Parc des Boucles de la Seine. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, reporting, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Étienne-du-Rouvray, en Seine-Maritime, pour les PME et ETI de la banlieue sud de Rouen : sous-traitants de l'industrie lourde et de la pétrochimie de la vallée de la Seine, PME innovantes du technopôle du Madrillet, artisans et négoces du Parc des Boucles de la Seine. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, reporting, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Étienne-du-Rouvray, en Seine-Maritime, pour les TPE et PME de la banlieue sud de Rouen : sous-traitants de l'industrie lourde et de la pétrochimie de la vallée de la Seine, PME innovantes du technopôle du Madrillet, artisans et négoces du Parc des Boucles de la Seine. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, reporting, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Étienne-du-Rouvray, en Seine-Maritime, pour les PME et ETI de la banlieue sud de Rouen : sous-traitants de l'industrie lourde et de la pétrochimie de la vallée de la Seine, PME innovantes du technopôle du Madrillet, artisans et négoces du Parc des Boucles de la Seine. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, reporting, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "industrie & sous-traitance vallée de Seine",
   ecosystemFr:
-    "Saint-Étienne-du-Rouvray, deuxième ville de la métropole rouennaise, est marquée par l'industrie lourde et la pétrochimie de la vallée de la Seine, qui alimentent un réseau dense de sous-traitants et de PME de maintenance. La commune accueille aussi le technopôle du Madrillet, pôle d'enseignement supérieur, de recherche et d'entreprises innovantes en énergie et matériaux. Autour cohabitent artisans du bâtiment, négoces et prestataires de services. Ces petites structures, souvent dépourvues de service IT, sont la cible idéale d'automatisations IA à forte valeur ajoutée.",
+    "Saint-Étienne-du-Rouvray, deuxième ville de la métropole rouennaise, est marquée par l'industrie lourde et la pétrochimie de la vallée de la Seine, qui alimentent un réseau dense de sous-traitants et de PME de maintenance. La commune accueille aussi le technopôle du Madrillet, pôle d'enseignement supérieur, de recherche et d'entreprises innovantes en énergie et matériaux. Autour cohabitent artisans du bâtiment, négoces et prestataires de services. Ces PME, souvent dépourvues de service IT, sont la cible idéale d'automatisations IA à forte valeur ajoutée.",
   ecosystemEn:
-    "Saint-Étienne-du-Rouvray, deuxième ville de la métropole rouennaise, est marquée par l'industrie lourde et la pétrochimie de la vallée de la Seine, qui alimentent un réseau dense de sous-traitants et de PME de maintenance. La commune accueille aussi le technopôle du Madrillet, pôle d'enseignement supérieur, de recherche et d'entreprises innovantes en énergie et matériaux. Autour cohabitent artisans du bâtiment, négoces et prestataires de services. Ces petites structures, souvent dépourvues de service IT, sont la cible idéale d'automatisations IA à forte valeur ajoutée.",
+    "Saint-Étienne-du-Rouvray, deuxième ville de la métropole rouennaise, est marquée par l'industrie lourde et la pétrochimie de la vallée de la Seine, qui alimentent un réseau dense de sous-traitants et de PME de maintenance. La commune accueille aussi le technopôle du Madrillet, pôle d'enseignement supérieur, de recherche et d'entreprises innovantes en énergie et matériaux. Autour cohabitent artisans du bâtiment, négoces et prestataires de services. Ces PME, souvent dépourvues de service IT, sont la cible idéale d'automatisations IA à forte valeur ajoutée.",
   distancesFr:
     "Saint-Étienne-du-Rouvray jouxte Rouen, dont la gare Rouen-Rive-Droite se trouve à une dizaine de kilomètres et relie Paris-Saint-Lazare en environ 1h15. L'A13 dessert directement la commune vers la capitale et la Normandie, tandis que la rocade sud de l'agglomération facilite l'accès aux zones industrielles de la vallée de la Seine. L'aéroport de Rouen-Vallée de Seine est tout proche. Cette accessibilité rend nos déplacements sur site fluides dans toute la métropole rouennaise.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
       en: "L'implémentation déploie à Saint-Étienne-du-Rouvray des assistants IA et workflows sur mesure pour l'industrie et les PME innovantes du Madrillet, avec formation des équipes et conformité RGPD dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Saint-Étienne-du-Rouvray forme le dirigeant de TPE ou PME à piloter l'IA : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données industrielles.",
-      en: "L'accompagnement un-à-un à Saint-Étienne-du-Rouvray forme le dirigeant de TPE ou PME à piloter l'IA : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données industrielles.",
+      fr: "L'accompagnement un-à-un à Saint-Étienne-du-Rouvray forme le dirigeant de PME ou ETI à piloter l'IA : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données industrielles.",
+      en: "L'accompagnement un-à-un à Saint-Étienne-du-Rouvray forme le dirigeant de PME ou ETI à piloter l'IA : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données industrielles.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés équipent les PME industrielles et de services de Saint-Étienne-du-Rouvray d'une plateforme rapide avec chatbot, demande de devis et contenu IA, pensée pour la recherche B2B locale.",
@@ -58,7 +58,7 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
           "L'essaimage du Madrillet (spin-off des labos CORIA, GPM, LITIS, jeunes pousses issues de l'ESIGELEC, l'ESITech, l'INSA et du CESI) a besoin de sites vitrines et de SaaS techniques crédibles : nous traduisons un sujet de R&D — combustion, matériaux, calcul intensif sur MYRIA du CRIANN — en pages claires et en démos interactives.",
           "Les prestataires de la Z.I. du Bord de Seine (logistique type Amazon France Transport ou Dachser, location d'équipements Kiloutou, imprimeurs) ont besoin de portails de devis, de suivi d'expédition et d'espaces clients : nous montons des plateformes rapides avec chatbot et formulaires qualifiés, pensées pour le mobile en entrepôt et sur le terrain.",
           "Les structures rattachées aux pôles NextMove (mobilité) et Nov@log (logistique), ainsi que les centres d'essais CEVAA et CERTAM, gèrent des contenus techniques denses : nous construisons des sites multilingues à recherche sémantique et bases documentaires indexées par l'IA, hébergés en UE.",
-          "Beaucoup de TPE et PME de l'agglomération rouennaise — artisans, négoces, services B2B autour du plateau du Madrillet — n'ont pas de service web interne : nous livrons des sites e-commerce ou catalogues multi-CMS (WordPress/WooCommerce, Shopify, ou headless sur mesure) sans dépendance ni verrou éditeur.",
+          "Beaucoup de PME et ETI de l'agglomération rouennaise — artisans, négoces, services B2B autour du plateau du Madrillet — n'ont pas de service web interne : nous livrons des sites e-commerce ou catalogues multi-CMS (WordPress/WooCommerce, Shopify, ou headless sur mesure) sans dépendance ni verrou éditeur.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou catalogue augmenté",
-            detail:
-              "Pour artisans, négoces et indépendants de l'agglomération rouennaise et du plateau du Madrillet : site rapide, mobile, formulaire de contact ou de devis et chatbot de premier niveau, sur CMS ou headless léger.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou portail métier",
@@ -175,12 +169,6 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Augmented showcase or catalogue site",
-            detail:
-              "For craftspeople, traders and freelancers in the Rouen area and on the Madrillet plateau: a fast, mobile site with contact or quote form and a first-level chatbot, on a CMS or lightweight headless stack.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce site or business portal",
             detail:
@@ -238,7 +226,7 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
-      a: "En priorité les TPE puis les PME de l'agglomération rouennaise : sous-traitants, PME innovantes du Madrillet, artisans et prestataires de services. Les ETI sont accompagnées en complément, chaque mission étant ajustée à la taille de la structure.",
+      a: "En priorité les PME puis les ETI de l'agglomération rouennaise : sous-traitants, PME innovantes du Madrillet, artisans et prestataires de services. Les grands groupes sont accompagnés en complément, chaque mission étant ajustée à la taille de la structure.",
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Étienne-du-Rouvray ?",

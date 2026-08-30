@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAULIN_COPY: VilleCopy = {
   pitchFr:
-    "Châteaulin (29), sous-préfecture du Finistère nichée dans la vallée de l'Aulne, est réputée pour sa pêche au saumon et son rôle de chef-lieu de canton. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales et services publics composent son économie. Axion-IA y intervient pour tous types d'activités de la vallée de l'Aulne.",
+    "Châteaulin (29), sous-préfecture du Finistère nichée dans la vallée de l'Aulne, est réputée pour sa pêche au saumon et son rôle de chef-lieu de canton. PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales et services publics composent son économie. Axion-IA y intervient pour tous types d'activités de la vallée de l'Aulne.",
   pitchEn:
-    "Châteaulin (29), sous-préfecture du Finistère nichée dans la vallée de l'Aulne, est réputée pour sa pêche au saumon et son rôle de chef-lieu de canton. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales et services publics composent son économie. Axion-IA y intervient pour tous types d'activités de la vallée de l'Aulne.",
+    "Châteaulin (29), sous-préfecture du Finistère nichée dans la vallée de l'Aulne, est réputée pour sa pêche au saumon et son rôle de chef-lieu de canton. PME artisanales, PME agroalimentaires, commerces de centre-ville, professions libérales et services publics composent son économie. Axion-IA y intervient pour tous types d'activités de la vallée de l'Aulne.",
   seoHook: "agroalimentaire, services & sous-préfecture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaulin (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants de centre-ville, professions libérales, acteurs touristiques et services de la vallée de l'Aulne. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaulin (29). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, commerçants de centre-ville, professions libérales, acteurs touristiques et services de la vallée de l'Aulne. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaulin (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants de centre-ville, professions libérales, acteurs touristiques et services de la vallée de l'Aulne. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaulin (29). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, commerçants de centre-ville, professions libérales, acteurs touristiques et services de la vallée de l'Aulne. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Châteaulin est la sous-préfecture du Finistère, bourg-centre de la vallée de l'Aulne entre Quimper et la presqu'île de Crozon. L'économie locale repose sur l'agroalimentaire, l'artisanat, le commerce de proximité, les services administratifs (sous-préfecture, hôpital) et le tourisme vert (pêche au saumon, canal de Nantes à Brest, randonnée). La commune irrigue un bassin rural étendu.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CHATEAULIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaulin : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Châteaulin : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Châteaulin : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châteaulin : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaulin : formations pratiques pour équipes agroalimentaires, artisans, commerçants et acteurs touristiques. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const CHATEAULIN_COPY: VilleCopy = {
       en: "Implémentation IA à Châteaulin : traçabilité agroalimentaire, agents conversationnels accueil touristique, automatisation devis artisans, gestion documentaire professions libérales. Adapté au tissu vallée de l'Aulne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châteaulin : sessions individuelles pour dirigeants TPE/PME, artisans, commerçants et professions libérales de la vallée de l'Aulne souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Châteaulin : sessions individuelles pour dirigeants TPE/PME, artisans, commerçants et professions libérales de la vallée de l'Aulne souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Châteaulin : sessions individuelles pour dirigeants de PME et d'ETI, artisans, commerçants et professions libérales de la vallée de l'Aulne souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Châteaulin : sessions individuelles pour dirigeants de PME et d'ETI, artisans, commerçants et professions libérales de la vallée de l'Aulne souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const CHATEAULIN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaulin  : quel budget prévoir ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME châteaulinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI châteaulinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Châteaulin ?",

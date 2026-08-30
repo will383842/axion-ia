@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const JOIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de PME et ETI commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de PME et ETI commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Joigny (89). Nous accompagnons PME et ETI : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Joigny (89). Nous accompagnons PME et ETI : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit sur place sur mesure.",
   seoHook: "commerce proximité & artisanat maintenance",
   ecosystemFr:
     "Joigny est une sous-préfecture de l'Yonne en bord de rivière, connue pour son centre historique Renaissance et ses côtes du vignoble jovinien. L'économie locale repose sur le commerce de centre-ville, l'artisanat BTP, les services aux entreprises, l'agroalimentaire et les professions libérales. Pôle administratif et de services du nord-ouest de l'Yonne. Proximité d'Auxerre (25 min) et de Sens (30 min).",
@@ -38,12 +38,12 @@ export const JOIGNY_COPY: VilleCopy = {
       en: "Interventions IA sur site à Joigny : formats adaptés au commerce, à l'artisan BTP, au cabinet libéral ou à l'exploitation viticole. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Joigny : automatisation gestion commerciale, planification chantiers BTP, agents conversationnels pour services, traçabilité viticole et classification documents comptables TPE/PME.",
-      en: "Implémentation IA à Joigny : automatisation gestion commerciale, planification chantiers BTP, agents conversationnels pour services, traçabilité viticole et classification documents comptables TPE/PME.",
+      fr: "Implémentation IA à Joigny : automatisation gestion commerciale, planification chantiers BTP, agents conversationnels pour services, traçabilité viticole et classification documents comptables PME et ETI.",
+      en: "Implémentation IA à Joigny : automatisation gestion commerciale, planification chantiers BTP, agents conversationnels pour services, traçabilité viticole et classification documents comptables PME et ETI.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Joigny : sessions dans vos locaux ou en visio. Dirigeants TPE/PME commerce, artisans, professions libérales et viticulteurs du nord Yonne souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Joigny : sessions dans vos locaux ou en visio. Dirigeants TPE/PME commerce, artisans, professions libérales et viticulteurs du nord Yonne souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Joigny : sessions dans vos locaux ou en visio. Dirigeants PME et ETI commerce, artisans, professions libérales et viticulteurs du nord Yonne souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Joigny : sessions dans vos locaux ou en visio. Dirigeants PME et ETI commerce, artisans, professions libérales et viticulteurs du nord Yonne souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const JOIGNY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Joigny  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Joigny et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre commerce, artisanat ou cabinet.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Joigny et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre commerce, artisanat ou cabinet.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Joigny ?",

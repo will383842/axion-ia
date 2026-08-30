@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
   pitchFr:
-    "Montereau-Fault-Yonne (77, Seine-et-Marne), 22 279 habitants, 14e ville du département, au confluent de la Seine et de l'Yonne. Port industriel de 33 hectares, héritage faïence et sidérurgie (SAM, Soletanche Bachy), TPE artisanat, PME industrielles et commerces. Axion-IA accompagne le tissu TPE/PME du Pays de Montereau et du sud Seine-et-Marne.",
+    "Montereau-Fault-Yonne (77, Seine-et-Marne), 22 279 habitants, 14e ville du département, au confluent de la Seine et de l'Yonne. Port industriel de 33 hectares, héritage faïence et sidérurgie (SAM, Soletanche Bachy), PME de l'artisanat, PME industrielles et commerces. Axion-IA accompagne le tissu PME et ETI du Pays de Montereau et du sud Seine-et-Marne.",
   pitchEn:
-    "Montereau-Fault-Yonne (77, Seine-et-Marne), 22 279 habitants, 14e ville du département, au confluent de la Seine et de l'Yonne. Port industriel de 33 hectares, héritage faïence et sidérurgie (SAM, Soletanche Bachy), TPE artisanat, PME industrielles et commerces. Axion-IA accompagne le tissu TPE/PME du Pays de Montereau et du sud Seine-et-Marne.",
+    "Montereau-Fault-Yonne (77, Seine-et-Marne), 22 279 habitants, 14e ville du département, au confluent de la Seine et de l'Yonne. Port industriel de 33 hectares, héritage faïence et sidérurgie (SAM, Soletanche Bachy), PME de l'artisanat, PME industrielles et commerces. Axion-IA accompagne le tissu PME et ETI du Pays de Montereau et du sud Seine-et-Marne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les TPE, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les PME, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les TPE, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les PME, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   seoHook: "industrie & logistique fluviale sud Seine-et-Marne",
   ecosystemFr:
     "Montereau-Fault-Yonne est un pôle industriel et logistique du sud Seine-et-Marne, au confluent Seine-Yonne. Tissu économique structuré autour du port industriel de 33 hectares (transport fluvial, vrac, conteneurs), des PME industrielles héritières des manufactures de faïence Creil-Montereau et de la sidérurgie (SAM, Soletanche Bachy), des artisans BTP, commerces de centre-ville et services aux entreprises. Ville haute (Surville) et ville basse (centre, gare, parc) complémentaires.",
@@ -30,8 +30,8 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montereau-Fault-Yonne : diagnostic pour TPE artisans, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Montereau-Fault-Yonne : diagnostic pour TPE artisans, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Montereau-Fault-Yonne : diagnostic pour PME artisanales, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Montereau-Fault-Yonne : diagnostic pour PME artisanales, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montereau-Fault-Yonne : ateliers et déploiement outils IA dans vos locaux industriels, au port fluvial ou en boutique. Vos équipes repartent autonomes.",
@@ -42,18 +42,18 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Montereau-Fault-Yonne : optimisation logistique fluviale, planification industrielle PME, automatisation devis-facturation BTP, gestion stocks commerces et agents IA RDV.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montereau-Fault-Yonne : sessions en usine, au port, en boutique ou en visio. Dirigeants TPE/PME du Pays de Montereau et du sud Seine-et-Marne.",
-      en: "Coaching 1-to-1 à Montereau-Fault-Yonne : sessions en usine, au port, en boutique ou en visio. Dirigeants TPE/PME du Pays de Montereau et du sud Seine-et-Marne.",
+      fr: "Coaching 1-to-1 à Montereau-Fault-Yonne : sessions en usine, au port, en boutique ou en visio. Dirigeants PME et ETI du Pays de Montereau et du sud Seine-et-Marne.",
+      en: "Coaching 1-to-1 à Montereau-Fault-Yonne : sessions en usine, au port, en boutique ou en visio. Dirigeants PME et ETI du Pays de Montereau et du sud Seine-et-Marne.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Montereau-Fault-Yonne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville-confluent de 22 279 habitants du sud Seine-et-Marne, où le port industriel de 33 hectares brasse le vrac et la logistique fluviale sur la Seine et l'Yonne, où l'héritage de la faïence de Creil-Montereau et de la sidérurgie (SAM, Soletanche Bachy) côtoie un tissu dense de TPE artisanales, de PME industrielles et de commerces, de la ville basse (gare, parc, centre) au plateau de Surville en ville haute. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montereau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montereau-Fault-Yonne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville-confluent de 22 279 habitants du sud Seine-et-Marne, où le port industriel de 33 hectares brasse le vrac et la logistique fluviale sur la Seine et l'Yonne, où l'héritage de la faïence de Creil-Montereau et de la sidérurgie (SAM, Soletanche Bachy) côtoie un tissu dense de PME artisanales, de PME industrielles et de commerces, de la ville basse (gare, parc, centre) au plateau de Surville en ville haute. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montereau, itérations à distance.",
         whyHere: [
           "Port industriel de 33 hectares au confluent Seine-Yonne, l'un des principaux ports du sud francilien : la logistique fluviale, le vrac, les conteneurs et le transport appellent des portails de suivi de flux en temps réel, des espaces clients sécurisés et des automatisations de devis-facturation avec recherche sémantique sur les bordereaux, taillés pour les opérateurs et transporteurs du port.",
           "PME industrielles héritières des manufactures de faïence Creil-Montereau et de la sidérurgie locale (SAM Montereau, Soletanche Bachy et son pôle géotechnique) : on greffe l'IA sur l'existant — recherche sémantique sur catalogues et fiches techniques, configurateurs produit, agents de planification atelier — sans imposer la refonte lourde que ces équipes industrielles ne peuvent pas se permettre.",
-          "Tissu majoritairement TPE BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (gare ligne Paris-Laroche-Migennes, parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
+          "Tissu majoritairement PME BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (gare ligne Paris-Laroche-Migennes, parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
           "Ville desservie en 1h depuis Paris-Gare-de-Lyon, reliée par l'A5 et la RD606 (ex-RN6) mais profondément ancrée dans le Pays de Montereau et le sud 77 : tous nos sites et briques IA sont hébergeables en UE, conformes RGPD et AI Act — vos données clients, industrielles et logistiques restent maîtrisées et ne transitent jamais hors UE sans DPA.",
         ],
         methodology: [
@@ -84,12 +84,6 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Pour les artisans BTP, restaurateurs, commerces de centre-ville et services de Montereau : ajout d'une brique IA (chatbot de qualification, prise de RDV en ligne, recherche sémantique) ou d'une vitrine simple sur le site existant, en quelques semaines et sans refonte coûteuse.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -124,7 +118,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces et artisans du centre-ville et de Surville ?",
-            a: "Oui, c'est même le cœur du tissu local. Pour les TPE BTP, restaurateurs et commerces, de la ville basse (gare, parc des Noues) au plateau de Surville en ville haute, on déploie des vitrines et boutiques e-commerce multi-CMS, la prise de RDV en ligne et des chatbots de qualification. Tout est calibré pour des budgets serrés et des équipes réduites, avec un devis ferme à partir de 24-48 h.",
+            a: "Oui, c'est même le cœur du tissu local. Pour les PME BTP, restaurateurs et commerces, de la ville basse (gare, parc des Noues) au plateau de Surville en ville haute, on déploie des vitrines et boutiques e-commerce multi-CMS, la prise de RDV en ligne et des chatbots de qualification. Tout est calibré pour des budgets serrés et des équipes réduites, avec un devis ferme à partir de 24-48 h.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -135,11 +129,11 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site marchand ou un portail déjà en activité, sans interrompre vos ventes ni vos flux logistiques. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire local du Pays de Montereau et du sud Seine-et-Marne, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Montereau-Fault-Yonne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville-confluent de 22 279 habitants du sud Seine-et-Marne, où le port industriel de 33 hectares brasse le vrac et la logistique fluviale sur la Seine et l'Yonne, où l'héritage de la faïence de Creil-Montereau et de la sidérurgie (SAM, Soletanche Bachy) côtoie un tissu dense de TPE artisanales, de PME industrielles et de commerces, de la ville basse (gare, parc, centre) au plateau de Surville en ville haute. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montereau, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Montereau-Fault-Yonne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette ville-confluent de 22 279 habitants du sud Seine-et-Marne, où le port industriel de 33 hectares brasse le vrac et la logistique fluviale sur la Seine et l'Yonne, où l'héritage de la faïence de Creil-Montereau et de la sidérurgie (SAM, Soletanche Bachy) côtoie un tissu dense de PME artisanales, de PME industrielles et de commerces, de la ville basse (gare, parc, centre) au plateau de Surville en ville haute. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Montereau, itérations à distance.",
         whyHere: [
           "Port industriel de 33 hectares au confluent Seine-Yonne, l'un des principaux ports du sud francilien : la logistique fluviale, le vrac, les conteneurs et le transport appellent des portails de suivi de flux en temps réel, des espaces clients sécurisés et des automatisations de devis-facturation avec recherche sémantique sur les bordereaux, taillés pour les opérateurs et transporteurs du port.",
           "PME industrielles héritières des manufactures de faïence Creil-Montereau et de la sidérurgie locale (SAM Montereau, Soletanche Bachy et son pôle géotechnique) : on greffe l'IA sur l'existant — recherche sémantique sur catalogues et fiches techniques, configurateurs produit, agents de planification atelier — sans imposer la refonte lourde que ces équipes industrielles ne peuvent pas se permettre.",
-          "Tissu majoritairement TPE BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (gare ligne Paris-Laroche-Migennes, parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
+          "Tissu majoritairement PME BTP, artisans, restauration et commerces de centre-ville répartis entre la ville basse (gare ligne Paris-Laroche-Migennes, parc des Noues) et la ville haute de Surville : vitrines et boutiques e-commerce sous WordPress, Shopify, WooCommerce, PrestaShop ou Magento, prise de RDV en ligne et chatbots de qualification, calibrés pour des budgets serrés et des équipes réduites.",
           "Ville desservie en 1h depuis Paris-Gare-de-Lyon, reliée par l'A5 et la RD606 (ex-RN6) mais profondément ancrée dans le Pays de Montereau et le sud 77 : tous nos sites et briques IA sont hébergeables en UE, conformes RGPD et AI Act — vos données clients, industrielles et logistiques restent maîtrisées et ne transitent jamais hors UE sans DPA.",
         ],
         methodology: [
@@ -170,12 +164,6 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Pour les artisans BTP, restaurateurs, commerces de centre-ville et services de Montereau : ajout d'une brique IA (chatbot de qualification, prise de RDV en ligne, recherche sémantique) ou d'une vitrine simple sur le site existant, en quelques semaines et sans refonte coûteuse.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -210,7 +198,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces et artisans du centre-ville et de Surville ?",
-            a: "Oui, c'est même le cœur du tissu local. Pour les TPE BTP, restaurateurs et commerces, de la ville basse (gare, parc des Noues) au plateau de Surville en ville haute, on déploie des vitrines et boutiques e-commerce multi-CMS, la prise de RDV en ligne et des chatbots de qualification. Tout est calibré pour des budgets serrés et des équipes réduites, avec un devis ferme à partir de 24-48 h.",
+            a: "Oui, c'est même le cœur du tissu local. Pour les PME BTP, restaurateurs et commerces, de la ville basse (gare, parc des Noues) au plateau de Surville en ville haute, on déploie des vitrines et boutiques e-commerce multi-CMS, la prise de RDV en ligne et des chatbots de qualification. Tout est calibré pour des budgets serrés et des équipes réduites, avec un devis ferme à partir de 24-48 h.",
           },
           {
             q: "Mes données restent-elles en Europe et le devis est-il ferme ?",
@@ -234,7 +222,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Montereau-Fault-Yonne ?",
-      a: "À Montereau, en priorité les TPE et PME : artisans BTP, PME industrielles héritières de la faïence et sidérurgie (SAM, Soletanche Bachy), logistique fluviale du port Seine-Yonne, commerces et services aux entreprises. Les ETI sont également accompagnées en complément.",
+      a: "À Montereau, en priorité les PME et ETI : artisans BTP, PME industrielles héritières de la faïence et sidérurgie (SAM, Soletanche Bachy), logistique fluviale du port Seine-Yonne, commerces et services aux entreprises. Les grands groupes sont accompagnés en complément.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Montereau-Fault-Yonne ?",

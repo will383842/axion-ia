@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les TPE et PME locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
+    "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les PME et ETI locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
   pitchEn:
-    "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les TPE et PME locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
+    "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les PME et ETI locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
+    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les PME puis les ETI de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les grands groupes complètent ce socle: nous priorisons clairement les PME puis les ETI.",
   directAnswerEn:
-    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
+    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les PME puis les ETI de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les grands groupes complètent ce socle: nous priorisons clairement les PME puis les ETI.",
   seoHook: "pétrochimie & services aux entreprises",
   ecosystemFr:
     "Le Grand-Quevilly est marqué par un héritage industriel fort. Le site pétrochimique Borealis (anciennement GPN) reste un employeur structurant. La commune a abrité les Chantiers de Normandie (fermés en 1986) et une ancienne centrale électrique au charbon. Le tissu actuel mêle pétrochimie, sous-traitance industrielle, logistique fluviale (proximité de la Seine), zones commerciales (multiplexe Pathé du Bois Cany ouvert en 1999) et grands équipements culturels (Zénith de Rouen ouvert en 2001, Théâtre Charles-Dullin, médiathèque François-Mitterrand). La proximité immédiate de Rouen ouvre l'accès à un bassin d'emploi métropolitain.",
@@ -31,8 +31,8 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de {{price:audit-flash|flat}}.",
-      en: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Grand-Quevilly pour les PME et ETI — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA au Grand-Quevilly pour les PME et ETI — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès {{price:intervention-4h|flat}}.",
@@ -43,8 +43,8 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
       en: "Implémentation de solutions IA mesurées au Grand-Quevilly pour les sous-traitants industriels et services aux entreprises — outils internes sur-mesure, conformes RGPD.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec les dirigeants de TPE/PME du Grand-Quevilly — montée en compétences IA pragmatique, orientée cas concrets locaux.",
-      en: "Sessions un-à-un avec les dirigeants de TPE/PME du Grand-Quevilly — montée en compétences IA pragmatique, orientée cas concrets locaux.",
+      fr: "Sessions un-à-un avec les dirigeants de PME et ETI du Grand-Quevilly — montée en compétences IA pragmatique, orientée cas concrets locaux.",
+      en: "Sessions un-à-un avec les dirigeants de PME et ETI du Grand-Quevilly — montée en compétences IA pragmatique, orientée cas concrets locaux.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           "Tissu de sous-traitants pétrochimiques et industriels gravitant autour de Borealis/GPN (engrais, près de 360 salariés, 100 hectares) et de Rubis Terminal : on greffe sur leur site ou leur SI des portails de suivi qualité, de traçabilité ICPE/Seveso et de devis, ou une plateforme métier sur mesure en code propre, sans imposer de refonte coûteuse ni de no-code propriétaire.",
           "Logistique fluviale et terrestre de la zone industrialo-portuaire HAROPA Port de Rouen, adossée à la Seine et à la nationale 338 (Sud III) reliée à l'A13 : nos agents et automatisations fluidifient le suivi des flux multimodaux, la facturation et le planning des prestataires transport et du commerce de gros, avec recherche sémantique sur les documents de transport.",
           "Grands équipements culturels et événementiels — Zénith de Rouen (ouvert en 2001), Théâtre Charles-Dullin, médiathèque François-Mitterrand, multiplexe Pathé du Bois Cany (1999) : terrain idéal pour des sites de billetterie mobile-first, des recherches sémantiques de programmation et des chatbots RAG multilingues calibrés pour un public métropolitain rouennais.",
-          "Proximité immédiate de Rouen via le tramway Georges-Braque (20 minutes) et un tissu dense de TPE du commerce et des services, sans oublier l'usine Vesta et son réseau de chaleur urbain : on construit des vitrines e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites sur mesure en code propre pour capter ce bassin d'emploi métropolitain.",
+          "Proximité immédiate de Rouen via le tramway Georges-Braque (20 minutes) et un tissu dense de PME du commerce et des services, sans oublier l'usine Vesta et son réseau de chaleur urbain : on construit des vitrines e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites sur mesure en code propre pour capter ce bassin d'emploi métropolitain.",
         ],
         methodology: [
           {
@@ -85,12 +85,6 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un commerce, artisan, restaurant ou service quévillais du Bois Cany ou du centre-ville, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -141,7 +135,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           "Tissu de sous-traitants pétrochimiques et industriels gravitant autour de Borealis/GPN (engrais, près de 360 salariés, 100 hectares) et de Rubis Terminal : on greffe sur leur site ou leur SI des portails de suivi qualité, de traçabilité ICPE/Seveso et de devis, ou une plateforme métier sur mesure en code propre, sans imposer de refonte coûteuse ni de no-code propriétaire.",
           "Logistique fluviale et terrestre de la zone industrialo-portuaire HAROPA Port de Rouen, adossée à la Seine et à la nationale 338 (Sud III) reliée à l'A13 : nos agents et automatisations fluidifient le suivi des flux multimodaux, la facturation et le planning des prestataires transport et du commerce de gros, avec recherche sémantique sur les documents de transport.",
           "Grands équipements culturels et événementiels — Zénith de Rouen (ouvert en 2001), Théâtre Charles-Dullin, médiathèque François-Mitterrand, multiplexe Pathé du Bois Cany (1999) : terrain idéal pour des sites de billetterie mobile-first, des recherches sémantiques de programmation et des chatbots RAG multilingues calibrés pour un public métropolitain rouennais.",
-          "Proximité immédiate de Rouen via le tramway Georges-Braque (20 minutes) et un tissu dense de TPE du commerce et des services, sans oublier l'usine Vesta et son réseau de chaleur urbain : on construit des vitrines e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites sur mesure en code propre pour capter ce bassin d'emploi métropolitain.",
+          "Proximité immédiate de Rouen via le tramway Georges-Braque (20 minutes) et un tissu dense de PME du commerce et des services, sans oublier l'usine Vesta et son réseau de chaleur urbain : on construit des vitrines e-commerce (WordPress, Shopify, WooCommerce, PrestaShop, Magento) et des sites sur mesure en code propre pour capter ce bassin d'emploi métropolitain.",
         ],
         methodology: [
           {
@@ -171,12 +165,6 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un commerce, artisan, restaurant ou service quévillais du Bois Cany ou du centre-ville, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -246,8 +234,8 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
       a: "Code propre sur-mesure (pas de plateforme no-code propriétaire), hébergement France ou UE, registre des traitements documenté à chaque mission. Particulièrement adapté aux contraintes des sous-traitants industriels.",
     },
     {
-      q: "Pourquoi un cabinet IA pour les TPE/PME industrielles du Grand-Quevilly ?",
-      a: "Le tissu pétrochimique et logistique local génère beaucoup de tâches administratives répétitives (suivi qualité, traçabilité, devis, facturation) — terrain idéal pour des automatisations IA mesurables. Nous priorisons TPE puis PME ; les ETI restent un complément.",
+      q: "Pourquoi un cabinet IA pour les PME et ETI industrielles du Grand-Quevilly ?",
+      a: "Le tissu pétrochimique et logistique local génère beaucoup de tâches administratives répétitives (suivi qualité, traçabilité, devis, facturation) — terrain idéal pour des automatisations IA mesurables. Nous priorisons les PME puis les ETI ; les ETI restent un complément.",
     },
   ],
 };

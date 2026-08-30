@@ -6,7 +6,7 @@
 //   - Aucun prix en dur — vient de pricing.ts
 //   - Durée minimale = 1 journée, formats de 1 journée à plusieurs semaines
 //   - "frais de logement, repas et forfait trajet en sus" sur interventions
-//   - Tailles d'entreprise INSEE : TPE / PME / ETI / GE
+//   - Tailles d'entreprise INSEE : PME/ETI/GE
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024
 //   - PAS heroSchema, PAS unAUn (non demandé)
 //
@@ -20,13 +20,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTPELLIER_COPY: VilleCopy = {
   pitchFr:
-    "Montpellier concentre 36 590 établissements actifs, le 2e pôle jeux vidéo de France (Ubisoft), le cluster santé-biotech Euromédecine, le siège France de Dell et French Tech Méditerranée. Axion-IA y intervient sur site, des TPE du numérique aux ETI santé et industrie de la Méditerranée.",
+    "Montpellier concentre 36 590 établissements actifs, le 2e pôle jeux vidéo de France (Ubisoft), le cluster santé-biotech Euromédecine, le siège France de Dell et French Tech Méditerranée. Axion-IA y intervient sur site, des PME du numérique aux ETI santé et industrie de la Méditerranée.",
   pitchEn:
     "Montpellier hosts 36,590 active businesses, France's 2nd video-game hub (Ubisoft), the Euromédecine health-biotech cluster, Dell's French HQ and the French Tech Méditerranée label. Axion-IA delivers on site, from digital micro-businesses to health and industry mid-caps across the Mediterranean region.",
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Montpellier : nous cartographions vos processus automatisables et chiffrons le ROI à 12-24 mois. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les TPE tech du Cap Omega, les PME santé d'Euromédecine et les ETI industrielles de l'Hérault.",
+      fr: "Audit IA opérationnel à Montpellier : nous cartographions vos processus automatisables et chiffrons le ROI à 12-24 mois. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les PME tech du Cap Omega, les PME santé d'Euromédecine et les ETI industrielles de l'Hérault.",
       en: "Operational AI audit in Montpellier: we map your automatable processes and quantify the 12-24 month ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Cap Omega tech micro-businesses, Euromédecine health SMEs and Hérault industrial mid-caps.",
     },
     interventions: {
@@ -48,7 +48,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montpellier (34) sur site dans la métropole et le bassin héraultais. Nous accompagnons les TPE du numérique (Cap Omega, Cap Alpha), les PME et ETI santé-biotech (Euromédecine, CHU, Sanofi R&D), les studios jeux vidéo, les acteurs de l'agritech et les groupes IT (Dell, IBM) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montpellier (34) sur site dans la métropole et le bassin héraultais. Nous accompagnons les PME du numérique (Cap Omega, Cap Alpha), les PME et ETI santé-biotech (Euromédecine, CHU, Sanofi R&D), les studios jeux vidéo, les acteurs de l'agritech et les groupes IT (Dell, IBM) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy delivering on site in Montpellier (34) across the metropolis and the Hérault basin. We support digital micro-businesses (Cap Omega, Cap Alpha), health-biotech SMEs and mid-caps (Euromédecine, CHU, Sanofi R&D), video-game studios, agritech players and IT groups (Dell, IBM) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -81,7 +81,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Montpellier cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles — des TPE numériques de Cap Omega aux ETI santé-biotech d'Euromédecine, en passant par les PME de l'agritech et les groupes IT comme Dell ou IBM implantés dans l'Hérault.",
+        hero: "L'audit IA Axion-IA à Montpellier cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toute l'échelle — des PME numériques de Cap Omega aux ETI santé-biotech d'Euromédecine, en passant par les PME de l'agritech et les groupes IT comme Dell ou IBM implantés dans l'Hérault.",
         whyHere: [
           "Montpellier est l'un de nos pôles d'intervention prioritaires en Occitanie : tissu B2B dense (36 590 établissements actifs, 121 pour 1 000 habitants) avec une surreprésentation des secteurs santé, IT et agronomie qui concentrent nos cas clients.",
           "Cluster Euromédecine + CHU Montpellier + Sanofi R&D : nos auditeurs maîtrisent les contraintes réglementaires de la santé (HDS, MDR, données patients) et adaptent le périmètre IA en conséquence.",
@@ -118,12 +118,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et startups numériques de Cap Omega ou Cap Alpha jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -187,7 +181,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD et secteur santé (HDS sur demande), hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Montpellier maps what can be automated in your organization and quantifies the 12-24 month ROI. Four tiers cover every size — from Cap Omega digital micro-businesses to Euromédecine health-biotech mid-caps, through agritech SMEs and IT groups such as Dell and IBM established in the Hérault.",
+        hero: "Axion-IA's AI audit in Montpellier maps what can be automated in your organization and quantifies the 12-24 month ROI. Four tiers cover the full range — from Cap Omega digital micro-businesses to Euromédecine health-biotech mid-caps, through agritech SMEs and IT groups such as Dell and IBM established in the Hérault.",
         whyHere: [
           "Montpellier is one of our priority engagement hubs in Occitania: dense B2B fabric (36,590 active businesses, 121 per 1,000 inhabitants) with an over-representation of health, IT and agronomy sectors that concentrate our client cases.",
           "Euromédecine cluster + CHU Montpellier + Sanofi R&D: our auditors master health regulatory constraints (HDS, MDR, patient data) and adapt the AI scope accordingly.",
@@ -224,12 +218,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to freelancers, micro-firms and digital startups at Cap Omega or Cap Alpha up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -334,12 +322,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal startups numériques Cap Omega, micro-entreprises biotech, studios indépendants jeux vidéo jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -439,12 +421,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group training",
-            detail:
-              "Ideal for Cap Omega digital startups, biotech micro-firms, independent video-game studios up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -549,12 +525,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple — analyse automatisée de rapports cliniques, qualification de leads IT, documentation technique jeux vidéo.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -590,7 +560,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Montpellier ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Gérez-vous les contraintes de données de santé pour les déploiements biotech ?",
@@ -654,12 +624,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case — automated clinical report analysis, IT lead qualification, video-game technical documentation.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -764,12 +728,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Entrée coaching 1-to-1 — dirigeant, indépendant ou expert TPE numérique, biotech ou agronomie du bassin montpelliérain.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -809,7 +767,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Combien de séances faut-il pour être autonome sur l'IA à Montpellier ?",
-            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant TPE numérique atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations avancées (HDS, pipelines agro) aura un programme plus étendu. Le plan est cadré à la première séance.",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant PME numérique atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations avancées (HDS, pipelines agro) aura un programme plus étendu. Le plan est cadré à la première séance.",
           },
           {
             q: "Le coaching peut-il se tenir dans mes locaux montpelliérains ?",
@@ -869,12 +827,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
-            detail:
-              "Entry-level 1-to-1 coaching — executive, freelancer or expert in a digital, biotech or agronomy micro-business in the Montpellier basin.",
-          },
           {
             sizeLabel: "SME",
             price: "On quote",
@@ -976,12 +928,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1062,12 +1008,6 @@ export const MONTPELLIER_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1117,7 +1057,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montpellier ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est identique à Montpellier comme partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est identique à Montpellier comme partout en France.",
     },
     {
       q: "Intervenez-vous dans les entreprises du parc Euromédecine ?",

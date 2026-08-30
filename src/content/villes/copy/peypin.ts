@@ -11,9 +11,9 @@ export const PEYPIN_COPY: VilleCopy = {
   pitchEn:
     "Peypin (13), ancienne commune charbonnière du bassin minier de Provence (Gardanne-Provence) reconvertie depuis la fermeture des puits, dans la vallée de l'Huveaune à l'est de Marseille. Tissu d'artisans BTP rénovation énergétique, sous-traitants industriels, micro-PME de maintenance et travailleurs du bâtiment au cœur d'un territoire en mutation post-charbon. Axion-IA y déploie ses missions IA auprès de tous types de structures.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peypin (13). Nous accompagnons en priorité les TPE (artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons) puis les PME de sous-traitance industrielle et micro-industries de maintenance de la vallée de l'Huveaune. Les ETI restent en complément. Audit sur place sur mesure, ROI mesuré chantier par chantier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peypin (13). Nous accompagnons en priorité les PME (artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons) puis les PME de sous-traitance industrielle et micro-industries de maintenance de la vallée de l'Huveaune. Les grands groupes viennent en complément. Audit sur place sur mesure, ROI mesuré chantier par chantier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peypin (13). Nous accompagnons en priorité les TPE (artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons) puis les PME de sous-traitance industrielle et micro-industries de maintenance de la vallée de l'Huveaune. Les ETI restent en complément. Audit sur place sur mesure, ROI mesuré chantier par chantier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Peypin (13). Nous accompagnons en priorité les PME (artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons) puis les PME de sous-traitance industrielle et micro-industries de maintenance de la vallée de l'Huveaune. Les grands groupes viennent en complément. Audit sur place sur mesure, ROI mesuré chantier par chantier.",
   seoHook: "bassin minier de",
   ecosystemFr:
     "Peypin appartient au pays minier de Provence, ancien bassin houiller exploité du 19e siècle jusqu'à la fermeture progressive des puits (charbon Gardanne-Provence). Située dans la vallée de l'Huveaune sur l'axe Aubagne–La Bouilladisse, la commune connaît une reconversion vers la rénovation énergétique du bâti ancien, la sous-traitance industrielle (maintenance, métallerie, soudure) et les micro-PME du BTP. Le tissu local comprend des artisans plombiers-chauffagistes, électriciens, maçons, ainsi que des entreprises de travaux publics et de désamiantage. Les communes voisines (Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive) partagent ce profil de bassin ouvrier reconverti. Bassin d'emploi Aubagne–Pays d'Aubagne et de l'Étoile.",
@@ -44,8 +44,8 @@ export const PEYPIN_COPY: VilleCopy = {
       en: "Implémentation IA à Peypin : génération automatique de devis BTP, chiffrage rénovation énergétique (calcul DPE, aides MaPrimeRénov'), planification chantiers multi-corps de métier, suivi matériel et stocks, classification photos chantier, agents conversationnels pour demandes de devis particuliers post-fermeture mine. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Peypin : sessions terrain pour dirigeants TPE BTP, artisans plombiers-chauffagistes, électriciens et chefs de petites entreprises de sous-traitance industrielle souhaitant intégrer l'IA dans le chiffrage, le planning et la relation client sans alourdir l'équipe.",
-      en: "Coaching 1-to-1 à Peypin : sessions terrain pour dirigeants TPE BTP, artisans plombiers-chauffagistes, électriciens et chefs de petites entreprises de sous-traitance industrielle souhaitant intégrer l'IA dans le chiffrage, le planning et la relation client sans alourdir l'équipe.",
+      fr: "Coaching 1-to-1 à Peypin : sessions terrain pour dirigeants PME BTP, artisans plombiers-chauffagistes, électriciens et dirigeants de PME de sous-traitance industrielle souhaitant intégrer l'IA dans le chiffrage, le planning et la relation client sans alourdir l'équipe.",
+      en: "Coaching 1-to-1 à Peypin : sessions terrain pour dirigeants PME BTP, artisans plombiers-chauffagistes, électriciens et dirigeants de PME de sous-traitance industrielle souhaitant intégrer l'IA dans le chiffrage, le planning et la relation client sans alourdir l'équipe.",
     },
   },
   faqGeolocalisee: [
@@ -55,7 +55,7 @@ export const PEYPIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP rénovation énergétique ?",
-      a: "Oui, c'est notre cible prioritaire à Peypin : génération de devis automatisés, chiffrage rénovation énergétique (calcul DPE, simulation MaPrimeRénov'), planification chantiers, suivi matériel, classification photos avant/après. Adapté aux TPE plombiers-chauffagistes, électriciens, maçons et entreprises d'isolation.",
+      a: "Oui, c'est notre cible prioritaire à Peypin : génération de devis automatisés, chiffrage rénovation énergétique (calcul DPE, simulation MaPrimeRénov'), planification chantiers, suivi matériel, classification photos avant/après. Adapté aux PME plombiers-chauffagistes, électriciens, maçons et entreprises d'isolation.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants industriels de la vallée de l'Huveaune ?",

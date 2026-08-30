@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MENNECY_COPY: VilleCopy = {
   pitchFr:
-    "Mennecy (91), commune résidentielle du sud de l'Essonne bordée par le Parc de Villeroy, mêle cadre verdoyant et dynamisme économique local. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Mennecy (91), commune résidentielle du sud de l'Essonne bordée par le Parc de Villeroy, mêle cadre verdoyant et dynamisme économique local. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Mennecy (91), commune résidentielle du sud de l'Essonne bordée par le Parc de Villeroy, mêle cadre verdoyant et dynamisme économique local. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Mennecy (91), commune résidentielle du sud de l'Essonne bordée par le Parc de Villeroy, mêle cadre verdoyant et dynamisme économique local. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mennecy (91). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mennecy (91). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   ecosystemEn:
-    "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   distancesFr:
     "Corbeil-Essonnes à 10 min. Évry-Courcouronnes à 15 min. Gare RER D Mennecy. Paris centre à 45 min. Aéroport Paris-Orly à 25 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const MENNECY_COPY: VilleCopy = {
       en: "Implémentation IA à Mennecy : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mennecy : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME mennecéens, professions libérales, artisans.",
-      en: "Coaching 1-to-1 à Mennecy : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME mennecéens, professions libérales, artisans.",
+      fr: "Coaching 1-to-1 à Mennecy : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI mennecéens, professions libérales, artisans.",
+      en: "Coaching 1-to-1 à Mennecy : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI mennecéens, professions libérales, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MENNECY_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

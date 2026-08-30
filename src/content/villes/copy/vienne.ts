@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des PME et ETI locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI viennoises, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des PME et ETI locales. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI viennoises, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vienne (38) auprès des PME et ETI : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vienne (38) auprès des PME et ETI : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   seoHook: "tourisme patrimonial & vallée du Rhône",
   ecosystemFr:
-    "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de TPE et PME, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
+    "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de PME et ETI, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
   ecosystemEn:
-    "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de TPE et PME, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
+    "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de PME et ETI, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
   distancesFr:
     "Vienne est à 30 min au sud de Lyon par l'A7 et desservie par sa gare sur l'axe Lyon-Valence. La gare TGV Lyon Part-Dieu est à 30 min et l'aéroport Lyon-Saint-Exupéry à 40 min.",
   distancesEn:
@@ -38,12 +38,12 @@ export const VIENNE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Vienne : ateliers pratiques pour accueil touristique, restauration, commerces et administration, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Vienne : agents conversationnels touristiques, gestion de réservations, automatisation devis et stocks, CRM augmenté pour TPE et PME du patrimoine et du commerce.",
-      en: "Implémentation IA à Vienne : agents conversationnels touristiques, gestion de réservations, automatisation devis et stocks, CRM augmenté pour TPE et PME du patrimoine et du commerce.",
+      fr: "Implémentation IA à Vienne : agents conversationnels touristiques, gestion de réservations, automatisation devis et stocks, CRM augmenté pour PME et ETI du patrimoine et du commerce.",
+      en: "Implémentation IA à Vienne : agents conversationnels touristiques, gestion de réservations, automatisation devis et stocks, CRM augmenté pour PME et ETI du patrimoine et du commerce.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Vienne : sessions sur site ou en visio pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, ciblées sur vos priorités métier.",
-      en: "Accompagnement un-à-un à Vienne : sessions sur site ou en visio pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, ciblées sur vos priorités métier.",
+      fr: "Accompagnement un-à-un à Vienne : sessions sur site ou en visio pour dirigeants de PME et d'ETI du tourisme, du commerce et de la logistique, ciblées sur vos priorités métier.",
+      en: "Accompagnement un-à-un à Vienne : sessions sur site ou en visio pour dirigeants de PME et d'ETI du tourisme, du commerce et de la logistique, ciblées sur vos priorités métier.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Vienne : vitrine ou plateforme de réservation avec IA intégrée (recherche, réservation, recommandation) pour acteurs du tourisme, hôtels, restaurants et commerces.",
@@ -57,7 +57,7 @@ export const VIENNE_COPY: VilleCopy = {
         whyHere: [
           "Pour les acteurs du tourisme et du patrimoine — billetterie du théâtre antique, hôtels et restaurants saturés pendant Jazz à Vienne, sites du Musée de l'Industrie Textile — nous déployons des portails de réservation multilingues avec agent conversationnel et recommandation d'itinéraires, calibrés sur les pics de fréquentation estivale.",
           "Pour l'agroalimentaire et l'artisanat (filière laitière autour du site Candia, 3 200 artisans rattachés à la Maison de l'Artisanat de l'Espace Saint-Germain), nous construisons des e-commerce multi-CMS et catalogues produits enrichis par l'IA : fiches générées, recherche par usage, gestion des stocks et des commandes B2B.",
-          "Pour les ~500 commerces du centre-ville (quais Jean Jaurès, rues Marchande, Clémentine, Boson, Ponsard), nous livrons des vitrines rapides et des mini-boutiques en ligne avec click-and-collect, chatbots de disponibilité et fidélisation, pensées pour des TPE sans service informatique.",
+          "Pour les ~500 commerces du centre-ville (quais Jean Jaurès, rues Marchande, Clémentine, Boson, Ponsard), nous livrons des vitrines rapides et des mini-boutiques en ligne avec click-and-collect, chatbots de disponibilité et fidélisation, pensées pour des PME sans service informatique.",
           "Pour le tertiaire d'ingénierie et de services de l'Espace Saint-Germain et les acteurs logistiques de la plateforme Salaise-Sablons, nous développons des plateformes SaaS métier sur mesure (suivi de flux, qualification de dossiers, portails clients) avec IA documentaire et search interne, intégrées à vos outils existants.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const VIENNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Vitrine ou mini-boutique IA",
-            detail:
-              "Pour un commerce du centre-ville (rues Marchande, Clémentine), un artisan rattaché à la Maison de l'Artisanat, un hôtel ou restaurant viennois : site vitrine ou petite boutique en ligne avec click-and-collect, formulaire de réservation et chatbot de disponibilité.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce ou portail de réservation augmenté",
@@ -175,12 +169,6 @@ export const VIENNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI showcase or mini-store",
-            detail:
-              "For a city-centre shop (rues Marchande, Clémentine), an artisan tied to the Crafts House, or a Vienne hotel or restaurant: showcase site or small online store with click-and-collect, booking form and availability chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "Augmented e-commerce or booking portal",
             detail:
@@ -234,7 +222,7 @@ export const VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vienne ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME viennoises : tourisme, hôtellerie-restauration, commerce et logistique.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux PME et ETI viennoises : tourisme, hôtellerie-restauration, commerce et logistique.",
     },
     {
       q: "Comment l'IA aide-t-elle les acteurs du tourisme à Vienne ?",
@@ -246,7 +234,7 @@ export const VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous priorisons les TPE puis les PME de Vienne ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+      a: "Non. Nous priorisons les PME puis les ETI de Vienne ; les grands groupes sont accompagnés en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
     },
     {
       q: "Comment se déroule une mission à Vienne ?",

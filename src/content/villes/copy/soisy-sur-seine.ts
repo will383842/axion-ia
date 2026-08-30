@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
+    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu PME artisanales, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
   pitchEn:
-    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
+    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu PME artisanales, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : PME artisanales, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : PME artisanales, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   seoHook: "professions libérales & artisanat second",
   ecosystemFr:
-    "Soisy-sur-Seine (7 418 hab) est une commune résidentielle entre bords de Seine et forêt de Sénart, intégrée à la communauté d'agglomération Grand Paris Sud. Proximité d'Évry-Courcouronnes (préfecture, Génopole, université) et Corbeil-Essonnes. Tissu TPE artisanat, professions libérales, PME tertiaires et commerces de proximité.",
+    "Soisy-sur-Seine (7 418 hab) est une commune résidentielle entre bords de Seine et forêt de Sénart, intégrée à la communauté d'agglomération Grand Paris Sud. Proximité d'Évry-Courcouronnes (préfecture, Génopole, université) et Corbeil-Essonnes. Tissu PME de l'artisanat, professions libérales, PME tertiaires et commerces de proximité.",
   ecosystemEn:
-    "Soisy-sur-Seine (7 418 hab) est une commune résidentielle entre bords de Seine et forêt de Sénart, intégrée à la communauté d'agglomération Grand Paris Sud. Proximité d'Évry-Courcouronnes (préfecture, Génopole, université) et Corbeil-Essonnes. Tissu TPE artisanat, professions libérales, PME tertiaires et commerces de proximité.",
+    "Soisy-sur-Seine (7 418 hab) est une commune résidentielle entre bords de Seine et forêt de Sénart, intégrée à la communauté d'agglomération Grand Paris Sud. Proximité d'Évry-Courcouronnes (préfecture, Génopole, université) et Corbeil-Essonnes. Tissu PME de l'artisanat, professions libérales, PME tertiaires et commerces de proximité.",
   distancesFr:
     "Gare d'Évry-Courcouronnes à 10 min (RER D, 35 min Gare de Lyon). Aéroport Paris-Orly à 20 min. Paris centre à 40 min via A6. Corbeil-Essonnes à 5 min. Gare TGV Massy à 25 min.",
   distancesEn:
     "Gare d'Évry-Courcouronnes à 10 min (RER D, 35 min Gare de Lyon). Aéroport Paris-Orly à 20 min. Paris centre à 40 min via A6. Corbeil-Essonnes à 5 min. Gare TGV Massy à 25 min.",
   topSectorsNaf: [
     "Professions libérales & santé",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Commerce de proximité & services",
     "PME tertiaires & conseil",
     "Restauration & activités de loisirs",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, PME artisanales, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, PME artisanales, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soisy-sur-Seine : formats adaptés au cabinet, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Soisy-sur-Seine : agents conversationnels cabinet médical, automatisation facturation, classification documents, gestion planning. Tous secteurs sud francilien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Soisy-sur-Seine : sessions dans vos locaux ou en visio. Professions libérales, gérants TPE/PME, artisans et dirigeants du bassin Évry-Corbeil souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Soisy-sur-Seine : sessions dans vos locaux ou en visio. Professions libérales, gérants TPE/PME, artisans et dirigeants du bassin Évry-Corbeil souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Soisy-sur-Seine : sessions dans vos locaux ou en visio. Professions libérales, gérants PME et ETI, artisans et dirigeants du bassin Évry-Corbeil souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Soisy-sur-Seine : sessions dans vos locaux ou en visio. Professions libérales, gérants PME et ETI, artisans et dirigeants du bassin Évry-Corbeil souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Soisy-sur-Seine  : quel budget prévoir ?",
-      a: "L'audit sur place IA à Soisy-sur-Seine débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
+      a: "L'audit sur place IA à Soisy-sur-Seine débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux PME et ETI locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Soisy-sur-Seine ?",

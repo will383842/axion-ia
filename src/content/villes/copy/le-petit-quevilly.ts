@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient au Petit-Quevilly (22 208 habitants, Métropole Rouen Normandie), commune au passé industriel marqué (chimie Malétra fondée en 1808, filature La Foudre, explosifs Davey Bickford) aujourd'hui reconvertie autour de Seine Innopolis — pôle tech installé dans l'ancienne filature — et de six zones d'activités dont l'Actipôle des Chartreux. Notre cabinet accompagne les TPE et PME locales avec une IA codée sur mesure, sans plateformes no-code.",
+    "Axion-IA intervient au Petit-Quevilly (22 208 habitants, Métropole Rouen Normandie), commune au passé industriel marqué (chimie Malétra fondée en 1808, filature La Foudre, explosifs Davey Bickford) aujourd'hui reconvertie autour de Seine Innopolis — pôle tech installé dans l'ancienne filature — et de six zones d'activités dont l'Actipôle des Chartreux. Notre cabinet accompagne les PME et ETI locales avec une IA codée sur mesure, sans plateformes no-code.",
   pitchEn:
-    "Axion-IA intervient au Petit-Quevilly (22 208 habitants, Métropole Rouen Normandie), commune au passé industriel marqué (chimie Malétra fondée en 1808, filature La Foudre, explosifs Davey Bickford) aujourd'hui reconvertie autour de Seine Innopolis — pôle tech installé dans l'ancienne filature — et de six zones d'activités dont l'Actipôle des Chartreux. Notre cabinet accompagne les TPE et PME locales avec une IA codée sur mesure, sans plateformes no-code.",
+    "Axion-IA intervient au Petit-Quevilly (22 208 habitants, Métropole Rouen Normandie), commune au passé industriel marqué (chimie Malétra fondée en 1808, filature La Foudre, explosifs Davey Bickford) aujourd'hui reconvertie autour de Seine Innopolis — pôle tech installé dans l'ancienne filature — et de six zones d'activités dont l'Actipôle des Chartreux. Notre cabinet accompagne les PME et ETI locales avec une IA codée sur mesure, sans plateformes no-code.",
   directAnswerFr:
-    "Axion-IA se déplace au Petit-Quevilly pour auditer et automatiser les processus des TPE et PME implantées dans les six zones d'activités locales, dont Seine Innopolis (pôle numérique dans l'ancienne filature La Foudre) et l'Actipôle des Chartreux. Notre équipe accompagne les éditeurs SaaS, agences digitales, sociétés de services et commerçants du Petit-Quevilly et des communes limitrophes (Rouen, Le Grand-Quevilly, Sotteville-lès-Rouen). Nous codons chaque automatisation en interne (Python, Node.js, TypeScript) — facturation, devis, CRM, reporting — sans aucune dépendance à Zapier, Make ou autre plateforme no-code.",
+    "Axion-IA se déplace au Petit-Quevilly pour auditer et automatiser les processus des PME et ETI implantées dans les six zones d'activités locales, dont Seine Innopolis (pôle numérique dans l'ancienne filature La Foudre) et l'Actipôle des Chartreux. Notre équipe accompagne les éditeurs SaaS, agences digitales, sociétés de services et commerçants du Petit-Quevilly et des communes limitrophes (Rouen, Le Grand-Quevilly, Sotteville-lès-Rouen). Nous codons chaque automatisation en interne (Python, Node.js, TypeScript) — facturation, devis, CRM, reporting — sans aucune dépendance à Zapier, Make ou autre plateforme no-code.",
   directAnswerEn:
-    "Axion-IA se déplace au Petit-Quevilly pour auditer et automatiser les processus des TPE et PME implantées dans les six zones d'activités locales, dont Seine Innopolis (pôle numérique dans l'ancienne filature La Foudre) et l'Actipôle des Chartreux. Notre équipe accompagne les éditeurs SaaS, agences digitales, sociétés de services et commerçants du Petit-Quevilly et des communes limitrophes (Rouen, Le Grand-Quevilly, Sotteville-lès-Rouen). Nous codons chaque automatisation en interne (Python, Node.js, TypeScript) — facturation, devis, CRM, reporting — sans aucune dépendance à Zapier, Make ou autre plateforme no-code.",
+    "Axion-IA se déplace au Petit-Quevilly pour auditer et automatiser les processus des PME et ETI implantées dans les six zones d'activités locales, dont Seine Innopolis (pôle numérique dans l'ancienne filature La Foudre) et l'Actipôle des Chartreux. Notre équipe accompagne les éditeurs SaaS, agences digitales, sociétés de services et commerçants du Petit-Quevilly et des communes limitrophes (Rouen, Le Grand-Quevilly, Sotteville-lès-Rouen). Nous codons chaque automatisation en interne (Python, Node.js, TypeScript) — facturation, devis, CRM, reporting — sans aucune dépendance à Zapier, Make ou autre plateforme no-code.",
   seoHook: "Seine Innopolis & reconversion industrielle",
   ecosystemFr:
     "Le Petit-Quevilly compte 622 entreprises (+48 % entre 2007 et 2010), structurées autour de six zones d'activités. Seine Innopolis, installé dans l'ancienne filature La Foudre, héberge un incubateur numérique et de nombreux éditeurs et agences. L'Actipôle des Chartreux concentre PME industrielles et tertiaires. La commune appartient à la Métropole Rouen Normandie et est intégrée au tissu économique de l'agglomération avec ses voisines Rouen, Le Grand-Quevilly et Sotteville-lès-Rouen. Cinq stations de tramway et la RN 338 desservent la ville.",
@@ -36,16 +36,16 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
       en: "À Le Petit-Quevilly, l'audit Axion-IA cible les éditeurs et agences de Seine Innopolis, les PME tertiaires de l'Actipôle des Chartreux et les commerçants locaux. Cartographie des tâches manuelles (devis, facturation, support, reporting). Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
-      en: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
+      fr: "Nos interventions au Petit-Quevilly couvrent les PME et ETI des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
+      en: "Nos interventions au Petit-Quevilly couvrent les PME et ETI des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
     },
     implementation: {
       fr: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès {{price:impl-poc|entry}}, code livré et documenté.",
       en: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès {{price:impl-poc|entry}}, code livré et documenté.",
     },
     unAUn: {
-      fr: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de TPE-PME des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
-      en: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de TPE-PME des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
+      fr: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de PME et ETI des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
+      en: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de PME et ETI des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           "Seine Innopolis, pépinière-hôtel numérique de 10 000 m² dans l'ancienne filature La Foudre (1847) et sa Cantine Numérique : ce vivier d'éditeurs SaaS et de start-up en incubation est notre terrain pour construire des plateformes SaaS IA-native, des portails clients et des interfaces produit sur mesure, ou pour greffer une brique IA — recherche sémantique, agents — sur un produit déjà en exploitation.",
           "PME industrielles et tertiaires de l'Actipôle des Chartreux et des cinq autres zones d'activités du Petit-Quevilly : on refond leurs sites vitrines et boutiques e-commerce sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, avec une UX/UI mobile-first et des automatisations devis-facturation reliées à leur ERP, le tout codé et livré chez elles sans plateforme no-code.",
           "Héritage de la chimie Malétra (fondée en 1808) et bassin industriel rouennais, prolongé par des acteurs comme Davey Bickford : pour ces métiers techniques à forte documentation produit, on déploie chatbots RAG, recherche sémantique et agents ancrés sur leurs notices, fiches sécurité et catalogues, en gardant le code source et les données dans leur infrastructure France/UE.",
-          "Commune dense en TPE du commerce et de l'artisanat le long de la RN 338, desservie par cinq stations du tramway Métro de Rouen et les lignes Astuce : terrain idéal pour des vitrines locales ultra-rapides, du e-commerce de proximité, des prises de rendez-vous en ligne et des parcours clients augmentés à l'IA pour capter une clientèle qui arrive en tram comme en voiture.",
+          "Commune dense en PME du commerce et de l'artisanat le long de la RN 338, desservie par cinq stations du tramway Métro de Rouen et les lignes Astuce : terrain idéal pour des vitrines locales ultra-rapides, du e-commerce de proximité, des prises de rendez-vous en ligne et des parcours clients augmentés à l'IA pour capter une clientèle qui arrive en tram comme en voiture.",
         ],
         methodology: [
           {
@@ -86,12 +86,6 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous ou automatisation de devis — sur le site existant d'un commerçant, artisan ou restaurateur du Petit-Quevilly et des axes RN 338, en quelques semaines et sans refonte complète.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -126,7 +120,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerçants et artisans des axes RN 338 ?",
-            a: "Oui. Les TPE du commerce et de l'artisanat denses le long de la RN 338 et autour des cinq stations de tramway sont un terrain idéal pour des vitrines locales rapides, du e-commerce de proximité, de la prise de rendez-vous en ligne et un chatbot qui répond aux questions clients 24/7. On part souvent d'une brique greffée sur le site existant pour limiter l'investissement.",
+            a: "Oui. Les PME du commerce et de l'artisanat denses le long de la RN 338 et autour des cinq stations de tramway sont un terrain idéal pour des vitrines locales rapides, du e-commerce de proximité, de la prise de rendez-vous en ligne et un chatbot qui répond aux questions clients 24/7. On part souvent d'une brique greffée sur le site existant pour limiter l'investissement.",
           },
           {
             q: "Mes données restent-elles hébergées en Europe ?",
@@ -142,7 +136,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           "Seine Innopolis, pépinière-hôtel numérique de 10 000 m² dans l'ancienne filature La Foudre (1847) et sa Cantine Numérique : ce vivier d'éditeurs SaaS et de start-up en incubation est notre terrain pour construire des plateformes SaaS IA-native, des portails clients et des interfaces produit sur mesure, ou pour greffer une brique IA — recherche sémantique, agents — sur un produit déjà en exploitation.",
           "PME industrielles et tertiaires de l'Actipôle des Chartreux et des cinq autres zones d'activités du Petit-Quevilly : on refond leurs sites vitrines et boutiques e-commerce sur WordPress, Shopify, WooCommerce, PrestaShop ou Magento, avec une UX/UI mobile-first et des automatisations devis-facturation reliées à leur ERP, le tout codé et livré chez elles sans plateforme no-code.",
           "Héritage de la chimie Malétra (fondée en 1808) et bassin industriel rouennais, prolongé par des acteurs comme Davey Bickford : pour ces métiers techniques à forte documentation produit, on déploie chatbots RAG, recherche sémantique et agents ancrés sur leurs notices, fiches sécurité et catalogues, en gardant le code source et les données dans leur infrastructure France/UE.",
-          "Commune dense en TPE du commerce et de l'artisanat le long de la RN 338, desservie par cinq stations du tramway Métro de Rouen et les lignes Astuce : terrain idéal pour des vitrines locales ultra-rapides, du e-commerce de proximité, des prises de rendez-vous en ligne et des parcours clients augmentés à l'IA pour capter une clientèle qui arrive en tram comme en voiture.",
+          "Commune dense en PME du commerce et de l'artisanat le long de la RN 338, desservie par cinq stations du tramway Métro de Rouen et les lignes Astuce : terrain idéal pour des vitrines locales ultra-rapides, du e-commerce de proximité, des prises de rendez-vous en ligne et des parcours clients augmentés à l'IA pour capter une clientèle qui arrive en tram comme en voiture.",
         ],
         methodology: [
           {
@@ -172,12 +166,6 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, prise de rendez-vous ou automatisation de devis — sur le site existant d'un commerçant, artisan ou restaurateur du Petit-Quevilly et des axes RN 338, en quelques semaines et sans refonte complète.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -212,7 +200,7 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerçants et artisans des axes RN 338 ?",
-            a: "Oui. Les TPE du commerce et de l'artisanat denses le long de la RN 338 et autour des cinq stations de tramway sont un terrain idéal pour des vitrines locales rapides, du e-commerce de proximité, de la prise de rendez-vous en ligne et un chatbot qui répond aux questions clients 24/7. On part souvent d'une brique greffée sur le site existant pour limiter l'investissement.",
+            a: "Oui. Les PME du commerce et de l'artisanat denses le long de la RN 338 et autour des cinq stations de tramway sont un terrain idéal pour des vitrines locales rapides, du e-commerce de proximité, de la prise de rendez-vous en ligne et un chatbot qui répond aux questions clients 24/7. On part souvent d'une brique greffée sur le site existant pour limiter l'investissement.",
           },
           {
             q: "Mes données restent-elles hébergées en Europe ?",

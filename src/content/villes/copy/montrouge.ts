@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTROUGE_COPY: VilleCopy = {
   pitchFr:
-    "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et TPE tertiaires. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants TPE, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
+    "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et ETI tertiaires. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants de PME et d'ETI, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
   pitchEn:
-    "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et TPE tertiaires. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants TPE, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
+    "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et ETI tertiaires. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne dirigeants de PME et d'ETI, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Montrouge (92) pour accompagner PME, ETI et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
-  seoHook: "TPE & PME tertiaires · sud Grand Paris",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, se déplace à Montrouge (92) pour accompagner PME, ETI et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
+  seoHook: "PME & PME tertiaires · sud Grand Paris",
   ecosystemFr:
-    "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, TPE commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
+    "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, PME du commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
   ecosystemEn:
-    "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, TPE commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
+    "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, PME du commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
   distancesFr:
     "Paris Châtelet à 15 min en métro M4. Paris Saint-Lazare via M13 à 20 min. Gare Montparnasse à 5 km (10 min). Aéroport Paris-Orly à 12 km par A6a. Limitrophe du 14ᵉ arrondissement de Paris, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff.",
   distancesEn:
@@ -30,20 +30,20 @@ export const MONTROUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
-      en: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
+      fr: "Audit IA à Montrouge : diagnostic pour PME du commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
+      en: "Audit IA à Montrouge : diagnostic pour PME du commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour PME, ETI et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour PME, ETI et professions libérales : automatisation back-office, classification emails, IA métier. Formation 4 h à {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
       en: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           "La proximité immédiate du Campus Évergreen du Crédit Agricole SA et de directions bancaires/assurance impose un niveau de rigueur élevé : nos plateformes SaaS pour ce tissu intègrent authentification forte, traçabilité et hébergement souverain UE — adaptés aux contraintes de confidentialité des données financières montrougiennes.",
           "Montrouge mêle éditeurs et médias (Bayard Presse, rue Barbès), industriels (STMicroelectronics), titres-services (Edenred France, rue François Ory) et green IT (Qarnot Computing) : nous construisons des portails, espaces abonnés, configurateurs et chatbots RAG calibrés sur chacun de ces métiers, pas un template générique recyclé.",
           "Les ~9 434 entreprises de Montrouge sont à 76 % tertiaires : agences, cabinets libéraux, services aux entreprises gravitant autour des grands sièges. Pour eux nous livrons des sites vitrines rapides, des espaces clients et des automatisations IA (qualification de leads, génération de devis) qui se branchent sur leurs CRM existants.",
-          "Le commerce de centre-ville, protégé par le périmètre de sauvegarde du commerce et de l'artisanat (instauré dès 2008) le long de l'avenue de la République et de l'avenue Henri Ginoux, ainsi que l'écosystème artistique du Beffroi et du Salon de Montrouge : nous équipons ces TPE de sites e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec recherche sémantique et recommandations IA.",
+          "Le commerce de centre-ville, protégé par le périmètre de sauvegarde du commerce et de l'artisanat (instauré dès 2008) le long de l'avenue de la République et de l'avenue Henri Ginoux, ainsi que l'écosystème artistique du Beffroi et du Salon de Montrouge : nous équipons ces PME de sites e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop) avec recherche sémantique et recommandations IA.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-ready",
-            detail:
-              "Pour les commerçants, artisans et professions libérales du centre-ville de Montrouge (périmètre de sauvegarde du commerce, avenue de la République, avenue Henri Ginoux) : site rapide multi-CMS, espace client, recherche et recommandations IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou SaaS sur mesure",
@@ -124,7 +118,7 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis de site web ou de plateforme SaaS à Montrouge ?",
-            a: "Un devis est remis à partir de 24-48 h selon la complexité, après un premier cadrage du périmètre. Pour un site vitrine TPE le chiffrage est rapide ; pour une plateforme SaaS ETI avec intégrations CRM/ERP et agents IA, nous prenons le temps de cadrer les contraintes avant d'engager un chiffre.",
+            a: "Un devis est remis à partir de 24-48 h selon la complexité, après un premier cadrage du périmètre. Pour un site vitrine PME le chiffrage est rapide ; pour une plateforme SaaS ETI avec intégrations CRM/ERP et agents IA, nous prenons le temps de cadrer les contraintes avant d'engager un chiffre.",
           },
           {
             q: "Le code et les modèles IA restent-ils notre propriété ?",
@@ -170,12 +164,6 @@ export const MONTROUGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI-ready showcase or e-commerce site",
-            detail:
-              "For Montrouge town-centre retailers, artisans and professional practices (trade safeguard perimeter, avenue de la République, avenue Henri Ginoux): fast multi-CMS site, client area, AI search and recommendations.",
-          },
           {
             sizeLabel: "PME",
             price: "Custom business or SaaS platform",
@@ -242,7 +230,7 @@ export const MONTROUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne à Montrouge ?",
-      a: "Cœur de cible à Montrouge : TPE commerce et restauration de proximité, PME tertiaires (conseil, services aux entreprises), professions libérales (droit, comptabilité, santé), structures gravitant autour de l'écosystème financier et télécoms local.",
+      a: "Cœur de cible à Montrouge : PME du commerce et restauration de proximité, PME tertiaires (conseil, services aux entreprises), professions libérales (droit, comptabilité, santé), structures gravitant autour de l'écosystème financier et télécoms local.",
     },
     {
       q: "Faut-il être basé à Montrouge pour travailler avec Axion-IA ?",

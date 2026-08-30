@@ -6,7 +6,7 @@
  * `/fr/implantations/{region}/{ville}` et templates verticale). Source de
  * vérité par ordre de priorité : (1) `ville.economicData.topSectorsNaf`
  * (INSEE/CCI vérifié), (2) `ville.copy.topSectorsNaf` (tags B2B curatés),
- * (3) fallback générique neutre (TPE/PME/ETI/GE — vrai pour la majorité des
+ * (3) fallback générique neutre (PME / ETI / grands groupes — vrai pour la majorité des
  * villes françaises). Aucun chiffre fabriqué : la colonne « Présence » est
  * qualitative (forte / moyenne / émergente). Les opportunités IA proviennent
  * du catalogue partagé `src/content/ville-tissu-data.ts` (génériques par
@@ -145,7 +145,7 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
     : `Secteurs B2B et leviers IA à ${ville.nameFr}`;
 
   const description = isFr
-    ? `Vue d'ensemble des secteurs B2B représentés à ${ville.nameFr} et leurs leviers IA prioritaires. Notre cabinet accompagne PME, ETI, grands groupes et TPE sans biais sectoriel.`
+    ? `Vue d'ensemble des secteurs B2B représentés à ${ville.nameFr} et leurs leviers IA prioritaires. Notre cabinet accompagne PME, ETI et grands groupes sans biais sectoriel.`
     : `Overview of B2B sectors active in ${ville.nameEn ?? ville.nameFr} and their priority AI levers. Our consultancy supports very small, medium, mid-cap and large companies with no sector bias.`;
 
   return (
@@ -216,7 +216,7 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
 
         <p className="text-fg-muted mt-6 text-xs leading-relaxed">
           {isFr
-            ? "Les opportunités présentées sont génériques par secteur ; nous calibrons chaque mission selon votre taille (TPE / PME / ETI / GE) et vos données réelles lors de l'audit IA Flash."
+            ? "Les opportunités présentées sont génériques par secteur ; nous calibrons chaque mission selon votre taille (PME / ETI / grands groupes) et vos données réelles lors de l'audit IA Flash."
             : "Opportunities shown are sector-generic; each engagement is tailored to your company size (VSE / SME / mid-cap / large) and real data during the Flash AI audit."}
         </p>
       </div>

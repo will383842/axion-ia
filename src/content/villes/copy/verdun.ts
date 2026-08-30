@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VERDUN_COPY: VilleCopy = {
   pitchFr:
-    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de PME et ETI tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de PME et ETI tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verdun (55). Nous accompagnons PME et ETI : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verdun (55). Nous accompagnons PME et ETI : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   seoHook: "vallée meuse",
   ecosystemFr:
     "Verdun est sous-préfecture de la Meuse, située sur les bords de la Meuse. La ville est un pôle mondial du tourisme de mémoire (champ de bataille, Mémorial de Verdun, Ossuaire de Douaumont, Citadelle souterraine). L'économie locale repose sur le tourisme mémoriel, l'hôtellerie-restauration, le commerce de centre-ville, l'artisanat BTP et les services aux entreprises et particuliers.",
@@ -34,16 +34,16 @@ export const VERDUN_COPY: VilleCopy = {
       en: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Verdun : formats adaptés à l'hôtel, au restaurant, au site mémoriel ou à la TPE commerciale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
-      en: "Interventions IA sur site à Verdun : formats adaptés à l'hôtel, au restaurant, au site mémoriel ou à la TPE commerciale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      fr: "Interventions IA sur site à Verdun : formats adaptés à l'hôtel, au restaurant, au site mémoriel ou à la PME commerciale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Verdun : formats adaptés à l'hôtel, au restaurant, au site mémoriel ou à la PME commerciale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Verdun : gestion réservations hôtelières, guides multilingues IA pour sites mémoriels, automatisation accueil touristique, agents conversationnels et CRM tourisme pour PME meusiennes.",
       en: "Implémentation IA à Verdun : gestion réservations hôtelières, guides multilingues IA pour sites mémoriels, automatisation accueil touristique, agents conversationnels et CRM tourisme pour PME meusiennes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Verdun : sessions dans votre hôtel, restaurant, structure touristique ou en visio. Dirigeants TPE/PME de la Meuse souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Verdun : sessions dans votre hôtel, restaurant, structure touristique ou en visio. Dirigeants TPE/PME de la Meuse souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Verdun : sessions dans votre hôtel, restaurant, structure touristique ou en visio. Dirigeants PME et ETI de la Meuse souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Verdun : sessions dans votre hôtel, restaurant, structure touristique ou en visio. Dirigeants PME et ETI de la Meuse souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VERDUN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Verdun  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme de mémoire à Verdun ?",

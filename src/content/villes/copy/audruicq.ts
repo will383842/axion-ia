@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const AUDRUICQ_COPY: VilleCopy = {
   pitchFr:
-    "Audruicq (62), commune du Pas-de-Calais aux portes du marais audomarois, reunit pres de 5 310 habitants. Situee entre Calais et Saint-Omer, son economie associe TPE de services, agriculture, commerces, artisanat BTP et petites entreprises logistiques. Axion-IA y intervient pour tous types d'activites.",
+    "Audruicq (62), commune du Pas-de-Calais aux portes du marais audomarois, reunit pres de 5 310 habitants. Situee entre Calais et Saint-Omer, son economie associe PME de services, agriculture, commerces, artisanat BTP et PME logistiques. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Audruicq (62), commune du Pas-de-Calais aux portes du marais audomarois, reunit pres de 5 310 habitants. Situee entre Calais et Saint-Omer, son economie associe TPE de services, agriculture, commerces, artisanat BTP et petites entreprises logistiques. Axion-IA y intervient pour tous types d'activites.",
+    "Audruicq (62), commune du Pas-de-Calais aux portes du marais audomarois, reunit pres de 5 310 habitants. Situee entre Calais et Saint-Omer, son economie associe PME de services, agriculture, commerces, artisanat BTP et PME logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "marais audomarois, agriculture & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Audruicq (62). Nous accompagnons les PME, ETI et grands groupes du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Audruicq (62). Nous accompagnons les PME, ETI et grands groupes du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Audruicq est situee entre Calais (20 km) et Saint-Omer (20 km), aux portes du marais audomarois. Tissu economique mixte : agriculture (maraichage, polyculture), TPE de services, commerces de centre-bourg, artisanat BTP et petites entreprises de transport.",
+    "Audruicq est situee entre Calais (20 km) et Saint-Omer (20 km), aux portes du marais audomarois. Tissu economique mixte : agriculture (maraichage, polyculture), PME de services, commerces de centre-bourg, artisanat BTP et PME de transport.",
   ecosystemEn:
-    "Audruicq est situee entre Calais (20 km) et Saint-Omer (20 km), aux portes du marais audomarois. Tissu economique mixte : agriculture (maraichage, polyculture), TPE de services, commerces de centre-bourg, artisanat BTP et petites entreprises de transport.",
+    "Audruicq est situee entre Calais (20 km) et Saint-Omer (20 km), aux portes du marais audomarois. Tissu economique mixte : agriculture (maraichage, polyculture), PME de services, commerces de centre-bourg, artisanat BTP et PME de transport.",
   distancesFr:
     "Gare d'Audruicq (TER Calais-Hazebrouck). Calais a 20 min. Saint-Omer a 20 min. Lille Europe (TGV) a 1h10 en TER. Gare Calais-Frethun (Eurostar) a 15 min.",
   distancesEn:
     "Gare d'Audruicq (TER Calais-Hazebrouck). Calais a 20 min. Saint-Omer a 20 min. Lille Europe (TGV) a 1h10 en TER. Gare Calais-Frethun (Eurostar) a 15 min.",
   topSectorsNaf: [
     "Agriculture & maraichage",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP",
     "Transport & petite logistique",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, TPE de services, commercants et artisans du marais audomarois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, TPE de services, commercants et artisans du marais audomarois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, PME de services, commercants et artisans du marais audomarois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, PME de services, commercants et artisans du marais audomarois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site a Audruicq : formations adaptees aux exploitations agricoles, commerces, ateliers artisanaux et bureaux TPE. Equipes autonomes sur outils IA.",
-      en: "Interventions IA sur site a Audruicq : formations adaptees aux exploitations agricoles, commerces, ateliers artisanaux et bureaux TPE. Equipes autonomes sur outils IA.",
+      fr: "Interventions IA sur site a Audruicq : formations adaptees aux exploitations agricoles, commerces, ateliers artisanaux et bureaux PME. Equipes autonomes sur outils IA.",
+      en: "Interventions IA sur site a Audruicq : formations adaptees aux exploitations agricoles, commerces, ateliers artisanaux et bureaux PME. Equipes autonomes sur outils IA.",
     },
     implementation: {
-      fr: "Implementation IA a Audruicq : IA predictive agriculture, agents conversationnels commerce, automatisation gestion TPE, CRM augmentes pour entreprises de l'Audomarois.",
-      en: "Implementation IA a Audruicq : IA predictive agriculture, agents conversationnels commerce, automatisation gestion TPE, CRM augmentes pour entreprises de l'Audomarois.",
+      fr: "Implementation IA a Audruicq : IA predictive agriculture, agents conversationnels commerce, automatisation gestion PME, CRM augmentes pour entreprises de l'Audomarois.",
+      en: "Implementation IA a Audruicq : IA predictive agriculture, agents conversationnels commerce, automatisation gestion PME, CRM augmentes pour entreprises de l'Audomarois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Audruicq : accompagnement personnalise exploitants agricoles, gerants TPE, commercants et artisans du marais audomarois.",
-      en: "Coaching 1-to-1 a Audruicq : accompagnement personnalise exploitants agricoles, gerants TPE, commercants et artisans du marais audomarois.",
+      fr: "Coaching 1-to-1 a Audruicq : accompagnement personnalise exploitants agricoles, gerants PME, commercants et artisans du marais audomarois.",
+      en: "Coaching 1-to-1 a Audruicq : accompagnement personnalise exploitants agricoles, gerants PME, commercants et artisans du marais audomarois.",
     },
   },
   faqGeolocalisee: [

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MAUREPAS_COPY: VilleCopy = {
   pitchFr:
-    "Maurepas, dans les Yvelines, fait partie de l'agglomération de Saint-Quentin-en-Yvelines, l'un des grands pôles industriels et tertiaires de l'ouest francilien. La zone d'activités Pariwest concentre commerces, sous-traitants de la filière automobile et entreprises de services, dans un bassin marqué par la présence historique des constructeurs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs tâches répétitives avec un ROI mesurable.",
+    "Maurepas, dans les Yvelines, fait partie de l'agglomération de Saint-Quentin-en-Yvelines, l'un des grands pôles industriels et tertiaires de l'ouest francilien. La zone d'activités Pariwest concentre commerces, sous-traitants de la filière automobile et entreprises de services, dans un bassin marqué par la présence historique des constructeurs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de ce territoire pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   pitchEn:
-    "Maurepas, dans les Yvelines, fait partie de l'agglomération de Saint-Quentin-en-Yvelines, l'un des grands pôles industriels et tertiaires de l'ouest francilien. La zone d'activités Pariwest concentre commerces, sous-traitants de la filière automobile et entreprises de services, dans un bassin marqué par la présence historique des constructeurs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs tâches répétitives avec un ROI mesurable.",
+    "Maurepas, dans les Yvelines, fait partie de l'agglomération de Saint-Quentin-en-Yvelines, l'un des grands pôles industriels et tertiaires de l'ouest francilien. La zone d'activités Pariwest concentre commerces, sous-traitants de la filière automobile et entreprises de services, dans un bassin marqué par la présence historique des constructeurs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME puis les ETI de ce territoire pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maurepas (78, Yvelines). Nous accompagnons en priorité les TPE puis les PME de l'agglomération Saint-Quentin-en-Yvelines : sous-traitants de la filière automobile, ateliers, entreprises de services et commerces de la ZA Pariwest. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maurepas (78, Yvelines). Nous accompagnons en priorité les PME puis les ETI de l'agglomération Saint-Quentin-en-Yvelines : sous-traitants de la filière automobile, ateliers, entreprises de services et commerces de la ZA Pariwest. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maurepas (78, Yvelines). Nous accompagnons en priorité les TPE puis les PME de l'agglomération Saint-Quentin-en-Yvelines : sous-traitants de la filière automobile, ateliers, entreprises de services et commerces de la ZA Pariwest. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Maurepas (78, Yvelines). Nous accompagnons en priorité les PME puis les ETI de l'agglomération Saint-Quentin-en-Yvelines : sous-traitants de la filière automobile, ateliers, entreprises de services et commerces de la ZA Pariwest. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les grands groupes complètent ce socle. Tarifs publics, ROI documenté.",
   seoHook: "sous-traitance auto & tertiaire SQY",
   ecosystemFr:
-    "Maurepas s'inscrit dans l'agglomération de Saint-Quentin-en-Yvelines, bassin industriel structuré autour de la filière automobile et de ses nombreux sous-traitants. La zone d'activités Pariwest, l'une des plus vastes de l'ouest parisien, mêle commerces, ateliers, logistique et entreprises de services. Ce maillage de TPE et PME, souvent dépendantes de donneurs d'ordres exigeants en délais et en traçabilité, trouve dans l'automatisation IA un levier direct de productivité et de fiabilité administrative.",
+    "Maurepas s'inscrit dans l'agglomération de Saint-Quentin-en-Yvelines, bassin industriel structuré autour de la filière automobile et de ses nombreux sous-traitants. La zone d'activités Pariwest, l'une des plus vastes de l'ouest parisien, mêle commerces, ateliers, logistique et entreprises de services. Ce maillage de PME et ETI, souvent dépendantes de donneurs d'ordres exigeants en délais et en traçabilité, trouve dans l'automatisation IA un levier direct de productivité et de fiabilité administrative.",
   ecosystemEn:
-    "Maurepas s'inscrit dans l'agglomération de Saint-Quentin-en-Yvelines, bassin industriel structuré autour de la filière automobile et de ses nombreux sous-traitants. La zone d'activités Pariwest, l'une des plus vastes de l'ouest parisien, mêle commerces, ateliers, logistique et entreprises de services. Ce maillage de TPE et PME, souvent dépendantes de donneurs d'ordres exigeants en délais et en traçabilité, trouve dans l'automatisation IA un levier direct de productivité et de fiabilité administrative.",
+    "Maurepas s'inscrit dans l'agglomération de Saint-Quentin-en-Yvelines, bassin industriel structuré autour de la filière automobile et de ses nombreux sous-traitants. La zone d'activités Pariwest, l'une des plus vastes de l'ouest parisien, mêle commerces, ateliers, logistique et entreprises de services. Ce maillage de PME et ETI, souvent dépendantes de donneurs d'ordres exigeants en délais et en traçabilité, trouve dans l'automatisation IA un levier direct de productivité et de fiabilité administrative.",
   distancesFr:
     "Maurepas est reliée à Paris en une quarantaine de minutes via l'A12 et la N10, et la gare de La Verrière dessert le réseau Transilien vers Montparnasse. Saint-Quentin-en-Yvelines et son pôle gare sont à dix minutes, Versailles à 20 km. L'aéroport Paris-Orly est à environ 45 minutes et la gare TGV de Massy à une trentaine de kilomètres, ouvrant l'ensemble du sud et de l'ouest francilien.",
   distancesEn:
@@ -34,16 +34,16 @@ export const MAUREPAS_COPY: VilleCopy = {
       en: "Audit IA à Maurepas : diagnostic des processus pour sous-traitants automobile, ateliers et PME de services de la ZA Pariwest. Nous repérons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Maurepas : automatisation des devis, bons de commande et relances pour les TPE et PME industrielles, avec montée en autonomie des équipes.",
-      en: "Interventions IA sur site à Maurepas : automatisation des devis, bons de commande et relances pour les TPE et PME industrielles, avec montée en autonomie des équipes.",
+      fr: "Interventions IA sur site à Maurepas : automatisation des devis, bons de commande et relances pour les PME et ETI industrielles, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Maurepas : automatisation des devis, bons de commande et relances pour les PME et ETI industrielles, avec montée en autonomie des équipes.",
     },
     implementation: {
       fr: "Implémentation IA à Maurepas : agents conversationnels, classification documentaire et automatisation des flux entre ERP et donneurs d'ordres de la filière automobile.",
       en: "Implémentation IA à Maurepas : agents conversationnels, classification documentaire et automatisation des flux entre ERP et donneurs d'ordres de la filière automobile.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Maurepas : sessions dans votre atelier ou bureau, ou en visio, pour les dirigeants de TPE et PME de Saint-Quentin-en-Yvelines.",
-      en: "Coaching 1-to-1 à Maurepas : sessions dans votre atelier ou bureau, ou en visio, pour les dirigeants de TPE et PME de Saint-Quentin-en-Yvelines.",
+      fr: "Coaching 1-to-1 à Maurepas : sessions dans votre atelier ou bureau, ou en visio, pour les dirigeants de PME et d'ETI de Saint-Quentin-en-Yvelines.",
+      en: "Coaching 1-to-1 à Maurepas : sessions dans votre atelier ou bureau, ou en visio, pour les dirigeants de PME et d'ETI de Saint-Quentin-en-Yvelines.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Maurepas : plateformes sur mesure avec IA intégrée pour sous-traitants, commerces et services souhaitant capter et qualifier leurs prospects B2B.",
@@ -56,8 +56,8 @@ export const MAUREPAS_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Maurepas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin de Saint-Quentin-en-Yvelines structuré autour de la sous-traitance automobile, du travail des métaux et d'un tertiaire dense, avec la zone d'activités Pariwest — près de 114 hectares partagés avec Coignières et plus de 480 entreprises — comme cœur économique. On y travaille aussi bien avec un atelier mécanique qu'avec un acteur de la logistique ou de l'édition implanté sur le parc. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maurepas, itérations à distance par sprints.",
         whyHere: [
           "Filière automobile et travail des métaux : les ateliers, équipementiers et mécaniciens du bassin SQY travaillent pour des donneurs d'ordres exigeants en délais et en traçabilité. On construit des portails B2B, des configurateurs de devis et des espaces clients qui automatisent bons de commande, ordres de fabrication et suivis, et on greffe la recherche sémantique sur vos catalogues de pièces et nomenclatures techniques.",
-          "Zone d'activités Pariwest, près de 114 hectares à cheval sur Maurepas et Coignières et plus de 480 entreprises gérées via l'association AZACOMA : commerces, logistique et services y cohabitent. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce mobile-first sans refonte lourde pour les TPE du parc qui veulent capter et convertir en ligne.",
-          "Présence de grands employeurs structurants — édition et distribution avec Hachette Livre, négoce de métaux avec ThyssenKrupp Materials France, services techniques avec SNEF — entourés d'un tissu très majoritaire de TPE et PME industrielles. Nos chatbots RAG et nos agents qualifient les prospects, répondent aux demandes fournisseurs et déchargent les équipes administratives, sans remplacer l'humain mais en supprimant la saisie répétitive.",
+          "Zone d'activités Pariwest, près de 114 hectares à cheval sur Maurepas et Coignières et plus de 480 entreprises gérées via l'association AZACOMA : commerces, logistique et services y cohabitent. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce mobile-first sans refonte lourde pour les PME du parc qui veulent capter et convertir en ligne.",
+          "Présence de grands employeurs structurants — édition et distribution avec Hachette Livre, négoce de métaux avec ThyssenKrupp Materials France, services techniques avec SNEF — entourés d'un tissu très majoritaire de PME et ETI industrielles. Nos chatbots RAG et nos agents qualifient les prospects, répondent aux demandes fournisseurs et déchargent les équipes administratives, sans remplacer l'humain mais en supprimant la saisie répétitive.",
           "Position au cœur de l'ouest des Yvelines, à dix minutes du pôle gare de Saint-Quentin-en-Yvelines et à 20 km de Versailles, avec la requalification du quartier durable le long de la RD13 qui modernise la frange urbaine de Pariwest : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et nous concevons des sites accessibles et performants (Web Vitals) pour des dirigeants souvent en déplacement entre l'atelier et le chantier.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, qualification de demandes — sur le site existant d'un commerce, d'un artisan ou d'un atelier mécanique de Pariwest, en quelques semaines et sans refonte. Idéal pour un négoce de détail ou un service technique.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -142,8 +136,8 @@ export const MAUREPAS_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Maurepas des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour un bassin de Saint-Quentin-en-Yvelines structuré autour de la sous-traitance automobile, du travail des métaux et d'un tertiaire dense, avec la zone d'activités Pariwest — près de 114 hectares partagés avec Coignières et plus de 480 entreprises — comme cœur économique. On y travaille aussi bien avec un atelier mécanique qu'avec un acteur de la logistique ou de l'édition implanté sur le parc. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Maurepas, itérations à distance par sprints.",
         whyHere: [
           "Filière automobile et travail des métaux : les ateliers, équipementiers et mécaniciens du bassin SQY travaillent pour des donneurs d'ordres exigeants en délais et en traçabilité. On construit des portails B2B, des configurateurs de devis et des espaces clients qui automatisent bons de commande, ordres de fabrication et suivis, et on greffe la recherche sémantique sur vos catalogues de pièces et nomenclatures techniques.",
-          "Zone d'activités Pariwest, près de 114 hectares à cheval sur Maurepas et Coignières et plus de 480 entreprises gérées via l'association AZACOMA : commerces, logistique et services y cohabitent. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce mobile-first sans refonte lourde pour les TPE du parc qui veulent capter et convertir en ligne.",
-          "Présence de grands employeurs structurants — édition et distribution avec Hachette Livre, négoce de métaux avec ThyssenKrupp Materials France, services techniques avec SNEF — entourés d'un tissu très majoritaire de TPE et PME industrielles. Nos chatbots RAG et nos agents qualifient les prospects, répondent aux demandes fournisseurs et déchargent les équipes administratives, sans remplacer l'humain mais en supprimant la saisie répétitive.",
+          "Zone d'activités Pariwest, près de 114 hectares à cheval sur Maurepas et Coignières et plus de 480 entreprises gérées via l'association AZACOMA : commerces, logistique et services y cohabitent. On greffe l'IA sur l'existant (widget, API, plugin WordPress ou PrestaShop) ou on livre une vitrine e-commerce mobile-first sans refonte lourde pour les PME du parc qui veulent capter et convertir en ligne.",
+          "Présence de grands employeurs structurants — édition et distribution avec Hachette Livre, négoce de métaux avec ThyssenKrupp Materials France, services techniques avec SNEF — entourés d'un tissu très majoritaire de PME et ETI industrielles. Nos chatbots RAG et nos agents qualifient les prospects, répondent aux demandes fournisseurs et déchargent les équipes administratives, sans remplacer l'humain mais en supprimant la saisie répétitive.",
           "Position au cœur de l'ouest des Yvelines, à dix minutes du pôle gare de Saint-Quentin-en-Yvelines et à 20 km de Versailles, avec la requalification du quartier durable le long de la RD13 qui modernise la frange urbaine de Pariwest : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act, et nous concevons des sites accessibles et performants (Web Vitals) pour des dirigeants souvent en déplacement entre l'atelier et le chantier.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, qualification de demandes — sur le site existant d'un commerce, d'un artisan ou d'un atelier mécanique de Pariwest, en quelques semaines et sans refonte. Idéal pour un négoce de détail ou un service technique.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -237,8 +225,8 @@ export const MAUREPAS_COPY: VilleCopy = {
       a: "Oui. La filière automobile et ses sous-traitants sont un public clé à Maurepas. Nous automatisons devis, bons de commande, relances et flux documentaires avec vos donneurs d'ordres pour gagner en délais et en fiabilité.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME de Maurepas en priorité ?",
-      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Maurepas. Nous adaptons les formats aux ateliers et structures de services. Les ETI restent un public marginal de notre activité.",
+      q: "Accompagnez-vous les PME et ETI de Maurepas en priorité ?",
+      a: "Oui. Les les PME puis les ETI sont notre public prioritaire à Maurepas. Nous adaptons les formats aux ateliers et structures de services. Les grands groupes complètent ce socle.",
     },
     {
       q: "Quels services pour les commerces de la ZA Pariwest ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const GENLIS_COPY: VilleCopy = {
   pitchFr:
-    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu PME du BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu PME du BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genlis (21). Nous accompagnons TPE et PME de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genlis (21). Nous accompagnons PME et ETI de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genlis (21). Nous accompagnons TPE et PME de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genlis (21). Nous accompagnons PME et ETI de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
   seoHook: "artisanat second & services aux",
   ecosystemFr:
-    "Genlis est un bourg résidentiel de la plaine de Saône (5 093 habitants), à 20 min à l'est de Dijon. Pôle de services et commerces pour les communes rurales environnantes. Économie mixte : TPE artisanat BTP, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
+    "Genlis est un bourg résidentiel de la plaine de Saône (5 093 habitants), à 20 min à l'est de Dijon. Pôle de services et commerces pour les communes rurales environnantes. Économie mixte : PME du BTP, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   ecosystemEn:
-    "Genlis est un bourg résidentiel de la plaine de Saône (5 093 habitants), à 20 min à l'est de Dijon. Pôle de services et commerces pour les communes rurales environnantes. Économie mixte : TPE artisanat BTP, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
+    "Genlis est un bourg résidentiel de la plaine de Saône (5 093 habitants), à 20 min à l'est de Dijon. Pôle de services et commerces pour les communes rurales environnantes. Économie mixte : PME du BTP, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   distancesFr:
     "Dijon à 20 min par D968. Gare TGV Dijon-Ville à 25 min. Dole à 30 min. Auxonne à 15 min. Aéroport Lyon-Saint-Exupéry à 2h15.",
   distancesEn:
     "Dijon à 20 min par D968. Gare TGV Dijon-Ville à 25 min. Dole à 30 min. Auxonne à 15 min. Aéroport Lyon-Saint-Exupéry à 2h15.",
   topSectorsNaf: [
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "PME services aux entreprises",
     "Commerces de proximité",
     "Agriculture céréalière plaine de Saône",
@@ -53,15 +53,15 @@ export const GENLIS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans BTP et second œuvre ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP : automatisation devis et métrés, planification chantiers IA, suivi temps et matériaux, facturation automatisée, gestion sous-traitants.",
+      a: "Oui, nous accompagnons les PME du BTP : automatisation devis et métrés, planification chantiers IA, suivi temps et matériaux, facturation automatisée, gestion sous-traitants.",
     },
     {
       q: "Accompagnez-vous les PME de services et professions libérales ?",
       a: "Oui, CRM augmenté, automatisation secrétariat et prise de rendez-vous, classification documents, agents conversationnels accueil, reporting automatisé.",
     },
     {
-      q: "Quels tarifs pour les TPE et commerces de Genlis ?",
-      a: "Pour les TPE artisans et commerces de Genlis, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, automatisation devis, agents IA relation client.",
+      q: "Quels tarifs pour les PME et commerces de Genlis ?",
+      a: "Pour les PME de l'artisanat et du commerce de Genlis, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, automatisation devis, agents IA relation client.",
     },
     {
       q: "Comment se déroule une mission à Genlis ?",

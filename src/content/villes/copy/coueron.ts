@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const COUERON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Couëron, commune de 24 100 habitants située à 16 km à l'ouest de Nantes dans Nantes Métropole. Le tissu local mélange industrie métallurgique historique (NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), karting de compétition (Sodikart, leader mondial implanté depuis 1981) et activités tertiaires de proximité. Nous intervenons sur site auprès des dirigeants couëronnais pour cadrer, prototyper et déployer leurs premiers cas d'usage IA en code custom.",
+    "Axion-IA accompagne les PME et ETI de Couëron, commune de 24 100 habitants située à 16 km à l'ouest de Nantes dans Nantes Métropole. Le tissu local mélange industrie métallurgique historique (NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), karting de compétition (Sodikart, leader mondial implanté depuis 1981) et activités tertiaires de proximité. Nous intervenons sur site auprès des dirigeants couëronnais pour cadrer, prototyper et déployer leurs premiers cas d'usage IA en code custom.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Couëron, commune de 24 100 habitants située à 16 km à l'ouest de Nantes dans Nantes Métropole. Le tissu local mélange industrie métallurgique historique (NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), karting de compétition (Sodikart, leader mondial implanté depuis 1981) et activités tertiaires de proximité. Nous intervenons sur site auprès des dirigeants couëronnais pour cadrer, prototyper et déployer leurs premiers cas d'usage IA en code custom.",
+    "Axion-IA accompagne les PME et ETI de Couëron, commune de 24 100 habitants située à 16 km à l'ouest de Nantes dans Nantes Métropole. Le tissu local mélange industrie métallurgique historique (NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), karting de compétition (Sodikart, leader mondial implanté depuis 1981) et activités tertiaires de proximité. Nous intervenons sur site auprès des dirigeants couëronnais pour cadrer, prototyper et déployer leurs premiers cas d'usage IA en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:audit-flash|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les PME et ETI locales. Williams réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:audit-flash|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:audit-flash|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Couëron (Loire-Atlantique, 44220) pour accompagner les PME et ETI locales. Williams réalise des audits de processus, conçoit des prototypes et implémente des solutions IA en code custom (pas de no-code). Nos audits Sur place démarrent à {{price:audit-flash|flat}}. Nous couvrons la métallurgie (héritage NGK Berylco/Tréfimétaux), la ZAC des Hauts de Couëron, les ETI industrielles type Sodikart, le commerce de proximité et les services aux entreprises de Nantes Métropole.",
   seoHook: "métallurgie & industrie Nantes Métropole",
   ecosystemFr:
-    "Couëron appartient à Nantes Métropole (24 communes). L'économie locale s'appuie sur la métallurgie spécialisée (NGK Berylco, alliages cuivre-béryllium), le karting (Sodikart, leader mondial depuis 1981), la ZAC des Hauts de Couëron, plus un tissu de TPE/PME en commerce, BTP et services. La commune est bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares).",
+    "Couëron appartient à Nantes Métropole (24 communes). L'économie locale s'appuie sur la métallurgie spécialisée (NGK Berylco, alliages cuivre-béryllium), le karting (Sodikart, leader mondial depuis 1981), la ZAC des Hauts de Couëron, plus un tissu de PME et ETI en commerce, BTP et services. La commune est bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares).",
   ecosystemEn:
-    "Couëron appartient à Nantes Métropole (24 communes). L'économie locale s'appuie sur la métallurgie spécialisée (NGK Berylco, alliages cuivre-béryllium), le karting (Sodikart, leader mondial depuis 1981), la ZAC des Hauts de Couëron, plus un tissu de TPE/PME en commerce, BTP et services. La commune est bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares).",
+    "Couëron appartient à Nantes Métropole (24 communes). L'économie locale s'appuie sur la métallurgie spécialisée (NGK Berylco, alliages cuivre-béryllium), le karting (Sodikart, leader mondial depuis 1981), la ZAC des Hauts de Couëron, plus un tissu de PME et ETI en commerce, BTP et services. La commune est bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares).",
   distancesFr:
     "Couëron est à 16 km à l'ouest de Nantes. Gare TER de Couëron desservie par TER Pays de la Loire. Gare de Nantes (TGV) à environ 20 minutes. Aéroport Nantes-Atlantique à 25 km. Bac fluvial vers Le Pellerin sur la Loire.",
   distancesEn:
@@ -31,30 +31,30 @@ export const COUERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
-      en: "Audit IA à Couëron pour les TPE/PME de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      fr: "Audit IA à Couëron pour les PME et ETI de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
+      en: "Audit IA à Couëron pour les PME et ETI de la ZAC des Hauts de Couëron et les industriels du bassin métallurgique (héritage Tréfimétaux). Williams se déplace sur site pour cartographier les processus métiers et identifier 3 à 5 cas d'usage IA prioritaires.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Couëron pour les TPE/PME industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
-      en: "Interventions ponctuelles à Couëron pour les TPE/PME industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
+      fr: "Interventions ponctuelles à Couëron pour les PME et ETI industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
+      en: "Interventions ponctuelles à Couëron pour les PME et ETI industrielles, commerciales ou tertiaires de Nantes Métropole. Débogage de pipelines IA, refonte de prompts, intégration LLM en code custom.",
     },
     implementation: {
       fr: "Implémentation IA à Couëron en code custom (Python, TypeScript, APIs OpenAI/Anthropic). Cas d'usage typiques : assistants techniques pour la métallurgie, automatisation devis BTP, outils internes pour PME industrielles.",
       en: "Implémentation IA à Couëron en code custom (Python, TypeScript, APIs OpenAI/Anthropic). Cas d'usage typiques : assistants techniques pour la métallurgie, automatisation devis BTP, outils internes pour PME industrielles.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Couëron pour dirigeants de TPE/PME : monter en compétence sur l'IA générative, choisir les bons outils, éviter les pièges no-code. Format 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou Loire-Atlantique.",
-      en: "Accompagnement un-à-un à Couëron pour dirigeants de TPE/PME : monter en compétence sur l'IA générative, choisir les bons outils, éviter les pièges no-code. Format 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou Loire-Atlantique.",
+      fr: "Accompagnement un-à-un à Couëron pour dirigeants de PME et ETI : monter en compétence sur l'IA générative, choisir les bons outils, éviter les pièges no-code. Format 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou Loire-Atlantique.",
+      en: "Accompagnement un-à-un à Couëron pour dirigeants de PME et ETI : monter en compétence sur l'IA générative, choisir les bons outils, éviter les pièges no-code. Format 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou Loire-Atlantique.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de TPE du commerce, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de PME du commerce, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
         whyHere: [
           "Métallurgie technique et alliages spécialisés (héritage NGK Berylco/Tréfimétaux, cuivre-béryllium) : on construit des portails clients B2B, configurateurs et catalogues techniques en ligne, augmentés d'une recherche sémantique qui interroge vos fiches matières, nuances et tolérances en langage naturel. Les acteurs industriels des Hauts de Couëron gagnent un canal commercial outillé sans alourdir leurs équipes techniques.",
           "Écosystème karting et équipementiers sport autour de Sodikart, leader mondial implanté depuis 1981, et de distributeurs spécialisés type Groseron : on bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des configurateurs produits, avec un chatbot multilingue calibré pour une clientèle internationale de revendeurs, pilotes et acheteurs pros.",
-          "Zones d'activité des Hauts de Couëron (ZA 1-2 d'environ 115 ha, ZA 3 d'environ 34 ha, plus de 380 entreprises — Exail Robotics, Charier GC, Williamson Transports, MAN Truck & Bus, Loxam) et tissu de TPE/PME en commerce, BTP et services de proximité : on greffe l'IA sur l'existant (widget, plugin, API) — devis automatisés, prise de rendez-vous, suivi de chantier, assistant de site — sans imposer une refonte coûteuse.",
+          "Zones d'activité des Hauts de Couëron (ZA 1-2 d'environ 115 ha, ZA 3 d'environ 34 ha, plus de 380 entreprises — Exail Robotics, Charier GC, Williamson Transports, MAN Truck & Bus, Loxam) et tissu de PME et ETI en commerce, BTP et services de proximité : on greffe l'IA sur l'existant (widget, plugin, API) — devis automatisés, prise de rendez-vous, suivi de chantier, assistant de site — sans imposer une refonte coûteuse.",
           "Commune ligérienne bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares), à 16 km de Nantes et desservie par sa propre gare TER : toute la chaîne IA est hébergeable en UE et conforme RGPD/AI Act, vos données clients, fiches techniques et modèles restent maîtrisées sur le sol européen, sans dépendance à un acteur hors UE.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const COUERON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis ou prise de rendez-vous automatisés) sur le site existant d'un commerçant, artisan BTP ou prestataire de services couëronnais, en quelques semaines et sans refonte du site en place.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -136,11 +130,11 @@ export const COUERON_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie, pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site ou une boutique déjà en activité à Couëron. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in. L'ensemble est transférable à tout prestataire local de Loire-Atlantique ou de Nantes Métropole, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de TPE du commerce, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Couëron des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensé pour une commune de 24 100 habitants de Nantes Métropole où cohabitent la métallurgie spécialisée (héritage NGK Berylco, ex-Tréfimétaux, alliages cuivre-béryllium), le karting de compétition de Sodikart, leader mondial depuis 1981, les zones d'activité des Hauts de Couëron (plus de 380 entreprises cumulées sur près de 150 hectares — Groseron, Exail Robotics, Charier GC) et un tissu dense de PME du commerce, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Couëron, itérations à distance.",
         whyHere: [
           "Métallurgie technique et alliages spécialisés (héritage NGK Berylco/Tréfimétaux, cuivre-béryllium) : on construit des portails clients B2B, configurateurs et catalogues techniques en ligne, augmentés d'une recherche sémantique qui interroge vos fiches matières, nuances et tolérances en langage naturel. Les acteurs industriels des Hauts de Couëron gagnent un canal commercial outillé sans alourdir leurs équipes techniques.",
           "Écosystème karting et équipementiers sport autour de Sodikart, leader mondial implanté depuis 1981, et de distributeurs spécialisés type Groseron : on bâtit des boutiques e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, Magento) et des configurateurs produits, avec un chatbot multilingue calibré pour une clientèle internationale de revendeurs, pilotes et acheteurs pros.",
-          "Zones d'activité des Hauts de Couëron (ZA 1-2 d'environ 115 ha, ZA 3 d'environ 34 ha, plus de 380 entreprises — Exail Robotics, Charier GC, Williamson Transports, MAN Truck & Bus, Loxam) et tissu de TPE/PME en commerce, BTP et services de proximité : on greffe l'IA sur l'existant (widget, plugin, API) — devis automatisés, prise de rendez-vous, suivi de chantier, assistant de site — sans imposer une refonte coûteuse.",
+          "Zones d'activité des Hauts de Couëron (ZA 1-2 d'environ 115 ha, ZA 3 d'environ 34 ha, plus de 380 entreprises — Exail Robotics, Charier GC, Williamson Transports, MAN Truck & Bus, Loxam) et tissu de PME et ETI en commerce, BTP et services de proximité : on greffe l'IA sur l'existant (widget, plugin, API) — devis automatisés, prise de rendez-vous, suivi de chantier, assistant de site — sans imposer une refonte coûteuse.",
           "Commune ligérienne bordée au sud par la Loire et à l'ouest par le marais Audubon (2 000 hectares), à 16 km de Nantes et desservie par sa propre gare TER : toute la chaîne IA est hébergeable en UE et conforme RGPD/AI Act, vos données clients, fiches techniques et modèles restent maîtrisées sur le sol européen, sans dépendance à un acteur hors UE.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const COUERON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, devis ou prise de rendez-vous automatisés) sur le site existant d'un commerçant, artisan BTP ou prestataire de services couëronnais, en quelques semaines et sans refonte du site en place.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -243,11 +231,11 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques accompagnez-vous à Couëron ?",
-      a: "Métallurgie spécialisée (héritage NGK Berylco/Tréfimétaux), équipementiers sport et loisirs (écosystème Sodikart), commerce de proximité, BTP et services tertiaires des TPE/PME de Nantes Métropole.",
+      a: "Métallurgie spécialisée (héritage NGK Berylco/Tréfimétaux), équipementiers sport et loisirs (écosystème Sodikart), commerce de proximité, BTP et services tertiaires des PME et ETI de Nantes Métropole.",
     },
     {
       q: "Proposez-vous des sessions de coaching 1-to-1 pour dirigeants couëronnais ?",
-      a: "Oui. Sessions un-à-un à Couëron à partir de {{price:intervention-dirigeants|flat}} (1h30), sur site ou en visio. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA sans dépendance no-code.",
+      a: "Oui. Sessions un-à-un à Couëron à partir de {{price:intervention-dirigeants|flat}} (1h30), sur site ou en visio. Cible : dirigeants de PME et ETI souhaitant cadrer leur feuille de route IA sans dépendance no-code.",
     },
   ],
 };

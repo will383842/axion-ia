@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOURBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Bourbourg (59), petite ville de la Flandre maritime dans le Nord, reunit pres de 6 930 habitants. Situee entre Dunkerque et Saint-Omer le long du canal de Bourbourg, son economie associe TPE artisans, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activites.",
+    "Bourbourg (59), petite ville de la Flandre maritime dans le Nord, reunit pres de 6 930 habitants. Situee entre Dunkerque et Saint-Omer le long du canal de Bourbourg, son economie associe PME artisanales, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Bourbourg (59), petite ville de la Flandre maritime dans le Nord, reunit pres de 6 930 habitants. Situee entre Dunkerque et Saint-Omer le long du canal de Bourbourg, son economie associe TPE artisans, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activites.",
+    "Bourbourg (59), petite ville de la Flandre maritime dans le Nord, reunit pres de 6 930 habitants. Situee entre Dunkerque et Saint-Omer le long du canal de Bourbourg, son economie associe PME artisanales, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Flandre maritime, industrie & canal",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bourbourg (59). Nous accompagnons les PME, ETI et grands groupes de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Bourbourg (59). Nous accompagnons les PME, ETI et grands groupes de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Bourbourg est situee en Flandre maritime, entre Dunkerque (15 km) et Saint-Omer (25 km), le long du canal de Bourbourg. Tissu economique mixte : PME industrielles (sous-traitance sidero-chimie dunkerquoise), TPE artisanat BTP, agriculture flamande (polyculture, elevage), commerces de centre-bourg et services.",
+    "Bourbourg est situee en Flandre maritime, entre Dunkerque (15 km) et Saint-Omer (25 km), le long du canal de Bourbourg. Tissu economique mixte : PME industrielles (sous-traitance sidero-chimie dunkerquoise), PME du BTP, agriculture flamande (polyculture, elevage), commerces de centre-bourg et services.",
   ecosystemEn:
-    "Bourbourg est situee en Flandre maritime, entre Dunkerque (15 km) et Saint-Omer (25 km), le long du canal de Bourbourg. Tissu economique mixte : PME industrielles (sous-traitance sidero-chimie dunkerquoise), TPE artisanat BTP, agriculture flamande (polyculture, elevage), commerces de centre-bourg et services.",
+    "Bourbourg est situee en Flandre maritime, entre Dunkerque (15 km) et Saint-Omer (25 km), le long du canal de Bourbourg. Tissu economique mixte : PME industrielles (sous-traitance sidero-chimie dunkerquoise), PME du BTP, agriculture flamande (polyculture, elevage), commerces de centre-bourg et services.",
   distancesFr:
     "Gare de Bourbourg (TER Dunkerque-Calais). Dunkerque a 15 min. Calais a 30 min. Gare Lille Europe (TGV) a 1h15 en TER. Aeroport Lille-Lesquin a 1h30. Bruxelles a 2h par autoroute.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BOURBOURG_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles (sous-traitance Dunkerque)",
     "Agriculture & agroalimentaire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, TPE artisans, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, TPE artisans, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, PME artisanales, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, PME artisanales, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Bourbourg : formations adaptees a l'atelier industriel, a l'exploitation agricole, au commerce ou au bureau. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BOURBOURG_COPY: VilleCopy = {
       en: "Implementation IA a Bourbourg : automatisation processus industriels, IA predictive agriculture, agents conversationnels client, CRM augmentes pour PME de la Flandre maritime.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Bourbourg : sessions dans votre atelier, exploitation, bureau ou commerce. Dirigeants industriels, agriculteurs, artisans, gerants TPE/PME de Flandre maritime.",
-      en: "Coaching 1-to-1 a Bourbourg : sessions dans votre atelier, exploitation, bureau ou commerce. Dirigeants industriels, agriculteurs, artisans, gerants TPE/PME de Flandre maritime.",
+      fr: "Coaching 1-to-1 a Bourbourg : sessions dans votre atelier, exploitation, bureau ou commerce. Dirigeants industriels, agriculteurs, artisans, gerants PME et ETI de Flandre maritime.",
+      en: "Coaching 1-to-1 a Bourbourg : sessions dans votre atelier, exploitation, bureau ou commerce. Dirigeants industriels, agriculteurs, artisans, gerants PME et ETI de Flandre maritime.",
     },
   },
   faqGeolocalisee: [

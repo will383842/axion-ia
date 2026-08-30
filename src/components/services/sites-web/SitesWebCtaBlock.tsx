@@ -4,7 +4,7 @@
  * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis
  * `src/app/[locale]/sites-web-augmentes/page.tsx`. Bloc final sur fond mocha
  * riche. 2026-06-04 (Will) : dé-audit-isé — un prospect web ne doit pas être
- * renvoyé vers /audit (prix 1190 € = TPE only). CTA = règle contact globale :
+ * renvoyé vers /audit (prix 1190 € = audit sur place uniquement). CTA = règle contact globale :
  * « Réserver un appel » (/appel) + « Nous écrire » (/contact).
  * Quand `villeContext` est fourni, le wording mentionne la ville.
  */

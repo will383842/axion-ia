@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu PME artisanales, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu PME artisanales, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferrière-la-Grande (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgiques et mécaniques de la Sambre, commerçants, professions libérales et acteurs de la reconversion du bassin sambre-avesnois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferrière-la-Grande (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles métallurgiques et mécaniques de la Sambre, commerçants, professions libérales et acteurs de la reconversion du bassin sambre-avesnois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferrière-la-Grande (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgiques et mécaniques de la Sambre, commerçants, professions libérales et acteurs de la reconversion du bassin sambre-avesnois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ferrière-la-Grande (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles métallurgiques et mécaniques de la Sambre, commerçants, professions libérales et acteurs de la reconversion du bassin sambre-avesnois.",
   seoHook: "métallurgie mécanique & artisanat rénovation",
   ecosystemFr:
-    "Ferrière-la-Grande est dans l'agglomération Maubeuge-Val de Sambre, territoire industriel historique en reconversion. PME métallurgie, mécanique et sous-traitance automobile côtoient TPE artisanat, commerces de proximité et professions libérales. Proximité frontière belge ouvre des opportunités transfrontalières.",
+    "Ferrière-la-Grande est dans l'agglomération Maubeuge-Val de Sambre, territoire industriel historique en reconversion. PME métallurgie, mécanique et sous-traitance automobile côtoient PME de l'artisanat, commerces de proximité et professions libérales. Proximité frontière belge ouvre des opportunités transfrontalières.",
   ecosystemEn:
-    "Ferrière-la-Grande est dans l'agglomération Maubeuge-Val de Sambre, territoire industriel historique en reconversion. PME métallurgie, mécanique et sous-traitance automobile côtoient TPE artisanat, commerces de proximité et professions libérales. Proximité frontière belge ouvre des opportunités transfrontalières.",
+    "Ferrière-la-Grande est dans l'agglomération Maubeuge-Val de Sambre, territoire industriel historique en reconversion. PME métallurgie, mécanique et sous-traitance automobile côtoient PME de l'artisanat, commerces de proximité et professions libérales. Proximité frontière belge ouvre des opportunités transfrontalières.",
   distancesFr:
     "Maubeuge centre à 5 min. Gare de Maubeuge (TER Lille, Aulnoye-Aymeries) à 5 min. Lille à 1h15 via A2/N2. Valenciennes à 35 min. Frontière belge (Erquelinnes) à 10 min. Aéroport Charleroi à 45 min.",
   distancesEn:
     "Maubeuge centre à 5 min. Gare de Maubeuge (TER Lille, Aulnoye-Aymeries) à 5 min. Lille à 1h15 via A2/N2. Valenciennes à 35 min. Frontière belge (Erquelinnes) à 10 min. Aéroport Charleroi à 45 min.",
   topSectorsNaf: [
     "PME métallurgie & mécanique (vallée de la Sambre)",
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Sous-traitance automobile & industrielle",
     "Commerce de proximité & détail",
     "Professions libérales & services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux PME artisanales, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux PME artisanales, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ferrière-la-Grande : formats adaptés à l'atelier industriel, l'usine mécanique ou le commerce. Vos équipes repartent avec des outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
       en: "Implémentation IA à Ferrière-la-Grande : maintenance prédictive industrielle, contrôle qualité pièces, agents conversationnels B2B, automatisation workflow. Tous secteurs val de Sambre.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ferrière-la-Grande : sessions dans vos locaux, atelier ou en visio. Industriels, artisans, gérants TPE/PME et dirigeants du bassin sambre-avesnois souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Ferrière-la-Grande : sessions dans vos locaux, atelier ou en visio. Industriels, artisans, gérants TPE/PME et dirigeants du bassin sambre-avesnois souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Ferrière-la-Grande : sessions dans vos locaux, atelier ou en visio. Industriels, artisans, gérants PME et ETI et dirigeants du bassin sambre-avesnois souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Ferrière-la-Grande : sessions dans vos locaux, atelier ou en visio. Industriels, artisans, gérants PME et ETI et dirigeants du bassin sambre-avesnois souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME métallurgiques, mécaniques et sous-traitants automobiles de la Sambre sur leurs cas IA : maintenance prédictive, contrôle qualité pièces, optimisation production, classification documents techniques.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans de Ferrière-la-Grande ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et services à Ferrière-la-Grande sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion planning, facturation. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
+      q: "Accompagnez-vous les PME et artisans de Ferrière-la-Grande ?",
+      a: "Oui, nous accompagnons les PME du BTP et services à Ferrière-la-Grande sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion planning, facturation. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Y a-t-il des opportunités transfrontalières avec la Belgique ?",

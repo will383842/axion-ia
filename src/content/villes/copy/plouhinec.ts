@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const PLOUHINEC_COPY: VilleCopy = {
   pitchFr:
-    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu PME artisanales (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu PME artisanales (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : PME artisanales pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : PME artisanales pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
   ecosystemFr:
-    "Plouhinec est une commune littorale entre la ria d'Étel et l'océan Atlantique, connue pour la barre d'Étel (passe maritime dangereuse et spectaculaire). Patrimoine mégalithique remarquable (alignements, dolmens). Économie tournée vers la pêche artisanale, l'ostréiculture ria d'Étel, le tourisme balnéaire (plages océan, campings) et le tourisme vert. Tissu TPE artisans maritimes, PME hébergement, commerces saisonniers.",
+    "Plouhinec est une commune littorale entre la ria d'Étel et l'océan Atlantique, connue pour la barre d'Étel (passe maritime dangereuse et spectaculaire). Patrimoine mégalithique remarquable (alignements, dolmens). Économie tournée vers la pêche artisanale, l'ostréiculture ria d'Étel, le tourisme balnéaire (plages océan, campings) et le tourisme vert. Tissu PME artisanales maritimes, PME hébergement, commerces saisonniers.",
   ecosystemEn:
-    "Plouhinec est une commune littorale entre la ria d'Étel et l'océan Atlantique, connue pour la barre d'Étel (passe maritime dangereuse et spectaculaire). Patrimoine mégalithique remarquable (alignements, dolmens). Économie tournée vers la pêche artisanale, l'ostréiculture ria d'Étel, le tourisme balnéaire (plages océan, campings) et le tourisme vert. Tissu TPE artisans maritimes, PME hébergement, commerces saisonniers.",
+    "Plouhinec est une commune littorale entre la ria d'Étel et l'océan Atlantique, connue pour la barre d'Étel (passe maritime dangereuse et spectaculaire). Patrimoine mégalithique remarquable (alignements, dolmens). Économie tournée vers la pêche artisanale, l'ostréiculture ria d'Étel, le tourisme balnéaire (plages océan, campings) et le tourisme vert. Tissu PME artisanales maritimes, PME hébergement, commerces saisonniers.",
   distancesFr:
     "Lorient centre à 20 min voiture. Gare de Lorient (TGV Paris 3h15). Aéroport Lorient Bretagne Sud à 25 min. Étel à 5 min. Auray à 25 min. Carnac/Quiberon à 30 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const PLOUHINEC_COPY: VilleCopy = {
     "Pêche artisanale & ostréiculture (ria d'Étel)",
     "Tourisme balnéaire & campings littoraux",
     "Hébergement touristique (gîtes, chambres d'hôtes)",
-    "TPE artisanat BTP & maritime",
+    "PME du BTP & maritime",
     "Commerce saisonnier & proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), PME de l'artisanat et du commerce du littoral ria d'Étel. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), PME de l'artisanat et du commerce du littoral ria d'Étel. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouhinec : formats adaptés à l'exploitation ostréicole, camping, gîte littoral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const PLOUHINEC_COPY: VilleCopy = {
       en: "Implémentation IA à Plouhinec : automatisation réservations campings/gîtes, agents conversationnels tourisme multilingue, traçabilité pêche et ostréiculture, optimisation saisonnalité hébergement. Adapté littoral + tourisme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plouhinec : sessions dans votre exploitation, camping, gîte ou en visio. Pêcheurs, ostréiculteurs, hébergeurs touristiques, artisans, gérants TPE/PME du littoral morbihannais.",
-      en: "Coaching 1-to-1 à Plouhinec : sessions dans votre exploitation, camping, gîte ou en visio. Pêcheurs, ostréiculteurs, hébergeurs touristiques, artisans, gérants TPE/PME du littoral morbihannais.",
+      fr: "Coaching 1-to-1 à Plouhinec : sessions dans votre exploitation, camping, gîte ou en visio. Pêcheurs, ostréiculteurs, hébergeurs touristiques, artisans, gérants PME et ETI du littoral morbihannais.",
+      en: "Coaching 1-to-1 à Plouhinec : sessions dans votre exploitation, camping, gîte ou en visio. Pêcheurs, ostréiculteurs, hébergeurs touristiques, artisans, gérants PME et ETI du littoral morbihannais.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const PLOUHINEC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les pêcheurs artisans et ostréiculteurs de la ria d'Étel sur leurs cas IA : traçabilité production, classification qualité par vision, automatisation gestion sanitaire, prédiction conditions maritimes (barre d'Étel), gestion commandes.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants plouhinécois ?",
-      a: "Pour les TPE artisans BTP, maritimes et commerçants à Plouhinec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
+      q: "Quels services pour les PME de l'artisanat et du commerce plouhinécois ?",
+      a: "Pour les PME du BTP, maritimes et commerçants à Plouhinec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
     },
     {
       q: "Comment se déroule une mission à Plouhinec depuis Lorient ?",

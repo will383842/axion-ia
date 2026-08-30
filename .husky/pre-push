@@ -28,11 +28,24 @@ pnpm zod:check
 # apprendrait `--no-verify` aussi sûrement qu'un hook trop lent.
 if git rev-parse --verify --quiet origin/main >/dev/null; then
   FICHIERS_MODIFIES=$(git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' | tr '\n' ' ')
-  if [ -n "${FICHIERS_MODIFIES}" ]; then
+  NB_MODIFIES=$(git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' | wc -l | tr -d ' ')
+  # 2026-08-30 — la branche de repositionnement (2 300 fichiers .ts/.tsx) a fait
+  # depasser la limite d'arguments du systeme : « Argument list too long », hook en
+  # code 1, push refuse. Un hook qui echoue POUR UNE RAISON QUI N'EST PAS UN DEFAUT
+  # DU CODE apprend `--no-verify` — c'est la crainte ecrite en tete de ce fichier,
+  # realisee. Et au-dela de ce seuil, `vitest related` ne cible plus rien : il
+  # rejoue la suite entiere, soit les 41 minutes qu'on a precisement retirees.
+  # On le DIT, on laisse passer ; Gate A reste bloquante sur le commit de fusion.
+  if [ "${NB_MODIFIES}" -eq 0 ]; then
+    echo "→ aucun .ts/.tsx modifié depuis origin/main : pas de test à jouer"
+  elif [ "${NB_MODIFIES}" -gt 200 ]; then
+    echo "⚠️ ${NB_MODIFIES} fichiers .ts/.tsx modifiés depuis origin/main — au-delà du"
+    echo "   seuil de 200, « vitest related » dépasse la limite d'arguments du système"
+    echo "   et ne cible plus rien d'utile (c'est la suite entière). Tests liés NON"
+    echo "   joués ici. Le filet exhaustif reste en CI, Gate A, bloquante."
+  else
     echo "→ tests liés aux fichiers modifiés (le filet complet est en CI, Gate A)"
     pnpm exec vitest related --run ${FICHIERS_MODIFIES} || exit 1
-  else
-    echo "→ aucun .ts/.tsx modifié depuis origin/main : pas de test à jouer"
   fi
 else
   echo "⚠️ origin/main introuvable — tests liés non joués. Gate A reste bloquante en CI."

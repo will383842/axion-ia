@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const LAVAL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
+    "Axion-IA accompagne les PME et ETI de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
+    "Axion-IA accompagne les PME et ETI de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
+    "Axion-IA intervient à Laval (Mayenne, 53000) pour les PME et ETI de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
-  seoHook: "TPE & PME Laval · agroalimentaire, plasturgie, automobile",
+    "Axion-IA intervient à Laval (Mayenne, 53000) pour les PME et ETI de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
+  seoHook: "PME & PME Laval · agroalimentaire, plasturgie, automobile",
   ecosystemFr:
-    "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de TPE et PME.",
+    "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de PME et ETI.",
   ecosystemEn:
-    "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de TPE et PME.",
+    "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de PME et ETI.",
   distancesFr:
     "Laval est à 300 km de Paris (1h10 en TGV Atlantique, 8 liaisons quotidiennes via la LGV Bretagne-Pays de la Loire ; 2h50 par l'A81). Rennes, Le Mans et Angers sont à environ 65 km. L'aéroport de Laval-Entrammes assure des vols privés et tourisme.",
   distancesEn:
@@ -37,16 +37,16 @@ export const LAVAL_COPY: VilleCopy = {
       en: "Auditer à Laval les flux d'un sous-traitant agroalimentaire, d'un atelier plasturgie ou d'une PME tertiaire — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Laval pour automatiser devis, ordonnancement et reporting d'une TPE/PME industrielle ou de services — Formation 4 h à partir de {{price:intervention-4h|flat}}.",
-      en: "Intervenir à Laval pour automatiser devis, ordonnancement et reporting d'une TPE/PME industrielle ou de services — Formation 4 h à partir de {{price:intervention-4h|flat}}.",
+      fr: "Intervenir à Laval pour automatiser devis, ordonnancement et reporting d'une PME et ETI industrielle ou de services — Formation 4 h à partir de {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Laval pour automatiser devis, ordonnancement et reporting d'une PME et ETI industrielle ou de services — Formation 4 h à partir de {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémenter à Laval des modules IA opérationnels (extraction documents fournisseurs, classification SAV, prévision stock) — déploiement sur site dès {{price:impl-poc|entry}}.",
       en: "Implémenter à Laval des modules IA opérationnels (extraction documents fournisseurs, classification SAV, prévision stock) — déploiement sur site dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Laval un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste sans dépendance no-code — à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner en un-à-un à Laval un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste sans dépendance no-code — à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner en un-à-un à Laval un dirigeants de PME et d'ETI pour cadrer une feuille de route IA réaliste sans dépendance no-code — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en un-à-un à Laval un dirigeants de PME et d'ETI pour cadrer une feuille de route IA réaliste sans dépendance no-code — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const LAVAL_COPY: VilleCopy = {
         whyHere: [
           "Projets web & SaaS mayennais : sous-traitants et sites de l'écosystème laitier Lactalis (usine LNUF, ~3 M yaourts/jour), industriels comme Séché Environnement (siège à Changé) ou le carrossier Gruau (siège à Saint-Berthevin, leader européen du véhicule pro), distributeurs comme Gemy Automobiles.",
           "Un atout rare : l'écosystème XR de Laval (Laval Virtual, centre d'expertise Clarté, ESIEA et son unité de recherche VR) — nous savons interfacer un portail web/SaaS avec des briques 3D, configurateurs et expériences immersives, pas seulement du site vitrine.",
-          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — ou simple greffe IA (widget, API, plugin) sur l'existant, selon le meilleur ROI à 18 mois, pour TPE, PME et startups Laval French Tech.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — ou simple greffe IA (widget, API, plugin) sur l'existant, selon le meilleur ROI à 18 mois, pour PME, ETI et startups Laval French Tech.",
           "Données industrielles sensibles (recettes agroalimentaires, nomenclatures carrossier, flux déchets) : hébergement UE strict et chaîne IA souveraine RGPD — un vrai argument pour les sites de l'écosystème Lactalis, Séché et Gruau.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const LAVAL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte — idéal pour un commerce, un artisan ou une startup Laval French Tech.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -119,7 +113,7 @@ export const LAVAL_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les industriels mayennais comme Lactalis, Séché ou Gruau ?",
-            a: "Nous accompagnons les TPE, PME, sous-traitants et fournisseurs gravitant autour de ces grands donneurs d'ordre (écosystème laitier Lactalis, environnement Séché à Changé, carrosserie Gruau à Saint-Berthevin), ainsi que ces groupes eux-mêmes sur des projets cadrés. L'IA et l'UX sont calibrées à votre taille et à votre métier, jamais un produit standardisé.",
+            a: "Nous accompagnons les PME, ETI, sous-traitants et fournisseurs gravitant autour de ces grands donneurs d'ordre (écosystème laitier Lactalis, environnement Séché à Changé, carrosserie Gruau à Saint-Berthevin), ainsi que ces groupes eux-mêmes sur des projets cadrés. L'IA et l'UX sont calibrées à votre taille et à votre métier, jamais un produit standardisé.",
           },
           {
             q: "Faites-vous vraiment l'UX/UI et le design, pas seulement l'IA ?",
@@ -173,12 +167,6 @@ export const LAVAL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, with no rebuild — ideal for a shop, a craftsperson or a Laval French Tech startup.",
-          },
           {
             sizeLabel: "PME",
             price: "Bespoke site / application",
@@ -245,7 +233,7 @@ export const LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous principalement à Laval ?",
-      a: "TPE et PME de l'agroalimentaire (sous-traitance laitière), plasturgie, sous-traitance automobile, commerces, professions libérales et services aux entreprises — l'IA est calibrée à la taille et au métier, pas un produit standardisé ETI.",
+      a: "PME et ETI de l'agroalimentaire (sous-traitance laitière), plasturgie, sous-traitance automobile, commerces, professions libérales et services aux entreprises — l'IA est calibrée à la taille et au métier, pas un produit standardisé ETI.",
     },
     {
       q: "Faites-vous du no-code à Laval ?",

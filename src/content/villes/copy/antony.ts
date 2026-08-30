@@ -7,14 +7,14 @@ import type { VilleCopy } from "./types";
 
 export const ANTONY_COPY: VilleCopy = {
   pitchFr:
-    "Antony (92), sous-préfecture des Hauts-de-Seine, compte 64 263 habitants au carrefour de trois départements (92, 91, 94). Ville desservie par cinq stations du RER B, le RER C et le tramway T10, traversée par l'A86 et la RD 920. Tissu de TPE de proximité, PME tertiaires, professions libérales et établissements de santé privé. Axion-IA accompagne ces entreprises locales dans leur transition vers l'intelligence artificielle.",
+    "Antony (92), sous-préfecture des Hauts-de-Seine, compte 64 263 habitants au carrefour de trois départements (92, 91, 94). Ville desservie par cinq stations du RER B, le RER C et le tramway T10, traversée par l'A86 et la RD 920. Tissu de PME de proximité, PME tertiaires, professions libérales et établissements de santé privé. Axion-IA accompagne ces entreprises locales dans leur transition vers l'intelligence artificielle.",
   pitchEn:
-    "Antony (92), sous-préfecture des Hauts-de-Seine, compte 64 263 habitants au carrefour de trois départements (92, 91, 94). Ville desservie par cinq stations du RER B, le RER C et le tramway T10, traversée par l'A86 et la RD 920. Tissu de TPE de proximité, PME tertiaires, professions libérales et établissements de santé privé. Axion-IA accompagne ces entreprises locales dans leur transition vers l'intelligence artificielle.",
+    "Antony (92), sous-préfecture des Hauts-de-Seine, compte 64 263 habitants au carrefour de trois départements (92, 91, 94). Ville desservie par cinq stations du RER B, le RER C et le tramway T10, traversée par l'A86 et la RD 920. Tissu de PME de proximité, PME tertiaires, professions libérales et établissements de santé privé. Axion-IA accompagne ces entreprises locales dans leur transition vers l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner TPE commerçantes, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics et sans devis opaque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner PME du commerce, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics et sans devis opaque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner TPE commerçantes, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics et sans devis opaque.",
-  seoHook: "TPE & PME tertiaires sud des Hauts-de-Seine",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner PME du commerce, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics et sans devis opaque.",
+  seoHook: "PME & PME tertiaires sud des Hauts-de-Seine",
   ecosystemFr:
     "Antony s'organise autour d'un tissu de services tertiaires, de commerces de proximité et de professions libérales. La ville accueille l'Institution Sainte-Marie (l'un des plus grands établissements privés d'enseignement de France) et l'un des plus importants pôles privés de santé d'Île-de-France. Le secteur Antonypole, futur arrêt de la ligne 18 du Grand Paris Express en 2027, et la zone Croix de Berny concentrent les bureaux. Antony Habitat gère 5 330 logements sociaux soit environ 20 % du parc.",
   ecosystemEn:
@@ -32,8 +32,8 @@ export const ANTONY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Antony : diagnostic pour TPE commerçantes, PME tertiaires, cabinets libéraux et établissements de santé. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré sur 12 mois.",
-      en: "Audit IA à Antony : diagnostic pour TPE commerçantes, PME tertiaires, cabinets libéraux et établissements de santé. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré sur 12 mois.",
+      fr: "Audit IA à Antony : diagnostic pour PME du commerce, PME tertiaires, cabinets libéraux et établissements de santé. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré sur 12 mois.",
+      en: "Audit IA à Antony : diagnostic pour PME du commerce, PME tertiaires, cabinets libéraux et établissements de santé. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré sur 12 mois.",
     },
     interventions: {
       fr: "Interventions IA sur site à Antony : automatisation devis et relances, prise de rendez-vous médicale, gestion documentaire pour cabinets libéraux. Déplacement sur site sous 5 jours ouvrés.",
@@ -44,8 +44,8 @@ export const ANTONY_COPY: VilleCopy = {
       en: "Implémentation IA à Antony : code custom Python/TypeScript pour PME tertiaires, intégration CRM, workflows administratifs et facturation. Pas de no-code, pas d'outils boîte noire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Antony : sessions sur site ou en visio pour dirigeants TPE/PME, gérants de cabinet et chefs d'établissement. Format pédagogique francophone adapté.",
-      en: "Coaching 1-to-1 à Antony : sessions sur site ou en visio pour dirigeants TPE/PME, gérants de cabinet et chefs d'établissement. Format pédagogique francophone adapté.",
+      fr: "Coaching 1-to-1 à Antony : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants de cabinet et chefs d'établissement. Format pédagogique francophone adapté.",
+      en: "Coaching 1-to-1 à Antony : sessions sur site ou en visio pour dirigeants de PME et d'ETI, gérants de cabinet et chefs d'établissement. Format pédagogique francophone adapté.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const ANTONY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour opticiens, cabinets libéraux, artisans et commerces du centre d'Antony et de La Croix-de-Berny : site rapide, mobile-first, avec assistant IA de prise de contact ou de réponse aux questions fréquentes.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce / portail métier sur mesure",
@@ -173,12 +167,6 @@ export const ANTONY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or essential e-commerce site",
-            detail:
-              "For opticians, private practices, artisans and shops in central Antony and La Croix-de-Berny: fast, mobile-first site with an AI assistant for first contact or FAQ answering.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom e-commerce / business portal",
             detail:
@@ -236,7 +224,7 @@ export const ANTONY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Antony ?",
-      a: "Nous accompagnons en priorité les TPE de commerce et services, les PME tertiaires, les professions libérales (médecins, avocats, experts-comptables), les cliniques privées et les établissements d'enseignement présents sur la commune.",
+      a: "Nous accompagnons en priorité les PME de commerce et services, les PME tertiaires, les professions libérales (médecins, avocats, experts-comptables), les cliniques privées et les établissements d'enseignement présents sur la commune.",
     },
     {
       q: "Quels délais d'intervention sur site à Antony ?",

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const AUDUN_LE_TICHE_COPY: VilleCopy = {
   pitchFr:
-    "Audun-le-Tiche (57), commune frontalière du Luxembourg au nord-ouest de Thionville, ancienne cité minière reconvertie en bassin résidentiel et tertiaire transfrontalier. Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et immobilier. Axion-IA y intervient pour tous types d'activités.",
+    "Audun-le-Tiche (57), commune frontalière du Luxembourg au nord-ouest de Thionville, ancienne cité minière reconvertie en bassin résidentiel et tertiaire transfrontalier. Tissu PME et ETI services, commerce, BTP, professions libérales, artisanat et immobilier. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Audun-le-Tiche (57), commune frontalière du Luxembourg au nord-ouest de Thionville, ancienne cité minière reconvertie en bassin résidentiel et tertiaire transfrontalier. Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et immobilier. Axion-IA y intervient pour tous types d'activités.",
+    "Audun-le-Tiche (57), commune frontalière du Luxembourg au nord-ouest de Thionville, ancienne cité minière reconvertie en bassin résidentiel et tertiaire transfrontalier. Tissu PME et ETI services, commerce, BTP, professions libérales, artisanat et immobilier. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : TPE/PME services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : PME et ETI services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : TPE/PME services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audun-le-Tiche (57). Nous accompagnons tous types d'activités : PME et ETI services et immobilier, commerces, artisans BTP, professions libérales et acteurs de l'économie transfrontalière du Pays-Haut.",
   ecosystemFr:
-    "Audun-le-Tiche est une commune frontalière du Luxembourg dans le Pays-Haut mosellan, ancienne cité minière (mine de fer) reconvertie en bassin résidentiel pour frontaliers luxembourgeois. Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et immobilier. Dynamisme transfrontalier fort.",
+    "Audun-le-Tiche est une commune frontalière du Luxembourg dans le Pays-Haut mosellan, ancienne cité minière (mine de fer) reconvertie en bassin résidentiel pour frontaliers luxembourgeois. Tissu PME et ETI services, commerce, BTP, professions libérales, artisanat et immobilier. Dynamisme transfrontalier fort.",
   ecosystemEn:
-    "Audun-le-Tiche est une commune frontalière du Luxembourg dans le Pays-Haut mosellan, ancienne cité minière (mine de fer) reconvertie en bassin résidentiel pour frontaliers luxembourgeois. Tissu TPE/PME services, commerce, BTP, professions libérales, artisanat et immobilier. Dynamisme transfrontalier fort.",
+    "Audun-le-Tiche est une commune frontalière du Luxembourg dans le Pays-Haut mosellan, ancienne cité minière (mine de fer) reconvertie en bassin résidentiel pour frontaliers luxembourgeois. Tissu PME et ETI services, commerce, BTP, professions libérales, artisanat et immobilier. Dynamisme transfrontalier fort.",
   distancesFr:
     "Luxembourg-Ville à 20 min. Thionville à 25 min. Metz à 50 min. Esch-sur-Alzette (Luxembourg) à 5 min. Gare SNCF Audun-le-Tiche sur ligne Thionville-Longwy. Autoroute A30 accès Longwy. Aéroport Luxembourg-Findel à 40 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audun-le-Tiche : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Audun-le-Tiche : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Audun-le-Tiche : diagnostic adapté aux PME et ETI services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Audun-le-Tiche : diagnostic adapté aux PME et ETI services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audun-le-Tiche : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou agence immobilière. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
       en: "Implémentation IA à Audun-le-Tiche : automatisation gestion locative immobilier, CRM services frontaliers, devis BTP, outils administratifs professions libérales, agents conversationnels bilingues.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Audun-le-Tiche : sessions dans votre bureau, commerce, atelier, agence ou en visio. Gérants TPE/PME, commerçants, artisans, professions libérales, agents immobiliers audunois.",
-      en: "Coaching 1-to-1 à Audun-le-Tiche : sessions dans votre bureau, commerce, atelier, agence ou en visio. Gérants TPE/PME, commerçants, artisans, professions libérales, agents immobiliers audunois.",
+      fr: "Coaching 1-to-1 à Audun-le-Tiche : sessions dans votre bureau, commerce, atelier, agence ou en visio. Gérants PME et ETI, commerçants, artisans, professions libérales, agents immobiliers audunois.",
+      en: "Coaching 1-to-1 à Audun-le-Tiche : sessions dans votre bureau, commerce, atelier, agence ou en visio. Gérants PME et ETI, commerçants, artisans, professions libérales, agents immobiliers audunois.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises liées à l'économie transfrontalière ?",
-      a: "Oui, nous accompagnons les TPE/PME qui servent les travailleurs frontaliers Luxembourg : agences immobilières, commerces, services à la personne, BTP résidentiel, restauration et conseil.",
+      a: "Oui, nous accompagnons les PME et ETI qui servent les travailleurs frontaliers Luxembourg : agences immobilières, commerces, services à la personne, BTP résidentiel, restauration et conseil.",
     },
     {
       q: "Quels tarifs pour un audit IA à Audun-le-Tiche ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les agences immobilières et la gestion locative ?",

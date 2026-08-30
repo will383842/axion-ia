@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MARCOUSSIS_COPY: VilleCopy = {
   pitchFr:
-    "Marcoussis (91), commune du Hurepoix en Essonne connue pour le centre national du rugby (FFR), accueille un tissu de TPE artisans, commerces, professions libérales, PME de services et activités liées au sport. Axion-IA y intervient pour tous types d'activités du Hurepoix essonnien.",
+    "Marcoussis (91), commune du Hurepoix en Essonne connue pour le centre national du rugby (FFR), accueille un tissu de PME artisanales, commerces, professions libérales, PME de services et activités liées au sport. Axion-IA y intervient pour tous types d'activités du Hurepoix essonnien.",
   pitchEn:
-    "Marcoussis (91), commune du Hurepoix en Essonne connue pour le centre national du rugby (FFR), accueille un tissu de TPE artisans, commerces, professions libérales, PME de services et activités liées au sport. Axion-IA y intervient pour tous types d'activités du Hurepoix essonnien.",
+    "Marcoussis (91), commune du Hurepoix en Essonne connue pour le centre national du rugby (FFR), accueille un tissu de PME artisanales, commerces, professions libérales, PME de services et activités liées au sport. Axion-IA y intervient pour tous types d'activités du Hurepoix essonnien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : PME artisanales, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : PME artisanales, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit sur place sur mesure.",
   seoHook: "professions libérales & services bureaux",
   ecosystemFr:
-    "Marcoussis est une commune du Hurepoix en Essonne, mondialement connue pour le centre national du rugby (FFR). Tissu économique diversifié : TPE artisans BTP, commerces de centre-bourg, professions libérales, PME tertiaires et bureaux d'études, activités sportives et de loisirs. Proximité du plateau de Courtabœuf (Les Ulis) et de la zone Paris-Saclay.",
+    "Marcoussis est une commune du Hurepoix en Essonne, mondialement connue pour le centre national du rugby (FFR). Tissu économique diversifié : PME du BTP, commerces de centre-bourg, professions libérales, PME tertiaires et bureaux d'études, activités sportives et de loisirs. Proximité du plateau de Courtabœuf (Les Ulis) et de la zone Paris-Saclay.",
   ecosystemEn:
-    "Marcoussis est une commune du Hurepoix en Essonne, mondialement connue pour le centre national du rugby (FFR). Tissu économique diversifié : TPE artisans BTP, commerces de centre-bourg, professions libérales, PME tertiaires et bureaux d'études, activités sportives et de loisirs. Proximité du plateau de Courtabœuf (Les Ulis) et de la zone Paris-Saclay.",
+    "Marcoussis est une commune du Hurepoix en Essonne, mondialement connue pour le centre national du rugby (FFR). Tissu économique diversifié : PME du BTP, commerces de centre-bourg, professions libérales, PME tertiaires et bureaux d'études, activités sportives et de loisirs. Proximité du plateau de Courtabœuf (Les Ulis) et de la zone Paris-Saclay.",
   distancesFr:
     "Linas-Montlhéry à 5 min. Les Ulis et plateau de Courtabœuf à 10 min. Paris Porte d'Orléans à 30 min voiture (A10/N20). Aéroport Paris-Orly à 20 min. Gare RER B Massy-Palaiseau à 15 min. Gare RER C Arpajon à 10 min.",
   distancesEn:
     "Linas-Montlhéry à 5 min. Les Ulis et plateau de Courtabœuf à 10 min. Paris Porte d'Orléans à 30 min voiture (A10/N20). Aéroport Paris-Orly à 20 min. Gare RER B Massy-Palaiseau à 15 min. Gare RER C Arpajon à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales (santé, juridique, conseil)",
     "PME services & bureaux d'études Courtabœuf",
@@ -30,20 +30,20 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Marcoussis : diagnostic adapté aux PME artisanales, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Marcoussis : diagnostic adapté aux PME artisanales, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marcoussis : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Marcoussis : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Marcoussis : agents conversationnels client, automatisation devis BTP, classification documents, gestion RDV professions libérales, CRM augmentés pour TPE/PME du Hurepoix.",
-      en: "Implémentation IA à Marcoussis : agents conversationnels client, automatisation devis BTP, classification documents, gestion RDV professions libérales, CRM augmentés pour TPE/PME du Hurepoix.",
+      fr: "Implémentation IA à Marcoussis : agents conversationnels client, automatisation devis BTP, classification documents, gestion RDV professions libérales, CRM augmentés pour PME et ETI du Hurepoix.",
+      en: "Implémentation IA à Marcoussis : agents conversationnels client, automatisation devis BTP, classification documents, gestion RDV professions libérales, CRM augmentés pour PME et ETI du Hurepoix.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marcoussis : sessions dans votre commerce, cabinet, atelier ou en visio. Artisans, commerçants, professions libérales, gérants TPE/PME marcoussiens souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Marcoussis : sessions dans votre commerce, cabinet, atelier ou en visio. Artisans, commerçants, professions libérales, gérants TPE/PME marcoussiens souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Marcoussis : sessions dans votre commerce, cabinet, atelier ou en visio. Artisans, commerçants, professions libérales, gérants PME et ETI marcoussiens souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Marcoussis : sessions dans votre commerce, cabinet, atelier ou en visio. Artisans, commerçants, professions libérales, gérants PME et ETI marcoussiens souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const MARCOUSSIS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Marcoussis et tout le Hurepoix (Linas, Montlhéry, Nozay, Les Ulis, Arpajon). Nos consultants accèdent facilement depuis Paris (30 min A10) ou Massy-Palaiseau (15 min).",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans de Marcoussis ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Marcoussis sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME et artisans de Marcoussis ?",
+      a: "Oui, nous accompagnons les PME du BTP à Marcoussis sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales de Marcoussis ?",

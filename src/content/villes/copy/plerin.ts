@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PLERIN_COPY: VilleCopy = {
   pitchFr:
-    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
+    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de PME et ETI du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
   pitchEn:
-    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
+    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de PME et ETI du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plérin (22). Nous accompagnons PME et ETI : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plérin (22). Nous accompagnons PME et ETI : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration activités",
   ecosystemFr:
-    "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : TPE commerces, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",
+    "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : PME du commerce, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",
   ecosystemEn:
-    "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : TPE commerces, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",
+    "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : PME du commerce, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",
   distancesFr:
     "Saint-Brieuc centre à 5 min, gare SNCF de Saint-Brieuc (TGV Paris 2 h 40) à 10 min. Lamballe à 20 min, Guingamp à 30 min, Rennes à 1 h. Accès RN12 et voie express vers Brest. Aéroport Saint-Brieuc — Armor à 10 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const PLERIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plérin : diagnostic adapté aux TPE commerces, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plérin : diagnostic adapté aux TPE commerces, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plérin : diagnostic adapté aux PME du commerce, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plérin : diagnostic adapté aux PME du commerce, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plérin : formats adaptés au commerce, au restaurant, au bureau ou en zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Plérin : formats adaptés au commerce, au restaurant, au bureau ou en zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Plérin : automatisation gestion commerciale, agents conversationnels, CRM augmenté, outils de fidélisation client. Solutions sur mesure pour TPE et PME de l'agglo briochine.",
-      en: "Implémentation IA à Plérin : automatisation gestion commerciale, agents conversationnels, CRM augmenté, outils de fidélisation client. Solutions sur mesure pour TPE et PME de l'agglo briochine.",
+      fr: "Implémentation IA à Plérin : automatisation gestion commerciale, agents conversationnels, CRM augmenté, outils de fidélisation client. Solutions sur mesure pour PME et ETI de l'agglo briochine.",
+      en: "Implémentation IA à Plérin : automatisation gestion commerciale, agents conversationnels, CRM augmenté, outils de fidélisation client. Solutions sur mesure pour PME et ETI de l'agglo briochine.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plérin : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants commerces, restaurateurs et professions libérales de l'agglomération de Saint-Brieuc.",
-      en: "Coaching 1-to-1 à Plérin : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants commerces, restaurateurs et professions libérales de l'agglomération de Saint-Brieuc.",
+      fr: "Coaching 1-to-1 à Plérin : sessions dans vos locaux ou en visio. Dirigeants PME, gérants commerces, restaurateurs et professions libérales de l'agglomération de Saint-Brieuc.",
+      en: "Coaching 1-to-1 à Plérin : sessions dans vos locaux ou en visio. Dirigeants PME, gérants commerces, restaurateurs et professions libérales de l'agglomération de Saint-Brieuc.",
     },
   },
   faqGeolocalisee: [

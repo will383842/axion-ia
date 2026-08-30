@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GLEIZE_COPY: VilleCopy = {
   pitchFr:
-    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Beaujolais-Villefranche.",
+    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, PME du BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Beaujolais-Villefranche.",
   pitchEn:
-    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Beaujolais-Villefranche.",
+    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, PME du BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Beaujolais-Villefranche.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, PME du BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, PME du BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
   seoHook: "vignoble du",
   ecosystemFr:
-    "Gleizé est en banlieue ouest de Villefranche-sur-Saône, à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique (Beaujolais, Beaujolais-Villages), TPE artisanat BTP, commerces de proximité.",
+    "Gleizé est en banlieue ouest de Villefranche-sur-Saône, à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique (Beaujolais, Beaujolais-Villages), PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Gleizé est en banlieue ouest de Villefranche-sur-Saône, à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique (Beaujolais, Beaujolais-Villages), TPE artisanat BTP, commerces de proximité.",
+    "Gleizé est en banlieue ouest de Villefranche-sur-Saône, à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique (Beaujolais, Beaujolais-Villages), PME du BTP, commerces de proximité.",
   distancesFr:
     "Villefranche-sur-Saône à 5 min. Lyon centre à 35 min A6. Aéroport Lyon-Saint-Exupéry à 50 min. Anse à 10 min. Belleville-en-Beaujolais à 15 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const GLEIZE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires Villefranche",
     "Viticulture Beaujolais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gleizé : formats adaptés au bureau, domaine viticole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const GLEIZE_COPY: VilleCopy = {
       en: "Implémentation IA à Gleizé : prédiction vendanges, classification photos cépages, agents conversationnels B2B, automatisation workflow. Villefranche Beaujolais Saône.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gleizé : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants tertiaires, viticulteurs, artisans, gérants TPE/PME gleizéens.",
-      en: "Coaching 1-to-1 à Gleizé : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants tertiaires, viticulteurs, artisans, gérants TPE/PME gleizéens.",
+      fr: "Coaching 1-to-1 à Gleizé : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants tertiaires, viticulteurs, artisans, gérants PME et ETI gleizéens.",
+      en: "Coaching 1-to-1 à Gleizé : sessions dans votre bureau, domaine viticole, commerce ou en visio. Dirigeants tertiaires, viticulteurs, artisans, gérants PME et ETI gleizéens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const GLEIZE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires de l'agglomération Villefranche sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Gleizé, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Gleizé, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

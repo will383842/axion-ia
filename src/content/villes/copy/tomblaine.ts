@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TOMBLAINE_COPY: VilleCopy = {
   pitchFr:
-    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA accompagne tout le tissu professionnel local.",
+    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu PME et ETI services, commerce, artisans BTP, professions libérales, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA accompagne tout le tissu professionnel local.",
+    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu PME et ETI services, commerce, artisans BTP, professions libérales, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tomblaine (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs de l'est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tomblaine (54). Nous accompagnons tous types d'activités : PME et ETI de services, commerçants, artisans BTP, professions libérales et restaurateurs de l'est de l'agglomération nancéienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tomblaine (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs de l'est de l'agglomération nancéienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tomblaine (54). Nous accompagnons tous types d'activités : PME et ETI de services, commerçants, artisans BTP, professions libérales et restaurateurs de l'est de l'agglomération nancéienne.",
   ecosystemFr:
     "Tomblaine est une commune de l'est de la Métropole du Grand Nancy, connue pour le stade Marcel-Picot (AS Nancy Lorraine). Son tissu économique repose sur les services aux entreprises, le commerce, l'artisanat BTP, les professions libérales et la restauration. Zones d'activités tertiaires en développement, accès direct au centre de Nancy.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const TOMBLAINE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises & tertiaire",
     "Commerce de détail & proximité",
-    "TPE artisanat BTP & second œuvre",
+    "PME du BTP & second œuvre",
     "Professions libérales & santé",
     "Restauration & événementiel sportif",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Tomblaine : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Tomblaine : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tomblaine : formats adaptés au bureau tertiaire, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const TOMBLAINE_COPY: VilleCopy = {
       en: "Implémentation IA à Tomblaine : agents conversationnels relation client, automatisation workflow tertiaire, chatbots prise de RDV, classification documentaire, gestion stocks commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tomblaine : sessions dans vos locaux ou en visio. Gérants TPE/PME, commerçants, professions libérales et dirigeants de l'est de la Métropole du Grand Nancy.",
-      en: "Coaching 1-to-1 à Tomblaine : sessions dans vos locaux ou en visio. Gérants TPE/PME, commerçants, professions libérales et dirigeants de l'est de la Métropole du Grand Nancy.",
+      fr: "Coaching 1-to-1 à Tomblaine : sessions dans vos locaux ou en visio. Gérants PME et ETI, commerçants, professions libérales et dirigeants de l'est de la Métropole du Grand Nancy.",
+      en: "Coaching 1-to-1 à Tomblaine : sessions dans vos locaux ou en visio. Gérants PME et ETI, commerçants, professions libérales et dirigeants de l'est de la Métropole du Grand Nancy.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const TOMBLAINE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME de services et commerçants de Tomblaine ?",
-      a: "Oui, nous accompagnons les TPE/PME de services et commerçants : agents conversationnels relation client, automatisation workflow, chatbots prise de RDV, gestion stocks, facturation automatique.",
+      a: "Oui, nous accompagnons les PME et ETI de services et commerçants : agents conversationnels relation client, automatisation workflow, chatbots prise de RDV, gestion stocks, facturation automatique.",
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales de Tomblaine ?",
@@ -61,7 +61,7 @@ export const TOMBLAINE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Tomblaine  ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Tomblaine et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Tomblaine et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Tomblaine ?",

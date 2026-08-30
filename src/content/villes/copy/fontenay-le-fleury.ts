@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-le-Fleury (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-le-Fleury (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit sur place sur mesure.",
   seoHook: "commerce détail & services conseil",
   ecosystemFr:
-    "Fontenay-le-Fleury est une commune résidentielle des Yvelines dans la plaine de Versailles, à proximité de Vélizy-Villacoublay et du château de Versailles. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne.",
+    "Fontenay-le-Fleury est une commune résidentielle des Yvelines dans la plaine de Versailles, à proximité de Vélizy-Villacoublay et du château de Versailles. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, restauration, services à la personne.",
   ecosystemEn:
-    "Fontenay-le-Fleury est une commune résidentielle des Yvelines dans la plaine de Versailles, à proximité de Vélizy-Villacoublay et du château de Versailles. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne.",
+    "Fontenay-le-Fleury est une commune résidentielle des Yvelines dans la plaine de Versailles, à proximité de Vélizy-Villacoublay et du château de Versailles. Tissu PME du commerce et artisanat, PME services et conseil, professions libérales, restauration, services à la personne.",
   distancesFr:
     "Versailles à 5 min. Vélizy-Villacoublay à 10 min. Gare Transilien Villepreux–Les Clayes (ligne N/U). Paris Montparnasse à 30 min. Paris La Défense à 25 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
       en: "Implémentation IA à Fontenay-le-Fleury : CRM augmenté commerçants, automatisation back-office PME conseil, gestion cabinet, outils réservation restauration, planification services à la personne IA.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fontenay-le-Fleury : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME fontenaisiens, professions libérales, prestataires services plaine de Versailles.",
-      en: "Coaching 1-to-1 à Fontenay-le-Fleury : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME fontenaisiens, professions libérales, prestataires services plaine de Versailles.",
+      fr: "Coaching 1-to-1 à Fontenay-le-Fleury : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI fontenaisiens, professions libérales, prestataires services plaine de Versailles.",
+      en: "Coaching 1-to-1 à Fontenay-le-Fleury : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI fontenaisiens, professions libérales, prestataires services plaine de Versailles.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, CRM clients, facturation automatisée, outils de pilotage activité, tableaux de bord IA, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

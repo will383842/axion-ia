@@ -304,7 +304,7 @@ export const ANGERS_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Annuaire EPV : entreprises labellisées dans Maine-et-Loire (ex Bohin,
   // Cointreau Distillerie). Sans extraction CSV vérifiée par entreprise,

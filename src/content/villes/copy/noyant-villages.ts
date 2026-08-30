@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const NOYANT_VILLAGES_COPY: VilleCopy = {
   pitchFr:
-    "Noyant-Villages (49), commune nouvelle du Maine-et-Loire au cœur du Baugeois, rassemble un tissu de TPE artisans, PME agricoles, commerces ruraux, exploitations d'élevage et de polyculture, prestataires de services et acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Noyant-Villages (49), commune nouvelle du Maine-et-Loire au cœur du Baugeois, rassemble un tissu de PME artisanales, PME agricoles, commerces ruraux, exploitations d'élevage et de polyculture, prestataires de services et acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Noyant-Villages (49), commune nouvelle du Maine-et-Loire au cœur du Baugeois, rassemble un tissu de TPE artisans, PME agricoles, commerces ruraux, exploitations d'élevage et de polyculture, prestataires de services et acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Noyant-Villages (49), commune nouvelle du Maine-et-Loire au cœur du Baugeois, rassemble un tissu de PME artisanales, PME agricoles, commerces ruraux, exploitations d'élevage et de polyculture, prestataires de services et acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : PME artisanales, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
-  seoHook: "TPE & PME Maine-et-Loire",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyant-Villages (49). Nous accompagnons tous types d'activités : PME artisanales, PME agricoles, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme patrimonial du Baugeois.",
+  seoHook: "PME & PME Maine-et-Loire",
   ecosystemFr:
     "Noyant-Villages est une commune nouvelle issue de la fusion de Noyant, Breil, Chavaignes, Chigné, Genneteil, Lasse, Méon et Parçay-les-Pins dans le Baugeois. Économie rurale : polyculture-élevage, artisanat, commerces de proximité, tourisme patrimoine (châteaux, manoirs angevins).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Noyant-Villages : diagnostic adapté aux PME artisanales, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noyant-Villages : diagnostic adapté aux PME artisanales, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyant-Villages : formations adaptées aux exploitations agricoles, artisans, commerces et hébergeurs touristiques du Baugeois. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
       en: "Implémentation IA à Noyant-Villages : traçabilité troupeau, optimisation assolement, agents conversationnels tourisme patrimonial, automatisation devis artisans et gestion stocks.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Noyant-Villages : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME agricoles, artisans, commerçants, hébergeurs.",
-      en: "Coaching 1-to-1 à Noyant-Villages : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME agricoles, artisans, commerçants, hébergeurs.",
+      fr: "Coaching 1-to-1 à Noyant-Villages : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI agricoles, artisans, commerçants, hébergeurs.",
+      en: "Coaching 1-to-1 à Noyant-Villages : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI agricoles, artisans, commerçants, hébergeurs.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les éleveurs et agriculteurs autour de Noyant-Villages sur leurs cas IA : traçabilité troupeau, optimisation assolement, prédiction récoltes, automatisation administratif PAC et gestion parcellaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Noyant-Villages ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et commerçants du Baugeois. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Noyant-Villages ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agricoles et commerçants du Baugeois. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial ?",

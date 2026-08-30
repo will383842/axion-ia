@@ -381,7 +381,7 @@ export const TOURS_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : la Touraine compte plusieurs entreprises labellisées
   // (cuir, soie, tonnellerie, gastronomie) mais sans cross-référence

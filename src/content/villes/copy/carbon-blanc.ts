@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const CARBON_BLANC_COPY: VilleCopy = {
   pitchFr:
-    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y travaille avec les organisations du territoire de la rive droite bordelaise.",
+    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu PME artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y travaille avec les organisations du territoire de la rive droite bordelaise.",
   pitchEn:
-    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y travaille avec les organisations du territoire de la rive droite bordelaise.",
+    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu PME artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y travaille avec les organisations du territoire de la rive droite bordelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carbon-Blanc (33). Nous accompagnons PME et ETI de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carbon-Blanc (33). Nous accompagnons PME et ETI de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit sur place sur mesure.",
   seoHook: "professions libérales & services",
   ecosystemFr:
-    "Carbon-Blanc est une commune résidentielle de la rive droite de Bordeaux Métropole, entre Lormont et Bassens. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et pont Chaban-Delmas.",
+    "Carbon-Blanc est une commune résidentielle de la rive droite de Bordeaux Métropole, entre Lormont et Bassens. Tissu PME du BTP dense, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et pont Chaban-Delmas.",
   ecosystemEn:
-    "Carbon-Blanc est une commune résidentielle de la rive droite de Bordeaux Métropole, entre Lormont et Bassens. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et pont Chaban-Delmas.",
+    "Carbon-Blanc est une commune résidentielle de la rive droite de Bordeaux Métropole, entre Lormont et Bassens. Tissu PME du BTP dense, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et pont Chaban-Delmas.",
   distancesFr:
     "Bordeaux centre à 15 min (pont Chaban-Delmas). Gare Bordeaux Saint-Jean à 20 min. Aéroport Bordeaux-Mérignac à 30 min. Accès rocade A630 et A10.",
   distancesEn:
     "Bordeaux centre à 15 min (pont Chaban-Delmas). Gare Bordeaux Saint-Jean à 20 min. Aéroport Bordeaux-Mérignac à 30 min. Accès rocade A630 et A10.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales (santé, juridique)",
     "Commerce de proximité",
     "PME de services",
@@ -30,8 +30,8 @@ export const CARBON_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carbon-Blanc : diagnostic pour TPE artisans, professions libérales, commerçants et PME de services de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Carbon-Blanc : diagnostic pour TPE artisans, professions libérales, commerçants et PME de services de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Carbon-Blanc : diagnostic pour PME artisanales, professions libérales, commerçants et PME de services de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carbon-Blanc : diagnostic pour PME artisanales, professions libérales, commerçants et PME de services de la rive droite. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carbon-Blanc : ateliers adaptés aux cabinets, ateliers et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Carbon-Blanc  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de la rive droite.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME artisanales et professions libérales de la rive droite.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Carbon-Blanc ?",
@@ -61,7 +61,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Carbon-Blanc ?",
-      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les PME du BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Carbon-Blanc ?",
