@@ -25,6 +25,7 @@ import { prisma } from "@/lib/prisma";
 import type { SearchIntent } from "../../../prisma/generated/client";
 import { ALL_KEYWORD_SEEDS } from "@/content/keywords/master";
 import type { KeywordModule } from "@/content/keywords/types";
+import { TERMES_DEPRIORISES, ciblUneTailleRetiree } from "@/content/keywords/deprioritized";
 import { generateGeoKeywords, selectGeoKeyword } from "./keyword-templates";
 import type { CityRef } from "./keyword-templates";
 
@@ -44,11 +45,29 @@ const VERTICAL_TO_MODULE: Record<string, KeywordModule> = {
 
 const inMemoryCounters = new Map<string, number>();
 
+/**
+ * Dépriorisation du positionnement retiré (2026-08-30) — LE JUMEAU du chemin
+ * base. Les deux puisent dans le MÊME corpus : trier la requête SQL sans
+ * filtrer ici laisserait le repli produire exactement ce qu'on vient d'écarter,
+ * et personne ne le verrait — le repli ne sert qu'en base vide ou indisponible
+ * (build SSG, tests, bootstrap).
+ *
+ * Dépriorisation, pas exclusion : si un module ne contient QUE des mots-clés
+ * dépriorisés, on les rend quand même plutôt que de renvoyer `null` et de faire
+ * échouer la génération.
+ */
+function prioriser<T extends { readonly keyword: string }>(
+  seeds: ReadonlyArray<T>,
+): ReadonlyArray<T> {
+  const retenus = seeds.filter((x) => !ciblUneTailleRetiree(x.keyword));
+  return retenus.length > 0 ? retenus : seeds;
+}
+
 function selectFromMemory(vertical: string): string | null {
   const mod = VERTICAL_TO_MODULE[vertical] ?? "transversal";
-  const pool = ALL_KEYWORD_SEEDS.filter((s) => s.module === mod);
+  const pool = prioriser(ALL_KEYWORD_SEEDS.filter((s) => s.module === mod));
   if (pool.length === 0) {
-    const all = ALL_KEYWORD_SEEDS;
+    const all = prioriser(ALL_KEYWORD_SEEDS);
     if (all.length === 0) return null;
     const idx = (inMemoryCounters.get("__all") ?? 0) % all.length;
     inMemoryCounters.set("__all", idx + 1);
@@ -178,6 +197,20 @@ export async function selectKeywordRich(
     ? Prisma.sql`AND (k.campaign_id = ${campaignId} OR k.campaign_id IS NULL)`
     : Prisma.empty;
 
+  // Dépriorisation du positionnement retiré (2026-08-30, suite de #895).
+  //
+  // Une CLÉ DE TRI, pas un `WHERE` : ces mots-clés restent sélectionnables en
+  // dernier recours, donc un vivier épuisé ne fait jamais échouer un job. En
+  // Postgres `false < true`, donc les non-dépriorisés passent devant.
+  //
+  // La liste est DÉRIVÉE du corpus (`TERMES_DEPRIORISES`) et sert AUSSI au repli
+  // in-memory : les deux chemins ne peuvent pas diverger. Réécrire le prédicat
+  // une seconde fois en SQL aurait créé deux dérivations d'un même fait.
+  const deprioriseOrder =
+    TERMES_DEPRIORISES.length > 0
+      ? Prisma.sql`(k.term IN (${Prisma.join([...TERMES_DEPRIORISES])})) ASC,`
+      : Prisma.empty;
+
   // 1. Tentative DB mode avec lock atomique + rotation cluster-aware (Postgres).
   //    Le LEFT JOIN sur l'agrégat `c` calcule, par cluster, la dernière
   //    utilisation (toutes verticals). `FOR UPDATE OF k` ne verrouille QUE la
@@ -197,7 +230,8 @@ export async function selectKeywordRich(
         ) c ON c.cluster_id = k.cluster_id
         WHERE k.vertical = ${vertical}
         ${campaignFilter}
-        ORDER BY c.cluster_last ASC NULLS FIRST,
+        ORDER BY ${deprioriseOrder}
+                 c.cluster_last ASC NULLS FIRST,
                  k.last_used_at ASC NULLS FIRST,
                  k.usage_count ASC,
                  k.term ASC
