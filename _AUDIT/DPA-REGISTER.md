@@ -30,7 +30,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
 | 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
-| 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | online | SCC                        | 🟡 à accepter   |
+| 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | accepté | SCC                       | ✅ DPA accepté 2026-08-28 |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
 | 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
 | 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités **et des rendez-vous** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
