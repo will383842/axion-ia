@@ -290,7 +290,7 @@ export const LILLE_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Lille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez une équipe retail, logistique, IT ou finance.",
         whyHere: [
-          "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — PME comme grands groupes, tous secteurs.",
+          "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — de la PME au grand groupe, tous secteurs.",
           "Toute la métropole lilloise couverte en présentiel : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul, Lesquin et communes limitrophes.",
           "Le format collectif (1 journée) est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME lilloise en transformation digitale.",
           "Le format Conférence convient aux plénières d'entreprise (Lille Grand Palais, auditoriums Euralille, campus EuraTechnologies, Plaine Images Tourcoing).",

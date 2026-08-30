@@ -38,16 +38,28 @@ function isComment(line: string): boolean {
   return t.startsWith("//") || t.startsWith("*") || t.startsWith("/*");
 }
 
-function filesIn(dir: string, suffix = ".ts"): string[] {
+/**
+ * 🔴 2026-08-30 — deux angles morts corrigés le jour même, trouvés par témoin :
+ *  1. `name.endsWith(".ts")` est FAUX pour « X.tsx » — toute la couche composant
+ *     échappait à la garde, en silence et sans changer le compte affiché ;
+ *  2. `readdirSync` sans récursion ignorait `__tests__/` et tout sous-dossier à
+ *     venir. Les trois scopes en ont un aujourd'hui.
+ * Le tell, dans les deux cas, était le NOMBRE DE FICHIERS MESURÉS resté identique
+ * — pas la couleur. C'est pour ça qu'il est imprimé, vert comme rouge.
+ */
+function filesIn(dir: string): string[] {
   if (!fs.existsSync(dir)) {
     console.error(`[positionnement:check] scope introuvable : ${dir}`);
     console.error("Le dossier a été déplacé ou renommé — la garde ne mesure plus rien.");
     process.exit(1);
   }
-  return fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((e) => e.isFile() && e.name.endsWith(suffix))
-    .map((e) => path.join(dir, e.name));
+  const out: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) out.push(...filesIn(full));
+    else if (e.isFile() && /\.tsx?$/.test(e.name)) out.push(full);
+  }
+  return out;
 }
 
 const offenders: string[] = [];

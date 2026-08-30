@@ -147,7 +147,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescEn:
       "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Grenoble, Annecy, Clermont.",
     audienceLocalFr:
-      "L'Auvergne-Rhône-Alpes compte plus de 700 000 entreprises, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI industrielles deep-tech (Grenoble, Saint-Étienne), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
+      "L'Auvergne-Rhône-Alpes compte plus de 700 000 entreprises, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA accompagne ces dirigeants de PME comme les ETI industrielles deep-tech (Grenoble, Saint-Étienne), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "PME mécanique de la Loire",
       leadFr: "Devis chiffré en 12 min vs 2 h avant",
@@ -181,7 +181,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescEn:
       "Senior AI experts in Provence-Alpes-Côte d'Azur. 5 services for SMBs: AI audit, training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Mid-caps and tech also covered. Marseille, Aix, Nice, Toulon, Cannes.",
     audienceLocalFr:
-      "Provence-Alpes-Côte d'Azur abrite plus de 500 000 entreprises ancrées dans le tissu local — hôteliers et restaurateurs azuréens, viticulteurs varois, négociants marseillais, cabinets d'avocats à Aix, agences immobilières cannoises, artisans du Var et des Alpes. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI tech de Sophia-Antipolis et les sièges aéronautiques (Eurocopter, Airbus Marignane), avec le même standard premium senior.",
+      "Provence-Alpes-Côte d'Azur abrite plus de 500 000 entreprises ancrées dans le tissu local — hôteliers et restaurateurs azuréens, viticulteurs varois, négociants marseillais, cabinets d'avocats à Aix, agences immobilières cannoises, artisans du Var et des Alpes. Axion-IA accompagne ces dirigeants de PME comme les ETI tech de Sophia-Antipolis et les sièges aéronautiques (Eurocopter, Airbus Marignane), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Hôtelier de la côte azuréenne",
       leadFr: "Upsell personnalisé multilingue",
@@ -212,7 +212,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Occitanie pour PME, ETI aéronautiques et santé, grands groupes : audit IA, formation, implémentation, coaching. Toulouse.",
     audienceLocalFr:
-      "L'Occitanie compte près de 600 000 entreprises — vignerons du Languedoc, restaurateurs et hôteliers de la Méditerranée, artisans toulousains, PME viticoles (Corbières, Minervois), cabinets médicaux à Montpellier, cabinets d'experts-comptables, agences de tourisme. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI aéronautiques sous-traitantes d'Airbus et les laboratoires de recherche santé de Montpellier, avec le même standard premium senior.",
+      "L'Occitanie compte près de 600 000 entreprises — vignerons du Languedoc, restaurateurs et hôteliers de la Méditerranée, artisans toulousains, PME viticoles (Corbières, Minervois), cabinets médicaux à Montpellier, cabinets d'experts-comptables, agences de tourisme. Axion-IA accompagne ces dirigeants de PME comme les ETI aéronautiques sous-traitantes d'Airbus et les laboratoires de recherche santé de Montpellier, avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Domaine viticole du Languedoc",
       leadFr: "Export USA + Asie automatisé",
@@ -241,7 +241,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Nouvelle-Aquitaine pour PME, ETI viticoles et tech, grands groupes : audit IA, formation, implémentation, coaching. Bordeaux, Pau.",
     audienceLocalFr:
-      "La Nouvelle-Aquitaine, plus grande région française, fédère plus de 550 000 entreprises. Domaines viticoles familiaux de Saint-Émilion à Médoc, restaurateurs et hôteliers du Bassin d'Arcachon, ostréiculteurs de Marennes, artisans bordelais, PME tech de Bordeaux Métropole, ETP du bois landais. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI agro-industrielles et tech (Dassault Aviation Mérignac, Thales), avec le même standard premium senior.",
+      "La Nouvelle-Aquitaine, plus grande région française, fédère plus de 550 000 entreprises. Domaines viticoles familiaux de Saint-Émilion à Médoc, restaurateurs et hôteliers du Bassin d'Arcachon, ostréiculteurs de Marennes, artisans bordelais, PME tech de Bordeaux Métropole, ETP du bois landais. Axion-IA accompagne ces dirigeants de PME comme les ETI agro-industrielles et tech (Dassault Aviation Mérignac, Thales), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Château de Saint-Émilion grand cru",
       leadFr: "Allocation export pilotée par IA",
@@ -299,7 +299,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Grand Est pour PME, ETI cross-border DE/FR et grands groupes : audit IA, formation, implémentation, coaching. Strasbourg, Reims.",
     audienceLocalFr:
-      "Le Grand Est rassemble plus de 410 000 entreprises entre la Champagne et les frontières germaniques. Viticulteurs et caves de champagne (Reims, Épernay), winstubs alsaciennes, artisans strasbourgeois, restaurateurs lorrains, PME industrielles de Mulhouse, négoces transfrontaliers, professions libérales messines. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI exportatrices automobile et pharma cross-border DE/FR, avec le même standard premium senior.",
+      "Le Grand Est rassemble plus de 410 000 entreprises entre la Champagne et les frontières germaniques. Viticulteurs et caves de champagne (Reims, Épernay), winstubs alsaciennes, artisans strasbourgeois, restaurateurs lorrains, PME industrielles de Mulhouse, négoces transfrontaliers, professions libérales messines. Axion-IA accompagne ces dirigeants de PME comme les ETI exportatrices automobile et pharma cross-border DE/FR, avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Maison de champagne familiale",
       leadFr: "Allocation cuvées + traçabilité export",
@@ -328,7 +328,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Pays de la Loire pour PME, ETI familiales industrielles et grands groupes : audit IA, formation, implémentation, coaching. Nantes.",
     audienceLocalFr:
-      "Les Pays de la Loire abritent près de 300 000 entreprises au tissu artisanal dense. Boulangers angevins, restaurateurs nantais, hôteliers de l'île de Ré et de la côte vendéenne, artisans choletais, PME agro de la Sarthe, ostréiculteurs de la Vendée maritime, cabinets de notaires. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI familiales industrielles (Mulliez, Pasquier, Beneteau, STX), avec le même standard premium senior.",
+      "Les Pays de la Loire abritent près de 300 000 entreprises au tissu artisanal dense. Boulangers angevins, restaurateurs nantais, hôteliers de l'île de Ré et de la côte vendéenne, artisans choletais, PME agro de la Sarthe, ostréiculteurs de la Vendée maritime, cabinets de notaires. Axion-IA accompagne ces dirigeants de PME comme les ETI familiales industrielles (Mulliez, Pasquier, Beneteau, STX), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "PME agro-industrielle de la Sarthe",
       leadFr: "Cahier des charges fournisseurs auto",
@@ -357,7 +357,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Bretagne pour PME, ETI agro et tech, grands groupes : audit IA, formation, implémentation, coaching. Rennes, Brest, Quimper.",
     audienceLocalFr:
-      "La Bretagne compte près de 260 000 entreprises ancrées dans le terroir. Crêperies et restaurateurs de la côte d'Émeraude, ostréiculteurs de Cancale, artisans cidriers, négoces de poissons et fruits de mer, PME maritimes brestoises, cabinets vétérinaires, hôteliers du Morbihan, agriculteurs et coopératives. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI agro (Sodiaal, Triskalia, Even) et l'écosystème tech rennais (b<>com), avec le même standard premium senior.",
+      "La Bretagne compte près de 260 000 entreprises ancrées dans le terroir. Crêperies et restaurateurs de la côte d'Émeraude, ostréiculteurs de Cancale, artisans cidriers, négoces de poissons et fruits de mer, PME maritimes brestoises, cabinets vétérinaires, hôteliers du Morbihan, agriculteurs et coopératives. Axion-IA accompagne ces dirigeants de PME comme les ETI agro (Sodiaal, Triskalia, Even) et l'écosystème tech rennais (b<>com), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Ostréiculteur de Cancale",
       leadFr: "Suivi élevage + commandes B2B en 1 outil",
@@ -386,7 +386,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Normandie pour PME, ETI portuaires et industrielles, grands groupes : audit IA, formation, implémentation, coaching. Rouen, Caen.",
     audienceLocalFr:
-      "La Normandie fédère plus de 240 000 entreprises. Restaurateurs et hôteliers de la côte fleurie (Deauville, Honfleur), artisans rouennais, négoces du port du Havre, cabinets dentaires de Caen, éleveurs et producteurs cidricoles, fromagers (Camembert, Livarot, Pont-l'Évêque), agences immobilières. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI industrielles de l'axe Seine (pétrochimie, automobile, logistique portuaire), avec le même standard premium senior.",
+      "La Normandie fédère plus de 240 000 entreprises. Restaurateurs et hôteliers de la côte fleurie (Deauville, Honfleur), artisans rouennais, négoces du port du Havre, cabinets dentaires de Caen, éleveurs et producteurs cidricoles, fromagers (Camembert, Livarot, Pont-l'Évêque), agences immobilières. Axion-IA accompagne ces dirigeants de PME comme les ETI industrielles de l'axe Seine (pétrochimie, automobile, logistique portuaire), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Fromagerie AOP du Pays d'Auge",
       leadFr: "Réponse export caves affineurs auto",
@@ -415,7 +415,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Bourgogne-Franche-Comté pour PME, ETI auto et viticoles, grands groupes : audit IA, formation, implémentation, coaching. Dijon.",
     audienceLocalFr:
-      "Bourgogne-Franche-Comté abrite plus de 200 000 entreprises. Domaines viticoles familiaux (Côte d'Or, Mâconnais), restaurateurs étoilés bourguignons, artisans dijonnais, PME de la microtechnique du Doubs, négoces de fromages (Comté, Époisses), cabinets de comptables, hôteliers de Beaune. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI sous-traitantes automobile (PSA Sochaux, Alstom Belfort), avec le même standard premium senior.",
+      "Bourgogne-Franche-Comté abrite plus de 200 000 entreprises. Domaines viticoles familiaux (Côte d'Or, Mâconnais), restaurateurs étoilés bourguignons, artisans dijonnais, PME de la microtechnique du Doubs, négoces de fromages (Comté, Époisses), cabinets de comptables, hôteliers de Beaune. Axion-IA accompagne ces dirigeants de PME comme les ETI sous-traitantes automobile (PSA Sochaux, Alstom Belfort), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "Microtechnique du Doubs",
       leadFr: "Devis horlogerie suisse en direct",
@@ -444,7 +444,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Centre-Val de Loire pour PME, ETI cosmétique et pharma, grands groupes : audit IA, formation, implémentation, coaching. Orléans.",
     audienceLocalFr:
-      "Le Centre-Val de Loire compte près de 180 000 entreprises. Viticulteurs du Val de Loire (Sancerre, Vouvray, Chinon), restaurateurs tourangeaux, hôteliers des châteaux, artisans orléanais, PME logistiques, négoces de produits du terroir, fromagers (Sainte-Maure), cabinets vétérinaires ruraux. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI de la Cosmetic Valley (LVMH, Shiseido) et la pharma touraine, avec le même standard premium senior.",
+      "Le Centre-Val de Loire compte près de 180 000 entreprises. Viticulteurs du Val de Loire (Sancerre, Vouvray, Chinon), restaurateurs tourangeaux, hôteliers des châteaux, artisans orléanais, PME logistiques, négoces de produits du terroir, fromagers (Sainte-Maure), cabinets vétérinaires ruraux. Axion-IA accompagne ces dirigeants de PME comme les ETI de la Cosmetic Valley (LVMH, Shiseido) et la pharma touraine, avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "PME Cosmetic Valley",
       leadFr: "Fiches MSDS/CSR multilingues",
@@ -510,7 +510,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Guadeloupe pour PME, ETI et grands groupes : audit IA, formation, implémentation, coaching. Basse-Terre, Pointe-à-Pitre.",
     audienceLocalFr:
-      "La Guadeloupe abrite plus de 35 000 entreprises insulaires. Hôteliers et restaurateurs de Sainte-Anne et Saint-François, distillateurs de rhum agricole (Damoiseau, Bologne, Longueteau, Bellevue), exportateurs de banane et de melon, négociants en café et cacao, agences de tourisme caribéen, artisans pointois et basse-terriens, cabinets médicaux. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI agro-industrielles et touristiques antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre métier.",
+      "La Guadeloupe abrite plus de 35 000 entreprises insulaires. Hôteliers et restaurateurs de Sainte-Anne et Saint-François, distillateurs de rhum agricole (Damoiseau, Bologne, Longueteau, Bellevue), exportateurs de banane et de melon, négociants en café et cacao, agences de tourisme caribéen, artisans pointois et basse-terriens, cabinets médicaux. Axion-IA accompagne ces dirigeants de PME comme les ETI agro-industrielles et touristiques antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre métier.",
     dromLogisticsFr:
       "Intervenir en Guadeloupe demande une logistique cadrée : aéroport Pôle Caraïbes (Pointe-à-Pitre), accès à Basse-Terre par la côte sous-le-vent ou la traversée centrale, archipel des Saintes / Marie-Galante / La Désirade accessibles en ferry. Axion-IA structure les missions en blocs cohérents (audit sur place + atelier ; ou implementation sprint), avec sessions distancielles en complément pour limiter les déplacements. Devis transparent intégrant les frais de voyage et hébergement, validé avant signature.",
     audienceCaseStudyFr: {
@@ -541,7 +541,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Martinique pour PME, ETI et grands groupes : audit IA, formation, implémentation, coaching. Fort-de-France, Lamentin, Schœlcher.",
     audienceLocalFr:
-      "La Martinique compte près de 32 000 entreprises ancrées dans le tissu créole. Hôteliers et restaurateurs des Trois-Îlets et de Sainte-Anne, distillateurs de rhum agricole AOC (Saint-James, Trois-Rivières, La Mauny, Clément, Depaz, JM), exportateurs de banane et fruits tropicaux, négociants foyalais, cabinets médicaux, agences immobilières, artisans pêcheurs du François. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI agro-industrielles antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre.",
+      "La Martinique compte près de 32 000 entreprises ancrées dans le tissu créole. Hôteliers et restaurateurs des Trois-Îlets et de Sainte-Anne, distillateurs de rhum agricole AOC (Saint-James, Trois-Rivières, La Mauny, Clément, Depaz, JM), exportateurs de banane et fruits tropicaux, négociants foyalais, cabinets médicaux, agences immobilières, artisans pêcheurs du François. Axion-IA accompagne ces dirigeants de PME comme les ETI agro-industrielles antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre.",
     dromLogisticsFr:
       "Intervenir en Martinique se cadre autour de l'aéroport Aimé-Césaire (Le Lamentin) et de l'agglomération foyalaise. Distance utile : Fort-de-France → Sainte-Marie 35 min, → Trois-Îlets 20 min de ferry. Axion-IA regroupe les missions par campagnes (audit sur 2-3 jours, atelier dirigeant + équipe, livrables sous 5 jours), avec suivi distanciel sur 30-60 jours. Devis transparent incluant transport et hébergement, sans surprise.",
     audienceCaseStudyFr: {
@@ -572,7 +572,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Guyane pour PME, ETI et grands groupes : audit IA, formation, implémentation, coaching. Cayenne, Kourou, Saint-Laurent-du-Maroni.",
     audienceLocalFr:
-      "La Guyane fédère près de 15 000 entreprises amazoniennes. Restaurateurs et hôteliers de Cayenne et Rémire-Montjoly, sous-traitants aérospatiaux du Centre spatial guyanais à Kourou (logistique, ingénierie, maintenance), entreprises forestières et exploitants aurifères, négociants en bois précieux, artisans amérindiens, cabinets médicaux. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI aérospatiales et minières guyanaises, avec le même standard premium senior — mission cadrée selon votre entreprise et vos contraintes logistiques amazoniennes.",
+      "La Guyane fédère près de 15 000 entreprises amazoniennes. Restaurateurs et hôteliers de Cayenne et Rémire-Montjoly, sous-traitants aérospatiaux du Centre spatial guyanais à Kourou (logistique, ingénierie, maintenance), entreprises forestières et exploitants aurifères, négociants en bois précieux, artisans amérindiens, cabinets médicaux. Axion-IA accompagne ces dirigeants de PME comme les ETI aérospatiales et minières guyanaises, avec le même standard premium senior — mission cadrée selon votre entreprise et vos contraintes logistiques amazoniennes.",
     dromLogisticsFr:
       "Intervenir en Guyane se cadre autour de l'aéroport Félix-Eboué (Cayenne) et de l'axe Cayenne → Kourou (60 km, 45 min). Saint-Laurent-du-Maroni accessible par RN1 (250 km). Axion-IA regroupe les missions par campagnes denses (2-4 jours sur place + livrables sous 5 jours), avec suivi distanciel pour limiter les déplacements transatlantiques. Devis transparent incluant transport, hébergement et frais spécifiques amazoniens (autorisations Kourou si zone spatiale).",
     audienceCaseStudyFr: {
@@ -603,7 +603,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors à La Réunion pour PME, ETI et grands groupes : audit IA, formation, implémentation, coaching. Saint-Denis, Saint-Paul, Saint-Pierre.",
     audienceLocalFr:
-      "La Réunion compte plus de 75 000 entreprises insulaires au tissu dense. Hôteliers et restaurateurs des cirques (Cilaos, Salazie, Mafate) et de la côte ouest, planteurs et industriels de la canne à sucre (Tereos Océan Indien), exportateurs de vanille Bourbon et de géranium rosat, PME tech de Saint-Denis et Sainte-Marie, agences de voyage volcanique (piton de la Fournaise), artisans dionysiens, cabinets médicaux. Axion-IA accompagne ces dirigeants de PME et d'ETI comme les ETI agro-industrielles et tertiaires réunionnaises, avec le même standard premium senior.",
+      "La Réunion compte plus de 75 000 entreprises insulaires au tissu dense. Hôteliers et restaurateurs des cirques (Cilaos, Salazie, Mafate) et de la côte ouest, planteurs et industriels de la canne à sucre (Tereos Océan Indien), exportateurs de vanille Bourbon et de géranium rosat, PME tech de Saint-Denis et Sainte-Marie, agences de voyage volcanique (piton de la Fournaise), artisans dionysiens, cabinets médicaux. Axion-IA accompagne ces dirigeants de PME comme les ETI agro-industrielles et tertiaires réunionnaises, avec le même standard premium senior.",
     dromLogisticsFr:
       "Intervenir à La Réunion se cadre autour de l'aéroport Roland-Garros (Saint-Denis) ou Pierrefonds (Saint-Pierre). Axe Nord-Sud : Saint-Denis → Saint-Pierre 1h30 (route des Tamarins). Axion-IA structure les missions en campagnes longues (4-7 jours sur place) pour amortir le voyage et couvrir Nord-Ouest-Sud, avec suivi distanciel ensuite. Devis transparent incluant vol, hébergement, location véhicule et déplacements inter-cirques si nécessaire.",
     audienceCaseStudyFr: {
