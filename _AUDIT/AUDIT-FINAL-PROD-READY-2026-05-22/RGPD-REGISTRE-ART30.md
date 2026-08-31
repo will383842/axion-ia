@@ -110,7 +110,7 @@ Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitH
 | `Submission` (formulaire contact)                                              | 36 mois post-dernière interaction                                                                          | Cadre relation commerciale B2B (CNIL recommandation 36 mois)                         |
 | `Booking` (réservation intervention)                                           | 36 mois post-dernière interaction + 10 ans pour pièces comptables associées (factures)                     | Obligation comptable art. L123-22 Code de commerce                                   |
 | Newsletter (`Subscriber`)                                                      | Jusqu'à désinscription (unsubscribe token HMAC) + 13 mois après désinscription pour preuve de consentement | RGPD Lignes directrices CEPD consentement                                            |
-| `CalendlyEvent` (réservation d'appel)                                          | ⛔ **NON DÉCIDÉE — décision Will requise**                                                                  | Voir l'encadré sous ce tableau                                                       |
+| `CalendlyEvent` (réservation d'appel)                                          | **36 mois** après le rendez-vous (ou après la capture si aucun horaire)                                     | Demande commerciale — durée alignée sur la notice art. 13 publiée (« Demandes commerciales : 3 ans ») |
 | Logs applicatifs (IP SHA-256, user agent, paths)                               | **28 jours rolling**                                                                                       | Sécurité opérationnelle (art. 6.1.f intérêt légitime — détection fraude, rate-limit) |
 | `Article` publié + contenus éditoriaux                                         | Indéfini                                                                                                   | Contenu non-PII, archives éditoriales                                                |
 | `GenerationProvenance` (AI Act art. 50 — promptHash, modelVersion, timestamps) | **6 ans**                                                                                                  | Obligation AI Act art. 19 + 50 (registre traitements IA) — cf. ADR 0024              |
@@ -118,29 +118,33 @@ Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitH
 | Sessions admin (Argon2id)                                                      | 7 jours sliding                                                                                            | Sécurité opérationnelle                                                              |
 | Backups DB chiffrés (cf. ADR 0022)                                             | 7 j local / 30 j distant Storage Box                                                                       | Continuité service + DRP                                                             |
 
-> ### ⛔ Décision requise — conservation des réservations d'appel
+> ### ✅ Conservation des réservations d'appel — tranché le 2026-08-31
 >
-> **Constat, mesuré le 2026-08-31.** `retention-purge-worker.ts` traite 24 modèles ;
-> `calendlyEvent` n'en fait pas partie (`grep -ci calendly` → 0). Nom, email,
-> téléphone et réponses libres des prospects sont donc conservés **sans limite**,
-> la plus ancienne ligne datant du 2026-07-01.
+> **Le constat.** `retention-purge-worker.ts` traitait 24 modèles et
+> `calendlyEvent` n'en faisait pas partie : nom, e-mail, téléphone et réponses
+> libres des prospects se conservaient **sans limite**, la plus ancienne ligne
+> datant du 2026-07-01. Pendant ce temps, `src/content/legal.ts` annonçait
+> publiquement « Demandes commerciales : 3 ans ». Ce n'était donc pas une durée
+> manquante mais un **écart entre la notice art. 13 et la pratique**.
 >
-> **Ce qui rend la décision urgente** : `src/content/legal.ts:680` **annonce déjà
-> publiquement** « Demandes commerciales : 3 ans ». Une durée publiée dans la
-> notice art. 13 qu'aucun mécanisme n'applique n'est plus une décision en
-> attente, c'est un écart entre ce qu'on dit aux personnes et ce qu'on fait.
+> **La décision, prise par Will le 2026-08-31** : conserver aussi longtemps que
+> le droit le permet. Une conservation indéfinie n'étant pas ouverte pour cette
+> finalité (art. 5.1.e — limitation de conservation), la durée retenue est la
+> durée usuelle maximale d'une demande commerciale, **36 mois**, qui présente
+> l'avantage d'être déjà celle qui est publiée. **Aucune modification de la
+> notice n'est donc nécessaire.**
 >
-> **Les deux issues possibles**, l'une ou l'autre à trancher par Will :
+> **Application** : purge quotidienne (03:00 UTC) sur `startTime`, avec repli sur
+> `capturedAt` pour les réservations sans horaire — sans ce repli, une ligne
+> jamais enrichie resterait en base indéfiniment. Surchargeable par
+> `RETENTION_CALENDLY_MONTHS`. Verrou :
+> `src/server/queue/workers/__tests__/la-retention-des-appels-suit-la-notice.spec.ts`
+> rougit si la durée du worker et celle de la notice divergent.
 >
-> 1. **Aligner le code sur la notice** — ajouter `calendlyEvent` au worker de
->    purge avec 36 mois post-dernière interaction, comme `Submission`. C'est
->    l'option cohérente avec ce qui est déjà publié.
-> 2. **Aligner la notice sur une autre durée** décidée explicitement — auquel cas
->    modifier `legal.ts` ET ce registre, et documenter la justification ici.
->
-> ⚠️ Ne pas confondre avec la décision « prospection : conservation sans limite »
-> ni avec « rétention 5 ans : garder sans purger », qui portent sur d'autres
-> traitements. Aucune décision datée ne couvre `CalendlyEvent` à ce jour.
+> ⚠️ Ne pas confondre avec la décision « prospection : conservation SANS LIMITE »
+> du 2026-08-20 (`ProspectionCompany` / `ProspectionPerson` /
+> `ProspectionHealthPractitioner`), qui reste **intacte** et protégée par sa
+> propre garde.
 
 Procédure d'effacement automatisée : workers `gdpr-purge-worker.ts` (à implémenter ou vérifié déjà présent dans `src/server/queue/workers/`) — cron daily 03:00 UTC.
 
