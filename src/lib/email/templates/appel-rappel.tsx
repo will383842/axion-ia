@@ -56,6 +56,7 @@
 import { Text, Link } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
+import { canalDuRendezVous, type CanalRendezVous } from "@/server/calendly/canal";
 
 /**
  * Le moment auquel ce message part.
@@ -82,6 +83,18 @@ interface Payload {
   dureeMinutes: number;
   /** Le numéro que le consultant appellera, ou le lieu du rendez-vous. */
   lieu?: string;
+  /**
+   * Le format du rendez-vous, quand l'appelant a pu le dériver proprement.
+   *
+   * 🔑 OPTIONNEL À DESSEIN. L'appelant qui dispose de la ligne complète
+   * (`rappels-appel.ts`) le dérive du `type` que Calendly pose — la source de
+   * vérité. Celui qui ne l'a pas l'omet, et le gabarit retombe alors sur la
+   * forme de `lieu`, qui est le dernier recours documenté dans
+   * `calendly/canal.ts`. Le rendre obligatoire forcerait un appelant qui ne
+   * sait pas à inventer une valeur, ce qui est exactement le défaut que toute
+   * cette chaîne cherche à éviter.
+   */
+  format?: string;
   cancelUrl?: string;
   rescheduleUrl?: string;
   moment?: MomentAppel;
@@ -126,7 +139,21 @@ const familleDe = (m: MomentAppel): "B" | "C" => (m === "confirmation" ? "B" : "
 const COMMUN = {
   fr: {
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
-    lieu: (l: string) => `Nous vous appellerons au ${l}.`,
+    // 🔑 Conditionnel au CANAL (2026-08-31). Le gabarit reçoit `lieu` — un
+    // numéro ou un lien de réunion — et le canal en est DÉRIVÉ, jamais transmis
+    // en double : deux champs qui doivent s'accorder finissent par diverger.
+    // Promettre « nous vous appellerons » à quelqu'un qui attend un lien de
+    // visio est exactement le genre d'erreur qu'aucun test de longueur ne voit.
+    lieu: (l: string, canal: CanalRendezVous) => {
+      if (canal === "visio") return `Nous nous retrouvons en visioconférence : ${l}`;
+      if (canal === "telephone") return `Nous vous appellerons au ${l}.`;
+      // 🔑 TROIS cas, pas deux. Un lieu que rien ne permet de classer — « chez
+      // le client », une saisie libre en console — ne doit affirmer NI l'un NI
+      // l'autre : on le mentionne, sans promettre un canal qu'on ignore. Deux
+      // branches feraient retomber l'inconnu sur « nous vous appellerons »,
+      // c'est-à-dire sur une promesse fausse, et rien ne le signalerait.
+      return `Lieu du rendez-vous : ${l}`;
+    },
     // On dit ce qu'on va faire, pas ce qu'on attend. La personne n'a rien à préparer.
     attendu:
       "Rien à préparer de votre côté. On vous écoute, on répond à vos questions, et vous repartez avec un avis clair — même si la réponse est « ce n'est pas pour vous ».",
@@ -144,7 +171,11 @@ const COMMUN = {
   },
   en: {
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
-    lieu: (l: string) => `We will call you on ${l}.`,
+    lieu: (l: string, canal: CanalRendezVous) => {
+      if (canal === "visio") return `We will meet by video: ${l}`;
+      if (canal === "telephone") return `We will call you on ${l}.`;
+      return `Meeting location: ${l}`;
+    },
     attendu:
       "Nothing to prepare on your side. We listen, we answer your questions, and you leave with a clear view — even if the answer is “this isn't for you”.",
     invitationAgenda: "Your calendar invitation arrives separately, from Calendly.",
@@ -213,6 +244,21 @@ const COPY = {
   },
 } as const;
 
+/**
+ * Le format à annoncer : celui que l'appelant a dérivé, sinon celui que la forme
+ * du lieu laisse deviner.
+ *
+ * On ne fait pas confiance à la chaîne reçue — le champ est typé `string` parce
+ * que les charges d'e-mail transitent par une file et sont sérialisées. Une
+ * valeur hors nomenclature retombe donc sur la déduction, jamais sur elle-même.
+ */
+function formatDuRendezVous(p: { lieu?: string; format?: string }): CanalRendezVous {
+  if (p.format === "telephone" || p.format === "visio" || p.format === "inconnu") {
+    return p.format;
+  }
+  return canalDuRendezVous(p.lieu);
+}
+
 export function AppelRappelEmail({
   locale,
   payload,
@@ -236,7 +282,9 @@ export function AppelRappelEmail({
           réception, et c'est la seule chose que le destinataire cherche. Un
           « Bonjour Jean, » en tête consommait ce résumé pour ne rien dire (§3.6). */}
       <Text style={emailStyles.paragraphStyle}>{t.quand(p.heure, p.dureeMinutes, p.date)}</Text>
-      {p.lieu ? <Text style={emailStyles.paragraphStyle}>{c.lieu(p.lieu)}</Text> : null}
+      {p.lieu ? (
+        <Text style={emailStyles.paragraphStyle}>{c.lieu(p.lieu, formatDuRendezVous(p))}</Text>
+      ) : null}
       <Text style={emailStyles.paragraphStyle}>
         {c.intro(p.prenom)}
         <br />

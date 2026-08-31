@@ -7,7 +7,21 @@
  * Vérifié le 2026-08-09 : les abonnements webhook exigent Standard, Teams ou
  * Enterprise — le plan gratuit renvoie 403 sur cet appel.
  *
- * Le script affiche la `signing_key` renvoyée par Calendly. ⚠️ Elle n'est
+ * 🔴 CALENDLY NE GÉNÈRE PAS LA CLÉ DE SIGNATURE — corrigé le 2026-08-31.
+ *
+ * Ce script attendait un champ `signing_key` dans la réponse de création. Il
+ * n'y en a jamais. Mesuré en production : l'abonnement se créait bien (201),
+ * puis le script affichait `CALENDLY_WEBHOOK_SIGNING_KEY=(absente)` — donc un
+ * abonnement vivant, et aucune clé pour vérifier ses livraisons. La route
+ * refusait alors tout ce qu'elle recevait, silencieusement.
+ *
+ * C'est l'APPELANT qui fournit la clé, dans le corps du POST. Le script en
+ * fabrique donc une (24 octets aléatoires, en hexadécimal) et la transmet à la
+ * création — sauf si `CALENDLY_WEBHOOK_SIGNING_KEY` est déjà posée dans
+ * l'environnement, auquel cas il réutilise celle-là, pour qu'un abonnement
+ * recréé reste vérifiable sans rien changer dans Coolify.
+ *
+ * Calendly ne la re-montre jamais. ⚠️ Elle n'est
  * montrée QU'UNE FOIS, à la création : la poser immédiatement dans Coolify sous
  * `CALENDLY_WEBHOOK_SIGNING_KEY` (application WEB — le worker n'en a pas besoin,
  * il ne reçoit pas de requêtes HTTP). Perdue, il faut supprimer l'abonnement et
@@ -21,8 +35,21 @@
  */
 
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
+import { randomBytes } from "node:crypto";
 
 const token = process.env.CALENDLY_API_TOKEN?.trim();
+
+/**
+ * La clé de signature transmise à Calendly.
+ *
+ * Reprise de l'environnement quand elle y est — recréer un abonnement ne doit
+ * pas obliger à toucher Coolify — et fabriquée sinon. 24 octets aléatoires : la
+ * signature est un HMAC-SHA256, dont la clé n'a aucun intérêt à être plus courte
+ * que son empreinte.
+ */
+const signingKey =
+  process.env.CALENDLY_WEBHOOK_SIGNING_KEY?.trim() || randomBytes(24).toString("hex");
+const cleReprise = Boolean(process.env.CALENDLY_WEBHOOK_SIGNING_KEY?.trim());
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/+$/, "");
 const callbackUrl = `${siteUrl}/api/calendly/webhook`;
 
@@ -36,9 +63,13 @@ const callbackUrl = `${siteUrl}/api/calendly/webhook`;
  * ⚠️ Un abonnement DÉJÀ créé garde la liste d'évènements qu'il avait à sa
  * création, et ce script ne la met PAS à jour : il détecte l'abonnement existant
  * et s'arrête (étape 2). Pour livrer un type ajouté ici, il faut SUPPRIMER
- * l'abonnement côté Calendly puis relancer — ce qui régénère aussi une
- * `signing_key`, à reposer dans Coolify. Sans abonnement (cas actuel, plan
- * gratuit), il n'y a rien à faire.
+ * l'abonnement côté Calendly puis relancer. La clé de signature, elle, est
+ * reprise de l'environnement si elle y est : il n'y a alors rien à reposer
+ * dans Coolify.
+ *
+ * ℹ️ Le plan Calendly est « standard » (payant) depuis le 2026-08-31 — mesuré,
+ * pas supposé. La phrase « plan gratuit, rien à faire » qui figurait ici est
+ * donc caduque : les webhooks sont désormais disponibles.
  */
 const EVENTS = ["invitee.created", "invitee.canceled", "invitee_no_show.created"] as const;
 
@@ -136,8 +167,13 @@ async function main(): Promise<void> {
       console.log(`✓ Un abonnement existe déjà pour ${callbackUrl} — rien à faire.`);
       console.log(`  URI : ${record(already)?.["uri"]}`);
       console.log(
-        "\n  ⚠️ La signing_key n'est PAS re-consultable. Si elle a été perdue,\n" +
-          "     supprimer cet abonnement puis relancer ce script.",
+        cleReprise
+          ? "\n  ℹ️ CALENDLY_WEBHOOK_SIGNING_KEY est posée dans l'environnement :\n" +
+              "     c'est elle qui vérifie les livraisons de cet abonnement."
+          : "\n  ⚠️ Aucune CALENDLY_WEBHOOK_SIGNING_KEY dans l'environnement, et\n" +
+              "     Calendly ne la re-montre pas. Les livraisons de cet abonnement ne\n" +
+              "     peuvent donc PAS être vérifiées : supprimer cet abonnement côté\n" +
+              "     Calendly, puis relancer ce script pour en fabriquer une.",
       );
       return;
     }
@@ -152,6 +188,8 @@ async function main(): Promise<void> {
       organization: orgUri,
       user: userUri,
       scope: "user",
+      // 🔑 C'est NOUS qui la posons. Calendly n'en génère pas.
+      signing_key: signingKey,
     }),
   });
 
@@ -196,12 +234,17 @@ async function main(): Promise<void> {
   console.log(`  URL    : ${callbackUrl}`);
   console.log(`  Events : ${EVENTS.join(", ")}`);
   console.log("\n──────────────────────────────────────────────────────────────");
-  console.log("  CALENDLY_WEBHOOK_SIGNING_KEY=" + String(sub?.["signing_key"] ?? "(absente)"));
+  // On affiche la clé qu'on a ENVOYÉE, pas un champ de la réponse : Calendly
+  // ne renvoie pas la clé de signature, et lire son absence a déjà coûté un
+  // abonnement muet (voir l'en-tête de ce fichier).
+  console.log("  CALENDLY_WEBHOOK_SIGNING_KEY=" + signingKey);
   console.log("──────────────────────────────────────────────────────────────");
   console.log(
-    "\n  ⚠️ Cette clé ne sera PLUS JAMAIS affichée.\n" +
-      "     La poser maintenant dans Coolify → application WEB → Env vars (scope RUN),\n" +
-      "     puis redémarrer le conteneur. La route s'activera d'elle-même.",
+    cleReprise
+      ? "\n  Clé REPRISE de l'environnement : rien à changer dans Coolify."
+      : "\n  Clé FABRIQUÉE par ce script, et Calendly ne la re-montrera pas.\n" +
+          "     La poser maintenant dans Coolify, application WEB, Env vars (scope RUN),\n" +
+          "     puis redémarrer le conteneur. La route s'activera d'elle-même.",
   );
 }
 

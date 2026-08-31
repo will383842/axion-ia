@@ -4,9 +4,12 @@
 import { adminPath } from "@/lib/admin-path";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import type { RdvStatus, UnifiedRdv } from "./types";
+import { canalDuRendezVous } from "@/server/calendly/canal";
 
 /** Sous-ensemble des colonnes `CalendlyEvent` consommées (découplé de Prisma). */
 export interface CalendlyEventRow {
+  /** Charge brute Calendly — sert à dériver le canal depuis le `type` du lieu. */
+  rawPayload?: unknown;
   id: string;
   eventTypeName: string;
   status: string;
@@ -54,6 +57,9 @@ export function fromCalendly(e: CalendlyEventRow): UnifiedRdv {
     contactEmail: e.inviteeEmail,
     contactPhone: e.inviteePhone,
     location: e.location,
+    // Dérivé ici, au seul endroit où une ligne Calendly devient un rendez-vous
+    // affichable : tous les écrans en héritent sans le recalculer chacun.
+    canal: canalDuRendezVous(e.location, e.rawPayload),
     notes: e.notes,
     createdAt: e.capturedAt,
   };

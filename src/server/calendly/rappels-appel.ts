@@ -1,3 +1,4 @@
+import { canalDuRendezVous } from "@/server/calendly/canal";
 /**
  * Les trois messages d'un appel de découverte : confirmation, J-1, H-1.
  *
@@ -238,6 +239,10 @@ export async function executerPassage(
         startTime: true,
         endTime: true,
         location: true,
+        // Nécessaire pour dériver le FORMAT du `type` que Calendly pose, plutôt
+        // que de la forme du texte : `location` est éditable à la main, donc sa
+        // forme ne fait pas foi (cf. `calendly/canal.ts`).
+        rawPayload: true,
         cancelUrl: true,
         rescheduleUrl: true,
       },
@@ -275,6 +280,11 @@ export async function executerPassage(
         ...(p.avecDate ? { date: dateParis(rdv.startTime) } : {}),
         ...(dureeMinutes && dureeMinutes > 0 ? { dureeMinutes } : {}),
         ...(rdv.location ? { lieu: rdv.location } : {}),
+        // 🔑 Dérivé ICI, où la charge brute est disponible — et pas dans le
+        // gabarit, qui ne voit que le texte. Le gabarit sait retomber sur la
+        // forme, mais c'est son dernier recours : un rendez-vous en visio dont
+        // le lieu aurait été ressaisi à la main annoncerait sinon un appel.
+        format: canalDuRendezVous(rdv.location, rdv.rawPayload),
         ...(rdv.cancelUrl ? { cancelUrl: rdv.cancelUrl } : {}),
         ...(rdv.rescheduleUrl ? { rescheduleUrl: rdv.rescheduleUrl } : {}),
       });

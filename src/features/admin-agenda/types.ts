@@ -1,3 +1,4 @@
+import type { CanalRendezVous } from "@/server/calendly/canal";
 /**
  * Agenda de la console — vue unifiée de TOUS les rendez-vous (2026-08-26).
  *
@@ -53,6 +54,16 @@ export interface AgendaItem {
   readonly contact: string | null;
   readonly telephone: string | null;
   readonly lieu: string | null;
+  /**
+   * Format du rendez-vous — téléphone, visio, ou indéterminé.
+   *
+   * 🔑 VISIBLE DE TOUS LES RÔLES, contrairement à `lieu`. Arbitré par Will le
+   * 2026-08-31 : « considère que tout le monde voit tout ». La distinction qui
+   * rend les deux décisions compatibles : un numéro de téléphone est une donnée
+   * personnelle, « ce rendez-vous se tient par téléphone » ne l'est pas. Un rôle
+   * non habilité voit donc le format sans jamais voir la coordonnée.
+   */
+  readonly format: CanalRendezVous;
   /** Fiche de détail dans la console, quand elle existe (réservations Calendly). */
   readonly detailHref: string | null;
   /** Identifiant Google — présent seulement pour ce qui est retirable. */

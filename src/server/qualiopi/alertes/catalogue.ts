@@ -905,6 +905,46 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — même origine que `emails_en_echec` : la sonde de santé e-mail, hors du balayage quotidien.",
     guichet: "direction",
   },
+  // ── Trois codes que la sonde levait SANS être déclarés ici (2026-08-31).
+  //
+  // La sonde `server/email/health.ts` lève cinq codes ; ce catalogue n'en
+  // connaissait que deux. Les trois autres arrivaient donc en console sans
+  // niveau, sans guichet et sans titre de référence — c'est-à-dire sans
+  // personne à qui les adresser. Le contrôle
+  // `la-sonde-et-le-catalogue-ne-divergent-pas.spec.ts` DÉRIVE désormais la
+  // liste de la sonde elle-même : un sixième code ne pourra plus arriver muet.
+  emails_sante_non_mesurable: {
+    // 🔑 `critique`, et ce n'est pas un excès de zèle. Cette alerte ne dit pas
+    // qu'un envoi a échoué : elle dit que PLUS RIEN n'est mesurable. Tant
+    // qu'elle est ouverte, l'absence des quatre autres alertes ne prouve rien.
+    // C'est l'alerte qui invalide les autres — la sous-classer reviendrait à
+    // ranger derrière les constats celle qui les rend caducs.
+    niveau: "critique",
+    titre: "La surveillance des e-mails n'a rien pu mesurer",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes`. Et surtout : elle doit être fermée à la main APRÈS un envoi de contrôle, sinon on résoudrait l'aveu d'aveuglement sans avoir rien vérifié.",
+    guichet: "direction",
+  },
+  emails_rebonds: {
+    niveau: "critique",
+    titre: "E-mails rejetés par le destinataire",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — même origine que `emails_en_echec` : la sonde de santé e-mail. Un rebond ne « disparaît » pas de lui-même : il se traite (adresse corrigée, destinataire recontacté autrement), et c'est ce geste-là qui ferme l'alerte.",
+    guichet: "direction",
+  },
+  emails_rebonds_non_detectes: {
+    // Même raisonnement que `emails_sante_non_mesurable` : ce code dit que
+    // l'INSTRUMENT est débranché, pas qu'un rebond a eu lieu. Tant qu'il est
+    // ouvert, un compteur de rebonds à zéro ne veut rien dire.
+    niveau: "critique",
+    titre: "Aucun rebond d'e-mail ne peut être détecté",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — la sonde la lève tant que `ZEPTOMAIL_WEBHOOK_KEY` est absente. Elle se ferme quand la clé est posée ET qu'un rebond de contrôle a été reçu — pas avant, sous peine de refermer sur un instrument toujours muet.",
+    guichet: "direction",
+  },
 } as const;
 
 /**

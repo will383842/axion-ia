@@ -19,6 +19,7 @@ import { dayKeyInParis, fromParisLocalInput } from "@/lib/calendar-grid";
 import { listerEvenements, MARQUEUR_CONSOLE } from "@/server/google-calendar/events";
 import { isGoogleCalendarConfigured } from "@/server/google-calendar/auth";
 import type { AgendaFenetre, AgendaItem } from "./types";
+import { canalDuRendezVous } from "@/server/calendly/canal";
 
 /**
  * Les statuts qui retirent le rendez-vous de l'occupation réelle.
@@ -81,7 +82,20 @@ async function chargerCalendly(
       endTime: true,
       inviteeName: peutVoirAppels,
       inviteePhone: peutVoirAppels,
-      location: peutVoirAppels,
+      // ⚠️ SÉLECTIONNÉS POUR TOUS LES RÔLES, à la différence des deux au-dessus.
+      //
+      // Le FORMAT (téléphone / visio) est visible de tout le monde — arbitré par
+      // Will le 2026-08-31 — et il se dérive de ces deux colonnes. Elles sont
+      // donc lues, mais **rien de brut n'en ressort** : `lieu` reste gardé
+      // ci-dessous, seul `format` traverse.
+      //
+      // C'est une réduction assumée de la marge que se donnait la garde du
+      // 2026-08-27 (« les colonnes ne sont même pas sélectionnées »). La
+      // propriété qui compte — aucune coordonnée de prospect n'atteint un rôle
+      // non habilité — tient toujours ; ce qui disparaît, c'est le fait
+      // qu'aucune PII ne transite en mémoire côté serveur.
+      location: true,
+      rawPayload: true,
     },
   });
 
@@ -103,6 +117,8 @@ async function chargerCalendly(
         contact: peutVoirAppels ? texteOuNull(e.inviteeName) : null,
         telephone: peutVoirAppels ? texteOuNull(e.inviteePhone) : null,
         lieu: peutVoirAppels ? texteOuNull(e.location) : null,
+        // Dérivé, puis seul à traverser : le format sans la coordonnée.
+        format: canalDuRendezVous(e.location, e.rawPayload),
         // Le lien mène à la fiche, qui EST gardée : le laisser produirait un
         // refus au clic. On le retire pour ne pas promettre ce qu'on refuse.
         detailHref: peutVoirAppels ? adminPath("fr", `contacts/appels/${e.id}`) : null,
@@ -168,6 +184,10 @@ export async function getAgendaFenetre(
             contact: null,
             telephone: null,
             lieu: e.location,
+            // Un événement Google qui n'est PAS une réservation Calendly n'a
+            // pas de type de lieu à interroger : on ne dispose que du texte, et
+            // « inconnu » est alors la réponse honnête plutôt qu'un défaut.
+            format: canalDuRendezVous(e.location),
             detailHref: e.htmlLink,
             // Seules les indisponibilités posées ici sont retirables. La console
             // n'a aucune raison de supprimer un vrai rendez-vous, et une

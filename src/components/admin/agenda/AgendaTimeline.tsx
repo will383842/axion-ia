@@ -28,6 +28,7 @@ import Link from "next/link";
 import { AGENDA_SOURCE_LABELS, type AgendaItem } from "@/features/admin-agenda/types";
 import { RetirerIndisponibiliteButton } from "./RetirerIndisponibiliteButton";
 import { RendezVousForm } from "./RendezVousForm";
+import { LIBELLE_CANAL } from "@/server/calendly/canal";
 
 /**
  * Amplitude affichée. 7 h → 21 h couvre la plage réservable (9 h – 19 h) avec
@@ -206,6 +207,9 @@ export function AgendaTimeline({
                 <span className="block truncate text-[length:var(--text-admin-xs)] tabular-nums opacity-80">
                   {heureParis(i.debut as Date)}
                   {i.fin ? ` – ${heureParis(i.fin)}` : ""} · {AGENDA_SOURCE_LABELS[i.source]}
+                  {/* Le format n'apparaît que s'il est établi : « à préciser »
+                      dans une ligne d'agenda serait du bruit à chaque ligne. */}
+                  {i.format === "inconnu" ? "" : ` · ${LIBELLE_CANAL[i.format]}`}
                   {i.annule ? " · annulé" : ""}
                 </span>
               </>

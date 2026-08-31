@@ -20,6 +20,12 @@ import {
   type RdvFilters,
   type UnifiedRdv,
 } from "@/features/admin-rendezvous/types";
+import {
+  INTITULE_FORMAT,
+  LIBELLE_CANAL,
+  TEINTE_CANAL,
+  type CanalRendezVous,
+} from "@/server/calendly/canal";
 import { dayKeyInParis, timeInParis } from "@/lib/calendar-grid";
 import { MonthGridCalendar, type MonthGridDay } from "@/components/admin/ui/MonthGridCalendar";
 import {
@@ -57,6 +63,40 @@ const MONTHS = [
 ];
 
 const PAGE_SIZE = 25;
+
+/**
+ * Pastille de FORMAT — téléphone, visio, ou « à préciser ».
+ *
+ * Teinte d'identité (non sémantique) quand le format est connu, badge neutre
+ * sinon : un format indécis ne doit pas ressembler à un format décidé. Le choix
+ * des deux couleurs et sa raison sont documentés sur `TEINTE_CANAL`.
+ */
+function PastilleFormat({ canal }: { canal: CanalRendezVous }) {
+  const teinte = TEINTE_CANAL[canal];
+  if (teinte === null) {
+    return (
+      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        {LIBELLE_CANAL[canal]}
+      </span>
+    );
+  }
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 rounded-[var(--radius-admin-sm)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium"
+      style={{
+        background: `var(--color-admin-id-${teinte}-soft)`,
+        color: `var(--color-admin-id-${teinte})`,
+      }}
+    >
+      <span
+        aria-hidden="true"
+        className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+        style={{ background: "currentColor" }}
+      />
+      {LIBELLE_CANAL[canal]}
+    </span>
+  );
+}
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
@@ -235,8 +275,11 @@ export default async function AppelsPage({
                           </span>
                         ) : null}
                       </span>
-                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        {RDV_STATUS_LABELS[r.status]} ›
+                      <span className="flex shrink-0 items-center gap-2">
+                        <PastilleFormat canal={r.canal} />
+                        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          {RDV_STATUS_LABELS[r.status]} ›
+                        </span>
                       </span>
                     </Link>
                   </li>
@@ -293,6 +336,11 @@ export default async function AppelsPage({
         ) : (
           <span className="text-[color:var(--color-admin-fg-muted)]">à compléter</span>
         ),
+    },
+    {
+      key: "format",
+      header: INTITULE_FORMAT,
+      cell: (r) => <PastilleFormat canal={r.canal} />,
     },
     { key: "status", header: "Statut", cell: (r) => RDV_STATUS_LABELS[r.status] },
   ];

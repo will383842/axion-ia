@@ -20,6 +20,16 @@ const CAL_SELECT = {
   inviteeEmail: true,
   inviteePhone: true,
   location: true,
+  // 🔑 Nécessaire pour DÉRIVER le format (téléphone / visio) du `type` que
+  // Calendly pose, plutôt que de la forme du texte — `location` est librement
+  // éditable en console, donc sa forme ne fait pas foi (cf. `calendly/canal.ts`).
+  //
+  // Coût MESURÉ en production le 2026-08-31, pas estimé : 19 lignes,
+  // 19 kB au total, **1 031 octets de moyenne** par charge brute. Au plafond
+  // théorique de `MAX_FETCH` (2 000) cela ferait ~2 Mo ; la table en compte 19.
+  // Si ce volume devenait un sujet, la réponse serait de paginer en base, pas
+  // de retirer ce champ — le retirer rendrait le format faux en silence.
+  rawPayload: true,
   notes: true,
   capturedAt: true,
 } as const;
