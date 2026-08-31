@@ -14,6 +14,7 @@ import { telegramGroupFor, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
+import { LIBELLE_CANAL, type CanalRendezVous } from "@/server/calendly/canal";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",
@@ -187,6 +188,18 @@ function legacyBodyOf(payload: unknown): string | null {
     }
   }
   return null;
+}
+
+/**
+ * Rend le format lisible, ou `undefined` s'il n'est pas établi.
+ *
+ * On ne fait PAS confiance à la chaîne reçue : le payload la déclare `string`
+ * (deux émetteurs, dont un qui n'a pas l'information), donc une valeur hors
+ * nomenclature est possible. Elle se tait plutôt que d'écrire un mot brut.
+ */
+function libelleFormat(v: string | undefined): string | undefined {
+  if (v === undefined) return undefined;
+  return v in LIBELLE_CANAL ? LIBELLE_CANAL[v as CanalRendezVous] : undefined;
 }
 
 function formatBody(event: NotificationEvent): string {
@@ -375,6 +388,11 @@ function formatBody(event: NotificationEvent): string {
       // un identifiant brut, inexploitable depuis le téléphone.
       return [
         formatKV("Type RDV", p.eventName),
+        // En DEUXIÈME position : c'est le fait qui change ce que le lecteur doit
+        // préparer — décrocher, ou ouvrir un lien. Plus bas, il se lirait après
+        // les coordonnées, c'est-à-dire trop tard. Absent quand il n'est pas
+        // établi : `formatKV` retire les valeurs nulles.
+        formatKV("Format", libelleFormat(p.format)),
         formatKV("Invité", p.inviteeName),
         formatKV("Email", p.inviteeEmail),
         formatKV("Téléphone", p.inviteePhone),

@@ -38,6 +38,12 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+import {
+  canalDuRendezVous,
+  COULEUR_GOOGLE_CANAL,
+  type CanalRendezVous,
+} from "@/server/calendly/canal";
+import { colorerReservationCalendly } from "@/server/google-calendar/events";
 
 const ClientEventSchema = z.object({
   eventName: z.literal("calendly.event_scheduled"),
@@ -352,17 +358,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let notifyName = inviteeName;
   let notifyEmail = inviteeEmail;
   let notifyStart: string | null = null;
+  // Le format n'est connaissable qu'APRÈS l'enrichissement : le postMessage de
+  // l'embed ne transmet aucun lieu. Tant qu'on ne l'a pas, il vaut « inconnu »
+  // — et l'alerte se tait alors sur le sujet plutôt que d'affirmer.
+  let format: CanalRendezVous = "inconnu";
+  let debutRdv: Date | null = null;
   if (enriched?.ok) {
     const fresh = await prisma.calendlyEvent
       .findUnique({
         where: { id: event.id },
-        select: { inviteeName: true, inviteeEmail: true, startTime: true },
+        select: {
+          inviteeName: true,
+          inviteeEmail: true,
+          startTime: true,
+          location: true,
+          rawPayload: true,
+        },
       })
       .catch(() => null);
     if (fresh) {
       notifyName = fresh.inviteeName ?? notifyName;
       notifyEmail = fresh.inviteeEmail ?? notifyEmail;
       notifyStart = fresh.startTime?.toISOString() ?? null;
+      format = canalDuRendezVous(fresh.location, fresh.rawPayload);
+      debutRdv = fresh.startTime;
     }
   }
 
@@ -375,6 +394,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       inviteeName: notifyName ?? "(non communiqué)",
       eventStartTime: notifyStart ?? "(voir mail Calendly)",
       eventName: parsed.data.eventTypeSlug,
+      // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
+      ...(format === "inconnu" ? {} : { format }),
       ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
       ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
       ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
@@ -389,6 +410,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // qu'une alerte, quel que soit le nombre de lignes créées.
     dedupKey: dedupKeyDuFait(inviteeUri, notifyEmail, parsed.data.eventTypeSlug),
   });
+
+  // 10. Couleur du format dans l'agenda Google — best-effort, jamais bloquant.
+  //     Même raisonnement qu'en `discover.ts` : Calendly met quelques secondes
+  //     à écrire son événement, une couleur manquante n'empêche rien.
+  if (debutRdv) {
+    try {
+      await colorerReservationCalendly(debutRdv, COULEUR_GOOGLE_CANAL[format]);
+    } catch {
+      // Une coloration ratée n'a jamais empêché un rendez-vous d'avoir lieu.
+    }
+  }
 
   return NextResponse.json({ ok: true, eventId: event.id });
 }

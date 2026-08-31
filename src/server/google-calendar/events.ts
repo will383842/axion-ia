@@ -458,6 +458,15 @@ export interface CreerRendezVousInput {
   readonly telephone?: string | null;
   /** Note interne. Elle finit dans la description Google — donc sur l'iPhone. */
   readonly note?: string | null;
+  /**
+   * `colorId` Google — la couleur du format (téléphone / visio).
+   *
+   * Google n'accepte que ses onze couleurs, désignées par un identifiant ; la
+   * table de correspondance est `COULEUR_GOOGLE_CANAL` (`calendly/canal.ts`),
+   * calée sur les teintes de la console pour qu'un rendez-vous ait la même
+   * couleur des deux côtés.
+   */
+  readonly couleur?: string | null;
 }
 
 /**
@@ -502,6 +511,10 @@ export async function creerRendezVous(input: CreerRendezVousInput): Promise<Goog
       start: { dateTime: input.debut.toISOString(), timeZone: "Europe/Paris" },
       end: { dateTime: input.fin.toISOString(), timeZone: "Europe/Paris" },
       transparency: "opaque",
+      // Absent quand le format n'est pas établi : Google retombe alors sur la
+      // couleur par défaut de l'agenda. Envoyer une couleur au hasard ferait
+      // croire à une information qu'on n'a pas.
+      ...(input.couleur ? { colorId: input.couleur } : {}),
     }),
   });
 
@@ -615,4 +628,79 @@ export async function retirerEvenement(
     return { ok: false, reason: res.reason, detail: res.detail };
   }
   return { ok: true };
+}
+
+/**
+ * Colore, dans l'agenda Google, la réservation Calendly d'un créneau donné.
+ *
+ * ## Pourquoi ce n'est PAS une entorse à la règle du marqueur console
+ *
+ * `MARQUEUR_CONSOLE` interdit à la console de modifier ou de supprimer un
+ * événement qu'elle n'a pas créé. Cette règle existe pour une raison précise :
+ * l'agenda de Will contient sa vie, et une console qui écrit dedans par
+ * inadvertance ne se rattrape pas.
+ *
+ * Cette fonction s'en écarte volontairement, sur trois garanties :
+ *
+ * 1. **Elle ne vise que les événements de Calendly**, reconnus par la signature
+ *    que Calendly pose lui-même dans leur description (`SIGNATURE_CALENDLY`).
+ *    Un événement personnel ne la porte jamais. Sans elle, on n'écrit pas.
+ * 2. **Elle ne touche QUE `colorId`.** Pas le titre, pas les horaires, pas la
+ *    description, pas les invités. La pire conséquence d'une erreur est une
+ *    couleur fausse — réversible d'un clic, et sans perte.
+ * 3. **Elle ne crée ni ne supprime rien.** Si l'événement n'existe pas, elle
+ *    renonce sans bruit.
+ *
+ * ## Elle ne doit jamais faire échouer une réservation
+ *
+ * Elle est appelée après coup, sur un rendez-vous déjà enregistré. Un agenda
+ * Google indisponible, un jeton expiré ou un événement pas encore propagé
+ * (Calendly met quelques secondes à écrire) sont des situations NORMALES, pas
+ * des erreurs : elle rend alors `false` et l'appelant continue. Une couleur
+ * manquante n'a jamais empêché personne de tenir un rendez-vous.
+ *
+ * @param debut   l'horaire de début du rendez-vous, tel que la base le connaît
+ * @param colorId la couleur à poser, ou `null` pour ne rien faire
+ * @returns `true` seulement si une couleur a réellement été posée
+ */
+export async function colorerReservationCalendly(
+  debut: Date,
+  colorId: string | null,
+): Promise<boolean> {
+  if (colorId === null) return false;
+
+  const cfg = readGoogleCalendarConfig();
+  if (!cfg) return false;
+
+  // Fenêtre étroite autour du créneau : on cherche un événement qui commence à
+  // cet instant précis, pas « dans la journée ». Une minute de part et d'autre
+  // absorbe les écarts d'arrondi sans jamais attraper le rendez-vous voisin.
+  const marge = 60_000;
+  const liste = await listerEvenements(
+    new Date(debut.getTime() - marge).toISOString(),
+    new Date(debut.getTime() + marge).toISOString(),
+  );
+  if (!liste.ok) {
+    journaliser("coloration abandonnée : agenda illisible", { reason: liste.reason });
+    return false;
+  }
+
+  const cible = liste.events.find(
+    (e) =>
+      e.fromCalendly && e.startIso !== null && new Date(e.startIso).getTime() === debut.getTime(),
+  );
+  if (!cible) return false;
+
+  const auth = await getGoogleAccessToken();
+  if (!auth.ok) return false;
+
+  const res = await appeler(
+    `/calendars/${encodeURIComponent(cfg.calendarId)}/events/${encodeURIComponent(cible.id)}`,
+    { method: "PATCH", token: auth.token, body: JSON.stringify({ colorId }) },
+  );
+  if (!res.ok) {
+    journaliser("coloration en échec", { reason: res.reason, detail: res.detail });
+    return false;
+  }
+  return true;
 }

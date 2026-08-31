@@ -1,3 +1,4 @@
+import type { CanalRendezVous } from "@/server/calendly/canal";
 // Module RV téléphonique — view-model unifié des rendez-vous (read-only).
 //
 // V1 = source `CalendlyEvent` (seul canal public actif). La couche est conçue
@@ -31,6 +32,14 @@ export interface UnifiedRdv {
   contactEmail: string | null;
   contactPhone: string | null;
   location: string | null;
+  /**
+   * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
+   *
+   * Deux champs qui doivent dire la même chose finissent par diverger : le
+   * canal se recalcule à chaque lecture, donc les lignes déjà en base répondent
+   * correctement sans migration. Cf. `src/server/calendly/canal.ts`.
+   */
+  canal: CanalRendezVous;
   notes: string | null;
   /** Date de tri de repli quand `startTime` est null (capture/création). */
   createdAt: Date;

@@ -355,6 +355,16 @@ export type NotificationEvent =
         /** ISO si connu, sinon texte libre (« (voir mail Calendly) »). */
         eventStartTime: string;
         eventName: string;
+        /**
+         * Format du rendez-vous — `telephone`, `visio` ou `inconnu`.
+         *
+         * Optionnel parce que DEUX émetteurs alimentent cette catégorie
+         * (`discover.ts` et `POST /api/calendly/client-event`) et qu'ils ne
+         * disposent pas de la même information : la capture depuis /appel n'a
+         * pas encore vu la charge Calendly. Le rendre obligatoire forcerait
+         * l'émetteur qui ne sait pas à inventer une valeur.
+         */
+        format?: string;
         pageUrl?: string;
         utmSource?: string;
         utmCampaign?: string;

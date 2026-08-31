@@ -35,6 +35,8 @@ import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { notify } from "@/server/notifications";
 import { CALENDLY_API_BASE, isCalendlyApiConfigured } from "./api";
 import { enrichCalendlyEvent } from "./enrich";
+import { canalDuRendezVous, COULEUR_GOOGLE_CANAL } from "@/server/calendly/canal";
+import { colorerReservationCalendly } from "@/server/google-calendar/events";
 
 /**
  * Nombre maximum de réservations créées par passage.
@@ -370,6 +372,7 @@ export async function discoverNewCalendlyEvents(
     let inviteePhone: string | null = null;
     let cancelUrl: string | null = null;
     let start: Date | null = startTime;
+    let location: string | null = null;
     if (enriched.ok) {
       const fresh = await prisma.calendlyEvent
         .findUnique({
@@ -380,6 +383,7 @@ export async function discoverNewCalendlyEvents(
             inviteePhone: true,
             cancelUrl: true,
             startTime: true,
+            location: true,
           },
         })
         .catch(() => null);
@@ -389,8 +393,15 @@ export async function discoverNewCalendlyEvents(
         inviteePhone = fresh.inviteePhone;
         cancelUrl = fresh.cancelUrl;
         start = fresh.startTime ?? start;
+        location = fresh.location;
       }
     }
+
+    // Le FORMAT du rendez-vous — téléphone ou visio — dérivé UNE fois ici, puis
+    // porté tel quel vers ses trois destinations : la notification, le CRM et la
+    // couleur dans l'agenda Google. Le dériver trois fois inviterait les trois
+    // réponses à diverger le jour où l'une des sources changerait.
+    const format = canalDuRendezVous(location, ev);
 
     // Synchro CRM (lot L2) — après enrichissement : c'est lui qui apporte
     // l'adresse de l'invité, sans laquelle aucune clé de personne n'est
@@ -406,7 +417,7 @@ export async function discoverNewCalendlyEvents(
           fullName: inviteeName,
           phone: inviteePhone,
         },
-        payload: { eventTypeName: name, source: "api_poll" },
+        payload: { eventTypeName: name, source: "api_poll", format },
       });
     }
 
@@ -421,6 +432,7 @@ export async function discoverNewCalendlyEvents(
           inviteeName: inviteeName ?? "(non communiqué)",
           eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
           eventName: name,
+          format,
           ...(inviteePhone ? { inviteePhone } : {}),
           ...(cancelUrl ? { cancelUrl } : {}),
           ...(enriched.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
@@ -429,6 +441,19 @@ export async function discoverNewCalendlyEvents(
       });
     } catch (e) {
       Sentry.captureException(e);
+    }
+
+    // Couleur du format dans l'agenda Google — best-effort, jamais bloquant.
+    //
+    // Calendly met quelques secondes à écrire son événement : au moment où on
+    // passe ici, il peut ne pas encore exister. Ce n'est pas une erreur, et on
+    // ne réessaie pas — `refreshUpcomingCalendlyEvents` repasse régulièrement.
+    if (start) {
+      try {
+        await colorerReservationCalendly(start, COULEUR_GOOGLE_CANAL[format]);
+      } catch (e) {
+        Sentry.captureException(e);
+      }
     }
   }
 
