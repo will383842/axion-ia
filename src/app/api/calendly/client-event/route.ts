@@ -325,26 +325,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     throw e;
   }
 
-  // 7 bis. Synchro CRM (lot L2). Sans adresse d'invité, on ne peut pas
-  // calculer la clé de personne : on n'émet rien plutôt que d'inventer une
-  // fiche anonyme. L'enrichissement API (étape 8) la récupérera peut-être, et
-  // c'est le passage `discover` qui portera alors l'événement.
-  if (inviteeEmail) {
-    await syncCalendlyEventToCrm({
-      kind: "booked",
-      subjectRef: `site:calendly_event:${event.id}`,
-      sourceSlug: "calendly",
-      person: { email: inviteeEmail, fullName: inviteeName ?? null },
-      payload: {
-        eventTypeSlug: parsed.data.eventTypeSlug,
-        pageUrl: parsed.data.pageUrl,
-        ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
-        ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
-        ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
-      },
-    });
-  }
-
   // 8. Enrichissement API — inerte sans `CALENDLY_API_TOKEN` (aucun appel
   //    reseau emis dans ce cas). Jamais bloquant : la capture est deja
   //    persistee, et `enrichCalendlyEvent` ne throw pas. On l'attend (plutot
@@ -363,6 +343,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // — et l'alerte se tait alors sur le sujet plutôt que d'affirmer.
   let format: CanalRendezVous = "inconnu";
   let debutRdv: Date | null = null;
+  // Récupéré par l'enrichissement : l'embed ne transmet aucune coordonnée.
+  let notifyPhone: string | null = null;
   if (enriched?.ok) {
     const fresh = await prisma.calendlyEvent
       .findUnique({
@@ -373,6 +355,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           startTime: true,
           location: true,
           rawPayload: true,
+          inviteePhone: true,
         },
       })
       .catch(() => null);
@@ -382,7 +365,51 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       notifyStart = fresh.startTime?.toISOString() ?? null;
       format = canalDuRendezVous(fresh.location, fresh.rawPayload);
       debutRdv = fresh.startTime;
+      notifyPhone = fresh.inviteePhone;
     }
+  }
+
+  // 8 bis. Synchro CRM (lot L2) — APRÈS l'enrichissement, et c'est un
+  //        déplacement délibéré (2026-08-31).
+  //
+  // Cet envoi se faisait avant l'étape 8, en expliquant que « le passage
+  // `discover` portera l'événement » si l'adresse manquait. C'est faux pour ce
+  // chemin-ci : `discover` commence par `if (known) continue;` — une ligne déjà
+  // créée ici ne sera jamais reprise par lui. L'événement émis ici était donc
+  // le SEUL, et il partait sans le téléphone (que l'enrichissement venait de
+  // récupérer) et sans le format.
+  //
+  // Émettre une seconde fois n'était pas une option : `dispatch` fabrique un
+  // `event_id` neuf à chaque appel, donc deux réservations apparaîtraient au
+  // CRM pour un seul rendez-vous. Le déplacer est la seule forme qui enrichisse
+  // sans dupliquer.
+  //
+  // Le risque pris est le même que celui déjà accepté par la notification
+  // ci-dessous, qui attend elle aussi l'enrichissement : si celui-ci ne rendait
+  // jamais la main, ni l'événement CRM ni l'alerte ne partiraient. Il est borné
+  // à 5 secondes et ne lève pas.
+  if (notifyEmail) {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: `site:calendly_event:${event.id}`,
+      sourceSlug: "calendly",
+      person: {
+        email: notifyEmail,
+        fullName: notifyName ?? null,
+        ...(notifyPhone ? { phone: notifyPhone } : {}),
+      },
+      payload: {
+        eventTypeSlug: parsed.data.eventTypeSlug,
+        pageUrl: parsed.data.pageUrl,
+        // 🔑 DANS `payload`, jamais à la racine : le validateur du CRM ne filtre
+        // que la racine, et une clé inconnue y vaut 422 définitif — c'est-à-dire
+        // un lead perdu, sans rattrapage.
+        ...(format === "inconnu" ? {} : { format }),
+        ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
+        ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
+        ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
+      },
+    });
   }
 
   // 9. Notif Telegram via hub
