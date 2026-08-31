@@ -12,12 +12,14 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Confirmez votre inscription",
+    preview: "Un clic et c'est terminé — sans confirmation, votre adresse n'est pas ajoutée.",
     body: "Merci de vous être inscrit(e) à la newsletter Axion-IA. Pour finaliser votre inscription, cliquez sur le bouton ci-dessous.",
     note: "Si vous n'avez pas demandé cette inscription, ignorez simplement cet email — votre adresse ne sera pas ajoutée.",
     cta: "Confirmer mon inscription",
   },
   en: {
     title: "Confirm your subscription",
+    preview: "One click and you are done — without it, your address is not added.",
     body: "Thank you for subscribing to the Axion-IA newsletter. To finalize your subscription, click the button below.",
     note: "If you didn't request this subscription, just ignore this email — your address won't be added.",
     cta: "Confirm my subscription",
@@ -27,10 +29,7 @@ const COPY = {
 export const newsletterConfirmOptinSubject = (
   locale: Locale,
   _p: Record<string, unknown>,
-): string =>
-  locale === "fr"
-    ? "Confirmez votre inscription — Axion-IA"
-    : "Confirm your subscription — Axion-IA";
+): string => (locale === "fr" ? "Confirmez votre inscription" : "Confirm your subscription");
 
 export function NewsletterConfirmOptinEmail({
   locale,
@@ -46,7 +45,8 @@ export function NewsletterConfirmOptinEmail({
   const unsubHref = `${baseUrl}/${locale}/desabonnement?token=${p.unsubscribeToken}`;
   return (
     <EmailLayout
-      preview={t.title}
+      famille="A"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: confirmHref }}
       unsubscribeHref={unsubHref}

@@ -4,6 +4,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -20,9 +21,9 @@ export const qualiopiSatisfactionJ1Subject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Votre avis compte — ${p.titreFormation ?? "Formation"} — Axion-IA`;
+    return objetCompose("Votre avis compte —", p.titreFormation ?? "Formation");
   }
-  return `Your feedback matters — ${p.titreFormation ?? "Training"} — Axion-IA`;
+  return objetCompose("Your feedback matters —", p.titreFormation ?? "Training");
 };
 
 export function QualiopiSatisfactionJ1Email({
@@ -35,18 +36,19 @@ export function QualiopiSatisfactionJ1Email({
   const p = payload as unknown as Payload;
   return (
     <EmailLayout
-      preview="Donnez votre avis sur votre formation"
+      famille="B"
+      preview="Moins de trois minutes, et vous avez quinze jours pour répondre."
       title="Comment s'est passée votre formation ?"
       cta={{ label: "Répondre au questionnaire", href: p.lienQuestionnaire }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
         Votre formation <strong>{p.titreFormation}</strong> s&apos;est terminée le{" "}
         {p.dateFinFormation}. Votre retour nous est précieux pour améliorer nos programmes.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Cela prend moins de 3 minutes. Merci de compléter le questionnaire avant 15 jours.
+        Bonjour {p.stagiairePrenomNom} — cela prend moins de 3 minutes. Merci de compléter le
+        questionnaire avant 15 jours.
       </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         Référence session : {p.numeroSession}

@@ -28,6 +28,8 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Votre demande de tournage est arrivée",
+    preview:
+      "Étudiée une par une. Le nombre de tournages est limité, et on vous le dira franchement.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (e: string, v: string) =>
       `Nous avons bien reçu votre proposition de tournage pour ${e}, à ${v}. Merci de nous avoir écrit.`,
@@ -39,6 +41,7 @@ const COPY = {
   },
   en: {
     title: "Your filming request has arrived",
+    preview: "Reviewed one by one. Slots are limited, and we will tell you plainly.",
     intro: (n: string) => `Hello ${n},`,
     body: (e: string, v: string) =>
       `We have received your filming proposal for ${e}, in ${v}. Thank you for writing to us.`,
@@ -51,9 +54,7 @@ const COPY = {
 } as const;
 
 export const podcastDemandeRecueSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr"
-    ? "Votre demande de tournage podcast — Axion-IA"
-    : "Your podcast filming request — Axion-IA";
+  locale === "fr" ? "Votre demande de tournage podcast" : "Your podcast filming request";
 
 export function PodcastDemandeRecueEmail({
   locale,
@@ -65,7 +66,7 @@ export function PodcastDemandeRecueEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.intro(p.leaderName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.companyName, p.city)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.suite}</Text>

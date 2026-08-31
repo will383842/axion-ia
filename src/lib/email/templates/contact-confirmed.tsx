@@ -12,6 +12,10 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Message bien reçu",
+    // Pré-en-tête (§3.5) : il PROLONGE l'objet au lieu de le répéter. L'objet dit
+    // que le message est arrivé ; celui-ci dit sous combien de temps on répond
+    // — l'information qui décide d'ouvrir maintenant ou plus tard.
+    preview: "Réponse sous 48 heures ouvrées — la référence de votre demande est dans le message.",
     intro: (n: string) => `Bonjour ${n},`,
     body: "Nous avons bien reçu votre message. Notre équipe revient vers vous sous 48 heures ouvrées.",
     // 🔴 Corrigé le 2026-08-16. Le texte promettait « notre calendrier de
@@ -25,6 +29,7 @@ const COPY = {
   },
   en: {
     title: "Message received",
+    preview: "Reply within 48 working hours — your request reference is in the message.",
     intro: (n: string) => `Hello ${n},`,
     body: "We received your message. Our team gets back to you within 48 working hours.",
     next: "For urgent topics (session within 7 days), book a call with us directly.",
@@ -34,7 +39,7 @@ const COPY = {
 } as const;
 
 export const contactConfirmedSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr" ? "Message bien reçu — Axion-IA" : "Message received — Axion-IA";
+  locale === "fr" ? "Message bien reçu" : "Message received";
 
 export function ContactConfirmedEmail({
   locale,
@@ -48,7 +53,8 @@ export function ContactConfirmedEmail({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       // 🔴 Corrigé le 2026-08-16 : le bouton « Voir le calendrier » pointait sur
       // `/interventions`, une page de présentation des prestations — pas un
@@ -58,9 +64,12 @@ export function ContactConfirmedEmail({
       cta={{ label: t.cta, href: `${baseUrl}/${locale === "en" ? "en/book-a-call" : "fr/appel"}` }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.next}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.submissionId)}
       </Text>

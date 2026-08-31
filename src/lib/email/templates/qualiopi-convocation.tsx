@@ -3,6 +3,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -19,6 +20,8 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Votre convocation à la formation",
+    preview: (debut: string, lieu: string) =>
+      `Début le ${debut}${lieu ? ` — ${lieu}` : ""}. Modalités pratiques dans votre espace.`,
     intro: (n: string) => `Bonjour ${n},`,
     body: (titre: string, debut: string, fin: string, lieu: string, modalite: string) =>
       `Nous avons le plaisir de vous convoquer à la formation « ${titre} » du ${debut} au ${fin} — ${modalite} — ${lieu}.`,
@@ -39,9 +42,9 @@ export const qualiopiConvocationSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Convocation — ${p.titreFormation ?? "Formation"} — Axion-IA`;
+    return objetCompose("Convocation —", p.titreFormation ?? "Formation");
   }
-  return `Training convocation — ${p.titreFormation ?? "Training"} — Axion-IA`;
+  return objetCompose("Training convocation —", p.titreFormation ?? "Training");
 };
 
 export function QualiopiConvocationEmail({
@@ -57,7 +60,8 @@ export function QualiopiConvocationEmail({
   const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview(p.dateDebut, p.lieu)}
       title={t.title}
       cta={{ label: t.cta, href: ctaHref }}
       locale={locale}

@@ -13,7 +13,7 @@ interface Payload {
   subject: string;
   /** Body en markdown léger (paragraphes + ** + * + [link](url)). */
   bodyMarkdown: string;
-  /** Signature optionnelle (défaut "Williams Jullin · Axion-IA"). */
+  /** Signature optionnelle (défaut "Williams Jullin"). */
   signature?: string;
   /** Excerpt optionnel du message original du user (style "quote" mail). */
   originalSubmissionExcerpt?: string;
@@ -24,7 +24,7 @@ export const submissionReplySubject = (
   payload: Record<string, unknown>,
 ): string => {
   const p = payload as unknown as Payload;
-  return p.subject || "Réponse — Axion-IA";
+  return p.subject || "Réponse";
 };
 
 /**
@@ -145,10 +145,26 @@ export function SubmissionReplyEmail({
   const [sigName, ...sigRest] = signature.split("\n");
   const paragraphs = p.bodyMarkdown.split(/\n\s*\n/).filter((para) => para.trim().length > 0);
   const isEn = locale === "en";
+  // Pré-en-tête (§3.5) : l'objet de ce message est SAISI par l'admin, et le
+  // pré-en-tête le recopiait à l'identique — Gmail affichait donc deux fois la
+  // même phrase, et le 2ᵉ élément d'accroche était perdu.
+  //
+  // On le dérive du DÉBUT DU MESSAGE : c'est la seule source disponible ici, et
+  // c'est exactement ce que le référentiel demande — prolonger l'objet, pas le
+  // répéter. La marque Markdown est retirée, sinon le pré-en-tête afficherait
+  // des astérisques ; et un repli couvre le corps vide, car un pré-en-tête vide
+  // laisse Gmail afficher le début du HTML à la place.
+  const preEnTete =
+    (paragraphs[0] ?? "")
+      .replace(/[*_`#>[\]()]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 110) || (isEn ? "A reply from Williams." : "Une réponse de Williams.");
 
   return (
     <EmailLayout
-      preview={p.subject}
+      famille="B"
+      preview={preEnTete}
       title={p.subject}
       locale={locale}
       eyebrow={isEn ? "A note from Williams" : "Un mot de Williams"}

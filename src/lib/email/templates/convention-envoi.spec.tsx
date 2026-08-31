@@ -55,16 +55,43 @@ describe("ConventionEnvoiEmail", () => {
   });
 
   // Signature institutionnelle, pas le nom d'une personne : ces e-mails partent
-  // au nom de l'organisme, et un client répond à une équipe. Le footer social
-  // commun (« et Williams, son fondateur » — demande Will 2026-08-04) est
-  // hors-signature : on borne donc le contrôle au CORPS, avant le footer.
-  it("signe « L'équipe Axion-IA », jamais un nom propre dans le corps", async () => {
+  // au nom de l'organisme, et un client répond à une équipe.
+  //
+  // 🔑 2026-08-31 — ce contrôle est devenu PLUS STRICT, et c'est la refonte
+  // éditoriale qui l'a permis. Il bornait sa lecture au corps, « avant le
+  // footer », parce que la rangée sociale commune glissait « et Williams, son
+  // fondateur » dans TOUS les e-mails (demande Will 2026-08-04). La convention
+  // est désormais de FAMILLE A : ni réseaux sociaux, ni partage, ni bandeau de
+  // confiance (référentiel §2.5). Il n'y a donc plus de zone à exclure — on
+  // vérifie le document ENTIER, ce que la version bornée ne pouvait pas faire.
+  it("signe « L'équipe Axion-IA », jamais un nom propre — dans tout le message", async () => {
     const h = await html(PAYLOAD);
     expect(h).toContain("L&#x27;équipe Axion-IA");
-    const marqueurFooter = h.indexOf("Suivez l&#x27;aventure Axion-IA");
-    expect(marqueurFooter).toBeGreaterThan(-1);
-    const corps = h.slice(0, marqueurFooter);
-    expect(corps).not.toContain("Williams");
+    expect(h).not.toContain("Williams");
+  });
+
+  // Famille A — la sobriété est ici une fonction de SÉCURITÉ : c'est le message
+  // que le hameçonnage imite le plus, et un e-mail chargé de liens sociaux
+  // détruit le repère qu'on apprend aux gens (« un vrai e-mail de signature est
+  // sobre »). Cette garde rougit si quelqu'un rebascule le gabarit en famille B.
+  it("famille A : aucun réseau social, aucun partage, aucun désabonnement", async () => {
+    const h = await html(PAYLOAD);
+    expect(h).not.toContain("linkedin.com");
+    expect(h).not.toContain("facebook.com");
+    expect(h).not.toContain("Partager sur LinkedIn");
+    expect(h).not.toContain("Se désabonner");
+  });
+
+  // §6.3 — le pied réduit reste une mention légale COMPLÈTE : la LCEN art. 1-1
+  // impose la dénomination, l'adresse du siège et l'identifiant. Ce pied lisait
+  // ces valeurs dans `process.env.COMPANY_*`, dont le repli était la CHAÎNE VIDE
+  // — un e-mail rendu sans ces variables (le worker est une app Coolify à part,
+  // avec son propre environnement) partait sans adresse ni SIREN, en silence.
+  it("porte l'identité légale complète, complément d'adresse SIRENE inclus", async () => {
+    const h = await html(PAYLOAD);
+    expect(h).toContain("AXION IA SAS");
+    expect(h).toContain("ELITE BUREAUX - boîte 53");
+    expect(h).toContain("108018631");
   });
 
   it("insère le message libre de l'admin quand il existe", async () => {

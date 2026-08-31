@@ -6,6 +6,7 @@
 
 import { Text, Link, Section } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -29,9 +30,9 @@ export const documentsNouvelleVersionSubject = (
   const p = payload as unknown as Payload;
   const doc = p.slotTitre ?? "Document";
   if (locale === "fr") {
-    return `Mise à jour — ${doc} (${p.interventionLabel ?? ""}) — Axion-IA`;
+    return objetCompose("Mise à jour —", `${doc} (${p.interventionLabel ?? ""})`);
   }
-  return `Updated — ${doc} (${p.interventionLabel ?? ""}) — Axion-IA`;
+  return objetCompose("Updated —", `${doc} (${p.interventionLabel ?? ""})`);
 };
 
 const secondaryBtn: React.CSSProperties = {
@@ -54,11 +55,11 @@ export function DocumentsNouvelleVersionEmail({
     : "Télécharger la source";
   return (
     <EmailLayout
-      preview={`Nouvelle version : ${p.slotTitre ?? "document"}`}
+      famille="C"
+      preview={`Version ${p.version} — ${p.changeNote ?? "liens de téléchargement valables 14 jours"}`}
       title="Un document a été mis à jour"
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour,</Text>
       <Text style={emailStyles.paragraphStyle}>
         Une nouvelle version (<strong>v{p.version}</strong>) du document{" "}
         <strong>{p.slotTitre}</strong> est disponible pour <strong>{p.interventionLabel}</strong> (

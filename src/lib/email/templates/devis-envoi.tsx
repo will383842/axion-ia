@@ -42,6 +42,10 @@ const COPY = {
     body: (num: string, montant: string) =>
       `Veuillez trouver ci-joint votre devis ${num}${montant ? ` d'un montant de ${montant}` : ""}, au format PDF.`,
     validity: (d: string) => (d ? `Il est valable jusqu'au ${d}.` : ""),
+    preview: (montant: string, validite: string) =>
+      [montant ? `${montant}` : "", validite ? `valable jusqu'au ${validite}` : "", "PDF joint"]
+        .filter(Boolean)
+        .join(" — ") + ".",
     attachment: "Le document est joint à cet email au format PDF.",
     sign: "Vous pouvez signer votre « bon pour accord » en ligne, en un clic, via le bouton ci-dessous.",
     signCta: "Signer le devis en ligne",
@@ -55,6 +59,10 @@ const COPY = {
     body: (num: string, montant: string) =>
       `Please find attached your quote ${num}${montant ? ` for ${montant}` : ""}, in PDF format.`,
     validity: (d: string) => (d ? `It is valid until ${d}.` : ""),
+    preview: (montant: string, validite: string) =>
+      [montant ? `${montant}` : "", validite ? `valid until ${validite}` : "", "PDF attached"]
+        .filter(Boolean)
+        .join(" — ") + ".",
     attachment: "The document is attached to this email in PDF format.",
     sign: "You can sign your approval online, in one click, using the button below.",
     signCta: "Sign the quote online",
@@ -66,7 +74,7 @@ const COPY = {
 
 export const devisEnvoiSubject = (locale: Locale, payload: Record<string, unknown>): string => {
   const num = field(payload as Partial<Payload>, "numero", "");
-  return locale === "fr" ? `Votre devis ${num} — Axion-IA` : `Your quote ${num} — Axion-IA`;
+  return locale === "fr" ? `Votre devis ${num}` : `Your quote ${num}`;
 };
 
 export function DevisEnvoiEmail({
@@ -83,9 +91,12 @@ export function DevisEnvoiEmail({
 
   return (
     <EmailLayout
+      famille="B"
       locale={locale}
       title={t.title}
-      preview={devisEnvoiSubject(locale, payload)}
+      /* Le pré-en-tête reprenait l'objet mot pour mot. Il porte désormais le
+         montant et la date de validité — ce qu'on cherche avant d'ouvrir. */
+      preview={t.preview(field(p, "montantLabel", ""), field(p, "dateValiditeLabel", ""))}
       {...(signatureUrl !== "" ? { cta: { label: t.signCta, href: signatureUrl } } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "clientNom", ""))}</Text>

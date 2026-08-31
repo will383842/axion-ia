@@ -18,6 +18,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -48,6 +49,8 @@ const COPY = {
       `La convention de formation professionnelle relative à « ${titre} »${client ? `, établie avec ${client},` : ""} est prête à être signée.`,
     lecture:
       "Le lien ci-dessous ouvre la convention : vous pouvez la lire intégralement avant de signer, puis apposer votre signature en ligne.",
+    preview:
+      "Lecture intégrale possible avant signature. Le lien vous est personnel et vaut signature.",
     cta: "Signer la convention",
     perso: "Ce lien vous est personnel et vaut signature : merci de ne pas le transférer.",
     ref: (n: string) => `Référence du document : ${n}`,
@@ -62,6 +65,8 @@ const COPY = {
       `The professional training agreement for "${titre}"${client ? `, drawn up with ${client},` : ""} is ready to be signed.`,
     lecture:
       "The link below opens the agreement: you can read it in full before signing, then sign online.",
+    preview:
+      "You can read it in full before signing. The link is personal and constitutes a signature.",
     cta: "Sign the agreement",
     perso: "This link is personal to you and constitutes a signature: please do not forward it.",
     ref: (n: string) => `Document reference: ${n}`,
@@ -78,9 +83,13 @@ export const conventionEnvoiSubject = (
   const p = payload as Partial<Payload>;
   const titre = field(p, "titreFormation", "");
   if (locale === "fr") {
-    return `Convention de formation à signer${titre ? ` — ${titre}` : ""} — Axion-IA`;
+    // Préfixe volontairement COURT : « Convention de formation à signer »
+    // consommait 35 des 45 caractères et ne laissait que « IA… » de
+    // l'intitulé — objet dans la borne, et incapable de distinguer deux
+    // formations. Le mot « formation » est de toute façon dans l'intitulé.
+    return objetCompose("Convention à signer —", titre);
   }
-  return `Training agreement to sign${titre ? ` — ${titre}` : ""} — Axion-IA`;
+  return objetCompose("Agreement to sign —", titre);
 };
 
 export function ConventionEnvoiEmail({
@@ -97,13 +106,19 @@ export function ConventionEnvoiEmail({
 
   return (
     <EmailLayout
+      famille="A"
       locale={locale}
       title={t.title}
-      preview={conventionEnvoiSubject(locale, payload)}
+      /* Le pré-en-tête reprenait l'objet. Il dit désormais ce que l'objet ne dit
+         pas : on peut TOUT LIRE avant de signer, et le lien est nominatif. */
+      preview={t.preview}
       // Sans lien, pas de bouton — mais l'e-mail reste lisible et n'affiche
       // jamais d'URL nue. Le cas ne devrait pas se produire : l'action refuse
       // d'enfiler l'e-mail sans lien.
       {...(signatureUrl !== "" ? { cta: { label: t.cta, href: signatureUrl } } : {})}
+      /* Le lien VAUT SIGNATURE : il est porte par le bouton, jamais imprime
+         en clair dans le corps. Voir `convention-envoi.spec.tsx`. */
+      ctaSecret
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "signataireNom", ""))}</Text>
       {message !== "" &&

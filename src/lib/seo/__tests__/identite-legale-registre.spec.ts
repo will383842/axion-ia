@@ -29,8 +29,21 @@ import { buildOrganizationJsonLd } from "@/lib/seo";
 
 const SRC = path.resolve(process.cwd(), "src");
 
-/** Le fichier SSOT lui-même est le seul endroit qui a le droit de l'écrire. */
-const SSOT_FILE = path.join("src", "lib", "brand.ts");
+/**
+ * Le fichier SSOT lui-même est le seul endroit qui a le droit de l'écrire.
+ *
+ * 🔑 2026-08-31 — la SSOT a DÉMÉNAGÉ de `brand.ts` vers `identite-legale-ssot.ts`,
+ * et ce chemin a suivi. Motif : le pied de page légal des e-mails a besoin de la
+ * raison sociale, mais il est rendu dans le worker BullMQ, sur un trajet qui ne
+ * charge pas `@/env` — or `brand.ts` l'importe. Deux règles justes se
+ * contredisaient (« dériver plutôt que recopier » contre « garder le rendu
+ * d'e-mail pur ») ; on a déplacé le littéral dans un module SANS AUCUN IMPORT
+ * plutôt que de sacrifier l'une des deux.
+ *
+ * `brand.ts` continue d'exposer `BRAND.legalName` — il le dérive désormais.
+ * L'invariant surveillé ici est inchangé : UN SEUL endroit écrit le littéral.
+ */
+const SSOT_FILE = path.join("src", "lib", "identite-legale-ssot.ts");
 
 const SCANNED_EXT = new Set([".ts", ".tsx"]);
 

@@ -55,9 +55,82 @@ function sanitizeFromName(raw: string): string {
   );
 }
 
-const FROM_ADDRESS = process.env.SMTP_FROM_ADDRESS ?? "noreply@axion-ia.com";
+/**
+ * 🔴 2026-08-31 — LA BOÎTE QUI N'EXISTAIT PAS.
+ *
+ * `FROM_ADDRESS` valait `noreply@axion-ia.com` en défaut, et `SMTP_FROM_ADDRESS`
+ * n'est posée nulle part dans le dépôt : c'est donc bien `noreply@` qui a signé
+ * tous les e-mails d'Axion-IA. Le référentiel §3.2 en fait un interdit, et son
+ * point de contrôle bloquant n°3 le vérifie avant toute mise en production.
+ *
+ * Trois coûts, du plus mesurable au plus cher :
+ *
+ *  1. **Délivrabilité.** Les fournisseurs de messagerie lisent un `noreply@`
+ *     comme le signal d'un expéditeur qui n'attend pas de conversation. Une
+ *     réponse est à l'inverse le signal d'engagement le PLUS fort qui existe :
+ *     s'en priver par construction, c'est renoncer au seul levier de réputation
+ *     qu'on ne peut pas acheter.
+ *  2. **Support.** L'adresse est affichée au moment exact où quelqu'un est
+ *     bloqué — un lien expiré, une facture qu'il conteste, un créneau qu'il ne
+ *     peut plus honorer. Lui répondre « personne n'écoute ici » le pousse vers
+ *     la seule issue restante : « signaler comme spam ». Le référentiel §4.3 le
+ *     dit dans l'autre sens : la soupape de réponse existe d'abord pour ÉVITER
+ *     la plainte, qui elle abîme le domaine pour tout le monde.
+ *  3. **Commercial.** Les réponses spontanées à un e-mail transactionnel sont
+ *     des conversations à coût nul. On les jetait.
+ *
+ * Arbitrage Will, 2026-08-31 : `contact@axion-ia.com` pour l'expédition ET pour
+ * le `Reply-To`. C'est une boîte Zoho Mail Lite qui EXISTE et qui est relevée —
+ * critère décisif : le §3.3 exige une adresse de réponse « toujours renseignée,
+ * toujours une boîte réellement surveillée ». Une adresse plus élégante mais
+ * non créée aurait rendu le défaut pire, pas meilleur : des réponses qui
+ * rebondissent sont moins visibles que des réponses qu'on ignore.
+ */
+const ADRESSE_CONTACT = "contact@axion-ia.com";
+
+/**
+ * Refuse une adresse d'expédition de type `noreply@`, même si l'environnement
+ * en pose une.
+ *
+ * Volontairement un REPLI et non une exception : lever ici empêcherait
+ * l'envoi de factures et de liens de connexion à cause d'un défaut de style.
+ * L'ordre de préséance du référentiel §0 est explicite — la délivrabilité passe
+ * avant l'expérience, et un e-mail jamais parti est le pire des deux. On
+ * corrige, on crie dans les journaux du worker, et le message part.
+ */
+function refuserNoReply(adresse: string): string {
+  if (/^(no[-_.]?reply|donotreply|do-not-reply)@/i.test(adresse.trim())) {
+    console.error(
+      `[email] adresse d'expédition « ${adresse} » refusée : le référentiel §3.2 interdit ` +
+        `noreply@ (signal négatif de délivrabilité, et ferme la porte au destinataire au ` +
+        `moment exact où il a besoin d'aide). Repli sur ${ADRESSE_CONTACT}. ` +
+        `Corriger SMTP_FROM_ADDRESS dans Coolify, sur l'app axion-ia-worker.`,
+    );
+    return ADRESSE_CONTACT;
+  }
+  return adresse;
+}
+
+const FROM_ADDRESS = refuserNoReply(process.env.SMTP_FROM_ADDRESS ?? ADRESSE_CONTACT);
 const FROM_NAME = sanitizeFromName(process.env.SMTP_FROM_NAME ?? "Axion-IA");
-const FROM_MARKETING = process.env.SMTP_FROM_MARKETING ?? "news@axion-ia.com";
+const FROM_MARKETING = refuserNoReply(process.env.SMTP_FROM_MARKETING ?? "news@axion-ia.com");
+
+/**
+ * Adresse de réponse par DÉFAUT de tout envoi.
+ *
+ * Avant ce jour, `replyTo` n'était renseigné qu'à UN seul endroit du dépôt
+ * (`handleSubmissionReply`, la réponse manuelle de l'admin à un message de
+ * contact). Les 43 autres gabarits partaient sans aucun `Reply-To` : un
+ * destinataire qui cliquait « Répondre » écrivait à `noreply@`, c'est-à-dire à
+ * personne, sans le savoir. Le pied de page lui affichait pourtant
+ * `contact@axion-ia.com` — l'e-mail promettait une issue que l'en-tête
+ * annulait.
+ *
+ * Le défaut est désormais posé ICI plutôt que dans chaque appelant : une règle
+ * qui dépend de 44 rappels n'est pas une règle. Un appelant peut toujours le
+ * surcharger (`params.replyTo`) quand la conversation doit atterrir ailleurs.
+ */
+const REPLY_TO_DEFAUT = process.env.ADMIN_REPLY_FROM ?? ADRESSE_CONTACT;
 
 let _transport: Transporter | null = null;
 
@@ -166,8 +239,13 @@ export interface SendEmailParams {
   subject: string;
   html: string;
   text?: string;
-  /** Newsletter expediteur (`news@`) au lieu de transactionnel (`noreply@`). */
+  /** Newsletter expediteur (`news@`) au lieu de transactionnel (`contact@`). */
   marketing?: boolean;
+  /**
+   * Adresse de reponse. OPTIONNELLE : a defaut, `REPLY_TO_DEFAUT` s'applique
+   * (contact@axion-ia.com). Ne la renseigner que pour router la conversation
+   * ailleurs que sur la boite generale.
+   */
   replyTo?: string;
   /**
    * P0 RGPD-3 fix audit final 2026-05-09 — token unsubscribe RFC 8058.
@@ -208,7 +286,9 @@ export async function sendEmail(params: SendEmailParams): Promise<{ messageId: s
     subject: params.subject,
     html: params.html,
     text: params.text ?? stripHtml(params.html),
-    replyTo: params.replyTo,
+    // Toujours renseigné (§3.3), et toujours vers une boîte réellement relevée.
+    // Un appelant peut surcharger ; personne ne peut plus l'oublier.
+    replyTo: params.replyTo ?? REPLY_TO_DEFAUT,
     ...(Object.keys(headers).length > 0 ? { headers } : {}),
     // Pièces jointes (envoi manuel devis/facture) — copie mutable pour nodemailer.
     ...(params.attachments && params.attachments.length > 0

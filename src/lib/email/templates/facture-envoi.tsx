@@ -41,6 +41,10 @@ const COPY = {
       d
         ? `Le règlement est attendu au plus tard le ${d} (coordonnées bancaires sur la facture).`
         : "",
+    preview: (echeance: string) =>
+      echeance
+        ? `PDF joint — règlement attendu au plus tard le ${echeance}.`
+        : "PDF joint — coordonnées bancaires sur le document.",
     attachment: "Le document est joint à cet email au format PDF.",
     questions: "Pour toute question, répondez simplement à cet email.",
     close: "Bien cordialement,\nL'équipe Axion-IA",
@@ -54,6 +58,10 @@ const COPY = {
     bodyAvoir: (num: string, montant: string) =>
       `Please find attached your credit note ${num}${montant ? ` for ${montant}` : ""}, in PDF format.`,
     echeance: (d: string) => (d ? `Payment is due by ${d} (bank details are on the invoice).` : ""),
+    preview: (echeance: string) =>
+      echeance
+        ? `PDF attached — payment due by ${echeance}.`
+        : "PDF attached — bank details are on the document.",
     attachment: "The document is attached to this email in PDF format.",
     questions: "For any question, simply reply to this email.",
     close: "Best regards,\nThe Axion-IA team",
@@ -65,9 +73,9 @@ export const factureEnvoiSubject = (locale: Locale, payload: Record<string, unkn
   const num = field(p, "numero", "");
   const estAvoir = p.estAvoir === true;
   if (locale === "fr") {
-    return estAvoir ? `Votre avoir ${num} — Axion-IA` : `Votre facture ${num} — Axion-IA`;
+    return estAvoir ? `Votre avoir ${num}` : `Votre facture ${num}`;
   }
-  return estAvoir ? `Your credit note ${num} — Axion-IA` : `Your invoice ${num} — Axion-IA`;
+  return estAvoir ? `Your credit note ${num}` : `Your invoice ${num}`;
 };
 
 export function FactureEnvoiEmail({
@@ -86,10 +94,17 @@ export function FactureEnvoiEmail({
 
   return (
     <EmailLayout
+      famille="A"
       locale={locale}
       title={estAvoir ? t.titleAvoir : t.titleFacture}
-      preview={factureEnvoiSubject(locale, payload)}
+      /* Le pré-en-tête reprenait l'objet mot pour mot. Il porte désormais ce que
+         l'objet ne dit pas : le PDF est joint, et l'échéance. C'est exactement
+         ce qu'une comptabilité cherche avant d'ouvrir (§3.5 et §7.7). */
+      preview={t.preview(field(p, "dateEcheanceLabel", ""))}
     >
+      <Text style={emailStyles.paragraphStyle}>
+        {estAvoir ? t.bodyAvoir(num, montant) : t.bodyFacture(num, montant)}
+      </Text>
       <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "clientNom", ""))}</Text>
       {message !== "" &&
         message.split("\n").map((line, i) => (
@@ -97,9 +112,6 @@ export function FactureEnvoiEmail({
             {line}
           </Text>
         ))}
-      <Text style={emailStyles.paragraphStyle}>
-        {estAvoir ? t.bodyAvoir(num, montant) : t.bodyFacture(num, montant)}
-      </Text>
       {!estAvoir && t.echeance(field(p, "dateEcheanceLabel", "")) !== "" && (
         <Text style={emailStyles.paragraphStyle}>
           {t.echeance(field(p, "dateEcheanceLabel", ""))}

@@ -25,6 +25,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "On vous rappelle",
+    preview: "Sous deux jours ouvrés. Vérifiez le numéro : il est rappelé dans le message.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (tel: string) =>
       `C'est noté : nous vous rappelons au ${tel}. Si ce numéro comporte une erreur, répondez à ce message et nous le corrigerons.`,
@@ -34,6 +35,7 @@ const COPY = {
   },
   en: {
     title: "We'll call you back",
+    preview: "Within two working days. Check the number — it is repeated inside.",
     intro: (n: string) => `Hello ${n},`,
     body: (tel: string) =>
       `Noted: we will call you on ${tel}. If this number is wrong, reply to this message and we will correct it.`,
@@ -44,7 +46,7 @@ const COPY = {
 } as const;
 
 export const rappelConfirmeSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr" ? "On vous rappelle — Axion-IA" : "We'll call you back — Axion-IA";
+  locale === "fr" ? "On vous rappelle" : "We'll call you back";
 
 export function RappelConfirmeEmail({
   locale,
@@ -56,10 +58,13 @@ export function RappelConfirmeEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.prenom)}</Text>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.telephone)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.quand}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.prenom)}
+        <br />
+        {t.quand}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.rien}
       </Text>

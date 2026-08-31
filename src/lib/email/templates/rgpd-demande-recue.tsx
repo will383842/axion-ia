@@ -30,6 +30,8 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Votre demande a bien été enregistrée",
+    preview:
+      "Réponse sous un mois maximum, comme l'exige le RGPD. Votre référence est dans le message.",
     intro: "Bonjour,",
     objet: (t: string) =>
       t === "suppression"
@@ -43,6 +45,7 @@ const COPY = {
   },
   en: {
     title: "Your request has been recorded",
+    preview: "Answer within one month, as GDPR requires. Your reference is in the message.",
     intro: "Hello,",
     objet: (t: string) =>
       t === "suppression"
@@ -57,9 +60,7 @@ const COPY = {
 } as const;
 
 export const rgpdDemandeRecueSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr"
-    ? "Votre demande RGPD a bien été reçue — Axion-IA"
-    : "Your GDPR request has been received — Axion-IA";
+  locale === "fr" ? "Votre demande RGPD a bien été reçue" : "Your GDPR request has been received";
 
 export function RgpdDemandeRecueEmail({
   locale,
@@ -71,15 +72,15 @@ export function RgpdDemandeRecueEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
-      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.objet(p.type)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.delai}</Text>
-      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.ref(p.reference, p.deposeeLe)}
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro}
+        <br />
+        {t.delai}
       </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.contact}
+        {t.ref(p.reference, p.deposeeLe)}
       </Text>
     </EmailLayout>
   );

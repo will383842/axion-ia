@@ -15,6 +15,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande d'audit reçue",
+    preview: "Réponse sous 48 heures ouvrées, avec un calendrier de mission.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (a: string | undefined, s: string | undefined, i: string | undefined) =>
       `Nous avons bien reçu votre demande d'audit${a ? ` (${a})` : ""}${s ? ` pour entreprise ${s}` : ""}${i ? ` — secteur ${i}` : ""}. Notre équipe revient vers vous sous 48 heures ouvrées avec un calendrier de mission.`,
@@ -24,6 +25,7 @@ const COPY = {
   },
   en: {
     title: "Audit request received",
+    preview: "Reply within 48 working hours, with a mission calendar.",
     intro: (n: string) => `Hello ${n},`,
     body: (a: string | undefined, s: string | undefined, i: string | undefined) =>
       `We received your audit request${a ? ` (${a})` : ""}${s ? ` for ${s} company` : ""}${i ? ` — ${i} sector` : ""}. Our team gets back to you within 48 working hours with a mission calendar.`,
@@ -34,7 +36,7 @@ const COPY = {
 } as const;
 
 export const auditConfirmedSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr" ? "Demande d'audit reçue — Axion-IA" : "Audit request received — Axion-IA";
+  locale === "fr" ? "Demande d'audit reçue" : "Audit request received";
 
 export function AuditConfirmedEmail({
   locale,
@@ -48,14 +50,18 @@ export function AuditConfirmedEmail({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/methodologie` }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.auditType, p.size, p.industry)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.next}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.submissionId)}
       </Text>

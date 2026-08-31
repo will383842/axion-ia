@@ -14,6 +14,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande d'implémentation reçue",
+    preview: "Réponse sous 48 heures ouvrées, avec une proposition cadrée.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (i: string | undefined, b: string | undefined) =>
       `Nous avons bien reçu votre demande d'implémentation${i ? ` (${i})` : ""}${b ? `, fourchette ${b}` : ""}. Notre équipe revient vers vous sous 48 heures ouvrées avec une proposition cadrée.`,
@@ -23,6 +24,7 @@ const COPY = {
   },
   en: {
     title: "Implementation request received",
+    preview: "Reply within 48 working hours, with a scoped proposal.",
     intro: (n: string) => `Hello ${n},`,
     body: (i: string | undefined, b: string | undefined) =>
       `We received your implementation request${i ? ` (${i})` : ""}${b ? `, ${b} budget range` : ""}. Our team gets back to you within 48 working hours with a scoped proposal.`,
@@ -36,9 +38,7 @@ export const implementationConfirmedSubject = (
   locale: Locale,
   _p: Record<string, unknown>,
 ): string =>
-  locale === "fr"
-    ? "Demande d'implémentation reçue — Axion-IA"
-    : "Implementation request received — Axion-IA";
+  locale === "fr" ? "Demande d'implémentation reçue" : "Implementation request received";
 
 export function ImplementationConfirmedEmail({
   locale,
@@ -52,14 +52,18 @@ export function ImplementationConfirmedEmail({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/cas-concrets` }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.implType, p.budget)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.next}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.submissionId)}
       </Text>

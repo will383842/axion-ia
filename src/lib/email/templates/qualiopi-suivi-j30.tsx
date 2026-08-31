@@ -4,6 +4,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -20,9 +21,9 @@ export const qualiopiSuiviJ30Subject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Suivi J+30 — ${p.titreFormation ?? "Formation"} — Axion-IA`;
+    return objetCompose("Suivi J+30 —", p.titreFormation ?? "Formation");
   }
-  return `30-day follow-up — ${p.titreFormation ?? "Training"} — Axion-IA`;
+  return objetCompose("30-day follow-up —", p.titreFormation ?? "Training");
 };
 
 export function QualiopiSuiviJ30Email({
@@ -37,20 +38,20 @@ export function QualiopiSuiviJ30Email({
   const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
+      famille="B"
       preview="Un mois après votre formation — comment allez-vous ?"
       title="Suivi post-formation — 30 jours déjà"
       cta={{ label: "Accéder à mon espace", href: ctaHref }}
       locale={locale}
       trust
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
         Il y a maintenant un mois que vous avez suivi la formation{" "}
         <strong>{p.titreFormation}</strong> (fin le {p.dateFinFormation}).
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Avez-vous pu mettre en pratique les acquis ? Des questions ou besoins d&apos;accompagnement
-        supplémentaire ? Notre équipe est à votre disposition.
+        Bonjour {p.stagiairePrenomNom} — avez-vous pu mettre en pratique les acquis ? Des questions
+        ou besoins d&apos;accompagnement supplémentaire ? Notre équipe est à votre disposition.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Retrouvez également vos documents (attestation, supports) dans votre espace stagiaire.

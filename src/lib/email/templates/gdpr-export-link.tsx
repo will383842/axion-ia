@@ -12,6 +12,9 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Export de vos données — lien d'accès",
+    // Le pré-en-tête porte la durée de validité : c'est ce qui décide d'ouvrir
+    // maintenant. Fonction plutôt que chaîne, pour reprendre le vrai délai.
+    preview: (h: number) => `Lien personnel et unique, valable ${h} heures. Format JSON.`,
     intro: "Bonjour,",
     body: (h: number) =>
       `Vous avez demandé un export de vos données personnelles. Cliquez sur le bouton ci-dessous dans les ${h} heures pour télécharger votre export au format JSON. Ce lien est unique et personnel.`,
@@ -21,6 +24,7 @@ const COPY = {
   },
   en: {
     title: "Your data export — access link",
+    preview: (h: number) => `Personal, single-use link, valid for ${h} hours. JSON format.`,
     intro: "Hello,",
     body: (h: number) =>
       `You have requested an export of your personal data. Click the button below within ${h} hours to download your export as JSON. This link is unique and personal.`,
@@ -31,7 +35,7 @@ const COPY = {
 } as const;
 
 export const gdprExportLinkSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr" ? "Votre export RGPD — Axion-IA" : "Your GDPR export — Axion-IA";
+  locale === "fr" ? "Votre export RGPD" : "Your GDPR export";
 
 export function GdprExportLinkEmail({
   locale,
@@ -44,12 +48,12 @@ export function GdprExportLinkEmail({
   const t = COPY[locale];
   return (
     <EmailLayout
-      preview={t.title}
+      famille="A"
+      preview={t.preview(p.expiresHours)}
       title={t.title}
       cta={{ label: t.cta, href: p.exportUrl }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.expiresHours)}</Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.safety}

@@ -2,7 +2,7 @@
 // Envoyé sur demande (« recevoir mon lien »). Contient un lien magique signé
 // (HMAC, scope formateur_login), à usage unique, valable 15 min. FR canonique.
 
-import { Text, Link, Section } from "@react-email/components";
+import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -13,9 +13,7 @@ interface Payload {
 }
 
 export const formateurMagicLinkSubject = (locale: Locale): string =>
-  locale === "fr"
-    ? "Votre lien de connexion — Espace formateur Axion-IA"
-    : "Your sign-in link — Axion-IA trainer space";
+  locale === "fr" ? "Votre lien de connexion formateur" : "Your trainer sign-in link";
 
 export function FormateurMagicLinkEmail({
   locale,
@@ -44,23 +42,28 @@ export function FormateurMagicLinkEmail({
       : null;
   return (
     <EmailLayout
-      preview="Votre lien de connexion sécurisé à l'espace formateur"
+      famille="A"
+      /* Pré-en-tête : il porte la DURÉE DE VALIDITÉ. C'est la seule information
+         qui décide d'ouvrir maintenant plutôt que ce soir — et un lien de
+         15 minutes ouvert ce soir est un lien mort. */
+      preview="Valable 15 minutes, à usage unique. Aucun mot de passe à retenir."
       title="Connexion à votre espace formateur"
+      /* Le CTA passe par la prop du layout plutôt que par un <Link> local : il
+         reçoit ainsi le bouton bulletproof Outlook ET le repli en texte brut
+         (§3.8), rendus une seule fois pour les 44 gabarits. */
+      cta={{ label: "Me connecter", href: p.magicLink }}
       locale={locale}
     >
+      {/* §3.6 — l'information d'abord : les résumés IA affichés dans la boîte de
+          réception se construisent sur les 100 premiers caractères du corps. */}
       <Text style={emailStyles.paragraphStyle}>
-        Bonjour{p.formateurNom ? ` ${p.formateurNom}` : ""},
+        Votre lien de connexion à l&apos;espace formateur est prêt — il est juste en dessous, et
+        aucun mot de passe n&apos;est nécessaire.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Cliquez sur le bouton ci-dessous pour vous connecter à votre espace formateur Axion-IA.
-        Aucun mot de passe n&apos;est nécessaire.
+        Bonjour{p.formateurNom ? ` ${p.formateurNom}` : ""}, un clic suffit pour ouvrir votre
+        espace.
       </Text>
-
-      <Section style={{ margin: "16px 0 8px 0" }}>
-        <Link href={p.magicLink} style={emailStyles.ctaStyle}>
-          Me connecter
-        </Link>
-      </Section>
 
       <Text
         style={{
@@ -72,16 +75,6 @@ export function FormateurMagicLinkEmail({
         Ce lien est <strong>valable {minutes} minutes</strong> et à <strong>usage unique</strong>.
         Si vous n&apos;êtes pas à l&apos;origine de cette demande, ignorez simplement cet e-mail —
         aucun accès ne sera ouvert.
-      </Text>
-      <Text
-        style={{
-          ...emailStyles.paragraphStyle,
-          fontSize: "12px",
-          color: emailStyles.COLORS.textMuted,
-        }}
-      >
-        Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :<br />
-        {p.magicLink}
       </Text>
       {/*
         Adresse de RETOUR — ajoutée 2026-07-28.

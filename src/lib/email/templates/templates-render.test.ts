@@ -53,12 +53,24 @@ describe("Sprint X.13 — render templates", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Footer social commun (demande Will 2026-08-04) — les 4 liens doivent être
-// présents dans TOUT email rendu via le layout. Garde : retirer la rangée
-// sociale du footer de `_layout.tsx` fait rougir ce test.
+// Footer social — présent SELON LA FAMILLE, plus « dans tous les e-mails ».
+//
+// 🔴 2026-08-31 — ce bloc affirmait : « les 4 liens doivent être présents dans
+// TOUT email rendu via le layout » (demande Will 2026-08-04), et ne le
+// vérifiait que sur `payment-receipt`. Or `payment-receipt` est un REÇU : le
+// référentiel e-mail le classe en famille A, où les réseaux sociaux, le partage
+// et la demande d'avis sont interdits (§2.5, §5.1 règle 3).
+//
+// Ce n'est pas une préférence esthétique. Un e-mail de paiement chargé de liens
+// sociaux ressemble à un e-mail marketing — c'est-à-dire à ce qu'un hameçonneur
+// fabrique. La sobriété de la famille A est le repère qui permet à un
+// destinataire de distinguer un vrai message d'argent d'un faux.
+//
+// La règle est donc conservée, mais RESTREINTE à son domaine : familles B et D
+// portent les 4 liens, famille A n'en porte aucun. Arbitrage Will, 2026-08-31.
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("footer social — présent dans chaque email", () => {
+describe("footer social — selon la famille de l'e-mail", () => {
   const LIENS_SOCIAUX = [
     "https://www.linkedin.com/company/axion-ia-france/",
     "https://www.linkedin.com/in/williamsjullin/",
@@ -66,14 +78,28 @@ describe("footer social — présent dans chaque email", () => {
     "https://www.facebook.com/profile.php?id=61586489122989",
   ];
 
-  it("payment-receipt (fr) porte les 4 liens sociaux du footer", async () => {
+  it("famille B (force-majeure-notice) porte les 4 liens sociaux du footer", async () => {
+    const r = await renderEmailTemplate(
+      "force-majeure-notice" as never,
+      "fr",
+      PAYLOADS["force-majeure-notice"]!,
+    );
+    for (const lien of LIENS_SOCIAUX) {
+      expect(r.html, `famille B doit porter ${lien}`).toContain(lien);
+    }
+  });
+
+  it("famille A (payment-receipt) n'en porte AUCUN — un reçu n'est pas un support de marque", async () => {
     const r = await renderEmailTemplate(
       "payment-receipt" as never,
       "fr",
       PAYLOADS["payment-receipt"]!,
     );
     for (const lien of LIENS_SOCIAUX) {
-      expect(r.html).toContain(lien);
+      expect(r.html, `famille A ne doit pas porter ${lien}`).not.toContain(lien);
     }
+    // Ni preuve sociale, ni sollicitation d'avis sur une pièce comptable.
+    expect(r.html).not.toContain("Laisser un avis");
+    expect(r.html).not.toContain("Partager sur LinkedIn");
   });
 });

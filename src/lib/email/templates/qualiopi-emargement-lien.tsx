@@ -33,6 +33,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -51,9 +52,9 @@ export const qualiopiEmargementLienSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Votre lien de signature — ${p.titreFormation ?? "votre formation"} — Axion-IA`;
+    return objetCompose("Votre lien de signature —", p.titreFormation ?? "votre formation");
   }
-  return `Your attendance signature link — ${p.titreFormation ?? "your training"} — Axion-IA`;
+  return objetCompose("Signature link —", p.titreFormation ?? "your training");
 };
 
 export function QualiopiEmargementLienEmail({
@@ -70,21 +71,22 @@ export function QualiopiEmargementLienEmail({
   if (locale !== "fr") {
     return (
       <EmailLayout
-        preview="Your personal link to sign the attendance sheet."
+        famille="A"
+        preview="One half-day at a time, from your phone. Valid until 48 h after the session."
         title="Your attendance signature link"
         cta={{ label: "Sign my attendance", href: ctaHref }}
+        ctaSecret
         locale={locale}
       >
-        <Text style={emailStyles.paragraphStyle}>Hello {p.stagiairePrenomNom},</Text>
         <Text style={emailStyles.paragraphStyle}>
           Here is your personal link to sign the attendance sheet for{" "}
           <strong>{p.titreFormation}</strong> (session {p.numeroSession}), starting on{" "}
           {p.dateDebutFormation}.
         </Text>
         <Text style={emailStyles.paragraphStyle}>
-          Keep this link to yourself: it carries <strong>your</strong> signature. You will sign one
-          half-day at a time, from your own phone. The link stays valid until 48 hours after the end
-          of the session.
+          Hello {p.stagiairePrenomNom} — keep this link to yourself: it carries{" "}
+          <strong>your</strong> signature. You will sign one half-day at a time, from your own
+          phone. The link stays valid until 48 hours after the end of the session.
         </Text>
       </EmailLayout>
     );
@@ -92,21 +94,26 @@ export function QualiopiEmargementLienEmail({
 
   return (
     <EmailLayout
-      preview="Votre lien personnel pour signer la feuille de présence."
+      famille="A"
+      preview="Une demi-journée à la fois, depuis votre téléphone. Valable jusqu'à J+48 h."
       title="Votre lien de signature de présence"
       cta={{ label: "Signer ma présence", href: ctaHref }}
+      /* Ce lien PORTE la signature du stagiaire : le corps dit lui-même
+         « gardez ce lien pour vous ». L'imprimer en clair contredirait la
+         consigne dans le même message. */
+      ctaSecret
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
         Voici votre lien personnel pour signer la feuille de présence de{" "}
         <strong>{p.titreFormation}</strong> (session {p.numeroSession}), qui débute le{" "}
         {p.dateDebutFormation}.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Vous signerez une demi-journée à la fois, depuis votre téléphone, au fil de la formation.
-        Gardez ce lien pour vous : il porte <strong>votre</strong> signature, et une signature
-        attribuée à quelqu&apos;un d&apos;autre rendrait la feuille inexacte.
+        Bonjour {p.stagiairePrenomNom} — vous signerez une demi-journée à la fois, depuis votre
+        téléphone, au fil de la formation. Gardez ce lien pour vous : il porte{" "}
+        <strong>votre</strong> signature, et une signature attribuée à quelqu&apos;un d&apos;autre
+        rendrait la feuille inexacte.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Le lien reste valable jusqu&apos;à 48 heures après la fin de la session. Si vous le perdez,

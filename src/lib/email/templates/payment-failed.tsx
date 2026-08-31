@@ -18,6 +18,9 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Paiement non abouti",
+    // §7.8 : « dans 70 % des cas c'est une carte expirée, pas un refus de payer ».
+    // Le pré-en-tête rassure AVANT l'ouverture — c'est le moment de friction.
+    preview: "Aucun débit n'a été effectué. Le créneau reste pré-réservé 48 h.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (n: string, a: string) =>
       `Le paiement de ${a} pour la facture ${n} n'a pas pu aboutir. Aucun débit n'a été effectué sur votre compte.`,
@@ -31,6 +34,7 @@ const COPY = {
   },
   en: {
     title: "Payment failed",
+    preview: "No debit was made. Your slot stays pre-reserved for 48 hours.",
     intro: (n: string) => `Hello ${n},`,
     body: (n: string, a: string) =>
       `The payment of ${a} for invoice ${n} could not be completed. No debit was made on your account.`,
@@ -45,9 +49,7 @@ const COPY = {
 
 export const paymentFailedSubject = (locale: Locale, p: Record<string, unknown>): string => {
   const n = (p as unknown as Payload).invoiceNumber;
-  return locale === "fr"
-    ? `Paiement non abouti — ${n} — Axion-IA`
-    : `Payment failed — ${n} — Axion-IA`;
+  return locale === "fr" ? `Paiement non abouti — ${n}` : `Payment failed — ${n}`;
 };
 
 export function PaymentFailedEmail({
@@ -64,7 +66,7 @@ export function PaymentFailedEmail({
     ? { label: t.cta, href: p.retryUrl }
     : { label: t.ctaContact, href: `${baseUrl}/${locale}/contact` };
   return (
-    <EmailLayout preview={t.title} title={t.title} cta={cta} locale={locale}>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} cta={cta} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.invoiceNumber, p.amountTtc)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.reasonGeneric}</Text>

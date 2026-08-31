@@ -9,6 +9,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -26,9 +27,9 @@ export const qualiopiQuestionnaireRelanceSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Un petit rappel — votre avis sur ${p.titreFormation ?? "votre formation"} — Axion-IA`;
+    return objetCompose("Rappel — votre avis sur", p.titreFormation ?? "votre formation");
   }
-  return `A quick reminder — your feedback on ${p.titreFormation ?? "your training"} — Axion-IA`;
+  return objetCompose("Reminder — your feedback on", p.titreFormation ?? "your training");
 };
 
 export function QualiopiQuestionnaireRelanceEmail({
@@ -43,19 +44,20 @@ export function QualiopiQuestionnaireRelanceEmail({
   const ctaHref = p.lienQuestionnaire ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
+      famille="C"
       preview="Deux minutes suffisent — votre avis compte vraiment."
       title="Votre avis nous manque"
       cta={{ label: "Répondre au questionnaire", href: ctaHref }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
         Vous avez suivi la formation <strong>{p.titreFormation}</strong> et votre{" "}
         {p.libelleQuestionnaire} attend toujours votre réponse.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Deux minutes suffisent — et votre retour compte double : il nous aide à améliorer nos
-        formations, et il alimente le suivi qualité que nous devons tenir pour chaque session.
+        Bonjour {p.stagiairePrenomNom} — deux minutes suffisent, et votre retour compte double : il
+        nous aide à améliorer nos formations, et il alimente le suivi qualité que nous devons tenir
+        pour chaque session.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Si vous avez déjà répondu entre-temps, merci — vous pouvez ignorer ce message.
