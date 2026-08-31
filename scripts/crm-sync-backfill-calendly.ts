@@ -11,12 +11,17 @@
  *
  * Mais il a une conséquence que rien ne traitait : **tout ce qui a été capté
  * AVANT cette borne est hors du filet pour toujours.** Mesuré en production le
- * 2026-08-31 : sur 15 `calendly_events`, 7 ont un pendant CRM et 8 n'en ont
- * pas ; les 8 orphelines ont toutes été captées entre le 2026-07-01 et le
- * 2026-08-07, alors que le marqueur d'activation date du 2026-08-15T04:30Z.
- * Sept d'entre elles portent une adresse e-mail exploitable — sept vrais leads
- * qui ne seraient jamais entrés dans le CRM, et que la réconciliation
- * quotidienne ne signalait même pas.
+ * 2026-08-31 : les 8 réservations orphelines ont toutes été captées entre le
+ * 2026-07-01 et le 2026-08-07, alors que le marqueur d'activation date du
+ * 2026-08-15T04:30Z. La réconciliation quotidienne ne les signale même pas.
+ *
+ * ⚠️ MAIS LE VOLUME RÉEL EST BIEN PLUS FAIBLE QUE LE COMPTE BRUT. Sur les 7
+ * orphelines porteuses d'une adresse, **6 sont des réservations de test faites
+ * depuis le compte de la maison** (deux variantes de l'adresse du dirigeant) :
+ * un seul tiers figure dans le lot. Un rattrapage sans filtre aurait créé six
+ * fiches du dirigeant dans son propre CRM. D'où `--exclure`, et d'où la
+ * consigne : **lire la liste avant d'émettre**. Le compte d'orphelines n'est pas
+ * un compte de leads.
  *
  * Ce n'est donc pas une panne à réparer dans le filet : c'est un rattrapage
  * ponctuel, à faire une fois, en connaissance de cause. D'où un script et non
@@ -26,6 +31,26 @@
  *
  *   pnpm tsx scripts/crm-sync-backfill-calendly.ts            # SIMULATION
  *   pnpm tsx scripts/crm-sync-backfill-calendly.ts --emettre  # émet vraiment
+ *
+ * ## ⚠️ Comment le lancer CONTRE LA PRODUCTION
+ *
+ * `scripts/` **n'est pas** dans l'image de production : le `Dockerfile` ne copie
+ * que `scripts/docker-entrypoint.sh` (l.298). Déployer ce fichier ne suffit donc
+ * pas à le rendre exécutable en prod — vérifié le 2026-08-31, `ls scripts/` dans
+ * le conteneur worker rend 0 entrée.
+ *
+ * Le conteneur WORKER a en revanche tout le reste : `tsx`, `src/`, les
+ * `node_modules` et `DATABASE_URL`. On l'y dépose donc au moment de s'en servir :
+ *
+ *   docker cp crm-sync-backfill-calendly.ts <worker>:/app/backfill.ts
+ *   docker exec <worker> node_modules/.bin/tsx /app/backfill.ts        # simulation
+ *   docker exec <worker> node_modules/.bin/tsx /app/backfill.ts --emettre --exclure <adresse>
+ *   docker exec <worker> rm /app/backfill.ts
+ *
+ * 🔑 Ne PAS ajouter `scripts/` au `Dockerfile` pour cet usage : ce serait
+ * embarquer une trentaine d'outils de maintenance dans une image de production
+ * pour une opération qui n'aura lieu qu'une fois. Un rattrapage ponctuel se
+ * transporte, il ne se déploie pas.
  *
  * 🔑 La simulation est le DÉFAUT, et ce n'est pas de la prudence décorative :
  * émettre écrit dans `crm_sync_outbox`, ce qui déclenche de vraies créations de
@@ -51,6 +76,32 @@ import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { isCrmSyncEnabled } from "@/server/crm-sync/config";
 
 const EMETTRE = process.argv.includes("--emettre");
+
+/**
+ * Adresses à NE PAS rattraper, en sous-chaîne, répétable :
+ *   --exclure williamsjullin --exclure williamjullin
+ *
+ * 🔑 POURQUOI CETTE OPTION EXISTE (mesuré le 2026-08-31). Sur les 8 réservations
+ * orphelines de production, 7 portaient une adresse — et **6 d'entre elles
+ * étaient les réservations de test de Will lui-même** (deux variantes de sa
+ * propre adresse). Un seul tiers réel figurait dans le lot. Lancer le rattrapage
+ * sans filtre aurait donc créé six fiches du dirigeant dans son propre CRM :
+ * pas un rattrapage, une pollution.
+ *
+ * L'option prend une sous-chaîne et non une liste codée en dur : une adresse
+ * écrite dans ce fichier serait fausse au premier changement, et surtout ce
+ * script doit rester utilisable par quelqu'un d'autre, sur d'autres données.
+ */
+const EXCLUSIONS = process.argv.reduce<string[]>((acc, arg, i, tout) => {
+  if (arg === "--exclure" && tout[i + 1]) acc.push(tout[i + 1]!.toLowerCase());
+  return acc;
+}, []);
+
+function estExclu(email: string | null): boolean {
+  if (!email) return false;
+  const e = email.toLowerCase();
+  return EXCLUSIONS.some((motif) => e.includes(motif));
+}
 
 function subjectRef(id: string): string {
   return `site:calendly_event:${id}`;
@@ -90,14 +141,24 @@ async function main(): Promise<void> {
   const connues = new Set(dejaEmis.map((r) => r.subjectRef));
 
   const orphelines = evenements.filter((e) => !connues.has(subjectRef(e.id)));
-  const emettables = orphelines.filter((e) => e.inviteeEmail);
   const sansAdresse = orphelines.filter((e) => !e.inviteeEmail);
+  const exclues = orphelines.filter((e) => e.inviteeEmail && estExclu(e.inviteeEmail));
+  const emettables = orphelines.filter((e) => e.inviteeEmail && !estExclu(e.inviteeEmail));
 
-  console.log(`Réservations en base      : ${evenements.length}`);
-  console.log(`Déjà connues du CRM       : ${evenements.length - orphelines.length}`);
-  console.log(`Orphelines                : ${orphelines.length}`);
-  console.log(`  · émettables (adresse)  : ${emettables.length}`);
-  console.log(`  · sans adresse, ignorées: ${sansAdresse.length}`);
+  console.log(`Réservations en base       : ${evenements.length}`);
+  console.log(`Déjà connues du CRM        : ${evenements.length - orphelines.length}`);
+  console.log(`Orphelines                 : ${orphelines.length}`);
+  console.log(`  · émettables             : ${emettables.length}`);
+  console.log(`  · sans adresse, ignorées : ${sansAdresse.length}`);
+  console.log(`  · exclues par --exclure  : ${exclues.length}`);
+  if (!EXCLUSIONS.length) {
+    console.log("");
+    console.log(
+      "  ⚠️ Aucun --exclure passé. Vérifier la liste ci-dessous AVANT d'émettre :\n" +
+        "     les réservations de test faites depuis le compte de la maison portent une\n" +
+        "     vraie adresse et sont donc indiscernables d'un prospect pour ce script.",
+    );
+  }
   console.log("");
 
   for (const e of sansAdresse) {
@@ -106,7 +167,10 @@ async function main(): Promise<void> {
         `source ${e.source}) : aucune adresse, donc aucune clé de personne.`,
     );
   }
-  if (sansAdresse.length) console.log("");
+  for (const e of exclues) {
+    console.log(`  — exclue  ${e.id} (${e.inviteeEmail ?? ""}) : filtrée par --exclure.`);
+  }
+  if (sansAdresse.length || exclues.length) console.log("");
 
   if (!emettables.length) {
     console.log("✓ Rien à rattraper.");
