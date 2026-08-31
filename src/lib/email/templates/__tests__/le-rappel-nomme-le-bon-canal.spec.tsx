@@ -88,6 +88,35 @@ describe("l'e-mail nomme le bon canal", () => {
     expect(t).toContain("calendly.com/cancellations");
   });
 
+  it("🔴 le FORMAT fourni l'emporte sur la forme du lieu", async () => {
+    // Le cas qui justifie le champ : un rendez-vous que Calendly déclare en
+    // visio, dont le lieu a été ressaisi à la main en un texte qui ressemble à
+    // un numéro. Sans le format fourni, l'e-mail annoncerait un appel à
+    // quelqu'un qui attend un lien — et personne ne le verrait.
+    const t = await texte({
+      ...BASE,
+      moment: "confirmation",
+      lieu: "+33 6 12 34 56 78",
+      format: "visio",
+    });
+    expect(t.includes("appellerons")).toBe(false);
+    expect(t).toContain("visioconférence");
+  });
+
+  it("un format hors nomenclature retombe sur la forme, jamais sur lui-même", async () => {
+    // La charge transite par une file et est sérialisée : rien ne garantit la
+    // valeur. « telephone_mobile » n'est pas du vocabulaire connu — on redescend
+    // sur ce que le lieu laisse voir plutôt que d'écrire un mot brut.
+    const t = await texte({
+      ...BASE,
+      moment: "confirmation",
+      lieu: LIEN_VISIO,
+      format: "telephone_mobile",
+    });
+    expect(t.includes("appellerons")).toBe(false);
+    expect(t).toContain("meet.google.com");
+  });
+
   it("🔑 CONTRE-TÉMOIN : un lieu libre saisi à la main ne ment pas non plus", async () => {
     // « chez le client » est acceptable en console : aucun format n'est imposé.
     // Le gabarit doit l'afficher sans affirmer un canal qu'il ignore.

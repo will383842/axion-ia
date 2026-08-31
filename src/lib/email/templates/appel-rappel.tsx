@@ -83,6 +83,18 @@ interface Payload {
   dureeMinutes: number;
   /** Le numéro que le consultant appellera, ou le lieu du rendez-vous. */
   lieu?: string;
+  /**
+   * Le format du rendez-vous, quand l'appelant a pu le dériver proprement.
+   *
+   * 🔑 OPTIONNEL À DESSEIN. L'appelant qui dispose de la ligne complète
+   * (`rappels-appel.ts`) le dérive du `type` que Calendly pose — la source de
+   * vérité. Celui qui ne l'a pas l'omet, et le gabarit retombe alors sur la
+   * forme de `lieu`, qui est le dernier recours documenté dans
+   * `calendly/canal.ts`. Le rendre obligatoire forcerait un appelant qui ne
+   * sait pas à inventer une valeur, ce qui est exactement le défaut que toute
+   * cette chaîne cherche à éviter.
+   */
+  format?: string;
   cancelUrl?: string;
   rescheduleUrl?: string;
   moment?: MomentAppel;
@@ -232,6 +244,21 @@ const COPY = {
   },
 } as const;
 
+/**
+ * Le format à annoncer : celui que l'appelant a dérivé, sinon celui que la forme
+ * du lieu laisse deviner.
+ *
+ * On ne fait pas confiance à la chaîne reçue — le champ est typé `string` parce
+ * que les charges d'e-mail transitent par une file et sont sérialisées. Une
+ * valeur hors nomenclature retombe donc sur la déduction, jamais sur elle-même.
+ */
+function formatDuRendezVous(p: { lieu?: string; format?: string }): CanalRendezVous {
+  if (p.format === "telephone" || p.format === "visio" || p.format === "inconnu") {
+    return p.format;
+  }
+  return canalDuRendezVous(p.lieu);
+}
+
 export function AppelRappelEmail({
   locale,
   payload,
@@ -256,7 +283,7 @@ export function AppelRappelEmail({
           « Bonjour Jean, » en tête consommait ce résumé pour ne rien dire (§3.6). */}
       <Text style={emailStyles.paragraphStyle}>{t.quand(p.heure, p.dureeMinutes, p.date)}</Text>
       {p.lieu ? (
-        <Text style={emailStyles.paragraphStyle}>{c.lieu(p.lieu, canalDuRendezVous(p.lieu))}</Text>
+        <Text style={emailStyles.paragraphStyle}>{c.lieu(p.lieu, formatDuRendezVous(p))}</Text>
       ) : null}
       <Text style={emailStyles.paragraphStyle}>
         {c.intro(p.prenom)}
