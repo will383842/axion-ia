@@ -135,6 +135,14 @@ const CODES_ATTENDUS: string[] = [
   // `synchroniserAlertes` venu les résoudrait avant que quiconque les ait lus.
   "emails_en_echec",
   "emails_bloques_en_file",
+  // Ajoutés le 2026-08-31 : la sonde levait CINQ codes, ce catalogue en
+  // connaissait deux. Les trois autres arrivaient en console sans niveau ni
+  // guichet. La liste ci-dessus reste tenue à la main — c'est sa faiblesse ;
+  // `la-sonde-et-le-catalogue-ne-divergent-pas.spec.ts` la compense en
+  // dérivant la liste attendue de la sonde elle-même.
+  "emails_sante_non_mesurable",
+  "emails_rebonds",
+  "emails_rebonds_non_detectes",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

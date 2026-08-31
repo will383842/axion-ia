@@ -35,7 +35,7 @@
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-08-26" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-08-31" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -282,6 +282,51 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl: "https://calendly.com/dpa",
   },
   {
+    // 🔴 DÉCLARÉ LE 2026-08-31 — ET IL DEMANDE UNE DÉCISION AVANT LA VISIO.
+    //
+    // Le « Notetaker » de Calendly est activé au niveau du COMPTE et réglé pour
+    // rejoindre automatiquement les réunions avec des personnes extérieures. Il
+    // enregistre et transcrit ce qui s'y dit. C'est une ligne à part, et non une
+    // mention ajoutée à la ligne Calendly ci-dessus, parce qu'il ne traite pas
+    // les mêmes données : l'un traite des coordonnées, l'autre la PAROLE des
+    // gens.
+    //
+    // ⚠️ Ce n'est pas une formalité. Enregistrer une personne suppose de l'en
+    // informer et, en pratique, de recueillir son accord. Tant que les
+    // rendez-vous se tiennent par téléphone, aucune réunion en ligne n'existe et
+    // le Notetaker ne rejoint rien. Le jour où le lieu « Google Meet » est
+    // ajouté côté Calendly, il rejoindra les rendez-vous prospects — et il
+    // faudra AVANT cela soit le désactiver, soit annoncer l'enregistrement dans
+    // la description de l'event-type et recueillir l'accord.
+    //
+    // Cette ligne existe pour que la question ne se découvre pas après coup.
+    name: "Calendly LLC (Notetaker)",
+    location: "Atlanta, États-Unis",
+    serversLocation: "États-Unis",
+    purposeFr:
+      "Enregistrement et transcription automatiques des rendez-vous tenus en visioconférence, par un assistant qui rejoint la réunion. Réglé au niveau du compte pour rejoindre les réunions comptant des personnes extérieures.",
+    purposeEn:
+      "Automatic recording and transcription of appointments held by video conference, by an assistant that joins the meeting. Configured at account level to join meetings that include external participants.",
+    dataCategoriesFr:
+      "Enregistrement audio et vidéo de la réunion, transcription du contenu de la conversation, noms des participants. Aucun rendez-vous téléphonique n'est concerné.",
+    dataCategoriesEn:
+      "Audio and video recording of the meeting, transcript of the conversation, participant names. Phone appointments are not concerned.",
+    // 🔴 CONSENTEMENT, et non 6.1.b. Tenir un rendez-vous relève des mesures
+    // précontractuelles ; l'ENREGISTRER n'en relève pas — le rendez-vous se
+    // tient parfaitement sans. C'est un traitement distinct, qui suppose l'accord
+    // de la personne. Écrire 6.1.b ici serait s'accorder à soi-même une
+    // permission qu'on n'a pas demandée.
+    legalBasis: "6.1.a_consent",
+    dpaStatus: "signed",
+    transferFramework: "scc",
+    category: "communications",
+    // Aucun rendez-vous en visioconférence n'existe aujourd'hui : l'event-type
+    // ne propose que l'appel téléphonique (mesuré le 2026-08-31 : 0 visio sur
+    // 19 réservations). Le Notetaker ne rejoint donc aucun rendez-vous prospect.
+    activationStatus: "pending_activation",
+    documentationUrl: "https://calendly.com/dpa",
+  },
+  {
     // Ajouté le 2026-08-26, EN MÊME TEMPS que l'intégration — c'est tout
     // l'intérêt de la garde `sous-traitants-serveur.spec.ts` : elle a refusé la
     // branche tant que `GOOGLE_CALENDAR_PRIVATE_KEY` n'était rattachée à rien.
@@ -334,6 +379,46 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // sous-traitance au sens de l'art. 28. La sortie reste la bascule vers
     // Google Workspace.
     activationStatus: "active",
+    documentationUrl: "https://policies.google.com/privacy",
+  },
+  {
+    // Ajouté le 2026-08-31, EN MÊME TEMPS que le code qui rend la visio
+    // possible — et AVANT qu'un seul flux existe. C'est délibéré : déclarer
+    // après le premier rendez-vous, c'est déclarer en retard.
+    name: "Google Ireland Limited (Google Meet)",
+    location: "Dublin, Irlande",
+    serversLocation: "Union européenne et États-Unis",
+    purposeFr:
+      "Tenue des rendez-vous de découverte en visioconférence, lorsque la personne choisit ce format plutôt que le téléphone. Le lien de réunion est créé par Calendly au moment de la réservation ; nous ne créons ni n'hébergeons la réunion nous-mêmes.",
+    purposeEn:
+      "Holding discovery appointments by video conference, when the person chooses that format rather than a phone call. The meeting link is created by Calendly at booking time; we neither create nor host the meeting ourselves.",
+    dataCategoriesFr:
+      "Flux audio et vidéo de la réunion, nom affiché, adresse email du participant, adresse IP et données de connexion. Aucune de ces données n'est enregistrée ni conservée par Axion-IA.",
+    dataCategoriesEn:
+      "Audio and video streams of the meeting, display name, participant email address, IP address and connection data. None of this data is recorded or retained by Axion-IA.",
+    // Même base que l'agenda et que Calendly, et pour la même raison : tenir un
+    // rendez-vous de découverte relève des mesures précontractuelles.
+    legalBasis: "6.1.b_contract",
+    // Même constat que la ligne Google Agenda : le compte est un compte Gmail
+    // grand public, dont les conditions consommateur ne comportent pas d'accord
+    // de sous-traitance au sens de l'art. 28. La sortie est la même — la bascule
+    // vers Workspace, décidée par Will pour janvier 2027.
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "communications",
+    // 🔑 `pending_activation` EST UN CONSTAT, pas une précaution.
+    //
+    // Le code sait reconnaître, afficher et annoncer une visioconférence, mais
+    // l'event-type Calendly ne propose encore qu'un seul lieu : l'appel
+    // téléphonique. Mesuré le 2026-08-31 sur les 19 réservations de la base :
+    // 14 portent `outbound_call`, 5 aucun type, **0 aucune visio**. Tant que le
+    // lieu « Google Meet » n'est pas ajouté côté Calendly, aucune réunion n'est
+    // créée et aucun flux n'existe.
+    //
+    // ⚠️ À BASCULER EN `active` le jour où ce lieu est ajouté — et à ce
+    // moment-là seulement, la question du Notetaker ci-dessous devient une
+    // question ouverte et non plus théorique.
+    activationStatus: "pending_activation",
     documentationUrl: "https://policies.google.com/privacy",
   },
   {
