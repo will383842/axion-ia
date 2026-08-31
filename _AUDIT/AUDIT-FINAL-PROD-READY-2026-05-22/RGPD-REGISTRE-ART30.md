@@ -57,6 +57,7 @@ Aucun mineur ciblé. Public B2B exclusivement (dirigeants, RH, équipes formatio
 | Formulaire contact (`Submission`) | Nom, email, téléphone (optionnel), message, IP **SHA-256 hashée** via `IP_HASH_SALT`                  | Standard — pas de catégorie particulière art. 9                       |
 | Newsletter                        | Email, token unsubscribe (signature HMAC), date opt-in, IP SHA-256 hashée                             | Standard                                                              |
 | Booking (`Booking`)               | Nom, email, téléphone, créneau, mode (présentiel/distanciel/hybride), notes libres, IP SHA-256 hashée | Standard — PII at-rest AES-256-GCM via `pii-crypto.ts` (cf. ADR 0025) |
+| Réservation d'appel (`CalendlyEvent`) | Nom, email, téléphone, créneau et fuseau, lieu (n° appelé), réponses libres au formulaire Calendly, liens d'annulation/report, UTM et referrer, IP **SHA-256 hashée** (`_ipHash` dans la charge brute) | Standard — pas de catégorie particulière art. 9 |
 | Logs serveur / analytics          | IP **SHA-256 hashée**, user agent, paths visités, referrer                                            | Pseudonymisé                                                          |
 | Cookies                           | `axion_consent` (consentement), session admin Argon2id, anti-CSRF                                     | Aucune PII directe                                                    |
 
@@ -77,6 +78,7 @@ Aucun mineur ciblé. Public B2B exclusivement (dirigeants, RH, équipes formatio
 | **Sentry**                                   | Observability erreurs                 | États-Unis           | Stack traces, contexte erreur (PII redacted via `pii-redaction.ts`)          |
 | **GitHub** (Actions + GHCR)                  | CI/CD + image registry                | États-Unis           | Code source, artifacts build                                                 |
 | **Google Search Console + Bing WMT**         | SEO ops (read-only)                   | Mondial              | URLs publiques uniquement, aucune PII                                        |
+| **Calendly LLC**                             | Prise de rendez-vous `/appel`         | États-Unis (Atlanta) | Nom, email, téléphone, créneau, réponses au formulaire de réservation        |
 
 ### Destinataires internes
 
@@ -85,7 +87,9 @@ Aucun mineur ciblé. Public B2B exclusivement (dirigeants, RH, équipes formatio
 
 ## 7. Transferts hors UE
 
-Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitHub + Cloudflare (PoPs US) + Google + Bing.
+Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitHub + Cloudflare (PoPs US) + Google + Bing + **Calendly**.
+
+⚠️ **Calendly est le seul de cette liste à recevoir des données DIRECTEMENT identifiantes** (nom, email, téléphone d'un prospect), là où les autres transferts sont pseudonymisés ou sans PII. Son DPA a été **accepté le 2026-08-28** (cf. `_AUDIT/DPA-REGISTER.md` ligne 16 et `src/content/subprocessors.ts`), avec clauses contractuelles types. Ajouté à ce registre le 2026-08-31 : la chaîne Calendly a atterri le 2026-05-26, soit quatre jours après la rédaction de ce document, qui n'avait jamais été rouvert depuis.
 
 **Garanties art. 46 RGPD** :
 
@@ -106,6 +110,7 @@ Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitH
 | `Submission` (formulaire contact)                                              | 36 mois post-dernière interaction                                                                          | Cadre relation commerciale B2B (CNIL recommandation 36 mois)                         |
 | `Booking` (réservation intervention)                                           | 36 mois post-dernière interaction + 10 ans pour pièces comptables associées (factures)                     | Obligation comptable art. L123-22 Code de commerce                                   |
 | Newsletter (`Subscriber`)                                                      | Jusqu'à désinscription (unsubscribe token HMAC) + 13 mois après désinscription pour preuve de consentement | RGPD Lignes directrices CEPD consentement                                            |
+| `CalendlyEvent` (réservation d'appel)                                          | **36 mois** après le rendez-vous (ou après la capture si aucun horaire)                                     | Demande commerciale — durée alignée sur la notice art. 13 publiée (« Demandes commerciales : 3 ans ») |
 | Logs applicatifs (IP SHA-256, user agent, paths)                               | **28 jours rolling**                                                                                       | Sécurité opérationnelle (art. 6.1.f intérêt légitime — détection fraude, rate-limit) |
 | `Article` publié + contenus éditoriaux                                         | Indéfini                                                                                                   | Contenu non-PII, archives éditoriales                                                |
 | `GenerationProvenance` (AI Act art. 50 — promptHash, modelVersion, timestamps) | **6 ans**                                                                                                  | Obligation AI Act art. 19 + 50 (registre traitements IA) — cf. ADR 0024              |
@@ -113,7 +118,43 @@ Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitH
 | Sessions admin (Argon2id)                                                      | 7 jours sliding                                                                                            | Sécurité opérationnelle                                                              |
 | Backups DB chiffrés (cf. ADR 0022)                                             | 7 j local / 30 j distant Storage Box                                                                       | Continuité service + DRP                                                             |
 
+> ### ✅ Conservation des réservations d'appel — tranché le 2026-08-31
+>
+> **Le constat.** `retention-purge-worker.ts` traitait 24 modèles et
+> `calendlyEvent` n'en faisait pas partie : nom, e-mail, téléphone et réponses
+> libres des prospects se conservaient **sans limite**, la plus ancienne ligne
+> datant du 2026-07-01. Pendant ce temps, `src/content/legal.ts` annonçait
+> publiquement « Demandes commerciales : 3 ans ». Ce n'était donc pas une durée
+> manquante mais un **écart entre la notice art. 13 et la pratique**.
+>
+> **La décision, prise par Will le 2026-08-31** : conserver aussi longtemps que
+> le droit le permet. Une conservation indéfinie n'étant pas ouverte pour cette
+> finalité (art. 5.1.e — limitation de conservation), la durée retenue est la
+> durée usuelle maximale d'une demande commerciale, **36 mois**, qui présente
+> l'avantage d'être déjà celle qui est publiée. **Aucune modification de la
+> notice n'est donc nécessaire.**
+>
+> **Application** : purge quotidienne (03:00 UTC) sur `startTime`, avec repli sur
+> `capturedAt` pour les réservations sans horaire — sans ce repli, une ligne
+> jamais enrichie resterait en base indéfiniment. Surchargeable par
+> `RETENTION_CALENDLY_MONTHS`. Verrou :
+> `src/server/queue/workers/__tests__/la-retention-des-appels-suit-la-notice.spec.ts`
+> rougit si la durée du worker et celle de la notice divergent.
+>
+> ⚠️ Ne pas confondre avec la décision « prospection : conservation SANS LIMITE »
+> du 2026-08-20 (`ProspectionCompany` / `ProspectionPerson` /
+> `ProspectionHealthPractitioner`), qui reste **intacte** et protégée par sa
+> propre garde.
+
 Procédure d'effacement automatisée : workers `gdpr-purge-worker.ts` (à implémenter ou vérifié déjà présent dans `src/server/queue/workers/`) — cron daily 03:00 UTC.
+
+⚠️ **Restent absents de ce registre** (relevés le 2026-08-31, non traités dans ce
+lot faute d'avoir vérifié le détail des données transmises) : **ZeptoMail**
+(relais de tous les envois — donc destinataire de l'adresse e-mail de chaque
+personne) et **Google Agenda** (les rendez-vous Calendly y sont écrits, avec nom
+et numéro de téléphone dans la description). Ce dernier fait l'objet d'un écart
+art. 28 **assumé et daté** par Will jusqu'en janvier 2027 — l'inscrire au
+registre est la contrepartie de cet arbitrage, pas sa remise en cause.
 
 ## 9. Mesures techniques et organisationnelles de sécurité
 

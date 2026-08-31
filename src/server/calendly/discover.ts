@@ -126,7 +126,28 @@ export interface DiscoverOutcome {
   readonly reason?: string;
 }
 
-async function get(url: string, token: string): Promise<unknown | null> {
+/**
+ * Cause du dernier appel HTTP échoué, écrite par `get()` et lue par
+ * `discoverNewCalendlyEvents` pour qualifier son `reason`.
+ *
+ * 🔑 POURQUOI CET OBJET EXISTE (2026-08-31). `get()` rendait `null` sur TOUT
+ * échec : 401 jeton révoqué, 429 quota, 404 ressource disparue, délai dépassé,
+ * coupure réseau — un seul et même `null`, donc un seul et même message
+ * `user_unresolved` / `list_failed`. Le journal disait qu'il avait échoué,
+ * jamais POURQUOI, et aucun des trois gestes correctifs (régénérer le jeton,
+ * ralentir, attendre) n'était déductible. Mesuré en production le 2026-08-31 :
+ * `[calendly-poll] découverte en échec : user_unresolved` à 00:02:08, cause
+ * indéterminable a posteriori.
+ *
+ * ⚠️ Un objet mutable plutôt qu'un type retour `{ok,data}` : `get()` a trois
+ * appelants qui traitent déjà `null` comme « ignore et continue », et les
+ * réécrire ferait porter à ce lot un risque sans rapport avec le défaut.
+ */
+interface DiagnosticHttp {
+  cause?: string;
+}
+
+async function get(url: string, token: string, diag?: DiagnosticHttp): Promise<unknown | null> {
   try {
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -134,9 +155,16 @@ async function get(url: string, token: string): Promise<unknown | null> {
       // Sondage : on veut l'état courant, jamais une réponse mise en cache.
       cache: "no-store",
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      // Le statut est la seule chose qui distingue « notre jeton est mort » de
+      // « on tape trop vite » — il ne doit pas se perdre.
+      if (diag) diag.cause = `http_${res.status}`;
+      return null;
+    }
     return (await res.json()) as unknown;
-  } catch {
+  } catch (e) {
+    // `AbortSignal.timeout` lève une `TimeoutError`; le reste est réseau/JSON.
+    if (diag) diag.cause = e instanceof Error && e.name === "TimeoutError" ? "timeout" : "network";
     return null;
   }
 }
@@ -221,9 +249,15 @@ export async function discoverNewCalendlyEvents(
   const token = process.env.CALENDLY_API_TOKEN?.trim();
   if (!token) return { ok: true, scanned: 0, created: 0, reason: "not_configured" };
 
-  const me = record(record(await get(`${CALENDLY_API_BASE}/users/me`, token))?.["resource"]);
+  const diag: DiagnosticHttp = {};
+  const me = record(record(await get(`${CALENDLY_API_BASE}/users/me`, token, diag))?.["resource"]);
   const userUri = str(me?.["uri"], 255);
-  if (!userUri) return { ok: false, scanned: 0, created: 0, reason: "user_unresolved" };
+  if (!userUri) {
+    // `user_unresolved` seul ne disait pas s'il fallait régénérer le jeton
+    // (401/403), attendre (429) ou ne rien faire (coupure passagère).
+    const cause = diag.cause ?? "reponse_illisible";
+    return { ok: false, scanned: 0, created: 0, reason: `user_unresolved:${cause}` };
+  }
 
   const lookbackMs = await profondeurRattrapage(nowMs);
 
@@ -243,12 +277,18 @@ export async function discoverNewCalendlyEvents(
   let pagesTronquees = false;
   let url: string | null = baseUrl;
   for (let page = 0; page < MAX_PAGES && url; page++) {
-    const corps = record(await get(url, token));
+    // `delete` et non `= undefined` : `exactOptionalPropertyTypes` est actif,
+    // une propriété optionnelle ne s'efface pas en lui assignant `undefined`.
+    delete diag.cause;
+    const corps = record(await get(url, token, diag));
     const lot = corps?.["collection"];
     if (!Array.isArray(lot)) {
       // Une première page illisible est un échec ; une page SUIVANTE illisible
       // laisse ce qu'on a déjà, plutôt que de tout jeter.
-      if (page === 0) return { ok: false, scanned: 0, created: 0, reason: "list_failed" };
+      if (page === 0) {
+        const cause = diag.cause ?? "reponse_illisible";
+        return { ok: false, scanned: 0, created: 0, reason: `list_failed:${cause}` };
+      }
       break;
     }
     collection.push(...lot);

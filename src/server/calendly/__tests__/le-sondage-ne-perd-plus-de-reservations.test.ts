@@ -243,7 +243,39 @@ describe("la liste est paginée, et une troncature se DIT", () => {
     // Sans ce témoin, le test précédent passerait aussi si la fonction avalait
     // TOUTE erreur de liste en rendant un succès vide — le pire des deux mondes.
     expect(res.ok).toBe(false);
-    expect(res.reason).toBe("list_failed");
+    // Depuis le 2026-08-31 la raison PORTE le statut : `list_failed:http_500`.
+    expect(res.reason).toBe("list_failed:http_500");
+  });
+
+  /**
+   * 🔴 TÉMOIN du correctif du 2026-08-31 — deux pannes différentes doivent
+   * produire deux messages différents.
+   *
+   * `get()` rendait `null` sur tout échec, donc un jeton révoqué (401), un
+   * quota dépassé (429) et une ressource disparue (404) sortaient tous sous le
+   * même `user_unresolved`. Aucun des trois gestes correctifs — régénérer,
+   * ralentir, ignorer — n'était déductible du journal. Mesuré en production le
+   * 2026-08-31 à 00:02:08, cause restée indéterminable.
+   *
+   * Ce témoin échouerait si quelqu'un ré-avalait la cause : il n'assertionne
+   * pas une chaîne, il assertionne que les deux chaînes DIFFÈRENT — c'est la
+   * propriété qui a manqué, pas le libellé.
+   */
+  it("🔴 TÉMOIN : un jeton refusé et un quota dépassé ne rendent PAS la même raison", async () => {
+    const raisonPour = async (statut: number): Promise<string | undefined> => {
+      fetchMock.mockImplementation((url: string) => {
+        if (url.includes("/users/me")) return reponse({}, statut);
+        return reponse({});
+      });
+      return (await discoverNewCalendlyEvents()).reason;
+    };
+
+    const jetonRefuse = await raisonPour(401);
+    const quotaDepasse = await raisonPour(429);
+
+    expect(jetonRefuse).toBe("user_unresolved:http_401");
+    expect(quotaDepasse).toBe("user_unresolved:http_429");
+    expect(jetonRefuse).not.toBe(quotaDepasse);
   });
 
   it("ne suit PAS une next_page qui pointe ailleurs que chez Calendly", async () => {

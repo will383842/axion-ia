@@ -254,9 +254,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // insensible à la casse, contrairement aux candidatures dont l'adresse est
   // chiffrée avec un IV aléatoire et exige un balayage déchiffrant borné. Aucun
   // plafond ici, donc aucun avertissement de troncature à émettre.
+  /**
+   * 🔴 LA COLONNE NE SUFFIT PAS (corrigé le 2026-08-31) — même angle mort que
+   * l'effacement, et il faut le corriger des DEUX côtés : une réservation
+   * captée mais jamais enrichie a `inviteeEmail` à NULL alors que son
+   * `rawPayload` porte l'adresse. Mesuré en production : 1 ligne sur 15. Elle
+   * sortait d'un export qui se présente pourtant comme complet.
+   *
+   * `position(... in ...)` et non `ILIKE` : une adresse contenant `%` ou `_`
+   * deviendrait un joker et exporterait les rendez-vous d'autrui — une fuite,
+   * pas un oubli.
+   */
+  const idsParPayload = await prisma.$queryRaw<{ id: string }[]>`
+      SELECT id FROM calendly_events
+      WHERE position(lower(${email}) in lower(raw_payload::text)) > 0
+    `.catch(() => [] as { id: string }[]);
+
   const rendezVous = await prisma.calendlyEvent
     .findMany({
-      where: { inviteeEmail: email },
+      where: {
+        OR: [
+          { inviteeEmail: email },
+          ...(idsParPayload.length ? [{ id: { in: idsParPayload.map((r) => r.id) } }] : []),
+        ],
+      },
       orderBy: { capturedAt: "desc" },
       select: {
         eventTypeName: true,
@@ -272,6 +293,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         cancelUrl: true,
         rescheduleUrl: true,
         pageUrl: true,
+        // ── Ajoutés le 2026-08-31 ────────────────────────────────────────
+        // Ces champs étaient tus alors que la notice d'exclusions plus bas
+        // n'en déclarait aucun : l'export se donnait pour « complet sauf la
+        // liste ci-dessous » avec une liste incomplète. `notes` est une
+        // appréciation écrite SUR la personne : l'article 15 y donne accès,
+        // et c'est précisément le genre de champ qu'on n'a pas le droit
+        // d'omettre en silence.
+        notes: true,
+        referrer: true,
+        utmSource: true,
+        utmMedium: true,
+        utmCampaign: true,
+        source: true,
         // Les réponses libres au formulaire ne vivent QUE là — aucune colonne
         // ne les porte. Les omettre reviendrait à taire ce que la personne a
         // elle-même écrit.
@@ -326,6 +360,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       lienAnnulation: r.cancelUrl,
       lienReport: r.rescheduleUrl,
       pageOrigine: r.pageUrl,
+      // Ajoutés le 2026-08-31 : sélectionnés en base mais jamais rendus, ils
+      // étaient invisibles à l'export sans figurer dans les exclusions.
+      notesInternes: r.notes,
+      siteReferent: r.referrer,
+      origineCampagne:
+        [r.utmSource, r.utmMedium, r.utmCampaign].filter(Boolean).join(" / ") || null,
+      canalDeCapture: r.source,
       // Restituées avec la MÊME fonction que celle qui les envoie dans l'alerte
       // interne — importée, jamais recopiée : la personne reçoit exactement ce
       // que nous lisons d'elle. Le filtre « question de téléphone » de cette

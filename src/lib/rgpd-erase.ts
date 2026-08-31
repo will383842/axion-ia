@@ -523,11 +523,41 @@ export interface EraseCalendlyResult {
 export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseCalendlyResult> {
   const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
 
+  /**
+   * 🔴 LA COLONNE NE SUFFIT PAS (corrigé le 2026-08-31).
+   *
+   * Ce `where` ne portait que sur `inviteeEmail`. Or une réservation captée
+   * mais jamais enrichie a cette colonne à NULL alors que son `rawPayload`
+   * contient l'adresse — mesuré en production le 2026-08-31 : 1 ligne sur 15,
+   * porteuse de notes, d'une URL de page, des deux URI Calendly et d'une
+   * empreinte d'IP. La personne recevait une confirmation d'effacement pendant
+   * que sa ligne survivait intacte, et rien ne le signalait.
+   *
+   * On récupère donc d'abord les identifiants par une recherche qui regarde
+   * AUSSI la charge brute, puis on efface par identifiant.
+   *
+   * ⚠️ `position(... in ...)` et non `ILIKE` : une adresse contenant `%` ou
+   * `_` — caractères légaux avant l'arobase — se transformerait en joker et
+   * effacerait les lignes d'autrui. C'est une comparaison littérale.
+   *
+   * ⚠️ La fenêtre entre ce SELECT et l'UPDATE est sans conséquence : le cron
+   * `refresh` ne peut qu'ENRICHIR une ligne, jamais la faire sortir du lot —
+   * une ligne qui gagnerait `inviteeEmail` entre les deux serait de toute
+   * façon déjà dans la liste, puisqu'elle portait l'adresse dans son payload.
+   */
+  const parPayload = await prisma.$queryRaw<{ id: string }[]>`
+    SELECT id FROM calendly_events
+    WHERE position(lower(${email}) in lower(raw_payload::text)) > 0
+  `;
+  const idsPayload = parPayload.map((r) => r.id);
+
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
   // sort de la fenêtre du cron au même instant. En deux temps, un passage de
   // `refresh` glissé entre les deux réécrirait la charge brute.
   const result = await prisma.calendlyEvent.updateMany({
-    where: { inviteeEmail: email },
+    where: {
+      OR: [{ inviteeEmail: email }, ...(idsPayload.length ? [{ id: { in: idsPayload } }] : [])],
+    },
     data: {
       inviteeName: ERASED_PLACEHOLDER,
       inviteeEmail: hashedEmail,

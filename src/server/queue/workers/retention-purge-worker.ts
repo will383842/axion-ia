@@ -52,6 +52,11 @@ const DEFAULTS = {
   chat: 12,
   funnelEvents: 12,
   candidatures: 24,
+  // Réservations d'appel (2026-08-31). 36 mois — valeur DÉRIVÉE de la notice
+  // publiée (`src/content/legal.ts` : « Demandes commerciales : 3 ans »), pas
+  // choisie ici. Si la notice change, cette valeur doit changer avec elle : le
+  // test `la-retention-des-appels-suit-la-notice.spec.ts` rougit sinon.
+  reservationsAppel: 36,
   // Chaine d'envoi (audit 2026-08-16). 13 mois = norme CNIL de prospection.
   // Voir le bloc commente dans le handler pour le raisonnement.
   //
@@ -118,6 +123,7 @@ export async function executerPurgeRetention(): Promise<void> {
   const counts = {
     logs: 0,
     submissions: 0,
+    reservationsAppel: 0,
     newsletter: 0,
     generationLogs: 0,
     costLedger: 0,
@@ -197,6 +203,38 @@ export async function executerPurgeRetention(): Promise<void> {
     });
     counts.submissions++;
   }
+
+  // 2 bis) réservations d'appel anciennes — `calendly_events`
+  //
+  // 🔴 CETTE TABLE N'ÉTAIT PURGÉE PAR RIEN (constat du 2026-08-31). Nom, e-mail,
+  // téléphone et réponses libres des prospects se conservaient sans limite, la
+  // plus ancienne ligne datant du 2026-07-01.
+  //
+  // 🔑 Ce n'est pas une durée choisie ici : `src/content/legal.ts` ANNONCE
+  // publiquement « Demandes commerciales : 3 ans » depuis toujours. Une durée
+  // publiée dans la notice art. 13 qu'aucun mécanisme n'applique est un écart
+  // entre ce qu'on dit aux personnes et ce qu'on fait — c'est lui qu'on ferme,
+  // pas un idéal qu'on invente. 36 mois, donc, et pas autre chose.
+  //
+  // ⚠️ NE PAS confondre avec la décision « prospection : conservation SANS
+  // LIMITE » du 2026-08-20 : celle-ci porte sur `ProspectionCompany` /
+  // `ProspectionPerson` / `ProspectionHealthPractitioner`, des fiches
+  // constituées, et elle reste intacte. Une réservation d'appel est une demande
+  // entrante d'une personne qui nous a écrit — autre finalité, autre régime.
+  //
+  // L'ancre est le dernier contact réel : `startTime` quand le rendez-vous a eu
+  // lieu, sinon la date de capture. Une ligne sans horaire (réservation jamais
+  // enrichie) retombe donc sur `capturedAt` au lieu d'échapper au filtre — le
+  // piège du `NULL` qui met une ligne hors de portée, déjà rencontré sur
+  // l'effacement RGPD de cette même table.
+  const rdvMonths = readMonths("RETENTION_CALENDLY_MONTHS", DEFAULTS.reservationsAppel);
+  const limiteRdv = monthsAgo(rdvMonths);
+  const rdvPurges = await prisma.calendlyEvent.deleteMany({
+    where: {
+      OR: [{ startTime: { lt: limiteRdv } }, { startTime: null, capturedAt: { lt: limiteRdv } }],
+    },
+  });
+  counts.reservationsAppel = rdvPurges.count;
 
   // 3) newsletter_subscribers unsubscribed anciens
   const newsMonths = readMonths("RETENTION_NEWSLETTER_UNSUB_MONTHS", DEFAULTS.newsletterUnsub);
@@ -459,6 +497,7 @@ export async function executerPurgeRetention(): Promise<void> {
 
   console.log(
     `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
+      `reservationsAppel=${counts.reservationsAppel}/${rdvMonths}m ` +
       `newsletter=${counts.newsletter} ` +
       `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
       `webVitals=${counts.webVitals} ` +

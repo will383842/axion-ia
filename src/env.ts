@@ -57,7 +57,12 @@ export const env = createEnv({
     // typées, documentées, et visibles de quiconque lit la configuration.
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
-    SMTP_FROM_ADDRESS: z.string().email().default("noreply@axion-ia.com"),
+    // 🔴 Le defaut valait `noreply@axion-ia.com` jusqu'au 2026-08-31, et la
+    // variable n'est posee nulle part : c'est donc ce defaut qui signait tous
+    // les envois. Le referentiel e-mail (§3.2) l'interdit, et `client.ts`
+    // refuse desormais activement toute adresse en `noreply@` (repli + log).
+    // Le defaut est aligne ici pour que les deux disent la meme chose.
+    SMTP_FROM_ADDRESS: z.string().email().default("contact@axion-ia.com"),
     SMTP_FROM_NAME: z.string().default("Axion-IA"),
     SMTP_FROM_MARKETING: z.string().email().default("news@axion-ia.com"),
     PMTA_API_URL: z.string().url().optional(),
@@ -123,9 +128,31 @@ export const env = createEnv({
     // Clé de signature du webhook Calendly (2026-08-09, ADR 0039).
     // Absente = `/api/calendly/webhook` répond 200 sans rien faire, et le
     // sondage BullMQ (≤ 60 s) reste le chemin nominal. Posée = livraison
-    // instantanée (~2 s). Exige un plan Calendly Standard : le plan gratuit
-    // n'a pas droit aux abonnements webhook.
-    // Obtenue UNE SEULE FOIS via `pnpm calendly:webhook:subscribe`.
+    // instantanée (~2 s).
+    //
+    // 🔴 ÉTAT CONSTATÉ EN PRODUCTION LE 2026-08-31 : cette clé est ABSENTE, et
+    // elle l'a toujours été — `calendly_events` ne contient pas une seule ligne
+    // de source `webhook` depuis la création de la table. Le sondage porte donc
+    // seul la découverte (≤ 60 s pour une création, ≤ 10 min pour une
+    // annulation via le cron `refresh`). Ce n'est pas un oubli de configuration
+    // mais une conséquence : voir ci-dessous.
+    //
+    // ⚠️ LA CAUSE N'EST PAS LE PLAN — ce commentaire a affirmé jusqu'au
+    // 2026-08-31 qu'un plan Standard était exigé et que « le plan gratuit n'y a
+    // pas droit ». C'est une cause qui n'avait jamais été mesurée. Mesuré
+    // depuis : le jeton `CALENDLY_API_TOKEN` de production ne porte que
+    // `event_types:read scheduled_events:read users:read`, sans aucune portée
+    // `webhooks:*` — et Calendly ne crée un webhook QUE par API. Le script de
+    // souscription ne pouvait donc pas aboutir, quel que soit le plan.
+    // `GET /organizations/{uuid}` répondant lui aussi 403 faute de
+    // `organizations:read`, le plan réel reste à ce jour NON VÉRIFIÉ : on sait
+    // que la portée manque, on ne sait pas si le plan suffirait ensuite.
+    //
+    // ⛔ Geste pour activer : régénérer un jeton personnel Calendly incluant
+    // `webhooks:read` ET `webhooks:write`, le poser dans CALENDLY_API_TOKEN,
+    // puis lancer `pnpm calendly:webhook:subscribe` — il distingue désormais un
+    // 403 de portée d'un 403 de plan au lieu de conclure au second.
+    // La clé n'est affichée qu'UNE SEULE FOIS, à la création.
     CALENDLY_WEBHOOK_SIGNING_KEY: z.string().optional(),
 
     // ── Agenda Google — console « Agenda » (2026-08-26) ────────────────────

@@ -77,9 +77,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale,
       path: "/appel",
       title: titleStr,
+      // 157 car. — sous `META_DESCRIPTION_MAX` (158), donc servie ENTIÈRE.
+      // Avant le 2026-08-31 elle en faisait 212 : la prod s'arrêtait sur
+      // « …SaaS web… » et perdait la clause finale, qui est la seule promesse
+      // différenciante de la page. Elle figurait à ce titre dans la `DETTE` du
+      // garde-fou `meta-description-longueur.spec.ts`, d'où sa ligne a été
+      // retirée en même temps que ce raccourcissement — le cliquet exige que le
+      // chiffre reste exact, il rougit donc si l'un bouge sans l'autre.
       description: isFr
-        ? "Un premier échange de 45 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."
-        : "Un premier échange de 45 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale.",
+        ? "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Sans engagement ni pression commerciale."
+        : "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Sans engagement ni pression commerciale.",
       alternates: { fr: "/appel", en: "/book-a-call" },
     })),
     title: { absolute: titleStr },

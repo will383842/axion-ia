@@ -36,8 +36,18 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const updateMany = vi.fn();
+const queryRaw = vi.fn();
 vi.mock("@/lib/prisma", () => ({
-  prisma: { calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) } },
+  prisma: {
+    calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
+    // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
+    // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
+    // `raw_payload` contient l'adresse, parce qu'une réservation non enrichie a
+    // `inviteeEmail` à NULL (1 ligne sur 15 en production) et échappait alors à
+    // l'effacement ET à l'export. Le mock rend une liste vide : ces tests-ci
+    // portent sur la NEUTRALISATION des champs, pas sur la sélection des lignes.
+    $queryRaw: (...a: unknown[]) => queryRaw(...a),
+  },
 }));
 
 vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "hash" }));
@@ -45,6 +55,7 @@ vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "hash" }
 beforeEach(() => {
   vi.clearAllMocks();
   updateMany.mockResolvedValue({ count: 1 });
+  queryRaw.mockResolvedValue([]);
 });
 
 /** Lit un fichier de production, en rougissant si la cible a déménagé. */
