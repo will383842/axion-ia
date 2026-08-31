@@ -255,29 +255,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // chiffrée avec un IV aléatoire et exige un balayage déchiffrant borné. Aucun
   // plafond ici, donc aucun avertissement de troncature à émettre.
   /**
-   * 🔴 LA COLONNE NE SUFFIT PAS (corrigé le 2026-08-31) — même angle mort que
-   * l'effacement, et il faut le corriger des DEUX côtés : une réservation
-   * captée mais jamais enrichie a `inviteeEmail` à NULL alors que son
-   * `rawPayload` porte l'adresse. Mesuré en production : 1 ligne sur 15. Elle
-   * sortait d'un export qui se présente pourtant comme complet.
+   * 🔴 ON NE CHERCHE **PAS** L'ADRESSE DANS LA CHARGE BRUTE. Révoqué le
+   * 2026-08-31, le jour même où ce chemin avait été élargi — voir le bloc
+   * jumeau dans `src/lib/rgpd-erase.ts`, les deux vont ensemble.
    *
-   * `position(... in ...)` et non `ILIKE` : une adresse contenant `%` ou `_`
-   * deviendrait un joker et exporterait les rendez-vous d'autrui — une fuite,
-   * pas un oubli.
+   * L'élargissement visait une réservation non enrichie dont la colonne serait
+   * nulle pendant que le JSON porterait l'adresse : **0 ligne sur 18** en
+   * production, et le cas est structurellement impossible (une capture
+   * navigateur ne transporte que deux URI, une ligne enrichie a sa colonne
+   * remplie).
+   *
+   * ⚠️ Ce qu'il ouvrait était réel : `rawPayload` contient `event_guests`. Un
+   * invité ajouté par le prospect s'authentifie légitimement — le jeton part à
+   * SA propre adresse — et obtenait la fiche complète du prospect : nom,
+   * téléphone, notes internes écrites sur lui, et surtout `cancelUrl` /
+   * `rescheduleUrl`, des URL-capacités qui annulent le rendez-vous d'autrui
+   * **sans aucune authentification**.
+   *
+   * 🔑 `inviteeEmail` désigne le TITULAIRE, jamais ses invités. Verrou :
+   * `src/lib/__tests__/un-invite-ne-voit-pas-la-fiche-du-prospect.spec.ts`.
    */
-  const idsParPayload = await prisma.$queryRaw<{ id: string }[]>`
-      SELECT id FROM calendly_events
-      WHERE position(lower(${email}) in lower(raw_payload::text)) > 0
-    `.catch(() => [] as { id: string }[]);
-
   const rendezVous = await prisma.calendlyEvent
     .findMany({
-      where: {
-        OR: [
-          { inviteeEmail: email },
-          ...(idsParPayload.length ? [{ id: { in: idsParPayload.map((r) => r.id) } }] : []),
-        ],
-      },
+      where: { inviteeEmail: email },
       orderBy: { capturedAt: "desc" },
       select: {
         eventTypeName: true,
