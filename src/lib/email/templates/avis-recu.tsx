@@ -23,6 +23,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Merci pour votre avis",
+    preview: "Il est relu avant publication — quelques jours. Rien à faire de votre côté.",
     intro: (n?: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: "Merci d'avoir pris le temps de laisser votre avis. C'est court à écrire et long à mériter — nous y attachons de l'importance.",
     moderation:
@@ -33,6 +34,7 @@ const COPY = {
   },
   en: {
     title: "Thank you for your review",
+    preview: "It is checked before publication — a few days. Nothing to do on your side.",
     intro: (n?: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thank you for taking the time to leave a review. It is quick to write and slow to earn — we do not take it lightly.",
     moderation:
@@ -43,7 +45,7 @@ const COPY = {
 } as const;
 
 export const avisRecuSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr" ? "Merci pour votre avis — Axion-IA" : "Thank you for your review — Axion-IA";
+  locale === "fr" ? "Merci pour votre avis" : "Thank you for your review";
 
 export function AvisRecuEmail({
   locale,
@@ -55,10 +57,13 @@ export function AvisRecuEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.moderation}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.moderation}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.suite}
       </Text>

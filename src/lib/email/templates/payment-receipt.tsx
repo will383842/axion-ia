@@ -19,6 +19,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Paiement reçu",
+    preview: (a: string) => `${a} encaissés. Ce message vaut reçu — à conserver.`,
     intro: (n: string) => `Bonjour ${n},`,
     body: (n: string, a: string, d: string) =>
       `Nous avons bien reçu votre paiement de ${a} pour la facture ${n} le ${d}. Merci.`,
@@ -31,6 +32,7 @@ const COPY = {
   },
   en: {
     title: "Payment received",
+    preview: (a: string) => `${a} received. This message is your receipt — keep it.`,
     intro: (n: string) => `Hello ${n},`,
     body: (n: string, a: string, d: string) =>
       `We received your payment of ${a} for invoice ${n} on ${d}. Thank you.`,
@@ -45,7 +47,7 @@ const COPY = {
 
 export const paymentReceiptSubject = (locale: Locale, p: Record<string, unknown>): string => {
   const n = (p as unknown as Payload).invoiceNumber;
-  return locale === "fr" ? `Paiement reçu — ${n} — Axion-IA` : `Payment received — ${n} — Axion-IA`;
+  return locale === "fr" ? `Paiement reçu — ${n}` : `Payment received — ${n}`;
 };
 
 export function PaymentReceiptEmail({
@@ -66,17 +68,18 @@ export function PaymentReceiptEmail({
         : t.nextInstallment;
   return (
     <EmailLayout
-      preview={t.title}
+      famille="A"
+      preview={t.preview(p.amountTtc)}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/mes-donnees/booking/${p.bookingId}` }}
       locale={locale}
-      snowball="review"
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.body(p.invoiceNumber, p.amountTtc, p.paidAt)}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)} {next}
+      </Text>
     </EmailLayout>
   );
 }

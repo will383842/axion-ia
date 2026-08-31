@@ -27,6 +27,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Votre demande est bien transmise",
+    preview: "Une personne de l'équipe vous répond sous deux jours ouvrés.",
     intro: "Bonjour,",
     rappel:
       "Vous avez demandé à être recontacté depuis notre assistant. Votre demande est arrivée et une personne de l'équipe vous répondra.",
@@ -38,6 +39,7 @@ const COPY = {
   },
   en: {
     title: "Your request has been passed on",
+    preview: "Someone from the team replies within two working days.",
     intro: "Hello,",
     rappel:
       "You asked to be contacted through our assistant. Your request has arrived and someone from the team will reply.",
@@ -52,10 +54,7 @@ const COPY = {
 export const chatbotDemandeTransmiseSubject = (
   locale: Locale,
   _p: Record<string, unknown>,
-): string =>
-  locale === "fr"
-    ? "Votre demande est transmise — Axion-IA"
-    : "Your request is on its way — Axion-IA";
+): string => (locale === "fr" ? "Votre demande est transmise" : "Your request is on its way");
 
 export function ChatbotDemandeTransmiseEmail({
   locale,
@@ -67,20 +66,20 @@ export function ChatbotDemandeTransmiseEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
-      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>
         {p.contexte === "question" ? t.question : t.rappel}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.delai}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro}
+        <br />
+        {t.delai}
+      </Text>
       {p.extrait ? (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
           {t.rappelExtrait} « {p.extrait} »
         </Text>
       ) : null}
-      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.contact}
-      </Text>
     </EmailLayout>
   );
 }

@@ -54,6 +54,9 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Vos données ont été effacées",
+    // Le pré-en-tête dit ce que l'objet ne dit pas : ce message EST la preuve,
+    // et c'est le dernier. Deux informations qui décident de le garder.
+    preview: "Conservez ce message : il vaut preuve. C'est aussi le dernier que vous recevrez.",
     intro: "Bonjour,",
     fait: (d: string) =>
       `Votre demande d'effacement (article 17 du RGPD) a été exécutée le ${d}. Ce message en est la confirmation ; conservez-le, il constitue votre preuve.`,
@@ -69,6 +72,7 @@ const COPY = {
   },
   en: {
     title: "Your data has been erased",
+    preview: "Keep this message: it is your proof. It is also the last you will receive.",
     intro: "Hello,",
     fait: (d: string) =>
       `Your erasure request (GDPR article 17) was carried out on ${d}. This message is your confirmation — keep it, it is your proof.`,
@@ -89,8 +93,8 @@ export const rgpdEffacementConfirmeSubject = (
   _p: Record<string, unknown>,
 ): string =>
   locale === "fr"
-    ? "Confirmation : vos données ont été effacées — Axion-IA"
-    : "Confirmed: your data has been erased — Axion-IA";
+    ? "Confirmation : vos données ont été effacées"
+    : "Confirmed: your data has been erased";
 
 export function RgpdEffacementConfirmeEmail({
   locale,
@@ -102,7 +106,7 @@ export function RgpdEffacementConfirmeEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
+    <EmailLayout famille="A" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.fait(p.effectueLe)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.detail}</Text>

@@ -14,6 +14,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Annulation confirmée",
+    preview: "Aucun débit supplémentaire. Le sort de l'acompte est précisé dans le message.",
     intro: (n: string) => `Bonjour ${n},`,
     body: "Nous confirmons l'annulation de votre intervention. Aucun débit supplémentaire ne sera effectué.",
     refundYes: (p: number) =>
@@ -25,6 +26,7 @@ const COPY = {
   },
   en: {
     title: "Cancellation confirmed",
+    preview: "No further charges. What happens to the deposit is set out inside.",
     intro: (n: string) => `Hello ${n},`,
     body: "We confirm the cancellation of your session. No further charges will be made.",
     refundYes: (p: number) =>
@@ -39,8 +41,7 @@ const COPY = {
 export const cancellationConfirmedByUserSubject = (
   locale: Locale,
   _p: Record<string, unknown>,
-): string =>
-  locale === "fr" ? "Annulation confirmée — Axion-IA" : "Cancellation confirmed — Axion-IA";
+): string => (locale === "fr" ? "Annulation confirmée" : "Cancellation confirmed");
 
 export function CancellationConfirmedByUserEmail({
   locale,
@@ -54,17 +55,21 @@ export function CancellationConfirmedByUserEmail({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/interventions` }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {p.refundPercentage > 0 ? t.refundYes(p.refundPercentage) : t.refundNo}
       </Text>
-      <Text style={emailStyles.paragraphStyle}>{t.next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.next}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.bookingId)}
       </Text>

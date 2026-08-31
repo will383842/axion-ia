@@ -36,9 +36,13 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Votre estimation de gains",
-    intro: (n: string) => `Bonjour ${n},`,
-    lead: (sector: string, headcount: number) =>
-      `Voici l'estimation établie pour votre entreprise (${sector}, ${headcount} personne${headcount > 1 ? "s" : ""}).`,
+    preview: (h: string, fte: string) => `${h} heures par an, soit ${fte} temps plein récupéré.`,
+    // §3.6 — le prénom vient APRÈS le fait, dans la même phrase. Sur le modèle
+    // du référentiel : « Votre place est réservée. Bonjour Marie — voici les
+    // détails. » Un « Bonjour Jean, » isolé en tête consommait tout le résumé IA.
+    lead: (sector: string, headcount: number, nom: string) =>
+      `Voici l'estimation établie pour votre entreprise (${sector}, ${headcount} personne${headcount > 1 ? "s" : ""}).` +
+      (nom ? ` Bonjour ${nom} — le détail est juste en dessous.` : ""),
     heroLabel: "Valeur annuelle du temps récupérable",
     range: (low: string, high: string) => `Fourchette réaliste : de ${low} à ${high} par an.`,
     hoursLine: (h: string, fte: string) =>
@@ -58,9 +62,11 @@ const COPY = {
   },
   en: {
     title: "Your estimated gains",
-    intro: (n: string) => `Hello ${n},`,
-    lead: (sector: string, headcount: number) =>
-      `Here is the estimate for your company (${sector}, ${headcount} people).`,
+    preview: (h: string, fte: string) =>
+      `${h} hours a year — the equivalent of ${fte} full-time roles.`,
+    lead: (sector: string, headcount: number, nom: string) =>
+      `Here is the estimate for your company (${sector}, ${headcount} people).` +
+      (nom ? ` Hello ${nom} — the detail is just below.` : ""),
     heroLabel: "Annual value of the time you can recover",
     range: (low: string, high: string) => `Realistic range: ${low} to ${high} per year.`,
     hoursLine: (h: string, fte: string) =>
@@ -84,8 +90,8 @@ export const roiReportSubject = (locale: Locale, p: Record<string, unknown>): st
   const eur = typeof p.savedEurPerYear === "number" ? p.savedEurPerYear : 0;
   const amount = formatEur(eur, locale);
   return locale === "fr"
-    ? `Votre estimation : ${amount} par an — Axion-IA`
-    : `Your estimate: ${amount} a year — Axion-IA`;
+    ? `Votre estimation : ${amount} par an`
+    : `Your estimate: ${amount} a year`;
 };
 
 function formatEur(value: number, locale: Locale): string {
@@ -115,13 +121,17 @@ export function RoiReportEmail({
 
   return (
     <EmailLayout
-      preview={`${formatEur(p.savedEurPerYear, locale)} — ${t.title}`}
+      famille="B"
+      /* L'objet porte déjà le montant : le pré-en-tête porte donc ce qu'il ne dit
+         pas — le volume d'heures et l'équivalent temps plein (§3.5). */
+      preview={t.preview(formatNum(p.savedHoursPerYear, locale), formatNum(p.fteRecovered, locale))}
       title={t.title}
       cta={{ label: t.cta, href: p.reportUrl }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.lead(p.sectorLabel, p.headcount)}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.lead(p.sectorLabel, p.headcount, p.contactName)}
+      </Text>
 
       {/* ── Le chiffre ─────────────────────────────────────────────────── */}
       <Section

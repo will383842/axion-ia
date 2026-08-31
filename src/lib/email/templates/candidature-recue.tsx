@@ -26,6 +26,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Votre candidature est bien arrivée",
+    preview: "Une personne la lira — et vous aurez une réponse, positive ou non.",
     intro: (n?: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: (offre?: string) =>
       offre
@@ -40,6 +41,7 @@ const COPY = {
   },
   en: {
     title: "Your application has arrived",
+    preview: "A person will read it — and you will get an answer, either way.",
     intro: (n?: string) => (n ? `Hello ${n},` : "Hello,"),
     body: (offre?: string) =>
       offre
@@ -54,9 +56,7 @@ const COPY = {
 } as const;
 
 export const candidatureRecueSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr"
-    ? "Votre candidature est bien arrivée — Axion-IA"
-    : "Your application has arrived — Axion-IA";
+  locale === "fr" ? "Votre candidature est bien arrivée" : "Your application has arrived";
 
 export function CandidatureRecueEmail({
   locale,
@@ -68,14 +68,14 @@ export function CandidatureRecueEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout preview={t.title} title={t.title} locale={locale}>
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
+    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.offerTitle)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.lecture}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.reponse}</Text>
-      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.contact}
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.lecture}
       </Text>
+      <Text style={emailStyles.paragraphStyle}>{t.reponse}</Text>
     </EmailLayout>
   );
 }

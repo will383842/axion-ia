@@ -18,6 +18,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "On a bien reçu ta candidature",
+    preview: "On répond à TOUTES les candidatures : la tienne aura une réponse, quoi qu'il arrive.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: "Merci d'avoir pris ces quelques minutes : ta candidature de commercial indépendant Axion-IA est bien arrivée, et elle sera lue avec attention — c'est promis, pas par un robot.",
     // 🔴 2026-08-23 — cette phrase disait « Si ton profil est retenu, on te
@@ -39,6 +40,7 @@ const COPY = {
   },
   en: {
     title: "We received your application",
+    preview: "We answer EVERY application: yours will get a reply, either way.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thanks for taking a few minutes: your application to become an independent Axion-IA sales rep has arrived, and it will be read carefully — by a human, promise.",
     next: "We answer every application: yours will get a reply either way. If your profile is a match, we will offer you a first 15-30 minute video call. We will come back to you in the coming weeks.",
@@ -51,10 +53,7 @@ const COPY = {
 export const candidatureCommercialConfirmeeSubject = (
   locale: Locale,
   _p: Record<string, unknown>,
-): string =>
-  locale === "fr"
-    ? "On a bien reçu ta candidature — Axion-IA"
-    : "We received your application — Axion-IA";
+): string => (locale === "fr" ? "On a bien reçu ta candidature" : "We received your application");
 
 export function CandidatureCommercialConfirmeeEmail({
   locale,
@@ -71,7 +70,8 @@ export function CandidatureCommercialConfirmeeEmail({
   const prenom = (p.contactName ?? "").trim().split(/\s+/)[0] ?? "";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}` }}
       locale={locale}

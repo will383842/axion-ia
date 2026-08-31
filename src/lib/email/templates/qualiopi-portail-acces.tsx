@@ -37,9 +37,7 @@ interface Payload {
 }
 
 export const qualiopiPortailAccesSubject = (locale: Locale): string =>
-  locale === "fr"
-    ? "Votre lien d'accès à votre espace — Axion-IA"
-    : "Your access link to your space — Axion-IA";
+  locale === "fr" ? "Votre lien d'accès à votre espace" : "Your access link to your space";
 
 export function QualiopiPortailAccesEmail({
   locale,
@@ -54,12 +52,14 @@ export function QualiopiPortailAccesEmail({
   const parOrganisme = p.ouvertParOrganisme === true;
   return (
     <EmailLayout
-      preview="Votre lien d'accès à votre espace stagiaire"
+      famille="A"
+      preview="Personnel, valable 90 jours — vos attestations et vos questionnaires."
       title="Votre lien d'accès"
       cta={{ label: "Accéder à mon espace", href: ctaHref }}
+      /* Accès personnel de 90 jours : on ne le recopie pas en clair. */
+      ctaSecret
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       {parOrganisme ? (
         <>
           <Text style={emailStyles.paragraphStyle}>
@@ -67,8 +67,8 @@ export function QualiopiPortailAccesEmail({
             <strong>attestations</strong> et vos <strong>questionnaires</strong>.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
-            Ce lien est personnel et valable 90 jours. Conservez-le : il vous servira tout au long
-            de votre parcours.
+            Bonjour {p.stagiairePrenomNom} — ce lien est personnel et valable 90 jours. Conservez-le
+            : il vous servira tout au long de votre parcours.
           </Text>
         </>
       ) : (
@@ -78,8 +78,8 @@ export function QualiopiPortailAccesEmail({
             retrouvez vos <strong>attestations</strong> et vos <strong>questionnaires</strong>.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
-            Ce lien est personnel et valable 90 jours. Si vous n&apos;êtes pas à l&apos;origine de
-            cette demande, vous pouvez ignorer cet email.
+            Bonjour {p.stagiairePrenomNom} — ce lien est personnel et valable 90 jours. Si vous
+            n&apos;êtes pas à l&apos;origine de cette demande, vous pouvez ignorer cet email.
           </Text>
         </>
       )}

@@ -59,7 +59,15 @@ export function VivierInformationEmail({
 
   return (
     <EmailLayout
-      preview={TITRE}
+      famille="A"
+      /* Le pré-en-tête recopiait le titre. Il porte désormais les deux faits
+         opérants de la notice — la durée de conservation et le droit
+         d'opposition — c'est-à-dire ce qui décide de lire maintenant.
+
+         ⚠️ Ce champ n'appartient PAS au texte juridique validé : celui-ci est
+         le CORPS, et l'en-tête de ce fichier interdit de le reformuler. On n'y
+         touche pas ; on ajoute une accroche qui en annonce fidèlement l'objet. */
+      preview={`Conservation 2 ans. Opposition en un clic, sans justification, sous ${jours} jours.`}
       title={TITRE}
       locale={locale}
       {...(p.oppositionUrl

@@ -975,8 +975,13 @@ interface OrganizationJsonLdInput {
  * siège — qui passera de toute façon par une modification de code. La rendre
  * env-dépendante garantissait la re-divergence.
  *
- * `COMPANY_ADDRESS` continue de servir le pied de page des emails
- * (`src/lib/email/templates/_layout.tsx`) — cette PR n'y touche pas.
+ * ✅ 2026-08-31 — CETTE PR-LÀ A ÉTÉ FAITE. Le paragraphe disait jusqu'ici :
+ * « `COMPANY_ADDRESS` continue de servir le pied de page des emails
+ * (`src/lib/email/templates/_layout.tsx`) — cette PR n'y touche pas. »
+ * C'est faux depuis la refonte e-mail : le pied de page tire désormais son
+ * identité légale de `src/lib/email/legal-footer.ts`, figée dans le code pour
+ * exactement le même motif qu'ici, et `legal-footer.spec.ts` vérifie qu'elle
+ * concorde avec les SSOT. **Plus AUCUN code ne lit `COMPANY_ADDRESS`.**
  *
  * FONCTION plutôt que constante de module, par cohérence avec le reste du
  * fichier : `seo.ts` est importé par des composants clients, et une constante

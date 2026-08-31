@@ -71,22 +71,22 @@ export const qualiopiRelanceImpayeeSubject = (
   if (locale !== "fr") {
     switch (tonDe(p)) {
       case "mise_en_demeure":
-        return `FORMAL NOTICE — invoice ${num} unpaid · Axion-IA`;
+        return `FORMAL NOTICE — invoice ${num} unpaid`;
       case "avant_contentieux":
-        return `Invoice ${num} — final notice before recovery proceedings · Axion-IA`;
+        return `Invoice ${num} — final notice before recovery proceedings`;
       default:
-        return `Invoice ${num} — payment overdue · Axion-IA`;
+        return `Invoice ${num} — payment overdue`;
     }
   }
   switch (tonDe(p)) {
     case "ferme":
-      return `${objet} ${num} — relance, règlement attendu · Axion-IA`;
+      return `${objet} ${num} — relance, règlement attendu`;
     case "mise_en_demeure":
-      return `MISE EN DEMEURE — ${objet.toLowerCase()} ${num} impayée · Axion-IA`;
+      return `MISE EN DEMEURE — ${objet.toLowerCase()} ${num} impayée`;
     case "avant_contentieux":
-      return `${objet} ${num} — dernier avis avant recouvrement · Axion-IA`;
+      return `${objet} ${num} — dernier avis avant recouvrement`;
     default:
-      return `${objet} ${num} — échéance dépassée · Axion-IA`;
+      return `${objet} ${num} — échéance dépassée`;
   }
 };
 
@@ -119,38 +119,43 @@ export function QualiopiRelanceImpayeeEmail({
 
   return (
     <EmailLayout
-      preview={`${estSolde ? "Solde" : "Facture"} ${p.numeroFacture ?? ""} — échéance dépassée`}
+      famille="A"
+      /* L'objet porte déjà le numéro et le retard : le pré-en-tête porte le
+         MONTANT et l'ancienneté, qui décident si on traite maintenant. */
+      preview={`${p.montantDu ?? ""} reste dû${
+        p.joursRetard != null ? ` — ${p.joursRetard} jours après l'échéance` : ""
+      }.`}
       title={titreDe(ton, estSolde)}
       {...(p.lienFacture
         ? { cta: { label: "Consulter la facture", href: p.lienFacture } }
         : { cta: { label: "Nous contacter", href: `${baseUrl}/fr/contact` } })}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.destinataireNom},</Text>
-
       {ton === "rappel" && (
         <Text style={emailStyles.paragraphStyle}>
-          Sauf erreur de notre part, {intitule} <strong>{p.numeroFacture}</strong>, d&apos;un
-          montant de <strong>{p.montantDu}</strong>, demeure en attente de règlement. Son échéance
-          était fixée au {p.dateEcheance}, soit il y a {p.joursRetard} jours.
+          Bonjour {p.destinataireNom}. Sauf erreur de notre part, {intitule}{" "}
+          <strong>{p.numeroFacture}</strong>, d&apos;un montant de <strong>{p.montantDu}</strong>,
+          demeure en attente de règlement. Son échéance était fixée au {p.dateEcheance}, soit il y a{" "}
+          {p.joursRetard} jours.
         </Text>
       )}
 
       {ton === "ferme" && (
         <Text style={emailStyles.paragraphStyle}>
-          Malgré nos précédents messages, {intitule} <strong>{p.numeroFacture}</strong>, d&apos;un
-          montant de <strong>{p.montantDu}</strong>, reste impayée. Son échéance était fixée au{" "}
-          {p.dateEcheance}, soit un retard de {p.joursRetard} jours. Nous vous remercions de
-          procéder au règlement sans délai.
+          Bonjour {p.destinataireNom}. Malgré nos précédents messages, {intitule}{" "}
+          <strong>{p.numeroFacture}</strong>, d&apos;un montant de <strong>{p.montantDu}</strong>,
+          reste impayée. Son échéance était fixée au {p.dateEcheance}, soit un retard de{" "}
+          {p.joursRetard} jours. Nous vous remercions de procéder au règlement sans délai.
         </Text>
       )}
 
       {ton === "mise_en_demeure" && (
         <>
           <Text style={emailStyles.paragraphStyle}>
-            Par la présente, nous vous mettons en demeure de régler {intitule}{" "}
-            <strong>{p.numeroFacture}</strong>, d&apos;un montant de <strong>{p.montantDu}</strong>,
-            échue depuis le {p.dateEcheance}, soit {p.joursRetard} jours de retard.
+            Bonjour {p.destinataireNom}. Par la présente, nous vous mettons en demeure de régler{" "}
+            {intitule} <strong>{p.numeroFacture}</strong>, d&apos;un montant de{" "}
+            <strong>{p.montantDu}</strong>, échue depuis le {p.dateEcheance}, soit {p.joursRetard}{" "}
+            jours de retard.
           </Text>
           <Text style={emailStyles.paragraphStyle}>
             Le règlement doit nous parvenir sous huit jours à compter de la réception de ce message.

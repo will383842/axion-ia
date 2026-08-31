@@ -31,6 +31,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { PAYLOAD_EXEMPLE } from "./payloads-exemple";
+import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES } from "@/lib/email/templates";
 
 const DOSSIER = join(process.cwd(), "src", "lib", "email", "templates");
 
@@ -92,6 +93,40 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
         `son aperçu s'afficherait troué, en silence. Ajoute ces champs à PAYLOAD_EXEMPLE.`,
     ).toEqual([]);
   });
+
+  /**
+   * L'aperçu RENDU, pas seulement les champs déclarés.
+   *
+   * 🔴 La garde au-dessus vérifie qu'aucun champ requis ne MANQUE. Elle ne dit
+   * rien de son TYPE — et c'est par là que le défaut est passé : `fteRecovered`
+   * valait la chaîne « 0,4 ETP », `savedEurPerYear` la chaîne « 18 000 € », et
+   * `roi-report` les passe à `Intl.NumberFormat`. La console affichait donc,
+   * en toutes lettres, « 320 heures par an, soit NaN temps plein récupéré » et
+   * « Votre estimation : 0 € par an ».
+   *
+   * Trois autres s'y ajoutaient : « [INFO] Alerte Qualiopi — undefined » faute
+   * de `titre`/`code`/`niveau`, et « valable jusqu'au valable jusqu'au 30
+   * septembre 2026 » parce que le libellé de date portait déjà la phrase que le
+   * gabarit écrit lui-même.
+   *
+   * Aucun test ne les voyait : ils se lisaient à l'œil, dans la console. On
+   * rend donc les 44 aperçus pour de vrai et on refuse les trous.
+   */
+  it("aucun aperçu ne montre de trou (undefined, NaN, [object Object])", async () => {
+    const troues: string[] = [];
+    for (const nom of EMAIL_TEMPLATE_NAMES) {
+      const r = await renderEmailTemplate(nom, "fr", { ...PAYLOAD_EXEMPLE });
+      const visible = `${r.subject} ${r.text}`;
+      const trous = ["undefined", "NaN", "[object Object]"].filter((t) => visible.includes(t));
+      if (trous.length > 0) troues.push(`${nom} → ${trous.join(", ")}`);
+    }
+    expect(
+      troues,
+      "un aperçu de la console affiche un trou : c'est la première chose que " +
+        "Will voit du gabarit, et un « NaN » y discrédite tout le reste.",
+    ).toEqual([]);
+    // Rendre 44 gabarits dépasse les 5 s par défaut de Vitest.
+  }, 60_000);
 
   it("n'expose AUCUNE donnée réelle", () => {
     // Un aperçu de console qui afficherait un vrai prospect, ou un lien vers la

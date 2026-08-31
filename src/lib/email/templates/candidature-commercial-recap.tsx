@@ -94,7 +94,16 @@ export function CandidatureCommercialRecapEmail({
 
   return (
     <EmailLayout
-      preview={`Candidature commerciale — ${qui}`}
+      famille="C"
+      /* Interne. L'objet porte déjà le nom et la ville ; l'aperçu porte ce qui
+         décide d'ouvrir maintenant : le volume d'expériences déclarées. */
+      preview={
+        experiences.length > 0
+          ? `${experiences.length} expérience${experiences.length > 1 ? "s" : ""} déclarée${
+              experiences.length > 1 ? "s" : ""
+            } — fiche complète dans ce message.`
+          : "Aucune expérience déclarée — fiche complète dans ce message."
+      }
       title={`Candidature commerciale — ${qui}`}
       {...(p.consoleUrl
         ? { cta: { label: "Ouvrir la fiche en console", href: p.consoleUrl } }

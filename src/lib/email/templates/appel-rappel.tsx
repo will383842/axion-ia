@@ -94,19 +94,33 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const m = momentDe(p);
   if (locale === "fr") {
     if (m === "confirmation")
-      return p.date
-        ? `C'est confirmé : votre appel avec Axion-IA le ${p.date} à ${p.heure}`
-        : `C'est confirmé : votre appel avec Axion-IA`;
-    if (m === "j1") return `Votre appel avec Axion-IA, demain à ${p.heure ?? "l'heure prévue"}`;
-    return `Votre appel avec Axion-IA à ${p.heure ?? "tout à l'heure"}`;
+      return p.date ? `Confirmé : appel ${p.date} à ${p.heure}` : `Votre appel est confirmé`;
+    if (m === "j1") return `Rappel : votre appel demain à ${p.heure ?? "l'heure prévue"}`;
+    return `Votre appel dans une heure, à ${p.heure ?? "l'heure prévue"}`;
   }
   if (m === "confirmation")
-    return p.date
-      ? `Confirmed: your call with Axion-IA on ${p.date} at ${p.heure}`
-      : `Confirmed: your call with Axion-IA`;
-  if (m === "j1") return `Your call with Axion-IA, tomorrow at ${p.heure ?? "the agreed time"}`;
-  return `Your call with Axion-IA at ${p.heure ?? "shortly"}`;
+    return p.date ? `Confirmed: call on ${p.date} at ${p.heure}` : `Your call is confirmed`;
+  if (m === "j1") return `Reminder: your call tomorrow at ${p.heure ?? "the agreed time"}`;
+  return `Your call in one hour, at ${p.heure ?? "the agreed time"}`;
 };
+
+/**
+ * La FAMILLE de ce message dépend du moment où il part, et le référentiel les
+ * sépare explicitement :
+ *
+ *   §7.4 — confirmation de rendez-vous : famille B (cycle de vie). Une réponse
+ *          est attendue en secondaire (« un empêchement ? répondez à ce
+ *          message »), le bandeau de confiance a du sens, le partage aussi.
+ *   §7.5 — rappel de rendez-vous : famille C (notification). Trois lignes
+ *          maximum, aucune réponse attendue, aucun partage. « Le rappel H-1
+ *          augmente le taux de présence de 20 à 30 % » : il ne vaut que s'il se
+ *          lit en deux secondes, et tout ce qu'on y ajoute le dégrade.
+ *
+ * Un seul composant sert les trois moments (voir le commentaire du registre
+ * dans `index.tsx`) : la famille se déduit donc du payload, elle n'est pas
+ * figée en attribut.
+ */
+const familleDe = (m: MomentAppel): "B" | "C" => (m === "confirmation" ? "B" : "C");
 
 /** Ce qui ne dépend PAS du moment : lieu, attente, liens, signature. */
 const COMMUN = {
@@ -145,7 +159,8 @@ const COMMUN = {
 const COPY = {
   fr: {
     confirmation: {
-      preview: "Votre appel avec Axion-IA est confirmé",
+      preview: (d: number) =>
+        `${d} minutes, rien à préparer. Les liens pour reporter ou annuler sont dans le message.`,
       title: "C'est confirmé",
       quand: (h: string, d: number, date?: string) =>
         date
@@ -154,14 +169,15 @@ const COPY = {
       signature: "À très vite,\nL'équipe Axion-IA",
     },
     j1: {
-      preview: "Votre appel avec Axion-IA a lieu demain",
+      preview: (d: number) =>
+        `${d} minutes, rien à préparer. Un imprévu ? Le lien pour reporter est ici.`,
       title: "Votre appel a lieu demain",
       quand: (h: string, d: number) =>
         `Petit rappel : nous nous appelons demain à ${h} (heure de Paris), pour ${d} minutes.`,
       signature: "À demain,\nL'équipe Axion-IA",
     },
     h1: {
-      preview: "Votre appel avec Axion-IA a lieu dans une heure",
+      preview: (d: number) => `${d} minutes au téléphone, rien à préparer de votre côté.`,
       title: "Votre appel a lieu dans une heure",
       quand: (h: string, d: number) =>
         `Petit rappel : nous nous appelons à ${h} (heure de Paris), pour ${d} minutes.`,
@@ -170,7 +186,8 @@ const COPY = {
   },
   en: {
     confirmation: {
-      preview: "Your call with Axion-IA is confirmed",
+      preview: (d: number) =>
+        `${d} minutes, nothing to prepare. Links to reschedule or cancel are inside.`,
       title: "You're all set",
       quand: (h: string, d: number, date?: string) =>
         date
@@ -179,14 +196,15 @@ const COPY = {
       signature: "Talk soon,\nThe Axion-IA team",
     },
     j1: {
-      preview: "Your call with Axion-IA is tomorrow",
+      preview: (d: number) =>
+        `${d} minutes, nothing to prepare. Something came up? Reschedule inside.`,
       title: "Your call is tomorrow",
       quand: (h: string, d: number) =>
         `A quick reminder: we speak tomorrow at ${h} (Paris time), for ${d} minutes.`,
       signature: "Talk tomorrow,\nThe Axion-IA team",
     },
     h1: {
-      preview: "Your call with Axion-IA is in one hour",
+      preview: (d: number) => `${d} minutes on the phone, nothing to prepare on your side.`,
       title: "Your call is in one hour",
       quand: (h: string, d: number) =>
         `A quick reminder: we speak at ${h} (Paris time), for ${d} minutes.`,
@@ -204,13 +222,26 @@ export function AppelRappelEmail({
 }) {
   const p = payload as unknown as Payload;
   const c = COMMUN[locale];
-  const t = COPY[locale][momentDe(p)];
+  const m = momentDe(p);
+  const t = COPY[locale][m];
   return (
-    <EmailLayout preview={t.preview} title={t.title} locale={locale}>
-      <Text style={emailStyles.paragraphStyle}>{c.intro(p.prenom)}</Text>
+    <EmailLayout
+      famille={familleDe(m)}
+      preview={t.preview(p.dureeMinutes)}
+      title={t.title}
+      locale={locale}
+    >
+      {/* L'horaire EN PREMIER : c'est ce que le résumé automatique d'Apple
+          Intelligence / Gemini / Copilot affiche dans la liste de la boîte de
+          réception, et c'est la seule chose que le destinataire cherche. Un
+          « Bonjour Jean, » en tête consommait ce résumé pour ne rien dire (§3.6). */}
       <Text style={emailStyles.paragraphStyle}>{t.quand(p.heure, p.dureeMinutes, p.date)}</Text>
       {p.lieu ? <Text style={emailStyles.paragraphStyle}>{c.lieu(p.lieu)}</Text> : null}
-      <Text style={emailStyles.paragraphStyle}>{c.attendu}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {c.intro(p.prenom)}
+        <br />
+        {c.attendu}
+      </Text>
       {momentDe(p) === "confirmation" ? (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
           {c.invitationAgenda}

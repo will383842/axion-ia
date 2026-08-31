@@ -28,6 +28,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -45,9 +46,9 @@ export const qualiopiPositionnementSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Avant votre formation ${p.titreFormation ?? ""} — 5 minutes à nous accorder — Axion-IA`;
+    return objetCompose("Questionnaire avant votre formation", p.titreFormation ?? "");
   }
-  return `Before your training ${p.titreFormation ?? ""} — 5 minutes needed — Axion-IA`;
+  return objetCompose("Questionnaire before your training", p.titreFormation ?? "");
 };
 
 export function QualiopiPositionnementEmail({
@@ -62,12 +63,12 @@ export function QualiopiPositionnementEmail({
   const ctaHref = p.lienQuestionnaire ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
+      famille="B"
       preview="Cinq minutes avant votre formation, pour l'ajuster à vos besoins."
       title="Votre questionnaire de positionnement"
       cta={{ label: "Remplir mon questionnaire", href: ctaHref }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       {/* 🔴 Formulation NEUTRE en genre, et ce n'est pas un détail de style : ce
           gabarit part à TOUS les stagiaires, pas à celui pour qui il a été
           écrit. « Vous êtes inscrite » — première rédaction, calquée sur la
@@ -79,9 +80,10 @@ export function QualiopiPositionnementEmail({
         débute le <strong>{p.dateDebutFormation}</strong>.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Avant de commencer, nous avons besoin de connaître votre niveau de départ et vos attentes :
-        c&apos;est ce que recueille le <strong>questionnaire de positionnement</strong>. Il prend
-        environ cinq minutes, et il se remplit en ligne — rien à imprimer, rien à renvoyer.
+        Bonjour {p.stagiairePrenomNom} — avant de commencer, nous avons besoin de connaître votre
+        niveau de départ et vos attentes : c&apos;est ce que recueille le{" "}
+        <strong>questionnaire de positionnement</strong>. Il prend environ cinq minutes, et il se
+        remplit en ligne — rien à imprimer, rien à renvoyer.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Merci de le remplir <strong>avant le début de la formation</strong>. Vos réponses servent

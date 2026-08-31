@@ -8,6 +8,12 @@
 // que toutes les pages, JSON-LD, OG images, manifest dérivent de ces constantes.
 
 import { env } from "@/env";
+// Littéraux d'identité légale — module PUR (zéro import). Ils vivaient ICI,
+// mais le pied de page légal des e-mails en a besoin sans pouvoir importer ce
+// fichier : `brand.ts` tire `@/env`, et le rendu d'e-mail tourne dans le
+// worker, sur un trajet qui ne charge pas la validation Zod des secrets.
+// Déplacer le littéral plutôt que le recopier — cf. `identite-legale-ssot.ts`.
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 
 export const BRAND = {
   /** Nom canonique customer-facing (logo, header, JSON-LD `name`, OG, titles). */
@@ -23,7 +29,7 @@ export const BRAND = {
    * qui est le champ que Google rapproche des registres (SIRENE / INPI) pour
    * fusionner l'entité. Un tiret ici ne matche AUCUN registre.
    */
-  legalName: "AXION IA SAS",
+  legalName: IDENTITE_LEGALE.legalName,
   /** Noms alternatifs Knowledge Graph / Wikidata — disambiguation vs axionai.fr. */
   alternateName: ["AxionIA", "Axion IA", "axion-ia.com"] as const,
   /** Tagline courte FR — sous-titre, JSON-LD `description`, OG. */

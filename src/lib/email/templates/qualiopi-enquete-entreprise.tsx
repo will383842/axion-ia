@@ -12,6 +12,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -29,9 +30,9 @@ export const qualiopiEnqueteEntrepriseSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Votre avis sur la formation ${p.titreFormation ?? ""} — Axion-IA`;
+    return objetCompose("Votre avis sur la formation", p.titreFormation ?? "");
   }
-  return `Your feedback on the training ${p.titreFormation ?? ""} — Axion-IA`;
+  return objetCompose("Your feedback on the training", p.titreFormation ?? "");
 };
 
 export function QualiopiEnqueteEntrepriseEmail({
@@ -44,20 +45,20 @@ export function QualiopiEnqueteEntrepriseEmail({
   const p = payload as unknown as Payload;
   return (
     <EmailLayout
+      famille="B"
       preview="Deux minutes pour nous dire ce que votre entreprise a pensé de la formation."
       title="Votre avis d'entreprise cliente"
       cta={{ label: "Donner notre avis", href: p.lienEnquete }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.contactNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
         Il y a un mois, <strong>{p.raisonSociale}</strong> nous confiait la formation{" "}
         <strong>{p.titreFormation}</strong> (achevée le {p.dateFinFormation}).
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Au-delà du ressenti des participants — que nous recueillons par ailleurs — c&apos;est
-        l&apos;avis de votre <strong>entreprise</strong> qui nous intéresse ici : la formation
-        a-t-elle produit les effets attendus dans votre activité ?
+        Bonjour {p.contactNom} — au-delà du ressenti des participants — que nous recueillons par
+        ailleurs — c&apos;est l&apos;avis de votre <strong>entreprise</strong> qui nous intéresse
+        ici : la formation a-t-elle produit les effets attendus dans votre activité ?
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Deux minutes suffisent : une note et, si vous le souhaitez, un commentaire.

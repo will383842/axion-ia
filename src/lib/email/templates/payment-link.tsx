@@ -19,6 +19,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Lien de paiement acompte",
+    preview: (a: string) => `${a} à régler par carte — paiement sécurisé Stripe.`,
     intro: (n: string) => `Bonjour ${n},`,
     body: (n: string, a: string) =>
       `Votre facture d'acompte ${n} pour ${a} est prête. Cliquez sur le bouton ci-dessous pour régler en ligne par carte bancaire (paiement sécurisé Stripe).`,
@@ -28,6 +29,7 @@ const COPY = {
   },
   en: {
     title: "Deposit payment link",
+    preview: (a: string) => `${a} to pay by card — secure Stripe payment.`,
     intro: (n: string) => `Hello ${n},`,
     body: (n: string, a: string) =>
       `Your deposit invoice ${n} for ${a} is ready. Click the button below to pay online by card (secure Stripe payment).`,
@@ -38,9 +40,7 @@ const COPY = {
 
 export const paymentLinkSubject = (locale: Locale, p: Record<string, unknown>): string => {
   const n = (p as unknown as Payload).invoiceNumber;
-  return locale === "fr"
-    ? `Lien de paiement acompte — ${n} — Axion-IA`
-    : `Deposit payment link — ${n} — Axion-IA`;
+  return locale === "fr" ? `Lien de paiement acompte — ${n}` : `Deposit payment link — ${n}`;
 };
 
 export function PaymentLinkEmail({
@@ -54,13 +54,14 @@ export function PaymentLinkEmail({
   const t = COPY[locale];
   return (
     <EmailLayout
-      preview={t.title}
+      famille="A"
+      preview={t.preview(p.amountTtc)}
       title={t.title}
       cta={{ label: t.cta, href: p.checkoutUrl }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.invoiceNumber, p.amountTtc)}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.expires(p.expiresAt)}
       </Text>

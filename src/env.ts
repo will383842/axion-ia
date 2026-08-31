@@ -319,6 +319,24 @@ export const env = createEnv({
     // Server-only (URL = token d'accès, ne doit pas leak dans le bundle public).
     PLAUSIBLE_SHARED_LINK: z.string().url().optional(),
 
+    // ⚠️ 2026-08-31 — CES QUATRE VARIABLES N'ONT PLUS AUCUN LECTEUR.
+    //
+    // Elles alimentaient le pied de page légal des e-mails. Leur repli était la
+    // CHAÎNE VIDE, filtrée en silence : un e-mail rendu sans elles partait sans
+    // adresse de siège ni SIREN — ce que la LCEN art. 1-1 impose d'afficher. Et
+    // le worker qui rend les e-mails est une application Coolify DISTINCTE, avec
+    // son propre environnement : rien ne garantissait qu'elles y soient posées.
+    //
+    // L'identité légale est désormais figée dans `src/lib/email/legal-footer.ts`,
+    // pour le même motif que l'adresse du siège dans `src/lib/seo.ts` : une
+    // adresse immatriculée n'est pas un réglage, et la rendre configurable
+    // garantissait la divergence (constatée le 02/08/2026, deux adresses en
+    // production pour la même entité).
+    //
+    // Elles restent DÉCLARÉES pour ne pas faire échouer un environnement qui les
+    // porte encore — mais les poser ne change plus rien. Ne pas les rétablir
+    // comme source : modifier `legal-footer.ts`, que `legal-footer.spec.ts` tient
+    // aligné sur les SSOT du dépôt.
     COMPANY_NAME: z.string().optional(),
     COMPANY_REGISTRATION_NUMBER: z.string().optional(),
     COMPANY_VAT_NUMBER: z.string().optional(),

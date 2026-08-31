@@ -16,7 +16,8 @@ interface Payload {
 
 const COPY = {
   fr: {
-    title: "Force majeure — refund 100 %",
+    title: "Force majeure — remboursement intégral",
+    preview: "Annulation sans frais. Remboursement complet sous 5 à 10 jours ouvrés.",
     intro: (n: string) => `Bonjour ${n},`,
     body: (i: string) =>
       `Suite à un événement de force majeure, votre intervention « ${i} » est annulée sans frais. Un remboursement complet sera traité sous 5 à 10 jours ouvrés.`,
@@ -27,6 +28,7 @@ const COPY = {
   },
   en: {
     title: "Force majeure — 100% refund",
+    preview: "Cancelled at no cost. Full refund within 5 to 10 business days.",
     intro: (n: string) => `Hello ${n},`,
     body: (i: string) =>
       `Following a force majeure event, your "${i}" session is cancelled at no cost. A full refund will be processed within 5 to 10 business days.`,
@@ -38,9 +40,7 @@ const COPY = {
 } as const;
 
 export const forceMajeureNoticeSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr"
-    ? "Force majeure — intervention annulée — Axion-IA"
-    : "Force majeure — session cancelled — Axion-IA";
+  locale === "fr" ? "Force majeure — intervention annulée" : "Force majeure — session cancelled";
 
 export function ForceMajeureNoticeEmail({
   locale,
@@ -54,15 +54,19 @@ export function ForceMajeureNoticeEmail({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/contact` }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.interventionType)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.notesRow(p.notes)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.next}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.bookingId)}
       </Text>

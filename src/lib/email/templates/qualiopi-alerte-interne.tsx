@@ -61,7 +61,7 @@ export const qualiopiAlerteInterneSubject = (
   // c'est exactement l'information qui décide si on ouvre maintenant ou ce soir.
   const compte = n > 1 ? ` (${n})` : "";
   const pour = p.guichet != null && p.guichet !== "" ? ` — ${p.guichet}` : "";
-  return `${prefix} Alerte Qualiopi${compte} — ${p.titre ?? p.code}${pour} — Axion-IA`;
+  return `${prefix} Alerte Qualiopi${compte} — ${p.titre ?? p.code}${pour}`;
 };
 
 export function QualiopiAlerteInterneEmail({
@@ -82,7 +82,21 @@ export function QualiopiAlerteInterneEmail({
 
   return (
     <EmailLayout
-      preview={`Alerte ${niveauLabel} — ${entete}`}
+      famille="C"
+      /* Le pré-en-tête recopiait le titre mot pour mot. Il porte désormais ce
+         que le titre ne dit pas : le GUICHET concerné et le code technique —
+         c'est-à-dire de qui c'est le sujet, et quoi chercher dans la console.
+         Sur une alerte interne, c'est ce qui décide de la traiter tout de
+         suite ou de la laisser à l'astreinte. */
+      preview={
+        [
+          p.guichet != null && p.guichet !== "" ? `Pour : ${p.guichet}` : "",
+          `code ${p.code}`,
+          occurrences.length > 1 ? `${occurrences.length} occurrences` : "1 occurrence",
+        ]
+          .filter(Boolean)
+          .join(" · ") + "."
+      }
       title={`Alerte ${niveauLabel} — ${entete}`}
       cta={{ label: "Voir les alertes", href: alertesHref }}
       locale={locale}

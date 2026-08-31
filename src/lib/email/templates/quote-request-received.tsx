@@ -27,6 +27,7 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande de devis reçue",
+    preview: "Réponse sous 48 heures ouvrées pour un appel de cadrage.",
     intro: (n: string) => `Bonjour ${n},`,
     // 🔴 L'entreprise est FACULTATIVE dans le formulaire. Sans ce repli, la
     // phrase devenait « votre demande de devis pour undefined ».
@@ -40,6 +41,7 @@ const COPY = {
   },
   en: {
     title: "Quote request received",
+    preview: "Reply within 48 working hours for a scoping call.",
     intro: (n: string) => `Hello ${n},`,
     body: (company: string | undefined) =>
       company
@@ -52,7 +54,7 @@ const COPY = {
 } as const;
 
 export const quoteRequestReceivedSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  locale === "fr" ? "Demande de devis reçue — Axion-IA" : "Quote request received — Axion-IA";
+  locale === "fr" ? "Demande de devis reçue" : "Quote request received";
 
 export function QuoteRequestReceivedEmail({
   locale,
@@ -66,14 +68,18 @@ export function QuoteRequestReceivedEmail({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
-      preview={t.title}
+      famille="B"
+      preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/interventions` }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.companyName)}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.next}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {t.intro(p.contactName)}
+        <br />
+        {t.next}
+      </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.submissionId)}
       </Text>

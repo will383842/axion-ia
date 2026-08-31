@@ -3,6 +3,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -29,9 +30,9 @@ export const qualiopiRappelJ7Subject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return `Rappel J-7 — ${p.titreFormation ?? "Formation"} — Axion-IA`;
+    return objetCompose("Rappel J-7 —", p.titreFormation ?? "Formation");
   }
-  return `7-day reminder — ${p.titreFormation ?? "Training"} — Axion-IA`;
+  return objetCompose("7-day reminder —", p.titreFormation ?? "Training");
 };
 
 export function QualiopiRappelJ7Email({
@@ -46,19 +47,19 @@ export function QualiopiRappelJ7Email({
   const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
-      preview="Votre formation démarre dans 7 jours"
+      famille="C"
+      preview="Convocation et informations pratiques vous attendent dans votre espace."
       title="Rappel — votre formation arrive !"
       cta={{ label: "Accéder à mon espace", href: ctaHref }}
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>
         Votre formation <strong>{p.titreFormation}</strong> démarre le{" "}
         <strong>{p.dateDebut}</strong> — {p.modalite} — {p.lieu}.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        N&apos;oubliez pas de consulter votre convocation et les informations pratiques dans votre
-        espace stagiaire avant la date de démarrage.
+        Bonjour {p.stagiairePrenomNom} — pensez à consulter votre convocation et les informations
+        pratiques dans votre espace stagiaire avant la date de démarrage.
       </Text>
       {p.lienEmargement ? (
         <>

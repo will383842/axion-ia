@@ -2,7 +2,7 @@
 // formateurs). Lien magique signé (HMAC, scope ressources_login), usage unique,
 // valable 15 min. FR canonique.
 
-import { Text, Link, Section } from "@react-email/components";
+import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 
@@ -13,9 +13,7 @@ interface Payload {
 }
 
 export const ressourcesMagicLinkSubject = (locale: Locale): string =>
-  locale === "fr"
-    ? "Votre lien de connexion — Espace ressources Axion-IA"
-    : "Your sign-in link — Axion-IA resources space";
+  locale === "fr" ? "Votre lien de connexion ressources" : "Your resources sign-in link";
 
 export function RessourcesMagicLinkEmail({
   locale,
@@ -28,23 +26,19 @@ export function RessourcesMagicLinkEmail({
   const minutes = p.expiresInMin ?? 15;
   return (
     <EmailLayout
-      preview="Votre lien de connexion sécurisé à l'espace ressources"
+      famille="A"
+      preview="Valable 15 minutes, à usage unique — supports, programmes et livrables."
       title="Connexion à votre espace ressources"
+      cta={{ label: "Accéder à mes ressources", href: p.magicLink }}
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>
-        Bonjour{p.destinataireNom ? ` ${p.destinataireNom}` : ""},
+        Vos documents Axion-IA — supports, programmes, livrables — sont accessibles par le lien
+        ci-dessous, sans mot de passe.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Cliquez sur le bouton ci-dessous pour accéder à vos documents Axion-IA (supports,
-        programmes, livrables). Aucun mot de passe n&apos;est nécessaire.
+        Bonjour{p.destinataireNom ? ` ${p.destinataireNom}` : ""}, un clic suffit.
       </Text>
-
-      <Section style={{ margin: "16px 0 8px 0" }}>
-        <Link href={p.magicLink} style={emailStyles.ctaStyle}>
-          Accéder à mes ressources
-        </Link>
-      </Section>
 
       <Text
         style={{
@@ -55,16 +49,6 @@ export function RessourcesMagicLinkEmail({
       >
         Ce lien est <strong>valable {minutes} minutes</strong> et à <strong>usage unique</strong>.
         Si vous n&apos;êtes pas à l&apos;origine de cette demande, ignorez cet e-mail.
-      </Text>
-      <Text
-        style={{
-          ...emailStyles.paragraphStyle,
-          fontSize: "12px",
-          color: emailStyles.COLORS.textMuted,
-        }}
-      >
-        Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :<br />
-        {p.magicLink}
       </Text>
     </EmailLayout>
   );
