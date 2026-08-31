@@ -57,6 +57,7 @@ Aucun mineur ciblé. Public B2B exclusivement (dirigeants, RH, équipes formatio
 | Formulaire contact (`Submission`) | Nom, email, téléphone (optionnel), message, IP **SHA-256 hashée** via `IP_HASH_SALT`                  | Standard — pas de catégorie particulière art. 9                       |
 | Newsletter                        | Email, token unsubscribe (signature HMAC), date opt-in, IP SHA-256 hashée                             | Standard                                                              |
 | Booking (`Booking`)               | Nom, email, téléphone, créneau, mode (présentiel/distanciel/hybride), notes libres, IP SHA-256 hashée | Standard — PII at-rest AES-256-GCM via `pii-crypto.ts` (cf. ADR 0025) |
+| Réservation d'appel (`CalendlyEvent`) | Nom, email, téléphone, créneau et fuseau, lieu (n° appelé), réponses libres au formulaire Calendly, liens d'annulation/report, UTM et referrer, IP **SHA-256 hashée** (`_ipHash` dans la charge brute) | Standard — pas de catégorie particulière art. 9 |
 | Logs serveur / analytics          | IP **SHA-256 hashée**, user agent, paths visités, referrer                                            | Pseudonymisé                                                          |
 | Cookies                           | `axion_consent` (consentement), session admin Argon2id, anti-CSRF                                     | Aucune PII directe                                                    |
 
@@ -77,6 +78,7 @@ Aucun mineur ciblé. Public B2B exclusivement (dirigeants, RH, équipes formatio
 | **Sentry**                                   | Observability erreurs                 | États-Unis           | Stack traces, contexte erreur (PII redacted via `pii-redaction.ts`)          |
 | **GitHub** (Actions + GHCR)                  | CI/CD + image registry                | États-Unis           | Code source, artifacts build                                                 |
 | **Google Search Console + Bing WMT**         | SEO ops (read-only)                   | Mondial              | URLs publiques uniquement, aucune PII                                        |
+| **Calendly LLC**                             | Prise de rendez-vous `/appel`         | États-Unis (Atlanta) | Nom, email, téléphone, créneau, réponses au formulaire de réservation        |
 
 ### Destinataires internes
 
@@ -85,7 +87,9 @@ Aucun mineur ciblé. Public B2B exclusivement (dirigeants, RH, équipes formatio
 
 ## 7. Transferts hors UE
 
-Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitHub + Cloudflare (PoPs US) + Google + Bing.
+Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitHub + Cloudflare (PoPs US) + Google + Bing + **Calendly**.
+
+⚠️ **Calendly est le seul de cette liste à recevoir des données DIRECTEMENT identifiantes** (nom, email, téléphone d'un prospect), là où les autres transferts sont pseudonymisés ou sans PII. Son DPA a été **accepté le 2026-08-28** (cf. `_AUDIT/DPA-REGISTER.md` ligne 16 et `src/content/subprocessors.ts`), avec clauses contractuelles types. Ajouté à ce registre le 2026-08-31 : la chaîne Calendly a atterri le 2026-05-26, soit quatre jours après la rédaction de ce document, qui n'avait jamais été rouvert depuis.
 
 **Garanties art. 46 RGPD** :
 
@@ -106,6 +110,7 @@ Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitH
 | `Submission` (formulaire contact)                                              | 36 mois post-dernière interaction                                                                          | Cadre relation commerciale B2B (CNIL recommandation 36 mois)                         |
 | `Booking` (réservation intervention)                                           | 36 mois post-dernière interaction + 10 ans pour pièces comptables associées (factures)                     | Obligation comptable art. L123-22 Code de commerce                                   |
 | Newsletter (`Subscriber`)                                                      | Jusqu'à désinscription (unsubscribe token HMAC) + 13 mois après désinscription pour preuve de consentement | RGPD Lignes directrices CEPD consentement                                            |
+| `CalendlyEvent` (réservation d'appel)                                          | ⛔ **NON DÉCIDÉE — décision Will requise**                                                                  | Voir l'encadré sous ce tableau                                                       |
 | Logs applicatifs (IP SHA-256, user agent, paths)                               | **28 jours rolling**                                                                                       | Sécurité opérationnelle (art. 6.1.f intérêt légitime — détection fraude, rate-limit) |
 | `Article` publié + contenus éditoriaux                                         | Indéfini                                                                                                   | Contenu non-PII, archives éditoriales                                                |
 | `GenerationProvenance` (AI Act art. 50 — promptHash, modelVersion, timestamps) | **6 ans**                                                                                                  | Obligation AI Act art. 19 + 50 (registre traitements IA) — cf. ADR 0024              |
@@ -113,7 +118,39 @@ Transferts hors UE : Anthropic + OpenAI + Perplexity + Voyage AI + Sentry + GitH
 | Sessions admin (Argon2id)                                                      | 7 jours sliding                                                                                            | Sécurité opérationnelle                                                              |
 | Backups DB chiffrés (cf. ADR 0022)                                             | 7 j local / 30 j distant Storage Box                                                                       | Continuité service + DRP                                                             |
 
+> ### ⛔ Décision requise — conservation des réservations d'appel
+>
+> **Constat, mesuré le 2026-08-31.** `retention-purge-worker.ts` traite 24 modèles ;
+> `calendlyEvent` n'en fait pas partie (`grep -ci calendly` → 0). Nom, email,
+> téléphone et réponses libres des prospects sont donc conservés **sans limite**,
+> la plus ancienne ligne datant du 2026-07-01.
+>
+> **Ce qui rend la décision urgente** : `src/content/legal.ts:680` **annonce déjà
+> publiquement** « Demandes commerciales : 3 ans ». Une durée publiée dans la
+> notice art. 13 qu'aucun mécanisme n'applique n'est plus une décision en
+> attente, c'est un écart entre ce qu'on dit aux personnes et ce qu'on fait.
+>
+> **Les deux issues possibles**, l'une ou l'autre à trancher par Will :
+>
+> 1. **Aligner le code sur la notice** — ajouter `calendlyEvent` au worker de
+>    purge avec 36 mois post-dernière interaction, comme `Submission`. C'est
+>    l'option cohérente avec ce qui est déjà publié.
+> 2. **Aligner la notice sur une autre durée** décidée explicitement — auquel cas
+>    modifier `legal.ts` ET ce registre, et documenter la justification ici.
+>
+> ⚠️ Ne pas confondre avec la décision « prospection : conservation sans limite »
+> ni avec « rétention 5 ans : garder sans purger », qui portent sur d'autres
+> traitements. Aucune décision datée ne couvre `CalendlyEvent` à ce jour.
+
 Procédure d'effacement automatisée : workers `gdpr-purge-worker.ts` (à implémenter ou vérifié déjà présent dans `src/server/queue/workers/`) — cron daily 03:00 UTC.
+
+⚠️ **Restent absents de ce registre** (relevés le 2026-08-31, non traités dans ce
+lot faute d'avoir vérifié le détail des données transmises) : **ZeptoMail**
+(relais de tous les envois — donc destinataire de l'adresse e-mail de chaque
+personne) et **Google Agenda** (les rendez-vous Calendly y sont écrits, avec nom
+et numéro de téléphone dans la description). Ce dernier fait l'objet d'un écart
+art. 28 **assumé et daté** par Will jusqu'en janvier 2027 — l'inscrire au
+registre est la contrepartie de cet arbitrage, pas sa remise en cause.
 
 ## 9. Mesures techniques et organisationnelles de sécurité
 

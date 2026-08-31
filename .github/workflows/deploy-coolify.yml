@@ -607,12 +607,26 @@ jobs:
           # soit une régression. Remplacés par `/fr/formations` (cible canonique du 301)
           # et `/fr/contact` (page stratégique indexable). Les Web Vitals de `/reserver`
           # restent couverts par `nightly.yml`.
+          # 2026-08-31 — `/fr/appel` AJOUTÉE. C'était la seule page du dépôt à
+          # porter un budget DÉROGATOIRE (AGENTS.md : INP <= 150 ms, First Load
+          # <= 110 KB gz) et elle ne figurait dans AUCUNE liste d'URLs mesurées :
+          # ni ici, ni dans lighthouserc.json. Une exception de budget que rien
+          # ne mesure n'est pas une exception, c'est un angle mort — d'autant
+          # que c'est la page de conversion du tunnel de réservation.
+          #
+          # ⚠️ Ses assertions sont en WARN (cf. lighthouserc.postdeploy.json,
+          # motif dédié) : mesurée le 2026-08-31 elle rend LCP 3196 ms / FCP
+          # 2855 ms / perf 0.67 contre des seuils error à 1800/1500/0.9. La
+          # poser en ERROR ouvrirait un rouge permanent sur tous les
+          # déploiements — exactement ce qu'AGENTS.md interdit (« seuil aligné
+          # d'abord, blocage ensuite »). On MESURE d'abord, on serre ensuite.
           URLS=(
             --url=https://axion-ia.com/fr
             --url=https://axion-ia.com/fr/formations
             --url=https://axion-ia.com/fr/audit
             --url=https://axion-ia.com/fr/contact
             --url=https://axion-ia.com/fr/implantations/ile-de-france/paris
+            --url=https://axion-ia.com/fr/appel
           )
           LH_SETTINGS=(--settings.preset=desktop --settings.throttlingMethod=devtools)
 
@@ -658,13 +672,49 @@ jobs:
           # deploiements des le premier run. Un gate qui bloque tout se fait
           # desactiver, donc ne garde plus rien.
           #
-          # `|| true` sur le collect : une passe mobile qui echoue a collecter ne
-          # doit pas faire tomber un deploiement par ailleurs sain. L'assert, lui,
-          # ne peut pas echouer puisque tout est en WARN — il sert a IMPRIMER les
-          # valeurs dans le journal, ce qui est le but de cette etape.
+          # 🔴 CORRIGÉ LE 2026-08-31 — CETTE PASSE N'A JAMAIS MESURÉ QUOI QUE CE SOIT.
+          #
+          # `--settings.preset=mobile` n'existe pas. Lighthouse n'accepte que
+          # `perf`, `experimental` et `desktop` ; le mobile est le DÉFAUT, il
+          # s'obtient en OMETTANT l'option. Chaque run mourait donc sur
+          # « Invalid values: Argument: preset, Given: "mobile" », le `|| true`
+          # avalait l'echec, et l'assert enchainait sur un dossier vide :
+          # « Checking assertions against 0 URL(s), 0 total run(s) ». Le job
+          # ressortait vert. Depuis GEO-121 (2026-08-14) jusqu'au 2026-08-31,
+          # soit 17 jours, la version que Google indexe n'a jamais ete mesuree —
+          # alors meme que cette etape avait ete creee pour ca.
+          #
+          # Le `|| true` sur le collect RESTE (une passe mobile qui echoue ne
+          # doit pas faire tomber un deploiement par ailleurs sain), mais il ne
+          # peut plus masquer le cas « rien n'a ete collecte » : le garde-fou
+          # ci-dessous compte les rapports produits et ROUGIT s'il n'y en a
+          # aucun. Une garde qui ne peut pas rougir ne garde rien — et c'est
+          # precisement ce silence qui a tenu 17 jours.
           rm -rf .lighthouseci
-          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1             --settings.preset=mobile --settings.throttlingMethod=devtools || true
-          pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json || true
+          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1 --settings.throttlingMethod=devtools || true
+
+          # ⚠️ `set -euo pipefail` est actif : un `ls` sans correspondance rend 1
+          # et, via pipefail, tuerait l'etape AVANT le message ci-dessous — la
+          # garde mourrait donc precisement dans le cas qu'elle doit signaler.
+          # `find` sur un dossier existant reussit toujours ; le `-d` couvre le
+          # cas ou la collecte n'a meme pas cree le dossier.
+          RAPPORTS=0
+          if [ -d .lighthouseci ]; then
+            RAPPORTS=$(find .lighthouseci -maxdepth 1 -name 'lhr-*.json' | wc -l)
+          fi
+          echo "Passe mobile : ${RAPPORTS} rapport(s) collecte(s) pour ${#URLS[@]} URL(s)."
+          if [ "$RAPPORTS" -eq 0 ]; then
+            echo "::error::Passe Lighthouse MOBILE : 0 rapport collecte. Les assertions vont porter sur 0 URL et le job serait vert pour une mauvaise raison. Lire l'erreur de collecte ci-dessus (option invalide, Chrome absent, prod injoignable)."
+            exit 1
+          fi
+
+          # L'assert ne peut pas echouer sur les seuils (tout est en WARN dans
+          # lighthouserc.postdeploy.mobile.json, faute de ligne de base) : il
+          # sert a IMPRIMER les valeurs. On retire le `|| true` — desormais il
+          # n'y a plus de raison legitime qu'il echoue, donc s'il echoue on veut
+          # le voir plutot que de decouvrir 17 jours plus tard qu'il criait dans
+          # le vide.
+          pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json
 
   # ───────────────────────────────────────────────────────────────────────
   # IndexNow post-deploy — Audit indexation 2026-06-20.

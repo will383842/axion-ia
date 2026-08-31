@@ -29,14 +29,26 @@ vi.mock("@/server/notifications", () => ({
 
 import { verifierSanteEmails, SEUIL_ECHECS, FENETRE_ECHECS_H, AGE_BLOCAGE_MIN } from "./health";
 
-/** `count` est appelé deux fois : d'abord les échecs, puis les bloqués. */
-function compteurs(echecs: number, bloques: number): void {
-  countMock.mockResolvedValueOnce(echecs).mockResolvedValueOnce(bloques);
+/**
+ * `count` est appelé TROIS fois depuis le 2026-08-31 : échecs, bloqués, puis
+ * rebonds. Le troisième argument est optionnel pour ne pas réécrire les appels
+ * existants, dont aucun ne portait sur les rebonds.
+ */
+function compteurs(echecs: number, bloques: number, rebonds = 0): void {
+  countMock
+    .mockResolvedValueOnce(echecs)
+    .mockResolvedValueOnce(bloques)
+    .mockResolvedValueOnce(rebonds);
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
   delete process.env["DATABASE_URL"];
+  // 🔑 Par défaut, on se place dans le cas où la détection de rebonds EST
+  // branchée. Sans cette ligne, chaque test hériterait de l'alerte
+  // `emails_rebonds_non_detectes` — vraie, mais sans rapport avec ce qu'il
+  // mesure. L'absence de clé se teste explicitement, dans son propre bloc.
+  process.env["ZEPTOMAIL_WEBHOOK_KEY"] = "cle-de-test";
   creerOuDedupMock.mockResolvedValue(null);
   notifyMock.mockResolvedValue({ ok: true, channels: {} });
 });
@@ -55,6 +67,61 @@ describe("verifierSanteEmails — quand tout va bien", () => {
     const r = await verifierSanteEmails();
     expect(r.alertesLevees).toEqual([]);
     expect(creerOuDedupMock).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * 🔴 Le zéro qui ne mesurait rien — corrigé le 2026-08-31.
+ *
+ * `bounced` n'est écrit que par `/api/zeptomail/webhook`, et cette route sort
+ * en `skipped: not_configured` avant de rien lire quand la clé manque. Mesuré
+ * en production : 141 e-mails `sent`, 0 `bounced` — un zéro qui se lisait
+ * « aucun destinataire injoignable » alors qu'il fallait lire « je n'ai aucun
+ * moyen de le savoir ». Un rebond dur sur l'adresse d'un prospect, donc sur une
+ * confirmation de rendez-vous ou une convocation, était strictement invisible.
+ */
+describe("verifierSanteEmails — les rebonds", () => {
+  it("🔴 crie quand AUCUN rebond ne peut être détecté, faute de clé de webhook", async () => {
+    delete process.env["ZEPTOMAIL_WEBHOOK_KEY"];
+    compteurs(0, 0, 0);
+
+    const r = await verifierSanteEmails();
+
+    expect(r.detectionRebondsDebranchee).toBe(true);
+    expect(r.alertesLevees).toContain("emails_rebonds_non_detectes");
+    expect(creerOuDedupMock).toHaveBeenCalled();
+  });
+
+  it("ne crie plus une fois la clé posée, et compte alors réellement", async () => {
+    compteurs(0, 0, 0);
+
+    const r = await verifierSanteEmails();
+
+    expect(r.detectionRebondsDebranchee).toBe(false);
+    expect(r.alertesLevees).toEqual([]);
+  });
+
+  it("un seul rebond suffit à alerter — il est définitif, là où un échec se rejoue", async () => {
+    compteurs(0, 0, 1);
+
+    const r = await verifierSanteEmails();
+
+    expect(r.rebondsRecents).toBe(1);
+    expect(r.alertesLevees).toContain("emails_rebonds");
+  });
+
+  it("🔑 CONTRE-TÉMOIN : sans clé, on n'annonce PAS un compte de rebonds rassurant", async () => {
+    // Le piège serait de lever l'alerte « instrument débranché » ET de laisser
+    // croire, par un `rebondsRecents: 0` d'apparence normale, qu'on a compté.
+    // Les deux alertes s'excluent : tant que l'instrument est débranché, le
+    // compteur n'est pas une mesure et ne doit pas déclencher son alerte à lui.
+    delete process.env["ZEPTOMAIL_WEBHOOK_KEY"];
+    compteurs(0, 0, 0);
+
+    const r = await verifierSanteEmails();
+
+    expect(r.alertesLevees).not.toContain("emails_rebonds");
+    expect(r.detectionRebondsDebranchee).toBe(true);
   });
 });
 

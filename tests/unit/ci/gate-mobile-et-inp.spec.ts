@@ -66,7 +66,10 @@ interface ConfigLhci {
   readonly ci: {
     readonly assert: {
       readonly assertions?: Record<string, unknown>;
-      readonly assertMatrix?: ReadonlyArray<{ assertions: Record<string, unknown> }>;
+      readonly assertMatrix?: ReadonlyArray<{
+        matchingUrlPattern?: string;
+        assertions: Record<string, unknown>;
+      }>;
     };
   };
 }
@@ -84,25 +87,83 @@ describe("GEO-114 — le gate bloquant mesure l'INP", () => {
     }
   });
 
-  it("le seuil INP reste aligné sur le contrat de performance (≤ 100 ms)", () => {
+  it("le seuil INP reste aligné sur le contrat de performance (≤ 100 ms, sauf dérogation écrite)", () => {
+    // 🔑 Les deux seuils sont DÉRIVÉS d'AGENTS.md, jamais recopiés ici. C'est
+    // là qu'est écrit le contrat de performance ; un chiffre recopié dans le
+    // test diverge du contrat sans que personne ne le voie — la classe de
+    // défaut que ce fichier existe pour empêcher.
+    const contrat = lire("AGENTS.md");
+    const general = Number(/INP\*\*\s*≤\s*(\d+)\s*ms/.exec(contrat)?.[1]);
+    const derogation = Number(
+      /Exception\s*:\s*`\/appel`[^\n]*?INP\s*≤\s*(\d+)\s*ms/.exec(contrat)?.[1],
+    );
+    expect(general, "seuil INP général introuvable dans AGENTS.md").toBeGreaterThan(0);
+    expect(derogation, "dérogation INP de /appel introuvable dans AGENTS.md").toBeGreaterThan(0);
+
     const conf = JSON.parse(lire(CONF_DESKTOP)) as ConfigLhci;
     for (const entree of conf.ci.assert.assertMatrix ?? []) {
       const regle = entree.assertions["interaction-to-next-paint"] as [
         string,
         { maxNumericValue: number },
       ];
-      expect(regle[1].maxNumericValue).toBeLessThanOrEqual(100);
+      // `/appel` porte une exception explicite au contrat (page de réservation,
+      // historiquement client-heavy). Toute autre URL reste au seuil général :
+      // l'exception se lit dans AGENTS.md ou elle n'existe pas.
+      const estAppel = /appel/.test(entree.matchingUrlPattern ?? "");
+      const plafond = estAppel ? derogation : general;
+      expect(
+        regle[1].maxNumericValue,
+        `${entree.matchingUrlPattern} : seuil INP hors contrat`,
+      ).toBeLessThanOrEqual(plafond);
     }
   });
 });
 
 describe("GEO-121 — le gate mesure aussi le mobile", () => {
-  it("🔴 le workflow exécute une passe `--settings.preset=mobile`", () => {
-    const wf = lire(WORKFLOW);
+  /**
+   * 🔴 CE TEST VERROUILLAIT LE DÉFAUT QU'IL CROYAIT GARDER — retourné le
+   * 2026-08-31.
+   *
+   * Il exigeait la présence littérale de `--settings.preset=mobile`. Or cette
+   * option **n'existe pas** : Lighthouse n'accepte que `perf`, `experimental`
+   * et `desktop`, et le mobile est le DÉFAUT, obtenu en omettant l'option.
+   * Chaque exécution mourait donc sur « Invalid values: Argument: preset,
+   * Given: "mobile" », puis assertait contre 0 URL. Le test, lui, restait vert :
+   * il mesurait la présence d'une chaîne de caractères, pas l'existence d'une
+   * mesure. Dix-sept jours (2026-08-14 → 2026-08-31) pendant lesquels la
+   * version que Google indexe n'a jamais été mesurée, sous la protection d'une
+   * garde qui exigeait la cause de la panne.
+   *
+   * La propriété à garder n'a jamais été « la chaîne est là » mais « la passe
+   * mobile produit des mesures ». On garde donc les deux versants : l'option
+   * invalide est bannie, et la passe doit compter ce qu'elle a collecté.
+   */
+  it("🔴 le workflow ne repose PAS sur un preset `mobile` qui n'existe pas", () => {
+    // 🔑 On mesure ce qui est EXÉCUTÉ, pas ce qui est écrit : les lignes de
+    // commentaire sont retirées avant la recherche. Sans ce filtrage, le
+    // commentaire qui EXPLIQUE la panne ferait rougir la garde qui la
+    // surveille — et on serait tenté de retirer l'explication plutôt que de
+    // corriger la mesure.
+    const commandes = lire(WORKFLOW)
+      .split("\n")
+      .filter((l) => !/^\s*#/.test(l))
+      .join("\n");
     expect(
-      wf,
-      "sans passe mobile, on mesure le desktop alors que Google classe le mobile",
-    ).toContain("--settings.preset=mobile");
+      commandes,
+      "`--settings.preset=mobile` est refusé par Lighthouse (choix : perf, experimental, desktop) — " +
+        "le mobile s'obtient en OMETTANT l'option. Sa présence fait mourir la collecte.",
+    ).not.toContain("preset=mobile");
+  });
+
+  it("🔴 la passe mobile compte ses rapports et rougit si elle n'a rien mesuré", () => {
+    const wf = lire(WORKFLOW);
+    // Sans ce garde-fou, « 0 rapport » et « tout va bien » sont le même job vert.
+    expect(wf, "le nombre de rapports collectés doit être compté").toMatch(
+      /RAPPORTS=\$\(find \.lighthouseci/,
+    );
+    expect(wf, "0 rapport doit produire une erreur explicite, pas un silence").toMatch(
+      /if \[ "\$RAPPORTS" -eq 0 \]/,
+    );
   });
 
   it("🔴 cette passe asserte contre la config mobile dédiée", () => {
@@ -138,12 +199,26 @@ describe("GEO-121 — le gate mesure aussi le mobile", () => {
     }
   });
 
-  it("la passe mobile ne peut pas faire échouer un déploiement sain", () => {
-    // Un `|| true` sur les deux commandes : un collect mobile qui casse ne doit
-    // pas renverser un deploiement par ailleurs valide, tant qu'on est en phase
-    // d'observation.
+  it("la passe mobile ne renverse pas un déploiement sain, mais ne se tait plus", () => {
     const wf = lire(WORKFLOW);
-    expect(wf).toMatch(/--config=lighthouserc\.postdeploy\.mobile\.json \|\| true/);
+
+    // Le `|| true` RESTE sur la COLLECTE : une passe mobile qui casse ne doit
+    // pas renverser un déploiement par ailleurs valide, tant qu'on est en
+    // phase d'observation. Ce job est post-deploy — il alerte, il ne bloque
+    // pas la mise en ligne, déjà faite.
+    expect(wf, "la collecte mobile reste non bloquante").toMatch(
+      /lhci collect .*--settings\.throttlingMethod=devtools \|\| true/,
+    );
+
+    // 🔑 Mais il a été RETIRÉ de l'assert (2026-08-31). Le raisonnement d'origine
+    // — « l'assert ne peut pas échouer puisque tout est en WARN, le `|| true`
+    // est une simple ceinture » — était juste sur les seuils et faux sur tout le
+    // reste : c'est lui qui a avalé, dix-sept jours durant, un assert qui
+    // tournait contre 0 URL. Une ceinture qui masque aussi la panne du moteur
+    // n'est pas une ceinture.
+    expect(wf, "l'assert mobile ne doit plus être masqué par un `|| true`").not.toMatch(
+      /--config=lighthouserc\.postdeploy\.mobile\.json \|\| true/,
+    );
   });
 });
 

@@ -13,7 +13,7 @@
     "assert": {
       "assertMatrix": [
         {
-          "matchingUrlPattern": "^(?!.*/fr/audit/?$).*$",
+          "matchingUrlPattern": "^(?!.*/fr/(audit|appel)/?$).*$",
           "assertions": {
             "categories:performance": [
               "error",
@@ -102,6 +102,54 @@
               "warn",
               {
                 "maxNumericValue": 100
+              }
+            ]
+          }
+        },
+        {
+          "//": "2026-08-31 — /fr/appel, ajoutee aux URLs mesurees le meme jour. TOUT est en WARN, et c'est une etape, pas un etat final : cette page n'avait JAMAIS ete mesuree par aucune gate alors qu'elle est la seule a porter un budget derogatoire (AGENTS.md : INP <= 150 ms, First Load <= 110 KB gz). Premiere mesure (2026-08-31, desktop, poste de dev, reseau domestique) : LCP 3196 ms, FCP 2855 ms, Speed Index 2664 ms, perf 0.67 — contre des seuils error 1800 / 1500 / 2500 / 0.9. La poser en ERROR ouvrirait un rouge permanent sur tous les deploiements, ce qu'AGENTS.md interdit explicitement (« ne reposez jamais un ratchet sur un seuil deja depasse »). CLS 0.00086 et TBT 0 ms sont eux excellents (boite de 720 px reservee par CalendlySlotPicker, et zero script tiers depuis l'ADR 0038) mais restent en WARN eux aussi : /fr/audit montre qu'un CLS cold-lab peut bondir a 0.0925 sur le seul swap de polices, et /fr/appel porte le meme layout. ⛔ A FAIRE apres 2-3 deploiements : lire les valeurs reelles mesurees par le runner (et non par un poste de dev), puis passer en ERROR ce qui passe et ouvrir un lot pour le LCP.",
+          "matchingUrlPattern": ".*/fr/appel/?$",
+          "assertions": {
+            "categories:performance": [
+              "warn",
+              {
+                "minScore": 0.9
+              }
+            ],
+            "largest-contentful-paint": [
+              "warn",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "cumulative-layout-shift": [
+              "warn",
+              {
+                "maxNumericValue": 0.05
+              }
+            ],
+            "total-blocking-time": [
+              "warn",
+              {
+                "maxNumericValue": 150
+              }
+            ],
+            "first-contentful-paint": [
+              "warn",
+              {
+                "maxNumericValue": 1500
+              }
+            ],
+            "speed-index": [
+              "warn",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 150
               }
             ]
           }

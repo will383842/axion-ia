@@ -64,6 +64,21 @@ function record(v: unknown): Record<string, unknown> | null {
   return typeof v === "object" && v !== null ? (v as Record<string, unknown>) : null;
 }
 
+/**
+ * Portées réclamées par Calendly dans le corps d'un 403, ou `null` si le corps
+ * n'en mentionne aucune.
+ *
+ * C'est ce qui distingue « ton JETON est trop étroit » (régénérer le jeton,
+ * gratuit) de « ton PLAN n'y a pas droit » (payer). Les deux rendent 403 ;
+ * seul le corps tranche, et il porte alors `required_scopes`.
+ */
+function portéesManquantes(body: unknown): string[] | null {
+  const brut = record(body)?.["required_scopes"];
+  if (!Array.isArray(brut)) return null;
+  const portees = brut.filter((s): s is string => typeof s === "string");
+  return portees.length > 0 ? portees : null;
+}
+
 async function main(): Promise<void> {
   if (!token) {
     console.error("✗ CALENDLY_API_TOKEN absent. Rien n'a été fait.");
@@ -88,6 +103,32 @@ async function main(): Promise<void> {
     `/webhook_subscriptions?organization=${encodeURIComponent(orgUri)}` +
       `&user=${encodeURIComponent(userUri)}&scope=user&count=100`,
   );
+  // 🔑 Ne PAS sauter cette garde en silence (corrigé 2026-08-31). Quand le GET
+  // échoue — typiquement 403 faute de portée `webhooks:read` —, `collection`
+  // n'est pas un tableau, la recherche de doublon était simplement ignorée et
+  // l'exécution tombait sur le POST. L'idempotence annoncée en tête de fichier
+  // (« deux livraisons par réservation ») n'était donc pas assurée, sans qu'un
+  // seul mot ne le dise.
+  if (existing.status !== 200) {
+    const portees = portéesManquantes(existing.body);
+    if (portees) {
+      console.error(
+        `✗ 403 — le JETON n'a pas la portée requise : ${portees.join(", ")}.\n` +
+          "  Ce n'est PAS une limite de plan : c'est le jeton qui est trop étroit.\n" +
+          "  Régénérer un jeton personnel Calendly incluant `webhooks:read` ET\n" +
+          "  `webhooks:write`, le poser dans CALENDLY_API_TOKEN, puis relancer.\n" +
+          "  Rien n'a changé ; le sondage BullMQ (≤ 60 s) reste en place.",
+      );
+      process.exit(1);
+    }
+    console.error(
+      `✗ Impossible de LIRE les abonnements existants (HTTP ${existing.status}).\n` +
+        "  On s'arrête ici volontairement : créer sans avoir pu vérifier\n" +
+        "  risquerait un DOUBLON, donc deux livraisons par réservation.",
+    );
+    console.error(JSON.stringify(existing.body, null, 2));
+    process.exit(1);
+  }
   const collection = record(existing.body)?.["collection"];
   if (Array.isArray(collection)) {
     const already = collection.find((c) => record(c)?.["callback_url"] === callbackUrl);
@@ -115,11 +156,32 @@ async function main(): Promise<void> {
   });
 
   if (created.status === 403) {
+    // 🔑 NE PAS imputer au plan un 403 qu'on n'a pas lu (corrigé 2026-08-31).
+    // Ce bloc traduisait TOUT 403 par « le plan Calendly ne permet pas les
+    // webhooks ». Mesuré en production le 2026-08-31, le 403 réellement rendu
+    // était un défaut de PORTÉE du jeton (`required_scopes: ["webhooks:read"]`,
+    // le jeton n'ayant que `event_types:read scheduled_events:read users:read`).
+    // Souscrire à Standard aurait reproduit le message à l'identique : un
+    // diagnostic qui nomme une cause qu'il n'a pas mesurée coûte un abonnement.
+    const portees = portéesManquantes(created.body);
+    if (portees) {
+      console.error(
+        `✗ 403 — le JETON n'a pas la portée requise : ${portees.join(", ")}.\n` +
+          "  Ce n'est PAS une limite de plan. Régénérer un jeton personnel\n" +
+          "  Calendly incluant `webhooks:read` ET `webhooks:write`, le poser\n" +
+          "  dans CALENDLY_API_TOKEN, puis relancer ce script.\n" +
+          "  Rien n'a changé ; le sondage BullMQ (≤ 60 s) reste en place.",
+      );
+      process.exit(1);
+    }
     console.error(
-      "✗ 403 — le plan Calendly ne permet pas les webhooks.\n" +
-        "  Ils exigent Standard, Teams ou Enterprise. Le plan gratuit n'y a pas droit.\n" +
+      "✗ 403 — création refusée, et le corps ne mentionne aucune portée manquante.\n" +
+        "  C'est alors vraisemblablement une limite de PLAN (les webhooks exigent\n" +
+        "  Standard, Teams ou Enterprise). Corps exact ci-dessous — le lire AVANT\n" +
+        "  de souscrire quoi que ce soit.\n" +
         "  Rien n'a changé ; le sondage BullMQ (≤ 60 s) reste en place.",
     );
+    console.error(JSON.stringify(created.body, null, 2));
     process.exit(1);
   }
   if (created.status !== 201) {

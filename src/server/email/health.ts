@@ -74,9 +74,48 @@ export const SEUIL_ECHECS = 3;
  */
 export const AGE_BLOCAGE_MIN = 15;
 
+/**
+ * Fenêtre d'observation des rebonds. Vingt-quatre heures et non six : un rebond
+ * n'arrive pas au moment de l'envoi mais quand le serveur destinataire répond,
+ * ce qui peut prendre plusieurs heures (rebond « différé » puis « dur »).
+ */
+export const FENETRE_REBONDS_H = 24;
+
+/**
+ * Un seul rebond suffit à alerter, là où il faut trois échecs.
+ *
+ * Ce n'est pas une incohérence : un échec d'envoi est souvent transitoire et se
+ * rattrape au réessai, alors qu'un rebond DUR est définitif — le message
+ * n'arrivera jamais, et sur cette chaîne il peut s'agir d'une convocation ou
+ * d'une confirmation de rendez-vous. Le destinataire, lui, ne saura rien.
+ */
+export const SEUIL_REBONDS = 1;
+
 export interface SanteEmails {
   echecsRecents: number;
   bloquesEnFile: number;
+  /**
+   * Rebonds enregistrés sur la fenêtre. Distinct de `echecsRecents` : un échec
+   * est un envoi REFUSÉ par notre relais, un rebond est un message ACCEPTÉ par
+   * le relais puis refusé par le serveur destinataire. Le second est invisible
+   * du worker — il n'arrive que par le webhook ZeptoMail.
+   */
+  rebondsRecents: number;
+  /**
+   * 🔑 Vrai quand AUCUN rebond ne peut être enregistré, faute de
+   * `ZEPTOMAIL_WEBHOOK_KEY`.
+   *
+   * Ajouté le 2026-08-31. `rebondsRecents` valait alors 0 sur 141 e-mails
+   * envoyés depuis le 2026-07-21 — et ce zéro n'était pas une mesure : la route
+   * `/api/zeptomail/webhook` sort en `skipped: not_configured` avant de lire
+   * quoi que ce soit, donc le statut `bounced` est structurellement
+   * inatteignable. Un rebond dur sur l'adresse d'un prospect était strictement
+   * invisible.
+   *
+   * ⚠️ Quand ce drapeau est levé, `rebondsRecents` **ne veut rien dire** —
+   * même contrat que `mesureIndisponible` pour les deux autres compteurs.
+   */
+  detectionRebondsDebranchee: boolean;
   alertesLevees: string[];
   /**
    * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
@@ -102,6 +141,11 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   const resultat: SanteEmails = {
     echecsRecents: 0,
     bloquesEnFile: 0,
+    rebondsRecents: 0,
+    // Le seul écrivain du statut `bounced` est `/api/zeptomail/webhook`, et il
+    // sort en `skipped: not_configured` sans cette clé. Pas de clé = pas de
+    // rebond possible, jamais.
+    detectionRebondsDebranchee: !process.env["ZEPTOMAIL_WEBHOOK_KEY"]?.trim(),
     alertesLevees: [],
     mesureIndisponible: false,
   };
@@ -109,14 +153,21 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
 
   const depuis = new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000);
   const avant = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);
+  const depuisRebonds = new Date(maintenant.getTime() - FENETRE_REBONDS_H * 3600_000);
 
   try {
-    [resultat.echecsRecents, resultat.bloquesEnFile] = await Promise.all([
+    [resultat.echecsRecents, resultat.bloquesEnFile, resultat.rebondsRecents] = await Promise.all([
       prisma.emailLog.count({
         where: { status: EmailLogStatus.failed, failedAt: { gte: depuis } },
       }),
       prisma.emailLog.count({
         where: { status: EmailLogStatus.pending, createdAt: { lt: avant } },
+      }),
+      // Fenêtre volontairement plus large que celle des échecs : un rebond
+      // remonte quand le serveur destinataire répond, parfois des heures après
+      // l'acceptation par le relais.
+      prisma.emailLog.count({
+        where: { status: EmailLogStatus.bounced, bouncedAt: { gte: depuisRebonds } },
       }),
     ]);
   } catch (e) {
@@ -161,6 +212,36 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       `Détail par envoi : console → Ops & monitoring → E-mails envoyés, filtre « échec ».`;
     await leverAlerte("emails_en_echec", titre, message, resultat.echecsRecents);
     resultat.alertesLevees.push("emails_en_echec");
+  }
+
+  // 🔑 L'INSTRUMENT AVANT LA MESURE (2026-08-31). Cette alerte-ci ne dit pas
+  // qu'un rebond a eu lieu : elle dit qu'aucun rebond ne PEUT être vu. Sans
+  // elle, `rebondsRecents: 0` se lisait comme « aucun destinataire injoignable »
+  // alors qu'il fallait lire « je n'ai aucun moyen de le savoir ». C'est le même
+  // défaut que `mesureIndisponible` ci-dessus, sur un instrument qui n'a jamais
+  // été branché plutôt que sur un instrument tombé en panne.
+  if (resultat.detectionRebondsDebranchee) {
+    await leverAlerte(
+      "emails_rebonds_non_detectes",
+      "Aucun rebond d'e-mail ne peut être détecté",
+      `ZEPTOMAIL_WEBHOOK_KEY est absente : la route /api/zeptomail/webhook répond ` +
+        `« non configuré » sans rien lire, donc le statut « rebond » ne peut JAMAIS être ` +
+        `écrit. Un compteur de rebonds à zéro ne prouve donc rien — une convocation ou une ` +
+        `confirmation de rendez-vous peut être refusée par le serveur destinataire sans que ` +
+        `personne ne l'apprenne. Créer le webhook côté ZeptoMail, puis poser sa clé dans ` +
+        `Coolify (application WEB, scope RUN) et redémarrer.`,
+      0,
+    );
+    resultat.alertesLevees.push("emails_rebonds_non_detectes");
+  } else if (resultat.rebondsRecents >= SEUIL_REBONDS) {
+    const titre = `${resultat.rebondsRecents} e-mail(s) rejeté(s) par le destinataire sur ${FENETRE_REBONDS_H} h`;
+    const message =
+      `Ces messages ont été acceptés par le relais puis REFUSÉS à l'arrivée : ils ne sont ` +
+      `jamais parvenus. Adresse erronée, boîte pleine ou domaine qui nous rejette. ` +
+      `Détail : console → Ops & monitoring → E-mails envoyés, filtre « rebond ». ` +
+      `Un rebond dur répété sur un même domaine abîme la réputation d'envoi : le traiter.`;
+    await leverAlerte("emails_rebonds", titre, message, resultat.rebondsRecents);
+    resultat.alertesLevees.push("emails_rebonds");
   }
 
   if (resultat.bloquesEnFile > 0) {
