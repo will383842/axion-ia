@@ -191,58 +191,105 @@ export async function drainFailedJobs(
   const budget = Math.min(settings.maxPerTick, dailyRoom, sharedBudget ?? Number.MAX_SAFE_INTEGER);
   if (budget <= 0) return { requeued: 0, skipped: 0, closed: 0 };
 
-  // On lit un peu plus large que le budget : une partie des candidats sera
-  // écartée par la classification (échecs de qualité mêlés aux échecs d'infra).
-  const candidates = await prisma.contentGenJob.findMany({
-    where: { status: "failed", retryCount: { lt: settings.maxRetries } },
-    // Fix 2026-08-15 — reprise dans l'ORDRE DU PLAN, pas dans l'ordre des échecs.
-    //
-    // `updatedAt` datait la dernière tentative : les jobs déjà rejoués une fois
-    // (la relance-test du 18/07) remontaient donc en tête, et le plan était
-    // repris en désordre. `createdAt` est l'ordre dans lequel l'orchestrateur a
-    // enfilé les slots — vérifié en base : il suit exactement le `slotIndex`
-    // (2, 77, 102, 241, 242…).
-    //
-    // Ce n'est pas cosmétique. Chaque job en échec porte sa place dans le plan
-    // et ce qui en découle : `slotIndex`, type de contenu, ville d'ancrage et
-    // intention de recherche, tous échantillonnés déterministement à partir du
-    // slot. Reprendre dans cet ordre, c'est rejouer la campagne telle qu'elle
-    // avait été conçue, en repartant là où elle s'était interrompue.
-    orderBy: { createdAt: "asc" },
-    take: budget * 6,
-    select: {
-      id: true,
-      contentType: true,
-      targetSearchIntent: true,
-      inputPayload: true,
-      retryCount: true,
-      errorMessage: true,
-    },
-  });
+  // 🔴 2026-09-01 — LA MÊME FAMINE DE FENÊTRE QUE `sweepStuckJobs`, EN PIRE.
+  //
+  // L'ancien code lisait UNE page de `budget * 6` lignes (30 au plus) et
+  // espérait y trouver de quoi remplir le budget. Mesuré en production ce
+  // jour-là, sur les 1 441 échecs encore relançables :
+  //
+  //   rang 1 à 29  : échecs PERMANENTS (« plan invalide », « aucun output
+  //                  valide », « quality_gate », parse errors) — début juillet
+  //   rang 30      : le PREMIER échec relançable
+  //   rangs 30+    : 1 383 échecs de quota, tous parfaitement régénérables
+  //
+  // La fenêtre s'ouvrait donc sur 29 cadavres. Ils sont écartés par
+  // `isAutoRetryable` mais restent `failed` avec `retryCount < maxRetries`,
+  // donc ils reprenaient la même place au tick suivant, indéfiniment. Le drain
+  // n'atteignait le premier job relançable que si le budget valait exactement 5
+  // — et le budget est lissé sur la journée, donc il vaut le plus souvent 1 à 3.
+  // Résultat : le rechargement du crédit n'aurait rien rattrapé du tout.
+  //
+  // 🔑 Une fenêtre doit être dimensionnée par CE QU'ON CHERCHE, pas par ce
+  // qu'on espère trouver. On pagine donc jusqu'à remplir le budget, avec un
+  // plafond de balayage par tick.
+  //
+  // L'offset se calcule exactement, sans champ curseur : les seules lignes qui
+  // QUITTENT l'ensemble pendant le tick sont celles qu'on vient de remettre en
+  // file (leur statut passe à `queued`), et elles sont toutes derrière nous.
+  // La page suivante commence donc à `scanned - requeued`.
+  const PAGE_SIZE = Math.max(budget * 6, 100);
+  const MAX_SCAN_PER_TICK = 600;
+  const candidatesWhere = { status: "failed", retryCount: { lt: settings.maxRetries } } as const;
+  const candidatesSelect = {
+    id: true,
+    contentType: true,
+    targetSearchIntent: true,
+    inputPayload: true,
+    retryCount: true,
+    errorMessage: true,
+  } as const;
 
   let requeued = 0;
   let skipped = 0;
-  for (const job of candidates) {
-    if (requeued >= budget) break;
-    // Le job est passé en entier au test : la fraîcheur du sujet se juge sur sa
-    // charge utile, pas sur son message d'erreur (incident RSS du 2026-08-15).
-    if (!isAutoRetryable(job.errorMessage, job.retryCount, settings.maxRetries, job)) {
-      skipped++;
-      continue;
+  let scanned = 0;
+
+  while (requeued < budget && scanned < MAX_SCAN_PER_TICK) {
+    const candidates = await prisma.contentGenJob.findMany({
+      where: candidatesWhere,
+      // Fix 2026-08-15 — reprise dans l'ORDRE DU PLAN, pas dans l'ordre des échecs.
+      //
+      // `updatedAt` datait la dernière tentative : les jobs déjà rejoués une fois
+      // (la relance-test du 18/07) remontaient donc en tête, et le plan était
+      // repris en désordre. `createdAt` est l'ordre dans lequel l'orchestrateur a
+      // enfilé les slots — vérifié en base : il suit exactement le `slotIndex`
+      // (2, 77, 102, 241, 242…).
+      //
+      // Ce n'est pas cosmétique. Chaque job en échec porte sa place dans le plan
+      // et ce qui en découle : `slotIndex`, type de contenu, ville d'ancrage et
+      // intention de recherche, tous échantillonnés déterministement à partir du
+      // slot. Reprendre dans cet ordre, c'est rejouer la campagne telle qu'elle
+      // avait été conçue, en repartant là où elle s'était interrompue.
+      orderBy: { createdAt: "asc" },
+      skip: scanned - requeued,
+      take: PAGE_SIZE,
+      select: candidatesSelect,
+    });
+    if (candidates.length === 0) break;
+
+    for (const job of candidates) {
+      if (requeued >= budget || scanned >= MAX_SCAN_PER_TICK) break;
+      scanned++;
+      // Le job est passé en entier au test : la fraîcheur du sujet se juge sur sa
+      // charge utile, pas sur son message d'erreur (incident RSS du 2026-08-15).
+      if (!isAutoRetryable(job.errorMessage, job.retryCount, settings.maxRetries, job)) {
+        skipped++;
+        continue;
+      }
+      try {
+        const ok = await requeueContentGenJob(queue, job);
+        if (ok) requeued++;
+        else skipped++;
+      } catch (err) {
+        // Isolation par job : une exception sur le job k ne doit pas empêcher
+        // k+1..N d'être repris (leçon du fix `retryAllFailed`).
+        skipped++;
+        console.warn(
+          `[backlog-recovery] relance échouée job=${job.id}:`,
+          err instanceof Error ? err.message : err,
+        );
+      }
     }
-    try {
-      const ok = await requeueContentGenJob(queue, job);
-      if (ok) requeued++;
-      else skipped++;
-    } catch (err) {
-      // Isolation par job : une exception sur le job k ne doit pas empêcher
-      // k+1..N d'être repris (leçon du fix `retryAllFailed`).
-      skipped++;
-      console.warn(
-        `[backlog-recovery] relance échouée job=${job.id}:`,
-        err instanceof Error ? err.message : err,
-      );
-    }
+    if (candidates.length < PAGE_SIZE) break;
+  }
+
+  // Le signal qui manquait : un drain qui balaie son plafond sans rien trouver
+  // n'est pas « au repos », il est affamé. Sans cette ligne, la famine de
+  // fenêtre est parfaitement silencieuse — c'est ce qui l'a laissée vivre.
+  if (requeued === 0 && scanned >= MAX_SCAN_PER_TICK) {
+    console.warn(
+      `[backlog-recovery] drain affamé — ${scanned} candidats balayés, aucun relançable. ` +
+        `Tête de file probablement occupée par des échecs permanents.`,
+    );
   }
 
   return { requeued, skipped, closed: 0 };
