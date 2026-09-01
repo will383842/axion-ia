@@ -423,11 +423,24 @@ export async function closeStuckJob(
 export async function sweepStuckJobs(
   queue: Queue,
   settings: BacklogRecoverySettings,
-  /** Budget partagé du tick (cf. `drainFailedJobs`). Prime quand il est fourni. */
+  /**
+   * Budget partagé du tick (cf. `drainFailedJobs`). Il plafonne les REMISES EN
+   * FILE, pas les clôtures.
+   *
+   * ⚠️ 2026-09-01, mesuré en production dans l'heure suivant le déploiement du
+   * correctif de famine : ce passage portait ici un `return` anticipé dès que le
+   * budget valait 0. Or le plafond quotidien est atteint presque tous les jours
+   * en fin de journée — le tick a rendu `tickBudget=0`, le balayage s'est arrêté
+   * net, et les 59 jobs figés sont restés figés. Le correctif se bloquait
+   * lui-même, en contradiction avec son propre commentaire (« clore ne
+   * déclenche aucun appel provider, donc ne dépense rien »).
+   *
+   * 🔑 Un nettoyage qui ne coûte rien ne doit jamais être gardé par un budget de
+   * DÉPENSE. Le plafond continue de s'appliquer aux relances, ligne par ligne,
+   * dans la boucle.
+   */
   sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
-  if (sharedBudget !== undefined && sharedBudget <= 0)
-    return { requeued: 0, skipped: 0, closed: 0 };
   const threshold = new Date(Date.now() - settings.stuckAfterMinutes * MS_PER_MINUTE);
 
   const stuck = await prisma.contentGenJob.findMany({
