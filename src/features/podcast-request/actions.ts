@@ -26,6 +26,7 @@ import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
 import { podcastRequestSchema } from "@/lib/schemas/podcast-request-schema";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 const CONSENT_VERSION = "podcast-v1-2026-07-21";
 
@@ -54,7 +55,11 @@ export async function submitPodcastRequestAction(
   if (!rl.allowed) return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
 
   // 2. Honeypot (bot → succès silencieux, on ne lui apprend rien)
-  if (formData.get("website")) return { ok: true, requestId: "" };
+  const leurre = formData.get("website");
+  if (leurre) {
+    signalerHoneypot("podcast", leurre);
+    return { ok: true, requestId: "" };
+  }
 
   // 3. Turnstile (hard-fail)
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
