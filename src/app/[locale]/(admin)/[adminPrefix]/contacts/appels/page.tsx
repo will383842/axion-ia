@@ -71,12 +71,12 @@ const PAGE_SIZE = 25;
  * sinon : un format indécis ne doit pas ressembler à un format décidé. Le choix
  * des deux couleurs et sa raison sont documentés sur `TEINTE_CANAL`.
  */
-function PastilleFormat({ canal }: { canal: CanalRendezVous }) {
-  const teinte = TEINTE_CANAL[canal];
+function PastilleFormat({ format }: { format: CanalRendezVous }) {
+  const teinte = TEINTE_CANAL[format];
   if (teinte === null) {
     return (
       <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        {LIBELLE_CANAL[canal]}
+        {LIBELLE_CANAL[format]}
       </span>
     );
   }
@@ -93,7 +93,7 @@ function PastilleFormat({ canal }: { canal: CanalRendezVous }) {
         className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
         style={{ background: "currentColor" }}
       />
-      {LIBELLE_CANAL[canal]}
+      {LIBELLE_CANAL[format]}
     </span>
   );
 }
@@ -276,7 +276,7 @@ export default async function AppelsPage({
                         ) : null}
                       </span>
                       <span className="flex shrink-0 items-center gap-2">
-                        <PastilleFormat canal={r.canal} />
+                        <PastilleFormat format={r.format} />
                         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                           {RDV_STATUS_LABELS[r.status]} ›
                         </span>
@@ -340,7 +340,7 @@ export default async function AppelsPage({
     {
       key: "format",
       header: INTITULE_FORMAT,
-      cell: (r) => <PastilleFormat canal={r.canal} />,
+      cell: (r) => <PastilleFormat format={r.format} />,
     },
     { key: "status", header: "Statut", cell: (r) => RDV_STATUS_LABELS[r.status] },
   ];
