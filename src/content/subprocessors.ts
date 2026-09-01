@@ -282,6 +282,30 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl: "https://calendly.com/dpa",
   },
   {
+    // 🛑 DÉCISION DE WILL, 2026-09-01 : « supprime tout enregistrement ».
+    //
+    // Le Notetaker de Calendly enregistre et transcrit les réunions en ligne.
+    // Il était activé au niveau du COMPTE et réglé pour rejoindre celles qui
+    // comptent des personnes extérieures. Le jour où le lieu « Google Meet » a
+    // été ajouté, il est donc devenu capable d'enregistrer des rendez-vous
+    // prospects — sans que personne en soit informé.
+    //
+    // Will a tranché pour la désactivation complète, et c'est la seule voie qui
+    // ne demandait rien d'autre : enregistrer les paroles d'une personne à son
+    // insu au cours d'un entretien privé est un délit (art. 226-1 du Code
+    // pénal), et Calendly n'offre AUCUN réglage de durée de conservation — ses
+    // comptes rendus restent « aussi longtemps que le compte existe ».
+    //
+    // 🔑 CETTE LIGNE RESTE, et ce n'est pas un oubli. Elle enregistre qu'un
+    // traitement possible a été EXAMINÉ puis ÉCARTÉ. La retirer effacerait la
+    // trace de l'examen, et la question se reposerait à neuf au prochain
+    // réglage Calendly modifié par inadvertance.
+    //
+    // ⚠️ Le réglage étant au niveau du compte, sa désactivation vaut pour TOUTE
+    // réunion en ligne avec une personne extérieure, pas seulement les
+    // rendez-vous prospects.
+    //
+    // ── Contexte d'origine, conservé ──────────────────────────────────────
     // 🔴 DÉCLARÉ LE 2026-08-31 — ET IL DEMANDE UNE DÉCISION AVANT LA VISIO.
     //
     // Le « Notetaker » de Calendly est activé au niveau du COMPTE et réglé pour
@@ -320,9 +344,10 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "signed",
     transferFramework: "scc",
     category: "communications",
-    // Aucun rendez-vous en visioconférence n'existe aujourd'hui : l'event-type
-    // ne propose que l'appel téléphonique (mesuré le 2026-08-31 : 0 visio sur
-    // 19 réservations). Le Notetaker ne rejoint donc aucun rendez-vous prospect.
+    // Reste NON ACTIVÉ, désormais par décision et non plus par circonstance :
+    // le Notetaker est désactivé côté Calendly. Le repasser en `active`
+    // supposerait de rouvrir la décision du 2026-09-01, pas seulement de
+    // modifier un champ.
     activationStatus: "pending_activation",
     documentationUrl: "https://calendly.com/dpa",
   },
@@ -406,19 +431,23 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "pending",
     transferFramework: "scc",
     category: "communications",
-    // 🔑 `pending_activation` EST UN CONSTAT, pas une précaution.
+    // 🔴 PASSÉ À `active` LE 2026-09-01 — le lieu EXISTE, constaté à l'écran.
     //
-    // Le code sait reconnaître, afficher et annoncer une visioconférence, mais
-    // l'event-type Calendly ne propose encore qu'un seul lieu : l'appel
-    // téléphonique. Mesuré le 2026-08-31 sur les 19 réservations de la base :
-    // 14 portent `outbound_call`, 5 aucun type, **0 aucune visio**. Tant que le
-    // lieu « Google Meet » n'est pas ajouté côté Calendly, aucune réunion n'est
-    // créée et aucun flux n'existe.
+    // Cette entrée est née la veille en `pending_activation`, sur une mesure
+    // exacte à l'heure où elle a été écrite : l'event-type ne proposait qu'un
+    // lieu, et les 19 réservations de la base portaient toutes un appel
+    // téléphonique. Le lieu « Google Meet » a été ajouté depuis, et le
+    // formulaire public de réservation propose désormais les deux.
     //
-    // ⚠️ À BASCULER EN `active` le jour où ce lieu est ajouté — et à ce
-    // moment-là seulement, la question du Notetaker ci-dessous devient une
-    // question ouverte et non plus théorique.
-    activationStatus: "pending_activation",
+    // 🔑 CE QUI COMPTE ICI N'EST PAS QU'UNE VISIO AIT DÉJÀ EU LIEU, mais qu'un
+    // prospect PUISSE en réserver une. Attendre la première pour déclarer,
+    // c'est déclarer après coup — exactement ce que ce fichier reproche à
+    // l'entrée Calendly, restée absente quatorze mois après sa mise en service.
+    //
+    // ⚠️ La base compte encore 0 visio au moment où cette ligne est écrite.
+    // Ce n'est pas une contradiction : c'est la différence entre un flux
+    // possible et un flux constaté. On déclare le possible.
+    activationStatus: "active",
     documentationUrl: "https://policies.google.com/privacy",
   },
   {
