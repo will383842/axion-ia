@@ -73,6 +73,22 @@ interface CalendlySlotPickerProps {
   readonly reservationDirecte?: boolean;
   /** Locale, pour construire l URL interne. Ignoree si `reservationDirecte` est faux. */
   readonly locale?: string;
+  /**
+   * Destination d un creneau, decidee par l appelant.
+   *
+   * 🔑 QUAND ELLE EST FOURNIE, ELLE L EMPORTE SUR TOUT LE RESTE. C est la
+   * troisieme destination possible d un creneau — apres la page Calendly et
+   * notre formulaire de reservation, le report vient s ajouter.
+   *
+   * On aurait pu poser un troisieme drapeau. Trois booleens qui decident d un
+   * meme lien, c est trois facons de se contredire : le jour ou deux sont vrais
+   * en meme temps, le comportement depend de l ordre des `if`, et personne ne le
+   * verra. Une fonction ne peut pas etre a moitie vraie.
+   *
+   * ⚠️ Le comportement PAR DEFAUT reste inchange : sans cette propriete, le
+   * selecteur se comporte exactement comme avant.
+   */
+  readonly lienDuCreneau?: ((startIso: string) => string) | undefined;
 }
 
 /** `AAAA-MM-JJ` → composantes numériques. Aucune conversion de fuseau. */
@@ -247,6 +263,7 @@ export function CalendlySlotPicker({
   dureeMinutes,
   reservationDirecte = false,
   locale = "fr",
+  lienDuCreneau,
 }: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
   // Même boîte que le repli — voir PIÈGE 2.
@@ -393,11 +410,13 @@ export function CalendlySlotPicker({
                           // reservation fait perdre le fil, et sur mobile il
                           // empile une fenetre de plus a fermer.
                           href={
-                            reservationDirecte
-                              ? urlDuFormulaire(locale, slot.startIso)
-                              : avecCouleursAxion(slot.schedulingUrl)
+                            lienDuCreneau
+                              ? lienDuCreneau(slot.startIso)
+                              : reservationDirecte
+                                ? urlDuFormulaire(locale, slot.startIso)
+                                : avecCouleursAxion(slot.schedulingUrl)
                           }
-                          {...(reservationDirecte
+                          {...(lienDuCreneau || reservationDirecte
                             ? {}
                             : { target: "_blank", rel: "noopener noreferrer" })}
                           data-cta="appel_slot_pick"
