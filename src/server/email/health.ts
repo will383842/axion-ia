@@ -40,6 +40,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { lireDernierAppelWebhook } from "./webhook-battement";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { notify } from "@/server/notifications";
 import { EmailLogStatus } from "../../../prisma/generated/client";
@@ -116,6 +117,27 @@ export interface SanteEmails {
    * même contrat que `mesureIndisponible` pour les deux autres compteurs.
    */
   detectionRebondsDebranchee: boolean;
+  /**
+   * 🔑 Date ISO du dernier appel AUTHENTIFIÉ reçu sur
+   * `/api/zeptomail/webhook`, ou `null` si aucun n'a jamais été vu.
+   *
+   * Ajouté le 2026-09-01. `detectionRebondsDebranchee` ne couvre qu'un cas : la
+   * clé absente. Or la clé EST posée en production (un POST non signé rend 401,
+   * pas le 200 muet du cas non configuré) — et pourtant rien ne prouvait que
+   * ZeptoMail appelle. Une clé posée côté NOUS ne dit rien de l'abonnement
+   * côté EUX : si le webhook n'a jamais été enregistré dans leur console, la
+   * route reste armée, correcte, et jamais appelée. `rebondsRecents` vaudrait
+   * alors 0 pour toujours, avec `detectionRebondsDebranchee` à faux : le rendu
+   * exact d'une chaîne saine.
+   *
+   * ⚠️ `null` ne lève AUCUNE alerte, et c'est voulu : ZeptoMail n'appelle que
+   * sur événement, donc le silence est le comportement normal d'un parc dont
+   * rien ne rebondit. Alerter dessus serait crier au loup, et le discrédit
+   * emporterait les alertes qui, elles, disent vrai. On expose la valeur, on ne
+   * la juge pas — cf. `server/email/webhook-battement.ts`, qui explique comment
+   * obtenir une réponse définitive en trente secondes.
+   */
+  dernierAppelWebhook: string | null;
   alertesLevees: string[];
   /**
    * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
@@ -146,10 +168,17 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     // sort en `skipped: not_configured` sans cette clé. Pas de clé = pas de
     // rebond possible, jamais.
     detectionRebondsDebranchee: !process.env["ZEPTOMAIL_WEBHOOK_KEY"]?.trim(),
+    dernierAppelWebhook: null,
     alertesLevees: [],
     mesureIndisponible: false,
   };
   if (estStub()) return resultat;
+
+  // Lu AVANT la base, et délibérément : le battement vit dans Redis, donc il
+  // reste lisible quand Postgres est en panne — c'est-à-dire dans le chemin où
+  // les trois compteurs ci-dessous ne veulent plus rien dire. Fail-soft de bout
+  // en bout : la fonction rend `null` plutôt que de lever.
+  resultat.dernierAppelWebhook = await lireDernierAppelWebhook();
 
   const depuis = new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000);
   const avant = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);

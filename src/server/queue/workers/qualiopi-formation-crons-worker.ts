@@ -1770,16 +1770,24 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
 async function handleEmailSante(): Promise<void> {
   try {
     const sante = await verifierSanteEmails();
+
+    // Le battement du webhook de rebonds accompagne CHAQUE ligne, saine ou non.
+    // C'est le seul moyen de répondre à « ZeptoMail nous appelle-t-il ? » sans
+    // ouvrir leur console : `JAMAIS` après un appel de test depuis leur
+    // interface signifie que l'abonnement n'atteint pas la route.
+    // Cf. `server/email/webhook-battement.ts`.
+    const battement = `dernier appel webhook : ${sante.dernierAppelWebhook ?? "JAMAIS"}`;
+
     if (sante.alertesLevees.length === 0) {
       console.log(
         `[formation-crons] email-sante: RAS (${sante.echecsRecents} échec(s) récent(s), ` +
-          `${sante.bloquesEnFile} en attente)`,
+          `${sante.bloquesEnFile} en attente) — ${battement}`,
       );
       return;
     }
     console.error(
       `[formation-crons] email-sante: ${sante.alertesLevees.join(", ")} — ` +
-        `${sante.echecsRecents} échec(s), ${sante.bloquesEnFile} bloqué(s)`,
+        `${sante.echecsRecents} échec(s), ${sante.bloquesEnFile} bloqué(s) — ${battement}`,
     );
   } catch (e) {
     console.error(

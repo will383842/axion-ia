@@ -17,6 +17,14 @@ const countMock = vi.fn();
 const creerOuDedupMock = vi.fn();
 const notifyMock = vi.fn();
 
+// Le battement du webhook lit Redis. Sans cette doublure, les tests mesurent
+// un vrai client absent : la lecture est bornée à 1,5 s (cf.
+// `webhook-battement.ts`), mais neuf tests à 1,5 s dépassent le délai de
+// vitest. On simule donc la lecture, comme prisma l'est juste en dessous.
+vi.mock("@/lib/redis", () => ({
+  redis: { get: vi.fn(async () => null), set: vi.fn(async () => "OK") },
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: { emailLog: { count: (...a: unknown[]) => countMock(...a) } },
 }));
