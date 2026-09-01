@@ -7,7 +7,14 @@ import type { CanalRendezVous } from "@/server/calendly/canal";
 
 export type RdvSource = "calendly" | "booking";
 
-export type RdvStatus = "scheduled" | "pending" | "completed" | "canceled" | "no_show";
+/**
+ * Les états d'un rendez-vous à l'écran.
+ *
+ * 🔑 `past` est DÉRIVÉ, il n'existe pas en base. Voir `estTermine` dans
+ * `normalize.ts` pour la raison — et surtout pour pourquoi il ne s'appelle pas
+ * `completed`.
+ */
+export type RdvStatus = "scheduled" | "pending" | "past" | "completed" | "canceled" | "no_show";
 
 export interface UnifiedRdv {
   /** Clé namespacée anti-collision entre sources : `cal_<id>` / `bk_<id>`. */
@@ -36,10 +43,17 @@ export interface UnifiedRdv {
    * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
    *
    * Deux champs qui doivent dire la même chose finissent par diverger : le
-   * canal se recalcule à chaque lecture, donc les lignes déjà en base répondent
-   * correctement sans migration. Cf. `src/server/calendly/canal.ts`.
+   * format se recalcule à chaque lecture, donc les lignes déjà en base
+   * répondent correctement sans migration. Cf. `src/server/calendly/canal.ts`.
+   *
+   * 🔑 IL S'APPELLE `format`, ET PAS `canal`. Arbitré par Will le 2026-08-31,
+   * et le champ portait pourtant `canal` jusqu'au 2026-09-01 — un même concept
+   * nommé de deux façons entre `admin-rendezvous` et `admin-agenda`, ce qui est
+   * précisément la divergence que la dérivation cherche à éviter. Le mot
+   * « canal » est en outre déjà pris trois fois ailleurs dans ce dépôt : type
+   * de message entrant, circuit de signature, canal de recrutement.
    */
-  canal: CanalRendezVous;
+  format: CanalRendezVous;
   notes: string | null;
   /** Date de tri de repli quand `startTime` est null (capture/création). */
   createdAt: Date;
@@ -58,6 +72,10 @@ export interface RdvFilters {
 
 export const RDV_STATUS_LABELS: Record<RdvStatus, string> = {
   scheduled: "Planifié",
+  // « Passé », et surtout PAS « Terminé » : on sait que l'heure est écoulée, on
+  // ne sait pas que l'échange a eu lieu. Un rendez-vous manqué sans que
+  // personne coche « absent » porterait sinon une affirmation fausse.
+  past: "Passé",
   pending: "En attente",
   completed: "Terminé",
   canceled: "Annulé",
