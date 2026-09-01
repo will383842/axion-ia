@@ -680,6 +680,10 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum.",
         },
         {
+          title: "Rendez-vous de découverte",
+          body: "Le rendez-vous de premier contact réservé depuis la page /appel se tient au choix par téléphone ou en visioconférence. Si vous choisissez la visioconférence, un lien de réunion vous est transmis avec la confirmation ; la réunion se déroule alors sur un service tiers, dont la localisation et le cadre de transfert figurent sur /sous-processeurs. Ces rendez-vous ne sont ni enregistrés ni transcrits : aucune captation audio ou vidéo n'est réalisée, et il n'existe donc aucun enregistrement à conserver ou à demander. Seules les informations que vous saisissez au moment de la réservation — nom, adresse e-mail, téléphone et réponses aux questions du formulaire — sont conservées, dans les conditions décrites ci-dessus.",
+        },
+        {
           title: "Vos droits",
           body: "Accès, rectification, effacement, opposition, portabilité, limitation. Contactez contact@axion-ia.com. Vous avez également le droit d'introduire une réclamation auprès de la CNIL.",
         },
