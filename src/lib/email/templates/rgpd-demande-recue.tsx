@@ -33,10 +33,14 @@ const COPY = {
     preview:
       "Réponse sous un mois maximum, comme l'exige le RGPD. Votre référence est dans le message.",
     intro: "Bonjour,",
+    // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que
+    // de nous ? » « Nous avons bien reçu… » parlait de nous. La refonte du
+    // 2026-08-31 avait corrigé l'ORDRE (l'info avant la politesse) sans
+    // corriger la VOIX — deux choses distinctes.
     objet: (t: string) =>
       t === "suppression"
-        ? "Nous avons bien reçu votre demande de suppression de vos données personnelles (article 17 du RGPD)."
-        : "Nous avons bien reçu votre demande d'accès à vos données personnelles (article 15 du RGPD).",
+        ? "Votre demande de suppression de vos données personnelles est enregistrée (article 17 du RGPD)."
+        : "Votre demande d'accès à vos données personnelles est enregistrée (article 15 du RGPD).",
     delai:
       "Nous y répondrons dans un délai maximum d'un mois à compter de cette date, comme le prévoit la réglementation.",
     ref: (r: string, d: string) => `Référence : ${r} — déposée le ${d}.`,
@@ -49,8 +53,8 @@ const COPY = {
     intro: "Hello,",
     objet: (t: string) =>
       t === "suppression"
-        ? "We have received your request to delete your personal data (GDPR article 17)."
-        : "We have received your request to access your personal data (GDPR article 15).",
+        ? "Your request to delete your personal data is recorded (GDPR article 17)."
+        : "Your request to access your personal data is recorded (GDPR article 15).",
     delai:
       "We will respond within one month of this date at the latest, as required by regulation.",
     ref: (r: string, d: string) => `Reference: ${r} — submitted on ${d}.`,

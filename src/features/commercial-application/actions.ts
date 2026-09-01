@@ -51,6 +51,7 @@ import {
   zoneResume,
   type CommercialApplicationInput,
 } from "@/lib/commercial-application/model";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 export type CommercialApplicationState =
   { ok: true; submissionId: string } | { ok: false; error: string };
@@ -198,7 +199,9 @@ export async function submitCommercialApplicationAction(
   }
 
   // 2. Honeypot — bot silent success
-  if (formData.get("website")) {
+  const leurre = formData.get("website");
+  if (leurre) {
+    signalerHoneypot("candidature-commerciale", leurre);
     return { ok: true, submissionId: "" };
   }
 

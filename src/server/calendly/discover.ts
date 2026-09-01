@@ -433,6 +433,7 @@ export async function discoverNewCalendlyEvents(
           eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
           eventName: name,
           format,
+          ...(location ? { lieu: location } : {}),
           ...(inviteePhone ? { inviteePhone } : {}),
           ...(cancelUrl ? { cancelUrl } : {}),
           ...(enriched.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),

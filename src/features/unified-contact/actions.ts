@@ -44,6 +44,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -163,7 +164,9 @@ export async function submitUnifiedContactAction(
   }
 
   // 2. Honeypot — bot silent success
-  if (formData.get("website")) {
+  const leurre = formData.get("website");
+  if (leurre) {
+    signalerHoneypot("contact", leurre);
     return { ok: true, submissionId: "" };
   }
 

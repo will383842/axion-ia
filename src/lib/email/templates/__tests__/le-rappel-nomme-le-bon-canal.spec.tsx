@@ -51,6 +51,84 @@ async function texte(
 
 const MOMENTS = ["confirmation", "j1", "h1"] as const;
 
+/** Rend le gabarit et rend son HTML brut, casse conservée. */
+async function html(payload: Record<string, unknown>, locale: "fr" | "en" = "fr"): Promise<string> {
+  const rendu = await renderEmailTemplate("appel-rappel", locale, payload);
+  return rendu.html;
+}
+
+describe("une visio dont le lien n'est pas encore créé", () => {
+  // 🔴 LE CAS QUI N'AVAIT JAMAIS EXISTÉ. Calendly crée la conférence de façon
+  // ASYNCHRONE : entre la réservation et la création du lien, `location` vaut
+  // `null`. Or la confirmation part environ une minute après la réservation —
+  // mesuré le 2026-09-01 : réservation 06:03:54, e-mail 06:05:00. Une minute
+  // est une marge, pas une garantie.
+
+  it("🔴 ne se tait PAS : elle renvoie vers l'invitation d'agenda", async () => {
+    const t = await texte({ ...BASE, moment: "confirmation", format: "visio" });
+    expect(
+      t,
+      "sans lien et sans phrase, le prospect n'a aucune instruction pour se connecter",
+    ).toContain("invitation d'agenda");
+  });
+
+  it("n'invente aucun lien et ne promet aucun appel", async () => {
+    const t = await texte({ ...BASE, moment: "confirmation", format: "visio" });
+    expect(t.includes("appellerons")).toBe(false);
+    expect(t.includes("http")).toBe(true); // les liens d'annulation restent
+    expect(t.includes("meet.google.com")).toBe(false);
+  });
+
+  it("en anglais aussi", async () => {
+    const t = await texte({ ...BASE, moment: "confirmation", format: "visio" }, "en");
+    expect(t).toContain("calendar invitation");
+  });
+});
+
+describe("le lien de réunion est cliquable", () => {
+  it("🔴 une URL de visio est rendue en <a href>, pas en texte brut", async () => {
+    // Une URL posée dans un paragraphe reste du texte : certains clients la
+    // détectent, beaucoup non. Un prospect qui doit recopier un lien Meet à la
+    // main, à l'heure du rendez-vous, ne le fait pas.
+    const h = await html({ ...BASE, moment: "confirmation", lieu: LIEN_VISIO, format: "visio" });
+    expect(h, "le lien de réunion doit être un vrai lien").toContain(`href="${LIEN_VISIO}"`);
+  });
+
+  it("un numéro de téléphone n'est PAS transformé en lien", async () => {
+    const h = await html({ ...BASE, moment: "confirmation", lieu: NUMERO, format: "telephone" });
+    expect(h).not.toContain(`href="${NUMERO}"`);
+    expect(h.toLowerCase()).toContain("appellerons");
+  });
+});
+
+describe("le vocabulaire ne présume plus du canal", () => {
+  // Six formulations disaient « appel » ou « nous nous appelons » — objets,
+  // titres, aperçus et phrase d'horaire. Pour une visio, le prospect lisait
+  // « Votre appel a lieu demain — nous nous appelons demain à 11 h 30 ».
+  //
+  // Le choix retenu est un vocabulaire NEUTRE plutôt que six branches : le
+  // canal est déjà énoncé une fois, dans la ligne qui porte le lien ou le
+  // numéro. Moins de branches, moins de façons de se tromper.
+
+  for (const moment of ["confirmation", "j1", "h1"] as const) {
+    it(`🔴 ${moment} — en visio, aucune formulation téléphonique`, async () => {
+      const t = await texte({ ...BASE, moment, lieu: LIEN_VISIO, format: "visio" });
+      for (const fautif of ["nous nous appelons", "au téléphone", "votre appel"]) {
+        expect(t.includes(fautif), `« ${fautif} » ne doit pas apparaître pour une visio`).toBe(
+          false,
+        );
+      }
+    });
+  }
+
+  it("🔑 CONTRE-TÉMOIN : le mot « appellerons » reste permis au téléphone", async () => {
+    // La neutralisation ne doit pas avoir vidé le vocabulaire téléphonique de
+    // sa précision : c'est bien un appel, et le dire est utile.
+    const t = await texte({ ...BASE, moment: "confirmation", lieu: NUMERO, format: "telephone" });
+    expect(t).toContain("appellerons");
+  });
+});
+
 describe("l'e-mail nomme le bon canal", () => {
   for (const moment of MOMENTS) {
     it(`🔴 ${moment} — une URL de visio ne produit JAMAIS « nous vous appellerons »`, async () => {
@@ -100,7 +178,11 @@ describe("l'e-mail nomme le bon canal", () => {
       format: "visio",
     });
     expect(t.includes("appellerons")).toBe(false);
-    expect(t).toContain("visioconférence");
+    // 🔑 Ce que l'e-mail dit alors est plus utile qu'un « visioconférence :
+    // +33 6 … » absurde : il renvoie vers l'invitation d'agenda, qui portera le
+    // lien. Un lieu qui n'est pas un lien ne PEUT pas être présenté comme tel.
+    expect(t).toContain("invitation d'agenda");
+    expect(t, "surtout pas le numéro présenté comme un lien").not.toContain("+33 6 12 34 56 78");
   });
 
   it("un format hors nomenclature retombe sur la forme, jamais sur lui-même", async () => {

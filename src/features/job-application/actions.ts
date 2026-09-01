@@ -31,6 +31,7 @@ import {
   CV_ALLOWED_MIME,
 } from "@/server/careers/cv-storage";
 import type { Prisma } from "../../../prisma/generated/client";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 /**
  * Version v2 (lot L4) — FERME, décidée au plan §2.3. Elle recouvre DEUX textes
@@ -149,7 +150,11 @@ export async function submitJobApplicationAction(
     };
 
   // 2. Honeypot
-  if (formData.get("website")) return { ok: true, applicationId: "" };
+  const leurre = formData.get("website");
+  if (leurre) {
+    signalerHoneypot("candidature-emploi", leurre);
+    return { ok: true, applicationId: "" };
+  }
 
   // 3. Turnstile
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;

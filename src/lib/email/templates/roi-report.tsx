@@ -127,6 +127,13 @@ export function RoiReportEmail({
       preview={t.preview(formatNum(p.savedHoursPerYear, locale), formatNum(p.fteRecovered, locale))}
       title={t.title}
       cta={{ label: t.cta, href: p.reportUrl }}
+      /* §5.2 ① — le transfert interne, « le plus sous-estimé, le plus puissant en
+         B2B », et la seule mécanique de partage qui n'était activée NULLE PART
+         avant le 2026-09-01. Sa place est ici : un rapport chiffré a une valeur
+         autonome, et c'est le cas d'usage que le §7.6 désigne comme « le
+         meilleur emplacement de tout le dispositif ». */
+      snowball="referral"
+      campagne="roi-report"
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>
