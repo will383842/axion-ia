@@ -52,8 +52,32 @@ const APP_LOCALE = join(APP, "[locale]");
  * un visiteur. Les auditer avec `page.goto` mesurerait la page de refus sous un
  * faux nom — le piège que `portail-garde-acces.spec.ts` documente déjà, et qui a
  * valu à `/fr/portail/mon-espace` d'être retirée de la liste.
+ *
+ * ── Réservation directe (2026-09-01) ────────────────────────────────────────
+ *
+ * `/appel/reserver` et `/appel/confirme` sortent de l'audit pour une raison
+ * VOISINE mais distincte : elles n'existent pas sans leur contexte.
+ *
+ * — `/appel/reserver` exige un paramètre `?debut=<créneau ISO>` valide, futur et
+ *   dans l'horizon. Sans lui, elle redirige vers `/appel` — l'auditer nu
+ *   mesurerait donc `/appel` sous un autre nom, exactement le faux nom que ce
+ *   fichier existe pour empêcher.
+ * — `/appel/confirme` exige l'identifiant d'un rendez-vous réel, ou le drapeau
+ *   d'incertitude. Sans l'un des deux, elle rend un 404 délibéré : une page de
+ *   confirmation vide serait indexable et trompeuse.
+ *
+ * Les deux portent d'ailleurs `robots: { index: false }` : elles ne sont pas des
+ * pages publiques au sens de cet audit, mais des étapes d'un parcours.
+ *
+ * ⚠️ Si un jour l'une d'elles devient consultable sans contexte, il faudra la
+ * RÉINTÉGRER ici — une sortie d'audit qui survit à sa cause est un trou.
  */
-const HORS_AUDIT = ["/portail/mon-espace", "/espace-formateur"];
+const HORS_AUDIT = [
+  "/portail/mon-espace",
+  "/espace-formateur",
+  "/appel/reserver",
+  "/appel/confirme",
+];
 
 /** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */
 function pagesStatiques(): string[] {
