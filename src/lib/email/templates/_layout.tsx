@@ -130,12 +130,66 @@ const SOCIALS = {
   linkedinCompany:
     process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
   facebookCompany: "https://www.facebook.com/profile.php?id=61591668644032",
+  /**
+   * §5.3 : « Faible impact B2B France, mais gratuit et cohérent. » Manquait.
+   */
+  x: "https://x.com/AxionIAFrance",
+  /**
+   * LinkedIn PERSONNEL — §5.3 le veut « oui, en priorité » : « pour une société
+   * jeune fondée par une personne identifiable, le profil personnel génère 5 à 10
+   * fois plus d'engagement que la page entreprise. Les gens suivent des
+   * personnes. » Il vit désormais AUSSI dans le bloc signature (§6.1), qui est
+   * l'emplacement que le référentiel lui assigne.
+   */
   linkedinWilliams: EMAIL_SIGNATURE.linkedin,
-  facebookWilliams: "https://www.facebook.com/profile.php?id=61586489122989",
 } as const;
+
+/*
+ * 🔴 Le profil FACEBOOK PERSONNEL a été RETIRÉ le 2026-09-01.
+ *
+ * Le §5.3 le refuse nommément, seul lien de sa table à porter un « Non » :
+ * « Ne jamais mêler profil personnel non professionnel et communication
+ * d'entreprise. Risque d'image sans contrepartie. »
+ *
+ * Il partait dans les 26 gabarits de famille B depuis la demande du
+ * 2026-08-04 (« les 4 liens sociaux partout »), écrite avant le référentiel.
+ * Arbitrage Will du 2026-09-01 : « enlève mon facebook mais laisse mon
+ * linkedin » — ce qui est exactement la ligne du §5.3.
+ */
+/**
+ * Traçage des liens de partage — §5.5, qui ne souffre pas d'exception :
+ * « Chaque lien de partage porte des paramètres UTM, sans exception. Sans ça,
+ * l'effet boule de neige existe peut-être, mais tu ne pourras jamais savoir
+ * lequel de tes leviers l'a produit — donc jamais l'amplifier. »
+ *
+ * Le §10.3 enfonce le clou : mesurer le trafic portant `utm_medium=transfert`
+ * ou `utm_medium=partage` est « le point que la plupart des entreprises ne
+ * mesurent jamais, et donc n'amplifient jamais ».
+ *
+ * `medium` dérive de la FAMILLE (§5.5 : transac | cycle | notif | campagne), ce
+ * qui évite d'avoir à le passer à la main dans 42 fichiers.
+ */
+const MEDIUM_PAR_FAMILLE = {
+  A: "transac",
+  B: "cycle",
+  C: "notif",
+  D: "campagne",
+} as const satisfies Record<FamilleEmail, string>;
+
+function avecUtm(url: string, famille: FamilleEmail, content: string, campagne?: string): string {
+  const sep = url.includes("?") ? "&" : "?";
+  const params = [
+    "utm_source=email",
+    `utm_medium=${MEDIUM_PAR_FAMILLE[famille]}`,
+    campagne ? `utm_campaign=${encodeURIComponent(campagne)}` : "",
+    `utm_content=${content}`,
+  ].filter(Boolean);
+  return `${url}${sep}${params.join("&")}`;
+}
+
 const REVIEW_URL = `${BASE_URL}/fr/avis`;
 const APPEL_URL = `${BASE_URL}/fr/appel`;
-const LINKEDIN_SHARE = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(BASE_URL)}`;
+const SITE_URL_PARTAGE = `${BASE_URL}/fr`;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Les quatre familles
@@ -520,35 +574,61 @@ export interface EmailLayoutProps {
    * partout le vide de son sens.
    */
   signature?: boolean;
+  /**
+   * Nom de campagne pour le `utm_campaign` des liens de partage (§5.5).
+   * À renseigner sur les gabarits qui portent un bloc de partage — sans lui, le
+   * traçage dit d'où vient le clic (famille, emplacement) mais pas de QUEL
+   * message. Les autres gabarits n'en ont pas besoin.
+   */
+  campagne?: string;
   unsubscribeHref?: string;
   locale: "fr" | "en";
 }
 
 const TXT = {
   fr: {
-    tagline: "Audit · Formation · Intégration · Sites web IA · Coaching",
+    /*
+     * Registre revu le 2026-09-01. L'ancienne ligne énumérait cinq prestations
+     * à plat — un menu de prestataire, pas le positionnement d'un cabinet. Face
+     * à un acheteur d'ETI ou de grand groupe, une liste de services suggère
+     * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
+     */
+    tagline: "Cabinet IA pour entreprises — PME, ETI et grands groupes",
     reviewsWord: "avis clients vérifiés",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
     soupape:
       "Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.",
-    reviewTitle: "Votre avis nous aide énormément 🙏",
+    /*
+     * 🔴 Registre revu le 2026-09-01. Les formulations précédentes
+     * quémandaient : « nous aide énormément 🙏 », et surtout « le bouche-à-oreille
+     * reste notre meilleure croissance » — une phrase qui avoue au client que
+     * la croissance de son prestataire dépend de lui. Devant un acheteur de
+     * grand groupe, c'est un signal de fragilité, pas de proximité.
+     *
+     * Le §5.1 règle 4 donne la bonne forme : « On partage une chose PRÉCISE, pas
+     * une entreprise. « Partagez AXION IA » ne fonctionne pas. » On demande donc
+     * le transfert d'un DOCUMENT, sans parler de soi.
+     */
+    reviewTitle: "Votre retour d'expérience",
     reviewText:
-      "30 secondes pour partager votre expérience — et aider d'autres dirigeants à franchir le pas de l'IA.",
-    reviewCta: "Laisser un avis",
-    referralTitle: "Ce message peut servir à quelqu'un d'autre ?",
+      "Deux minutes pour décrire ce que l'intervention a changé chez vous. C'est ce que lisent les dirigeants qui évaluent la même démarche.",
+    reviewCta: "Déposer un avis",
+    referralTitle: "À transmettre en interne",
     referralText:
-      "Transférez-lui simplement cet e-mail — il fonctionnera aussi bien pour lui. Ou parlez d'Axion-IA autour de vous : le bouche-à-oreille reste notre meilleure croissance.",
+      "Si ce document éclaire une décision qui ne vous appartient pas seul, transférez cet e-mail : il se lit aussi bien sans contexte. En B2B, la décision est collective.",
     referralCta: "Partager sur LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleFr,
     signatureRdv: "Prendre rendez-vous",
+    signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
     siren: "SIREN",
     vat: "TVA",
     nda: "NDA",
     contact: "Contact :",
-    followBrand: "Suivez l'aventure Axion-IA",
-    followFounder: "et Williams, son fondateur",
+    /* « Suivez l'aventure » — registre startup, retiré le 2026-09-01. */
+    followBrand: "Axion-IA",
+    followFounder: "Williams Jullin",
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
     /** Pied de page réduit famille A — §6.3. Remplace tout le reste. */
@@ -556,27 +636,29 @@ const TXT = {
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
   },
   en: {
-    tagline: "Audit · Training · Integration · AI websites · Coaching",
+    tagline: "AI consultancy for mid-market and enterprise",
     reviewsWord: "verified client reviews",
     qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
     soupape: "A question? Just reply to this email — it reaches us directly, and a human reads it.",
-    reviewTitle: "Your feedback means a lot 🙏",
-    reviewText: "30 seconds to share your experience — and help other leaders take the AI leap.",
+    reviewTitle: "Your feedback",
+    reviewText:
+      "Two minutes to describe what the engagement changed for you. It is what other leaders read when weighing the same decision.",
     reviewCta: "Leave a review",
-    referralTitle: "Could this be useful to someone else?",
+    referralTitle: "Worth passing on internally",
     referralText:
-      "Just forward them this email — it will work just as well for them. Or spread the word about Axion-IA: word of mouth remains our best growth.",
+      "If this document informs a decision that is not yours alone, forward this email: it reads just as well without context. In B2B, the decision is collective.",
     referralCta: "Share on LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleEn,
     signatureRdv: "Book a call",
+    signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
     siren: "Reg. no.",
     vat: "VAT",
     nda: "Training provider reg. no.",
     contact: "Contact:",
-    followBrand: "Follow the Axion-IA journey",
-    followFounder: "and Williams, its founder",
+    followBrand: "Axion-IA",
+    followFounder: "Williams Jullin",
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
     autoNotice: "This email was sent automatically following an action on your account.",
@@ -595,6 +677,7 @@ export function EmailLayout({
   trust,
   snowball,
   signature,
+  campagne,
   unsubscribeHref,
   locale,
 }: EmailLayoutProps) {
@@ -722,7 +805,10 @@ export function EmailLayout({
                 <Text style={snowballText} className="ax-muted">
                   {t.reviewText}
                 </Text>
-                <Link href={REVIEW_URL} style={snowballLink}>
+                <Link
+                  href={avecUtm(REVIEW_URL, famille, "bloc-avis", campagne)}
+                  style={snowballLink}
+                >
                   {t.reviewCta} →
                 </Link>
               </Section>
@@ -735,7 +821,12 @@ export function EmailLayout({
                 <Text style={snowballText} className="ax-muted">
                   {t.referralText}
                 </Text>
-                <Link href={LINKEDIN_SHARE} style={snowballLink}>
+                <Link
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                    avecUtm(SITE_URL_PARTAGE, famille, "partage-linkedin", campagne),
+                  )}`}
+                  style={snowballLink}
+                >
                   {t.referralCta} →
                 </Link>
               </Section>
@@ -759,8 +850,18 @@ export function EmailLayout({
                 <br />
                 {EMAIL_LEGAL.phone}
                 <br />
-                <Link href={APPEL_URL} style={{ color: C.orangeDeep, fontWeight: 600 }}>
+                <Link
+                  href={avecUtm(APPEL_URL, famille, "signature", campagne)}
+                  style={{ color: C.orangeDeep, fontWeight: 600 }}
+                >
                   {t.signatureRdv}
+                </Link>
+                {" · "}
+                <Link
+                  href={SOCIALS.linkedinWilliams}
+                  style={{ color: C.orangeDeep, fontWeight: 600 }}
+                >
+                  {t.signatureLinkedin}
                 </Link>
               </Text>
             )}
@@ -788,14 +889,14 @@ export function EmailLayout({
                 <Link href={SOCIALS.facebookCompany} style={socialLinkStyle}>
                   Facebook
                 </Link>
+                {" · "}
+                <Link href={SOCIALS.x} style={socialLinkStyle}>
+                  X
+                </Link>
                 {" — "}
                 {t.followFounder} :{" "}
                 <Link href={SOCIALS.linkedinWilliams} style={socialLinkStyle}>
                   LinkedIn
-                </Link>
-                {" · "}
-                <Link href={SOCIALS.facebookWilliams} style={socialLinkStyle}>
-                  Facebook
                 </Link>
               </Text>
             )}
