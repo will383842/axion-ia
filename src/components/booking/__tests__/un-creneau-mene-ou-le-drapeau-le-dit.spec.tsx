@@ -114,6 +114,49 @@ describe("🔴 drapeau ALLUMÉ — le créneau reste chez nous", () => {
   });
 });
 
+describe("🔴 une destination fournie par l'appelant l'emporte", () => {
+  it("elle gagne même quand le drapeau est allumé", () => {
+    // La troisième destination : le report. L'appelant la fournit, le sélecteur
+    // n'a pas à la connaître.
+    //
+    // 🔑 Le test le plus important du bloc est celui-ci : la fonction doit
+    // gagner AUSSI quand `reservationDirecte` est vrai. Sinon deux sources
+    // décideraient du même lien, et le comportement dépendrait de l'ordre des
+    // `if` — invisible en relecture, et faux un cas sur deux.
+    rendre({
+      reservationDirecte: true,
+      locale: "fr",
+      lienDuCreneau: (iso: string) => `/fr/appel/reporter?t=JETON&debut=${encodeURIComponent(iso)}`,
+    });
+    const href = lienDuCreneau().getAttribute("href") ?? "";
+    expect(href).toContain("/fr/appel/reporter");
+    expect(href, "le formulaire de réservation ne doit PAS l'emporter").not.toContain(
+      "/appel/reserver",
+    );
+  });
+
+  it("elle gagne aussi quand le drapeau est éteint", () => {
+    rendre({
+      lienDuCreneau: (iso: string) => `/fr/appel/reporter?t=JETON&debut=${encodeURIComponent(iso)}`,
+    });
+    const href = lienDuCreneau().getAttribute("href") ?? "";
+    expect(href).toContain("/fr/appel/reporter");
+    expect(href, "Calendly ne doit pas l'emporter non plus").not.toContain("calendly.com");
+  });
+
+  it("🔴 et le lien reste INTERNE — pas de nouvel onglet", () => {
+    // Un report se fait dans le fil du parcours. Ouvrir un onglet au milieu
+    // ferait perdre le fil, et sur téléphone empilerait une fenêtre à fermer.
+    rendre({ lienDuCreneau: () => "/fr/appel/reporter?t=JETON" });
+    expect(lienDuCreneau().getAttribute("target")).toBeNull();
+  });
+
+  it("le créneau exact lui est transmis", () => {
+    rendre({ lienDuCreneau: (iso: string) => `/x?d=${encodeURIComponent(iso)}` });
+    expect(lienDuCreneau().getAttribute("href")).toContain(encodeURIComponent(DEBUT));
+  });
+});
+
 describe("🔑 CONTRE-TÉMOIN — les deux modes rendent des liens DIFFÉRENTS", () => {
   it("sinon les deux blocs ci-dessus mesureraient la même chose", () => {
     rendre();
