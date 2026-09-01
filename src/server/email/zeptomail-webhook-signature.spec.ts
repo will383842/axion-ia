@@ -149,3 +149,74 @@ describe("verifierSignatureZeptomail", () => {
     expect(verifierSignatureZeptomail(corps, header, CLE, MAINTENANT).ok).toBe(false);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 La signature telle que le FOURNISSEUR l'émet — percent-encodée.
+//
+// Les tests ci-dessus fabriquent la signature avec `signer()`, donc toujours
+// sous forme NUE. Ils vérifiaient la forme qu'ils produisaient eux-mêmes : la
+// garde et la chose gardée partageaient la forme de la signature.
+//
+// Or la documentation ZeptoMail donne l'en-tête ainsi — noter le `%3D` final :
+//
+//     ts=1596109465823;s=dN0yVozgabP5NPlxMDfP1r5u65bVO9kTGEZMIQlqI2o%3D;s-algorithm=HmacSHA256
+//
+// Sans décodage, `Buffer.from("…I2o%3D", "base64")` rend 33 octets au lieu de
+// 32 : le décodeur de Node ignore le `%` mais garde le `D`. `base64Equals`
+// compare des longueurs différentes et rend `false`. **Toute livraison réelle
+// aurait été refusée en `mismatch`, quelle que soit la clé.**
+//
+// 🔑 Le défaut était invisible parce que le webhook n'a reçu AUCUN appel
+// réel depuis sa création le 2026-08-20 (`dernier appel webhook : JAMAIS`,
+// constaté sur deux lignes horaires consécutives le 2026-09-01). Le seul juge
+// qui aurait tranché — une livraison véritable — n'est jamais venu.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("signature percent-encodée — la forme réellement émise", () => {
+  /** Encode le bourrage base64 comme le fait ZeptoMail dans sa documentation. */
+  function enteteEncodee(corps: string, opts: { cle?: string } = {}): string {
+    const brut = signer(corps, opts.cle ?? CLE);
+    return `ts=${MAINTENANT};s=${brut.replace(/=/g, "%3D")};s-algorithm=HmacSHA256`;
+  }
+
+  it("🔴 accepte une signature dont le bourrage est percent-encodé", () => {
+    const entete = enteteEncodee(CORPS);
+    expect(entete, "le test doit bien produire un %3D, sinon il ne mesure rien").toContain("%3D");
+    expect(
+      verifierSignatureZeptomail(CORPS, entete, CLE, MAINTENANT),
+      "Une signature percent-encodée est refusée. C'est la forme que la " +
+        "documentation ZeptoMail montre, donc TOUTE livraison réelle serait " +
+        "rejetée en `mismatch`. Vérifier `decodeSignature()` dans " +
+        "`zeptomail-webhook-signature.ts`.",
+    ).toEqual({ ok: true });
+  });
+
+  it("🔴 une MAUVAISE clé reste refusée, même percent-encodée", () => {
+    // Le décodage ne doit pas être une porte dérobée : il canonicalise une
+    // forme, il ne dispense pas de connaître le secret.
+    expect(
+      verifierSignatureZeptomail(
+        CORPS,
+        enteteEncodee(CORPS, { cle: "autre-cle" }),
+        CLE,
+        MAINTENANT,
+      ),
+    ).toEqual({ ok: false, reason: "mismatch" });
+  });
+
+  it("les deux formes rendent le MÊME verdict — nue et encodée", () => {
+    const nue = verifierSignatureZeptomail(CORPS, entete(CORPS), CLE, MAINTENANT);
+    const encodee = verifierSignatureZeptomail(CORPS, enteteEncodee(CORPS), CLE, MAINTENANT);
+    expect(encodee).toEqual(nue);
+  });
+
+  it("une valeur avec un `%` isolé ne fait pas lever — elle est simplement refusée", () => {
+    const verdict = verifierSignatureZeptomail(
+      CORPS,
+      `ts=${MAINTENANT};s=abc%zz;s-algorithm=HmacSHA256`,
+      CLE,
+      MAINTENANT,
+    );
+    expect(verdict.ok).toBe(false);
+  });
+});
