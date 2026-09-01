@@ -33,6 +33,9 @@ vi.mock("@/lib/magic-token", () => ({
   verifyMagicToken: vi.fn(),
 }));
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { prisma } from "@/lib/prisma";
 import { signMagicToken, verifyMagicToken } from "@/lib/magic-token";
 import {
@@ -64,7 +67,28 @@ function ligne(over: Record<string, unknown> = {}) {
     signataireNom: "Camille Durand",
     signataireEmail: "camille@client.test",
     signataireQualite: "DRH",
-    expiresAt: new Date("2026-09-01T00:00:00.000Z"),
+    // 🔴 RELATIF À MAINTENANT, ET SURTOUT PAS UNE DATE ÉCRITE EN DUR.
+    //
+    // Cette ligne portait `new Date("2026-09-01T00:00:00.000Z")`. Le
+    // 2026-09-01 à 00:00 UTC, elle est devenue le passé, et les deux tests qui
+    // vérifient un jeton VALIDE se sont mis à recevoir `raison: "expire"`.
+    // `main` est passée au rouge cette nuit-là sans qu'une seule ligne de code
+    // ait changé, et toutes les fusions du dépôt se sont retrouvées bloquées.
+    //
+    // 🔑 LE PIÈGE N'EST PAS « une date en dur », c'est **une date en dur
+    // comparée à l'horloge RÉELLE**. Les dates figées de ce fichier qui servent
+    // d'entrées à `calculerExpirationDocument` sont parfaitement saines : cette
+    // fonction reçoit `maintenant` en paramètre, donc son résultat ne dépend pas
+    // du jour où on l'exécute. `verifierTokenDocument`, lui, lit `Date.now()`.
+    // Une donnée de test qui l'alimente doit donc être exprimée PAR RAPPORT à
+    // maintenant, jamais par une date absolue — quelle que soit sa distance
+    // apparente au moment où on l'écrit.
+    //
+    // Trente jours : assez loin pour qu'aucune exécution ne tombe au bord, assez
+    // court pour rester lisible. Le cas « périmé » est couvert plus bas par un
+    // `ligne({ expiresAt: … })` explicitement placé dans le passé, qui lui reste
+    // absolu — parce qu'une date du passé le demeure.
+    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     revokedAt: null,
     usedAt: null,
     ...over,
@@ -335,5 +359,48 @@ describe("révocation", () => {
       unknown
     >;
     expect((data["revokedMotif"] as string).length).toBe(500);
+  });
+});
+
+describe("la donnée de test ne périme pas toute seule", () => {
+  it("🔴 l'expiration par défaut est DÉRIVÉE de maintenant, pas écrite en dur", () => {
+    // Cette garde ne mesure pas une valeur, elle mesure la FORME de la source —
+    // et c'est délibéré. Une assertion « expiresAt est dans le futur » serait
+    // vraie jusqu'au jour où elle cesserait de l'être : elle rougirait au même
+    // moment que le défaut, c'est-à-dire trop tard, un matin, sur la PR de
+    // quelqu'un d'autre. Celle-ci rougit à l'instant où l'on réécrit une date
+    // absolue, donc dans la PR qui l'introduit.
+    const source = readFileSync(
+      join(process.cwd(), "src/server/qualiopi/documents/signature/token-document.spec.ts"),
+      "utf8",
+    );
+    const fabrique = /function ligne\([\s\S]*?\n\}/.exec(source)?.[0];
+    expect(
+      fabrique,
+      "la fabrique `ligne` est introuvable : la garde ne mesure plus rien",
+    ).toBeDefined();
+
+    const sansCommentaires = (fabrique ?? "")
+      .replace(/\/\*[\s\S]*?\*\//g, " ")
+      .replace(/^\s*\/\/.*$/gm, " ");
+
+    expect(
+      /expiresAt:\s*new Date\(\s*Date\.now\(\)/.test(sansCommentaires),
+      "`expiresAt` doit être calculé depuis `Date.now()`. Une date absolue y a " +
+        "déjà fait passer `main` au rouge toute seule, le 2026-09-01 à 00:00 UTC, " +
+        "en bloquant toutes les fusions du dépôt.",
+    ).toBe(true);
+
+    // 🔑 CONTRE-TÉMOIN : le filtre de commentaires ne doit pas avaler le code.
+    // Sans lui, la longue note qui explique le piège au-dessus de `expiresAt`
+    // suffirait à faire passer le motif — la garde serait verte pour la pire
+    // des raisons, sa propre documentation.
+    expect(sansCommentaires).toContain("signataireEmail");
+    expect(sansCommentaires).not.toContain("passé la demeure");
+  });
+
+  it("et cette expiration est bien dans le futur, quel que soit le jour", () => {
+    const exp = ligne()["expiresAt"] as Date;
+    expect(exp.getTime()).toBeGreaterThan(Date.now());
   });
 });
