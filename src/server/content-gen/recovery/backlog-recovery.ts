@@ -31,7 +31,9 @@
  *
  * - Rythmé : plafond par tick ET plafond quotidien, pour que la reprise s'étale
  *   au lieu de vider le crédit rechargé en quelques minutes (concurrence 3).
- * - Borné : au-delà de `maxRetries` tentatives, un job n'est plus repris.
+ * - Borné : au-delà de `maxRetries` tentatives, un job n'est plus repris — et,
+ *   s'il était figé dans un état non terminal, il est CLOS plutôt que laissé
+ *   en place (sans quoi il affame la fenêtre du balayage, cf. `sweepStuckJobs`).
  * - Réutilise `resolveReenqueueAction` (fix #342) : jamais de `add` sur une clé
  *   squattée par un job terminé, jamais de `remove` sur un job en vol.
  * - Fail-open : toute erreur est journalisée sans interrompre le tick.
@@ -80,8 +82,17 @@ export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
 export interface RecoveryOutcome {
   /** Jobs remis en file. */
   readonly requeued: number;
-  /** Jobs examinés puis écartés (cause permanente, budget épuisé, job en vol). */
+  /** Jobs examinés puis écartés (budget épuisé, job en vol, erreur isolée). */
   readonly skipped: number;
+  /**
+   * Jobs irrécupérables passés en état TERMINAL par ce passage.
+   *
+   * Distinct de `skipped` à dessein : un job écarté sera réexaminé au tick
+   * suivant, un job clos ne le sera plus jamais. Confondre les deux, c'est
+   * exactement ce qui a rendu la famine de fenêtre invisible pendant 12 jours
+   * (cf. `sweepStuckJobs`).
+   */
+  readonly closed: number;
 }
 
 const MS_PER_MINUTE = 60_000;
@@ -159,8 +170,9 @@ export async function drainFailedJobs(
    */
   sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
-  if (!settings.enabled || settings.maxPerTick <= 0) return { requeued: 0, skipped: 0 };
-  if (sharedBudget !== undefined && sharedBudget <= 0) return { requeued: 0, skipped: 0 };
+  if (!settings.enabled || settings.maxPerTick <= 0) return { requeued: 0, skipped: 0, closed: 0 };
+  if (sharedBudget !== undefined && sharedBudget <= 0)
+    return { requeued: 0, skipped: 0, closed: 0 };
 
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
@@ -174,10 +186,10 @@ export async function drainFailedJobs(
     where: { retryCount: { gt: 0 }, updatedAt: { gte: startOfDayUtc } },
   });
   const dailyRoom = Math.max(0, settings.maxPerDay - alreadyToday);
-  if (dailyRoom === 0) return { requeued: 0, skipped: 0 };
+  if (dailyRoom === 0) return { requeued: 0, skipped: 0, closed: 0 };
 
   const budget = Math.min(settings.maxPerTick, dailyRoom, sharedBudget ?? Number.MAX_SAFE_INTEGER);
-  if (budget <= 0) return { requeued: 0, skipped: 0 };
+  if (budget <= 0) return { requeued: 0, skipped: 0, closed: 0 };
 
   // On lit un peu plus large que le budget : une partie des candidats sera
   // écartée par la classification (échecs de qualité mêlés aux échecs d'infra).
@@ -233,7 +245,92 @@ export async function drainFailedJobs(
     }
   }
 
-  return { requeued, skipped };
+  return { requeued, skipped, closed: 0 };
+}
+
+/**
+ * Statut terminal et motif d'un job figé que plus aucun passage ne pourra sauver.
+ *
+ * `null` = le job reste récupérable, il sera remis en file.
+ */
+export interface StuckClosure {
+  readonly status: "failed" | "cancelled";
+  readonly reason: string;
+}
+
+/**
+ * Décide si un job figé est DÉFINITIVEMENT irrécupérable.
+ *
+ * Fonction PURE (aucun accès BullMQ/Prisma) : c'est la règle métier de la
+ * clôture, testable sans mock.
+ *
+ * Deux causes, toutes deux constatées en production le 2026-09-01 :
+ *  - tentatives épuisées : le job a déjà consommé `maxRetries` passages, aucun
+ *    passage supplémentaire ne lui est dû ;
+ *  - sujet périmé : le job porte une dépêche figée trop vieille pour être
+ *    publiée (incident RSS du 2026-08-15). Le relancer republierait du vieux.
+ *
+ * Le statut retenu diffère selon la cause, et ce n'est pas cosmétique :
+ * `failed` dit « la machine n'y est pas arrivée » (il compte dans les échecs et
+ * peut être rejoué à la main si Will le décide), `cancelled` dit « on a renoncé
+ * volontairement » — c'est le statut employé pour la remédiation des 74 jobs RSS
+ * du 2026-08-15, on garde le même vocabulaire.
+ */
+export function resolveStuckClosure(
+  job: {
+    readonly contentType: string;
+    readonly inputPayload: unknown;
+    readonly retryCount: number;
+  },
+  settings: BacklogRecoverySettings,
+): StuckClosure | null {
+  if (job.retryCount >= settings.maxRetries) {
+    return {
+      status: "failed",
+      reason:
+        `Job figé clos automatiquement : ${job.retryCount} tentative(s) pour un plafond de ` +
+        `${settings.maxRetries}. Plus aucune reprise n'est due à ce job.`,
+    };
+  }
+  if (!isTopicStillFresh(job.contentType, job.inputPayload)) {
+    return {
+      status: "cancelled",
+      reason:
+        "Job figé clos automatiquement : le sujet qu'il porte est périmé, le relancer " +
+        "republierait une actualité dépassée.",
+    };
+  }
+  return null;
+}
+
+/**
+ * Fait passer un job figé irrécupérable dans son état terminal.
+ *
+ * ⚠️ Garde-fou non négociable : on interroge d'abord BullMQ. Un job encore en
+ * vol (`active` / `waiting` / `delayed`) N'EST PAS clos, quel que soit son âge
+ * en base — le statut DB peut être en retard sur un traitement bien vivant, et
+ * clore un job en cours le rendrait fantôme au moment où il finirait.
+ *
+ * @returns true si le job a réellement été clos.
+ */
+export async function closeStuckJob(
+  queue: Queue,
+  jobId: string,
+  closure: StuckClosure,
+): Promise<boolean> {
+  const existing = await queue.getJob(`gen-${jobId}`);
+  const state = existing ? ((await existing.getState()) as BullJobState) : null;
+  if (resolveReenqueueAction(state) === "skip-in-flight") return false;
+
+  await prisma.contentGenJob.update({
+    where: { id: jobId },
+    data: {
+      status: closure.status,
+      errorMessage: closure.reason,
+      completedAt: new Date(),
+    },
+  });
+  return true;
 }
 
 /**
@@ -251,6 +348,30 @@ export async function drainFailedJobs(
  * Le garde-fou décisif est `resolveReenqueueAction` : un job encore en vol
  * renvoie `skip-in-flight` et n'est pas touché. On ne double donc jamais un
  * traitement en cours, quel que soit son âge.
+ *
+ * ## 🔴 Famine de fenêtre — corrigé le 2026-09-01
+ *
+ * Mesuré en production : **60 jobs `running` figés, dont 20 depuis le 19/08**,
+ * alors que ce balayage tournait 96 fois par jour depuis 12 jours. Il n'en avait
+ * remis AUCUN en file.
+ *
+ * La fenêtre est bornée (`take: maxPerTick * 4` = 20) et triée par `updatedAt`
+ * croissant. Or les 20 plus anciens portaient tous `retryCount = 3 = maxRetries`.
+ * L'ancien code les comptait `skipped` et passait au suivant — mais ils
+ * restaient `running` en base, donc ils **revenaient occuper la même fenêtre au
+ * tick suivant**, indéfiniment. Les 40 jobs derrière eux, dont une vingtaine
+ * parfaitement récupérables, n'ont jamais été regardés.
+ *
+ * 🔑 **Un candidat écarté sans être retiré de l'ensemble des candidats affame la
+ * file qu'il occupe.** Le drain (`drainFailedJobs`) n'a jamais eu le problème :
+ * il exclut `retryCount >= maxRetries` **dans la requête SQL**. L'asymétrie
+ * entre les deux passages est ce qui a laissé le défaut vivre.
+ *
+ * Le correctif ne consiste PAS à recopier ce filtre ici : un job exclu de la
+ * requête resterait `running` à vie, à mentir dans la console et dans tous les
+ * comptages. Un job qu'aucun passage ne peut plus sauver doit passer en état
+ * **terminal**, avec son motif écrit dans `errorMessage` (cf.
+ * `resolveStuckClosure`). C'est cette clôture qui vide la tête de fenêtre.
  */
 export async function sweepStuckJobs(
   queue: Queue,
@@ -258,7 +379,8 @@ export async function sweepStuckJobs(
   /** Budget partagé du tick (cf. `drainFailedJobs`). Prime quand il est fourni. */
   sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
-  if (sharedBudget !== undefined && sharedBudget <= 0) return { requeued: 0, skipped: 0 };
+  if (sharedBudget !== undefined && sharedBudget <= 0)
+    return { requeued: 0, skipped: 0, closed: 0 };
   const threshold = new Date(Date.now() - settings.stuckAfterMinutes * MS_PER_MINUTE);
 
   const stuck = await prisma.contentGenJob.findMany({
@@ -280,15 +402,36 @@ export async function sweepStuckJobs(
 
   let requeued = 0;
   let skipped = 0;
+  let closed = 0;
   for (const job of stuck) {
-    if (sharedBudget !== undefined && requeued >= sharedBudget) break;
-    if (job.retryCount >= settings.maxRetries) {
-      skipped++;
+    // 1. Irrécupérable → état terminal. Volontairement AVANT le contrôle de
+    //    budget et sans `break` : clore ne déclenche aucun appel provider, donc
+    //    ne dépense rien. Un budget serré ne doit pas laisser la tête de fenêtre
+    //    se re-remplir des mêmes cadavres au tick suivant.
+    const closure = resolveStuckClosure(job, settings);
+    if (closure) {
+      try {
+        if (await closeStuckJob(queue, job.id, closure)) {
+          closed++;
+          console.warn(
+            `[backlog-recovery] job figé clos id=${job.id} (était ${job.status}) → ` +
+              `${closure.status} : ${closure.reason}`,
+          );
+        } else {
+          skipped++;
+        }
+      } catch (err) {
+        skipped++;
+        console.warn(
+          `[backlog-recovery] clôture échouée job=${job.id}:`,
+          err instanceof Error ? err.message : err,
+        );
+      }
       continue;
     }
-    // Même garde que le drain : un job figé qui porte une dépêche périmée ne
-    // doit pas être remis en circulation (incident RSS du 2026-08-15).
-    if (!isTopicStillFresh(job.contentType, job.inputPayload)) {
+
+    // 2. Récupérable → remise en file, dans la limite du budget partagé.
+    if (sharedBudget !== undefined && requeued >= sharedBudget) {
       skipped++;
       continue;
     }
@@ -311,7 +454,7 @@ export async function sweepStuckJobs(
     }
   }
 
-  return { requeued, skipped };
+  return { requeued, skipped, closed };
 }
 
 /**
@@ -378,5 +521,5 @@ export async function sweepStrandedQualityJobs(
   if (requeued > 0) {
     console.warn(`[backlog-recovery] ${requeued} job(s) figé(s) en boucle qualité réinjecté(s)`);
   }
-  return { requeued, skipped };
+  return { requeued, skipped, closed: 0 };
 }
