@@ -22,6 +22,40 @@
 //     service était `smtp.zoho.eu`. Documenter d'après le fournisseur plutôt
 //     que d'après la production produit une fiction crédible.
 //
+// 🔴 AVANT DE BRANCHER UN NOUVEL ÉMETTEUR : DMARC EST EN `p=reject`
+//
+// Mesuré le 2026-09-01 sur les serveurs de noms faisant autorité :
+//
+//   axion-ia.com        TXT  "v=spf1 include:zohomail.eu include:eu.zeptomail.net ~all"
+//   _dmarc.axion-ia.com TXT  "v=DMARC1; p=reject; pct=100; rua=...; adkim=r; aspf=r"
+//
+// Deux émetteurs sont autorisés, et deux seulement. `p=reject` à **100 %**
+// signifie qu'un message non aligné n'arrive pas en indésirables : il est
+// **refusé par le serveur destinataire**. Et l'alignement relaché (`adkim=r`,
+// `aspf=r`) n'aide en rien un émetteur absent du SPF — il ne tolère qu'un
+// sous-domaine du même domaine organisationnel, pas un tiers non déclaré.
+//
+// ⚠️ Le cas concret qui menace : **MailWizz**. Il est prévu pour le volume, il
+// n'envoie rien aujourd'hui, et il n'est **déclaré nulle part** — vérifié le
+// 2026-09-01, aucun SPF sur `mail.`, `news.`, `mailwizz.`, `mw.`, `email.`.
+// Le rallumer sans le déclarer, c'est **100 % de perte**, et une perte
+// SILENCIEUSE des deux côtés : pas de rebond exploitable côté relais, et rien
+// dans `EmailLog` — le message est parti, notre relais l'a accepté, c'est le
+// destinataire qui refuse. `status` resterait à `sent`.
+//
+// La séquence, dans cet ordre, avant le premier envoi de masse :
+//   1. créer un sous-domaine dédié (`news.axion-ia.com`) plutôt que d'émettre
+//      depuis le domaine racine — une réputation de campagne ne doit pas
+//      contaminer celle des convocations et des factures ;
+//   2. ajouter l'émetteur au SPF de CE sous-domaine ;
+//   3. publier son DKIM et vérifier qu'il signe réellement ;
+//   4. n'envoyer qu'après avoir lu un rapport `rua` montrant `dkim=pass` ET
+//      `spf=pass` sur ce nouveau flux. Un rapport DMARC arrive sous 24 h.
+//
+// Ne jamais faire l'inverse (émettre puis corriger) : sous `p=reject`, la
+// première campagne serait intégralement perdue, et l'échec ne se verrait ni
+// dans la console, ni dans les journaux.
+
 // Zoho Mail reste en service comme BOÎTE humaine (contact@axion-ia.com, plan
 // payant Mail Lite, IMAP `imappro.zoho.eu:993`). ZeptoMail est envoi-seul : il
 // s'ajoute à Zoho, il ne le remplace pas.
