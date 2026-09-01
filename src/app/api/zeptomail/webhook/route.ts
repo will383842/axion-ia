@@ -27,6 +27,7 @@ import { notify } from "@/server/notifications";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-signature";
 import { lireRebond, FENETRE_RATTACHEMENT_HEURES } from "@/server/email/bounce-service";
+import { noterAppelWebhook } from "@/server/email/webhook-battement";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -111,6 +112,27 @@ export async function POST(req: NextRequest): Promise<Response> {
     });
     return new Response("invalid_signature", { status: 401 });
   }
+
+  // ── Battement ────────────────────────────────────────────────
+  //
+  // Posé ICI — après la signature, AVANT l'analyse du contenu — et c'est
+  // délibéré. Ce qu'on mesure n'est pas le rebond, c'est l'ABONNEMENT : un
+  // appel de test depuis la console ZeptoMail, ou un événement qui n'est pas un
+  // rebond, prouve que la route est atteinte tout aussi bien qu'un vrai rebond.
+  // Le placer plus bas ne laisserait aucune trace des appels `not_a_bounce`.
+  //
+  // `void` : le battement ne doit ni ralentir ni faire échouer la réponse. Un
+  // 500 répété fait désabonner ZeptoMail — on détruirait l'abonnement qu'on
+  // cherche justement à surveiller.
+  //
+  // 🔴 Cette ligne a été PERDUE une fois, le 2026-09-01 : la PR qui a
+  // ajouté la sonde `GET` ci-dessus a été construite à partir d'une copie
+  // périmée de ce fichier, prise dans un arbre de travail partagé qui était
+  // resté sur une autre branche. Le module `webhook-battement.ts` est demeuré
+  // parfait et DÉBRANCHÉ — état rigoureusement indiscernable d'un module
+  // branché, tant qu'on ne teste que le module. D'où la garde de câblage dans
+  // `route.spec.ts`, qui lit CE fichier et exige l'appel.
+  void noterAppelWebhook();
 
   let payload: unknown;
   try {

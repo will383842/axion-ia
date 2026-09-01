@@ -889,12 +889,16 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     const improver = getQualityImproverQueue();
     const stranded = improver
       ? await sweepStrandedQualityJobs(improver, recovery)
-      : { requeued: 0, skipped: 0 };
-    const total = stuck.requeued + drained.requeued + stranded.requeued;
+      : { requeued: 0, skipped: 0, closed: 0 };
+    // Les clôtures comptent dans le total : un tick qui n'a rien relancé mais a
+    // vidé la tête de fenêtre a fait un travail réel, et le taire laisserait
+    // croire que la reprise ne sert à rien (12 jours de silence en août 2026).
+    const total = stuck.requeued + drained.requeued + stranded.requeued + (stuck.closed ?? 0);
     if (total > 0) {
       console.log(
         `[orchestrator] reprise du retard — ${drained.requeued} échec(s) relancé(s), ` +
-          `${stuck.requeued} job(s) figé(s) débloqué(s), ${stranded.requeued} en boucle qualité`,
+          `${stuck.requeued} job(s) figé(s) débloqué(s), ${stuck.closed ?? 0} clos ` +
+          `(irrécupérables), ${stranded.requeued} en boucle qualité`,
       );
     }
   } catch (err) {

@@ -76,9 +76,34 @@ export function mapOpenAiError(err: unknown): ProviderError {
     //     tentative consommant un slot de couverture (slots monotones = perdus) ;
     //   - cause réelle invisible en base, en console admin et dans les alertes.
     if (status === 429) {
+      // ⚠️ 2026-09-01 — LE MOT EXACT ÉTAIT DANS LE MAUVAIS CHAMP.
+      //
+      // Le correctif du 21/07 ci-dessus n'a rattrapé qu'UNE forme de solde nul.
+      // Le 28/08, le compte est retombé à zéro et OpenAI a répondu ceci :
+      //
+      //   { "type": "insufficient_quota",
+      //     "code": "credit_balance_exhausted",
+      //     "message": "You have no credits remaining. Add credits to continue…" }
+      //
+      // `insufficient_quota` était bien là — dans `type`, pas dans `code`. Et le
+      // message ne contient aucune des trois formes cherchées. Le 429 est donc
+      // reparti en `rate_limited` RETRYABLE, le garde-fou `quota-guard` (qui ne
+      // compte que les codes permanents) n'a jamais été appelé, le kill switch
+      // est resté levé, et la chaîne a produit 54 échecs sur 4 jours SANS que
+      // rien ne le signale. Dernier article publié : 28/08 06:32.
+      //
+      // 🔑 Une seule forme écrite ne couvre pas la famille. On interroge donc
+      // les trois porteurs de l'information, du plus structuré au moins sûr :
+      // `type` (champ canonique OpenAI), puis `code`, puis le message en dernier
+      // recours. Les motifs de message restent DÉLIBÉRÉMENT étroits : élargir
+      // ferait basculer de vrais rate-limits transitoires en non-retryable, et
+      // tuerait des jobs qui auraient abouti.
       const isQuota =
+        err.type === "insufficient_quota" ||
         err.code === "insufficient_quota" ||
-        /insufficient[_-]quota|exceeded your current quota|check your plan and billing/i.test(
+        err.code === "credit_balance_exhausted" ||
+        err.code === "billing_hard_limit_reached" ||
+        /insufficient[_-]quota|exceeded your current quota|check your plan and billing|no credits remaining|credit[_\s-]balance/i.test(
           err.message,
         );
       if (isQuota) {
