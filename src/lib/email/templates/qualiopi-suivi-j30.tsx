@@ -44,6 +44,12 @@ export function QualiopiSuiviJ30Email({
       cta={{ label: "Accéder à mon espace", href: ctaHref }}
       locale={locale}
       trust
+      /* §6.1 — le bloc signature existait dans le gabarit commun depuis la
+         refonte, et AUCUN des 42 fichiers ne l'activait. Sa place est sur les
+         messages qui ouvrent un dialogue : le §4.2 attend une réponse sur le
+         suivi J+30. Un message qui demande « avez-vous pu mettre en pratique ? »
+         doit porter le nom de celui qui le demande. */
+      signature
     >
       <Text style={emailStyles.paragraphStyle}>
         Il y a maintenant un mois que vous avez suivi la formation{" "}
