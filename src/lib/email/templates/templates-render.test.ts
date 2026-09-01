@@ -71,12 +71,31 @@ describe("Sprint X.13 — render templates", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("footer social — selon la famille de l'e-mail", () => {
+  /**
+   * Les quatre liens attendus en famille B, tels que la table du §5.3 les
+   * arbitre — trois surfaces d'entreprise et le profil PERSONNEL LinkedIn.
+   */
   const LIENS_SOCIAUX = [
     "https://www.linkedin.com/company/axion-ia-france/",
-    "https://www.linkedin.com/in/williamsjullin/",
     "https://www.facebook.com/profile.php?id=61591668644032",
-    "https://www.facebook.com/profile.php?id=61586489122989",
+    "https://x.com/AxionIAFrance",
+    "https://www.linkedin.com/in/williamsjullin/",
   ];
+
+  /**
+   * 🔴 Le profil FACEBOOK PERSONNEL, retiré le 2026-09-01.
+   *
+   * Il est le SEUL lien de la table du §5.3 à porter un « Non », et le motif y
+   * est écrit : « Ne jamais mêler profil personnel non professionnel et
+   * communication d'entreprise. Risque d'image sans contrepartie. »
+   *
+   * Il partait dans les 26 gabarits de famille B depuis la demande du
+   * 2026-08-04 (« les 4 liens sociaux partout »), antérieure au référentiel.
+   * Arbitrage Will du 2026-09-01 : « enlève mon facebook mais laisse mon
+   * linkedin ». Cette garde empêche qu'il revienne par recopie d'un ancien
+   * gabarit ou par restauration d'une version antérieure du layout.
+   */
+  const FACEBOOK_PERSONNEL = "https://www.facebook.com/profile.php?id=61586489122989";
 
   it("famille B (force-majeure-notice) porte les 4 liens sociaux du footer", async () => {
     const r = await renderEmailTemplate(
@@ -86,6 +105,18 @@ describe("footer social — selon la famille de l'e-mail", () => {
     );
     for (const lien of LIENS_SOCIAUX) {
       expect(r.html, `famille B doit porter ${lien}`).toContain(lien);
+    }
+  });
+
+  it("AUCUNE famille ne porte le profil Facebook personnel (§5.3)", async () => {
+    for (const nom of ["force-majeure-notice", "payment-receipt"] as const) {
+      const r = await renderEmailTemplate(nom as never, "fr", PAYLOADS[nom]!);
+      expect(
+        r.html,
+        `${nom} : le §5.3 refuse nommément le profil Facebook personnel — ` +
+          `« ne jamais mêler profil personnel non professionnel et communication ` +
+          `d'entreprise ».`,
+      ).not.toContain(FACEBOOK_PERSONNEL);
     }
   });
 

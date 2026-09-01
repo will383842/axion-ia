@@ -10,6 +10,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
 /** Une occurrence : ce qui distingue une alerte des autres du même code. */
@@ -61,7 +62,12 @@ export const qualiopiAlerteInterneSubject = (
   // c'est exactement l'information qui décide si on ouvre maintenant ou ce soir.
   const compte = n > 1 ? ` (${n})` : "";
   const pour = p.guichet != null && p.guichet !== "" ? ` — ${p.guichet}` : "";
-  return `${prefix} Alerte Qualiopi${compte} — ${p.titre ?? p.code}${pour}`;
+  // 🔴 87 caractères mesurés avec un titre d'alerte réel (« Facture
+  // arrivée à échéance sans règlement »). L'objet est borné comme les autres :
+  // interne ne veut pas dire illisible, et c'est la boîte de réception de Will
+  // qui le reçoit. Le PRÉFIXE (niveau + compte + guichet) est ce qui trie — il
+  // n'est jamais rogné ; c'est le titre qui s'abrège.
+  return objetCompose(`${prefix} Alerte Qualiopi${compte} —`, `${p.titre ?? p.code}${pour}`);
 };
 
 export function QualiopiAlerteInterneEmail({
