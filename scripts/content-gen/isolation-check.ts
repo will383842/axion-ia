@@ -318,6 +318,28 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
   // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
   /^tests\/unit\/ci\/gate-mobile-et-inp\.spec\.ts$/,
+  // Exception ajoutée 2026-09-01 — garde « use server » (mêmes raisons que les
+  // deux ci-dessus).
+  //
+  // Cette garde balaie les 274 fichiers `"use server"` du dépôt et refuse tout
+  // export non asynchrone : Next transforme chaque export d'un tel fichier en
+  // point d'entrée réseau, et une constante n'en est pas un — le fichier ENTIER
+  // cesse alors de compiler, sous un message qui désigne la mauvaise cause. Ni
+  // `tsc` ni eslint ne voient cette règle ; seul un `next build` la mesure.
+  //
+  // Le balayage a trouvé une dette PRÉEXISTANTE dans
+  // `server/actions/content-gen/expansion-state.ts` (une constante exportée).
+  // Elle ne casse rien aujourd'hui parce que personne ne l'importe, et elle
+  // cassera le build le jour où quelqu'un le fera. La garde la NOMME dans une
+  // liste de dette explicite, pour ne pas rougir les PR d'autrui — c'est la
+  // doctrine « seuil aligné d'abord, blocage ensuite » d'AGENTS.md.
+  //
+  // 🔑 C'est ce nommage, et lui seul, qui fait apparaître le marqueur : le
+  // chemin est une CHAÎNE dans une liste, pas un `import`. La masquer pour
+  // passer ce contrôle reviendrait à cacher une dette au lieu de la déclarer —
+  // exactement l'inverse de ce que les deux gates cherchent à obtenir. Aucun
+  // couplage à l'exécution : le § 4.1bis n'interdit rien de ce qui se passe ici.
+  /^tests\/unit\/ci\/un-fichier-use-server-n-exporte-que-des-fonctions\.spec\.ts$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL
