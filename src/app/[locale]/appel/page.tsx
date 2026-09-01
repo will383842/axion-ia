@@ -118,8 +118,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
     path: "/appel",
     name: isFr ? "Premier contact projet IA · Axion-IA" : "Premier contact projet IA · Axion-IA",
     description: isFr
-      ? "Premier échange téléphonique de 45 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement."
-      : "Premier échange téléphonique de 45 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement.",
+      ? "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement."
+      : "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -234,7 +234,19 @@ export default async function AppelPage({ params, searchParams }: Props) {
                   </h3>
                   <ol className="space-y-3">
                     {[
-                      "Choisissez un créneau qui vous convient dans le calendrier.",
+                      // 🔴 Le CHOIX DU FORMAT s'annonce ici, et pas ailleurs.
+                      //
+                      // L'event-type propose « Appel téléphonique » ou « Google
+                      // Meet » depuis le 2026-09-01, et rien sur cette page ne
+                      // le disait : le prospect découvrait l'option en arrivant
+                      // chez Calendly, une fois son créneau déjà choisi. Une
+                      // page qui promet un appel et propose une visio se
+                      // contredit au moment le moins opportun.
+                      //
+                      // C'est l'étape 1 parce que c'est le moment où l'on
+                      // s'apprête à cliquer : l'annoncer plus bas serait
+                      // l'annoncer après.
+                      "Choisissez un créneau, puis le format : par téléphone ou en visioconférence.",
                       // 🔴 Disait « Vous recevez une confirmation par email
                       // immédiatement » — vrai au sens strict (Calendly envoie
                       // l'invitation d'agenda), mais la phrase laissait attendre
