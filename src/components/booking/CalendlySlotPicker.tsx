@@ -53,6 +53,7 @@
 import * as React from "react";
 import type { CalendlyAvailabilityDay } from "@/server/calendly/availability";
 import { avecCouleursAxion } from "./calendly-brand";
+import { urlDuFormulaire } from "@/server/calendly/formulaire-reservation";
 
 interface CalendlySlotPickerProps {
   /** Duree reelle de l event-type, en minutes, telle que Calendly la connait. */
@@ -60,6 +61,18 @@ interface CalendlySlotPickerProps {
   readonly days: readonly CalendlyAvailabilityDay[];
   readonly isFr: boolean;
   readonly height: number;
+  /**
+   * Le clic mene-t-il a NOTRE formulaire, ou a la page Calendly ?
+   *
+   * 🔑 Passe en propriete plutot que lu ici : la decision appartient a la page,
+   * qui la prend une seule fois. Deux lectures independantes du meme drapeau
+   * finiraient par diverger, et la divergence serait muette dans le pire sens —
+   * des liens pointant vers un formulaire eteint, c est-a-dire un cul-de-sac au
+   * milieu du seul entonnoir du site.
+   */
+  readonly reservationDirecte?: boolean;
+  /** Locale, pour construire l URL interne. Ignoree si `reservationDirecte` est faux. */
+  readonly locale?: string;
 }
 
 /** `AAAA-MM-JJ` → composantes numériques. Aucune conversion de fuseau. */
@@ -227,7 +240,14 @@ function styleUnJourALaFois(cles: readonly string[]): string {
   return `@supports selector(:has(*)){${regles}}`;
 }
 
-export function CalendlySlotPicker({ days, isFr, height, dureeMinutes }: CalendlySlotPickerProps) {
+export function CalendlySlotPicker({
+  days,
+  isFr,
+  height,
+  dureeMinutes,
+  reservationDirecte = false,
+  locale = "fr",
+}: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
   // Même boîte que le repli — voir PIÈGE 2.
   const box: React.CSSProperties = { minWidth: "320px", height: `${height}px` };
@@ -366,9 +386,20 @@ export function CalendlySlotPicker({ days, isFr, height, dureeMinutes }: Calendl
                     return (
                       <li key={slot.startIso}>
                         <a
-                          href={avecCouleursAxion(slot.schedulingUrl)}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          // Deux destinations possibles pour le MEME lien.
+                          // Quand notre formulaire est actif, le visiteur reste
+                          // chez nous et rien ne s ouvre dans un onglet : un
+                          // nouvel onglet au milieu d un parcours de
+                          // reservation fait perdre le fil, et sur mobile il
+                          // empile une fenetre de plus a fermer.
+                          href={
+                            reservationDirecte
+                              ? urlDuFormulaire(locale, slot.startIso)
+                              : avecCouleursAxion(slot.schedulingUrl)
+                          }
+                          {...(reservationDirecte
+                            ? {}
+                            : { target: "_blank", rel: "noopener noreferrer" })}
                           data-cta="appel_slot_pick"
                           aria-label={
                             isFr
