@@ -44,6 +44,41 @@ export type VerdictSignature =
     };
 
 /** Découpe `ts=…;s=…;s-algorithm=…` sans supposer l'ordre des champs. */
+/**
+ * Rend la signature sous sa forme base64 CANONIQUE.
+ *
+ * 🔴 2026-09-01 — la documentation ZeptoMail donne l'en-tête ainsi :
+ *
+ *     ts=1596109465823;s=dN0yVozgabP5NPlxMDfP1r5u65bVO9kTGEZMIQlqI2o%3D;s-algorithm=HmacSHA256
+ *
+ * Le `%3D` est le `=` de bourrage base64, **percent-encodé**. Sans ce décodage,
+ * `Buffer.from("…I2o%3D", "base64")` rend **33 octets** au lieu de 32 : le
+ * décodeur de Node ignore le `%` mais conserve le `D`. Les longueurs diffèrent,
+ * `base64Equals` rend `false`, et TOUTE livraison est refusée en `mismatch` —
+ * quelle que soit la clé. Mesuré, pas déduit.
+ *
+ * 🔑 Pourquoi personne ne l'avait vu : le module décode déjà le CORPS en
+ * seconde tentative, avec un commentaire qui explique pourquoi — mais le même
+ * raisonnement n'avait pas été appliqué à la signature. Et le webhook n'avait
+ * reçu AUCUN appel réel depuis sa création le 2026-08-20 : les tests fabriquent
+ * eux-mêmes les signatures qu'ils vérifient, donc toujours sous forme nue. La
+ * garde et la chose gardée partageaient la forme de la signature.
+ *
+ * Sécurité inchangée : le décodage est déterministe et ne crée aucune valeur —
+ * il faut toujours la clé pour produire le condensat.
+ */
+function decodeSignature(valeur: string): string {
+  if (!valeur.includes("%")) return valeur;
+  try {
+    return decodeURIComponent(valeur);
+  } catch {
+    // `%` isolé : on garde la valeur telle quelle plutôt que de lever. La
+    // comparaison échouera, ce qui est le bon défaut pour une signature
+    // qu'on ne sait pas lire.
+    return valeur;
+  }
+}
+
 function parseEntete(header: string): { ts: string; s: string; algo: string } | null {
   let ts: string | undefined;
   let s: string | undefined;
@@ -58,7 +93,7 @@ function parseEntete(header: string): { ts: string; s: string; algo: string } | 
     const value = rest.join("=").trim();
     if (!key || !value) continue;
     if (key === "ts") ts = value;
-    else if (key === "s") s = value;
+    else if (key === "s") s = decodeSignature(value);
     else if (key === "s-algorithm") algo = value;
   }
   return ts && s && algo ? { ts, s, algo } : null;
