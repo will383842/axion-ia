@@ -34,6 +34,19 @@ vi.mock("@/server/queue/queues", () => ({
   crmSyncQueue: { add: (...args: unknown[]) => queueAddMock(...args) },
 }));
 
+// 🔴 MOCK AJOUTÉ LE 2026-09-01, EN MÊME TEMPS QUE LA DÉPENDANCE.
+//
+// `emit.ts` prévient désormais quand un événement est abandonné — un refus
+// définitif du CRM, ou des tentatives épuisées. Sans ce mock, la notification
+// partirait POUR DE VRAI pendant les tests : le cas « abandonne définitivement
+// sur un refus 422 » expirait à 5 secondes, en essayant de joindre Telegram.
+//
+// Ce dépôt connaît déjà ce défaut : `client-event/route.test.ts` porte le même
+// avertissement depuis qu'une synchro CRM non simulée y a fait échouer tout le
+// hook de pré-push, pour tout le monde. Ajouter la dépendance ET son mock dans
+// le même geste est la seule façon de ne pas le reproduire.
+vi.mock("@/server/notifications", () => ({ notify: vi.fn().mockResolvedValue({ ok: true }) }));
+
 vi.mock("@/lib/security/email-hash", () => ({
   normalizeEmail: (email: string) => email.trim().toLowerCase(),
   hashEmailForLookup: (email: string | null | undefined) =>
