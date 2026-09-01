@@ -40,6 +40,7 @@ import { diagnose } from "@/lib/roi/diagnose";
 import { clientSectorLabel } from "@/content/sectors";
 import { HEADCOUNT_BANDS } from "@/content/roi/model/types";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 export type RoiReportState =
   // `submissionId` est rendu au client pour qu'il puisse, dans un SECOND temps,
@@ -76,7 +77,9 @@ export async function submitRoiReportAction(
 
   // Honeypot : succès silencieux. Un robot qui reçoit une erreur adapte son
   // remplissage ; un robot qui croit avoir réussi n'apprend rien.
-  if (formData.get("website")) {
+  const leurre = formData.get("website");
+  if (leurre) {
+    signalerHoneypot("rapport-roi", leurre);
     return { ok: true, submissionId: "" };
   }
 

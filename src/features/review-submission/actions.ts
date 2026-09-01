@@ -28,6 +28,7 @@ import { isClientSectorSlug, clientSectorLabel } from "@/content/sectors";
 import { serviceLineLabel } from "@/lib/reviews/service-lines";
 import { buildReviewSlugBase, buildReviewSlug, slugifyToken } from "@/lib/reviews/slug";
 import type { Prisma, ServiceSector } from "../../../prisma/generated/client";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 const CONSENT_VERSION = "reviews-v1-2026-07-06";
 const PHOTO_MAX_BYTES = 5 * 1024 * 1024; // 5 Mo
@@ -82,7 +83,11 @@ export async function submitReviewAction(
   if (!rl.allowed) return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
 
   // 2. Honeypot (bot → succès silencieux)
-  if (formData.get("website")) return { ok: true, reviewId: "" };
+  const leurre = formData.get("website");
+  if (leurre) {
+    signalerHoneypot("avis", leurre);
+    return { ok: true, reviewId: "" };
+  }
 
   // 3. Turnstile (hard-fail)
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
