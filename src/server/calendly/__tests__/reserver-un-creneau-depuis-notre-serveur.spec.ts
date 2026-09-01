@@ -277,3 +277,185 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     }
   });
 });
+
+/**
+ * La relecture du lieu — le second appel, sans lequel deux promesses de ce
+ * module étaient fausses.
+ *
+ * ## Ce qui manquait, et comment ça s'est vu
+ *
+ * La première version de `reserverCreneau` s'arrêtait au 201. Son en-tête
+ * promettait pourtant « on relit la réponse », et le type déclarait une variante
+ * `lieu_non_pris_en_compte`. Les deux étaient inertes : la réponse du POST ne
+ * porte PAS le lieu — elle rend l'URI de l'événement, et c'est tout. Vérifier
+ * exige un second appel, qui n'existait pas.
+ *
+ * Conséquences, toutes deux muettes :
+ * — un cas d'échec déclaré et INATTEIGNABLE, donc une protection qui n'en était
+ *   pas une, alors que le fichier expliquait longuement pourquoi elle était
+ *   indispensable ;
+ * — `lienReunion` toujours `null`, donc une page de confirmation qui n'aurait
+ *   jamais eu de lien de réunion à afficher.
+ *
+ * ## ⚠️ POURQUOI CES TESTS PILOTENT LE MOCK PAR MÉTHODE
+ *
+ * Les dix-huit tests ci-dessus rendaient le MÊME objet `Response` à chaque
+ * appel. Le corps d'une `Response` ne se lit qu'une fois : la relecture tombait
+ * donc systématiquement dans sa branche d'échec, et ces tests restaient verts
+ * sans jamais éprouver la relecture. Verts pour une mauvaise raison — le piège
+ * exact que ce dépôt a déjà rencontré ailleurs. On distingue donc POST et GET.
+ */
+describe("🔴 la relecture du lieu, qui exige un SECOND appel", () => {
+  /** Un `fetch` qui répond différemment au POST et au GET. */
+  function deuxAppels(evenement: Record<string, unknown> | null) {
+    return vi.fn((url: string, init?: RequestInit) => {
+      if ((init?.method ?? "GET") === "POST") {
+        return Promise.resolve(new Response(JSON.stringify(reponseCreee()), { status: 201 }));
+      }
+      if (evenement === null) return Promise.resolve(new Response("nope", { status: 500 }));
+      return Promise.resolve(
+        new Response(JSON.stringify({ resource: evenement }), { status: 200 }),
+      );
+    });
+  }
+
+  it("🔴 un lieu CONFORME est relu, et le lien de réunion en est extrait", async () => {
+    const f = deuxAppels({
+      location: {
+        type: "google_conference",
+        join_url: "https://meet.google.com/abc-defg-hij",
+      },
+    });
+    vi.stubGlobal("fetch", f);
+    const r = await reserverCreneau(demande({ format: "visio" }));
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(f, "la relecture exige un SECOND appel").toHaveBeenCalledTimes(2);
+    expect(r.lieuVerifie).toBe(true);
+    expect(r.lienReunion).toBe("https://meet.google.com/abc-defg-hij");
+  });
+
+  it("🔴 un lieu NON conforme échoue — et rend de quoi défaire", async () => {
+    // Le cas que l'API ne signale pas : la réservation est créée, au mauvais
+    // format. Sans `eventUri` ni `cancelUrl`, il resterait un rendez-vous
+    // fantôme que personne ne pourrait retrouver.
+    vi.stubGlobal("fetch", deuxAppels({ location: { type: "outbound_call" } }));
+    const r = await reserverCreneau(demande({ format: "visio" }));
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    if (r.raison !== "lieu_non_pris_en_compte") throw new Error(`raison : ${r.raison}`);
+    expect(r.eventUri).toContain("scheduled_events");
+    expect(r.cancelUrl).toContain("cancellations");
+    expect(r.lieuEnregistre).toBe("outbound_call");
+  });
+
+  it("🔑 une relecture EN ÉCHEC ne fait pas échouer la réservation", async () => {
+    // La distinction qui compte. Le rendez-vous EXISTE : le nier ferait
+    // réserver une seconde fois. On confirme, en disant qu'on n'a pas vérifié.
+    vi.stubGlobal("fetch", deuxAppels(null));
+    const r = await reserverCreneau(demande());
+    expect(r.ok, "une relecture ratée n'est pas une réservation ratée").toBe(true);
+    if (!r.ok) return;
+    expect(r.lieuVerifie).toBe(false);
+    expect(r.lienReunion).toBeNull();
+  });
+
+  it("🔑 un appel téléphonique conforme passe la relecture", async () => {
+    // Contre-témoin de la garde ci-dessus : si la relecture refusait TOUT, le
+    // test du lieu non conforme passerait pour la mauvaise raison.
+    vi.stubGlobal("fetch", deuxAppels({ location: { type: "outbound_call" } }));
+    const r = await reserverCreneau(demande({ format: "telephone", telephone: "+33611223344" }));
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.lieuVerifie).toBe(true);
+    // Un appel n'a pas de lien de réunion, et c'est normal — pas une lacune.
+    expect(r.lienReunion).toBeNull();
+  });
+
+  it("un événement sans lieu du tout compte comme NON relu", async () => {
+    // Ni conforme ni non conforme : on n'a rien lu. Le ranger dans « mauvais
+    // lieu » annulerait des réservations parfaitement valides.
+    vi.stubGlobal("fetch", deuxAppels({ uri: "x" }));
+    const r = await reserverCreneau(demande());
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.lieuVerifie).toBe(false);
+  });
+});
+
+/**
+ * La portée manquante — la panne totale qui se déguise en cas limite.
+ *
+ * ## Pourquoi elle mérite sa propre raison
+ *
+ * Si le jeton posé dans Coolify n'a pas `scheduled_events:write`, Calendly rend
+ * un 403 et AUCUNE réservation ne passe. Rangé dans `refus`, ce cas serait
+ * traité comme un problème du visiteur : on lui rend sa saisie et on lui montre
+ * le lien Calendly, qui fonctionne. Le parcours marcherait donc — en apparence
+ * — pendant que le formulaire est mort pour tout le monde.
+ *
+ * Le moment où cela se produit est le pire possible : la mise en service. C'est
+ * exactement quand personne ne surveille encore, et quand un repli qui marche
+ * ressemble à un succès.
+ *
+ * ## 🔑 Le corps de la réponse se LIT
+ *
+ * Ce dépôt a déjà perdu trois allers-retours, en juillet 2026, sur un 403 dont
+ * on jetait le corps avant de le lire : on croyait à un jeton invalide alors
+ * qu'il manquait une permission, écrite noir sur blanc dans `required_scopes`.
+ * La leçon est inscrite dans `availability.ts` ; elle vaut ici aussi.
+ */
+describe("🔴 un jeton sans droit d'écrire est nommé, pas confondu avec un refus", () => {
+  function repond(status: number, corps: unknown) {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(new Response(JSON.stringify(corps), { status })),
+    );
+  }
+
+  it("un 403 devient « portee_manquante », jamais « refus »", async () => {
+    repond(403, { message: "Insufficient scope", required_scopes: ["scheduled_events:write"] });
+    const r = await reserverCreneau(demande());
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(
+      r.raison,
+      "rangé dans « refus », ce cas replierait poliment vers Calendly à chaque " +
+        "réservation — ce qui marche, ce qui ne casse rien, et que personne ne remarquerait",
+    ).toBe("portee_manquante");
+  });
+
+  it("🔑 la portée exigée est EXTRAITE du corps, pas jetée", () => {
+    // C'est la seule information qui dit quoi corriger. Sans elle, l'alerte
+    // dirait « ça ne marche pas » sans dire quel droit ajouter.
+    repond(403, { message: "Insufficient scope", required_scopes: ["scheduled_events:write"] });
+    return reserverCreneau(demande()).then((r) => {
+      if (r.ok || r.raison !== "portee_manquante") throw new Error("mauvaise raison");
+      expect(r.porteesRequises).toContain("scheduled_events:write");
+    });
+  });
+
+  it("un 403 sans détail reste « portee_manquante », sans inventer de portée", async () => {
+    repond(403, {});
+    const r = await reserverCreneau(demande());
+    if (r.ok || r.raison !== "portee_manquante") throw new Error("mauvaise raison");
+    expect(r.porteesRequises).toBeNull();
+  });
+
+  it("🔑 CONTRE-TÉMOIN : un 400 ordinaire reste un « refus »", async () => {
+    // Sans lui, une détection trop large rangerait tous les refus dans la panne
+    // de configuration — et alerterait Will à chaque saisie un peu bancale,
+    // jusqu'à ce qu'il apprenne à ignorer l'alerte.
+    repond(400, { message: "Invalid event type" });
+    const r = await reserverCreneau(demande());
+    if (r.ok) throw new Error("aurait dû échouer");
+    expect(r.raison).toBe("refus");
+  });
+
+  it("🔑 CONTRE-TÉMOIN : un créneau pris reste un créneau pris", async () => {
+    repond(400, { message: "This time is no longer available" });
+    const r = await reserverCreneau(demande());
+    if (r.ok) throw new Error("aurait dû échouer");
+    expect(r.raison).toBe("creneau_pris");
+  });
+});

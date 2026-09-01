@@ -46,6 +46,7 @@
 // URL par intervalle, donc un seul appel réseau par intervalle.
 
 import { CALENDLY_API_BASE } from "./api";
+import { lireLesQuestions, type QuestionEventType } from "./questions";
 
 /**
  * TTL du cache des créneaux, en secondes.
@@ -381,7 +382,9 @@ function record(value: unknown): Record<string, unknown> | null {
  */
 async function resolveEventTypeUri(
   schedulingUrl: string,
-): Promise<{ uri: string; dureeMinutes?: number } | { failure: GetErr } | null> {
+): Promise<
+  { uri: string; dureeMinutes?: number; customQuestions: unknown } | { failure: GetErr } | null
+> {
   const me = await calendlyGet(
     `${CALENDLY_API_BASE}/users/me`,
     EVENT_TYPE_REVALIDATE_SECONDS,
@@ -415,7 +418,15 @@ async function resolveEventTypeUri(
     // La duree officielle de l event-type, telle que Calendly la connait. C est
     // la SEULE source qui ne peut pas diverger de ce que le visiteur reservera.
     const duree = et["duration"];
-    return { uri, ...(typeof duree === "number" && duree > 0 ? { dureeMinutes: duree } : {}) };
+    // Les questions posées au visiteur voyagent DANS cette même réponse. Les
+    // relire ici ne coûte donc aucun appel supplémentaire — et surtout, cela
+    // évite d'ouvrir une seconde résolution de l'event-type ailleurs dans le
+    // code, qui serait une deuxième vérité pour un seul fait.
+    return {
+      uri,
+      customQuestions: et["custom_questions"],
+      ...(typeof duree === "number" && duree > 0 ? { dureeMinutes: duree } : {}),
+    };
   }
   return null;
 }
@@ -696,4 +707,60 @@ export async function fetchAvailableSlots({
   // absente » de « clé à undefined », et l appelant teste la présence pour
   // décider s il affiche un chiffre ou son libellé de repli.
   return { ok: true, days, diagnostics, ...(dureeMinutes ? { dureeMinutes } : {}) };
+}
+
+/**
+ * Ce que la page de réservation doit savoir avant d'afficher un formulaire.
+ *
+ * ## Pourquoi cette fonction vit ICI et pas dans son propre module
+ *
+ * Elle réutilise `resolveEventTypeUri`, qui est la SEULE résolution de
+ * l'event-type du dépôt. En ouvrir une seconde ailleurs donnerait deux vérités
+ * pour un seul fait — et le jour où l'URL publique change, l'une des deux
+ * suivrait sans l'autre. Les deux appels réseau sont d'ailleurs mis en cache
+ * 24 h sous le même `tag`, donc appeler cette fonction juste après
+ * `fetchAvailableSlots` ne coûte rien.
+ *
+ * ## Le contrat de repli, identique au reste du module
+ *
+ * Toute défaillance rend `null`, et l'appelant renvoie le visiteur sur la page
+ * Calendly. Y compris — et surtout — le cas `incomplet` : une question que nous
+ * ne savons pas poser rend le formulaire indisponible, parce qu'un formulaire
+ * amputé produirait une réservation qui a l'air complète et à laquelle il
+ * manque une réponse obligatoire. Voir `questions.ts`.
+ */
+export async function resoudreEventTypePourReservation(schedulingUrl: string): Promise<{
+  readonly uri: string;
+  readonly questions: readonly QuestionEventType[];
+  readonly dureeMinutes?: number;
+} | null> {
+  if (!process.env.CALENDLY_API_TOKEN?.trim()) return null;
+  if (!isPublicCalendlyUrl(schedulingUrl)) return null;
+
+  const resolved = await resolveEventTypeUri(schedulingUrl);
+  if (!resolved || "failure" in resolved) {
+    if (resolved) {
+      const { ok: _ignore, ...failure } = resolved.failure;
+      journaliser("réservation directe : résolution de l'event-type en échec", failure);
+    }
+    return null;
+  }
+
+  const lecture = lireLesQuestions(resolved.customQuestions);
+  if (!lecture.ok) {
+    // 🔴 Ce journal est le SEUL endroit où l'on apprendra qu'une question
+    // ajoutée chez Calendly a fermé notre formulaire. Sans lui, le repli vers
+    // Calendly serait silencieux et durerait jusqu'à ce que quelqu'un s'étonne
+    // que le formulaire n'apparaisse plus.
+    journaliser("réservation directe : question non rendable, repli vers Calendly", {
+      typesInconnus: lecture.typesInconnus,
+    });
+    return null;
+  }
+
+  return {
+    uri: resolved.uri,
+    questions: lecture.questions,
+    ...(resolved.dureeMinutes ? { dureeMinutes: resolved.dureeMinutes } : {}),
+  };
 }
