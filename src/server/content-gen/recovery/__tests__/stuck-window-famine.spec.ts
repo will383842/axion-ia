@@ -127,6 +127,28 @@ describe("famine de fenêtre — la tête ne doit pas se re-remplir", () => {
     expect(outcome.closed).toBe(1);
   });
 
+  it("clôt même quand le budget du jour est ÉPUISÉ (budget 0)", async () => {
+    // Mesuré en production le 2026-09-01, dans l'heure suivant le déploiement :
+    // le tick a rendu `tickBudget=0` (plafond quotidien 14/15 atteint), le
+    // balayage s'est arrêté net sur un `return` anticipé, et les 59 jobs figés
+    // sont restés figés. Le correctif se bloquait lui-même.
+    //
+    // 🔑 Un nettoyage qui ne coûte rien ne doit pas être gardé par un budget de
+    // dépense. Le plafond ne concerne que les remises en file.
+    const { queue, addMock } = makeQueue(null);
+    findManyMock.mockResolvedValue([
+      stuckJob({ id: "epuise", retryCount: DEFAULT_RECOVERY_SETTINGS.maxRetries }),
+      stuckJob({ id: "recuperable", retryCount: 0 }),
+    ]);
+
+    const outcome = await sweepStuckJobs(queue, DEFAULT_RECOVERY_SETTINGS, 0);
+
+    expect(outcome.closed).toBe(1);
+    // …mais rien n'est relancé : le budget reste souverain sur la dépense.
+    expect(outcome.requeued).toBe(0);
+    expect(addMock).not.toHaveBeenCalled();
+  });
+
   it("ne clôt JAMAIS un job encore en vol, même à tentatives épuisées", async () => {
     // Le statut en base peut être en retard sur un traitement bien vivant.
     // Clore ici rendrait fantôme un job au moment précis où il aboutit.

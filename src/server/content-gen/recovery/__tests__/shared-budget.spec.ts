@@ -99,12 +99,25 @@ describe("sweepStuckJobs — budget partagé", () => {
     expect(addMock).toHaveBeenCalledTimes(1);
   });
 
-  it("ne débloque rien avec un budget nul", async () => {
-    const { queue } = makeQueue();
+  it("ne RELANCE rien avec un budget nul — mais continue de nettoyer", async () => {
+    // ⚠️ Ce test exigeait aussi `findManyMock` non appelé. C'était une hypothèse
+    // recopiée du drain (« inutile de payer une requête pour un budget nul ») —
+    // vraie là-bas, fausse ici : le drain ne sait que RELANCER, alors que le
+    // balayage a aussi du travail GRATUIT, la clôture des jobs irrécupérables.
+    //
+    // Mesuré en production le 2026-09-01 : le plafond quotidien étant atteint
+    // (14/15), le tick a rendu `tickBudget=0`, le balayage s'est arrêté net et
+    // les 59 jobs figés sont restés figés. La garde protégeait la dépense en
+    // bloquant un nettoyage qui ne dépense rien.
+    //
+    // L'invariant qui compte — aucune relance sans budget — est conservé.
+    const { queue, addMock } = makeQueue();
+    findManyMock.mockResolvedValue([]);
 
     const outcome = await sweepStuckJobs(queue, DEFAULT_RECOVERY_SETTINGS, 0);
 
     expect(outcome.requeued).toBe(0);
-    expect(findManyMock).not.toHaveBeenCalled();
+    expect(addMock).not.toHaveBeenCalled();
+    expect(findManyMock).toHaveBeenCalled();
   });
 });
