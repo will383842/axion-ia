@@ -110,7 +110,28 @@ export async function POST(req: NextRequest): Promise<Response> {
         details: { reason: verdict.reason, ipHash: hashIp(ip) ?? "unknown" },
       },
     });
-    return new Response("invalid_signature", { status: 401 });
+    // 🔴 200, PAS 401 — et c'est ce qui permet au webhook d'exister.
+    //
+    // ZeptoMail interroge cette URL en POST avant d'accepter la création d'un
+    // webhook. Cette sonde n'est PAS signée, et elle ne peut pas l'être : la
+    // « Clé d'authentification » ne se configure qu'APRÈS la création. Un 401
+    // sur cette sonde ferme donc un cercle : pas de clé sans webhook, pas de
+    // webhook sans clé. Mesuré le 2026-09-01 — le panneau affichait « URL
+    // cannot be reached », la boîte se fermait sans rien créer, et rien
+    // n'indiquait que la cause était notre code de rejet.
+    //
+    // 🔑 Le contrat de sécurité est INCHANGÉ : on ne traite toujours
+    // rien. La charge n'est pas lue, aucun rebond n'est enregistré, l'alerte
+    // ci-dessus part quand même. Ce qui change est le CODE rendu, pas le
+    // comportement — et c'est la doctrine déjà écrite en tête de ce fichier :
+    // « un 404 ou un 500 répété fait désabonner le fournisseur ». Le 401 était
+    // une incohérence avec cette règle, pas une protection.
+    //
+    // Accessoirement, un 200 uniforme en dit MOINS à un attaquant qu'un 401 :
+    // celui-ci confirmait que la vérification est active et que la tentative
+    // avait échoué. Ici, rien ne distingue une charge acceptée d'une charge
+    // ignorée — seule l'alerte hors bande le dit, à nous.
+    return Response.json({ ok: true, ignored: "invalid_signature" });
   }
 
   // ── Battement ────────────────────────────────────────────────

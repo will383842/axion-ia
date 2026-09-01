@@ -103,3 +103,60 @@ describe("câblage du battement dans la route", () => {
     ).toBeGreaterThan(iSignature);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 UNE SIGNATURE ABSENTE REND 200, JAMAIS 401.
+//
+// Le cercle vicieux, mesuré le 2026-09-01 : ZeptoMail interroge l'URL en POST
+// avant d'accepter la création d'un webhook, cette sonde n'est pas signée, et
+// la « Clé d'authentification » ne se configure qu'APRÈS la création. Un 401
+// sur la sonde → « URL cannot be reached » → pas de webhook → pas de clé.
+//
+// 🔑 Ce test ne relâche RIEN : il exige le 200 **et** l'absence de
+// traitement. C'est la distinction qui compte — le contrat de sécurité porte
+// sur ce qu'on FAIT de la charge, pas sur le code qu'on rend.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("sonde de création : POST non signé", () => {
+  const SOURCE = readFileSync(
+    join(process.cwd(), "src", "app", "api", "zeptomail", "webhook", "route.ts"),
+    "utf8",
+  );
+
+  it("🔴 ne rend PLUS 401 sur signature invalide", () => {
+    expect(
+      /invalid_signature[^)]*status:\s*401/.test(SOURCE.replace(/\s+/g, " ")),
+      "La route rend un 401 sur signature absente ou invalide. ZeptoMail " +
+        "interroge l'URL en POST NON SIGNÉ avant d'accepter la création du " +
+        "webhook — la clé ne se configure qu'après. Un 401 rend donc la " +
+        "création impossible : « URL cannot be reached », et pas de webhook du " +
+        "tout. Rendre 200 SANS traiter la charge.",
+    ).toBe(false);
+  });
+
+  it("l'alerte de sécurité est TOUJOURS émise — le 200 ne la remplace pas", () => {
+    // Le code rendu change ; la détectabilité ne doit pas. Sans cette alerte,
+    // une clé désynchronisée après rotation deviendrait parfaitement muette.
+    expect(
+      SOURCE.includes("zeptomail_webhook_signature_invalid"),
+      "L'alerte hors bande a disparu. C'est désormais la SEULE chose qui " +
+        "distingue une charge acceptée d'une charge ignorée, puisque les deux " +
+        "rendent 200.",
+    ).toBe(true);
+  });
+
+  it("🔴 la charge n'est PAS traitée quand la signature échoue", () => {
+    // Le contrôle qui compte vraiment : le `return` doit précéder l'analyse.
+    const iRejet = SOURCE.indexOf('ignored: "invalid_signature"');
+    // `payload = JSON.parse`, et non `JSON.parse` seul : la première
+    // occurrence de la forme nue est dans un COMMENTAIRE d'en-tête, ligne 89.
+    // Une garde qui la prend pour l'appel réel mesure une phrase, pas du code.
+    const iParse = SOURCE.indexOf("payload = JSON.parse");
+    expect(iRejet, "sortie de rejet introuvable").toBeGreaterThan(0);
+    expect(
+      iParse,
+      "L'analyse de la charge doit venir APRÈS la sortie de rejet. Rendre 200 " +
+        "n'autorise pas à lire ce qu'on n'a pas authentifié.",
+    ).toBeGreaterThan(iRejet);
+  });
+});
