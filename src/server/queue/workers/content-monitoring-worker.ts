@@ -34,6 +34,10 @@ import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import {
+  evaluatePipelineStall,
+  evaluateRejectRate,
+} from "@/server/content-gen/monitoring/anomaly-rules";
+import {
   alertQueueStuck,
   alertSoft404Detected,
   alertIndexationStagnant,
@@ -295,15 +299,41 @@ async function checkAnomalies(): Promise<void> {
     }
   }
 
-  // Check 2 : taux rejet > 50% sur 1h
-  const [totalRecent, failedRecent] = await Promise.all([
+  // Check 2 : taux de rejet > 50 %
+  //
+  // 🔴 2026-09-01 — CETTE ALARME ÉTAIT DEVENUE MATHÉMATIQUEMENT INATTEIGNABLE.
+  //
+  // Elle exigeait `totalRecent > 5` sur une fenêtre d'UNE HEURE. Le 2026-08-16,
+  // le plafond global est passé à 15 contenus/jour (décision Will) — soit
+  // ~0,6 job terminé par heure. Le seuil de 6 par heure ne pouvait donc plus
+  // JAMAIS être franchi. Résultat mesuré : du 28/08 au 01/09, **100 % d'échecs
+  // pendant quatre jours** (54 jobs, aucun publié) sans une seule alerte.
+  //
+  // 🔑 Baisser une cadence peut tuer une garde exprimée en volume horaire.
+  // Une garde dont le seuil dépend d'un débit doit être relue quand le débit
+  // change — sinon elle meurt en silence, et son silence ressemble au calme.
+  //
+  // Deux règles cumulatives désormais, la première INCHANGÉE pour ne rien
+  // régresser sur les cadences hautes :
+  //   A. pic court  — > 5 jobs terminés sur 1 h et > 50 % d'échecs ;
+  //   B. taux soutenu — ≥ 5 jobs terminés sur 24 h et > 50 % d'échecs.
+  // À 15/jour, B se déclenche après ~5 échecs, soit quelques heures.
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const [totalRecent, failedRecent, totalDay, failedDay] = await Promise.all([
     prisma.contentGenJob.count({ where: { completedAt: { gte: oneHourAgo } } }).catch(() => 0),
     prisma.contentGenJob
       .count({ where: { status: "failed", completedAt: { gte: oneHourAgo } } })
       .catch(() => 0),
+    prisma.contentGenJob
+      .count({ where: { completedAt: { gte: twentyFourHoursAgo } } })
+      .catch(() => 0),
+    prisma.contentGenJob
+      .count({ where: { status: "failed", completedAt: { gte: twentyFourHoursAgo } } })
+      .catch(() => 0),
   ]);
-  if (totalRecent > 5 && failedRecent / totalRecent > 0.5) {
-    const pct = Math.round((failedRecent / totalRecent) * 100);
+  const rejet = evaluateRejectRate({ totalRecent, failedRecent, totalDay, failedDay });
+  if (rejet) {
+    const { failed, total, fenetre, pct } = rejet;
     await prisma.contentGenConfig
       .upsert({
         where: { key: "alert_reject_spike" },
@@ -313,7 +343,7 @@ async function checkAnomalies(): Promise<void> {
             active: true,
             value: pct,
             detectedAt: new Date().toISOString(),
-            message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
+            message: `Taux de rejet : ${failed}/${total} (${pct} %) sur ${fenetre}`,
           },
           updatedBy: "content-monitoring-worker",
         },
@@ -322,24 +352,67 @@ async function checkAnomalies(): Promise<void> {
             active: true,
             value: pct,
             detectedAt: new Date().toISOString(),
-            message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
+            message: `Taux de rejet : ${failed}/${total} (${pct} %) sur ${fenetre}`,
           },
           updatedBy: "content-monitoring-worker",
         },
       })
       .catch(() => {});
-    console.warn(`[content-monitoring] ALERT reject_spike=${failedRecent}/${totalRecent}`);
+    console.warn(
+      `[content-monitoring] ALERT reject_spike=${failed}/${total} sur ${fenetre} (${pct} %)`,
+    );
   } else {
     // Condition résolue — désactiver l'alerte si elle était active.
     await resolveAnomaly("alert_reject_spike");
   }
 
-  // Check 3 : 0 jobs crees depuis 4h sur campagne running
+  // Check 3 : la chaîne de production tourne-t-elle À VIDE ?
+  //
+  // 🔴 2026-09-01 — CETTE VEILLE MESURAIT LE PRODUCTEUR, PAS LE PRODUIT.
+  //
+  // Elle ne regardait que les jobs CRÉÉS depuis 4 h. Or l'orchestrateur créait
+  // fidèlement ses 15 jobs par jour pendant que le solde OpenAI était à zéro :
+  // `recentJobs > 0`, donc « rien à signaler ». Du 28/08 au 01/09, quatre jours
+  // sans un seul article publié, et l'alarme affichait `active: false` —
+  // résolue à midi le jour même du constat.
+  //
+  // 🔑 Une veille qui compte ce qu'on LANCE ne voit jamais mourir ce qu'on
+  // PRODUIT. Une machine en panne qui continue d'avaler des pièces lui paraît
+  // en bonne santé.
+  //
+  // Deux règles désormais, la première INCHANGÉE :
+  //   A. plus rien n'est LANCÉ depuis 4 h → l'orchestrateur est mort ;
+  //   B. ≥ 5 jobs lancés sur 24 h et AUCUN n'a rien produit → la chaîne tourne
+  //      à vide. Le plancher de 5 évite d'alarmer un système simplement au
+  //      repos ou fraîchement démarré : on n'alerte que si l'on a demandé du
+  //      travail et que rien n'en est sorti.
+  //
+  // « Produire » = atteindre un état où le contenu EXISTE (`published`,
+  // `approved`, `needs_review`). `failed` n'en fait évidemment pas partie, et
+  // `quality_improving` non plus : y rester 24 h est aussi une panne.
   const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
-  const [runningCampaigns, recentJobs] = await Promise.all([
+  const [runningCampaigns, recentJobs, createdDay, productiveDay] = await Promise.all([
     prisma.coverageCampaign.count({ where: { status: "running" } }).catch(() => 0),
     prisma.contentGenJob.count({ where: { createdAt: { gte: fourHoursAgo } } }).catch(() => 0),
+    prisma.contentGenJob
+      .count({ where: { createdAt: { gte: twentyFourHoursAgo } } })
+      .catch(() => 0),
+    prisma.contentGenJob
+      .count({
+        where: {
+          status: { in: ["published", "approved", "needs_review"] },
+          completedAt: { gte: twentyFourHoursAgo },
+        },
+      })
+      .catch(() => 0),
   ]);
+  const stall = evaluatePipelineStall({
+    runningCampaigns,
+    recentJobs,
+    createdDay,
+    productiveDay,
+  });
+  const rienDeLance = stall === "rien_lance";
   /**
    * Le texte affiché dans le bandeau rouge de `/content-gen`. Il disait
    * « Pipeline bloque : 1 campagne(s) running, 0 job cree depuis 4h » —
@@ -351,12 +424,14 @@ async function checkAnomalies(): Promise<void> {
    * change QUE les alertes émises à partir de maintenant. Celle qui est
    * affichée aujourd'hui gardera son ancien libellé jusqu'à sa résolution.
    */
-  const messagePipelineBloque = (campagnes: number): string =>
-    campagnes > 1
-      ? `Chaîne de production à l'arrêt : ${campagnes} campagnes en cours, aucune génération lancée depuis 4 h.`
-      : `Chaîne de production à l'arrêt : 1 campagne en cours, aucune génération lancée depuis 4 h.`;
+  const messagePipelineBloque = (campagnes: number): string => {
+    const enCours = campagnes > 1 ? `${campagnes} campagnes en cours` : "1 campagne en cours";
+    return rienDeLance
+      ? `Chaîne de production à l'arrêt : ${enCours}, aucune génération lancée depuis 4 h.`
+      : `Chaîne de production à vide : ${enCours}, ${createdDay} générations lancées sur 24 h et aucun contenu produit.`;
+  };
 
-  if (runningCampaigns > 0 && recentJobs === 0) {
+  if (stall) {
     await prisma.contentGenConfig
       .upsert({
         where: { key: "alert_pipeline_stall" },
@@ -381,7 +456,10 @@ async function checkAnomalies(): Promise<void> {
         },
       })
       .catch(() => {});
-    console.warn(`[content-monitoring] ALERT pipeline_stall campaigns=${runningCampaigns}`);
+    console.warn(
+      `[content-monitoring] ALERT pipeline_stall campaigns=${runningCampaigns} ` +
+        `lances4h=${recentJobs} lances24h=${createdDay} produits24h=${productiveDay}`,
+    );
   } else {
     // Condition résolue — désactiver l'alerte si elle était active.
     await resolveAnomaly("alert_pipeline_stall");
