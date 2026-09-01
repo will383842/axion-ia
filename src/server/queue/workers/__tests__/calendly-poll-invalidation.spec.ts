@@ -26,7 +26,7 @@
 // d'appelant vivant qui cassait. Un test de plus sur elle n'aurait rien vu :
 // il faut éprouver ce que le worker ENVOIE.
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest";
 
 const revalidateContentMock = vi.fn();
 vi.mock("@/server/content-gen/shared/revalidate-content", () => ({
@@ -80,6 +80,32 @@ async function chargerProcesseur(): Promise<Processeur> {
     throw new Error("le processeur n'a pas été capturé — le mock de bullmq a changé");
   return processeur;
 }
+
+/**
+ * 🔴 LE CHARGEMENT DU MODULE EST PAYÉ ICI, PAS DANS LE PREMIER TEST.
+ *
+ * `chargerProcesseur()` fait un `await import("../calendly-poll-worker")`, qui
+ * résout tout le graphe du worker — BullMQ, Prisma, la chaîne Calendly. Ce coût
+ * n'était payé qu'une fois, mais **contre le budget du test qui se trouvait
+ * passer en premier** : les suivants tapent le cache de modules et sont rapides.
+ *
+ * Conséquence, mesurée deux fois le 2026-09-01 : sous la charge parallèle du
+ * `pre-push`, « envoie les CHEMINS et pas seulement les étiquettes » dépassait
+ * les 5 000 ms et faisait ROUGIR un test qui, seul, met 1,8 s. Le budget était
+ * consommé par la mise en place, pas par ce que le test mesure — et le message
+ * d'échec accusait l'assertion.
+ *
+ * Le déplacer dans un `beforeAll` n'est pas un contournement : c'est mettre le
+ * coût là où il appartient. Vitest accorde d'ailleurs aux hooks un budget
+ * distinct et plus large qu'aux tests, précisément parce qu'un hook installe.
+ *
+ * ⚠️ Ne PAS remplacer ceci par un `testTimeout` plus grand : le premier test
+ * resterait deux fois plus lent que les autres pour une raison qui n'a rien à
+ * voir avec lui, et le prochain à s'y ajouter hériterait du même piège.
+ */
+beforeAll(async () => {
+  await import("../calendly-poll-worker");
+});
 
 beforeEach(() => {
   vi.clearAllMocks();
