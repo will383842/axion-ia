@@ -39,8 +39,11 @@ import { lireLaRepriseDuCreneau } from "@/server/calendly/reprise-formulaire";
 import {
   reservationDirecteActive,
   creneauExploitable,
+  CHAMP_LOCALE,
+  CHAMP_LEURRE,
 } from "@/server/calendly/formulaire-reservation";
-import { soumettreLaReservation, CHAMP_LOCALE, CHAMP_LEURRE } from "./actions";
+import { soumettreLaReservation } from "./actions";
+import { signalerRepliPermanent } from "@/server/calendly/alertes-reservation";
 
 /**
  * Rendu à chaque requête.
@@ -111,9 +114,23 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   const et = await resoudreEventTypePourReservation(
     process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
   );
-  // Jeton absent, API muette, ou une question qu'on ne sait pas poser : le
-  // contrat de repli s'applique, et il est écrit dans `questions.ts`.
-  if (!et) redirect(`/${locale}/appel`);
+  if (!et) {
+    // Jeton absent, API muette, ou une question qu'on ne sait pas poser : le
+    // contrat de repli s'applique, et il est écrit dans `questions.ts`.
+    //
+    // 🔴 MAIS ON ALERTE ICI, ET PAS SEULEMENT DANS L'ACTION.
+    //
+    // L'alerte vivait uniquement côté action, et elle était INATTEIGNABLE :
+    // c'est cette page qui fait la résolution EN PREMIER. Quand elle échoue,
+    // aucun visiteur n'atteint le formulaire, donc aucun envoi n'a lieu, donc
+    // l'action n'est jamais appelée. La seule branche qui alertait ne se
+    // déclenchait que si quelqu'un postait à la main.
+    //
+    // La déduplication (quinze minutes, même clé des deux côtés) évite qu'une
+    // panne produise une alerte par visiteur.
+    await signalerRepliPermanent();
+    redirect(`/${locale}/appel`);
+  }
 
   const reprise = await lireLaRepriseDuCreneau(debutBrut);
 
@@ -164,6 +181,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             locale={locale}
             champLocale={CHAMP_LOCALE}
             champLeurre={CHAMP_LEURRE}
+            retourAuCalendrier={`/${locale}/appel`}
           />
         </div>
       </Container>

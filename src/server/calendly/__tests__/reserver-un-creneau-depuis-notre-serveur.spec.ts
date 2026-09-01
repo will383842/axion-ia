@@ -55,6 +55,25 @@ function demande(over: Partial<DemandeReservation> = {}): DemandeReservation {
   };
 }
 
+/**
+ * ⚠️ CHAQUE APPEL REÇOIT UNE `Response` NEUVE.
+ *
+ * Ces tests employaient `mockResolvedValue(new Response(...))`, qui rend le
+ * MÊME objet à tous les appels. Le corps d'une `Response` ne se lit qu'une
+ * fois : le jour où `reserverCreneau` a gagné un second appel — la relecture du
+ * lieu — celle-ci tombait systématiquement dans sa branche d'échec, et ces
+ * dix-huit tests sont restés VERTS sans jamais l'éprouver.
+ *
+ * Ils ne mesuraient rien de faux, ils ne mesuraient plus rien du second appel.
+ * Le test « une réservation acceptée rend l'événement et ses liens » portait ce
+ * titre en n'observant que le premier.
+ *
+ * 🔑 La leçon dépasse ce fichier : quand on ajoute un appel, une lecture ou un
+ * effet à une fonction DÉJÀ COUVERTE, ce ne sont pas les nouveaux tests qu'il
+ * faut relire — ce sont les anciens. Ils ont été écrits pour un monde à un seul
+ * appel, et rien ne leur dit qu'il y en a deux.
+ */
+
 /** La réponse que Calendly rend réellement sur un 201. */
 function reponseCreee(over: Record<string, unknown> = {}) {
   return {
@@ -172,7 +191,9 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     // confirmation : sans `eventUri`, elle n'aurait rien à afficher.
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(new Response(JSON.stringify(reponseCreee()), { status: 201 })),
+      vi
+        .fn()
+        .mockImplementation(() => new Response(JSON.stringify(reponseCreee()), { status: 201 })),
     );
     return reserverCreneau(demande()).then((r) => {
       expect(r.ok).toBe(true);
@@ -214,7 +235,10 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     // Le serveur a pu traiter la demande avant de tomber : même incertitude,
     // donc même traitement. Le ranger dans « refus » ferait replier, et
     // replier ferait doubler.
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("boom", { status: 502 })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(() => new Response("boom", { status: 502 })),
+    );
     const r = await reserverCreneau(demande());
     expect(r.ok).toBe(false);
     if (r.ok) return;
@@ -245,7 +269,9 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     // Le cas prudent est le silence, qui déclenche une vérification.
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(new Response(JSON.stringify({ resource: {} }), { status: 201 })),
+      vi
+        .fn()
+        .mockImplementation(() => new Response(JSON.stringify({ resource: {} }), { status: 201 })),
     );
     const r = await reserverCreneau(demande());
     expect(r.ok).toBe(false);
@@ -269,8 +295,8 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     // écran d'erreur, alors que chaque panne a une réponse utile.
     for (const f of [
       vi.fn().mockRejectedValue(new Error("réseau")),
-      vi.fn().mockResolvedValue(new Response("pas du json", { status: 201 })),
-      vi.fn().mockResolvedValue(new Response("", { status: 429 })),
+      vi.fn().mockImplementation(() => new Response("pas du json", { status: 201 })),
+      vi.fn().mockImplementation(() => new Response("", { status: 429 })),
     ]) {
       vi.stubGlobal("fetch", f);
       await expect(reserverCreneau(demande())).resolves.toBeDefined();
@@ -409,7 +435,7 @@ describe("🔴 un jeton sans droit d'écrire est nommé, pas confondu avec un re
   function repond(status: number, corps: unknown) {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(new Response(JSON.stringify(corps), { status })),
+      vi.fn().mockImplementation(() => new Response(JSON.stringify(corps), { status })),
     );
   }
 

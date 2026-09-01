@@ -102,6 +102,14 @@ interface FormulaireReservationProps {
   readonly champLocale: string;
   /** Nom du champ leurre. Voir son rendu plus bas — il n'est PAS `hidden`. */
   readonly champLeurre: string;
+  /**
+   * Lien de retour au calendrier, affiché AVEC l'erreur du créneau.
+   *
+   * 🔑 Sans lui, le message « ce créneau vient d'être réservé » laisserait le
+   * visiteur devant un formulaire qu'il ne peut pas réparer : le créneau est
+   * dans un champ caché, il n'a aucun moyen d'en changer depuis cette page.
+   */
+  readonly retourAuCalendrier?: string | undefined;
 }
 
 /**
@@ -171,6 +179,7 @@ export function FormulaireReservation({
   locale,
   champLocale,
   champLeurre,
+  retourAuCalendrier,
 }: FormulaireReservationProps) {
   const v = (nom: string): string => valeurs[nom] ?? "";
   const e = (nom: string): string | undefined => erreurs[nom];
@@ -225,6 +234,36 @@ export function FormulaireReservation({
           defaultValue=""
         />
       </div>
+
+      {/* 🔴 L'ERREUR DU CRÉNEAU, ET ELLE N'EST PAS DÉCORATIVE.
+          
+          Ce message a été INVISIBLE pendant toute la première version, et c'était
+          le défaut le plus grave du lot. `debut` n'existait dans ce composant
+          que comme champ caché ; or SIX chemins de refus sur sept écrivent leur
+          message dans cette clé — créneau pris entre-temps, quota atteint,
+          leurre déclenché, jeton sans droit d'écrire, refus de l'API.
+          
+          Ce que voyait le visiteur : le bandeau « un point à corriger avant
+          d'envoyer », aucun champ marqué, et rien à corriger. Il renvoyait le
+          même formulaire, avec le même créneau caché, et obtenait le même
+          résultat. Une boucle sans sortie, sur le cas que le code lui-même
+          désigne comme le plus fréquent.
+          
+          Il est rendu ICI, contre le récapitulatif du créneau, parce que c'est
+          de LUI que le message parle. */}
+      {e(CHAMPS.debut) ? (
+        <div role="alert" className="border-terracotta bg-terracotta/5 rounded-xl border px-4 py-3">
+          <p className="text-terracotta-deep text-sm font-semibold">{e(CHAMPS.debut)}</p>
+          {retourAuCalendrier ? (
+            <a
+              href={retourAuCalendrier}
+              className="text-terracotta-deep mt-1.5 inline-block text-sm font-medium underline underline-offset-2"
+            >
+              Choisir un autre créneau
+            </a>
+          ) : null}
+        </div>
+      ) : null}
 
       {/* RÉCAPITULATIF DU CRÉNEAU — en tête, parce que c'est la première chose
           qu'on vérifie en arrivant, et qu'il doit être lisible sans défiler. */}
@@ -371,7 +410,12 @@ export function FormulaireReservation({
           defaultValue={v(CHAMPS.telephone)}
           autoComplete="tel"
           placeholder="+33 6 12 34 56 78"
-          maxLength={30}
+          // 🔑 33, PAS 30. La regex du serveur accepte 2 + 3 + 28 = 33
+          // caractères ; couper à 30 dans le navigateur amputait en SILENCE un
+          // numéro international formaté collé depuis un carnet d'adresses. Le
+          // reste passait encore la validation — et c'est ce numéro tronqué
+          // qu'on aurait composé le jour du rendez-vous.
+          maxLength={33}
           aria-invalid={e(CHAMPS.telephone) ? true : undefined}
           aria-describedby={decrit(CHAMPS.telephone, true)}
           className={CHAMP_HAUT}

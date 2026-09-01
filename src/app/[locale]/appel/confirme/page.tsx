@@ -53,7 +53,6 @@ interface DetailEvenement {
   readonly debut: Date | null;
   readonly format: "telephone" | "visio" | "inconnu";
   readonly lienReunion: string | null;
-  readonly annulerUrl: string | null;
 }
 
 /**
@@ -92,7 +91,6 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
       // visiteur reçoit dans la minute.
       format: canalDuRendezVous(null, { event: { location: lieu } }),
       lienReunion: typeof join === "string" && join.startsWith("http") ? join : null,
-      annulerUrl: null,
     };
   } catch {
     return null;

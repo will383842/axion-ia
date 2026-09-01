@@ -75,11 +75,31 @@ export const REPRISE_TTL_SECONDES = 120;
 /**
  * Budget d'écriture, sous le plafond réel de 4 096 octets.
  *
- * La marge couvre le nom du cookie, ses attributs, et l'encodage — un cookie
- * refusé par le navigateur serait un silence parfait : la redirection
- * marcherait, et le formulaire reviendrait vide sans que rien ne le signale.
+ * ## 🔴 CE QUI SE MESURE ICI : L'EN-TÊTE ÉMISE, PAS LE JSON
+ *
+ * La première version comparait `JSON.stringify(...)` à 3 500 octets et
+ * expliquait que la marge de 596 octets « couvre le nom du cookie, ses
+ * attributs, et l'encodage ». **C'était faux, et d'un facteur, pas d'une
+ * marge** : l'encodage est MULTIPLICATIF. Next sérialise
+ * `${nom}=${encodeURIComponent(valeur)}` ; chaque guillemet devient `%22`,
+ * chaque accolade `%7B`, chaque accent six caractères. Mesuré :
+ *
+ *     réponse de 2 600 caractères → JSON 2 963 o  (sous le budget, AUCUN sacrifice)
+ *                                 → Set-Cookie 4 189 o  → REFUSÉ par le navigateur
+ *
+ * Le seuil réel tombait donc autour de 2 500 caractères, très en dessous du
+ * `maxLength` de 10 000 du champ. Au-delà, la redirection aboutissait, la page
+ * lisait un cookie absent, et **le formulaire revenait entièrement vide** —
+ * sans le bandeau d'avertissement, qui dépend d'`abandonnes` resté vide. Le
+ * « silence parfait » que ce commentaire prétendait prévenir.
+ *
+ * ⚠️ La garde ne mordait pas non plus : elle mesurait le MÊME
+ * `JSON.stringify` que le code. Garde et chose gardée partageaient la mesure,
+ * donc aucune des deux ne voyait l'encodage.
+ *
+ * On mesure désormais ce que le navigateur reçoit réellement.
  */
-const BUDGET_OCTETS = 3_500;
+const BUDGET_OCTETS = 3_800;
 
 /** Les champs dont la valeur peut être longue, sacrifiés en premier. */
 const SACRIFIABLES_EN_PREMIER = (nom: string): boolean => nom.startsWith("q") || nom === "invites";
@@ -99,8 +119,25 @@ export interface Reprise {
   readonly abandonnes: readonly string[];
 }
 
+/**
+ * La taille de l'en-tête `Set-Cookie` que le navigateur recevra.
+ *
+ * 🔑 `encodeURIComponent` fait partie de la mesure, pas d'une marge : c'est lui
+ * qui triple le coût des guillemets et des accolades d'un JSON. Le nom du
+ * cookie et ses attributs sont comptés aussi — ils entrent dans le plafond de
+ * 4 096 octets, qui porte sur l'en-tête entière.
+ *
+ * Exporté pour que la garde mesure la MÊME chose que le code, et pour qu'elle
+ * puisse le faire sans dépendre de Next.
+ */
+export function tailleDeLEnTete(charge: unknown): number {
+  const attributs = "; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=120";
+  const entete = `${COOKIE_REPRISE}=${encodeURIComponent(JSON.stringify(charge))}${attributs}`;
+  return new TextEncoder().encode(entete).length;
+}
+
 function taille(o: unknown): number {
-  return new TextEncoder().encode(JSON.stringify(o)).length;
+  return tailleDeLEnTete(o);
 }
 
 /**

@@ -29,8 +29,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
-import { notify } from "@/server/notifications";
-import type { NotificationSeverity } from "@/server/notifications/types";
+import { prevenir, signalerRepliPermanent } from "@/server/calendly/alertes-reservation";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/client-ip";
@@ -40,18 +39,14 @@ import {
   urlDuFormulaire,
   reservationDirecteActive,
   CHAMPS,
+  CHAMP_LOCALE,
+  CHAMP_LEURRE,
   type Erreurs,
   type Valeurs,
 } from "@/server/calendly/formulaire-reservation";
 import { deposerLaReprise } from "@/server/calendly/reprise-formulaire";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { reserverCreneau } from "@/server/calendly/reservation";
-
-/**
- * Le leurre. Même nom que sur `/contact`, pour la même raison : les robots
- * remplissent tout ce qui ressemble à un champ, et `website` en est un.
- */
-export const CHAMP_LEURRE = "website";
 
 /**
  * ## 🔴 DEUX QUOTAS, ET C'EST LA LEÇON D'UN DÉFAUT DÉJÀ PAYÉ
@@ -77,8 +72,19 @@ export const CHAMP_LEURRE = "website";
 const ANTI_INONDATION = { limit: 30, windowSec: 600 } as const;
 const QUOTA_RESERVATION = { limit: 3, windowSec: 3_600 } as const;
 
-/** Champ caché portant la locale : l'action n'a pas accès aux paramètres de route. */
-export const CHAMP_LOCALE = "locale";
+/**
+ * L'identifiant d'un `eventUri`, extrait d'UNE seule façon.
+ *
+ * ⚠️ Il y en avait deux, et elles ne rendaient pas la même chose : l'une
+ * filtrait les segments vides, l'autre non. Sur un URI terminé par une barre
+ * oblique, la seconde rendait une chaîne vide — et la page de confirmation,
+ * qui refuse un identifiant absent, servait un 404 à quelqu'un dont le
+ * rendez-vous venait d'être créé. Au moment précis où l'on a le plus besoin de
+ * lui dire quelque chose.
+ */
+function identifiantDe(eventUri: string): string {
+  return eventUri.split("/").filter(Boolean).pop() ?? "";
+}
 
 /** Où atterrit une réservation réussie. */
 function urlDeConfirmation(locale: string, eventUri: string): string {
@@ -86,8 +92,29 @@ function urlDeConfirmation(locale: string, eventUri: string): string {
   // l'e-mail : une adresse d'URL finit dans l'historique, dans les journaux du
   // serveur et dans l'en-tête `Referer`. La page de confirmation relira le reste
   // chez Calendly.
-  const uuid = eventUri.split("/").filter(Boolean).pop() ?? "";
+  const uuid = identifiantDe(eventUri);
   return `/${locale}/appel/confirme?e=${encodeURIComponent(uuid)}`;
+}
+
+/**
+ * La saisie telle quelle, avant toute validation.
+ *
+ * Sert aux refus qui surviennent AVANT `validerFormulaire` — la limite
+ * d'inondation et le leurre. Sans elle, ces deux chemins rendraient au visiteur
+ * un formulaire vide, ce qui est la seule chose qu'on s'est promis de ne jamais
+ * faire.
+ *
+ * ⚠️ Le leurre est EXCLU du renvoi : le remettre dans le formulaire le ferait
+ * se déclencher à nouveau à la tentative suivante, et enfermerait pour de bon la
+ * personne dont le gestionnaire de mots de passe l'avait rempli.
+ */
+function saisieBrute(fd: FormData): Valeurs {
+  const out: Record<string, string> = {};
+  for (const [cle, v] of fd.entries()) {
+    if (cle === CHAMP_LEURRE) continue;
+    if (typeof v === "string") out[cle] = v;
+  }
+  return out;
 }
 
 async function replier(
@@ -114,24 +141,57 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   //    humain qui se trompe.
   const flot = await checkRateLimit(`reserv-flot:${ip}`, ANTI_INONDATION);
   if (!flot.allowed) {
+    // ⚠️ ON REND LA SAISIE, même ici. Premier jet : un objet vide, ce qui
+    // paraissait sans conséquence puisque « c'est un robot ». Ça ne l'est pas —
+    // ce compteur porte sur une ADRESSE IP, et une adresse IP est partagée : un
+    // bureau, un hôtel, un opérateur mobile. La personne qui l'atteint sans
+    // l'avoir provoquée est justement celle qu'il ne faut pas punir, et elle
+    // perdrait ses sept champs pour la faute de quelqu'un d'autre.
     await replier(
       locale,
       debutBrut,
       {
         [CHAMPS.debut]:
-          "Trop de tentatives depuis cette connexion. Réessayez dans quelques minutes.",
+          "Trop de tentatives depuis cette connexion. Réessayez dans quelques minutes — votre saisie est conservée.",
       },
-      {},
+      saisieBrute(fd),
     );
   }
 
-  // 2. Leurre. Un champ que rien n'invite à remplir, et qu'un robot remplit
-  //    quand même. On rend un succès APPARENT : dire non apprendrait au robot
-  //    quoi corriger, et il reviendrait mieux armé.
+  // 2. Leurre.
+  //
+  // 🔴 CE FORMULAIRE DIVERGE DES SEPT AUTRES, ET C'EST DÉLIBÉRÉ.
+  //
+  // Partout ailleurs dans ce dépôt, un leurre rempli rend un succès APPARENT :
+  // dire non apprendrait au robot quoi corriger. C'est le bon arbitrage quand
+  // le pire cas est un message perdu.
+  //
+  // Ici le pire cas n'est pas le même. `honeypot-observable.ts` le nomme dans
+  // son propre en-tête : si le piège se referme sur un HUMAIN — gestionnaire de
+  // mots de passe, extension de remplissage — cette personne lit « c'est
+  // envoyé », ne reçoit rien, et personne ne le sait. Constaté le 2026-09-01 sur
+  // le formulaire guide : quatre soumissions, aucun e-mail.
+  //
+  // Sur un formulaire de contact, cette personne perd un message. ICI, elle
+  // croit avoir un RENDEZ-VOUS. Elle attendrait une confirmation qui ne
+  // viendrait jamais, et se présenterait peut-être à un entretien qui n'existe
+  // pas. L'asymétrie est trop forte pour recopier la convention.
+  //
+  // On rend donc un refus RÉCUPÉRABLE : le robot apprend seulement que sa
+  // soumission n'a pas abouti — ce qu'il apprend de toute façon en ne recevant
+  // rien — et l'humain, lui, a une porte de sortie qui marche.
   const leurre = fd.get(CHAMP_LEURRE);
   if (leurre) {
     signalerHoneypot("reservation-directe", leurre);
-    redirect(`/${locale}/appel/confirme?incertain=1`);
+    await replier(
+      locale,
+      debutBrut,
+      {
+        [CHAMPS.debut]:
+          "Nous n'avons pas pu enregistrer ce rendez-vous. Réessayez, ou passez par le lien Calendly en bas du formulaire.",
+      },
+      saisieBrute(fd),
+    );
   }
 
   const et = await resoudreEventTypePourReservation(
@@ -148,22 +208,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     // qui se déclenche à chaque fois n'est pas un repli, c'est une panne
     // déguisée en bon fonctionnement, et sans cette alerte elle durerait
     // jusqu'à ce que quelqu'un s'étonne du silence des réservations.
-    await prevenir(
-      "repli_permanent",
-      "critical",
-      "resolution",
-      `Le formulaire de reservation se replie alors que son drapeau est ALLUME.
-
-` +
-        `Cause probable : jeton Calendly absent ou refuse, API injoignable, ou une ` +
-        `question ajoutee chez Calendly que notre formulaire ne sait pas poser ` +
-        `(voir les journaux du conteneur, prefixe [calendly-availability]).
-
-` +
-        `Consequence : AUCUN visiteur n'atteint le formulaire. Ils partent tous ` +
-        `chez Calendly, ce qui fonctionne — donc rien ne casse, et personne ne ` +
-        `s'en apercevra sans cette alerte.`,
-    );
+    await signalerRepliPermanent();
     redirect(`/${locale}/appel`);
   }
 
@@ -177,6 +222,22 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     utmMedium: utm.utm_medium ?? null,
     utmCampaign: utm.utm_campaign ?? null,
   });
+
+  // 🔴 UN CRÉNEAU EXPIRÉ NE SE REPLIE PAS VERS LE FORMULAIRE.
+  //
+  // Le repli dépose un cookie et redirige vers `/appel/reserver?debut=…`. Mais
+  // la page rejuge le créneau AVANT de lire ce cookie : sur un créneau devenu
+  // trop proche pendant la saisie, elle redirige vers `/appel` et la reprise
+  // n'est jamais lue. Le visiteur perdait ses sept champs et atterrissait sur
+  // le calendrier sans un mot d'explication.
+  //
+  // On l'envoie donc directement au calendrier, en DISANT pourquoi. La saisie
+  // est perdue — c'est assumé et ce n'est pas réparable ici : le créneau
+  // n'existe plus, donc le formulaire n'aurait rien à confirmer. Ce qui se
+  // répare, c'est le silence.
+  if (!validation.ok && validation.erreurs[CHAMPS.debut] !== undefined) {
+    redirect(`/${locale}/appel?creneau=indisponible`);
+  }
 
   if (!validation.ok) {
     // ⚠️ Inliné plutôt qu'appelé : `redirect()` est typé `never`, ce qui apprend
@@ -281,7 +342,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
       await prevenir(
         "reservation_sans_reponse",
         "critical",
-        `${debutBrut}|${validation.demande.email}`,
+        debutBrut,
         `Reservation SANS REPONSE de Calendly - on ignore si elle existe.
 
 ` +
@@ -289,7 +350,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
 ` +
           `Format : ${validation.demande.format}
 ` +
-          `Invite : ${validation.demande.email}
+          `Invite : (voir Calendly, non recopie ici)
 
 ` +
           `Le visiteur a ete prevenu que nous verifions. VERIFIER MAINTENANT dans ` +
@@ -389,37 +450,4 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
  */
 function raisonNonTraitee(r: never): never {
   throw new Error(`Raison de reservation non traitee : ${JSON.stringify(r)}`);
-}
-
-/**
- * Signale sans jamais faire échouer la réservation.
- *
- * 🔑 Une alerte qui lèverait remplacerait une réservation réussie par un écran
- * d'erreur — le pire échange possible. On journalise en dernier recours : c'est
- * peu, mais c'est plus qu'un `catch` vide, et c'est visible dans le conteneur.
- *
- * ⚠️ LA CLÉ DE DÉDUPLICATION PORTE UN DISCRIMINANT, et ce n'est pas un détail.
- * Dédupliquer sur le seul `kind` ferait taire le deuxième incident d'une même
- * famille pendant tout le TTL — or deux réservations sans réponse à quinze
- * minutes d'intervalle, ce sont deux personnes à rappeler, pas une.
- */
-async function prevenir(
-  kind: string,
-  severity: NotificationSeverity,
-  discriminant: string,
-  corps: string,
-): Promise<void> {
-  try {
-    await notify({
-      category: "MONITORING_ALERT",
-      severity,
-      payload: { kind, details: { legacyBody: corps } },
-      dedupKey: `reservation-directe:${kind}:${discriminant}`,
-      dedupTtlSec: 900,
-    });
-  } catch (e) {
-    console.warn(
-      `[reservation-directe] alerte « ${kind} » non émise : ${e instanceof Error ? e.message : String(e)}`,
-    );
-  }
 }

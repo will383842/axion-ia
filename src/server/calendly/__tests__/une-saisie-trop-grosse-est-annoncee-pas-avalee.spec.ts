@@ -37,7 +37,12 @@
 
 import { describe, expect, it } from "vitest";
 
-import { composerReprise, lireLaReprise, REPRISE_TTL_SECONDES } from "../reprise-formulaire";
+import {
+  composerReprise,
+  lireLaReprise,
+  tailleDeLEnTete,
+  REPRISE_TTL_SECONDES,
+} from "../reprise-formulaire";
 
 const CRENEAU = "2026-09-10T09:30:00.000Z";
 
@@ -52,8 +57,18 @@ const PETITE = {
   q0: "Un audit.",
 };
 
+/**
+ * ⚠️ ON MESURE L'EN-TÊTE, PAS LE JSON.
+ *
+ * La première version de ce fichier recalculait `JSON.stringify` de son côté —
+ * la même mesure que le code. Garde et chose gardée partageaient donc
+ * l'instrument, et aucune des deux ne voyait `encodeURIComponent`, qui
+ * MULTIPLIE la taille au lieu d'y ajouter une marge. Une réponse de 2 600
+ * caractères passait les deux contrôles et se faisait refuser par le
+ * navigateur, en silence.
+ */
 function octets(o: unknown): number {
-  return new TextEncoder().encode(JSON.stringify(o)).length;
+  return tailleDeLEnTete(o);
 }
 
 describe("🔑 CONTRE-TÉMOIN — une saisie normale passe entière", () => {
@@ -79,7 +94,23 @@ describe("🔴 une saisie trop grosse est annoncée, jamais avalée", () => {
       "au-delà de 4 096 octets le navigateur REFUSE le cookie — et un cookie " +
         "refusé est un silence parfait : la redirection marche, le formulaire " +
         "revient vide, et rien ne le signale",
-    ).toBeLessThan(4_000);
+    ).toBeLessThan(4_096);
+  });
+
+  it("🔴 une réponse de 2 600 caractères tient — c'est elle qui débordait", () => {
+    // Le cas EXACT qui passait sous l'ancienne mesure et se faisait refuser par
+    // le navigateur : 2 963 octets de JSON, 4 189 d'en-tête. Sans encodage dans
+    // la mesure, ni le code ni la garde ne le voyaient.
+    const r = composerReprise(CRENEAU, ERREURS, { ...PETITE, q0: "x".repeat(2_600) });
+    expect(octets(r)).toBeLessThan(4_096);
+  });
+
+  it("🔴 les ACCENTS comptent — un encodage coûte jusqu'à six octets par signe", () => {
+    // Une réponse en français bien écrite est trois fois plus chère qu'un
+    // remplissage en « x ». Mesurer sur des caractères ASCII donnerait une
+    // fausse confiance exactement là où les vrais visiteurs écrivent.
+    const r = composerReprise(CRENEAU, ERREURS, { ...PETITE, q0: "éàçù".repeat(600) });
+    expect(octets(r)).toBeLessThan(4_096);
   });
 
   it("🔴 le champ sacrifié est NOMMÉ", () => {

@@ -26,6 +26,9 @@
  * l'horizon, et sur les valeurs illisibles.
  */
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -104,6 +107,58 @@ describe("🔴 la page et le validateur ne divergent sur aucun instant", () => {
       ).toBe(validateur);
     });
   }
+});
+
+/**
+ * 🔴 CE FICHIER EST DEVENU EN PARTIE TAUTOLOGIQUE, ET IL FAUT LE DIRE.
+ *
+ * Le tableau ci-dessus compare `creneauExploitable` à `validerFormulaire`. Il a
+ * trouvé une vraie divergence — un désaccord d'une seconde aux bornes — et la
+ * correction a consisté à faire DÉLÉGUER le validateur à `creneauExploitable`.
+ *
+ * Depuis, les deux membres de l'égalité sont le même appel. La comparaison ne
+ * peut plus rien découvrir : garde et chose gardée partagent l'implémentation,
+ * exactement le motif que ce dépôt a rencontré quatre fois le 2026-09-01.
+ *
+ * Elle garde une valeur, mais une seule : elle rougirait si quelqu'un
+ * réintroduisait une comparaison écrite à la main dans le validateur. C'est
+ * précisément ce que le contrôle ci-dessous vérifie DIRECTEMENT, sur la source —
+ * et lui, il ne peut pas devenir tautologique.
+ */
+describe("🔴 le validateur ne rejuge PAS le créneau lui-même", () => {
+  it("il délègue, et la source le montre", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src/server/calendly/formulaire-reservation.ts"),
+      "utf8",
+    );
+    // La fenêtre : le corps de `validerFormulaire`, du début jusqu'aux erreurs
+    // d'identité — c'est là que vivait la comparaison rejouée.
+    const fenetre = /const debutLisible[\s\S]{0,1400}/.exec(source)?.[0] ?? "";
+    expect(fenetre, "le bloc du créneau est introuvable : la fenêtre est à refaire").not.toBe("");
+
+    expect(
+      fenetre.includes("creneauExploitable("),
+      "le validateur doit APPELER `creneauExploitable`, pas rejouer sa comparaison",
+    ).toBe(true);
+
+    // ⚠️ ON NE MESURE QUE LE VERDICT, PAS LES COMPARAISONS.
+    //
+    // Premier jet : un motif qui refusait toute comparaison de bornes dans la
+    // fenêtre. Il a rougi tout de suite — sur une comparaison parfaitement
+    // légitime, celle qui choisit le MESSAGE (« passé » plutôt que « trop
+    // lointain ») à l'intérieur même du bloc de délégation.
+    //
+    // La distinction est le sujet : ce qui a divergé d'une seconde, ce n'est pas
+    // qu'une comparaison existe, c'est qu'elle DÉCIDE. Tant que le `if` porte
+    // sur `creneauExploitable`, les branches internes ne peuvent plus contredire
+    // la page — elles ne se lisent que lorsque le verdict est déjà tombé.
+    expect(
+      /if\s*\(\s*!creneauExploitable\(/.test(fenetre),
+      "le verdict doit être PORTÉ par `creneauExploitable` : c'est le `if` qui " +
+        "compte, pas la présence d'un appel plus bas. Un `if` écrit à la main " +
+        "rouvrirait le désaccord d'une seconde avec la page.",
+    ).toBe(true);
+  });
 });
 
 describe("🔑 CONTRE-TÉMOIN — les deux ne disent pas toujours la même chose", () => {

@@ -46,6 +46,28 @@ export const CHAMPS = {
   consent: "consent",
 } as const;
 
+/**
+ * Deux champs cachés qui ne portent pas de saisie, mais du contexte.
+ *
+ * 🔴 ILS VIVENT ICI ET NON DANS L'ACTION, ET CE N'EST PAS UN RANGEMENT.
+ * Un fichier marqué `"use server"` n'a le droit d'exporter QUE des fonctions
+ * asynchrones : Next transforme chacun de ses exports en point d'entrée réseau,
+ * et une constante n'en est pas un. Les y avoir déclarés faisait échouer le
+ * build entier avec « Export CHAMP_LOCALE doesn't exist in target module » —
+ * message trompeur, puisque l'export existait bel et bien.
+ *
+ * ⚠️ Le typecheck NE VOIT PAS cette règle : `tsc` était vert pendant que le
+ * build échouait. Seul `next build` la mesure.
+ */
+export const CHAMP_LOCALE = "locale";
+
+/**
+ * Le leurre. Même nom que sur les sept autres formulaires publics du site
+ * (`components/forms/HoneypotField.tsx`), pour la même raison : les robots
+ * remplissent tout ce qui ressemble à un champ, et `website` en est un.
+ */
+export const CHAMP_LEURRE = "website";
+
 export type Champ = string;
 
 /** Message d'erreur par champ. La clé est le `name` de l'input. */

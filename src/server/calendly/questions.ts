@@ -101,7 +101,12 @@ export function lireLesQuestions(customQuestions: unknown): LectureQuestions {
   const typesInconnus: string[] = [];
 
   for (const brut of customQuestions) {
-    if (typeof brut !== "object" || brut === null) continue;
+    if (typeof brut !== "object" || brut === null) {
+      // Une entrée qu'on ne sait pas lire est une question qu'on ne posera pas.
+      // La sauter en silence contredirait la règle du fichier.
+      typesInconnus.push("entrée illisible dans custom_questions");
+      continue;
+    }
     const q = brut as Record<string, unknown>;
 
     // 🔑 Une question DÉSACTIVÉE ne doit pas être posée : Calendly jetterait la
@@ -110,7 +115,19 @@ export function lireLesQuestions(customQuestions: unknown): LectureQuestions {
     if (q["enabled"] === false) continue;
 
     const libelle = texte(q, "name");
-    if (!libelle) continue;
+    if (!libelle) {
+      // 🔴 FERME, ne saute pas. Une question active sans libellé — en cours
+      // d'édition chez Calendly, ou dont le champ a changé de nom — est
+      // exactement le cas que la règle de ce fichier vise : le formulaire
+      // s'afficherait complet, la réservation aboutirait, et une réponse
+      // peut-être obligatoire manquerait sans que personne ne l'apprenne.
+      //
+      // Ce `continue` silencieux a survécu à la première version alors que le
+      // fichier expliquait, en majuscules et vingt lignes plus haut, pourquoi
+      // il ne fallait pas le faire.
+      typesInconnus.push("question active sans libellé");
+      continue;
+    }
 
     const type = q["type"];
     if (!estUnTypeRendu(type)) {

@@ -46,6 +46,7 @@
  */
 
 import { CALENDLY_API_BASE } from "./api";
+import { canalDuRendezVous } from "./canal";
 
 /** Le format demandé, tel que la page le propose. */
 export type FormatDemande = "telephone" | "visio";
@@ -222,8 +223,29 @@ export function corpsDeLaDemande(d: DemandeReservation): Record<string, unknown>
  * le saurait avant le jour du rendez-vous.
  */
 export function lieuConforme(format: FormatDemande, lieuRendu: unknown): boolean {
-  const type = texte(lieuRendu, "type");
-  return type === KIND_CALENDLY[format];
+  // 🔴 ON DÉRIVE PAR `canalDuRendezVous`, PAS PAR `KIND_CALENDLY`.
+  //
+  // La première version comparait le type rendu à `KIND_CALENDLY[format]`,
+  // c'est-à-dire à `google_conference` exactement. Or `canal.ts` — la
+  // dérivation qu'emploient l'e-mail, la console et la page de confirmation —
+  // reconnaît AUSSI `zoom`, `microsoft_teams_conference`, `webex_conference`,
+  // `gotomeeting_conference` et `custom` comme des visioconférences.
+  //
+  // Deux dérivations du même fait, donc, et elles se contredisaient sur des cas
+  // réels : un event-type dont l'intégration Google Meet est déconnectée, ou
+  // qui porte un lien saisi à la main, fait enregistrer `custom` par Calendly.
+  // La réservation était alors REFUSÉE avec une alerte `critical` « au mauvais
+  // format » — pour une visio parfaitement valide, que la page de confirmation
+  // aurait annoncée « En visioconférence » deux secondes plus tard.
+  //
+  // Une alerte critique qui se déclenche à tort est pire qu'aucune alerte :
+  // on apprend à l'ignorer, et le jour où elle dit vrai, elle ne dit plus rien.
+  //
+  // `KIND_CALENDLY` reste la table d'ÉMISSION — ce qu'on demande. `canal.ts`
+  // est la table de LECTURE — ce qu'on accepte. Les deux ne sont pas
+  // symétriques, et c'est correct : on demande le plus précis, on accepte le
+  // plus large.
+  return canalDuRendezVous(null, { event: { location: lieuRendu } }) === format;
 }
 
 /**
