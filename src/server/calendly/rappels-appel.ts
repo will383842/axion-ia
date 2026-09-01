@@ -1,4 +1,7 @@
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { liensPourEmail } from "@/server/calendly/liens-rendez-vous";
+import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
+import { SITE_URL } from "@/lib/seo";
 import { notify } from "@/server/notifications";
 /**
  * Les trois messages d'un appel de découverte : confirmation, J-1, H-1.
@@ -325,6 +328,20 @@ export async function executerPassage(
       }
     }
 
+    // 🔑 NOS liens quand le drapeau est allumé, ceux de Calendly sinon.
+    //
+    // Ce n'est pas un remplacement de valeur mais un changement de NATURE : les
+    // liens Calendly sont LUS en base, les nôtres sont CALCULÉS ici, parce que
+    // leur durée de vie dépend de l'heure du rendez-vous.
+    const liens = await liensPourEmail({
+      rendezVousId: rdv.id,
+      debut: rdv.startTime,
+      locale: "fr",
+      origine: SITE_URL,
+      replis: { cancelUrl: rdv.cancelUrl, rescheduleUrl: rdv.rescheduleUrl },
+      actif: reservationDirecteActive(),
+    });
+
     let miseEnFile: { enqueued: boolean } | null = null;
     try {
       miseEnFile = await enqueueEmail(p.job, rdv.inviteeEmail, "fr", {
@@ -339,8 +356,11 @@ export async function executerPassage(
         // forme, mais c'est son dernier recours : un rendez-vous en visio dont
         // le lieu aurait été ressaisi à la main annoncerait sinon un appel.
         format,
-        ...(rdv.cancelUrl ? { cancelUrl: rdv.cancelUrl } : {}),
-        ...(rdv.rescheduleUrl ? { rescheduleUrl: rdv.rescheduleUrl } : {}),
+        // ⚠️ Le repli reste utile APRÈS l'allumage : si la signature échoue, on
+        // préfère un lien Calendly qui marche à un e-mail sans aucun moyen
+        // d'annuler. Un prospect qui ne peut pas se décommander ne prévient
+        // pas — il ne vient pas.
+        ...liens,
       });
     } catch (e) {
       console.warn(

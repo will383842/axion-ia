@@ -71,12 +71,28 @@ const APP_LOCALE = join(APP, "[locale]");
  *
  * ⚠️ Si un jour l'une d'elles devient consultable sans contexte, il faudra la
  * RÉINTÉGRER ici — une sortie d'audit qui survit à sa cause est un trou.
+ *
+ * ── Annuler et reporter (2026-09-01) ────────────────────────────────────────
+ *
+ * `/appel/annuler` et `/appel/reporter` exigent un jeton SIGNÉ, porté par le
+ * lien de l'e-mail. Sans lui, elles rendent un 404 délibéré : une page
+ * d'annulation atteignable sans jeton serait une porte ouverte sur le
+ * rendez-vous de n'importe qui — c'est précisément ce que la signature existe
+ * pour empêcher.
+ *
+ * Les auditer à nu ne mesurerait donc pas la page, mais son refus. Et fournir
+ * un jeton valide à l'audit reviendrait à publier un lien d'annulation dans un
+ * fichier de configuration, ce qui n'a pas de sens.
+ *
+ * Elles portent `robots: { index: false }` pour la même raison.
  */
 const HORS_AUDIT = [
   "/portail/mon-espace",
   "/espace-formateur",
   "/appel/reserver",
   "/appel/confirme",
+  "/appel/annuler",
+  "/appel/reporter",
 ];
 
 /** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */
