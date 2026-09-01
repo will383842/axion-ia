@@ -219,3 +219,93 @@ export async function lireLeLien(jeton: string, geste: GesteRendezVous): Promise
   }
   return { ok: false, raison: "invalide" };
 }
+
+/**
+ * Les deux liens à poser dans un e-mail — les nôtres, ou ceux de Calendly.
+ *
+ * ## Pourquoi cette fonction existe plutôt qu'un remplacement de valeur
+ *
+ * Les liens de Calendly sont LUS en base : l'enrichissement les y a écrits une
+ * fois pour toutes. Les nôtres sont CALCULÉS à l'envoi, parce que leur durée de
+ * vie dépend de l'heure du rendez-vous. Ce n'est donc pas la même nature de
+ * donnée, et le remplacement ne peut pas être un simple `??`.
+ *
+ * ## 🔑 LE REPLI N'EST PAS UN CAS D'ERREUR, C'EST LE DÉFAUT
+ *
+ * Tant que le drapeau est éteint — et il l'est —, ce sont les liens Calendly
+ * qui partent, exactement comme avant. Même contrat que le reste du parcours.
+ *
+ * Et le repli reste utile APRÈS l'allumage : si la signature échoue pour une
+ * raison quelconque, on préfère un lien Calendly qui fonctionne à un e-mail
+ * sans aucun moyen d'annuler. Un prospect qui ne peut pas se décommander finit
+ * par ne pas venir, sans prévenir.
+ *
+ * ## ⚠️ LES ANCIENS E-MAILS GARDENT LEURS ANCIENS LIENS
+ *
+ * Un e-mail déjà parti ne change pas. Après l'allumage, les deux chemins
+ * coexisteront donc plusieurs semaines — le temps que les rendez-vous déjà pris
+ * soient passés. C'est voulu, et c'est même confortable : les pages Calendly
+ * restent un repli gratuit si les nôtres posaient problème.
+ *
+ * ## ⚠️ UN SEUL DRAPEAU GOUVERNE LES DEUX, ET C'EST DISCUTABLE
+ *
+ * Le formulaire de réservation et ces liens partagent `RESERVATION_DIRECTE_ACTIVE`.
+ * Un argument existe pour les séparer : une annulation faite depuis nos pages est
+ * enregistrée par Calendly comme venant de l'HÔTE (`canceler_type: "host"`), donc
+ * leur e-mail dira « annulé par l'organisateur » alors que c'est le prospect qui
+ * a cliqué. Quelqu'un pourrait vouloir notre formulaire SANS nos liens.
+ *
+ * Séparer se fait en une ligne : remplacer l'appel à `reservationDirecteActive()`
+ * ci-dessous par un second drapeau. On ne le fait pas d'avance — deux
+ * interrupteurs, c'est deux fois plus d'états à comprendre, et celui-là n'a pas
+ * encore été demandé.
+ */
+export async function liensPourEmail(opts: {
+  readonly rendezVousId: string;
+  readonly debut: Date | null;
+  readonly locale: string;
+  /** L'origine du site — un lien d'e-mail doit être ABSOLU. */
+  readonly origine: string;
+  /** Ce que l'enrichissement a stocké. Le repli. */
+  readonly replis: { readonly cancelUrl: string | null; readonly rescheduleUrl: string | null };
+  /** Injectable : `reservationDirecteActive()` par défaut, via l'appelant. */
+  readonly actif: boolean;
+}): Promise<{ cancelUrl?: string; rescheduleUrl?: string }> {
+  const repli = {
+    ...(opts.replis.cancelUrl ? { cancelUrl: opts.replis.cancelUrl } : {}),
+    ...(opts.replis.rescheduleUrl ? { rescheduleUrl: opts.replis.rescheduleUrl } : {}),
+  };
+
+  // Sans horaire, on ne sait pas quelle durée de vie donner au lien. Le repli
+  // est alors le seul choix honnête.
+  if (!opts.actif || !opts.debut) return repli;
+
+  try {
+    const [annuler, reporter] = await Promise.all([
+      lienDuGeste({
+        rendezVousId: opts.rendezVousId,
+        debut: opts.debut,
+        locale: opts.locale,
+        geste: "cancel",
+      }),
+      lienDuGeste({
+        rendezVousId: opts.rendezVousId,
+        debut: opts.debut,
+        locale: opts.locale,
+        geste: "reschedule",
+      }),
+    ]);
+    // 🔑 ABSOLUS. Un lien relatif dans un e-mail ne mène nulle part : le client
+    // de messagerie n'a pas d'origine à laquelle le rattacher.
+    const base = opts.origine.replace(/\/+$/, "");
+    return { cancelUrl: `${base}${annuler}`, rescheduleUrl: `${base}${reporter}` };
+  } catch (e) {
+    // ⚠️ On ne laisse JAMAIS un e-mail partir sans moyen d'annuler. Un prospect
+    // qui ne peut pas se décommander ne prévient pas : il ne vient pas.
+    console.warn(
+      `[liens-rendez-vous] signature impossible pour ${opts.rendezVousId}, ` +
+        `repli sur les liens Calendly : ${e instanceof Error ? e.message : String(e)}`,
+    );
+    return repli;
+  }
+}
