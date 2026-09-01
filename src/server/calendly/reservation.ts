@@ -25,6 +25,40 @@
  *   requête entière. Les six champs doivent être présents, quitte à valoir
  *   `null`.
  *
+ * ## Ce que l'ANNULATION a établi, et qui a failli être perdu
+ *
+ * Les deux réservations de test ont été annulées par l'API. Ce constat-là n'a
+ * PAS été écrit ici le premier jour — il tenait dans une demi-phrase, « créées
+ * puis annulées ». Il a fallu qu'une recherche exhaustive du dépôt et de tout
+ * l'historique git échoue pour qu'on pense à le récupérer dans la transcription
+ * de la conversation. **Une mesure faite en conversation et non consignée ici
+ * est perdue pour tout le monde, y compris pour celui qui l'a faite.**
+ *
+ * `POST /scheduled_events/{uuid}/cancellation` :
+ *
+ * — corps `{"reason":"…"}` → **400** `{"title":"Invalid Argument", "message":
+ *   "The supplied parameters are invalid."}`, **et l'événement reste ACTIF**.
+ *   🔴 Le champ `reason` n'est PAS accepté. On ne peut donc pas demander de
+ *   motif d'annulation : l'envoyer fait échouer l'annulation elle-même.
+ * — corps `{}` → **201** `{"resource":{"canceled_by":"…", "canceler_type":
+ *   "host", "reason":null}}`.
+ * — rejeu sur un événement déjà annulé → **403** `{"title":"Permission Denied",
+ *   "message":"Event is already canceled"}`. 🔑 Réponse parfaitement
+ *   discriminante : un lien d'annulation cliqué deux fois — le cas COURANT — se
+ *   distingue sans ambiguïté d'une panne. Aucun registre de jetons consommés
+ *   n'est nécessaire.
+ *
+ * ⚠️ **`canceler_type` vaut `host`, et c'est une conséquence produit.** Un
+ * prospect qui annulerait depuis une page à nous apparaîtra chez Calendly comme
+ * ayant été annulé *par nous*, et leur e-mail le dira. À décider avant
+ * d'écrire l'annulation, pas à découvrir après.
+ *
+ * ⚠️ Ce « 400 muet » a longtemps été décrit comme muet. Il ne l'était pas : son
+ * corps disait exactement ce qui n'allait pas. C'est la troisième fois dans ce
+ * module qu'une réponse jugée silencieuse s'avère simplement non lue — voir le
+ * 403 de portée plus bas. **« Muet » est presque toujours un jugement sur notre
+ * observation, pas sur l'émetteur.**
+ *
  * ## 🔴 L'API NE DIT PAS NON QUAND ELLE NE COMPREND PAS
  *
  * Mesuré : une requête contenant un champ inventé de toutes pièces passe sans
