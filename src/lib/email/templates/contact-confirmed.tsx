@@ -17,7 +17,11 @@ const COPY = {
     // — l'information qui décide d'ouvrir maintenant ou plus tard.
     preview: "Réponse sous 48 heures ouvrées — la référence de votre demande est dans le message.",
     intro: (n: string) => `Bonjour ${n},`,
-    body: "Nous avons bien reçu votre message. Notre équipe revient vers vous sous 48 heures ouvrées.",
+    // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que
+    // de nous ? » « Nous avons bien reçu… » parlait de nous. La refonte du
+    // 2026-08-31 avait corrigé l'ORDRE (l'info avant la politesse) sans
+    // corriger la VOIX — deux choses distinctes.
+    body: "Votre message est bien arrivé. Une réponse vous parvient sous 48 heures ouvrées.",
     // 🔴 Corrigé le 2026-08-16. Le texte promettait « notre calendrier de
     // réservation » et le bouton disait « Voir le calendrier » — alors que le
     // site n'expose pas de calendrier public, mais une page de réservation
@@ -31,7 +35,7 @@ const COPY = {
     title: "Message received",
     preview: "Reply within 48 working hours — your request reference is in the message.",
     intro: (n: string) => `Hello ${n},`,
-    body: "We received your message. Our team gets back to you within 48 working hours.",
+    body: "Your message has arrived. You will have a reply within 48 working hours.",
     next: "For urgent topics (session within 7 days), book a call with us directly.",
     cta: "Book a call",
     refRow: (id: string) => `Reference: ${id}`,
@@ -65,13 +69,13 @@ export function ContactConfirmedEmail({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
+      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+        {t.refRow(p.submissionId)}
+      </Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.intro(p.contactName)}
         <br />
         {t.next}
-      </Text>
-      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.refRow(p.submissionId)}
       </Text>
     </EmailLayout>
   );

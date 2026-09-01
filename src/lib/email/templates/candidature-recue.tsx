@@ -28,10 +28,14 @@ const COPY = {
     title: "Votre candidature est bien arrivée",
     preview: "Une personne la lira — et vous aurez une réponse, positive ou non.",
     intro: (n?: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
+    // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que
+    // de nous ? » « Nous avons bien reçu… » parlait de nous. La refonte du
+    // 2026-08-31 avait corrigé l'ORDRE (l'info avant la politesse) sans
+    // corriger la VOIX — deux choses distinctes.
     body: (offre?: string) =>
       offre
-        ? `Nous avons bien reçu votre candidature pour le poste de ${offre}. Merci de l'intérêt que vous portez à Axion-IA.`
-        : "Nous avons bien reçu votre candidature. Merci de l'intérêt que vous portez à Axion-IA.",
+        ? `Votre candidature au poste de ${offre} est bien arrivée. Merci de l'intérêt que vous portez à Axion-IA.`
+        : "Votre candidature est bien arrivée. Merci de l'intérêt que vous portez à Axion-IA.",
     lecture:
       "Chaque candidature est lue par une personne, pas par un filtre automatique. Nous prenons le temps de le faire sérieusement.",
     // Aucun délai annoncé : voir l'en-tête de ce fichier.
@@ -45,8 +49,8 @@ const COPY = {
     intro: (n?: string) => (n ? `Hello ${n},` : "Hello,"),
     body: (offre?: string) =>
       offre
-        ? `We have received your application for the ${offre} position. Thank you for your interest in Axion-IA.`
-        : "We have received your application. Thank you for your interest in Axion-IA.",
+        ? `Your application for the ${offre} position has arrived. Thank you for your interest in Axion-IA.`
+        : "Your application has arrived. Thank you for your interest in Axion-IA.",
     lecture:
       "Every application is read by a person, not by an automated filter. We take the time to do it properly.",
     reponse:

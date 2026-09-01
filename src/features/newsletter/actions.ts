@@ -24,6 +24,7 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
+import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
 
@@ -50,7 +51,12 @@ export async function subscribeNewsletterAction(
 
   // 2. Honeypot — Sprint 15 fix Fork 3 C1-3 : champ "website" canonique
   // (uniformise avec contact/audit/booking/implementation/option48h)
-  if (formData.get("website")) return { ok: true }; // silent succes pour bot
+  const leurre = formData.get("website");
+  if (leurre) {
+    // Succes SILENCIEUX cote visiteur (inchange) — mais trace cote serveur.
+    signalerHoneypot("newsletter", leurre);
+    return { ok: true };
+  }
 
   // 3. Turnstile — SOFT-FAIL (Will 2026-07-01 : zéro friction). On ne bloque
   // plus si le challenge échoue ; honeypot + rate-limit + double opt-in email

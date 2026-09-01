@@ -90,7 +90,12 @@ const PAYLOAD: Record<string, unknown> = {
   modalite: "présentiel",
   niveau: "critique",
   code: "FACTURE_IMPAYEE",
-  titre: "Facture impayée",
+  // Titre d'alerte VOLONTAIREMENT long : avec « Facture impayée » (15
+  // caractères), la garde ne voyait pas que `qualiopi-alerte-interne`
+  // atteignait 87 caractères sur un cas réel. Une charge d'essai trop douce
+  // mesure une situation qui n'arrive pas.
+  titre: "Facture arrivée à échéance sans règlement",
+  guichet: "Administration",
   date: "mardi 2 septembre",
   heure: "14:00",
   dureeMinutes: 30,
