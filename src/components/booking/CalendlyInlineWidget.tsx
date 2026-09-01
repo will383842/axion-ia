@@ -65,6 +65,9 @@ interface CalendlyInlineWidgetProps {
   readonly calendlyUrl: string | undefined;
   readonly isFr: boolean;
   readonly height?: number;
+  /** Voir `CalendlySlotPicker` : la decision appartient a la page. */
+  readonly reservationDirecte?: boolean;
+  readonly locale?: string;
 }
 
 function buildCalendlyUrl(baseUrl: string): string {
@@ -89,6 +92,8 @@ export async function CalendlyInlineWidget({
   calendlyUrl,
   isFr,
   height = 720,
+  reservationDirecte = false,
+  locale = "fr",
 }: CalendlyInlineWidgetProps) {
   const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl) : null;
 
@@ -142,6 +147,8 @@ export async function CalendlyInlineWidget({
           isFr={isFr}
           height={height}
           dureeMinutes={availability.dureeMinutes}
+          reservationDirecte={reservationDirecte}
+          locale={locale}
         />
       </div>
     );

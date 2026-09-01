@@ -35,6 +35,36 @@ export const dynamic = "force-dynamic";
 /** Un payload de rebond fait quelques kilo-octets ; au-delà, ce n'en est pas un. */
 const MAX_BODY_BYTES = 128 * 1024;
 
+/**
+ * Sonde d'accessibilité — 🔴 SANS ELLE, LE WEBHOOK NE PEUT PAS ÊTRE CRÉÉ.
+ *
+ * ZeptoMail interroge l'URL AVANT d'accepter la création d'un webhook, et
+ * exige un `200`. Mesuré sur la production le 2026-09-01, avant ce correctif :
+ *
+ *     GET  /api/zeptomail/webhook  → 405   (la route n'exportait que POST)
+ *     POST /api/zeptomail/webhook  → 401   (signature exigée, absente)
+ *
+ * Aucune des deux réponses ne satisfait la sonde : le panneau affichait
+ * « URL cannot be reached » et le bouton « Ajouter » ne créait rien.
+ *
+ * 🔑 C'est ce qui explique le vrai mystère de la journée : le compteur
+ * `dernier appel webhook` valait `JAMAIS` non pas parce que les appels
+ * étaient refusés, mais parce que **le webhook n'a jamais pu exister**. On a
+ * cherché longtemps du côté de la clé et de la signature — c'est-à-dire d'une
+ * étape qu'on n'avait jamais atteinte.
+ *
+ * Ce que cette route rend, et pourquoi c'est sûr : un objet constant, sans
+ * aucune donnée du système. Elle ne dit même pas si une clé est configurée —
+ * un point d'entrée public ne renseigne pas sur son propre armement.
+ *
+ * ⚠️ Elle NE contourne PAS la vérification de signature : le `POST` ci-dessous
+ * est inchangé. Un `GET` ne transporte pas de rebond ; accepter de dire
+ * « je suis là » n'est pas accepter de dire « j'ai reçu ça ».
+ */
+export function GET(): Response {
+  return Response.json({ ok: true, endpoint: "zeptomail-webhook" });
+}
+
 export async function POST(req: NextRequest): Promise<Response> {
   const cle = process.env["ZEPTOMAIL_WEBHOOK_KEY"]?.trim();
 
@@ -89,12 +119,19 @@ export async function POST(req: NextRequest): Promise<Response> {
   // délibéré. Ce qu'on mesure n'est pas le rebond, c'est l'ABONNEMENT : un
   // appel de test depuis la console ZeptoMail, ou un événement qui n'est pas un
   // rebond, prouve que la route est atteinte tout aussi bien qu'un vrai rebond.
-  // Le placer plus bas ne laisserait aucune trace des appels `not_a_bounce`,
-  // c'est-à-dire de la majorité d'entre eux.
+  // Le placer plus bas ne laisserait aucune trace des appels `not_a_bounce`.
   //
   // `void` : le battement ne doit ni ralentir ni faire échouer la réponse. Un
   // 500 répété fait désabonner ZeptoMail — on détruirait l'abonnement qu'on
   // cherche justement à surveiller.
+  //
+  // 🔴 Cette ligne a été PERDUE une fois, le 2026-09-01 : la PR qui a
+  // ajouté la sonde `GET` ci-dessus a été construite à partir d'une copie
+  // périmée de ce fichier, prise dans un arbre de travail partagé qui était
+  // resté sur une autre branche. Le module `webhook-battement.ts` est demeuré
+  // parfait et DÉBRANCHÉ — état rigoureusement indiscernable d'un module
+  // branché, tant qu'on ne teste que le module. D'où la garde de câblage dans
+  // `route.spec.ts`, qui lit CE fichier et exige l'appel.
   void noterAppelWebhook();
 
   let payload: unknown;

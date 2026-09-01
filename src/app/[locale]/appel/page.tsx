@@ -11,6 +11,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
+import { reservationDirecteActive } from "@/server/calendly/formulaire-reservation";
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
 import { ArrowRight, Clock, Shield, CheckCircle, Calendar } from "lucide-react";
 
@@ -295,7 +296,19 @@ export default async function AppelPage({ params, searchParams }: Props) {
                   aria-hidden="true"
                 />
                 <div className="bg-paper ring-border shadow-terracotta/10 relative rounded-3xl p-1.5 shadow-2xl ring-1">
-                  <CalendlyInlineWidget calendlyUrl={CALENDLY_APPEL_URL} isFr={isFr} height={720} />
+                  {/* 🔑 LE DRAPEAU EST LU ICI, ET NULLE PART AILLEURS DANS CE
+                      PARCOURS. Le sélecteur et le formulaire le reçoivent ;
+                      deux lectures indépendantes finiraient par diverger, et la
+                      divergence serait muette dans le pire sens — des liens
+                      pointant vers un formulaire éteint, c'est-à-dire un
+                      cul-de-sac au milieu du seul entonnoir du site. */}
+                  <CalendlyInlineWidget
+                    calendlyUrl={CALENDLY_APPEL_URL}
+                    isFr={isFr}
+                    height={720}
+                    reservationDirecte={reservationDirecteActive()}
+                    locale={locale}
+                  />
                 </div>
                 {/* Sprint Notif Infra 2026-05-26 / Chantier 3 — capture client
                     des events `event_scheduled` emis par l'iframe Calendly.
