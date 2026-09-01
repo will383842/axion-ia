@@ -34,6 +34,8 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
 | 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
 | 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités **et des rendez-vous** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
+| 20  | Google Ireland Limited (Google Meet) | Rendez-vous de découverte tenus en **visioconférence** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
+| 21  | Calendly LLC (Notetaker) | **Enregistrement et transcription** automatiques des rendez-vous en visio | États-Unis | accepté (DPA Calendly) | SCC | 🛑 **ÉCARTÉ par décision du 2026-09-01** — aucun enregistrement |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -460,3 +462,86 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | _(date)_   | DPA Stripe accepté (Will) — Stripe Dashboard.                                                                                                            |
 | _(date)_   | Audit AKI annuel (rappel : prévoir Q4 2026).                                                                                                             |
 | _(date)_   | Renouvellement annuel DPA (rappel : revue trimestrielle minimum, signature ré-évaluée 1× /an).                                                           |
+
+> 🆕 **Lignes 20 et 21 ajoutées le 2026-08-31**, en même temps que le code qui
+> rend la visioconférence possible — et **avant** qu'un seul rendez-vous en
+> visio existe. Déclarer après le premier, c'est déclarer en retard.
+>
+> **Ce qui est mesuré, et ce qui ne l'est pas.** Sur les 19 réservations de la
+> base au 2026-08-31 : 14 portent le type Calendly `outbound_call`, 5 n'ont
+> aucun type, et **aucune n'est une visioconférence**. L'event-type ne propose
+> qu'un seul lieu, l'appel téléphonique. Les deux lignes sont donc **non
+> activées** : le code sait reconnaître, afficher et annoncer une visio, mais
+> rien ne peut en créer une tant que le lieu « Google Meet » n'est pas ajouté
+> côté Calendly.
+>
+> ⛔ **CE QUI DOIT ÊTRE TRANCHÉ AVANT D'AJOUTER CE LIEU — ligne 21.**
+>
+> Le « Notetaker » de Calendly est **activé au niveau du compte** et réglé pour
+> rejoindre automatiquement les réunions comptant des personnes extérieures. Le
+> jour où un prospect réserve une visio, cet assistant **rejoindra la réunion,
+> l'enregistrera et la transcrira**.
+>
+> Ce n'est pas la même chose que tenir le rendez-vous. Le rendez-vous se tient
+> parfaitement sans enregistrement : l'enregistrement est un traitement
+> **distinct**, qui suppose d'informer la personne et, en pratique, de recueillir
+> son accord — d'où la base légale `6.1.a` (consentement) et non `6.1.b`, sur la
+> ligne correspondante de `src/content/subprocessors.ts`. S'accorder 6.1.b ici
+> reviendrait à se donner à soi-même une permission qu'on n'a pas demandée.
+>
+> Deux sorties, l'une comme l'autre acceptables, **mais il en faut une** :
+>
+> 1. **Désactiver le Notetaker** pour les rendez-vous prospects (réglage
+>    Calendly, hors dépôt). La ligne 21 reste alors non activée, définitivement.
+> 2. **Le garder**, et alors : annoncer l'enregistrement dans la description de
+>    l'event-type, recueillir l'accord au moment de la réservation, et faire
+>    passer la ligne 21 en actif — avec une durée de conservation des
+>    enregistrements, qui n'existe aujourd'hui nulle part.
+>
+> ⚠️ Le réglage étant **au niveau du compte**, il ne concerne pas que les
+> rendez-vous prospects : toute réunion en ligne comptant une personne
+> extérieure est concernée aujourd'hui. Ce constat dépasse le périmètre de ce
+> registre, mais il se signale ici parce qu'il se découvre ici.
+>
+> **Ligne 20 (Google Meet)** partage le constat de la ligne 19 : compte Gmail
+> grand public, donc aucun accord de sous-traitance au sens de l'art. 28. La
+> sortie est la même — la bascule vers Google Workspace, décidée par Will pour
+> **janvier 2027**.
+
+> 🛑 **DÉCISION DE WILL — 2026-09-01 : « supprime tout enregistrement ».**
+>
+> Le Notetaker de Calendly est **désactivé**. Aucun rendez-vous, en visio comme
+> au téléphone, n'est enregistré ni transcrit. La ligne 21 reste inscrite au
+> registre pour garder la trace qu'un traitement possible a été **examiné puis
+> écarté** — l'effacer ferait reposer la question à neuf au prochain réglage
+> Calendly modifié par inadvertance.
+>
+> **Ce qui a motivé la décision, et qui vaut d'être conservé :**
+>
+> 1. Le réglage était **au niveau du compte**, réglé pour rejoindre
+>    automatiquement les réunions comptant des personnes extérieures. Dès l'ajout
+>    du lieu « Google Meet », il devenait capable d'enregistrer un rendez-vous
+>    prospect sans que personne en soit informé.
+> 2. Enregistrer les paroles d'une personne à son insu au cours d'un entretien
+>    privé est un **délit** — art. 226-1 du Code pénal, un an d'emprisonnement et
+>    45 000 € — indépendamment du RGPD.
+> 3. **Calendly n'offre aucun réglage de durée de conservation.** Sa
+>    documentation indique que les comptes rendus restent disponibles « aussi
+>    longtemps que votre compte existe ». Une rétention à 30 jours aurait dû être
+>    construite par nous, via `DELETE /meeting_recaps/{uuid}`, et surveillée.
+> 4. Le stockage se fait dans des **centres de données aux États-Unis** (Google
+>    et AWS), ce qui aurait ajouté un transfert de données de PAROLE, et non plus
+>    seulement de coordonnées.
+>
+> ⚠️ La désactivation vaut pour **toute réunion en ligne avec une personne
+> extérieure**, pas seulement les rendez-vous prospects.
+>
+> 🆕 **Ligne 20 passée en ACTIF le 2026-09-01.** Le lieu « Google Meet » a été
+> ajouté à l'event-type : un prospect peut désormais réserver une visio. Ce qui
+> déclenche la déclaration n'est pas qu'une visio ait eu lieu — la base en compte
+> encore zéro — mais qu'une visio soit **réservable**. Attendre la première, ce
+> serait déclarer après coup.
+>
+> La ligne 20 partage le constat de la ligne 19 : compte Gmail grand public, donc
+> aucun accord de sous-traitance au sens de l'art. 28. Sortie identique — la
+> bascule vers Google Workspace, décidée pour **janvier 2027**.
