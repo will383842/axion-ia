@@ -38,6 +38,8 @@
  * @sentry/nextjs pour autre chose (custom spans, breadcrumbs) sans passer ici.
  */
 
+import { createRequire } from "node:module";
+
 import * as Sentry from "@sentry/nextjs";
 import type { Job } from "bullmq";
 
@@ -118,6 +120,75 @@ export type WorkerName =
   | "documents-auto";
 
 /**
+ * Resout `captureException`, en contournant les exports conditionnels du paquet.
+ *
+ * ── LA CAUSE, mesuree le 2026-09-01 ─────────────────────────────────────────
+ *
+ * Le worker tourne en Node pur (`tsx src/server/queue/worker.ts`), HORS du
+ * bundler Next. Sur la MEME machine et la MEME version (`@sentry/nextjs`
+ * 10.70.0), les deux facons de charger le paquet ne rendent pas le meme
+ * module :
+ *
+ *   import * as S from "@sentry/nextjs"   ->  28 symboles, captureException ABSENT
+ *   require("@sentry/nextjs")             -> 201 symboles, captureException PRESENT
+ *
+ * Ce n'est donc pas un paquet casse : ce sont ses **exports conditionnels**, qui
+ * font pointer la condition `import` et la condition `require` vers deux builds
+ * differents. Le worker prend la premiere, Next prend la seconde. L'audit du
+ * 2026-07-21 avait bien constate le symptome (27 symboles) mais conclu qu'il
+ * fallait ajouter `@sentry/node` et changer le lockfile. Il n'en faut rien :
+ * il suffit de redemander le meme paquet par l'autre resolution.
+ *
+ * ── CE QUI A ETE VERIFIE AVANT DE POSER CE CORRECTIF ────────────────────────
+ *
+ * Les deux builds sont deux instances de module DISTINCTES. Un correctif qui
+ * appelle une vraie fonction sur un client vide n'aurait rien envoye, tout en
+ * ayant l'air de marcher — le pire des correctifs. Mesure du 2026-09-01 :
+ * apres un `init()` fait par le chemin ESM, un `captureException()` fait par le
+ * chemin CJS atteint bien le `beforeSend` de cette configuration. Les deux
+ * instances partagent le porteur global `globalThis.__SENTRY__`.
+ *
+ * ── PORTEE ──────────────────────────────────────────────────────────────────
+ *
+ * Le defaut ne touchait pas que l'e-mail : les 33 workers de `WorkerName`
+ * passent par ce helper, donc AUCUNE erreur de worker n'a atteint Sentry depuis
+ * juillet. Et l'echec de l'observabilite etait lui-meme muet.
+ */
+type CaptureException = (err: Error, hint?: unknown) => unknown;
+
+let captureResolue: CaptureException | null | undefined;
+
+function resoudreCapture(): CaptureException | null {
+  if (captureResolue !== undefined) return captureResolue;
+
+  // Chemin nominal : dans le bundle Next, l'export ESM porte la fonction.
+  const direct = (Sentry as { captureException?: unknown }).captureException;
+  if (typeof direct === "function") {
+    captureResolue = direct as CaptureException;
+    return captureResolue;
+  }
+
+  // Repli worker : meme paquet, resolution CJS. Enferme dans un try/catch car
+  // `createRequire` n'existe pas dans tous les runtimes ou ce module peut etre
+  // embarque (edge, navigateur) — et une observabilite qui casse son appelant
+  // est pire que pas d'observabilite.
+  try {
+    const requis = createRequire(import.meta.url)("@sentry/nextjs") as {
+      captureException?: unknown;
+    };
+    if (typeof requis.captureException === "function") {
+      captureResolue = requis.captureException as CaptureException;
+      return captureResolue;
+    }
+  } catch {
+    // On tombe dans le `null` ci-dessous, qui journalise bruyamment.
+  }
+
+  captureResolue = null;
+  return null;
+}
+
+/**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
  *
  * Appelé depuis `worker.on("failed", (job, err) => ...)`. Fail-soft :
@@ -152,33 +223,21 @@ export function captureWorkerError(
       tags["jobName"] = job.name;
     }
 
-    // ⚠️ AUDIT 2026-07-21 — `Sentry.captureException is not a function` en prod.
-    //
-    // Le worker tourne en Node pur (`tsx src/server/queue/worker.ts`), HORS du
-    // bundler Next. Dans ce contexte `@sentry/nextjs` résout vers un build qui
-    // n'expose que 27 symboles — `init` est présent, `captureException` NON.
-    // Vérifié dans le conteneur worker de prod :
-    //   `typeof S.captureException` → "undefined", `typeof S.init` → "function".
-    //
-    // Conséquence : depuis la mise en place de ce helper, AUCUNE erreur worker
-    // n'a jamais atteint Sentry. Le `catch` ci-dessous les avalait en
-    // `console.warn`, donc l'échec de l'observabilité était lui-même invisible.
-    // C'est ce qui a masqué la panne de quota OpenAI pendant plusieurs jours.
-    //
-    // Correctif complet (à faire, nécessite un changement de lockfile) :
-    // ajouter `@sentry/node` aux dépendances et l'utiliser dans le chemin
-    // worker. En attendant, on DÉTECTE le cas et on le signale bruyamment au
-    // lieu de le taire.
-    const capture = (Sentry as { captureException?: unknown }).captureException;
-    if (typeof capture !== "function") {
+    // La résolution vit dans `resoudreCapture()` au-dessus, avec la mesure qui
+    // l'a motivée. Ici on garde le signalement bruyant du cas où elle échoue :
+    // si un jour les DEUX résolutions cessent d'exposer la fonction, ce
+    // `console.error` est la seule chose qui le dira.
+    const capture = resoudreCapture();
+    if (capture === null) {
       console.error(
-        `[sentry-worker] ⛔ Sentry INDISPONIBLE dans le worker (captureException absent) — ` +
-          `erreur NON remontée : ${workerName}/${queueName} · ${errName}: ${errMsg}`,
+        `[sentry-worker] ⛔ Sentry INDISPONIBLE dans le worker (captureException absent ` +
+          `des DEUX résolutions, ESM et CJS) — erreur NON remontée : ` +
+          `${workerName}/${queueName} · ${errName}: ${errMsg}`,
       );
       return;
     }
 
-    Sentry.captureException(err, {
+    capture(err, {
       tags,
       extra: {
         jobId: job?.id ?? null,
