@@ -54,6 +54,7 @@
 // fait rien.
 
 import { Text, Link } from "@react-email/components";
+import { objetCompose } from "../objet-email";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { canalDuRendezVous, type CanalRendezVous } from "@/server/calendly/canal";
@@ -107,14 +108,18 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const m = momentDe(p);
   if (locale === "fr") {
     if (m === "confirmation")
-      return p.date ? `Confirmé : appel ${p.date} à ${p.heure}` : `Votre appel est confirmé`;
-    if (m === "j1") return `Rappel : votre appel demain à ${p.heure ?? "l'heure prévue"}`;
-    return `Votre appel dans une heure, à ${p.heure ?? "l'heure prévue"}`;
+      return p.date
+        ? objetCompose("Confirmé :", `${p.date} à ${p.heure}`)
+        : `Votre rendez-vous est confirmé`;
+    if (m === "j1") return `Rappel : rendez-vous demain à ${p.heure ?? "l'heure prévue"}`;
+    return `Rendez-vous dans une heure, à ${p.heure ?? "l'heure prévue"}`;
   }
   if (m === "confirmation")
-    return p.date ? `Confirmed: call on ${p.date} at ${p.heure}` : `Your call is confirmed`;
-  if (m === "j1") return `Reminder: your call tomorrow at ${p.heure ?? "the agreed time"}`;
-  return `Your call in one hour, at ${p.heure ?? "the agreed time"}`;
+    return p.date
+      ? objetCompose("Confirmed:", `${p.date} at ${p.heure}`)
+      : `Your meeting is confirmed`;
+  if (m === "j1") return `Reminder: meeting tomorrow at ${p.heure ?? "the agreed time"}`;
+  return `Meeting in one hour, at ${p.heure ?? "the agreed time"}`;
 };
 
 /**
@@ -144,16 +149,23 @@ const COMMUN = {
     // en double : deux champs qui doivent s'accorder finissent par diverger.
     // Promettre « nous vous appellerons » à quelqu'un qui attend un lien de
     // visio est exactement le genre d'erreur qu'aucun test de longueur ne voit.
-    lieu: (l: string, canal: CanalRendezVous) => {
-      if (canal === "visio") return `Nous nous retrouvons en visioconférence : ${l}`;
-      if (canal === "telephone") return `Nous vous appellerons au ${l}.`;
-      // 🔑 TROIS cas, pas deux. Un lieu que rien ne permet de classer — « chez
-      // le client », une saisie libre en console — ne doit affirmer NI l'un NI
-      // l'autre : on le mentionne, sans promettre un canal qu'on ignore. Deux
-      // branches feraient retomber l'inconnu sur « nous vous appellerons »,
-      // c'est-à-dire sur une promesse fausse, et rien ne le signalerait.
-      return `Lieu du rendez-vous : ${l}`;
-    },
+    // 🔑 TROIS CAS, et un quatrième qui n'a pas de lieu du tout.
+    //
+    // Un lieu que rien ne permet de classer — « chez le client », une saisie
+    // libre en console — ne doit affirmer NI l'un NI l'autre : on le mentionne,
+    // sans promettre un canal qu'on ignore. Deux branches feraient retomber
+    // l'inconnu sur « nous vous appellerons », c'est-à-dire sur une promesse
+    // fausse, et rien ne le signalerait.
+    lieuVisio: "Lien de la visioconférence :",
+    // 🔴 LE CAS QUI N'EXISTAIT PAS. Calendly crée la conférence de façon
+    // ASYNCHRONE : entre la réservation et la création du lien, il n'y a rien à
+    // afficher. Se taire laisserait le prospect sans instruction ; inventer un
+    // lien est impossible. On le renvoie donc vers l'invitation d'agenda, qui
+    // portera le lien dès qu'il existera.
+    lieuVisioSansLien:
+      "Le lien de connexion figure dans l'invitation d'agenda que vous recevez séparément.",
+    lieuTelephone: (l: string) => `Nous vous appellerons au ${l}.`,
+    lieuIndetermine: (l: string) => `Lieu du rendez-vous : ${l}`,
     // On dit ce qu'on va faire, pas ce qu'on attend. La personne n'a rien à préparer.
     attendu:
       "Rien à préparer de votre côté. On vous écoute, on répond à vos questions, et vous repartez avec un avis clair — même si la réponse est « ce n'est pas pour vous ».",
@@ -171,11 +183,10 @@ const COMMUN = {
   },
   en: {
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
-    lieu: (l: string, canal: CanalRendezVous) => {
-      if (canal === "visio") return `We will meet by video: ${l}`;
-      if (canal === "telephone") return `We will call you on ${l}.`;
-      return `Meeting location: ${l}`;
-    },
+    lieuVisio: "Video meeting link:",
+    lieuVisioSansLien: "The joining link is in the calendar invitation you receive separately.",
+    lieuTelephone: (l: string) => `We will call you on ${l}.`,
+    lieuIndetermine: (l: string) => `Meeting location: ${l}`,
     attendu:
       "Nothing to prepare on your side. We listen, we answer your questions, and you leave with a clear view — even if the answer is “this isn't for you”.",
     invitationAgenda: "Your calendar invitation arrives separately, from Calendly.",
@@ -195,23 +206,23 @@ const COPY = {
       title: "C'est confirmé",
       quand: (h: string, d: number, date?: string) =>
         date
-          ? `Nous nous appelons le ${date} à ${h} (heure de Paris), pour ${d} minutes.`
-          : `Nous nous appelons à ${h} (heure de Paris), pour ${d} minutes.`,
+          ? `Nous nous retrouvons le ${date} à ${h} (heure de Paris), pour ${d} minutes.`
+          : `Nous nous retrouvons à ${h} (heure de Paris), pour ${d} minutes.`,
       signature: "À très vite,\nL'équipe Axion-IA",
     },
     j1: {
       preview: (d: number) =>
         `${d} minutes, rien à préparer. Un imprévu ? Le lien pour reporter est ici.`,
-      title: "Votre appel a lieu demain",
+      title: "Votre rendez-vous a lieu demain",
       quand: (h: string, d: number) =>
-        `Petit rappel : nous nous appelons demain à ${h} (heure de Paris), pour ${d} minutes.`,
+        `Petit rappel : nous nous retrouvons demain à ${h} (heure de Paris), pour ${d} minutes.`,
       signature: "À demain,\nL'équipe Axion-IA",
     },
     h1: {
-      preview: (d: number) => `${d} minutes au téléphone, rien à préparer de votre côté.`,
-      title: "Votre appel a lieu dans une heure",
+      preview: (d: number) => `${d} minutes, rien à préparer de votre côté.`,
+      title: "Votre rendez-vous a lieu dans une heure",
       quand: (h: string, d: number) =>
-        `Petit rappel : nous nous appelons à ${h} (heure de Paris), pour ${d} minutes.`,
+        `Petit rappel : nous nous retrouvons à ${h} (heure de Paris), pour ${d} minutes.`,
       signature: "À tout à l'heure,\nL'équipe Axion-IA",
     },
   },
@@ -222,27 +233,74 @@ const COPY = {
       title: "You're all set",
       quand: (h: string, d: number, date?: string) =>
         date
-          ? `We speak on ${date} at ${h} (Paris time), for ${d} minutes.`
-          : `We speak at ${h} (Paris time), for ${d} minutes.`,
+          ? `We meet on ${date} at ${h} (Paris time), for ${d} minutes.`
+          : `We meet at ${h} (Paris time), for ${d} minutes.`,
       signature: "Talk soon,\nThe Axion-IA team",
     },
     j1: {
       preview: (d: number) =>
         `${d} minutes, nothing to prepare. Something came up? Reschedule inside.`,
-      title: "Your call is tomorrow",
+      title: "Your meeting is tomorrow",
       quand: (h: string, d: number) =>
-        `A quick reminder: we speak tomorrow at ${h} (Paris time), for ${d} minutes.`,
+        `A quick reminder: we meet tomorrow at ${h} (Paris time), for ${d} minutes.`,
       signature: "Talk tomorrow,\nThe Axion-IA team",
     },
     h1: {
-      preview: (d: number) => `${d} minutes on the phone, nothing to prepare on your side.`,
-      title: "Your call is in one hour",
+      preview: (d: number) => `${d} minutes, nothing to prepare on your side.`,
+      title: "Your meeting is in one hour",
       quand: (h: string, d: number) =>
-        `A quick reminder: we speak at ${h} (Paris time), for ${d} minutes.`,
+        `A quick reminder: we meet at ${h} (Paris time), for ${d} minutes.`,
       signature: "Talk soon,\nThe Axion-IA team",
     },
   },
 } as const;
+
+/**
+ * La ligne qui dit OÙ se tient le rendez-vous.
+ *
+ * 🔑 Un composant, et non une chaîne, pour deux raisons.
+ *
+ * 1. **Le lien doit être cliquable.** Une URL posée dans un `<Text>` reste du
+ *    texte : certains clients la détectent, beaucoup non. Un prospect qui doit
+ *    recopier à la main un lien Meet à l'heure du rendez-vous ne le fait pas.
+ * 2. **Une visio peut n'avoir pas encore de lien.** Calendly crée la conférence
+ *    de façon asynchrone ; la confirmation part environ une minute après la
+ *    réservation, et le lien peut n'être pas prêt. Se taire laisserait le
+ *    prospect sans instruction — on le renvoie alors vers l'invitation
+ *    d'agenda, qui portera le lien dès qu'il existera.
+ */
+function LigneLieu({
+  lieu,
+  format,
+  c,
+}: {
+  lieu: string | undefined;
+  format: CanalRendezVous;
+  c: (typeof COMMUN)["fr"] | (typeof COMMUN)["en"];
+}) {
+  const valeur = (lieu ?? "").trim();
+  const estUnLien = /^https?:\/\//i.test(valeur);
+
+  if (format === "visio") {
+    return estUnLien ? (
+      <Text style={emailStyles.paragraphStyle}>
+        {c.lieuVisio} <Link href={valeur}>{valeur}</Link>
+      </Text>
+    ) : (
+      <Text style={emailStyles.paragraphStyle}>{c.lieuVisioSansLien}</Text>
+    );
+  }
+
+  // Hors visio, une absence de lieu se tait : l'invitation Calendly fait foi,
+  // et inventer une phrase serait pire que le silence.
+  if (valeur === "") return null;
+
+  return (
+    <Text style={emailStyles.paragraphStyle}>
+      {format === "telephone" ? c.lieuTelephone(valeur) : c.lieuIndetermine(valeur)}
+    </Text>
+  );
+}
 
 /**
  * Le format à annoncer : celui que l'appelant a dérivé, sinon celui que la forme
@@ -282,9 +340,7 @@ export function AppelRappelEmail({
           réception, et c'est la seule chose que le destinataire cherche. Un
           « Bonjour Jean, » en tête consommait ce résumé pour ne rien dire (§3.6). */}
       <Text style={emailStyles.paragraphStyle}>{t.quand(p.heure, p.dureeMinutes, p.date)}</Text>
-      {p.lieu ? (
-        <Text style={emailStyles.paragraphStyle}>{c.lieu(p.lieu, formatDuRendezVous(p))}</Text>
-      ) : null}
+      <LigneLieu lieu={p.lieu} format={formatDuRendezVous(p)} c={c} />
       <Text style={emailStyles.paragraphStyle}>
         {c.intro(p.prenom)}
         <br />

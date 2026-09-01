@@ -393,6 +393,10 @@ function formatBody(event: NotificationEvent): string {
         // les coordonnées, c'est-à-dire trop tard. Absent quand il n'est pas
         // établi : `formatKV` retire les valeurs nulles.
         formatKV("Format", libelleFormat(p.format)),
+        // Juste après le format : quand on lit « Visio », la question suivante
+        // est « où ? ». La faire descendre sous les coordonnées obligerait à
+        // chercher, et l'alerte existe pour éviter de chercher.
+        formatKV("Lieu", p.lieu),
         formatKV("Invité", p.inviteeName),
         formatKV("Email", p.inviteeEmail),
         formatKV("Téléphone", p.inviteePhone),
