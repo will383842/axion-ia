@@ -24,7 +24,7 @@ import { mapAnthropicError } from "../anthropic";
  * `err.message` vaut `` `${status} ${error.message}` `` (cf. `APIError.makeMessage`).
  * On reproduit donc cette forme exacte — c'est ce que les mappers voient en prod.
  */
-function openAiError(status: number, error: { code?: string; message?: string }) {
+function openAiError(status: number, error: { code?: string; message?: string; type?: string }) {
   return new OpenAI.APIError(status, error, undefined, undefined);
 }
 
@@ -79,6 +79,61 @@ describe("mapOpenAiError — 429 quota vs 429 rate-limit", () => {
     );
 
     expect(mapped.message).toContain("Rate limit reached for gpt-4o");
+  });
+
+  /**
+   * Panne réelle du 2026-08-28 → 2026-09-01, relevée telle quelle en production.
+   *
+   * `insufficient_quota` est présent — mais dans `type`, pas dans `code`. Le
+   * mapping ne lisait que `code`, et aucune des trois formes de message
+   * cherchées n'apparaît dans « You have no credits remaining ». Résultat :
+   * 429 classé RETRYABLE, garde-fou jamais appelé, 54 échecs sur 4 jours et
+   * pas une alerte. Ce test est la panne, à l'octet près.
+   */
+  it("429 `credit_balance_exhausted` (solde prépayé à zéro) → quota_exhausted, NON retryable", () => {
+    const mapped = mapOpenAiError(
+      openAiError(429, {
+        type: "insufficient_quota",
+        code: "credit_balance_exhausted",
+        message:
+          "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.",
+      }),
+    );
+
+    expect(mapped.code).toBe("quota_exhausted");
+    expect(mapped.retryable).toBe(false);
+  });
+
+  it("le `type` seul suffit, même avec un `code` inconnu", () => {
+    // OpenAI peut faire évoluer ses `code` (déjà deux libellés en six semaines).
+    // Le champ canonique `type` est le point d'ancrage stable.
+    const mapped = mapOpenAiError(
+      openAiError(429, {
+        type: "insufficient_quota",
+        code: "un_code_inedit_2027",
+        message: "Quelque chose d'inattendu.",
+      }),
+    );
+
+    expect(mapped.code).toBe("quota_exhausted");
+    expect(mapped.retryable).toBe(false);
+  });
+
+  it("un vrai rate-limit reste RETRYABLE malgré l'élargissement", () => {
+    // Garde anti-sur-correction : élargir la détection de quota ne doit pas
+    // faire basculer un throttling transitoire en échec sec. Les jobs
+    // concernés auraient abouti au retry.
+    const mapped = mapOpenAiError(
+      openAiError(429, {
+        type: "requests",
+        code: "rate_limit_exceeded",
+        message:
+          "Rate limit reached for gpt-4o in organization org-x on tokens per min. Limit: 30000, Used: 29000.",
+      }),
+    );
+
+    expect(mapped.code).toBe("rate_limited");
+    expect(mapped.retryable).toBe(true);
   });
 
   it("401 reste auth_failed non-retryable (pas de régression collatérale)", () => {

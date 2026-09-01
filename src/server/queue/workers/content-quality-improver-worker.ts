@@ -196,6 +196,45 @@ interface QualityLoopSettings {
   readonly monthlyBudgetCapUsd: number;
 }
 
+/**
+ * Garantit qu'un job entrant en relecture humaine a bien sa ligne `ReviewQueue`.
+ *
+ * ⚠️ Le statut `needs_review` NE SUFFIT PAS. L'écran de relecture de la console
+ * se construit à partir de `ReviewQueue` : sans cette ligne, le job existe en
+ * base, porte un contenu généré et payé, et n'apparaît NULLE PART. Personne ne
+ * peut ni le valider, ni le rejeter, ni même le voir. C'est déjà écrit dans
+ * `content-gen-worker.ts` (« Sans cette row, /review-queue/[id] ne trouve
+ * rien ») — mais ce worker-ci ne l'appliquait que sur son chemin
+ * d'auto-publication.
+ *
+ * Mesuré en production le 2026-09-01 : **51 jobs `needs_review` sans ligne de
+ * relecture**, tous avec `qualityImprovementAttempts ≥ 1`, donc tous sortis
+ * d'ici. Le plus récent datait du 24/08 : le trou était encore ouvert.
+ *
+ * `update: {}` est délibéré : si une ligne existe déjà, on n'y touche pas. Un
+ * job qui repasse par la boucle ne doit jamais faire retomber en `pending` une
+ * décision humaine déjà prise (`approved` / `rejected`).
+ *
+ * Exporté pour les tests uniquement.
+ */
+export async function ensurePendingReviewRow(contentGenJobId: string): Promise<void> {
+  try {
+    await prisma.reviewQueue.upsert({
+      where: { jobId: contentGenJobId },
+      create: { jobId: contentGenJobId, status: "pending" },
+      update: {},
+    });
+  } catch (err) {
+    // Fail-open : ne jamais faire échouer une passe de boucle qualité pour la
+    // file de relecture. Mais on le DIT — un échec silencieux ici est
+    // exactement ce qui a produit les 51 orphelins.
+    console.warn(
+      `[quality-improver] ligne de relecture non créée job=${contentGenJobId}:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
+}
+
 async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const { contentGenJobId, previousScore } = job.data;
 
@@ -221,6 +260,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       where: { id: contentGenJobId },
       data: { status: "needs_review" },
     });
+    await ensurePendingReviewRow(contentGenJobId);
     return;
   }
 
@@ -232,6 +272,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       where: { id: contentGenJobId },
       data: { status: "needs_review" },
     });
+    await ensurePendingReviewRow(contentGenJobId);
     await logGeneration({
       jobId: contentGenJobId,
       level: "warn",
@@ -257,6 +298,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       where: { id: contentGenJobId },
       data: { status: "needs_review" },
     });
+    await ensurePendingReviewRow(contentGenJobId);
     await logGeneration({
       jobId: contentGenJobId,
       level: "warn",
@@ -400,6 +442,9 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       ...(judgeFeedback ? { outputJsonRaw: updatedOutput as never } : {}),
     },
   });
+  // Chemin le plus fréquent de sortie de boucle (cap atteint, rejet ferme sans
+  // P0) : c'est lui qui produisait le gros des orphelins.
+  if (nextStatus === "needs_review") await ensurePendingReviewRow(contentGenJobId);
 
   // P0-7 — Log + Telegram escalade REJECT distinct du cap-reached.
   if (isHardReject && judge) {
@@ -465,6 +510,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         where: { id: contentGenJobId },
         data: { status: "needs_review" },
       });
+      await ensurePendingReviewRow(contentGenJobId);
     }
   }
 
@@ -534,6 +580,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         where: { id: contentGenJobId },
         data: { status: "needs_review" },
       });
+      await ensurePendingReviewRow(contentGenJobId);
       await logGeneration({
         jobId: contentGenJobId,
         level: "warn",
