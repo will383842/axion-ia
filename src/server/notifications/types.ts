@@ -365,6 +365,15 @@ export type NotificationEvent =
          * l'émetteur qui ne sait pas à inventer une valeur.
          */
         format?: string;
+        /**
+         * Le lieu : lien de réunion pour une visio, numéro pour un appel.
+         *
+         * 🔴 Il MANQUAIT. L'alerte annonçait « Format : Visio » sans donner le
+         * lien — il fallait ouvrir la console pour l'obtenir, à l'heure du
+         * rendez-vous. Une alerte qui nomme un canal sans donner le moyen de
+         * l'emprunter oblige à un détour qu'elle était censée éviter.
+         */
+        lieu?: string;
         pageUrl?: string;
         utmSource?: string;
         utmCampaign?: string;

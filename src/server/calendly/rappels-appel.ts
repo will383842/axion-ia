@@ -1,4 +1,5 @@
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { notify } from "@/server/notifications";
 /**
  * Les trois messages d'un appel de découverte : confirmation, J-1, H-1.
  *
@@ -271,6 +272,59 @@ export async function executerPassage(
       ? Math.round((rdv.endTime.getTime() - rdv.startTime.getTime()) / 60_000)
       : null;
 
+    const format = canalDuRendezVous(rdv.location, rdv.rawPayload);
+    const lienUtilisable = /^https?:\/\//i.test((rdv.location ?? "").trim());
+
+    // 🔴 UNE VISIO SANS LIEN NE SE DÉCOUVRE PLUS À L'HEURE DU RENDEZ-VOUS.
+    //
+    // Calendly crée la conférence de façon asynchrone, et le lien peut ne
+    // jamais arriver — connexion agenda expirée, quota Google, panne. Dans ce
+    // cas le rendez-vous existe, les trois e-mails partent, et le vide se
+    // découvre au moment de se connecter, des deux côtés en même temps.
+    //
+    // On le dit à H-1, et pas plus tôt, pour deux raisons : c'est le dernier
+    // moment où l'on peut encore agir, et c'est celui où l'absence devient
+    // certaine plutôt que probable — `refresh` a eu des dizaines de passages
+    // pour poser le lien depuis la réservation.
+    //
+    // L'e-mail part quand même : il renvoie vers l'invitation d'agenda, qui
+    // portera le lien s'il finit par exister. Alerter n'est pas retenir.
+    if (p.moment === "h1" && format === "visio" && !lienUtilisable) {
+      try {
+        await notify({
+          category: "MONITORING_ALERT",
+          severity: "critical",
+          payload: {
+            kind: "visio_sans_lien",
+            details: {
+              legacyBody:
+                `Rendez-vous en VISIO dans une heure, sans lien de connexion.
+
+` +
+                `Invité : ${rdv.inviteeName ?? "(inconnu)"}
+` +
+                `Heure : ${heureParis(rdv.startTime)} (heure de Paris)
+
+` +
+                `Calendly n'a pas créé le lien de réunion, ou ne l'a pas transmis. ` +
+                `Le prospect a reçu ses e-mails et sera renvoyé vers l'invitation ` +
+                `d'agenda. Vérifier la connexion Google Agenda côté Calendly, et ` +
+                `au besoin envoyer un lien à la main.`,
+            },
+          },
+          // Une par rendez-vous : le passage H-1 repasse toutes les quelques
+          // minutes dans sa fenêtre, on ne veut pas d'un chapelet d'alertes.
+          dedupKey: `visio-sans-lien:${rdv.id}`,
+          dedupTtlSec: 6 * 3600,
+        });
+      } catch (e) {
+        // Une alerte qui échoue ne doit pas empêcher le rappel de partir.
+        console.warn(
+          `[${p.job}] alerte visio-sans-lien impossible : ${e instanceof Error ? e.message : String(e)}`,
+        );
+      }
+    }
+
     let miseEnFile: { enqueued: boolean } | null = null;
     try {
       miseEnFile = await enqueueEmail(p.job, rdv.inviteeEmail, "fr", {
@@ -284,7 +338,7 @@ export async function executerPassage(
         // gabarit, qui ne voit que le texte. Le gabarit sait retomber sur la
         // forme, mais c'est son dernier recours : un rendez-vous en visio dont
         // le lieu aurait été ressaisi à la main annoncerait sinon un appel.
-        format: canalDuRendezVous(rdv.location, rdv.rawPayload),
+        format,
         ...(rdv.cancelUrl ? { cancelUrl: rdv.cancelUrl } : {}),
         ...(rdv.rescheduleUrl ? { rescheduleUrl: rdv.rescheduleUrl } : {}),
       });

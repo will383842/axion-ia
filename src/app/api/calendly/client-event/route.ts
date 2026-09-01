@@ -345,6 +345,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let debutRdv: Date | null = null;
   // Récupéré par l'enrichissement : l'embed ne transmet aucune coordonnée.
   let notifyPhone: string | null = null;
+  // Le lieu — lien de réunion ou numéro — pour que l'alerte porte le moyen et
+  // pas seulement le nom du canal.
+  let lieuRdv: string | null = null;
   if (enriched?.ok) {
     const fresh = await prisma.calendlyEvent
       .findUnique({
@@ -366,6 +369,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       format = canalDuRendezVous(fresh.location, fresh.rawPayload);
       debutRdv = fresh.startTime;
       notifyPhone = fresh.inviteePhone;
+      lieuRdv = fresh.location;
     }
   }
 
@@ -405,6 +409,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // que la racine, et une clé inconnue y vaut 422 définitif — c'est-à-dire
         // un lead perdu, sans rattrapage.
         ...(format === "inconnu" ? {} : { format }),
+        ...(lieuRdv ? { lieu: lieuRdv } : {}),
         ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
         ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
         ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),

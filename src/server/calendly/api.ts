@@ -276,14 +276,34 @@ export async function fetchCalendlyInvitee(
   }
 
   // `location` est tantôt une string, tantôt un objet { type, location, join_url }.
+  //
+  // 🔴 LE REPLI `JSON.stringify` A ÉTÉ RETIRÉ LE 2026-09-01.
+  //
+  // Il existait pour « ne rien perdre ». Ce qu'il produisait, en réalité, c'est
+  // une chaîne comme `{"type":"google_conference","status":"processing"}` posée
+  // dans la colonne `location` — puis recopiée telle quelle dans l'e-mail du
+  // prospect, qui lisait : « Nous nous retrouvons en visioconférence :
+  // {"type":"google_conference"…} ».
+  //
+  // Le cas n'est pas théorique : Calendly crée la conférence de façon
+  // ASYNCHRONE. Entre la réservation et la création du lien, le lieu porte
+  // `status: "processing"` et n'a pas encore de `join_url`. La capture arrive
+  // dans cette fenêtre à chaque fois qu'elle est rapide — et elle l'est : le
+  // webhook livre en 2 secondes (mesuré le 2026-09-01).
+  //
+  // 🔑 `null` EST LA BONNE RÉPONSE, ET PAS SEULEMENT LA MOINS MAUVAISE. La
+  // colonne se remplit par `setIfEmpty`, qui n'écrit que sur `null` : rendre
+  // `null` laisse donc la place, et `refreshUpcomingCalendlyEvents` — qui
+  // rappelle `enrich` toutes les 10 minutes sur les rendez-vous à venir —
+  // posera le vrai lien dès que Calendly l'aura créé. Une chaîne JSON, elle,
+  // remplissait la colonne et **interdisait définitivement** cette correction.
   const locationRaw = event["location"];
   const location =
     typeof locationRaw === "string"
       ? locationRaw.slice(0, 500)
       : typeof locationRaw === "object" && locationRaw !== null
         ? (stringOrNull((locationRaw as Record<string, unknown>)["join_url"], 500) ??
-          stringOrNull((locationRaw as Record<string, unknown>)["location"], 500) ??
-          JSON.stringify(locationRaw).slice(0, 500))
+          stringOrNull((locationRaw as Record<string, unknown>)["location"], 500))
         : null;
 
   return {
