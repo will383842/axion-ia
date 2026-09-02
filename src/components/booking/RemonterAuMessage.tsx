@@ -1,5 +1,5 @@
 "use client";
-// use-client : un effet de défilement, rien d'autre. Le formulaire et les pages
+// use-client: un effet de défilement, rien d'autre. Le formulaire et les pages
 // de fin restent sans JavaScript propre ; ce composant n'ajoute qu'un geste
 // que le navigateur faisait de lui-même avant que l'action serveur ne l'en
 // empêche.
