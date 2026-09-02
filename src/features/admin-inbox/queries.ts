@@ -169,8 +169,11 @@ async function fetchAppels(peutVoirAppels: boolean): Promise<InboxItem[]> {
   }));
 }
 
-async function fetchCandidatures(): Promise<InboxItem[]> {
-  const res = await listApplications({ page: 1, pageSize: PER_CHANNEL_FETCH });
+async function fetchCandidatures(acces: {
+  role: string | null;
+  acteurId: string | null;
+}): Promise<InboxItem[]> {
+  const res = await listApplications({ page: 1, pageSize: PER_CHANNEL_FETCH }, acces);
   return res.items.map((a) => ({
     key: `job_${a.id}`,
     sourceId: a.id,
@@ -242,6 +245,17 @@ export interface InboxFilters {
    * C'est exactement l'oubli qui a laissé ce canal ouvert jusqu'au 2026-08-27.
    */
   peutVoirAppels?: boolean;
+  /**
+   * Le rôle admin courant — il décide de ce que le canal « candidature » rend.
+   *
+   * 🔴 ABSENT ⇒ AUCUNE IDENTITÉ DE CANDIDAT, et c'est le seul défaut sûr : un
+   * appelant qui l'oublie masque au lieu de divulguer. Le prédicat commun
+   * (`peutOuvrirDossierCandidat`) est appliqué par la lecture elle-même ; on ne
+   * passe pas un booléen, qu'un appelant pourrait poser à `true` par mégarde.
+   * Les lignes restent comptées et datées ; le nom et l'adresse ne sortent que
+   * pour les rôles qui traitent le dossier.
+   */
+  roleAdmin?: string | null;
 }
 
 export interface InboxResult {
@@ -287,7 +301,10 @@ export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult
   const settled = await Promise.allSettled([
     fetchAppels(filters.peutVoirAppels === true),
     fetchMessages(),
-    fetchCandidatures(),
+    fetchCandidatures({
+      role: filters.roleAdmin ?? null,
+      acteurId: filters.adminUserId ?? null,
+    }),
     fetchPodcast(),
   ]);
   const failedChannels: InboxChannel[] = [];

@@ -34,7 +34,13 @@ export const ROLE_DE_L_ADAPTATEUR: RoleAdmin = "reader";
 export const DELAI_D_APPEL_MS = 8_000;
 
 export function habilitationsDeLAdaptateur(): Habilitations {
-  return { peutVoirAppels: peutVoirLesAppels(ROLE_DE_L_ADAPTATEUR) };
+  return {
+    peutVoirAppels: peutVoirLesAppels(ROLE_DE_L_ADAPTATEUR),
+    // Le rôle lui-même, transmis tel quel : les lectures du produit qui
+    // raisonnent en rôle appliqueront LEUR prédicat dessus. L'adaptateur ne
+    // tranche aucun droit — il dit seulement au nom de qui il parle.
+    roleConsole: ROLE_DE_L_ADAPTATEUR,
+  };
 }
 
 /** Ce que l'enveloppe JSON-RPC peut porter en `_meta` — des identifiants OPAQUES. */

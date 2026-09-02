@@ -118,6 +118,7 @@ export const NOMS_RESERVES_AU_CONTEXTE = [
   "deadline",
   "habilitations",
   "peutVoirAppels",
+  "roleConsole",
   "idempotencyKey",
 ] as const;
 
@@ -133,6 +134,19 @@ export interface Habilitations {
    * `false`, et coordonnées masquées. Cf. `identite.ts`.
    */
   readonly peutVoirAppels: boolean;
+  /**
+   * **LE RÔLE CONSOLE au nom duquel l'adaptateur agit** (§ 19 bis : « le socle
+   * traduit scope socle → rôle console → drapeaux »). Il est ici parce que
+   * certaines lectures du produit appliquent elles-mêmes le prédicat commun sur
+   * un rôle — c'est le cas du dossier de candidat, où recevoir un booléen déjà
+   * tranché rendrait le cloisonnement dépendant de chaque appelant.
+   *
+   * ⚠️ **EXTENSION DU CONTRAT DU SOCLE, À RÉPERCUTER.** `core/types.ts`
+   *    d'`axion-ops` ne porte aujourd'hui que `peutVoirAppels`. Tant que le
+   *    socle ne le calcule pas, la valeur vient du pont d'identité local et vaut
+   *    le rôle le plus faible (défaut W-6).
+   */
+  readonly roleConsole: string;
 }
 
 export interface ContexteOutil {

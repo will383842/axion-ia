@@ -57,6 +57,7 @@ vi.mock("@/features/admin-planning/hub-queries", () => ({
 }));
 
 import { ROLES_APPELS } from "@/features/admin-calendly/acces";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { listInbox, PER_CHANNEL_FETCH } from "@/features/admin-inbox/queries";
 
 import { contexteDAppel, habilitationsDeLAdaptateur, ROLE_DE_L_ADAPTATEUR } from "../identite";
@@ -322,7 +323,13 @@ describe("qualiopi.conformite — la lecture persistée, et hasMore par la ligne
 describe("le pont d'identité — W-6 par défaut", () => {
   it("le rôle de l'adaptateur est hors de ROLES_APPELS, donc peutVoirAppels vaut false", () => {
     expect(ROLES_APPELS as readonly string[]).not.toContain(ROLE_DE_L_ADAPTATEUR);
-    expect(habilitationsDeLAdaptateur()).toEqual({ peutVoirAppels: false });
+    expect(habilitationsDeLAdaptateur()).toEqual({
+      peutVoirAppels: false,
+      roleConsole: ROLE_DE_L_ADAPTATEUR,
+    });
+    // 🔑 Et le rôle transmis n'ouvre PAS le dossier de candidat : c'est la
+    //    lecture qui applique le prédicat, mais la valeur se vérifie ici.
+    expect(peutOuvrirDossierCandidat(ROLE_DE_L_ADAPTATEUR)).toBe(false);
     const c = contexteDAppel({}, d("2026-09-02T04:00:00Z"));
     expect(c.principal).toBe("socle");
     expect(c.requestId).toMatch(/^local-/);

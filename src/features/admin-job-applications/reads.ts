@@ -25,6 +25,8 @@
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
+import { getClientIp } from "@/lib/client-ip";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { decryptPii } from "@/lib/pii-crypto";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
 import type { JobApplicationStatus } from "../../../prisma/generated/client";
@@ -75,8 +77,14 @@ export interface JobApplicationListItem {
   id: string;
   offerId: string;
   offerTitleSnap: string;
-  contactName: string;
-  contactEmail: string;
+  /**
+   * 🔴 `null` QUAND L'APPELANT N'A PAS LE DROIT D'OUVRIR LE DOSSIER.
+   *
+   * Le type le dit, plutôt qu'une chaîne vide : un consommateur qui l'oublie
+   * est signalé par le compilateur, là où `""` se serait affiché sans un mot.
+   */
+  contactName: string | null;
+  contactEmail: string | null;
   status: JobApplicationStatus;
   hasCv: boolean;
   needsAttention: boolean;
@@ -92,14 +100,46 @@ export interface JobApplicationListResult {
 }
 
 /**
- * **LE CORPS DE `listApplicationsAction`, MOT POUR MOT, MOINS SA GARDE.**
+ * Le droit d'ouvrir un dossier de candidat, et la trace de son ouverture.
  *
- * Ne l'appeler que depuis un contexte qui a DÉJÀ établi le droit de lire :
+ * 🔴 **AUCUNE VALEUR PAR DÉFAUT, ET C'EST LE CŒUR DU CORRECTIF.** Extraire
+ *    cette lecture de son action lui avait retiré `requireAdminRead()`, donc le
+ *    prédicat `peutOuvrirDossierCandidat` — et la Boîte de réception servait de
+ *    nouveau le nom et l'adresse de chaque candidat à tous les rôles, y compris
+ *    `reader`. C'est exactement le défaut du 2026-08-25 (cahier D6-1), rouvert
+ *    par le lot 4a et rattrapé par la garde `dossier-candidat-cloisonne`.
+ *    Sans défaut, le compilateur oblige chaque appelant à TRANCHER.
+ */
+export interface AccesDossierCandidat {
+  /**
+   * Le rôle au nom duquel on lit — **pas** un booléen déjà tranché.
+   *
+   * 🔑 C'est ce fichier qui appelle `peutOuvrirDossierCandidat`, et c'est
+   *    délibéré : recevoir un `true` déjà calculé rendrait le cloisonnement
+   *    dépendant de la rigueur de chaque appelant, et un `true` posé par erreur
+   *    ne se verrait nulle part. Le rôle, lui, ne peut pas mentir sur lui-même.
+   *    `null` (aucun rôle établi) ⇒ refus, comme pour un rôle inconnu.
+   */
+  readonly role: string | null;
+  /**
+   * Qui consulte, pour la trace. `null` quand l'appel n'a pas de session
+   * (adaptateur MCP) : la trace porte alors l'absence d'acteur plutôt que
+   * d'inventer un identifiant.
+   */
+  readonly acteurId: string | null;
+}
+
+/**
+ * **LE CORPS DE `listApplicationsAction`, MOT POUR MOT, MOINS SA GARDE DE SESSION.**
+ *
+ * Ne l'appeler que depuis un contexte qui a DÉJÀ établi *qui* appelle :
  * `listApplicationsAction` (session de navigateur) ou le handler `/api/mcp`
- * (secret partagé). Ce fichier ne décide d'aucun droit.
+ * (secret partagé). Ce fichier ne lit aucune session — mais il EXIGE que le
+ * droit ait été tranché, et il le fait respecter.
  */
 export async function listApplications(
   input: Partial<ListApplicationsInput> = {},
+  acces: AccesDossierCandidat,
 ): Promise<JobApplicationListResult> {
   const parsed = listApplicationsSchema.parse(input);
   const where: Record<string, unknown> = {};
@@ -137,17 +177,49 @@ export async function listApplications(
     }),
   ]);
 
+  // ── LE CLOISONNEMENT, ICI ET NULLE PART AILLEURS ──────────────────────────
+  //    Les lignes restent — compteurs et chronologie justes, comme pour le canal
+  //    « appel » depuis le 2026-08-27. L'identité, non : sans le droit, elle ne
+  //    sort pas de cette fonction, et `hasCv` non plus (savoir qu'un CV existe
+  //    est déjà une information sur la personne).
+  // Le prédicat COMMUN, appelé ici — jamais une liste de rôles recopiée : le
+  // dépôt en a soldé vingt-neuf copies, et c'est la divergence entre copies qui
+  // avait laissé la pièce jointe mieux protégée que l'identité qu'elle porte.
+  const ouvert = peutOuvrirDossierCandidat(acces.role);
   const items: JobApplicationListItem[] = rows.map((r) => ({
     id: r.id,
     offerId: r.offerId,
     offerTitleSnap: r.offerTitleSnap,
-    contactName: `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim(),
-    contactEmail: safeDecrypt(r.email),
+    contactName: ouvert ? `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim() : null,
+    contactEmail: ouvert ? safeDecrypt(r.email) : null,
     status: r.status,
-    hasCv: Boolean(r.cvStoragePath),
+    hasCv: ouvert ? Boolean(r.cvStoragePath) : false,
     needsAttention: r.needsAttention,
     submittedAt: r.submittedAt,
   }));
+
+  // ── LA TRACE — ce qui rend l'accès défendable ─────────────────────────────
+  //    Écrite seulement quand des identités sont réellement sorties. Une liste
+  //    cloisonnée ne montre personne : la journaliser noierait les vraies
+  //    consultations sous du bruit.
+  //
+  //    ⚠️ Best-effort, comme partout ailleurs dans le dépôt : un journal
+  //    indisponible ne doit pas priver le recruteur de sa liste.
+  if (ouvert && items.length > 0) {
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: acces.acteurId,
+          action: "careers.candidature.liste.consultee",
+          targetType: "JobApplication",
+          targetId: null,
+          ipAddress: await getClientIp(),
+        },
+      });
+    } catch {
+      // silence volontaire : cf. ci-dessus
+    }
+  }
 
   return {
     items,

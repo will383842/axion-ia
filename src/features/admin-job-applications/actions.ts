@@ -77,8 +77,11 @@ async function requireSuperAdmin() {
  *    la lecture nue ne peut pas y vivre.
  */
 export async function listApplicationsAction(input: Partial<ListApplicationsInput> = {}) {
-  await requireAdminRead();
-  return listApplications(input);
+  // `requireAdminRead()` a déjà refusé tout rôle hors du prédicat commun. On lui
+  // repasse néanmoins le RÔLE, pas un `true` : la lecture réapplique le prédicat,
+  // et les deux étages ne peuvent pas diverger.
+  const acteur = await requireAdminRead();
+  return listApplications(input, { role: acteur.role, acteurId: acteur.userId });
 }
 
 // ============================================================ vues fusionnées
@@ -109,8 +112,13 @@ export interface CandidatureUnifieeItem {
    *  "commerciale" = Submission du tunnel commercial (détail /contacts/commercial/[id]). */
   source: "emploi" | "commerciale";
   offerLabel: string;
-  contactName: string;
-  contactEmail: string;
+  /**
+   * 🔴 `null` quand le rôle n'ouvre pas le dossier de candidat. L'écran le rend
+   * alors « masqué » — jamais une chaîne vide, qui se lirait comme un candidat
+   * sans nom. Cf. `reads.ts`, `AccesDossierCandidat`.
+   */
+  contactName: string | null;
+  contactEmail: string | null;
   /** JobApplicationStatus (emploi) ou SubmissionStatus (commerciale). */
   status: string;
   /** null = sans objet (le tunnel commercial ne collecte pas de CV). */

@@ -12,7 +12,10 @@
  *   sécurité, et un lien dans une réponse vocale finirait dans une
  *   transcription. L'identifiant `id` est opaque ; la console le résout.
  * · Aucune coordonnée (e-mail, téléphone) : décision W-6 par défaut, rôle le
- *   plus faible. Le nom du contact reste — c'est ce qu'une secrétaire voit.
+ *   plus faible.
+ * · Le canal « candidature » ne rend NI nom NI adresse tant que le rôle de
+ *   l'adaptateur n'ouvre pas le dossier de candidat. Les lignes restent —
+ *   comptées, datées —, l'identité non.
  */
 
 import { z } from "zod/v4";
@@ -95,6 +98,7 @@ export const inboxRecent = definirOutil({
       pageSize: limite,
       adminUserId: null,
       peutVoirAppels: ctx.habilitations.peutVoirAppels,
+      roleAdmin: ctx.habilitations.roleConsole,
     });
 
     return {
