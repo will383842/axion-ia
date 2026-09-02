@@ -72,19 +72,20 @@ jobs:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
           CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+          CALENDLY_API_TOKEN_BRUT: ${{ secrets.CALENDLY_API_TOKEN }}
         run: |
           set -euo pipefail
           # 🔑 Le secret peut porter un retour chariot de fin (posé depuis PowerShell :
-          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR dans
-          # l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
-          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -d '\r\n ')
+          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR — ou un BOM UTF-8 —
+          # dans l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
           for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID CALENDLY_API_TOKEN; do
             if [ -z "${!v:-}" ]; then
               echo "::error::Secret manquant : $v"
               exit 1
             fi
           done
-          echo "Secrets présents. Longueur du jeton Calendly : ${#CALENDLY_API_TOKEN} caractères (valeur jamais affichée)."
+          echo "Secrets présents. Longueur du jeton Calendly après nettoyage : ${#CALENDLY_API_TOKEN} (brut : ${#CALENDLY_API_TOKEN_BRUT}). Premiers octets bruts (en-tête JWT publique) : $(printf '%s' "$CALENDLY_API_TOKEN_BRUT" | head -c 4 | od -An -tx1)"
 
       - name: Sonder le jeton contre l'API Calendly (lecture seule)
         env:
@@ -92,9 +93,9 @@ jobs:
         run: |
           set -euo pipefail
           # 🔑 Le secret peut porter un retour chariot de fin (posé depuis PowerShell :
-          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR dans
-          # l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
-          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -d '\r\n ')
+          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR — ou un BOM UTF-8 —
+          # dans l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
           me=$(curl -sS -m 20 -w "\nHTTP=%{http_code}" \
             -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" \
             https://api.calendly.com/users/me)
@@ -138,9 +139,9 @@ jobs:
         run: |
           set -euo pipefail
           # 🔑 Le secret peut porter un retour chariot de fin (posé depuis PowerShell :
-          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR dans
-          # l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
-          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -d '\r\n ')
+          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR — ou un BOM UTF-8 —
+          # dans l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
           # ⚠️ is_preview:false — on ne touche JAMAIS à la ligne Preview, qui porte
           # volontairement un jeton mort (un déploiement éphémère ne doit pas
           # parler à Calendly avec le jeton de prod).
@@ -207,9 +208,9 @@ jobs:
         run: |
           set -euo pipefail
           # 🔑 Le secret peut porter un retour chariot de fin (posé depuis PowerShell :
-          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR dans
-          # l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
-          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -d '\r\n ')
+          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR — ou un BOM UTF-8 —
+          # dans l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
           # 1. Existe-t-il déjà un abonnement pour notre URL ? Le script le
           #    détecte et s'arrête ; dans ce cas la clé posée en Coolify doit
           #    être celle de CET abonnement, qu'on ne connaît pas → on refuse
@@ -258,9 +259,9 @@ jobs:
         run: |
           set -euo pipefail
           # 🔑 Le secret peut porter un retour chariot de fin (posé depuis PowerShell :
-          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR dans
-          # l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
-          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -d '\r\n ')
+          # `$c | gh secret set` ajoute CRLF, GitHub ne retire que le LF). Un CR — ou un BOM UTF-8 —
+          # dans l'en-tête Authorization rend 401 « invalid token » — mesuré le 2026-09-02.
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
           deploy() {
             local uuid="$1" nom="$2"
             local r
