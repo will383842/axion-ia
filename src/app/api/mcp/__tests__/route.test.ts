@@ -20,7 +20,24 @@ vi.mock("@/lib/rate-limit", () => ({
   })),
 }));
 
+// `@/auth` (next-auth) est tiré par la couche service que le registre importe ;
+// hors sujet ici, et next-auth exige un `next/server` que vitest ne résout pas.
+vi.mock("@/auth", () => ({ auth: async () => null }));
+vi.mock("next/navigation", () => ({
+  redirect: () => {
+    throw new Error("redirect");
+  },
+}));
+
 const SECRET = "un-secret-de-garde-sans-valeur-reelle";
+
+// L'exécuteur d'outil est simulé : cette garde mesure la ROUTE (serrure,
+// enveloppe, correspondance des codes), pas les outils — ils ont leurs gardes
+// sous `src/server/mcp/__tests__/`.
+const appelMock = vi.hoisted(() => ({ executerAppel: vi.fn() }));
+vi.mock("@/server/mcp/appel", () => ({
+  executerAppel: (...a: unknown[]) => appelMock.executerAppel(...a),
+}));
 
 /** Fabrique un appel JSON-RPC. Le secret est OPTIONNEL — c'est tout l'objet. */
 function appel(corps: unknown, options: { secret?: string; entete?: string } = {}): Request {
@@ -141,26 +158,63 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
     expect(Object.keys(corps.result.capabilities)).toEqual(["tools"]);
   });
 
-  it("rend une liste d'outils VIDE — le lot 4b les apporte, pas celui-ci", async () => {
+  it("publie les six outils du registre, chacun avec son schéma d'entrée FERMÉ", async () => {
     const { POST } = await charger();
     const res = await POST(
       appel({ jsonrpc: "2.0", id: 8, method: "tools/list" }, { secret: SECRET }) as never,
     );
-    const corps = (await res.json()) as { result: { tools: unknown[] } };
+    const corps = (await res.json()) as {
+      result: {
+        tools: {
+          name: string;
+          inputSchema: { additionalProperties?: unknown };
+          annotations: { readOnlyHint: boolean };
+        }[];
+      };
+    };
 
-    expect(corps.result.tools).toEqual([]);
+    const noms = corps.result.tools.map((t) => t.name).sort();
+    console.info(`[mcp] tools/list → ${String(noms.length)} outil(s) : ${noms.join(", ")}`);
+    expect(noms).toEqual([
+      "axionia.agenda.jour",
+      "axionia.agenda.semaine",
+      "axionia.inbox.recent",
+      "axionia.pilotage.alertes",
+      "axionia.qualiopi.conformite",
+      "axionia.rendezvous.list",
+    ]);
+    for (const outil of corps.result.tools) {
+      expect(outil.inputSchema.additionalProperties, outil.name).toBe(false);
+      expect(outil.annotations.readOnlyHint, outil.name).toBe(true);
+    }
+  });
+
+  it("rend le manifeste sur axionia/manifest — derrière la même serrure", async () => {
+    const { POST } = await charger();
+    const res = await POST(
+      appel({ jsonrpc: "2.0", id: 10, method: "axionia/manifest" }, { secret: SECRET }) as never,
+    );
+    const corps = (await res.json()) as {
+      result: { manifest: { id: string; mode: string; tools: unknown[] } };
+    };
+    expect(corps.result.manifest.id).toBe("axionia");
+    expect(corps.result.manifest.mode).toBe("fédéré");
+    expect(corps.result.manifest.tools).toHaveLength(6);
+
+    const sans = await POST(appel({ jsonrpc: "2.0", id: 11, method: "axionia/manifest" }) as never);
+    expect(sans.status).toBe(401);
   });
 
   it("refuse une méthode inconnue avec -32601, et NOMME la méthode reçue", async () => {
     const { POST } = await charger();
     const res = await POST(
-      appel({ jsonrpc: "2.0", id: 9, method: "tools/call" }, { secret: SECRET }) as never,
+      appel({ jsonrpc: "2.0", id: 9, method: "prompts/list" }, { secret: SECRET }) as never,
     );
     const corps = (await res.json()) as { error: { code: number; message: string } };
 
     expect(corps.error.code).toBe(-32601);
     // Un refus qui ne nomme pas ce qu'il a reçu se paie en quart d'heure perdu.
-    expect(corps.error.message).toContain("tools/call");
+    expect(corps.error.message).toContain("prompts/list");
   });
 
   it("refuse une enveloppe mal formée, chacune par son code propre", async () => {
@@ -183,6 +237,120 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
     console.info(`[mcp] ${String(cas.length)} enveloppe(s) mal formée(s) refusée(s)`);
     // Deux familles distinctes : analyse impossible vs requête invalide.
     expect(codes.size).toBe(2);
+  });
+});
+
+describe("tools/call — la forme MCP, et deux familles de refus bien distinctes", () => {
+  it("passe name, arguments et les identifiants de _meta à l'exécuteur, et rend structuredContent", async () => {
+    appelMock.executerAppel.mockResolvedValue({
+      ok: true,
+      sortie: { items: [{ id: "1" }], meta: { returned: 1 } },
+      returned: 1,
+      octets: 42,
+    });
+    const { POST } = await charger();
+    const res = await POST(
+      appel(
+        {
+          jsonrpc: "2.0",
+          id: 12,
+          method: "tools/call",
+          params: {
+            name: "axionia.inbox.recent",
+            arguments: { limite: 5 },
+            _meta: { "ops/requestId": "req-7", "ops/principal": "socle-test" },
+          },
+        },
+        { secret: SECRET },
+      ) as never,
+    );
+    const corps = (await res.json()) as {
+      result: {
+        isError: boolean;
+        structuredContent: { items: unknown[] };
+        content: { type: string; text: string }[];
+      };
+    };
+    expect(corps.result.isError).toBe(false);
+    expect(corps.result.structuredContent.items).toHaveLength(1);
+    expect(JSON.parse(corps.result.content[0]?.text ?? "{}")).toEqual(
+      corps.result.structuredContent,
+    );
+    expect(appelMock.executerAppel).toHaveBeenCalledWith(
+      "axionia.inbox.recent",
+      { limite: 5 },
+      { requestId: "req-7", principal: "socle-test" },
+    );
+  });
+
+  it("outil inconnu et entrée hors schéma sont des erreurs de PROTOCOLE (-32602, avec le code)", async () => {
+    appelMock.executerAppel.mockResolvedValue({
+      ok: false,
+      code: "invalid_input",
+      message: "l'entrée ne respecte pas le schéma",
+      details: [{ chemin: "limite", probleme: "trop grand" }],
+    });
+    const { POST } = await charger();
+    const res = await POST(
+      appel(
+        {
+          jsonrpc: "2.0",
+          id: 13,
+          method: "tools/call",
+          params: { name: "axionia.inbox.recent", arguments: {} },
+        },
+        { secret: SECRET },
+      ) as never,
+    );
+    const corps = (await res.json()) as {
+      error: { code: number; data: { code: string; details: unknown[] } };
+    };
+    expect(corps.error.code).toBe(-32602);
+    expect(corps.error.data.code).toBe("invalid_input");
+    expect(corps.error.data.details).toHaveLength(1);
+  });
+
+  it("une source en panne est une erreur d'EXÉCUTION : résultat isError, pas erreur JSON-RPC", async () => {
+    appelMock.executerAppel.mockResolvedValue({
+      ok: false,
+      code: "upstream_unavailable",
+      message: "la source n'a pas répondu",
+    });
+    const { POST } = await charger();
+    const res = await POST(
+      appel(
+        {
+          jsonrpc: "2.0",
+          id: 14,
+          method: "tools/call",
+          params: { name: "axionia.agenda.jour", arguments: { jour: "2026-09-02" } },
+        },
+        { secret: SECRET },
+      ) as never,
+    );
+    const corps = (await res.json()) as {
+      error?: unknown;
+      result: { isError: boolean; structuredContent: { code: string } };
+    };
+    expect(corps.error).toBeUndefined();
+    expect(corps.result.isError).toBe(true);
+    expect(corps.result.structuredContent.code).toBe("upstream_unavailable");
+  });
+
+  it("refuse des params absents ou sans name, sans même appeler l'exécuteur", async () => {
+    appelMock.executerAppel.mockClear();
+    const { POST } = await charger();
+    for (const params of [undefined, [], { arguments: {} }, { name: "" }]) {
+      const res = await POST(
+        appel(
+          { jsonrpc: "2.0", id: 15, method: "tools/call", params },
+          { secret: SECRET },
+        ) as never,
+      );
+      const corps = (await res.json()) as { error: { code: number } };
+      expect(corps.error.code).toBe(-32602);
+    }
+    expect(appelMock.executerAppel).not.toHaveBeenCalled();
   });
 });
 

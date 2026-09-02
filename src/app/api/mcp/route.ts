@@ -32,19 +32,22 @@
  *    lecture, pour qu'aucun appel ne parte au SSG. Contrat d'ADR 0026 : ne pas
  *    toucher à cette chaîne magique sans la propager.
  *
- * ═══ CE QUE CETTE ROUTE NE FAIT PAS ENCORE ═══
+ * ═══ CE QUE CETTE ROUTE SERT ═══
  *
- * Elle ne sert **aucun outil**. Les cinq outils de lecture sont le lot 4b ; ce
- * lot-ci pose la porte, sa serrure et ses gardes. `tools/list` rend donc une
- * liste **vide, et le dit** — un adaptateur qui prétendrait servir ce qu'il n'a
- * pas ferait échouer le socle plus loin, avec un symptôme qui ne le désignerait
- * pas.
+ * Le lot 4a a posé la porte, sa serrure et ses gardes. Le lot 4b apporte les
+ * outils : `tools/list` publie le registre (`src/server/mcp/registre.ts`),
+ * `tools/call` exécute un outil par `src/server/mcp/appel.ts`, et
+ * `axionia/manifest` rend le manifeste que le socle épingle par empreinte.
+ * Tout passe par la même serrure ; rien n'est servi sans elle.
  */
 
 import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 
 import { checkRateLimit } from "@/lib/rate-limit";
+import { executerAppel } from "@/server/mcp/appel";
+import { construireManifeste } from "@/server/mcp/manifeste";
+import { outilsPublies } from "@/server/mcp/registre";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -101,6 +104,66 @@ interface EnveloppeJsonRpc {
   id?: unknown;
   method?: unknown;
   params?: unknown;
+}
+
+/** Le champ `_meta` de `tools/call` : des identifiants OPAQUES, pour le journal. */
+function metaDAppel(params: Readonly<Record<string, unknown>>): {
+  requestId: string | null;
+  principal: string | null;
+} {
+  const meta = params["_meta"];
+  const lire = (cle: string): string | null => {
+    if (typeof meta !== "object" || meta === null) return null;
+    const valeur = (meta as Record<string, unknown>)[cle];
+    return typeof valeur === "string" ? valeur : null;
+  };
+  return { requestId: lire("ops/requestId"), principal: lire("ops/principal") };
+}
+
+/**
+ * `tools/call` — la forme MCP : `params.name`, `params.arguments`, `params._meta`.
+ *
+ * Un outil inconnu ou une entrée hors schéma est une ERREUR DE PROTOCOLE
+ * (-32602, avec le code et les champs fautifs dans `data`) ; une source en
+ * panne ou une sortie trop large est une ERREUR D'EXÉCUTION, rendue dans le
+ * résultat avec `isError: true` — c'est la distinction de la révision
+ * 2025-06-18, et le socle n'a pas à deviner laquelle des deux il lit.
+ */
+async function appelerUnOutil(id: string | number | null, params: unknown): Promise<Response> {
+  if (typeof params !== "object" || params === null || Array.isArray(params)) {
+    return erreurJsonRpc(id, -32602, "`params` doit être un objet portant `name`");
+  }
+  const p = params as Readonly<Record<string, unknown>>;
+  const nom = p["name"];
+  if (typeof nom !== "string" || nom.length === 0) {
+    return erreurJsonRpc(id, -32602, "`params.name` doit être une chaîne non vide");
+  }
+  const resultat = await executerAppel(nom, p["arguments"], metaDAppel(p));
+
+  if (resultat.ok) {
+    return resultatJsonRpc(id, {
+      content: [{ type: "text", text: JSON.stringify(resultat.sortie) }],
+      structuredContent: resultat.sortie,
+      isError: false,
+    });
+  }
+  if (resultat.code === "tool_not_found" || resultat.code === "invalid_input") {
+    return Response.json({
+      jsonrpc: "2.0",
+      id,
+      error: {
+        code: -32602,
+        message: resultat.message,
+        data: { code: resultat.code, details: resultat.details ?? [] },
+      },
+    });
+  }
+  const erreur = { code: resultat.code, message: resultat.message };
+  return resultatJsonRpc(id, {
+    content: [{ type: "text", text: JSON.stringify(erreur) }],
+    structuredContent: erreur,
+    isError: true,
+  });
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
@@ -167,10 +230,15 @@ export async function POST(req: NextRequest): Promise<Response> {
       });
 
     case "tools/list":
-      // ⚠️ VIDE, ET CE N'EST PAS UNE PANNE. Les cinq outils de lecture sont le
-      //    lot 4b. Un adaptateur qui annoncerait des outils qu'il n'a pas ferait
-      //    échouer le socle à l'appel, avec un symptôme qui ne le désigne pas.
-      return resultatJsonRpc(id, { tools: [] });
+      return resultatJsonRpc(id, { tools: outilsPublies() });
+
+    case "tools/call":
+      return appelerUnOutil(id, enveloppe.params);
+
+    case "axionia/manifest":
+      // Le document que le socle épingle (adapters.lock.json). Derrière la même
+      // serrure que le reste : un manifeste liste des outils et leurs schémas.
+      return resultatJsonRpc(id, { manifest: construireManifeste() });
 
     case "ping":
       return resultatJsonRpc(id, {});

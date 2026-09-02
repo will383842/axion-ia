@@ -98,6 +98,8 @@
     "contrast:check": "tsx scripts/check-contrast.ts",
     "radius:check": "tsx scripts/check-radius.ts",
     "bundle:check": "size-limit",
+    "mcp:manifeste": "tsx scripts/mcp/ecrire-manifeste.ts",
+    "mcp:fixtures": "tsx scripts/mcp/ecrire-fixtures-max.ts",
     "bundle:analyze": "ANALYZE=true next build",
     "linkcheck": "linkinator http://localhost:3000 --recurse --silent",
     "schemacheck": "tsx scripts/check-schema.ts",
