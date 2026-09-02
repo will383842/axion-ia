@@ -273,6 +273,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/editorial/plan-production-pdf.tsx",
   // ── Workers & santé : rétention de preuve d'envoi, alertes.
   "src/server/email/health.ts",
+  // ── Liste de suppression (audit e-mails 2026-09-02) : un envoi retenu
+  //    (adresse à rebond dur, désabonnement) lève une alerte console via
+  //    `alertes-service`, comme la santé ci-dessus — import DYNAMIQUE au point
+  //    d'usage, pour ne pas charger le domaine (et next-auth derrière lui) dans
+  //    tout ce qui enfile un e-mail. Même plomberie d'alerte que `health.ts` ;
+  //    au troisième emprunteur, sortir `creerOuDedup` vers une zone neutre.
+  "src/server/email/suppression.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",
