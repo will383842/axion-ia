@@ -309,6 +309,15 @@ export const CAREERS_IMAGES: Record<string, CareerImage> = {
     byName: "James Kovin",
     byUrl: "https://unsplash.com/@james2k",
   },
+  // Seule offre du pôle média restée sans image : elle servait CAREERS_HERO,
+  // une photo de réunion en open space — pour une mission solo à distance,
+  // jusque dans le champ `image` du JobPosting vu par Google for Jobs.
+  "monteur-video-freelance-distance": {
+    url: "https://images.unsplash.com/photo-1613909207039-6b173b755cc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxmcmVlbGFuY2UlMjB2aWRlbyUyMGVkaXRvciUyMGhvbWUlMjBkZXNrJTIwaGVhZHBob25lc3xlbnwxfDB8fHwxNzg4MzM1NzAyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "monteur vidéo au travail sur son poste de montage",
+    byName: "Faizur Rehman",
+    byUrl: "https://unsplash.com/@fazurrehman",
+  },
   "charge-relations-presse": {
     url: "https://images.unsplash.com/photo-1635847870914-3d79036809b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxwcmVzcyUyMGNvbmZlcmVuY2UlMjBtaWNyb3Bob25lcyUyMGpvdXJuYWxpc3RzfGVufDF8MHx8fDE3ODEwMTAwMTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
     alt: "a large group of people in a room with cameras",
