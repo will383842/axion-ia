@@ -14,13 +14,13 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     emailLog: { findFirst: (...a: unknown[]) => findFirst(...a) },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => findUnique(...a) },
+    emailOpposition: { findUnique: (...a: unknown[]) => oppositionFindUnique(...a) },
   },
 }));
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   creerOuDedup: (...a: unknown[]) => creerOuDedup(...a),
 }));
-const estOpposee = vi.fn();
-vi.mock("./opposition", () => ({ estOpposee: (...a: unknown[]) => estOpposee(...a) }));
+const oppositionFindUnique = vi.fn();
 
 import { verdictAvantEnvoi, signalerRetenue } from "./suppression";
 
@@ -28,7 +28,7 @@ beforeEach(() => {
   findFirst.mockReset().mockResolvedValue(null);
   findUnique.mockReset().mockResolvedValue(null);
   creerOuDedup.mockReset().mockResolvedValue(null);
-  estOpposee.mockReset().mockResolvedValue(false);
+  oppositionFindUnique.mockReset().mockResolvedValue(null);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
@@ -119,7 +119,7 @@ describe("verdictAvantEnvoi — désabonnement", () => {
   });
 
   it("🔴 lot 1b : une opposition à la prospection retient un envoi marketing", async () => {
-    estOpposee.mockResolvedValue(true);
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
     const v = await verdictAvantEnvoi("oppose@client.fr", {
       template: "campagne-x",
       marketing: true,
@@ -128,13 +128,13 @@ describe("verdictAvantEnvoi — désabonnement", () => {
   });
 
   it("l'opposition ne retient PAS un envoi transactionnel (facture, convocation)", async () => {
-    estOpposee.mockResolvedValue(true);
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
     const v = await verdictAvantEnvoi("oppose@client.fr", {
       template: "qualiopi-convocation",
       marketing: false,
     });
     expect(v).toEqual({ retenu: false });
-    expect(estOpposee).not.toHaveBeenCalled();
+    expect(oppositionFindUnique).not.toHaveBeenCalled();
   });
 
   it("un abonné actif ou inconnu passe", async () => {
