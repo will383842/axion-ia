@@ -20,7 +20,7 @@ import {
   unarchiveCampaign,
   deleteCampaignPermanently,
 } from "@/server/actions/content-gen/coverage";
-import { ConfirmSubmitButton } from "../../_v2/ConfirmSubmitButton";
+import { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { Pause, RotateCcw } from "lucide-react";
 import {
@@ -252,13 +252,13 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                   </button>
                 </form>
                 <form action={cancelAll}>
-                  <button
-                    type="submit"
+                  <ConfirmSubmitButton
                     className="admin-button-ghost admin-button-ghost-danger"
                     title="Annule TOUS les contenus non publiés — y compris ceux en relecture ou approuvés"
+                    confirmMessage={`Tout annuler sur « ${campaign.name} » ? Les contenus en file, en cours, en relecture ET approuvés seront annulés. Les articles déjà publiés sont conservés.`}
                   >
                     Tout annuler
-                  </button>
+                  </ConfirmSubmitButton>
                 </form>
               </>
             ) : null}

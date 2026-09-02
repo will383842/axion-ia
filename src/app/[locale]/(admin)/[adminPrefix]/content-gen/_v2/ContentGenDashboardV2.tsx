@@ -34,6 +34,7 @@ import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import { regenerateTier1Corpus } from "@/server/actions/content-gen/regenerate";
 import { getCityCoverageProgress, getOrchestratorStats } from "@/server/actions/content-gen/geo";
 import type { ContentType, SearchIntent } from "../../../../../../../prisma/generated/client";
+import { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";
 
 interface Props {
   adminPrefix: string;
@@ -155,9 +156,12 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               style={{ width: 120 }}
             />
           </label>
-          <AdminButton type="submit" iconAfter={ArrowRight}>
-            Régénérer le lot tier-1
-          </AdminButton>
+          <ConfirmSubmitButton
+            className="admin-button"
+            confirmMessage="Régénérer le lot d'articles tier-1 saisi ? Chaque article est réécrit par l'IA (appel payant) puis republié à la même adresse, étalé par la fenêtre de publication et le plafond quotidien."
+          >
+            Régénérer le lot tier-1 <ArrowRight size={14} aria-hidden="true" />
+          </ConfirmSubmitButton>
         </form>
       </AdminCard>
 
