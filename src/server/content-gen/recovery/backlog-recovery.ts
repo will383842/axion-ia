@@ -95,6 +95,50 @@ export interface RecoveryOutcome {
   readonly closed: number;
 }
 
+/**
+ * Préfixe commun des motifs écrits par `resolveStuckClosure`.
+ *
+ * Il sert de marqueur : un job `failed` dont le message commence ainsi a été
+ * CLOS par le balayage, pas relancé. `requeuedTodayWhere` s'en sert pour ne pas
+ * le compter comme une dépense du jour. Une seule définition, dérivée des deux
+ * côtés — la recopier ailleurs recréerait le fantôme.
+ */
+export const STUCK_CLOSURE_PREFIX = "Job figé clos automatiquement : ";
+
+/**
+ * Clause Prisma « jobs RELANCÉS depuis `startOfDay` », partagée par le drain
+ * (`alreadyToday`) et par l'orchestrateur (`requeuedTodayAll`).
+ *
+ * 🔴 2026-09-02 — le fantôme qui a décalé la reprise de 08:15 à 09:45 UTC.
+ *
+ * L'ancien comptage lisait `retryCount > 0 AND updatedAt >= minuit`, sans
+ * filtre de statut, avec cette justification : « un job relancé puis re-tombé
+ * en échec doit rester compté ». Juste — mais un job CLOS ce jour-là porte
+ * exactement la même signature : l'arbitrage manuel du 02/09 a passé en
+ * `cancelled` un job à `retryCount = 2`, et le budget global l'a compté comme
+ * une relance (6/15 consommés au lieu de 5). Idem pour les clôtures du balayage
+ * (`closeStuckJob`) : 21 jobs clos `failed` le 01/09, tous à `retryCount = 3`,
+ * tous comptés comme des relances du jour.
+ *
+ * Ce qui distingue une relance d'une clôture, en base :
+ *  - `cancelled` n'est JAMAIS l'issue d'une relance (queued → running →
+ *    published / needs_review / quarantined / failed) ;
+ *  - un `failed` de clôture porte le motif `STUCK_CLOSURE_PREFIX` ; un `failed`
+ *    de relance porte l'erreur du provider.
+ * Un `failed` d'arbitrage manuel n'existe pas (l'arbitrage écrit `cancelled`).
+ *
+ * La mesure reste approchée par excès pour tout le reste, qui est le bon côté
+ * pour une garde de dépense.
+ */
+export function requeuedTodayWhere(startOfDay: Date) {
+  return {
+    retryCount: { gt: 0 },
+    updatedAt: { gte: startOfDay },
+    status: { not: "cancelled" },
+    NOT: { status: "failed", errorMessage: { startsWith: STUCK_CLOSURE_PREFIX } },
+  } as const;
+}
+
 const MS_PER_MINUTE = 60_000;
 
 /**
@@ -178,12 +222,12 @@ export async function drainFailedJobs(
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
 
   // Plafond quotidien des relances. Un job relancé porte `retryCount > 0` et un
-  // `updatedAt` du jour. Volontairement SANS filtre de statut : un job relancé
-  // puis re-tombé en échec doit rester compté, sinon un provider durablement
-  // dégradé ferait boucler la reprise bien au-delà du plafond. La mesure est
-  // approchée par excès, ce qui est le bon côté pour une garde de dépense.
+  // `updatedAt` du jour. Un job relancé puis re-tombé en échec reste compté,
+  // sinon un provider durablement dégradé ferait boucler la reprise bien
+  // au-delà du plafond — mais un job CLOS ce jour-là n'est pas une relance,
+  // cf. `requeuedTodayWhere`.
   const alreadyToday = await prisma.contentGenJob.count({
-    where: { retryCount: { gt: 0 }, updatedAt: { gte: startOfDayUtc } },
+    where: requeuedTodayWhere(startOfDayUtc),
   });
   const dailyRoom = Math.max(0, settings.maxPerDay - alreadyToday);
   if (dailyRoom === 0) return { requeued: 0, skipped: 0, closed: 0 };
@@ -335,7 +379,7 @@ export function resolveStuckClosure(
     return {
       status: "failed",
       reason:
-        `Job figé clos automatiquement : ${job.retryCount} tentative(s) pour un plafond de ` +
+        `${STUCK_CLOSURE_PREFIX}${job.retryCount} tentative(s) pour un plafond de ` +
         `${settings.maxRetries}. Plus aucune reprise n'est due à ce job.`,
     };
   }
@@ -343,7 +387,7 @@ export function resolveStuckClosure(
     return {
       status: "cancelled",
       reason:
-        "Job figé clos automatiquement : le sujet qu'il porte est périmé, le relancer " +
+        `${STUCK_CLOSURE_PREFIX}le sujet qu'il porte est périmé, le relancer ` +
         "republierait une actualité dépassée.",
     };
   }

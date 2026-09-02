@@ -31,6 +31,7 @@ import {
 import {
   DEFAULT_RECOVERY_SETTINGS,
   drainFailedJobs,
+  requeuedTodayWhere,
   sweepStrandedQualityJobs,
   sweepStuckJobs,
   type BacklogRecoverySettings,
@@ -837,15 +838,16 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   startOfDayUtcGlobal.setUTCHours(0, 0, 0, 0);
   // Deux natures de consommation à compter : les jobs CRÉÉS aujourd'hui
   // (production neuve) et les jobs RELANCÉS aujourd'hui (reprise). La clause
-  // `createdAt` exclut du second comptage les jobs déjà comptés au premier.
+  // `createdAt` exclut du second comptage les jobs déjà comptés au premier ;
+  // `requeuedTodayWhere` en exclut les jobs seulement CLOS ce jour (fantôme du
+  // 2026-09-02 : un job clos à la main comptait comme une relance).
   const [createdTodayAll, requeuedTodayAll] = await Promise.all([
     prisma.contentGenJob.count({
       where: { createdAt: { gte: startOfDayUtcGlobal }, status: { not: "cancelled" } },
     }),
     prisma.contentGenJob.count({
       where: {
-        retryCount: { gt: 0 },
-        updatedAt: { gte: startOfDayUtcGlobal },
+        ...requeuedTodayWhere(startOfDayUtcGlobal),
         createdAt: { lt: startOfDayUtcGlobal },
       },
     }),

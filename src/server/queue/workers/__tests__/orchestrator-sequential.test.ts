@@ -65,7 +65,11 @@ vi.mock("@/server/content-gen/scheduler/anti-burst", async () => {
 });
 
 // Reprise du retard (2026-08-15) — hors sujet ici : neutralisée.
-vi.mock("@/server/content-gen/recovery/backlog-recovery", () => ({
+vi.mock("@/server/content-gen/recovery/backlog-recovery", async (importOriginal) => ({
+  // La clause de comptage `requeuedTodayWhere` est PURE : on garde la vraie,
+  // sinon le mock ferait passer l'orchestrateur sur une fonction absente
+  // (fantôme du 2026-09-02).
+  ...(await importOriginal<typeof import("@/server/content-gen/recovery/backlog-recovery")>()),
   DEFAULT_RECOVERY_SETTINGS: {
     enabled: false,
     maxPerTick: 0,
