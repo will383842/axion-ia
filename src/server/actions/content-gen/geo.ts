@@ -13,6 +13,7 @@ import { z } from "zod";
 import type { ContentGenJobStatus } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { REGIONS } from "@/content/regions";
+import { VILLES_CORE } from "@/content/villes/core";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig } from "./_settings";
 
@@ -38,19 +39,41 @@ export interface RegionGeoStat {
   readonly pendingReviewJobs: number;
 }
 
+const REGION_BY_VILLE: ReadonlyMap<string, string> = new Map(
+  VILLES_CORE.map((v) => [v.slug, v.region] as const),
+);
+
+/**
+ * Région d'ancrage d'un job qui ne porte qu'une ville.
+ *
+ * Privée au module : ce fichier est `"use server"`, où tout export doit être
+ * une fonction asynchrone (Gate B du 2026-09-02 : « Server Actions must be
+ * async functions »).
+ */
+function regionOfVille(villeSlug: string | null | undefined): string | null {
+  if (!villeSlug) return null;
+  return REGION_BY_VILLE.get(villeSlug) ?? null;
+}
+
 export async function listRegionGeoStats(): Promise<ReadonlyArray<RegionGeoStat>> {
   await requireAdmin(); // Pass B fix P0-4
+  // 🔴 2026-09-02 — le cockpit géo affichait 0 partout (« 0 contenu publié »
+  // en tête, 18 régions à 0/0/0/0) à côté d'un KPI « Publiés total 258 ».
+  // Les jobs ne portent que `anchorVilleSlug` : `anchorRegionSlug` n'est écrit
+  // que pour une campagne à `anchorRegionSlugs`, ce qu'aucune campagne prod
+  // n'a. La région se DÉRIVE donc de la ville quand elle n'est pas portée.
   const grouped = await prisma.contentGenJob.groupBy({
-    by: ["anchorRegionSlug", "status"],
+    by: ["anchorRegionSlug", "anchorVilleSlug", "status"],
     _count: { _all: true },
-    where: { anchorRegionSlug: { not: null } },
+    where: { OR: [{ anchorRegionSlug: { not: null } }, { anchorVilleSlug: { not: null } }] },
   });
   const byRegion = new Map<string, Record<string, number>>();
   for (const row of grouped) {
-    if (!row.anchorRegionSlug) continue;
-    const map = byRegion.get(row.anchorRegionSlug) ?? {};
-    map[row.status] = row._count._all;
-    byRegion.set(row.anchorRegionSlug, map);
+    const region = row.anchorRegionSlug ?? regionOfVille(row.anchorVilleSlug);
+    if (!region) continue;
+    const map = byRegion.get(region) ?? {};
+    map[row.status] = (map[row.status] ?? 0) + row._count._all;
+    byRegion.set(region, map);
   }
   return REGIONS.map((r) => {
     const stats = byRegion.get(r.slug) ?? {};
@@ -162,7 +185,10 @@ export async function getOrchestratorStats(): Promise<OrchestratorStats> {
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const [activeCampaigns, dailyPlan] = await Promise.all([
     prisma.coverageCampaign.findMany({
-      where: { status: { in: ["running", "paused"] } },
+      // 2026-09-02 — sans `archivedAt: null`, le tableau de bord annonçait
+      // « 5 actives » (2 en cours + 3 en pause ARCHIVÉES) contre 2 partout
+      // ailleurs. `listCampaigns` respecte l'archivage ; ce compteur aussi.
+      where: { status: { in: ["running", "paused"] }, archivedAt: null },
       orderBy: { createdAt: "desc" },
     }),
     prisma.contentGenJob.count({

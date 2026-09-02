@@ -150,6 +150,29 @@ export function requeuedTodayWhere(startOfDay: Date) {
   } as const;
 }
 
+/**
+ * Ce que le système a CONSOMMÉ du plafond quotidien depuis `startOfDay` :
+ * les jobs créés (production neuve, annulations exclues) + les jobs relancés
+ * (reprise, jobs créés un autre jour). Une seule définition, lue par
+ * l'orchestrateur (budget du tick) et par le monitoring (la chaîne est-elle
+ * à l'arrêt, ou simplement à son plafond ?).
+ */
+export async function countConsumedToday(startOfDay: Date): Promise<{
+  readonly createdToday: number;
+  readonly requeuedToday: number;
+  readonly consumedToday: number;
+}> {
+  const [createdToday, requeuedToday] = await Promise.all([
+    prisma.contentGenJob.count({
+      where: { createdAt: { gte: startOfDay }, status: { not: "cancelled" } },
+    }),
+    prisma.contentGenJob.count({
+      where: { ...requeuedTodayWhere(startOfDay), createdAt: { lt: startOfDay } },
+    }),
+  ]);
+  return { createdToday, requeuedToday, consumedToday: createdToday + requeuedToday };
+}
+
 /** Un `failed` écrit par `closeStuckJob` : clos par le balayage, jamais exécuté. */
 export const STUCK_CLOSURE_FAILED_WHERE = {
   status: "failed",

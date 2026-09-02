@@ -78,6 +78,17 @@ interface Props {
   adminPrefix?: string;
 }
 
+/** « 6 h 02 min », « 21 s » — pour l'écart création → fin d'un job. */
+function formatDureeHumaine(ms: number): string {
+  if (!Number.isFinite(ms) || ms < 0) return "—";
+  const s = Math.round(ms / 1000);
+  if (s < 60) return `${s} s`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m / 60);
+  return `${h} h ${String(m % 60).padStart(2, "0")} min`;
+}
+
 export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
   async function retry() {
     "use server";
@@ -154,8 +165,17 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             <strong>Terminé :</strong> {formatDateFr(job.completedAt)}
           </li>
           <li>
-            <strong>Durée :</strong>{" "}
+            {/* `durationMs` ne mesure que l'appel de génération ; `completedAt`
+                est réécrit à la publication (drip-window 08:00) : 21 s de
+                génération pour 6 h d'attente, les deux sont vrais. */}
+            <strong>Durée de génération (IA) :</strong>{" "}
             {job.durationMs ? `${(job.durationMs / 1000).toFixed(1)} s` : "—"}
+          </li>
+          <li>
+            <strong>Temps total (création → fin) :</strong>{" "}
+            {job.startedAt && job.completedAt
+              ? formatDureeHumaine(job.completedAt.getTime() - job.startedAt.getTime())
+              : "—"}
           </li>
         </ul>
       </AdminCard>
@@ -201,8 +221,13 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             )}
           </li>
           <li>
-            <strong>Jetons :</strong> {job.tokensInput ?? 0} en entrée, {job.tokensOutput ?? 0} en
-            sortie
+            {/* Le worker écrit `tokensInput: 0` (détail dans CostLedger) : 0 n'est
+                pas une mesure, ne pas l'afficher comme telle. */}
+            <strong>Jetons :</strong>{" "}
+            {job.tokensInput
+              ? `${job.tokensInput} en entrée, `
+              : "entrée non mesurée (voir Coûts), "}
+            {job.tokensOutput ?? 0} en sortie
           </li>
           <li>
             <strong>Coût :</strong> {job.costUsd ? `$${Number(job.costUsd).toFixed(4)}` : "—"}

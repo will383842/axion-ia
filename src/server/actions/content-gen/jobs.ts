@@ -370,10 +370,14 @@ export async function cancelJob(id: string): Promise<void> {
 export async function getFailedJobsCount(): Promise<number> {
   // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde.
   await requireAdmin();
+  // 2026-09-02 — la console affichait trois chiffres pour « les échecs » :
+  // 1 453 (badge, jobs de campagne seulement), 1 462 (`failed` nus) et 1 482
+  // (bouton de suppression, échecs + quarantaines). Le badge excluait sans
+  // raison les jobs hors campagne (RSS, enfilage direct) : il s'aligne sur le
+  // périmètre du bouton qu'il annonce.
   return prisma.contentGenJob.count({
     where: {
       status: { in: ["failed", "quarantined_critical", "quarantined_factcheck"] },
-      campaignId: { not: null },
     },
   });
 }

@@ -43,9 +43,12 @@ export function GeoEventsBanner() {
   useEffect(() => {
     const es = new EventSource("/api/content-gen/geo-events", { withCredentials: true });
     es.onopen = () => setConnected(true);
+    // 2026-09-02 — `es.close()` ici figeait le bandeau sur « déconnecté » au
+    // premier incident (coupure proxy, délai serveur de 10 min) : EventSource
+    // sait se reconnecter seul, on le laisse faire. L'état repasse à
+    // « connecté » via `onopen` à la reprise.
     es.onerror = () => {
       setConnected(false);
-      es.close();
     };
     es.onmessage = (e) => {
       try {

@@ -27,6 +27,13 @@ import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export type CandidaturesView = "all" | "monteur" | "memo" | "standard";
 
+/**
+ * Ce qu'on affiche à la place d'une identité que le rôle courant n'a pas le
+ * droit d'ouvrir. Un tiret cadratin, pas une chaîne vide : une cellule vide se
+ * lit comme « ce candidat n'a pas donné son nom », ce qui est faux.
+ */
+const MASQUE = "—";
+
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouvelle",
   reviewing: "En revue",
@@ -129,12 +136,12 @@ export function ApplicationsV2({
       header: "Candidat",
       cell: (a) => (
         <>
-          {a.contactName}
+          {a.contactName ?? MASQUE}
           {a.needsAttention ? <span className="admin-meta-small"> · à traiter</span> : null}
         </>
       ),
     },
-    { key: "email", header: "Email", cell: (a) => a.contactEmail },
+    { key: "email", header: "Email", cell: (a) => a.contactEmail ?? MASQUE },
     { key: "offer", header: "Offre", cell: (a) => a.offerLabel },
     {
       key: "cv",

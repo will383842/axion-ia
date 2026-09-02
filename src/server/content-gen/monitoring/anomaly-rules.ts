@@ -116,6 +116,19 @@ export interface StallCounters {
    * 24 h est aussi une panne.
    */
   readonly productiveDay: number;
+  /**
+   * Nombre de lancements que le plafond quotidien AUTORISAIT sur la fenêtre
+   * (0 = le budget du jour était consommé, l'orchestrateur n'avait rien à
+   * lancer).
+   *
+   * 🔴 2026-09-02 — sans ce compteur, la règle « rien lancé depuis 4 h »
+   * hurlait tous les matins : la rafale RSS de minuit consomme 5 des 15
+   * contenus du jour, le lissage horaire n'en rouvre pas avant 08:00, et à
+   * 04:00 la console affichait « Chaîne de production à l'arrêt » sur une
+   * chaîne parfaitement saine qui attendait son budget. Un orchestrateur qui
+   * n'a pas le droit de lancer n'est pas un orchestrateur mort.
+   */
+  readonly budgetRoom: number;
 }
 
 export type StallReason =
@@ -131,7 +144,7 @@ export type StallReason =
  */
 export function evaluatePipelineStall(c: StallCounters): StallReason | null {
   if (c.runningCampaigns <= 0) return null;
-  if (c.recentJobs === 0) return "rien_lance";
+  if (c.recentJobs === 0) return c.budgetRoom > 0 ? "rien_lance" : null;
   if (c.createdDay >= STALL_RULES.dayWindowMinCreated && c.productiveDay === 0) {
     return "tourne_a_vide";
   }

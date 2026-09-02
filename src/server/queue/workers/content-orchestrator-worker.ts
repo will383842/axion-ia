@@ -22,17 +22,20 @@ import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { resolveIntentDistribution } from "@/server/content-gen/intent-distribution-schema";
 import {
+  DEFAULT_DAILY_GENERATION_CAP,
   computeAntiBurstSchedule,
   computeCampaignTickBudget,
   msSinceStartOfDay,
+  resolveCapPerDay,
+  type DailyGenerationCap,
 } from "@/server/content-gen/scheduler/anti-burst";
 // Fix 2026-08-15 — reprise du retard (drain des échecs transitoires + déblocage
 // des jobs figés) et lecture fail-safe du kill switch.
 import {
   DEFAULT_RECOVERY_SETTINGS,
   computeRecoveryRoom,
+  countConsumedToday,
   drainFailedJobs,
-  requeuedTodayWhere,
   sweepStrandedQualityJobs,
   sweepStuckJobs,
   type BacklogRecoverySettings,
@@ -72,20 +75,10 @@ interface BatchSettings {
   readonly antiBurstEnabled?: boolean;
 }
 
-/**
- * Plafond quotidien GLOBAL de génération, tous canaux confondus (décision Will
- * 2026-08-15, clé `ContentGenConfig.daily_generation_cap`).
- *
- * Avant, la reprise du retard et la production neuve avaient chacune leur
- * budget : ils s'additionnaient. Le plafond voulu porte sur le TOTAL — c'est le
- * nombre de contenus qu'on accepte de payer dans une journée, peu importe qu'ils
- * soient neufs ou rejoués.
- */
-interface DailyGenerationCap {
-  readonly maxPerDay: number;
-}
-
-const DEFAULT_DAILY_GENERATION_CAP: DailyGenerationCap = { maxPerDay: 20 };
+// `DailyGenerationCap` / `DEFAULT_DAILY_GENERATION_CAP` vivent dans
+// `scheduler/anti-burst.ts` depuis le 2026-09-02 : le monitoring lit le même
+// plafond. Avant, la reprise et la production neuve avaient chacune leur
+// budget et s'additionnaient ; le plafond porte sur le TOTAL payé par jour.
 
 // L'interface locale `KillSwitchState` a été retirée le 2026-08-15 : l'état du
 // kill switch est désormais lu par `readKillSwitchFailSafe`, qui porte son
@@ -842,24 +835,9 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // `createdAt` exclut du second comptage les jobs déjà comptés au premier ;
   // `requeuedTodayWhere` en exclut les jobs seulement CLOS ce jour (fantôme du
   // 2026-09-02 : un job clos à la main comptait comme une relance).
-  const [createdTodayAll, requeuedTodayAll] = await Promise.all([
-    prisma.contentGenJob.count({
-      where: { createdAt: { gte: startOfDayUtcGlobal }, status: { not: "cancelled" } },
-    }),
-    prisma.contentGenJob.count({
-      where: {
-        ...requeuedTodayWhere(startOfDayUtcGlobal),
-        createdAt: { lt: startOfDayUtcGlobal },
-      },
-    }),
-  ]);
-  const consumedToday = createdTodayAll + requeuedTodayAll;
-  // Défensif : une valeur de configuration absente ou aberrante ne doit pas
-  // produire un budget NaN, qui gèlerait silencieusement toute la production.
-  const capPerDay =
-    Number.isFinite(dailyCap?.maxPerDay) && (dailyCap?.maxPerDay ?? 0) > 0
-      ? dailyCap.maxPerDay
-      : DEFAULT_DAILY_GENERATION_CAP.maxPerDay;
+  const { requeuedToday: requeuedTodayAll, consumedToday } =
+    await countConsumedToday(startOfDayUtcGlobal);
+  const capPerDay = resolveCapPerDay(dailyCap);
   const allowedNow = computeCampaignTickBudget({
     dailyTarget: capPerDay,
     createdToday: consumedToday,

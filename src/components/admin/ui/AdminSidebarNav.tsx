@@ -22,6 +22,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { HoverPrefetchLink } from "@/components/admin/ui/HoverPrefetchLink";
 import {
   Wallet,
   Inbox,
@@ -549,7 +550,7 @@ export function AdminSidebarNav({
     const iconSize = level >= 1 ? 14 : 16;
     return (
       <li key={item.href}>
-        <Link
+        <HoverPrefetchLink
           href={item.href}
           {...(item.external === true ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           {...(active ? { "aria-current": "page" } : {})}
@@ -638,7 +639,7 @@ export function AdminSidebarNav({
               ) : null}
             </>
           ) : null}
-        </Link>
+        </HoverPrefetchLink>
       </li>
     );
   };

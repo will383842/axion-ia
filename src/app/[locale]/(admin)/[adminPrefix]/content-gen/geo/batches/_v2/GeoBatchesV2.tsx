@@ -15,30 +15,21 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import {
+  perimetreCampagneLabelFr,
+  statutCampagneLabelFr,
+  statutCampagneTone,
+} from "@/server/content-gen/shared/campaign-labels";
 
 interface Props {
   adminPrefix: string;
 }
 
-// Track 2 : tonalité du badge dérivée du statut de batch.
-// La colonne « Statut » affichait running / completed / cancelled bruts.
-const STATUT_LOT_LABELS: Record<string, string> = {
-  pending: "En attente",
-  running: "En cours",
-  completed: "Terminé",
-  cancelled: "Annulé",
-  failed: "En échec",
-};
-
-const STATUS_TONE: Record<string, "success" | "warning" | "destructive" | "neutral"> = {
-  done: "success",
-  completed: "success",
-  running: "warning",
-  pending: "warning",
-  active: "warning",
-  failed: "destructive",
-  cancelled: "neutral",
-};
+// 🔴 Cette liste portait sa PROPRE table de statuts (pending / done / active…),
+// dont aucune valeur n'existe dans l'enum `CoverageStatus` réel, et qui
+// ignorait `draft` : un lot fraîchement créé s'affichait « DRAFT », et son
+// périmètre « multi ». Les libellés viennent désormais de la même source que
+// la liste des campagnes (typée sur l'enum, exhaustive à la compilation).
 
 type BatchRow = Awaited<ReturnType<typeof prisma.coverageCampaign.findMany>>[number];
 
@@ -61,14 +52,14 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
         </Link>
       ),
     },
-    { key: "scope", header: "Périmètre", cell: (b) => b.scope },
+    { key: "scope", header: "Périmètre", cell: (b) => perimetreCampagneLabelFr(b.scope) },
     { key: "target", header: "Cible", cell: (b) => b.totalTargetCount },
     {
       key: "status",
       header: "Statut",
       cell: (b) => (
-        <AdminBadge tone={STATUS_TONE[b.status] ?? "neutral"}>
-          {STATUT_LOT_LABELS[b.status] ?? b.status}
+        <AdminBadge tone={statutCampagneTone(b.status)}>
+          {statutCampagneLabelFr(b.status)}
         </AdminBadge>
       ),
     },
@@ -87,19 +78,19 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
         }
         actions={
           <Link href={`${base}/new`} className="admin-button">
-            + Nouveau batch
+            + Nouveau lot
           </Link>
         }
       />
 
       {batches.length === 0 ? (
-        <AdminEmptyState title="Aucun batch — créez-en un." />
+        <AdminEmptyState title="Aucun lot — créez-en un." />
       ) : (
         <AdminTable
           columns={columns}
           rows={batches}
           getRowId={(b) => b.id}
-          caption="Liste des batches géographiques"
+          caption="Liste des lots géographiques"
           rowAction={(b) => (
             <Link
               href={`/fr/${adminPrefix}/content-gen/coverage/${b.id}`}
