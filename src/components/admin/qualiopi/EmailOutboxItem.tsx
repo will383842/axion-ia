@@ -208,9 +208,13 @@ export function EmailOutboxItem({
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-          <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          {/* Lot 3 (2026-09-02) : cette case est l'unique garde-fou avant un
+              envoi irréversible, et elle faisait ~13 px. 24 px pour la case,
+              44 px de hauteur pour le libellé cliquable qui l'entoure. */}
+          <label className="flex min-h-11 items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <input
               type="checkbox"
+              className="h-6 w-6 shrink-0"
               checked={confirmeEnvoi}
               onChange={(e) => setConfirmeEnvoi(e.target.checked)}
               disabled={isPending}

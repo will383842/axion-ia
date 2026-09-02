@@ -92,7 +92,12 @@ export const FENETRE_REBONDS_H = 24;
  */
 export const SEUIL_REBONDS = 1;
 
+/** Un « approuvé » sans envoi au-delà de ce délai est un tombeau (lot 3). */
+export const AGE_APPROUVE_ABANDONNE_MIN = 15;
+
 export interface SanteEmails {
+  /** Lignes de corbeille remises en attente parce que bloquées en « approuvé » (lot 3). */
+  approuvesRemisEnAttente: number;
   echecsRecents: number;
   bloquesEnFile: number;
   /**
@@ -161,6 +166,7 @@ export interface SanteEmails {
  */
 export async function verifierSanteEmails(maintenant: Date = new Date()): Promise<SanteEmails> {
   const resultat: SanteEmails = {
+    approuvesRemisEnAttente: 0,
     echecsRecents: 0,
     bloquesEnFile: 0,
     rebondsRecents: 0,
@@ -271,6 +277,37 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       `Un rebond dur répété sur un même domaine abîme la réputation d'envoi : le traiter.`;
     await leverAlerte("emails_rebonds", titre, message, resultat.rebondsRecents);
     resultat.alertesLevees.push("emails_rebonds");
+  }
+
+  // ── Lot 3 (2026-09-02) — le statut « approuvé » n'a aucun écran ─────────
+  // La transition a_valider → approuve est commitée AVANT la mise en file. Si
+  // le conteneur meurt entre les deux (redéploiement Coolify), la ligne reste
+  // « approuvé » : absente de « En attente », absente de « Traités »,
+  // ni ré-approuvable ni refusable. Un tombeau, et l'email n'est jamais parti.
+  // Le contrôle horaire la remet en attente et le dit.
+  try {
+    const avantApprouve = new Date(maintenant.getTime() - AGE_APPROUVE_ABANDONNE_MIN * 60_000);
+    const remis = await prisma.emailOutbox.updateMany({
+      where: { statut: "approuve", approuveAt: { lt: avantApprouve } },
+      data: { statut: "a_valider", approuveAt: null, approuveById: null },
+    });
+    resultat.approuvesRemisEnAttente = remis.count;
+    if (remis.count > 0) {
+      await leverAlerte(
+        "emails_approuves_abandonnes",
+        `${remis.count} e-mail(s) approuvé(s) jamais partis, remis en attente`,
+        `Ils avaient été approuvés il y a plus de ${AGE_APPROUVE_ABANDONNE_MIN} minutes sans être ` +
+          `mis en file (conteneur redéployé entre l'approbation et l'envoi, ou Redis coupé). Ils sont ` +
+          `de retour dans la corbeille « E-mails à valider » : les relire et les approuver de nouveau.`,
+        remis.count,
+      );
+      resultat.alertesLevees.push("emails_approuves_abandonnes");
+    }
+  } catch (e) {
+    console.error(
+      "[email-sante] balayage des « approuvé » abandonnés impossible :",
+      e instanceof Error ? e.message : String(e),
+    );
   }
 
   if (resultat.bloquesEnFile > 0) {

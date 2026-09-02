@@ -132,6 +132,13 @@ export interface EmailJobData {
    * attache (fail-soft : envoi sans PJ si R2 indisponible).
    */
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+  /**
+   * Objet FORCÉ — lot 2 (2026-09-02). Posé uniquement quand l'admin a modifié
+   * l'objet dans la corbeille de validation. Le worker le préfère à l'objet
+   * calculé par le gabarit. Sans lui, l'objet corrigé était persisté en base,
+   * journalisé « modifié »… et jeté au rendu.
+   */
+  sujet?: string;
 }
 
 // ============================================================

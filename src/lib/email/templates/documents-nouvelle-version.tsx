@@ -4,7 +4,7 @@
 // téléchargement signés (source éditable + PDF) valables ~14 jours.
 // FR canonique.
 
-import { Text, Link, Section } from "@react-email/components";
+import { Text, Button, Link, Section } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -35,9 +35,15 @@ export const documentsNouvelleVersionSubject = (
   return objetCompose("Updated —", `${doc} (${p.interventionLabel ?? ""})`);
 };
 
+// Lot 4 (2026-09-02) : le secondaire écrasait la couleur de fond mais
+// héritait du DÉGRADÉ terracotta de `ctaStyle` — il restait orange. Et les deux
+// « boutons » étaient des <Link> en ligne : pas bulletproof Outlook, et un
+// padding vertical qui ne gonfle pas une boîte en ligne (cible < 44 px).
 const secondaryBtn: React.CSSProperties = {
   ...emailStyles.ctaStyle,
   backgroundColor: emailStyles.COLORS.textMuted,
+  backgroundImage: "none",
+  boxShadow: "none",
   marginLeft: "8px",
 };
 
@@ -75,14 +81,18 @@ export function DocumentsNouvelleVersionEmail({
         <>
           <Section style={{ margin: "8px 0 4px 0" }}>
             {p.sourceUrl ? (
-              <Link href={p.sourceUrl} style={emailStyles.ctaStyle}>
+              <Button href={p.sourceUrl} style={emailStyles.ctaStyle} className="ax-cta">
                 {sourceLabel}
-              </Link>
+              </Button>
             ) : null}
             {p.pdfUrl ? (
-              <Link href={p.pdfUrl} style={p.sourceUrl ? secondaryBtn : emailStyles.ctaStyle}>
+              <Button
+                href={p.pdfUrl}
+                style={p.sourceUrl ? secondaryBtn : emailStyles.ctaStyle}
+                className="ax-cta"
+              >
                 Télécharger le PDF
-              </Link>
+              </Button>
             ) : null}
           </Section>
           <Text
