@@ -32,6 +32,7 @@ import {
   type CityRow,
 } from "@/server/actions/content-gen/cities-coverage";
 import { PALIER_LABELS } from "@/server/content-gen/cities/population-tiers";
+import { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";
 
 interface Props {
   adminPrefix: string;
@@ -194,13 +195,13 @@ export async function CitiesCoverageV2({
         description={`${stats.covered} / ${stats.total} villes couvertes — ${stats.coveragePercent}%`}
         actions={
           <form action={runCitiesSync}>
-            <button
-              type="submit"
+            <ConfirmSubmitButton
               className="admin-button"
               title="Seed idempotent des tables villes (City + ordre de génération) depuis la SSOT + recompute de la couverture depuis les articles publiés"
+              confirmMessage="Synchroniser les villes ? Les tables villes sont resynchronisées depuis la source de vérité et la couverture recalculée depuis les articles publiés. Opération idempotente, mais lourde."
             >
               Synchroniser les villes
-            </button>
+            </ConfirmSubmitButton>
           </form>
         }
       />

@@ -236,6 +236,7 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
       if (slugChanged) revalidatePath(`/fr/actualites/${newSlug}`);
     }
     revalidatePath("/sitemap.xml");
+    revalidatePath("/sitemap-news.xml"); // 2026-09-02 : une news dépubliée restait listée jusqu'à 1 h
     revalidatePath(`${adminBase()}/publications`);
 
     if (article.status === "published" && article.indexationTier === "tier_1_indexable") {
@@ -305,6 +306,7 @@ export async function demoteArticle(articleId: string): Promise<void> {
       revalidatePath(`/fr/blog/${t.slug}`);
       if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
       revalidatePath("/sitemap.xml");
+      revalidatePath("/sitemap-news.xml");
       // Audit indexation 2026-05-15 P0-6 — demote tier-1 → tier-2 = page sort du
       // sitemap indexable. Signal Google `URL_DELETED` pour désindexation rapide
       // (~24h vs ~6 mois en attente naturelle).
@@ -353,6 +355,7 @@ export async function archiveArticle(articleId: string): Promise<void> {
       revalidatePath(`/fr/blog/${t.slug}`);
       if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
       revalidatePath("/sitemap.xml");
+      revalidatePath("/sitemap-news.xml");
       // Audit indexation 2026-05-15 P0-6 — archive → URL retirée du sitemap +
       // status=archived → 410 Gone côté route handler. Signal Google `URL_DELETED`.
       await pingIndexing(article.id, t.slug, article.isNews, "delete");
@@ -400,6 +403,7 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
       revalidatePath(`/fr/blog/${t.slug}`);
       if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
       revalidatePath("/sitemap.xml");
+      revalidatePath("/sitemap-news.xml");
     }
     revalidatePath(`${adminBase()}/publications`);
     await logActivity({
@@ -447,6 +451,7 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
       revalidatePath(`/fr/blog/${t.slug}`);
       if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
       revalidatePath("/sitemap.xml");
+      revalidatePath("/sitemap-news.xml");
       // Audit indexation 2026-05-15 P0-6 — delete = disparition définitive. Signal
       // Google `URL_DELETED` pour désindexation rapide (la table DB est purgée,
       // la page renvoie 404 ; les pages archived renvoient 410, cf. P0-7).
@@ -504,6 +509,7 @@ export async function rollbackArticle(articleId: string): Promise<void> {
       revalidatePath(`/fr/blog/${t.slug}`);
       if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
       revalidatePath("/sitemap.xml");
+      revalidatePath("/sitemap-news.xml");
       // Audit indexation 2026-05-15 P0-6 — rollback published→draft+tier_3 = page
       // sort du sitemap indexable. Signal Google `URL_DELETED`.
       await pingIndexing(article.id, t.slug, article.isNews, "delete");

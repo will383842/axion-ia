@@ -28,7 +28,7 @@ import {
   parseCampaignListView,
   type CampaignListView,
 } from "@/server/actions/content-gen/coverage-status-groups";
-import { ConfirmSubmitButton } from "./ConfirmSubmitButton";
+import { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import {
   SERVICE_SECTOR_LABELS,

@@ -143,6 +143,9 @@ const CODES_ATTENDUS: string[] = [
   "emails_sante_non_mesurable",
   "emails_rebonds",
   "emails_rebonds_non_detectes",
+  // Lot 3 (audit e-mails 2026-09-02) : le balayage horaire des e-mails restés
+  // « approuvés » sans être partis.
+  "emails_approuves_abandonnes",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

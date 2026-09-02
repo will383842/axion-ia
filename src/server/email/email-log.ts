@@ -84,6 +84,29 @@ export async function journaliserEnAttente(entree: EntreeJournal): Promise<void>
   }
 }
 
+/**
+ * Tentative ratée NON définitive (lot 2) : la ligne reste « en attente », on y
+ * note la tentative et le motif. Le statut « échec » est réservé au dernier
+ * essai — `cloturerJournal`.
+ */
+export async function noterTentativeEchouee(
+  tentative: EntreeJournal & { attempts: number; error: string },
+): Promise<void> {
+  if (estStub()) return;
+  if (tentative.jobId === undefined) return;
+  try {
+    await prisma.emailLog.updateMany({
+      where: { jobId: tentative.jobId, status: EmailLogStatus.pending },
+      data: { attempts: tentative.attempts, error: tentative.error },
+    });
+  } catch (e) {
+    console.error(
+      `[email-log] tentative ratée non consignée (${tentative.template} → ${tentative.recipient}) :`,
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+}
+
 export interface ClotureJournal extends EntreeJournal {
   attempts: number;
   status: typeof EmailLogStatus.sent | typeof EmailLogStatus.failed;
@@ -117,8 +140,11 @@ export async function cloturerJournal(cloture: ClotureJournal): Promise<void> {
 
   try {
     if (cloture.jobId !== undefined) {
+      // Lot 2 : on clôt la ligne du job quel que soit son état intermédiaire
+      // (« en attente » avec tentatives comptées), jamais une ligne déjà
+      // « envoyé » — un succès ne se réécrit pas.
       const maj = await prisma.emailLog.updateMany({
-        where: { jobId: cloture.jobId, status: EmailLogStatus.pending },
+        where: { jobId: cloture.jobId, status: { not: EmailLogStatus.sent } },
         data: donnees,
       });
       if (maj.count > 0) return;
