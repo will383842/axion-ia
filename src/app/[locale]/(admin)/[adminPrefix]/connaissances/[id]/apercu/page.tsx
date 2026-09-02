@@ -6,6 +6,7 @@
 
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { isUuid } from "@/lib/is-uuid";
 import { auth } from "@/auth";
 import { getEntryAction } from "@/server/actions/knowledge/get-entry";
 import { getKbTypeMeta } from "@/content/knowledge/types";
@@ -31,6 +32,9 @@ export default async function ConnaissancesApercuPage({ params, searchParams }: 
   const previewLocale = sp.locale === "en" ? "en" : "fr";
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  // Un slug ou un identifiant tronqué n'est pas une entrée : 404, pas 500.
+  if (!isUuid(id)) notFound();
 
   const entry = await getEntryAction({ id });
   if (!entry || entry.deletedAt) notFound();
