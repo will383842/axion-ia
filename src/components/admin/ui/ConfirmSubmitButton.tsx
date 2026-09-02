@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  * Bouton de soumission (dans un <form action={serverAction}>) qui demande une
  * confirmation navigateur AVANT d'exécuter l'action serveur.
  *
- * Né dans `content-gen/coverage` pour la suppression définitive de campagne ;
+ * Né dans l'écran des campagnes de génération pour la suppression définitive ;
  * partagé depuis le 2026-09-02 (audit UI de la console) pour toutes les
  * actions de masse ou irréversibles qui partaient au premier clic :
  * « Relancer tous les échecs » (1 462 jobs), « Approuver / Rejeter en masse »,
