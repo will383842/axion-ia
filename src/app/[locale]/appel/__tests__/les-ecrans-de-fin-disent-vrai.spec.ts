@@ -142,3 +142,39 @@ describe("🔴 jamais de cul-de-sac", () => {
     expect(accompli).not.toContain("·");
   });
 });
+
+describe("🔴 après une action serveur, l'écran REMONTE au message", () => {
+  // Mesuré en prod le 2026-09-02 : la navigation client conserve le défilement.
+  // « C'est réservé » s'ouvrait 325 px au-dessus de l'écran, le bandeau d'erreurs
+  // 990 px au-dessus. Chaque page atteinte par `redirect()` depuis un formulaire
+  // doit porter le composant qui ramène l'écran en haut.
+  const RESERVER = "src/app/[locale]/appel/reserver/page.tsx";
+  const reserver = sansCommentaires(lire(RESERVER));
+
+  it.each([
+    [CONFIRME, confirme, 1],
+    [ANNULER, annuler, 2],
+    [REPORTER, reporter, 2],
+    [RESERVER, reserver, 1],
+  ])("%s rend <RemonterAuMessage> (≥ %i)", (_chemin, source, minimum) => {
+    expect(source).toContain('from "@/components/booking/RemonterAuMessage"');
+    expect(source.match(/<RemonterAuMessage\b/g)?.length ?? 0).toBeGreaterThanOrEqual(
+      minimum as number,
+    );
+  });
+
+  it("le formulaire ne remonte QUE lorsqu'il y a des erreurs à montrer", () => {
+    // Remonter à chaque affichage ferait perdre sa place à qui revient au
+    // formulaire pour corriger un seul champ.
+    expect(reserver).toMatch(
+      /reprise && Object\.keys\(reprise\.erreurs\)\.length > 0 \? <RemonterAuMessage \/> : null/,
+    );
+  });
+
+  it("le composant est client, remonte en haut, et ne fait rien d'autre", () => {
+    const src = lire("src/components/booking/RemonterAuMessage.tsx");
+    expect(src.startsWith('"use client"')).toBe(true);
+    expect(src).toContain("window.scrollTo({ top: 0");
+    expect(sansCommentaires(src)).not.toMatch(/fetch|localStorage|router/);
+  });
+});

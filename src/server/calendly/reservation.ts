@@ -208,6 +208,32 @@ function texte(o: unknown, cle: string): string | null {
 }
 
 /**
+ * Les détails d'une erreur Calendly, quand elle en porte.
+ *
+ * 🔴 Un refus de l'API tient en DEUX étages : `message` de premier niveau
+ * (« The supplied parameters are invalid. »), puis `details[]`, où chaque entrée
+ * nomme le paramètre fautif et dit pourquoi. Mesuré en prod le 2026-09-02 :
+ * un créneau pris entre-temps rendait le message générique, et la raison —
+ * celle qui distingue « choisissez un autre créneau » de « le formulaire est
+ * cassé » — dormait dans `details`, que personne ne lisait.
+ */
+function detailsDeLErreur(o: unknown): ReadonlyArray<{ parameter: string; message: string }> {
+  if (typeof o !== "object" || o === null) return [];
+  const brut = (o as Record<string, unknown>)["details"];
+  if (!Array.isArray(brut)) return [];
+  return brut.flatMap((d) => {
+    if (typeof d !== "object" || d === null) return [];
+    const r = d as Record<string, unknown>;
+    return [
+      {
+        parameter: typeof r["parameter"] === "string" ? r["parameter"] : "?",
+        message: typeof r["message"] === "string" ? r["message"] : "",
+      },
+    ];
+  });
+}
+
+/**
  * Le corps de la requête.
  *
  * Exporté pour être testable seul : c'est lui qui porte les quatre pièges de la
@@ -320,7 +346,14 @@ export async function reserverCreneau(d: DemandeReservation): Promise<ResultatRe
   }
 
   if (!res.ok) {
-    const detail = texte(corps, "message") ?? texte(corps, "title") ?? `HTTP ${res.status}`;
+    const details = detailsDeLErreur(corps);
+    // Le détail SERT : il part dans l'alerte « reservation_refusee » et c'est lui
+    // qu'on lit pour savoir si le formulaire est cassé. Sans `details[]`, il ne
+    // disait que « The supplied parameters are invalid. »
+    const detail = [
+      texte(corps, "message") ?? texte(corps, "title") ?? `HTTP ${res.status}`,
+      ...details.map((x) => `${x.parameter}: ${x.message}`),
+    ].join(" — ");
 
     // 🔴 AVANT TOUT LE RESTE. Un 403 de portée n'est pas un refus de la demande,
     // c'est un refus du JETON — donc une panne de configuration qui touche tout
@@ -343,7 +376,15 @@ export async function reserverCreneau(d: DemandeReservation): Promise<ResultatRe
     // Le créneau pris entre-temps est le refus le PLUS FRÉQUENT, et il ne doit
     // surtout pas être traité comme une panne : rediriger vers Calendly ferait
     // lire au prospect le même refus, en moins bien, sur une page étrangère.
-    if (/already|no longer available|not available|taken|slot/i.test(detail)) {
+    // Deux signatures : le texte (ancienne forme, conservée) et le PARAMÈTRE
+    // fautif. Un refus sur `start_time` dit toujours la même chose au prospect :
+    // cet horaire n'est plus prenable, choisissez-en un autre — la saisie est
+    // conservée. Mesuré le 2026-09-02 : sans la seconde, un créneau pris
+    // rendait le message de panne « Réessayez », qui aurait échoué pareil.
+    if (
+      /already|no longer available|not available|taken|slot/i.test(detail) ||
+      details.some((x) => x.parameter === "start_time")
+    ) {
       return { ok: false, raison: "creneau_pris" };
     }
     return { ok: false, raison: "refus", detail };

@@ -47,6 +47,7 @@ import {
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
+import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { prisma } from "@/lib/prisma";
 import { CalendlySlotPicker } from "@/components/booking/CalendlySlotPicker";
 import { fetchAvailableSlots } from "@/server/calendly/availability";
@@ -259,6 +260,7 @@ export default async function ReporterPage({ params, searchParams }: Props) {
 function Deplace({ locale }: { locale: string }) {
   return (
     <Cadre>
+      <RemonterAuMessage />
       <TeteDeParcours
         icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
         ton="ok"
@@ -369,11 +371,15 @@ function EchecPrecedent({ raison }: { raison: string }) {
         ? "Nous n'avons pas reçu de réponse de notre agenda. Votre rendez-vous actuel tient toujours. Ne réessayez pas tout de suite : nous vérifions et nous vous écrivons dans les prochaines minutes."
         : "Nous n'avons pas pu déplacer ce rendez-vous. Votre créneau actuel est intact. Réessayez, ou écrivez-nous à contact@axion-ia.com.";
   return (
-    <div
-      role="alert"
-      className="border-terracotta bg-terracotta/5 text-fg mt-5 rounded-xl border px-4 py-3 text-sm"
-    >
-      {message}
-    </div>
+    <>
+      <RemonterAuMessage vers="echec-precedent" />
+      <div
+        id="echec-precedent"
+        role="alert"
+        className="border-terracotta bg-terracotta/5 text-fg mt-5 rounded-xl border px-4 py-3 text-sm"
+      >
+        {message}
+      </div>
+    </>
   );
 }

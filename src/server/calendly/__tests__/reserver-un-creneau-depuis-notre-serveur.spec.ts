@@ -220,6 +220,53 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     expect(r.raison).toBe("creneau_pris");
   });
 
+  it("🔴 la forme RÉELLE de Calendly : message générique + details[] sur start_time", async () => {
+    // Mesuré en prod le 2026-09-02 (9 septembre 10:00, pris trente secondes
+    // plus tôt par un report) : le message de premier niveau ne dit rien, la
+    // raison est dans `details`. Le prospect lisait « Réessayez » — et
+    // réessayer aurait échoué pareil.
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            title: "Invalid Argument",
+            message: "The supplied parameters are invalid.",
+            details: [{ parameter: "start_time", message: "must be a valid available time" }],
+          }),
+          { status: 422 },
+        ),
+      ),
+    );
+    const r = await reserverCreneau(demande());
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("creneau_pris");
+  });
+
+  it("🔴 un refus sur un AUTRE paramètre garde ses details[] dans le détail", async () => {
+    // Le détail part dans l'alerte : c'est lui qu'on lit pour savoir si le
+    // formulaire est cassé. Sans details[], il ne disait que le générique.
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            message: "The supplied parameters are invalid.",
+            details: [{ parameter: "event_type", message: "does not exist" }],
+          }),
+          { status: 422 },
+        ),
+      ),
+    );
+    const r = await reserverCreneau(demande());
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("refus");
+    if (r.raison !== "refus") return;
+    expect(r.detail).toContain("event_type: does not exist");
+  });
+
   it("🔴 un délai dépassé rend « silence », jamais « refus »", async () => {
     // ⚠️ La distinction qui évite la double réservation. Sur un silence, on ne
     // sait PAS si Calendly a créé le rendez-vous : l'appelant doit vérifier
