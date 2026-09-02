@@ -40,7 +40,7 @@ export function ArticleTransparencyBlock({
   const hasCycle = typeof updateCycleDays === "number" && updateCycleDays > 0;
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-3xl">
         <aside
           data-aeo="freshness"

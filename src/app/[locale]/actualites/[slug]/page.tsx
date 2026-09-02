@@ -652,6 +652,7 @@ export default async function NewsArticlePage({ params }: Props) {
       <ArticleNewsletterInline locale="fr" />
 
       <CtaBlock
+        spacing="compact"
         title="Mettre en pratique"
         description="Démarrez par notre formation collective (1 journée)."
         cta={

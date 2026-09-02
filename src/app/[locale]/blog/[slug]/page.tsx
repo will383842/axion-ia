@@ -800,6 +800,7 @@ export default async function BlogArticle({ params }: Props) {
       <ArticleNewsletterInline locale={loc} />
 
       <CtaBlock
+        spacing="compact"
         title={isFr ? "Mettre en pratique" : "Put it to work"}
         description={
           isFr ? `Démarrez par notre formation en groupe.` : `Start with our group training.`
