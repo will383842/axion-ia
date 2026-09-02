@@ -29,8 +29,8 @@
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { adminPath } from "@/lib/admin-path";
-import { listSubmissionsAction } from "@/features/admin-submissions/actions";
-import { listApplicationsAction } from "@/features/admin-job-applications/actions";
+import { listSubmissions } from "@/features/admin-submissions/reads";
+import { listApplications } from "@/features/admin-job-applications/reads";
 import { listRendezVous } from "@/features/admin-rendezvous/queries";
 import { RDV_STATUS_LABELS } from "@/features/admin-rendezvous/types";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
@@ -84,8 +84,23 @@ function safeDecrypt(value: string | null | undefined): string | null {
   }
 }
 
+/**
+ * ⚠️ **POURQUOI `listSubmissions` ET NON `listSubmissionsAction`.**
+ *
+ * Les deux actions commencent par une garde qui appelle `auth()`, laquelle lit
+ * un **cookie de navigateur**. Cette union en dépendait donc pour deux de ses
+ * quatre canaux — et un appel MCP, qui porte un secret partagé dans un en-tête,
+ * n'a pas de cookie. Voir `admin-submissions/reads.ts`.
+ *
+ * ⚠️ **CE CHANGEMENT N'OUVRE RIEN, ET ÇA A ÉTÉ VÉRIFIÉ AVANT DE L'ÉCRIRE.**
+ *    L'écran `/contacts` n'a jamais été protégé par la garde de l'action : il
+ *    l'est par le middleware — `src/auth.config.ts`, callback `authorized()`,
+ *    qui redirige vers la connexion toute requête d'une page sous le préfixe
+ *    d'administration sans session. Le layout admin, lui, ne refuse PAS
+ *    l'absence de session, parce que la page de connexion vit dedans.
+ */
 async function fetchMessages(): Promise<InboxItem[]> {
-  const res = await listSubmissionsAction({ page: 1, pageSize: PER_CHANNEL_FETCH });
+  const res = await listSubmissions({ page: 1, pageSize: PER_CHANNEL_FETCH });
   return res.items.map((s) => ({
     key: `msg_${s.id}`,
     sourceId: s.id,
@@ -154,8 +169,11 @@ async function fetchAppels(peutVoirAppels: boolean): Promise<InboxItem[]> {
   }));
 }
 
-async function fetchCandidatures(): Promise<InboxItem[]> {
-  const res = await listApplicationsAction({ page: 1, pageSize: PER_CHANNEL_FETCH });
+async function fetchCandidatures(acces: {
+  role: string | null;
+  acteurId: string | null;
+}): Promise<InboxItem[]> {
+  const res = await listApplications({ page: 1, pageSize: PER_CHANNEL_FETCH }, acces);
   return res.items.map((a) => ({
     key: `job_${a.id}`,
     sourceId: a.id,
@@ -227,6 +245,17 @@ export interface InboxFilters {
    * C'est exactement l'oubli qui a laissé ce canal ouvert jusqu'au 2026-08-27.
    */
   peutVoirAppels?: boolean;
+  /**
+   * Le rôle admin courant — il décide de ce que le canal « candidature » rend.
+   *
+   * 🔴 ABSENT ⇒ AUCUNE IDENTITÉ DE CANDIDAT, et c'est le seul défaut sûr : un
+   * appelant qui l'oublie masque au lieu de divulguer. Le prédicat commun
+   * (`peutOuvrirDossierCandidat`) est appliqué par la lecture elle-même ; on ne
+   * passe pas un booléen, qu'un appelant pourrait poser à `true` par mégarde.
+   * Les lignes restent comptées et datées ; le nom et l'adresse ne sortent que
+   * pour les rôles qui traitent le dossier.
+   */
+  roleAdmin?: string | null;
 }
 
 export interface InboxResult {
@@ -272,7 +301,10 @@ export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult
   const settled = await Promise.allSettled([
     fetchAppels(filters.peutVoirAppels === true),
     fetchMessages(),
-    fetchCandidatures(),
+    fetchCandidatures({
+      role: filters.roleAdmin ?? null,
+      acteurId: filters.adminUserId ?? null,
+    }),
     fetchPodcast(),
   ]);
   const failedChannels: InboxChannel[] = [];

@@ -142,6 +142,14 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Lot 4b — l'adaptateur MCP branche `qualiopi.conformite` sur `listAlertes()`
+  // (la lecture persistée, PAS l'évaluateur). Inscrit NOMINATIVEMENT : un motif
+  // de répertoire serait un blanc-seing pour tout fichier futur sous mcp/.
+  "src/server/mcp/outils/qualiopi-conformite.ts",
+  // Le harnais du lot 4b CHARGE le module pour vérifier que le symbole autorisé
+  // existe encore (contrôle 3, cliquet des symboles). Il n'appelle rien : sans
+  // ce chargement, une entrée morte dans la liste resterait verte pour toujours.
+  "src/server/mcp/__tests__/harnais.spec.ts",
   // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
   //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
   "src/app/[locale]/a-propos/page.tsx",
