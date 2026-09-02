@@ -27,6 +27,7 @@ import { notify } from "@/server/notifications";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-signature";
 import { lireRebond, FENETRE_RATTACHEMENT_HEURES } from "@/server/email/bounce-service";
+import { noterAppelWebhook } from "@/server/email/webhook-battement";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -109,8 +110,50 @@ export async function POST(req: NextRequest): Promise<Response> {
         details: { reason: verdict.reason, ipHash: hashIp(ip) ?? "unknown" },
       },
     });
-    return new Response("invalid_signature", { status: 401 });
+    // 🔴 200, PAS 401 — et c'est ce qui permet au webhook d'exister.
+    //
+    // ZeptoMail interroge cette URL en POST avant d'accepter la création d'un
+    // webhook. Cette sonde n'est PAS signée, et elle ne peut pas l'être : la
+    // « Clé d'authentification » ne se configure qu'APRÈS la création. Un 401
+    // sur cette sonde ferme donc un cercle : pas de clé sans webhook, pas de
+    // webhook sans clé. Mesuré le 2026-09-01 — le panneau affichait « URL
+    // cannot be reached », la boîte se fermait sans rien créer, et rien
+    // n'indiquait que la cause était notre code de rejet.
+    //
+    // 🔑 Le contrat de sécurité est INCHANGÉ : on ne traite toujours
+    // rien. La charge n'est pas lue, aucun rebond n'est enregistré, l'alerte
+    // ci-dessus part quand même. Ce qui change est le CODE rendu, pas le
+    // comportement — et c'est la doctrine déjà écrite en tête de ce fichier :
+    // « un 404 ou un 500 répété fait désabonner le fournisseur ». Le 401 était
+    // une incohérence avec cette règle, pas une protection.
+    //
+    // Accessoirement, un 200 uniforme en dit MOINS à un attaquant qu'un 401 :
+    // celui-ci confirmait que la vérification est active et que la tentative
+    // avait échoué. Ici, rien ne distingue une charge acceptée d'une charge
+    // ignorée — seule l'alerte hors bande le dit, à nous.
+    return Response.json({ ok: true, ignored: "invalid_signature" });
   }
+
+  // ── Battement ────────────────────────────────────────────────
+  //
+  // Posé ICI — après la signature, AVANT l'analyse du contenu — et c'est
+  // délibéré. Ce qu'on mesure n'est pas le rebond, c'est l'ABONNEMENT : un
+  // appel de test depuis la console ZeptoMail, ou un événement qui n'est pas un
+  // rebond, prouve que la route est atteinte tout aussi bien qu'un vrai rebond.
+  // Le placer plus bas ne laisserait aucune trace des appels `not_a_bounce`.
+  //
+  // `void` : le battement ne doit ni ralentir ni faire échouer la réponse. Un
+  // 500 répété fait désabonner ZeptoMail — on détruirait l'abonnement qu'on
+  // cherche justement à surveiller.
+  //
+  // 🔴 Cette ligne a été PERDUE une fois, le 2026-09-01 : la PR qui a
+  // ajouté la sonde `GET` ci-dessus a été construite à partir d'une copie
+  // périmée de ce fichier, prise dans un arbre de travail partagé qui était
+  // resté sur une autre branche. Le module `webhook-battement.ts` est demeuré
+  // parfait et DÉBRANCHÉ — état rigoureusement indiscernable d'un module
+  // branché, tant qu'on ne teste que le module. D'où la garde de câblage dans
+  // `route.spec.ts`, qui lit CE fichier et exige l'appel.
+  void noterAppelWebhook();
 
   let payload: unknown;
   try {

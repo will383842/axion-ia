@@ -31,7 +31,9 @@
  *
  * - Rythmé : plafond par tick ET plafond quotidien, pour que la reprise s'étale
  *   au lieu de vider le crédit rechargé en quelques minutes (concurrence 3).
- * - Borné : au-delà de `maxRetries` tentatives, un job n'est plus repris.
+ * - Borné : au-delà de `maxRetries` tentatives, un job n'est plus repris — et,
+ *   s'il était figé dans un état non terminal, il est CLOS plutôt que laissé
+ *   en place (sans quoi il affame la fenêtre du balayage, cf. `sweepStuckJobs`).
  * - Réutilise `resolveReenqueueAction` (fix #342) : jamais de `add` sur une clé
  *   squattée par un job terminé, jamais de `remove` sur un job en vol.
  * - Fail-open : toute erreur est journalisée sans interrompre le tick.
@@ -80,8 +82,17 @@ export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
 export interface RecoveryOutcome {
   /** Jobs remis en file. */
   readonly requeued: number;
-  /** Jobs examinés puis écartés (cause permanente, budget épuisé, job en vol). */
+  /** Jobs examinés puis écartés (budget épuisé, job en vol, erreur isolée). */
   readonly skipped: number;
+  /**
+   * Jobs irrécupérables passés en état TERMINAL par ce passage.
+   *
+   * Distinct de `skipped` à dessein : un job écarté sera réexaminé au tick
+   * suivant, un job clos ne le sera plus jamais. Confondre les deux, c'est
+   * exactement ce qui a rendu la famine de fenêtre invisible pendant 12 jours
+   * (cf. `sweepStuckJobs`).
+   */
+  readonly closed: number;
 }
 
 const MS_PER_MINUTE = 60_000;
@@ -159,8 +170,9 @@ export async function drainFailedJobs(
    */
   sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
-  if (!settings.enabled || settings.maxPerTick <= 0) return { requeued: 0, skipped: 0 };
-  if (sharedBudget !== undefined && sharedBudget <= 0) return { requeued: 0, skipped: 0 };
+  if (!settings.enabled || settings.maxPerTick <= 0) return { requeued: 0, skipped: 0, closed: 0 };
+  if (sharedBudget !== undefined && sharedBudget <= 0)
+    return { requeued: 0, skipped: 0, closed: 0 };
 
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
@@ -174,66 +186,198 @@ export async function drainFailedJobs(
     where: { retryCount: { gt: 0 }, updatedAt: { gte: startOfDayUtc } },
   });
   const dailyRoom = Math.max(0, settings.maxPerDay - alreadyToday);
-  if (dailyRoom === 0) return { requeued: 0, skipped: 0 };
+  if (dailyRoom === 0) return { requeued: 0, skipped: 0, closed: 0 };
 
   const budget = Math.min(settings.maxPerTick, dailyRoom, sharedBudget ?? Number.MAX_SAFE_INTEGER);
-  if (budget <= 0) return { requeued: 0, skipped: 0 };
+  if (budget <= 0) return { requeued: 0, skipped: 0, closed: 0 };
 
-  // On lit un peu plus large que le budget : une partie des candidats sera
-  // écartée par la classification (échecs de qualité mêlés aux échecs d'infra).
-  const candidates = await prisma.contentGenJob.findMany({
-    where: { status: "failed", retryCount: { lt: settings.maxRetries } },
-    // Fix 2026-08-15 — reprise dans l'ORDRE DU PLAN, pas dans l'ordre des échecs.
-    //
-    // `updatedAt` datait la dernière tentative : les jobs déjà rejoués une fois
-    // (la relance-test du 18/07) remontaient donc en tête, et le plan était
-    // repris en désordre. `createdAt` est l'ordre dans lequel l'orchestrateur a
-    // enfilé les slots — vérifié en base : il suit exactement le `slotIndex`
-    // (2, 77, 102, 241, 242…).
-    //
-    // Ce n'est pas cosmétique. Chaque job en échec porte sa place dans le plan
-    // et ce qui en découle : `slotIndex`, type de contenu, ville d'ancrage et
-    // intention de recherche, tous échantillonnés déterministement à partir du
-    // slot. Reprendre dans cet ordre, c'est rejouer la campagne telle qu'elle
-    // avait été conçue, en repartant là où elle s'était interrompue.
-    orderBy: { createdAt: "asc" },
-    take: budget * 6,
-    select: {
-      id: true,
-      contentType: true,
-      targetSearchIntent: true,
-      inputPayload: true,
-      retryCount: true,
-      errorMessage: true,
-    },
-  });
+  // 🔴 2026-09-01 — LA MÊME FAMINE DE FENÊTRE QUE `sweepStuckJobs`, EN PIRE.
+  //
+  // L'ancien code lisait UNE page de `budget * 6` lignes (30 au plus) et
+  // espérait y trouver de quoi remplir le budget. Mesuré en production ce
+  // jour-là, sur les 1 441 échecs encore relançables :
+  //
+  //   rang 1 à 29  : échecs PERMANENTS (« plan invalide », « aucun output
+  //                  valide », « quality_gate », parse errors) — début juillet
+  //   rang 30      : le PREMIER échec relançable
+  //   rangs 30+    : 1 383 échecs de quota, tous parfaitement régénérables
+  //
+  // La fenêtre s'ouvrait donc sur 29 cadavres. Ils sont écartés par
+  // `isAutoRetryable` mais restent `failed` avec `retryCount < maxRetries`,
+  // donc ils reprenaient la même place au tick suivant, indéfiniment. Le drain
+  // n'atteignait le premier job relançable que si le budget valait exactement 5
+  // — et le budget est lissé sur la journée, donc il vaut le plus souvent 1 à 3.
+  // Résultat : le rechargement du crédit n'aurait rien rattrapé du tout.
+  //
+  // 🔑 Une fenêtre doit être dimensionnée par CE QU'ON CHERCHE, pas par ce
+  // qu'on espère trouver. On pagine donc jusqu'à remplir le budget, avec un
+  // plafond de balayage par tick.
+  //
+  // L'offset se calcule exactement, sans champ curseur : les seules lignes qui
+  // QUITTENT l'ensemble pendant le tick sont celles qu'on vient de remettre en
+  // file (leur statut passe à `queued`), et elles sont toutes derrière nous.
+  // La page suivante commence donc à `scanned - requeued`.
+  const PAGE_SIZE = Math.max(budget * 6, 100);
+  const MAX_SCAN_PER_TICK = 600;
+  const candidatesWhere = { status: "failed", retryCount: { lt: settings.maxRetries } } as const;
+  const candidatesSelect = {
+    id: true,
+    contentType: true,
+    targetSearchIntent: true,
+    inputPayload: true,
+    retryCount: true,
+    errorMessage: true,
+  } as const;
 
   let requeued = 0;
   let skipped = 0;
-  for (const job of candidates) {
-    if (requeued >= budget) break;
-    // Le job est passé en entier au test : la fraîcheur du sujet se juge sur sa
-    // charge utile, pas sur son message d'erreur (incident RSS du 2026-08-15).
-    if (!isAutoRetryable(job.errorMessage, job.retryCount, settings.maxRetries, job)) {
-      skipped++;
-      continue;
+  let scanned = 0;
+
+  while (requeued < budget && scanned < MAX_SCAN_PER_TICK) {
+    const candidates = await prisma.contentGenJob.findMany({
+      where: candidatesWhere,
+      // Fix 2026-08-15 — reprise dans l'ORDRE DU PLAN, pas dans l'ordre des échecs.
+      //
+      // `updatedAt` datait la dernière tentative : les jobs déjà rejoués une fois
+      // (la relance-test du 18/07) remontaient donc en tête, et le plan était
+      // repris en désordre. `createdAt` est l'ordre dans lequel l'orchestrateur a
+      // enfilé les slots — vérifié en base : il suit exactement le `slotIndex`
+      // (2, 77, 102, 241, 242…).
+      //
+      // Ce n'est pas cosmétique. Chaque job en échec porte sa place dans le plan
+      // et ce qui en découle : `slotIndex`, type de contenu, ville d'ancrage et
+      // intention de recherche, tous échantillonnés déterministement à partir du
+      // slot. Reprendre dans cet ordre, c'est rejouer la campagne telle qu'elle
+      // avait été conçue, en repartant là où elle s'était interrompue.
+      orderBy: { createdAt: "asc" },
+      skip: scanned - requeued,
+      take: PAGE_SIZE,
+      select: candidatesSelect,
+    });
+    if (candidates.length === 0) break;
+
+    for (const job of candidates) {
+      if (requeued >= budget || scanned >= MAX_SCAN_PER_TICK) break;
+      scanned++;
+      // Le job est passé en entier au test : la fraîcheur du sujet se juge sur sa
+      // charge utile, pas sur son message d'erreur (incident RSS du 2026-08-15).
+      if (!isAutoRetryable(job.errorMessage, job.retryCount, settings.maxRetries, job)) {
+        skipped++;
+        continue;
+      }
+      try {
+        const ok = await requeueContentGenJob(queue, job);
+        if (ok) requeued++;
+        else skipped++;
+      } catch (err) {
+        // Isolation par job : une exception sur le job k ne doit pas empêcher
+        // k+1..N d'être repris (leçon du fix `retryAllFailed`).
+        skipped++;
+        console.warn(
+          `[backlog-recovery] relance échouée job=${job.id}:`,
+          err instanceof Error ? err.message : err,
+        );
+      }
     }
-    try {
-      const ok = await requeueContentGenJob(queue, job);
-      if (ok) requeued++;
-      else skipped++;
-    } catch (err) {
-      // Isolation par job : une exception sur le job k ne doit pas empêcher
-      // k+1..N d'être repris (leçon du fix `retryAllFailed`).
-      skipped++;
-      console.warn(
-        `[backlog-recovery] relance échouée job=${job.id}:`,
-        err instanceof Error ? err.message : err,
-      );
-    }
+    if (candidates.length < PAGE_SIZE) break;
   }
 
-  return { requeued, skipped };
+  // Le signal qui manquait : un drain qui balaie son plafond sans rien trouver
+  // n'est pas « au repos », il est affamé. Sans cette ligne, la famine de
+  // fenêtre est parfaitement silencieuse — c'est ce qui l'a laissée vivre.
+  if (requeued === 0 && scanned >= MAX_SCAN_PER_TICK) {
+    console.warn(
+      `[backlog-recovery] drain affamé — ${scanned} candidats balayés, aucun relançable. ` +
+        `Tête de file probablement occupée par des échecs permanents.`,
+    );
+  }
+
+  return { requeued, skipped, closed: 0 };
+}
+
+/**
+ * Statut terminal et motif d'un job figé que plus aucun passage ne pourra sauver.
+ *
+ * `null` = le job reste récupérable, il sera remis en file.
+ */
+export interface StuckClosure {
+  readonly status: "failed" | "cancelled";
+  readonly reason: string;
+}
+
+/**
+ * Décide si un job figé est DÉFINITIVEMENT irrécupérable.
+ *
+ * Fonction PURE (aucun accès BullMQ/Prisma) : c'est la règle métier de la
+ * clôture, testable sans mock.
+ *
+ * Deux causes, toutes deux constatées en production le 2026-09-01 :
+ *  - tentatives épuisées : le job a déjà consommé `maxRetries` passages, aucun
+ *    passage supplémentaire ne lui est dû ;
+ *  - sujet périmé : le job porte une dépêche figée trop vieille pour être
+ *    publiée (incident RSS du 2026-08-15). Le relancer republierait du vieux.
+ *
+ * Le statut retenu diffère selon la cause, et ce n'est pas cosmétique :
+ * `failed` dit « la machine n'y est pas arrivée » (il compte dans les échecs et
+ * peut être rejoué à la main si Will le décide), `cancelled` dit « on a renoncé
+ * volontairement » — c'est le statut employé pour la remédiation des 74 jobs RSS
+ * du 2026-08-15, on garde le même vocabulaire.
+ */
+export function resolveStuckClosure(
+  job: {
+    readonly contentType: string;
+    readonly inputPayload: unknown;
+    readonly retryCount: number;
+  },
+  settings: BacklogRecoverySettings,
+): StuckClosure | null {
+  if (job.retryCount >= settings.maxRetries) {
+    return {
+      status: "failed",
+      reason:
+        `Job figé clos automatiquement : ${job.retryCount} tentative(s) pour un plafond de ` +
+        `${settings.maxRetries}. Plus aucune reprise n'est due à ce job.`,
+    };
+  }
+  if (!isTopicStillFresh(job.contentType, job.inputPayload)) {
+    return {
+      status: "cancelled",
+      reason:
+        "Job figé clos automatiquement : le sujet qu'il porte est périmé, le relancer " +
+        "republierait une actualité dépassée.",
+    };
+  }
+  return null;
+}
+
+/**
+ * Fait passer un job figé irrécupérable dans son état terminal.
+ *
+ * ⚠️ Garde-fou non négociable : on interroge d'abord BullMQ. Un job encore en
+ * vol (`active` / `waiting` / `delayed`) N'EST PAS clos, quel que soit son âge
+ * en base — le statut DB peut être en retard sur un traitement bien vivant, et
+ * clore un job en cours le rendrait fantôme au moment où il finirait.
+ *
+ * @returns true si le job a réellement été clos.
+ */
+export async function closeStuckJob(
+  queue: Queue,
+  jobId: string,
+  closure: StuckClosure,
+): Promise<boolean> {
+  const existing = await queue.getJob(`gen-${jobId}`);
+  const state = existing ? ((await existing.getState()) as BullJobState) : null;
+  if (resolveReenqueueAction(state) === "skip-in-flight") return false;
+
+  await prisma.contentGenJob.update({
+    where: { id: jobId },
+    data: {
+      status: closure.status,
+      errorMessage: closure.reason,
+      completedAt: new Date(),
+    },
+  });
+  return true;
 }
 
 /**
@@ -251,14 +395,52 @@ export async function drainFailedJobs(
  * Le garde-fou décisif est `resolveReenqueueAction` : un job encore en vol
  * renvoie `skip-in-flight` et n'est pas touché. On ne double donc jamais un
  * traitement en cours, quel que soit son âge.
+ *
+ * ## 🔴 Famine de fenêtre — corrigé le 2026-09-01
+ *
+ * Mesuré en production : **60 jobs `running` figés, dont 20 depuis le 19/08**,
+ * alors que ce balayage tournait 96 fois par jour depuis 12 jours. Il n'en avait
+ * remis AUCUN en file.
+ *
+ * La fenêtre est bornée (`take: maxPerTick * 4` = 20) et triée par `updatedAt`
+ * croissant. Or les 20 plus anciens portaient tous `retryCount = 3 = maxRetries`.
+ * L'ancien code les comptait `skipped` et passait au suivant — mais ils
+ * restaient `running` en base, donc ils **revenaient occuper la même fenêtre au
+ * tick suivant**, indéfiniment. Les 40 jobs derrière eux, dont une vingtaine
+ * parfaitement récupérables, n'ont jamais été regardés.
+ *
+ * 🔑 **Un candidat écarté sans être retiré de l'ensemble des candidats affame la
+ * file qu'il occupe.** Le drain (`drainFailedJobs`) n'a jamais eu le problème :
+ * il exclut `retryCount >= maxRetries` **dans la requête SQL**. L'asymétrie
+ * entre les deux passages est ce qui a laissé le défaut vivre.
+ *
+ * Le correctif ne consiste PAS à recopier ce filtre ici : un job exclu de la
+ * requête resterait `running` à vie, à mentir dans la console et dans tous les
+ * comptages. Un job qu'aucun passage ne peut plus sauver doit passer en état
+ * **terminal**, avec son motif écrit dans `errorMessage` (cf.
+ * `resolveStuckClosure`). C'est cette clôture qui vide la tête de fenêtre.
  */
 export async function sweepStuckJobs(
   queue: Queue,
   settings: BacklogRecoverySettings,
-  /** Budget partagé du tick (cf. `drainFailedJobs`). Prime quand il est fourni. */
+  /**
+   * Budget partagé du tick (cf. `drainFailedJobs`). Il plafonne les REMISES EN
+   * FILE, pas les clôtures.
+   *
+   * ⚠️ 2026-09-01, mesuré en production dans l'heure suivant le déploiement du
+   * correctif de famine : ce passage portait ici un `return` anticipé dès que le
+   * budget valait 0. Or le plafond quotidien est atteint presque tous les jours
+   * en fin de journée — le tick a rendu `tickBudget=0`, le balayage s'est arrêté
+   * net, et les 59 jobs figés sont restés figés. Le correctif se bloquait
+   * lui-même, en contradiction avec son propre commentaire (« clore ne
+   * déclenche aucun appel provider, donc ne dépense rien »).
+   *
+   * 🔑 Un nettoyage qui ne coûte rien ne doit jamais être gardé par un budget de
+   * DÉPENSE. Le plafond continue de s'appliquer aux relances, ligne par ligne,
+   * dans la boucle.
+   */
   sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
-  if (sharedBudget !== undefined && sharedBudget <= 0) return { requeued: 0, skipped: 0 };
   const threshold = new Date(Date.now() - settings.stuckAfterMinutes * MS_PER_MINUTE);
 
   const stuck = await prisma.contentGenJob.findMany({
@@ -280,15 +462,36 @@ export async function sweepStuckJobs(
 
   let requeued = 0;
   let skipped = 0;
+  let closed = 0;
   for (const job of stuck) {
-    if (sharedBudget !== undefined && requeued >= sharedBudget) break;
-    if (job.retryCount >= settings.maxRetries) {
-      skipped++;
+    // 1. Irrécupérable → état terminal. Volontairement AVANT le contrôle de
+    //    budget et sans `break` : clore ne déclenche aucun appel provider, donc
+    //    ne dépense rien. Un budget serré ne doit pas laisser la tête de fenêtre
+    //    se re-remplir des mêmes cadavres au tick suivant.
+    const closure = resolveStuckClosure(job, settings);
+    if (closure) {
+      try {
+        if (await closeStuckJob(queue, job.id, closure)) {
+          closed++;
+          console.warn(
+            `[backlog-recovery] job figé clos id=${job.id} (était ${job.status}) → ` +
+              `${closure.status} : ${closure.reason}`,
+          );
+        } else {
+          skipped++;
+        }
+      } catch (err) {
+        skipped++;
+        console.warn(
+          `[backlog-recovery] clôture échouée job=${job.id}:`,
+          err instanceof Error ? err.message : err,
+        );
+      }
       continue;
     }
-    // Même garde que le drain : un job figé qui porte une dépêche périmée ne
-    // doit pas être remis en circulation (incident RSS du 2026-08-15).
-    if (!isTopicStillFresh(job.contentType, job.inputPayload)) {
+
+    // 2. Récupérable → remise en file, dans la limite du budget partagé.
+    if (sharedBudget !== undefined && requeued >= sharedBudget) {
       skipped++;
       continue;
     }
@@ -311,7 +514,7 @@ export async function sweepStuckJobs(
     }
   }
 
-  return { requeued, skipped };
+  return { requeued, skipped, closed };
 }
 
 /**
@@ -378,5 +581,5 @@ export async function sweepStrandedQualityJobs(
   if (requeued > 0) {
     console.warn(`[backlog-recovery] ${requeued} job(s) figé(s) en boucle qualité réinjecté(s)`);
   }
-  return { requeued, skipped };
+  return { requeued, skipped, closed: 0 };
 }
