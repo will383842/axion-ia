@@ -312,6 +312,23 @@ export function CookieConsent() {
         role="dialog"
         aria-labelledby="cookie-consent-title"
         aria-describedby="cookie-consent-body"
+        // 🔴 Police SYSTÈME, délibérément (2026-09-02, mesure mobile du runner).
+        // Depuis que le bandeau est rendu côté serveur, il est peint AVANT
+        // l'arrivée de Manrope : le swap de police change sa hauteur et décale la
+        // page — 0,052 sur /fr, 0,062 sur /contact, 0,049 sur /appel, cause
+        // « Web font loaded » vérifiée dans `layout-shifts`. Avant le rendu
+        // serveur, le bandeau apparaissait APRÈS les polices et le problème
+        // n'existait pas : c'est une régression introduite avec le gain de LCP
+        // (/appel 9 690 → 1 268 ms), pas un défaut préexistant.
+        //
+        // Le bandeau est une pièce d'INTERFACE, pas du contenu éditorial : lui
+        // retirer la police de marque ne coûte rien de visible et supprime le
+        // swap, donc le décalage. Les autres décalages « Web font loaded » (titres
+        // et paragraphes éditoriaux) relèvent d'un lot police à part.
+        style={{
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif',
+        }}
         className="bg-bg/95 border-terracotta-deep fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg backdrop-blur"
       >
         <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-4">
