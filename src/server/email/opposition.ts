@@ -28,6 +28,7 @@
 // de domaine : compromettre ce jeton ne donne rien d'autre qu'une opposition.
 
 import { prisma } from "@/lib/prisma";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { syncNewsletterOptOutToCrm } from "@/server/crm-sync";
 import { lireJetonOpposition, normaliserAdresse } from "./opposition-jeton";
 
@@ -59,15 +60,21 @@ export async function enregistrerOpposition(
   if (email === null) return { ok: false, error: "invalid_token" };
   if (estStub()) return { ok: false, error: "internal" };
   try {
+    // La table ne porte QUE l'empreinte : voir le modèle Prisma pour le
+    // raisonnement (une liste d'opposition survit à l'effacement, donc elle ne
+    // contient rien de lisible).
+    const emailHash = hashEmailForLookup(email);
+    if (emailHash === null) return { ok: false, error: "invalid_token" };
+
     const existante = await prisma.emailOpposition.findUnique({
-      where: { email },
+      where: { emailHash },
       select: { id: true },
     });
     if (existante !== null) return { ok: true, email, dejaOpposee: true };
 
     const ligne = await prisma.emailOpposition.create({
       data: {
-        email,
+        emailHash,
         source: "lien-email",
         ...(source.template ? { template: source.template.slice(0, 60) } : {}),
       },
@@ -96,8 +103,10 @@ export async function enregistrerOpposition(
 /** Vrai si l'adresse s'est opposée à la prospection commerciale. */
 export async function estOpposee(email: string): Promise<boolean> {
   if (estStub()) return false;
+  const emailHash = hashEmailForLookup(normaliserAdresse(email));
+  if (emailHash === null) return false;
   const ligne = await prisma.emailOpposition.findUnique({
-    where: { email: normaliserAdresse(email) },
+    where: { emailHash },
     select: { id: true },
   });
   return ligne !== null;

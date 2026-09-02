@@ -125,6 +125,10 @@ describe("verdictAvantEnvoi — désabonnement", () => {
       marketing: true,
     });
     expect(v).toEqual({ retenu: true, motif: "oppose", depuis: null });
+    // Lu par empreinte, jamais par adresse.
+    const lu = oppositionFindUnique.mock.calls[0]![0] as { where: Record<string, unknown> };
+    expect(lu.where).not.toHaveProperty("email");
+    expect(String(lu.where["emailHash"])).toMatch(/^[0-9a-f]{64}$/);
   });
 
   it("l'opposition ne retient PAS un envoi transactionnel (facture, convocation)", async () => {

@@ -33,6 +33,7 @@
 // puisse honnêtement faire ici.
 
 import { prisma } from "@/lib/prisma";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose";
 
@@ -96,11 +97,16 @@ export async function verdictAvantEnvoi(
       // e-mail, retient les envois marketing au même titre que le désabonnement.
       // Lecture DIRECTE : `opposition.ts` tire la synchronisation CRM, qui tire
       // les files, qui tirent ce module — un cycle, et une chaîne d'imports qui
-      // n'a rien à faire sur le chemin d'enfilage.
-      const opposition = await prisma.emailOpposition.findUnique({
-        where: { email: adresse.toLowerCase() },
-        select: { id: true },
-      });
+      // n'a rien à faire sur le chemin d'enfilage. La table ne porte que
+      // l'empreinte de recherche : aucune adresse lisible n'y dort.
+      const empreinte = hashEmailForLookup(adresse);
+      const opposition =
+        empreinte === null
+          ? null
+          : await prisma.emailOpposition.findUnique({
+              where: { emailHash: empreinte },
+              select: { id: true },
+            });
       if (opposition !== null) {
         return { retenu: true, motif: "oppose", depuis: null };
       }

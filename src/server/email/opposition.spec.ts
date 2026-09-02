@@ -22,6 +22,8 @@ vi.mock("@/server/crm-sync", () => ({
   syncNewsletterOptOutToCrm: (...a: unknown[]) => syncOptOut(...a),
 }));
 
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+
 import {
   jetonOpposition,
   lireJetonOpposition,
@@ -86,11 +88,12 @@ describe("enregistrerOpposition", () => {
       template: "roi-report",
     });
     expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false });
-    expect(create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ email: "jean@client.fr", template: "roi-report" }),
-      }),
-    );
+    // 🔴 La table ne porte QUE l'empreinte : une liste d'opposition survit à
+    // l'effacement, donc elle ne contient aucune adresse lisible.
+    const ecrit = create.mock.calls[0]![0] as { data: Record<string, unknown> };
+    expect(ecrit.data["emailHash"]).toBe(hashEmailForLookup("jean@client.fr"));
+    expect(ecrit.data["template"]).toBe("roi-report");
+    expect(ecrit.data).not.toHaveProperty("email");
     expect(syncOptOut).toHaveBeenCalledWith(
       expect.objectContaining({
         subjectRef: "site:email_opposition:opp-1",
@@ -125,7 +128,7 @@ describe("estOpposee", () => {
     findUnique.mockResolvedValue({ id: "opp-1" });
     expect(await estOpposee("Jean@Client.FR")).toBe(true);
     expect(findUnique).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { email: "jean@client.fr" } }),
+      expect.objectContaining({ where: { emailHash: hashEmailForLookup("jean@client.fr") } }),
     );
   });
 });
