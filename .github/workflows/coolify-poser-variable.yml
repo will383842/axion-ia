@@ -138,7 +138,7 @@ jobs:
           # SONDE : un jeton de lecture GitHub se presente a GitHub AVANT d'etre pose.
           # Un 401 ici vaut mieux qu'un outil MCP muet apres le prochain deploiement.
           if [ "$CIBLE" = "GITHUB_READ_TOKEN" ]; then
-            sonde=$(curl -sS -m 20 -o /dev/null -w '%{http_code}' \n              -H "Authorization: Bearer ${valeur}" -H 'Accept: application/vnd.github+json' \n              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=1")
+            sonde=$(curl -sS -m 20 -o /dev/null -w '%{http_code}'  -H "Authorization: Bearer ${valeur}" -H 'Accept: application/vnd.github+json'  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=1")
             echo "Sonde GitHub Actions (lecture) : HTTP $sonde"
             [ "$sonde" = "200" ] || { echo "::error::le jeton est refuse par GitHub ($sonde) : ne pas le poser"; exit 1; }
           fi
