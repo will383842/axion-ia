@@ -64,6 +64,17 @@ export interface BacklogRecoverySettings {
   readonly maxRetries: number;
   /** Âge (minutes) au-delà duquel un job non terminal est considéré figé. */
   readonly stuckAfterMinutes: number;
+  /**
+   * Part du plafond quotidien GLOBAL que la reprise peut consommer (0 à 1).
+   *
+   * 2026-09-02 — sans cette part, la reprise, servie AVANT les campagnes et
+   * dotée d'un `maxPerDay` (20) supérieur au plafond global (15), absorbait
+   * tout le budget du jour : 1 385 échecs à rejouer, soit 4 à 5 mois pendant
+   * lesquels les campagnes `running` n'auraient produit AUCUN contenu neuf.
+   * À 0,5, la reprise prend au plus la moitié du plafond ; le reste va aux
+   * campagnes. Surchargeable via la clé `backlog_recovery`.
+   */
+  readonly shareOfDailyCap: number;
 }
 
 export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
@@ -77,6 +88,7 @@ export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
   // 60 min : très au-dessus de la durée d'un job (lock BullMQ = 120 s) et des
   // pauses de kill switch courtes, donc aucun risque de doubler un job vivant.
   stuckAfterMinutes: 60,
+  shareOfDailyCap: 0.5,
 };
 
 export interface RecoveryOutcome {
@@ -134,9 +146,54 @@ export function requeuedTodayWhere(startOfDay: Date) {
   return {
     retryCount: { gt: 0 },
     updatedAt: { gte: startOfDay },
-    status: { not: "cancelled" },
-    NOT: { status: "failed", errorMessage: { startsWith: STUCK_CLOSURE_PREFIX } },
+    ...CLOSED_WITHOUT_RUNNING_EXCLUSION,
   } as const;
+}
+
+/** Un `failed` écrit par `closeStuckJob` : clos par le balayage, jamais exécuté. */
+export const STUCK_CLOSURE_FAILED_WHERE = {
+  status: "failed",
+  errorMessage: { startsWith: STUCK_CLOSURE_PREFIX },
+} as const;
+
+/**
+ * Exclut d'un comptage les jobs qui ont été CLOS sans avoir tourné : les
+ * `cancelled` (arbitrage humain ou sujet périmé) et les `failed` de clôture.
+ *
+ * Partagée par le budget du jour (`requeuedTodayWhere`) et par l'alarme de
+ * taux de rejet du monitoring : le 02/09, celle-ci annonçait « 27/50 (54 %)
+ * sur 24 h » alors que 21 de ces 27 « rejets » étaient des clôtures du
+ * balayage et 14 du dénominateur des annulations — aucun n'avait consommé un
+ * appel provider. Une alarme de rejet mesure ce que la MACHINE n'a pas réussi ;
+ * un job qu'on a renoncé à lancer n'en fait pas partie.
+ */
+export const CLOSED_WITHOUT_RUNNING_EXCLUSION = {
+  status: { not: "cancelled" },
+  NOT: STUCK_CLOSURE_FAILED_WHERE,
+} as const;
+
+/**
+ * Budget que la reprise peut consommer sur ce tick.
+ *
+ * Fonction PURE : `min(budget global restant, part quotidienne de la reprise
+ * moins ce qu'elle a déjà relancé aujourd'hui)`. La part est bornée à ]0, 1] ;
+ * une valeur absente ou aberrante retombe sur la part par défaut, jamais sur
+ * « tout le budget » — c'est précisément la dérive qu'on corrige.
+ */
+export function computeRecoveryRoom(input: {
+  readonly capPerDay: number;
+  readonly shareOfDailyCap: number | undefined;
+  readonly requeuedToday: number;
+  readonly globalRoom: number;
+}): number {
+  const raw = input.shareOfDailyCap;
+  const share =
+    typeof raw === "number" && Number.isFinite(raw) && raw > 0 && raw <= 1
+      ? raw
+      : DEFAULT_RECOVERY_SETTINGS.shareOfDailyCap;
+  const dailyShare = Math.floor(Math.max(0, input.capPerDay) * share);
+  const shareRoom = Math.max(0, dailyShare - Math.max(0, input.requeuedToday));
+  return Math.max(0, Math.min(input.globalRoom, shareRoom));
 }
 
 const MS_PER_MINUTE = 60_000;

@@ -34,6 +34,10 @@ import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import {
+  CLOSED_WITHOUT_RUNNING_EXCLUSION,
+  STUCK_CLOSURE_FAILED_WHERE,
+} from "@/server/content-gen/recovery/backlog-recovery";
+import {
   evaluatePipelineStall,
   evaluateRejectRate,
 } from "@/server/content-gen/monitoring/anomaly-rules";
@@ -319,16 +323,40 @@ async function checkAnomalies(): Promise<void> {
   //   B. taux soutenu — ≥ 5 jobs terminés sur 24 h et > 50 % d'échecs.
   // À 15/jour, B se déclenche après ~5 échecs, soit quelques heures.
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  //
+  // 2026-09-02 — les jobs CLOS SANS AVOIR TOURNÉ ne sont ni des rejets ni des
+  // terminaisons : `closeStuckJob` pose `completedAt` et un statut terminal,
+  // exactement comme une vraie fin de job. Le 02/09 à 02:15, l'alarme lisait
+  // « 27/50 (54 %) sur 24 h » : 21 des 27 « rejets » étaient les clôtures du
+  // balayage de la veille, 14 des 50 « terminés » des annulations pour sujet
+  // périmé. Aucun appel provider derrière. `CLOSED_WITHOUT_RUNNING_EXCLUSION`
+  // est la même clause que celle du budget du jour — une seule définition.
   const [totalRecent, failedRecent, totalDay, failedDay] = await Promise.all([
-    prisma.contentGenJob.count({ where: { completedAt: { gte: oneHourAgo } } }).catch(() => 0),
     prisma.contentGenJob
-      .count({ where: { status: "failed", completedAt: { gte: oneHourAgo } } })
+      .count({ where: { completedAt: { gte: oneHourAgo }, ...CLOSED_WITHOUT_RUNNING_EXCLUSION } })
       .catch(() => 0),
     prisma.contentGenJob
-      .count({ where: { completedAt: { gte: twentyFourHoursAgo } } })
+      .count({
+        where: {
+          status: "failed",
+          completedAt: { gte: oneHourAgo },
+          NOT: STUCK_CLOSURE_FAILED_WHERE,
+        },
+      })
       .catch(() => 0),
     prisma.contentGenJob
-      .count({ where: { status: "failed", completedAt: { gte: twentyFourHoursAgo } } })
+      .count({
+        where: { completedAt: { gte: twentyFourHoursAgo }, ...CLOSED_WITHOUT_RUNNING_EXCLUSION },
+      })
+      .catch(() => 0),
+    prisma.contentGenJob
+      .count({
+        where: {
+          status: "failed",
+          completedAt: { gte: twentyFourHoursAgo },
+          NOT: STUCK_CLOSURE_FAILED_WHERE,
+        },
+      })
       .catch(() => 0),
   ]);
   const rejet = evaluateRejectRate({ totalRecent, failedRecent, totalDay, failedDay });

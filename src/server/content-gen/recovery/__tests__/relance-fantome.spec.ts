@@ -32,8 +32,10 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import {
+  CLOSED_WITHOUT_RUNNING_EXCLUSION,
   DEFAULT_RECOVERY_SETTINGS,
   STUCK_CLOSURE_PREFIX,
+  computeRecoveryRoom,
   drainFailedJobs,
   requeuedTodayWhere,
   resolveStuckClosure,
@@ -116,5 +118,79 @@ describe("drainFailedJobs — le comptage du jour utilise la clause partagée", 
     expect(Object.keys(args.where).sort()).toEqual(
       ["NOT", "retryCount", "status", "updatedAt"].sort(),
     );
+  });
+});
+
+describe("CLOSED_WITHOUT_RUNNING_EXCLUSION — partagée par le budget et par l'alarme de rejet", () => {
+  it("exclut les `cancelled` et les `failed` de clôture, rien d'autre", () => {
+    expect(CLOSED_WITHOUT_RUNNING_EXCLUSION).toEqual({
+      status: { not: "cancelled" },
+      NOT: { status: "failed", errorMessage: { startsWith: STUCK_CLOSURE_PREFIX } },
+    });
+  });
+
+  it("requeuedTodayWhere est dérivée de la même clause", () => {
+    const where = requeuedTodayWhere(new Date("2026-09-02T00:00:00.000Z"));
+    expect(where.status).toBe(CLOSED_WITHOUT_RUNNING_EXCLUSION.status);
+    expect(where.NOT).toBe(CLOSED_WITHOUT_RUNNING_EXCLUSION.NOT);
+  });
+});
+
+describe("computeRecoveryRoom — la reprise ne prend qu'une part du plafond", () => {
+  it("plafond 15, part 0,5, rien relancé : la reprise a droit à 7 (floor), pas à tout", () => {
+    expect(
+      computeRecoveryRoom({
+        capPerDay: 15,
+        shareOfDailyCap: 0.5,
+        requeuedToday: 0,
+        globalRoom: 15,
+      }),
+    ).toBe(7);
+  });
+
+  it("déduit ce que la reprise a déjà relancé aujourd'hui", () => {
+    expect(
+      computeRecoveryRoom({
+        capPerDay: 15,
+        shareOfDailyCap: 0.5,
+        requeuedToday: 5,
+        globalRoom: 15,
+      }),
+    ).toBe(2);
+    expect(
+      computeRecoveryRoom({
+        capPerDay: 15,
+        shareOfDailyCap: 0.5,
+        requeuedToday: 9,
+        globalRoom: 15,
+      }),
+    ).toBe(0);
+  });
+
+  it("ne dépasse jamais le budget global restant du tick (lissage horaire)", () => {
+    expect(
+      computeRecoveryRoom({ capPerDay: 15, shareOfDailyCap: 0.5, requeuedToday: 0, globalRoom: 1 }),
+    ).toBe(1);
+    expect(
+      computeRecoveryRoom({ capPerDay: 15, shareOfDailyCap: 0.5, requeuedToday: 0, globalRoom: 0 }),
+    ).toBe(0);
+  });
+
+  it("une part absente ou aberrante retombe sur la part par défaut, jamais sur « tout »", () => {
+    const base = { capPerDay: 15, requeuedToday: 0, globalRoom: 15 };
+    const attendu = computeRecoveryRoom({
+      ...base,
+      shareOfDailyCap: DEFAULT_RECOVERY_SETTINGS.shareOfDailyCap,
+    });
+    expect(attendu).toBeLessThan(15);
+    for (const share of [undefined, 0, -1, 2, Number.NaN]) {
+      expect(computeRecoveryRoom({ ...base, shareOfDailyCap: share })).toBe(attendu);
+    }
+  });
+
+  it("part 1 = comportement d'avant (la reprise peut tout prendre) — reste possible par config", () => {
+    expect(
+      computeRecoveryRoom({ capPerDay: 15, shareOfDailyCap: 1, requeuedToday: 0, globalRoom: 15 }),
+    ).toBe(15);
   });
 });

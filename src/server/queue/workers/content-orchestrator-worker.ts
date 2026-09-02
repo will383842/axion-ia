@@ -30,6 +30,7 @@ import {
 // des jobs figés) et lecture fail-safe du kill switch.
 import {
   DEFAULT_RECOVERY_SETTINGS,
+  computeRecoveryRoom,
   drainFailedJobs,
   requeuedTodayWhere,
   sweepStrandedQualityJobs,
@@ -881,9 +882,19 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       DEFAULT_RECOVERY_SETTINGS,
     );
     const genQueue = getContentGenQueue();
-    const stuck = await sweepStuckJobs(genQueue, recovery, globalRoom);
+    // 2026-09-02 — la reprise ne prend qu'une PART du plafond (moitié par
+    // défaut) : servie en premier, elle absorbait tout et les campagnes ne
+    // produisaient plus rien de neuf pour des mois. Cf. `shareOfDailyCap`.
+    let recoveryRoom = computeRecoveryRoom({
+      capPerDay,
+      shareOfDailyCap: recovery.shareOfDailyCap,
+      requeuedToday: requeuedTodayAll,
+      globalRoom,
+    });
+    const stuck = await sweepStuckJobs(genQueue, recovery, recoveryRoom);
+    recoveryRoom = Math.max(0, recoveryRoom - stuck.requeued);
     globalRoom = Math.max(0, globalRoom - stuck.requeued);
-    const drained = await drainFailedJobs(genQueue, recovery, globalRoom);
+    const drained = await drainFailedJobs(genQueue, recovery, recoveryRoom);
     globalRoom = Math.max(0, globalRoom - drained.requeued);
     // La réinjection en boucle qualité ne consomme PAS le budget : elle ne
     // génère aucun contenu neuf, elle reprend l'évaluation d'un contenu déjà
