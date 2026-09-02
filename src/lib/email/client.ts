@@ -310,7 +310,11 @@ export async function sendEmail(params: SendEmailParams): Promise<{ messageId: s
   if (params.unsubscribeToken) {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
     const url = `${siteUrl}/api/unsubscribe?token=${encodeURIComponent(params.unsubscribeToken)}`;
-    headers["List-Unsubscribe"] = `<${url}>, <mailto:unsubscribe@axion-ia.com>`;
+    // Lot 1b (2026-09-02, arbitrage Will) : plus de `mailto:`. La porte HTTPS
+    // en un clic (RFC 8058) suffit à Gmail, Yahoo, Apple et Outlook ; une boîte
+    // `unsubscribe@` qu'aucun humain ne relève, ou qui n'existe pas, transforme
+    // un désabonnement en rebond — l'inverse de ce que l'en-tête promet.
+    headers["List-Unsubscribe"] = `<${url}>`;
     headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
   }
 

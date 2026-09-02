@@ -18,6 +18,11 @@ vi.mock("@/features/newsletter/actions", () => ({
 vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: (...a: unknown[]) => checkRateLimit(...a),
 }));
+const enregistrerOpposition = vi.fn();
+vi.mock("@/server/email/opposition", () => ({
+  estJetonOpposition: (t: unknown) => typeof t === "string" && t.startsWith("op1."),
+  enregistrerOpposition: (...a: unknown[]) => enregistrerOpposition(...a),
+}));
 
 import { GET, POST } from "./route";
 
@@ -37,6 +42,9 @@ beforeEach(() => {
     .mockReset()
     .mockResolvedValue({ ok: true, alreadyUnsubscribed: false, email: "x@y.fr" });
   checkRateLimit.mockReset().mockResolvedValue({ allowed: true });
+  enregistrerOpposition
+    .mockReset()
+    .mockResolvedValue({ ok: true, email: "x@y.fr", dejaOpposee: false });
   process.env["NEXT_PUBLIC_SITE_URL"] = BASE;
 });
 
@@ -124,5 +132,27 @@ describe("limite de débit", () => {
       "unsubscribe:203.0.113.9",
       expect.objectContaining({ windowSec: 60 }),
     );
+  });
+});
+
+describe("jeton d'opposition (lot 1b) — même porte, autre registre", () => {
+  it("🔴 un jeton `op1.` enregistre une OPPOSITION, pas un désabonnement newsletter", async () => {
+    const res = await POST(post("List-Unsubscribe=One-Click", "op1.abc.def"));
+    expect(res.status).toBe(200);
+    expect(enregistrerOpposition).toHaveBeenCalledWith("op1.abc.def");
+    expect(unsubscribeNewsletterAction).not.toHaveBeenCalled();
+  });
+
+  it("depuis le formulaire, redirige vers le résultat comme la newsletter", async () => {
+    enregistrerOpposition.mockResolvedValue({ ok: true, email: "x@y.fr", dejaOpposee: true });
+    const res = await POST(post("token=op1.abc.def"));
+    expect(res.status).toBe(303);
+    expect(res.headers.get("location")).toBe(`${BASE}/fr/desabonnement?status=ok&already=1`);
+  });
+
+  it("un jeton d'opposition forgé rend 400 en un clic", async () => {
+    enregistrerOpposition.mockResolvedValue({ ok: false, error: "invalid_token" });
+    const res = await POST(post("List-Unsubscribe=One-Click", "op1.forge.xxx"));
+    expect(res.status).toBe(400);
   });
 });
