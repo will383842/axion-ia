@@ -34,7 +34,7 @@
 
 import { prisma } from "@/lib/prisma";
 
-export type MotifRetenue = "rebond_dur" | "desabonne";
+export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose";
 
 export type VerdictEnvoi =
   | { readonly retenu: false }
@@ -92,6 +92,18 @@ export async function verdictAvantEnvoi(
       if (abonne?.status === "unsubscribed") {
         return { retenu: true, motif: "desabonne", depuis: abonne.unsubscribedAt };
       }
+      // Lot 1b : l'opposition à la prospection, exprimée depuis n'importe quel
+      // e-mail, retient les envois marketing au même titre que le désabonnement.
+      // Lecture DIRECTE : `opposition.ts` tire la synchronisation CRM, qui tire
+      // les files, qui tirent ce module — un cycle, et une chaîne d'imports qui
+      // n'a rien à faire sur le chemin d'enfilage.
+      const opposition = await prisma.emailOpposition.findUnique({
+        where: { email: adresse.toLowerCase() },
+        select: { id: true },
+      });
+      if (opposition !== null) {
+        return { retenu: true, motif: "oppose", depuis: null };
+      }
     } catch (e) {
       console.error(
         `[email-suppression] lecture du désabonnement impossible pour ${adresse} — envoi maintenu :`,
@@ -121,7 +133,9 @@ export async function signalerRetenue(
   const titre =
     verdict.motif === "rebond_dur"
       ? "Un envoi a été retenu : l'adresse a déjà rebondi définitivement"
-      : "Un envoi marketing a été retenu : la personne s'est désabonnée";
+      : verdict.motif === "oppose"
+        ? "Un envoi marketing a été retenu : la personne s'est opposée à la prospection"
+        : "Un envoi marketing a été retenu : la personne s'est désabonnée";
   const message =
     verdict.motif === "rebond_dur"
       ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : le serveur destinataire a déjà refusé ` +

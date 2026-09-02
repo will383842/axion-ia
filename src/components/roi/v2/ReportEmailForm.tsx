@@ -193,8 +193,7 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
         />
         <span className="text-[13.5px] leading-relaxed text-[var(--sim-fg-soft)]">
           J&apos;accepte de recevoir ce rapport et d&apos;être recontacté par Axion-IA à ce sujet.
-          Aucune revente de données. Pour ne plus être recontacté, répondez à l&apos;e-mail reçu ou
-          écrivez à contact@axion-ia.com.
+          Aucune revente de données ; chaque e-mail porte un lien pour ne plus être sollicité.
         </span>
       </label>
 

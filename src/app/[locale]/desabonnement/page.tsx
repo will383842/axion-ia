@@ -95,6 +95,10 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
   ];
 
   const hasToken = typeof token === "string" && token.length > 0;
+  // Lot 1b (2026-09-02) : un jeton `op1.` porte une OPPOSITION aux sollicitations
+  // commerciales (depuis n'importe quel e-mail), pas un désabonnement de liste.
+  // La page dit lequel des deux elle confirme.
+  const estOpposition = hasToken && token.startsWith("op1.");
 
   return (
     <>
@@ -104,8 +108,16 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
       <Section
         titleAs="h1"
         eyebrow={isFr ? "RGPD · RFC 8058" : "GDPR · RFC 8058"}
-        title={isFr ? "Confirmer le" : "Confirm"}
-        titleEm={isFr ? "désabonnement" : "unsubscribe"}
+        title={isFr ? "Confirmer" : "Confirm"}
+        titleEm={
+          estOpposition
+            ? isFr
+              ? "l'arrêt des sollicitations commerciales"
+              : "the end of commercial messages"
+            : isFr
+              ? "le désabonnement"
+              : "unsubscribe"
+        }
         description={
           isFr
             ? "Conformément au RGPD et à la RFC 8058 (List-Unsubscribe en un clic), vous pouvez retirer votre consentement à tout moment."
@@ -132,8 +144,12 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
             <>
               <p>
                 {isFr
-                  ? "Cliquez sur le bouton ci-dessous pour confirmer votre désabonnement. Le traitement est instantané et définitif pour la liste concernée."
-                  : "Click the button below to confirm your unsubscription. Processing is instant and final for the relevant list."}
+                  ? estOpposition
+                    ? "Cliquez sur le bouton ci-dessous pour ne plus recevoir de sollicitations commerciales d'Axion-IA. Les e-mails liés à un dossier en cours (convocation, facture, accès) continuent d'arriver."
+                    : "Cliquez sur le bouton ci-dessous pour confirmer votre désabonnement. Le traitement est instantané et définitif pour la liste concernée."
+                  : estOpposition
+                    ? "Click the button below to stop receiving commercial messages from Axion-IA. Emails tied to an ongoing file (invitations, invoices, access) keep coming."
+                    : "Click the button below to confirm your unsubscription. Processing is instant and final for the relevant list."}
               </p>
               <form
                 action="/api/unsubscribe"
@@ -145,7 +161,14 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
                   type="submit"
                   className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-md px-5 py-3 text-base font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  {isFr ? "Confirmer le désabonnement" : "Confirm unsubscribe"} →
+                  {estOpposition
+                    ? isFr
+                      ? "Ne plus être sollicité"
+                      : "Stop commercial messages"
+                    : isFr
+                      ? "Confirmer le désabonnement"
+                      : "Confirm unsubscribe"}{" "}
+                  →
                 </button>
                 <Cta href="/" variant="outline">
                   {isFr ? "Annuler" : "Cancel"}

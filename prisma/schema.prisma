@@ -11289,3 +11289,24 @@ model EdCanalNotification {
 
   @@map("ed_canaux_notification")
 }
+
+// ============================================================
+// Opposition à la prospection commerciale — audit e-mails 2026-09-02, lot 1b
+// ============================================================
+
+/// Une adresse qui a cliqué « Ne plus recevoir de sollicitations commerciales »
+/// depuis un e-mail. Sans compte ni inscription : le jeton signé dérivé de
+/// l'adresse suffit (cf. `src/server/email/opposition.ts`). Relue par la liste
+/// de suppression (envois marketing retenus) et poussée vers la liste
+/// d'opposition du CRM, qui gouverne la prospection humaine.
+model EmailOpposition {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.Citext
+  /// Gabarit depuis lequel le lien a été cliqué — une trace, pas un secret.
+  template  String?  @db.VarChar(60)
+  source    String   @default("lien-email") @db.VarChar(40)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_oppositions")
+}
