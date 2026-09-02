@@ -184,7 +184,7 @@ export async function POST(req: NextRequest): Promise<Response> {
  * ⚠️ **TOUT AUTRE VERBE REND `405`, ET C'EST DÉLIBÉRÉ.** Sans cet export, Next
  *    rend `405` de lui-même — mais une route MCP qui répondrait à `GET` inviterait
  *    à croire qu'elle expose quelque chose à un navigateur. Le défaut a déjà
- *    coûté un webhook dans ce dépôt (#917) : c'est le verbe manquant qui rendait
+ *    coûté un webhook dans ce dépôt (PR 917) : c'est le verbe manquant qui rendait
  *    405, et personne ne le voyait.
  */
 export function GET(): Response {

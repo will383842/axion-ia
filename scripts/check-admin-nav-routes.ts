@@ -130,7 +130,14 @@ if (missing.length > 0 || externesInvalides.length > 0) {
 //    rangé ailleurs rendrait la garde muette sans un mot — le défaut mesuré sur
 //    `surface-server-actions.spec.ts`.
 
-const RACINE_MCP = resolve(process.cwd(), "src/server/mcp");
+// ⚠️ DEUX RACINES, PAS UNE. La porte HTTP vit sous `src/app/api/mcp` (route
+//    Next), la couche outils vivra sous `src/server/mcp` (lot 4b). Une garde qui
+//    ne lirait que la seconde serait verte aujourd'hui en n'ayant rien lu — et
+//    resterait aveugle au fichier qui, précisément, rend la réponse au socle.
+const RACINES_MCP: readonly string[] = [
+  resolve(process.cwd(), "src/app/api/mcp"),
+  resolve(process.cwd(), "src/server/mcp"),
+];
 
 /** Ce qu'un fichier de l'adaptateur ne doit pas contenir, et pourquoi. */
 const INTERDITS_DANS_MCP: readonly { readonly motif: RegExp; readonly quoi: string }[] = [
@@ -157,7 +164,7 @@ function fichiersDeLAdaptateur(dir: string): string[] {
   return out;
 }
 
-const fichiersMcp = fichiersDeLAdaptateur(RACINE_MCP);
+const fichiersMcp = RACINES_MCP.flatMap((racine) => fichiersDeLAdaptateur(racine));
 const violationsMcp: string[] = [];
 
 for (const chemin of fichiersMcp) {

@@ -189,7 +189,7 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
 describe("les verbes autres que POST", () => {
   it("rendent 405 en annonçant le verbe admis", async () => {
     // ⚠️ Un verbe manquant qui rend 405 a déjà coûté un webhook dans ce dépôt
-    //    (#917) : personne ne voyait POURQUOI. Ici le 405 est explicite et porte
+    //    (PR 917) : personne ne voyait POURQUOI. Ici le 405 est explicite et porte
     //    son en-tête `Allow`.
     const { GET } = await charger();
     const res = GET();
