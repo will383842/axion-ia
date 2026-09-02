@@ -1,0 +1,231 @@
+/**
+ * `admin-job-applications/reads.ts` — **LA LECTURE DES CANDIDATURES, SANS SESSION.**
+ *
+ * ⚠️ **CE FICHIER N'EST PAS UN MODULE `"use server"`, ET C'EST TOUT LE POINT.**
+ *    Dans un fichier de Server Actions, *chaque export devient un point d'entrée
+ *    réseau*. Une lecture sans garde de session exportée depuis `actions.ts`
+ *    serait appelable depuis n'importe quel navigateur.
+ *
+ * Même motif que `admin-submissions/reads.ts` : `listApplicationsAction`
+ * commençait par `requireAdminRead()`, qui appelle `auth()` — lequel lit un
+ * **cookie de navigateur**. La boîte de réception
+ * (`admin-inbox/queries.ts:158`) passait par cette action, donc elle exigeait
+ * une session de navigateur qu'un appel MCP n'a pas.
+ *
+ * ⚠️ **CETTE EXTRACTION N'ÉLARGIT RIEN.** Le corps est déplacé sans une
+ *    modification, et `listApplicationsAction` garde sa garde à l'identique.
+ *
+ * Y vivent aussi les trois choses dont la lecture a besoin et qu'un module
+ * `"use server"` ne peut pas exporter : la liste des statuts, le schéma de
+ * filtres, et le déchiffrement tolérant. Elles n'ont pas été dupliquées —
+ * `actions.ts` les importe désormais d'ici, pour qu'il n'y en ait qu'une
+ * écriture.
+ */
+
+import { z } from "zod";
+
+import { prisma } from "@/lib/prisma";
+import { getClientIp } from "@/lib/client-ip";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
+import { decryptPii } from "@/lib/pii-crypto";
+import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
+import type { JobApplicationStatus } from "../../../prisma/generated/client";
+
+export const STATUSES = [
+  "new",
+  "reviewing",
+  "shortlisted",
+  "rejected",
+  "hired",
+  "archived",
+] as const;
+
+/**
+ * Déchiffre sans jamais faire tomber la page. Un PII corrompu rend une chaîne
+ * lisible plutôt qu'une exception : l'écran doit rester consultable même quand
+ * une ligne est illisible.
+ */
+export function safeDecrypt(v: string): string {
+  try {
+    return decryptPii(v);
+  } catch {
+    return "[déchiffrement échoué]";
+  }
+}
+
+export const listApplicationsSchema = z.object({
+  offerId: z.preprocess(
+    (v) => (v === "" || v == null ? undefined : v),
+    z.string().uuid().optional(),
+  ),
+  status: z.enum([...STATUSES, "all"]).default("all"),
+  // Vues séparées (demande Will 2026-08-12) : la vue standard EXCLUT l'offre
+  // monteur vidéo freelance, qui a son propre onglet. L'onglet « Toutes »
+  // (demande Will 2026-08-13) passe `all` : aucune contrainte d'offre.
+  // Le défaut reste `standard` — la boîte de réception unifiée appelle cette
+  // action sans `view` et son canal Candidatures ne doit pas changer de
+  // périmètre en silence.
+  view: z.enum(["standard", "monteur", "all"]).default("standard"),
+  onlyAttention: z.coerce.boolean().optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(10).max(100).default(50),
+});
+
+export type ListApplicationsInput = z.infer<typeof listApplicationsSchema>;
+
+export interface JobApplicationListItem {
+  id: string;
+  offerId: string;
+  offerTitleSnap: string;
+  /**
+   * 🔴 `null` QUAND L'APPELANT N'A PAS LE DROIT D'OUVRIR LE DOSSIER.
+   *
+   * Le type le dit, plutôt qu'une chaîne vide : un consommateur qui l'oublie
+   * est signalé par le compilateur, là où `""` se serait affiché sans un mot.
+   */
+  contactName: string | null;
+  contactEmail: string | null;
+  status: JobApplicationStatus;
+  hasCv: boolean;
+  needsAttention: boolean;
+  submittedAt: Date;
+}
+
+export interface JobApplicationListResult {
+  items: JobApplicationListItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+/**
+ * Le droit d'ouvrir un dossier de candidat, et la trace de son ouverture.
+ *
+ * 🔴 **AUCUNE VALEUR PAR DÉFAUT, ET C'EST LE CŒUR DU CORRECTIF.** Extraire
+ *    cette lecture de son action lui avait retiré `requireAdminRead()`, donc le
+ *    prédicat `peutOuvrirDossierCandidat` — et la Boîte de réception servait de
+ *    nouveau le nom et l'adresse de chaque candidat à tous les rôles, y compris
+ *    `reader`. C'est exactement le défaut du 2026-08-25 (cahier D6-1), rouvert
+ *    par le lot 4a et rattrapé par la garde `dossier-candidat-cloisonne`.
+ *    Sans défaut, le compilateur oblige chaque appelant à TRANCHER.
+ */
+export interface AccesDossierCandidat {
+  /**
+   * Le rôle au nom duquel on lit — **pas** un booléen déjà tranché.
+   *
+   * 🔑 C'est ce fichier qui appelle `peutOuvrirDossierCandidat`, et c'est
+   *    délibéré : recevoir un `true` déjà calculé rendrait le cloisonnement
+   *    dépendant de la rigueur de chaque appelant, et un `true` posé par erreur
+   *    ne se verrait nulle part. Le rôle, lui, ne peut pas mentir sur lui-même.
+   *    `null` (aucun rôle établi) ⇒ refus, comme pour un rôle inconnu.
+   */
+  readonly role: string | null;
+  /**
+   * Qui consulte, pour la trace. `null` quand l'appel n'a pas de session
+   * (adaptateur MCP) : la trace porte alors l'absence d'acteur plutôt que
+   * d'inventer un identifiant.
+   */
+  readonly acteurId: string | null;
+}
+
+/**
+ * **LE CORPS DE `listApplicationsAction`, MOT POUR MOT, MOINS SA GARDE DE SESSION.**
+ *
+ * Ne l'appeler que depuis un contexte qui a DÉJÀ établi *qui* appelle :
+ * `listApplicationsAction` (session de navigateur) ou le handler `/api/mcp`
+ * (secret partagé). Ce fichier ne lit aucune session — mais il EXIGE que le
+ * droit ait été tranché, et il le fait respecter.
+ */
+export async function listApplications(
+  input: Partial<ListApplicationsInput> = {},
+  acces: AccesDossierCandidat,
+): Promise<JobApplicationListResult> {
+  const parsed = listApplicationsSchema.parse(input);
+  const where: Record<string, unknown> = {};
+  if (parsed.offerId) where.offerId = parsed.offerId;
+  if (parsed.status !== "all") where.status = parsed.status;
+  if (parsed.onlyAttention) where.needsAttention = true;
+  if (parsed.view === "monteur") {
+    where.offer = { slug: VIDEO_EDITOR_OFFER_SLUG };
+  } else if (parsed.view === "standard" && !parsed.offerId) {
+    // Vue standard sans filtre d'offre explicite : les candidatures monteur
+    // vidéo restent dans leur onglet. Un `offerId` explicite (lien depuis la
+    // fiche offre) garde la priorité et n'est pas amputé.
+    where.offer = { slug: { not: VIDEO_EDITOR_OFFER_SLUG } };
+  }
+
+  const [total, rows] = await Promise.all([
+    prisma.jobApplication.count({ where }),
+    prisma.jobApplication.findMany({
+      where,
+      orderBy: [{ submittedAt: "desc" }],
+      skip: (parsed.page - 1) * parsed.pageSize,
+      take: parsed.pageSize,
+      select: {
+        id: true,
+        offerId: true,
+        offerTitleSnap: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        status: true,
+        cvStoragePath: true,
+        needsAttention: true,
+        submittedAt: true,
+      },
+    }),
+  ]);
+
+  // ── LE CLOISONNEMENT, ICI ET NULLE PART AILLEURS ──────────────────────────
+  //    Les lignes restent — compteurs et chronologie justes, comme pour le canal
+  //    « appel » depuis le 2026-08-27. L'identité, non : sans le droit, elle ne
+  //    sort pas de cette fonction, et `hasCv` non plus (savoir qu'un CV existe
+  //    est déjà une information sur la personne).
+  // Le prédicat COMMUN, appelé ici — jamais une liste de rôles recopiée : le
+  // dépôt en a soldé vingt-neuf copies, et c'est la divergence entre copies qui
+  // avait laissé la pièce jointe mieux protégée que l'identité qu'elle porte.
+  const ouvert = peutOuvrirDossierCandidat(acces.role);
+  const items: JobApplicationListItem[] = rows.map((r) => ({
+    id: r.id,
+    offerId: r.offerId,
+    offerTitleSnap: r.offerTitleSnap,
+    contactName: ouvert ? `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim() : null,
+    contactEmail: ouvert ? safeDecrypt(r.email) : null,
+    status: r.status,
+    hasCv: ouvert ? Boolean(r.cvStoragePath) : false,
+    needsAttention: r.needsAttention,
+    submittedAt: r.submittedAt,
+  }));
+
+  // ── LA TRACE — ce qui rend l'accès défendable ─────────────────────────────
+  //    Écrite seulement quand des identités sont réellement sorties. Une liste
+  //    cloisonnée ne montre personne : la journaliser noierait les vraies
+  //    consultations sous du bruit.
+  //
+  //    ⚠️ Best-effort, comme partout ailleurs dans le dépôt : un journal
+  //    indisponible ne doit pas priver le recruteur de sa liste.
+  if (ouvert && items.length > 0) {
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: acces.acteurId,
+          action: "careers.candidature.liste.consultee",
+          targetType: "JobApplication",
+          targetId: null,
+          ipAddress: await getClientIp(),
+        },
+      });
+    } catch {
+      // silence volontaire : cf. ci-dessus
+    }
+  }
+
+  return {
+    items,
+    total,
+    page: parsed.page,
+    pageSize: parsed.pageSize,
+    totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
+  };
+}

@@ -18,7 +18,7 @@ interface Props {
 const SECTOR_SHORT: Record<string, string> = {
   audits: "Audits",
   interventions_formations: "Interventions",
-  implementations: "Implantations",
+  implementations: "Implémentations",
   un_a_un: "1-à-1",
   sites_web_augmentes: "Web IA",
 };

@@ -712,8 +712,16 @@ const nextConfig: NextConfig = {
       // Le lookahead négatif `(?:/|$)` après `widget` n'exclut PAS
       // `/carrieres/widget-builder` (suivi de `-builder`). Aligné avec
       // `isEmbedPath` (src/lib/csp.ts) + proxy.ts.
+      //
+      // 🔴 2026-09-02 — audit UI de la console : `/api/content-gen/preview/*`
+      // est l'aperçu de l'article dans l'écran de relecture, rendu dans une
+      // `<iframe>` same-origin (`ReviewDetailV2.tsx`). La route pose elle-même
+      // `X-Frame-Options: SAMEORIGIN`, mais cet en-tête global la recouvrait en
+      // DENY : le relecteur approuvait un cadre gris de 600 px sans jamais voir
+      // le texte. La route reste protégée par son jeton HMAC (10 min), `no-store`
+      // et `noindex`.
       {
-        source: "/((?!.*\\/carrieres\\/widget(?:\\/|$)).*)",
+        source: "/((?!api\\/content-gen\\/preview\\/|.*\\/carrieres\\/widget(?:\\/|$)).*)",
         headers: [{ key: "X-Frame-Options", value: "DENY" }],
       },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare

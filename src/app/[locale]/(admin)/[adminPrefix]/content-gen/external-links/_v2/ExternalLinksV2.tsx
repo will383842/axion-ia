@@ -75,7 +75,7 @@ export async function ExternalLinksV2({
     <AdminPageShell>
       <AdminPageHeader
         title="Catalogue de liens externes"
-        description={`Catalogue d'autorité ~2400 liens (${result.stats.healthyForSelection} actuellement éligibles à selectExternalLinks()). Worker mensuel + tracking rotation équitable.`}
+        description={`Catalogue d'autorité : ${result.stats.total.toLocaleString("fr-FR")} liens, dont ${result.stats.healthyForSelection.toLocaleString("fr-FR")} éligibles à l'insertion automatique. Les états « obsolète » proviennent de l'instantané de vérification versionné dans le dépôt, pas du moniteur mensuel.`}
         actions={
           <div className="flex gap-2">
             <TriggerVerificationButton />
@@ -292,7 +292,8 @@ export async function ExternalLinksV2({
                     <td>{l.organization}</td>
                     <td>
                       <a href={l.url} target="_blank" rel="noopener noreferrer">
-                        {l.title}
+                        {/* 2026-09-02 — certains titres du seed portent des `**` Markdown. */}
+                        {l.title.replace(/\*\*/g, "")}
                       </a>
                     </td>
                     <td>{l.authority}/5</td>

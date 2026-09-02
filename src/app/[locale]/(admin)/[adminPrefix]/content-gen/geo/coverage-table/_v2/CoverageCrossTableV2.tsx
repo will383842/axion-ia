@@ -27,7 +27,7 @@ const STATUS_LABELS: Record<string, string> = {
 const SECTOR_LABELS: Record<string, string> = {
   interventions_formations: "Interventions",
   audits: "Audits",
-  implementations: "Implantations",
+  implementations: "Implémentations",
   un_a_un: "1-à-1",
   sites_web_augmentes: "Web IA",
 };

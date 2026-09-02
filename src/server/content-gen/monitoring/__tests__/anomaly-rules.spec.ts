@@ -86,6 +86,7 @@ describe("chaîne à l'arrêt — la veille comptait le producteur, pas le produ
       recentJobs: 3,
       createdDay: 15,
       productiveDay: 0,
+      budgetRoom: 1,
     });
 
     expect(stall).toBe("tourne_a_vide");
@@ -97,6 +98,7 @@ describe("chaîne à l'arrêt — la veille comptait le producteur, pas le produ
       recentJobs: 0,
       createdDay: 0,
       productiveDay: 0,
+      budgetRoom: 1,
     });
 
     expect(stall).toBe("rien_lance");
@@ -109,6 +111,7 @@ describe("chaîne à l'arrêt — la veille comptait le producteur, pas le produ
         recentJobs: 3,
         createdDay: 15,
         productiveDay: 9,
+        budgetRoom: 1,
       }),
     ).toBeNull();
   });
@@ -120,6 +123,7 @@ describe("chaîne à l'arrêt — la veille comptait le producteur, pas le produ
         recentJobs: 0,
         createdDay: 0,
         productiveDay: 0,
+        budgetRoom: 1,
       }),
     ).toBeNull();
   });
@@ -133,6 +137,7 @@ describe("chaîne à l'arrêt — la veille comptait le producteur, pas le produ
         recentJobs: 3,
         createdDay: 3,
         productiveDay: 0,
+        budgetRoom: 1,
       }),
     ).toBeNull();
     expect(STALL_RULES.dayWindowMinCreated).toBe(5);
@@ -148,7 +153,47 @@ describe("chaîne à l'arrêt — la veille comptait le producteur, pas le produ
         recentJobs: 2,
         createdDay: 15,
         productiveDay: 15,
+        budgetRoom: 1,
       }),
     ).toBeNull();
+  });
+
+  it("ne crie pas « à l'arrêt » quand le plafond du jour est consommé", () => {
+    // 02/09 à 04:00 UTC : 5 news RSS à minuit + 1 fantôme = 6/15, lissage
+    // horaire → budget 0 jusqu'à 09:36. Rien lancé depuis 4 h : NORMAL.
+    expect(
+      evaluatePipelineStall({
+        runningCampaigns: 2,
+        recentJobs: 0,
+        createdDay: 5,
+        productiveDay: 5,
+        budgetRoom: 0,
+      }),
+    ).toBeNull();
+  });
+
+  it("crie « à l'arrêt » dès que le budget était ouvert et que rien n'est parti", () => {
+    expect(
+      evaluatePipelineStall({
+        runningCampaigns: 2,
+        recentJobs: 0,
+        createdDay: 5,
+        productiveDay: 5,
+        budgetRoom: 1,
+      }),
+    ).toBe("rien_lance");
+  });
+
+  it("le budget consommé ne masque PAS une chaîne qui tourne à vide", () => {
+    // La règle B ne dépend pas du budget : on a lancé 15 fois, rien n'est sorti.
+    expect(
+      evaluatePipelineStall({
+        runningCampaigns: 2,
+        recentJobs: 3,
+        createdDay: 15,
+        productiveDay: 0,
+        budgetRoom: 0,
+      }),
+    ).toBe("tourne_a_vide");
   });
 });

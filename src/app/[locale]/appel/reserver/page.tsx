@@ -34,6 +34,7 @@ import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
 import { FormulaireReservation } from "@/components/booking/FormulaireReservation";
+import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { lireLaRepriseDuCreneau } from "@/server/calendly/reprise-formulaire";
 import {
@@ -170,6 +171,10 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             </div>
           ) : null}
 
+          {/* Après un refus, le bandeau d'erreurs est en TÊTE du formulaire et le
+              bouton d'envoi en bas : sans ce geste, la navigation client laissait
+              le prospect devant le bouton, 990 px sous le message. */}
+          {reprise && Object.keys(reprise.erreurs).length > 0 ? <RemonterAuMessage /> : null}
           <FormulaireReservation
             debutIso={debut.toISOString()}
             creneauLisible={creneauLisible(debut)}

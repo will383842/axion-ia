@@ -33,6 +33,27 @@ export interface DedupGuardInput {
   readonly targetAudienceOrganisation?: OrganisationType;
   /** Lookback window pour anti-doublon ville/keyword en jours. Default 90. */
   readonly windowDays?: number;
+  /**
+   * Job qui demande le contrôle : exclu de la comparaison, sinon un job en
+   * file se reconnaît lui-même à 100 % et s'annule.
+   */
+  readonly excludeJobId?: string;
+}
+
+/**
+ * Titre porté par la charge utile d'un job, quelle que soit sa provenance.
+ *
+ * 🔴 2026-09-02 — deux news RSS sur la MÊME dépêche (« Claude Fable 5.1 … AWS »)
+ * publiées à la même minute par deux flux : la garde n'avait jamais vu passer
+ * un job RSS. L'ingestion écrit `rssTitle`, la garde et le worker lisaient
+ * `title` — vide, donc contrôle sauté. Une seule lecture, ici, pour les deux.
+ */
+export function titleOfPayload(payload: unknown): string {
+  if (typeof payload !== "object" || payload === null) return "";
+  const p = payload as { title?: unknown; rssTitle?: unknown };
+  if (typeof p.title === "string" && p.title.trim()) return p.title;
+  if (typeof p.rssTitle === "string" && p.rssTitle.trim()) return p.rssTitle;
+  return "";
 }
 
 export interface DedupGuardResult {
@@ -104,10 +125,16 @@ export async function checkDedup(input: DedupGuardInput): Promise<DedupGuardResu
     const cutoff = new Date(Date.now() - windowDays * 24 * 3600 * 1000);
 
     // Couche A.1 — Levenshtein 0.85 vs 5000 derniers
+    // `queued` / `running` / `needs_review` comparés aussi : deux jobs créés
+    // à la même minute (rafale RSS de minuit) ne se voyaient pas, chacun ne
+    // regardant que ce qui était déjà publié.
     const recent = await prisma.contentGenJob.findMany({
       where: {
         createdAt: { gte: cutoff },
-        status: { in: ["published", "approved", "publishing"] },
+        status: {
+          in: ["published", "approved", "publishing", "needs_review", "queued", "running"],
+        },
+        ...(input.excludeJobId ? { id: { not: input.excludeJobId } } : {}),
       },
       orderBy: { createdAt: "desc" },
       take: LOOKBACK_LIMIT,
@@ -121,13 +148,7 @@ export async function checkDedup(input: DedupGuardInput): Promise<DedupGuardResu
     });
 
     for (const job of recent) {
-      const otherTitle =
-        typeof job.inputPayload === "object" &&
-        job.inputPayload !== null &&
-        "title" in job.inputPayload &&
-        typeof (job.inputPayload as { title: unknown }).title === "string"
-          ? (job.inputPayload as { title: string }).title
-          : "";
+      const otherTitle = titleOfPayload(job.inputPayload);
       if (!otherTitle) continue;
 
       const sim = levenshteinSimilarity(input.title, otherTitle);

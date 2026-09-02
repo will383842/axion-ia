@@ -19,6 +19,8 @@ import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { csvEscape } from "@/lib/csv";
 import { ROI_DETAILS_KEYS as K } from "@/lib/roi/submission-details";
+import { listSubmissions } from "./reads";
+import type { SubmissionListResult } from "./reads";
 import {
   listSubmissionsSchema,
   buildSubmissionsWhere,
@@ -27,12 +29,7 @@ import {
   exportedScope,
   type ListSubmissionsInput,
 } from "./query";
-import type {
-  SubmissionType,
-  SubmissionStatus,
-  Locale,
-  Prisma,
-} from "../../../prisma/generated/client";
+import type { Prisma } from "../../../prisma/generated/client";
 
 // ============================================================
 // AUTH guard helper (RBAC simple V1 : super_admin/admin/editor)
@@ -66,173 +63,28 @@ async function requireAdminReadSession() {
 
 export type { ListSubmissionsInput } from "./query";
 
-export interface SubmissionListItem {
-  id: string;
-  type: SubmissionType;
-  status: SubmissionStatus;
-  locale: Locale;
-  companyName: string;
-  contactName: string;
-  contactEmail: string;
-  /** Téléphone déchiffré (2026-08-13 — colonne Téléphone du listing). Null si absent. */
-  contactPhone: string | null;
-  /** Extrait du contenu (details.message, tronqué à 300 caractères) pour
-   *  l'afficher directement dans le listing (demande Will 2026-08-13). */
-  messageExtrait: string | null;
-  sector: string | null;
-  assignedTo: string | null;
-  submittedAt: Date;
-  // Sprint Notif Infra 2026-05-26 / fix P1-2 — champs reply system pour
-  // afficher les badges Sans réponse / Répondu (N) / Échec dans le listing.
-  replyCount: number;
-  needsAttention: boolean;
-  archivedAt: Date | null;
-  /** Corbeille (2026-07-10) — non null = soft-deleted (dans la corbeille). */
-  deletedAt: Date | null;
-  lastRepliedAt: Date | null;
-  /** Status delivery de la DERNIÈRE reply (null si aucune). */
-  lastReplyStatus: string | null;
-  /** Form v2 (2026-05-28) — type fin extrait de details.unifiedType. Les 5
-   * nouveaux types (presse, recrutement, speaker, investisseur, support_client)
-   * sont stockés en DB comme SubmissionType.contact + details.unifiedType. */
-  unifiedType: string | null;
-  /** details.subType — le slug de la formation (devis express des fiches) ou la
-   * granularité fine (audit-flash, chatbot…). C'est LE contexte que la boîte de
-   * réception affichait « — » alors qu'il était en base (relevé P1-08). */
-  subType: string | null;
-}
+// Les deux formes du résultat vivent dans `./reads`, avec la lecture qui les
+// produit. Re-exportées ici en TYPES — un `export type` ne crée aucun point
+// d'entrée réseau, contrairement à un export de valeur dans un module
+// `"use server"`.
+export type { SubmissionListItem, SubmissionListResult } from "./reads";
 
-export interface SubmissionListResult {
-  items: SubmissionListItem[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-}
-
+/**
+ * ⚠️ **LA GARDE EST INTACTE, ET C'EST LA SEULE CHOSE QUI COMPTE ICI.** Le corps
+ *    a été déplacé dans `./reads` — mot pour mot, sans une modification — pour
+ *    qu'un appelant SANS session de navigateur (le handler `/api/mcp`, qui
+ *    porte un secret partagé) puisse lire sans passer par une Server Action.
+ *
+ *    Ce fichier est `"use server"` : **chaque export y devient un point d'entrée
+ *    réseau.** Une lecture sans garde exportée d'ici serait appelable depuis
+ *    n'importe quel navigateur. C'est pourquoi la lecture nue vit ailleurs, et
+ *    pourquoi cette action-ci reste le SEUL chemin exposé.
+ */
 export async function listSubmissionsAction(
   input: Partial<ListSubmissionsInput> = {},
 ): Promise<SubmissionListResult> {
   await requireAdminReadSession();
-  const parsed = listSubmissionsSchema.parse(input);
-
-  // Un SEUL constructeur de `where`, partagé avec l'export CSV (cf. `./query`).
-  //
-  // NB : la recherche par email/nom N'EST PAS un filtre SQL. `contactEmail` /
-  // `contactName` sont chiffrés au repos (AES-GCM, IV aléatoire → non
-  // déterministe), donc un `contains` SQL ne matche jamais. On filtre en mémoire
-  // après déchiffrement (voir plus bas). `companyName` reste en clair.
-  const where = buildSubmissionsWhere(parsed);
-
-  // Sélection partagée liste + recherche.
-  const select = {
-    id: true,
-    type: true,
-    status: true,
-    locale: true,
-    companyName: true,
-    contactName: true,
-    contactEmail: true,
-    contactPhone: true,
-    sector: true,
-    assignedTo: true,
-    submittedAt: true,
-    replyCount: true,
-    needsAttention: true,
-    archivedAt: true,
-    deletedAt: true,
-    lastRepliedAt: true,
-    // Form v2 — `details` JSON contient unifiedType (le champ `type` DB n'a que
-    // 5 valeurs enum, vs 12 types unifiés).
-    details: true,
-    // Dernière reply → lastReplyStatus (badge "Échec envoi").
-    replies: {
-      orderBy: { repliedAt: "desc" },
-      take: 1,
-      select: { deliveryStatus: true },
-    },
-  } satisfies Prisma.SubmissionSelect;
-
-  // Mappe une ligne DB → SubmissionListItem. DÉCHIFFRE le PII : contactName /
-  // contactEmail sont stockés chiffrés (enc:v1) par le formulaire ; decryptPii
-  // est un no-op sur les valeurs en clair (leads chatbot) → sûr partout.
-  const mapRow = (s: Prisma.SubmissionGetPayload<{ select: typeof select }>) => {
-    const details =
-      s.details && typeof s.details === "object" && !Array.isArray(s.details)
-        ? (s.details as Record<string, unknown>)
-        : null;
-    const unifiedType =
-      details && typeof details.unifiedType === "string" ? details.unifiedType : null;
-    const subType = details && typeof details.subType === "string" ? details.subType : null;
-    const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
-    return {
-      id: s.id,
-      type: s.type,
-      status: s.status,
-      locale: s.locale,
-      companyName: s.companyName,
-      contactName: decryptPii(s.contactName),
-      contactEmail: decryptPii(s.contactEmail),
-      contactPhone: s.contactPhone ? decryptPii(s.contactPhone) : null,
-      messageExtrait: rawMessage
-        ? rawMessage.length > 300
-          ? `${rawMessage.slice(0, 300)}…`
-          : rawMessage
-        : null,
-      sector: s.sector,
-      assignedTo: s.assignedTo,
-      submittedAt: s.submittedAt,
-      replyCount: s.replyCount,
-      needsAttention: s.needsAttention,
-      archivedAt: s.archivedAt,
-      deletedAt: s.deletedAt,
-      lastRepliedAt: s.lastRepliedAt,
-      lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
-      unifiedType,
-      subType,
-    };
-  };
-
-  const searchQ = normalizeSearch(parsed.search);
-
-  let mapped: ReturnType<typeof mapRow>[];
-  let total: number;
-  if (searchQ) {
-    // Scan borné des plus récents (matchant les AUTRES filtres) → déchiffre →
-    // filtre + pagine en mémoire. Une boîte admin dépasse rarement ce plafond.
-    const SEARCH_SCAN_CAP = 2000;
-    const scanned = await prisma.submission.findMany({
-      where,
-      orderBy: { submittedAt: "desc" },
-      take: SEARCH_SCAN_CAP,
-      select,
-    });
-    const filtered = scanned.map(mapRow).filter((r) => matchSubmissionSearch(r, searchQ));
-    total = filtered.length;
-    const start = (parsed.page - 1) * parsed.pageSize;
-    mapped = filtered.slice(start, start + parsed.pageSize);
-  } else {
-    const [count, items] = await Promise.all([
-      prisma.submission.count({ where }),
-      prisma.submission.findMany({
-        where,
-        orderBy: { submittedAt: "desc" },
-        skip: (parsed.page - 1) * parsed.pageSize,
-        take: parsed.pageSize,
-        select,
-      }),
-    ]);
-    total = count;
-    mapped = items.map(mapRow);
-  }
-
-  return {
-    items: mapped,
-    total,
-    page: parsed.page,
-    pageSize: parsed.pageSize,
-    totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
-  };
+  return listSubmissions(input);
 }
 
 // ============================================================

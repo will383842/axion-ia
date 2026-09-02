@@ -28,7 +28,10 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
       take: 30,
     }),
     prisma.reviewQueue.findMany({
-      where: { status: "approved", promotedToTier1At: null },
+      // 2026-09-02 — `promotedToTier1At` n'est posé que par `promoteToTier1` ;
+      // `approveReview` publie sans le poser. Sans le filtre sur le statut du
+      // job, les 258 publiés restaient dans « à publier » (314 affichés).
+      where: { status: "approved", promotedToTier1At: null, job: { status: { not: "published" } } },
       include: { job: true },
       orderBy: { reviewedAt: "desc" },
       take: 30,
@@ -57,7 +60,9 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
   const [nbDraft, nbReview, nbApproved, nbPublished, nbRejected] = await Promise.all([
     prisma.contentGenJob.count({ where: { status: { in: ["queued", "running"] } } }),
     prisma.contentGenJob.count({ where: { status: "needs_review" } }),
-    prisma.reviewQueue.count({ where: { status: "approved", promotedToTier1At: null } }),
+    prisma.reviewQueue.count({
+      where: { status: "approved", promotedToTier1At: null, job: { status: { not: "published" } } },
+    }),
     prisma.contentGenJob.count({ where: { status: "published" } }),
     prisma.contentGenJob.count({ where: { status: "failed" } }),
   ]);
@@ -208,11 +213,9 @@ function KanbanColumn({
             </span>
           </li>
         ))}
-        {rows.length > 12 ? (
-          <li className="mt-[var(--space-admin-3)]">
-            <em>… +{rows.length - 12} autres</em>
-          </li>
-        ) : null}
+        {/* 2026-09-02 — l'ancien « … +N autres » valait toujours 18 (30 lignes
+            chargées − 12 affichées) : l'indicateur « N affichées sur total »
+            ci-dessus est le seul juste. */}
       </ul>
     </AdminCard>
   );

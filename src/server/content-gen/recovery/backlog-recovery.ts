@@ -64,6 +64,17 @@ export interface BacklogRecoverySettings {
   readonly maxRetries: number;
   /** Âge (minutes) au-delà duquel un job non terminal est considéré figé. */
   readonly stuckAfterMinutes: number;
+  /**
+   * Part du plafond quotidien GLOBAL que la reprise peut consommer (0 à 1).
+   *
+   * 2026-09-02 — sans cette part, la reprise, servie AVANT les campagnes et
+   * dotée d'un `maxPerDay` (20) supérieur au plafond global (15), absorbait
+   * tout le budget du jour : 1 385 échecs à rejouer, soit 4 à 5 mois pendant
+   * lesquels les campagnes `running` n'auraient produit AUCUN contenu neuf.
+   * À 0,5, la reprise prend au plus la moitié du plafond ; le reste va aux
+   * campagnes. Surchargeable via la clé `backlog_recovery`.
+   */
+  readonly shareOfDailyCap: number;
 }
 
 export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
@@ -77,6 +88,7 @@ export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
   // 60 min : très au-dessus de la durée d'un job (lock BullMQ = 120 s) et des
   // pauses de kill switch courtes, donc aucun risque de doubler un job vivant.
   stuckAfterMinutes: 60,
+  shareOfDailyCap: 0.5,
 };
 
 export interface RecoveryOutcome {
@@ -93,6 +105,118 @@ export interface RecoveryOutcome {
    * (cf. `sweepStuckJobs`).
    */
   readonly closed: number;
+}
+
+/**
+ * Préfixe commun des motifs écrits par `resolveStuckClosure`.
+ *
+ * Il sert de marqueur : un job `failed` dont le message commence ainsi a été
+ * CLOS par le balayage, pas relancé. `requeuedTodayWhere` s'en sert pour ne pas
+ * le compter comme une dépense du jour. Une seule définition, dérivée des deux
+ * côtés — la recopier ailleurs recréerait le fantôme.
+ */
+export const STUCK_CLOSURE_PREFIX = "Job figé clos automatiquement : ";
+
+/**
+ * Clause Prisma « jobs RELANCÉS depuis `startOfDay` », partagée par le drain
+ * (`alreadyToday`) et par l'orchestrateur (`requeuedTodayAll`).
+ *
+ * 🔴 2026-09-02 — le fantôme qui a décalé la reprise de 08:15 à 09:45 UTC.
+ *
+ * L'ancien comptage lisait `retryCount > 0 AND updatedAt >= minuit`, sans
+ * filtre de statut, avec cette justification : « un job relancé puis re-tombé
+ * en échec doit rester compté ». Juste — mais un job CLOS ce jour-là porte
+ * exactement la même signature : l'arbitrage manuel du 02/09 a passé en
+ * `cancelled` un job à `retryCount = 2`, et le budget global l'a compté comme
+ * une relance (6/15 consommés au lieu de 5). Idem pour les clôtures du balayage
+ * (`closeStuckJob`) : 21 jobs clos `failed` le 01/09, tous à `retryCount = 3`,
+ * tous comptés comme des relances du jour.
+ *
+ * Ce qui distingue une relance d'une clôture, en base :
+ *  - `cancelled` n'est JAMAIS l'issue d'une relance (queued → running →
+ *    published / needs_review / quarantined / failed) ;
+ *  - un `failed` de clôture porte le motif `STUCK_CLOSURE_PREFIX` ; un `failed`
+ *    de relance porte l'erreur du provider.
+ * Un `failed` d'arbitrage manuel n'existe pas (l'arbitrage écrit `cancelled`).
+ *
+ * La mesure reste approchée par excès pour tout le reste, qui est le bon côté
+ * pour une garde de dépense.
+ */
+export function requeuedTodayWhere(startOfDay: Date) {
+  return {
+    retryCount: { gt: 0 },
+    updatedAt: { gte: startOfDay },
+    ...CLOSED_WITHOUT_RUNNING_EXCLUSION,
+  } as const;
+}
+
+/**
+ * Ce que le système a CONSOMMÉ du plafond quotidien depuis `startOfDay` :
+ * les jobs créés (production neuve, annulations exclues) + les jobs relancés
+ * (reprise, jobs créés un autre jour). Une seule définition, lue par
+ * l'orchestrateur (budget du tick) et par le monitoring (la chaîne est-elle
+ * à l'arrêt, ou simplement à son plafond ?).
+ */
+export async function countConsumedToday(startOfDay: Date): Promise<{
+  readonly createdToday: number;
+  readonly requeuedToday: number;
+  readonly consumedToday: number;
+}> {
+  const [createdToday, requeuedToday] = await Promise.all([
+    prisma.contentGenJob.count({
+      where: { createdAt: { gte: startOfDay }, status: { not: "cancelled" } },
+    }),
+    prisma.contentGenJob.count({
+      where: { ...requeuedTodayWhere(startOfDay), createdAt: { lt: startOfDay } },
+    }),
+  ]);
+  return { createdToday, requeuedToday, consumedToday: createdToday + requeuedToday };
+}
+
+/** Un `failed` écrit par `closeStuckJob` : clos par le balayage, jamais exécuté. */
+export const STUCK_CLOSURE_FAILED_WHERE = {
+  status: "failed",
+  errorMessage: { startsWith: STUCK_CLOSURE_PREFIX },
+} as const;
+
+/**
+ * Exclut d'un comptage les jobs qui ont été CLOS sans avoir tourné : les
+ * `cancelled` (arbitrage humain ou sujet périmé) et les `failed` de clôture.
+ *
+ * Partagée par le budget du jour (`requeuedTodayWhere`) et par l'alarme de
+ * taux de rejet du monitoring : le 02/09, celle-ci annonçait « 27/50 (54 %)
+ * sur 24 h » alors que 21 de ces 27 « rejets » étaient des clôtures du
+ * balayage et 14 du dénominateur des annulations — aucun n'avait consommé un
+ * appel provider. Une alarme de rejet mesure ce que la MACHINE n'a pas réussi ;
+ * un job qu'on a renoncé à lancer n'en fait pas partie.
+ */
+export const CLOSED_WITHOUT_RUNNING_EXCLUSION = {
+  status: { not: "cancelled" },
+  NOT: STUCK_CLOSURE_FAILED_WHERE,
+} as const;
+
+/**
+ * Budget que la reprise peut consommer sur ce tick.
+ *
+ * Fonction PURE : `min(budget global restant, part quotidienne de la reprise
+ * moins ce qu'elle a déjà relancé aujourd'hui)`. La part est bornée à ]0, 1] ;
+ * une valeur absente ou aberrante retombe sur la part par défaut, jamais sur
+ * « tout le budget » — c'est précisément la dérive qu'on corrige.
+ */
+export function computeRecoveryRoom(input: {
+  readonly capPerDay: number;
+  readonly shareOfDailyCap: number | undefined;
+  readonly requeuedToday: number;
+  readonly globalRoom: number;
+}): number {
+  const raw = input.shareOfDailyCap;
+  const share =
+    typeof raw === "number" && Number.isFinite(raw) && raw > 0 && raw <= 1
+      ? raw
+      : DEFAULT_RECOVERY_SETTINGS.shareOfDailyCap;
+  const dailyShare = Math.floor(Math.max(0, input.capPerDay) * share);
+  const shareRoom = Math.max(0, dailyShare - Math.max(0, input.requeuedToday));
+  return Math.max(0, Math.min(input.globalRoom, shareRoom));
 }
 
 const MS_PER_MINUTE = 60_000;
@@ -178,12 +302,12 @@ export async function drainFailedJobs(
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
 
   // Plafond quotidien des relances. Un job relancé porte `retryCount > 0` et un
-  // `updatedAt` du jour. Volontairement SANS filtre de statut : un job relancé
-  // puis re-tombé en échec doit rester compté, sinon un provider durablement
-  // dégradé ferait boucler la reprise bien au-delà du plafond. La mesure est
-  // approchée par excès, ce qui est le bon côté pour une garde de dépense.
+  // `updatedAt` du jour. Un job relancé puis re-tombé en échec reste compté,
+  // sinon un provider durablement dégradé ferait boucler la reprise bien
+  // au-delà du plafond — mais un job CLOS ce jour-là n'est pas une relance,
+  // cf. `requeuedTodayWhere`.
   const alreadyToday = await prisma.contentGenJob.count({
-    where: { retryCount: { gt: 0 }, updatedAt: { gte: startOfDayUtc } },
+    where: requeuedTodayWhere(startOfDayUtc),
   });
   const dailyRoom = Math.max(0, settings.maxPerDay - alreadyToday);
   if (dailyRoom === 0) return { requeued: 0, skipped: 0, closed: 0 };
@@ -335,7 +459,7 @@ export function resolveStuckClosure(
     return {
       status: "failed",
       reason:
-        `Job figé clos automatiquement : ${job.retryCount} tentative(s) pour un plafond de ` +
+        `${STUCK_CLOSURE_PREFIX}${job.retryCount} tentative(s) pour un plafond de ` +
         `${settings.maxRetries}. Plus aucune reprise n'est due à ce job.`,
     };
   }
@@ -343,7 +467,7 @@ export function resolveStuckClosure(
     return {
       status: "cancelled",
       reason:
-        "Job figé clos automatiquement : le sujet qu'il porte est périmé, le relancer " +
+        `${STUCK_CLOSURE_PREFIX}le sujet qu'il porte est périmé, le relancer ` +
         "republierait une actualité dépassée.",
     };
   }
@@ -423,11 +547,24 @@ export async function closeStuckJob(
 export async function sweepStuckJobs(
   queue: Queue,
   settings: BacklogRecoverySettings,
-  /** Budget partagé du tick (cf. `drainFailedJobs`). Prime quand il est fourni. */
+  /**
+   * Budget partagé du tick (cf. `drainFailedJobs`). Il plafonne les REMISES EN
+   * FILE, pas les clôtures.
+   *
+   * ⚠️ 2026-09-01, mesuré en production dans l'heure suivant le déploiement du
+   * correctif de famine : ce passage portait ici un `return` anticipé dès que le
+   * budget valait 0. Or le plafond quotidien est atteint presque tous les jours
+   * en fin de journée — le tick a rendu `tickBudget=0`, le balayage s'est arrêté
+   * net, et les 59 jobs figés sont restés figés. Le correctif se bloquait
+   * lui-même, en contradiction avec son propre commentaire (« clore ne
+   * déclenche aucun appel provider, donc ne dépense rien »).
+   *
+   * 🔑 Un nettoyage qui ne coûte rien ne doit jamais être gardé par un budget de
+   * DÉPENSE. Le plafond continue de s'appliquer aux relances, ligne par ligne,
+   * dans la boucle.
+   */
   sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
-  if (sharedBudget !== undefined && sharedBudget <= 0)
-    return { requeued: 0, skipped: 0, closed: 0 };
   const threshold = new Date(Date.now() - settings.stuckAfterMinutes * MS_PER_MINUTE);
 
   const stuck = await prisma.contentGenJob.findMany({

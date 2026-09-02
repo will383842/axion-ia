@@ -34,13 +34,18 @@ const CAL_SELECT = {
   capturedAt: true,
 } as const;
 
-const MAX_FETCH = 2000;
+/**
+ * Plafond de lignes lues AVANT filtrage et pagination. Exporté : l'adaptateur
+ * MCP (`src/server/mcp/outils/rendezvous-list.ts`) s'en sert pour déclarer une
+ * fenêtre incomplète quand le total l'atteint, plutôt que de recopier « 2000 ».
+ */
+export const MAX_FETCH_CALENDLY = 2000;
 
 async function fetchAllCalendly(): Promise<UnifiedRdv[]> {
   const events = await prisma.calendlyEvent.findMany({
     select: CAL_SELECT,
     orderBy: [{ startTime: "desc" }, { capturedAt: "desc" }],
-    take: MAX_FETCH,
+    take: MAX_FETCH_CALENDLY,
   });
   const rows = (events as CalendlyEventRow[]).map(fromCalendly);
   // Re-tri EN MÉMOIRE sur l'ancre d'affichage (`startTime` sinon `capturedAt`),

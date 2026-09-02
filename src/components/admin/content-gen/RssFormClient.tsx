@@ -3,6 +3,7 @@
 
 import { useState, useTransition } from "react";
 import { AdminFormError } from "@/components/admin/ui/AdminFormError";
+import { RSS_LANGUAGE_DEFAULT, RSS_VERTICALE_OPTIONS } from "./rss-verticale-options";
 
 interface Props {
   action: (formData: FormData) => Promise<void>;
@@ -85,6 +86,39 @@ export function RssFormClient({ action }: Props): React.ReactElement {
             defaultValue="60"
             className="admin-input"
             required
+          />
+        </div>
+      </div>
+      {/* Audit console 2026-09-02 — la CRÉATION n'offrait ni la verticale ni
+          la langue, que l'ÉDITION (`RssDetailV2`) porte pourtant : il fallait
+          créer puis rouvrir la fiche pour les renseigner. Mêmes options, mêmes
+          valeurs par défaut (transversal, « fr ») que l'action serveur. */}
+      <div className="admin-filters-grid">
+        <div className="admin-field">
+          <label htmlFor="verticale" className="admin-label">
+            Verticale
+          </label>
+          <select id="verticale" name="verticale" className="admin-input" defaultValue="">
+            {RSS_VERTICALE_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="admin-field">
+          <label htmlFor="language" className="admin-label">
+            Langue
+          </label>
+          <input
+            id="language"
+            name="language"
+            required
+            minLength={2}
+            maxLength={5}
+            className="admin-input"
+            defaultValue={RSS_LANGUAGE_DEFAULT}
+            placeholder={RSS_LANGUAGE_DEFAULT}
           />
         </div>
       </div>
