@@ -199,12 +199,13 @@ export function SubmissionReplyEmail({
       )}
 
       <Hr style={{ borderColor: emailStyles.COLORS.border, margin: "28px 0 16px 0" }} />
+      {/* Lot 4 : la signature reprend la typographie du bloc signature du
+          châssis (14 px, interligne 1,7) — deux implémentations divergeaient. */}
       <Text
         style={{
+          ...emailStyles.signatureStyle,
           margin: 0,
-          fontSize: "15px",
           fontWeight: 600,
-          color: emailStyles.COLORS.text,
           fontFamily: emailStyles.SERIF,
         }}
       >
@@ -213,8 +214,8 @@ export function SubmissionReplyEmail({
       {sigRest.length > 0 && (
         <Text
           style={{
+            ...emailStyles.signatureStyle,
             margin: "2px 0 0 0",
-            fontSize: "13px",
             color: emailStyles.COLORS.textMuted,
           }}
         >

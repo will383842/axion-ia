@@ -75,6 +75,7 @@ export function CandidatureCommercialConfirmeeEmail({
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}` }}
       locale={locale}
+      tutoiement
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>

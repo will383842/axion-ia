@@ -283,6 +283,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/queue/workers/retention-purge-worker.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",
+  // ── Journal des e-mails (lot 3, 2026-09-02) : « Renvoyer » un échec est un
+  //    acte d'écriture admin, gardé par le même `requireAdminWrite` que la
+  //    console Qualiopi. Même emprunt que la recherche admin ci-dessus.
+  "src/features/admin-emails/actions.ts",
   // ── Tests des surfaces ci-dessus. Un test qui ne peut pas importer ce qu'il
   //    teste ne teste rien.
   "src/content/formations/catalog-v2-minutage.test.ts",

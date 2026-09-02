@@ -49,7 +49,10 @@ vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: (...a: unknown[]) => isR2ConfiguredMock(...a),
   getObjectBufferR2: (...a: unknown[]) => getObjectBufferR2Mock(...a),
 }));
-vi.mock("@/server/email/email-log", () => ({ cloturerJournal: vi.fn() }));
+vi.mock("@/server/email/email-log", () => ({
+  cloturerJournal: vi.fn(),
+  noterTentativeEchouee: vi.fn(),
+}));
 
 import { startEmailWorker, resolveAttachments, TAILLE_MAX_PJ_OCTETS } from "./email-worker";
 

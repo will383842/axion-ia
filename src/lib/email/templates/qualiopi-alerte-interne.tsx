@@ -81,7 +81,11 @@ export function QualiopiAlerteInterneEmail({
   const niveauLabel =
     p.niveau === "critique" ? "CRITIQUE" : p.niveau === "important" ? "IMPORTANT" : "INFO";
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const alertesHref = `${baseUrl}/fr/admin-dev-x7k2n9/qualiopi/alertes`;
+  // Lot 2 (2026-09-02) : le préfixe d'administration vient de l'environnement,
+  // comme pour la console elle-même (`auth.config.ts`). La valeur codée en dur
+  // était celle, PUBLIQUE, du dépôt : en production le bouton menait à un 404.
+  const prefixeAdmin = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
+  const alertesHref = `${baseUrl}/fr/${prefixeAdmin}/qualiopi/alertes`;
   const occurrences = occurrencesDe(p);
   const titre = p.titre ?? p.code;
   const entete = occurrences.length > 1 ? `${titre} — ${occurrences.length} cas` : titre;
@@ -105,6 +109,7 @@ export function QualiopiAlerteInterneEmail({
       }
       title={`Alerte ${niveauLabel} — ${entete}`}
       cta={{ label: "Voir les alertes", href: alertesHref }}
+      ctaSecret
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>

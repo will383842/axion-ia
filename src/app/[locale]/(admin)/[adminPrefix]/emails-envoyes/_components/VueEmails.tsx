@@ -16,10 +16,14 @@ import {
 } from "@/components/admin/ui";
 import {
   FENETRES_EMAILS,
+  STATUTS_EMAILS,
+  LIBELLES_STATUT_EMAIL,
+  libelleStatutLigne,
   type ChargementEmails,
   type FiltresEmails,
   type LigneEmail,
 } from "@/features/admin-emails/query";
+import { renvoyerEmailActionFormulaire } from "@/features/admin-emails/actions";
 
 const nb = (n: number): string => n.toLocaleString("fr-FR");
 
@@ -33,20 +37,29 @@ const quand = (d: Date | null): string =>
       })
     : "—";
 
-const LIBELLES_STATUT: Readonly<Record<string, string>> = {
-  sent: "Envoyé",
-  failed: "Échec",
-  pending: "En attente",
-};
+/** Le motif à montrer : erreur d'envoi, ou motif de rebond rendu par le relais. */
+const detailDe = (r: LigneEmail): string | null =>
+  r.error ? r.error.slice(0, 90) : r.bounceReason ? r.bounceReason.slice(0, 90) : null;
+
+/**
+ * Cibles tactiles — lot 3 (2026-09-02). Les puces de filtre héritent d'une
+ * hauteur de 30 px du système d'administration ; on en empile jusqu'à 21 sur
+ * cet écran, consulté au téléphone en urgence. 44 px minimum, sans toucher au
+ * jeton global : c'est cet écran qui a le problème, pas la console entière.
+ */
+const PUCE = "min-h-11 inline-flex items-center";
 
 export function VueEmails({
   donnees,
   filtres,
   adminPrefix,
+  nbGabaritsDeclares,
 }: {
   donnees: ChargementEmails;
   filtres: FiltresEmails;
   adminPrefix: string;
+  /** Taille du registre des gabarits, DÉRIVÉE par la page — jamais un chiffre écrit ici (lot 3). */
+  nbGabaritsDeclares: number;
 }): React.ReactElement {
   const base = `/fr/${adminPrefix}/emails-envoyes`;
 
@@ -85,6 +98,16 @@ export function VueEmails({
           <span>{r.template}</span>
           <br />
           <span className="admin-meta-small break-all">{r.recipient}</span>
+          {/* Lot 3 : sous `lg`, la colonne Détail est masquée — or le motif
+              d'un échec ou d'un rebond est l'information la plus actionnable
+              de la ligne, et c'est au téléphone qu'on la lit en urgence. On
+              le répète ici, uniquement sur les petits écrans. */}
+          {detailDe(r) ? (
+            <>
+              <br />
+              <span className="admin-meta-small lg:hidden">{detailDe(r)}</span>
+            </>
+          ) : null}
         </>
       ),
       width: "44%",
@@ -94,21 +117,44 @@ export function VueEmails({
       header: "Statut",
       align: "right",
       cell: (r) => (
-        <span className={r.status === "failed" ? "admin-severity-critical" : undefined}>
-          {LIBELLES_STATUT[r.status] ?? r.status}
-          {r.attempts > 1 ? ` (${r.attempts} essais)` : ""}
-        </span>
+        <>
+          <span
+            className={
+              r.status === "failed" || (r.status === "bounced" && r.bounceType === "hard")
+                ? "admin-severity-critical"
+                : r.status === "bounced"
+                  ? "admin-severity-warning"
+                  : undefined
+            }
+          >
+            {libelleStatutLigne(r)}
+            {r.attempts > 1 ? ` (${r.attempts} essais)` : ""}
+          </span>
+          {/* Lot 3 : REJOUER un échec depuis l'écran. Le journal ne stocke pas
+              le contenu, mais BullMQ garde le job (removeOnFail : 5 000) : on
+              lui demande de le reprendre, avec le même gabarit et les mêmes
+              variables. Avant, une ligne « Échec » était terminale — quarante
+              envois à ré-émettre à la main un lundi matin, déclencheur par
+              déclencheur. */}
+          {r.status === "failed" && r.jobId ? (
+            <form action={renvoyerEmailActionFormulaire.bind(null, r.id)} className="mt-1">
+              <button type="submit" className={`admin-button-ghost ${PUCE}`}>
+                Renvoyer
+              </button>
+            </form>
+          ) : null}
+        </>
       ),
     },
     {
       key: "detail",
       header: "Détail",
       cell: (r) =>
-        r.error ? (
-          // L'erreur est la seule information vraiment actionnable d'une ligne
-          // en échec : on la montre, tronquée, plutôt que de la cacher derrière
-          // un clic.
-          <span className="admin-meta-small">{r.error.slice(0, 90)}</span>
+        detailDe(r) ? (
+          // L'erreur ou le motif de rebond est la seule information vraiment
+          // actionnable d'une ligne : on la montre, tronquée, plutôt que de la
+          // cacher derrière un clic.
+          <span className="admin-meta-small">{detailDe(r)}</span>
         ) : r.entityType ? (
           <span className="admin-meta-small">
             {r.entityType}
@@ -133,11 +179,11 @@ export function VueEmails({
                 <Link
                   key={f.jours}
                   href={lien({ jours: f.jours, page: 1 })}
-                  className={
+                  className={`${
                     f.jours === filtres.jours
                       ? "admin-button admin-button-sm"
                       : "admin-button-ghost"
-                  }
+                  } ${PUCE}`}
                   aria-current={f.jours === filtres.jours ? "page" : undefined}
                 >
                   {f.libelle}
@@ -157,16 +203,15 @@ export function VueEmails({
               écrans répondent à la même question — « mes e-mails partent-ils ? »
               — mais depuis les deux bouts de la chaîne. Ce tableau dit ce que
               l'application a TENTÉ ; ZeptoMail dit ce que le relais a réellement
-              REMIS, et ce qui a rebondi. L'écart entre les deux EST
-              l'information, et tant qu'aucun endpoint de rebond n'existe, la
-              comparer à l'œil est le seul moyen de voir un destinataire qui n'a
-              rien reçu.
+              REMIS. Depuis le 2026-08-20 le webhook de rebonds ramène l'écart
+              ici (statut « Rebond ») ; le tableau de bord du relais reste le
+              second canal pour le vérifier.
             */}
             <a
               href="https://zeptomail.zoho.eu/"
               target="_blank"
               rel="noopener noreferrer"
-              className="admin-button-ghost"
+              className={`admin-button-ghost ${PUCE}`}
               title="Compteurs envoyés / livrés / rebonds, côté relais"
             >
               ZeptoMail ↗
@@ -203,14 +248,18 @@ export function VueEmails({
         <AdminStatCard
           label="Rebonds"
           value={nb(donnees.parStatut.rebonds)}
-          meta="Refusés par le serveur destinataire — adresse à corriger"
-          tone={donnees.parStatut.rebonds > 0 ? "destructive" : "default"}
+          meta={
+            donnees.parStatut.rebonds > 0
+              ? `dont ${nb(donnees.parStatut.rebondsDurs)} définitif(s) — adresse à corriger ; le reste est temporaire (boîte pleine, serveur absent)`
+              : "Refusés par le serveur destinataire"
+          }
+          tone={donnees.parStatut.rebondsDurs > 0 ? "destructive" : "default"}
           {...(donnees.parStatut.rebonds > 0 ? { href: lien({ statut: "bounced", page: 1 }) } : {})}
         />
         <AdminStatCard
           label="Gabarits utilisés"
           value={nb(donnees.gabarits.length)}
-          meta={`sur 66 déclarés`}
+          meta={`sur ${nb(nbGabaritsDeclares)} déclarés`}
         />
       </div>
 
@@ -233,23 +282,26 @@ export function VueEmails({
         <nav aria-label="Statut" className="flex flex-wrap gap-[var(--space-admin-2)]">
           <Link
             href={lien({ statut: null, page: 1 })}
-            className={
+            className={`${
               filtres.statut === null ? "admin-button admin-button-sm" : "admin-button-ghost"
-            }
+            } ${PUCE}`}
             aria-current={filtres.statut === null ? "page" : undefined}
           >
             Tous
           </Link>
-          {(["sent", "failed", "pending"] as const).map((s) => (
+          {/* Lot 3 : les puces sont DÉRIVÉES de l'énum. La liste écrite à la
+              main oubliait « Rebond » : le lien de la tuile filtrait bien, mais
+              aucune puce ne s'allumait, et l'admin ne savait plus où il était. */}
+          {STATUTS_EMAILS.map((s) => (
             <Link
               key={s}
               href={lien({ statut: s, page: 1 })}
-              className={
+              className={`${
                 filtres.statut === s ? "admin-button admin-button-sm" : "admin-button-ghost"
-              }
+              } ${PUCE}`}
               aria-current={filtres.statut === s ? "page" : undefined}
             >
-              {LIBELLES_STATUT[s]}
+              {LIBELLES_STATUT_EMAIL[s]}
             </Link>
           ))}
         </nav>
@@ -261,9 +313,9 @@ export function VueEmails({
           >
             <Link
               href={lien({ gabarit: null, page: 1 })}
-              className={
+              className={`${
                 filtres.gabarit === null ? "admin-button admin-button-sm" : "admin-button-ghost"
-              }
+              } ${PUCE}`}
               aria-current={filtres.gabarit === null ? "page" : undefined}
             >
               Tous les gabarits
@@ -272,9 +324,9 @@ export function VueEmails({
               <Link
                 key={g.nom}
                 href={lien({ gabarit: g.nom, page: 1 })}
-                className={
+                className={`${
                   filtres.gabarit === g.nom ? "admin-button admin-button-sm" : "admin-button-ghost"
-                }
+                } ${PUCE}`}
                 aria-current={filtres.gabarit === g.nom ? "page" : undefined}
               >
                 {g.nom} ({nb(g.envois)})
