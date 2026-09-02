@@ -57,6 +57,11 @@ on:
           - "true"
           - "false"
 
+      sonde_creneau:
+        description: "SONDE (diagnostic) : début ISO UTC d'un créneau ; rejoue POST /invitees et imprime la réponse brute de Calendly. Aucune écriture Coolify, aucun redeploy."
+        required: false
+        default: ""
+
 permissions:
   contents: read
 
@@ -128,7 +133,29 @@ jobs:
           [ "$et" = "200" ] && echo "event_types:read ✅" || { echo "::error::event_types:read → HTTP $et"; exit 1; }
           echo "⚠️ scheduled_events:write n'est pas sondable en lecture : la preuve sera une réservation réelle."
 
+      - name: Sonde — rejouer une réservation et imprimer la réponse brute de Calendly
+        if: ${{ inputs.sonde_creneau != '' }}
+        env:
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+          SONDE: ${{ inputs.sonde_creneau }}
+        run: |
+          set -euo pipefail
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
+          # Même corps que corpsDeLaDemande() dans src/server/calendly/reservation.ts,
+          # pour lire la forme EXACTE de l'erreur que rend Calendly sur un créneau pris.
+          me=$(curl -sS -m 20 -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" https://api.calendly.com/users/me)
+          user=$(echo "$me" | jq -r '.resource.uri')
+          ets=$(curl -sS -m 20 -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" "https://api.calendly.com/event_types?user=$(printf %s "$user" | jq -sRr @uri)&active=true&count=100")
+          et=$(echo "$ets" | jq -r '.collection[] | select(.scheduling_url == "https://calendly.com/axion-ia/premier-contact") | .uri' | head -1)
+          echo "event_type: $et — start_time: $SONDE"
+          body=$(jq -nc --arg et "$et" --arg st "$SONDE" '{event_type:$et, start_time:$st, invitee:{name:"Sonde Axion (workflow)", email:"beeeditions@gmail.com", timezone:"Europe/Paris"}, location:{kind:"google_conference"}, tracking:{utm_source:null, utm_medium:null, utm_campaign:null, utm_content:null, utm_term:null, salesforce_uuid:null}, booking_source:"axion_ia_site"}')
+          resp=$(curl -sS -m 30 -w "\nHTTP=%{http_code}" -X POST -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" -H "Content-Type: application/json" -d "$body" https://api.calendly.com/invitees)
+          echo "──── RÉPONSE BRUTE CALENDLY ────"
+          echo "$resp"
+          echo "────────────────────────────────"
+
       - name: Écrire CALENDLY_API_TOKEN dans Coolify (Production seulement)
+        if: ${{ inputs.sonde_creneau == '' }}
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
@@ -249,7 +276,7 @@ jobs:
           CALENDLY_WEBHOOK_SIGNING_KEY="$key" pnpm tsx scripts/calendly-webhook-subscribe.ts 2>&1 | sed "s/$key/[clé masquée]/g"
 
       - name: Redéployer (POST /api/v1/deploy)
-        if: ${{ inputs.redeploy == 'true' }}
+        if: ${{ inputs.redeploy == 'true' && inputs.sonde_creneau == '' }}
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
