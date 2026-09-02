@@ -22,6 +22,7 @@ import {
   lireStatutEmail,
 } from "@/features/admin-emails/query";
 import { VueEmails } from "./_components/VueEmails";
+import { EMAIL_TEMPLATE_NAMES } from "@/lib/email/templates";
 
 export const dynamic = "force-dynamic";
 
@@ -56,7 +57,12 @@ export default async function EmailsEnvoyesPage({
 
   return (
     <AdminPageShell width="wide">
-      <VueEmails donnees={donnees} filtres={filtres} adminPrefix={adminPrefix} />
+      <VueEmails
+        donnees={donnees}
+        filtres={filtres}
+        adminPrefix={adminPrefix}
+        nbGabaritsDeclares={EMAIL_TEMPLATE_NAMES.length}
+      />
     </AdminPageShell>
   );
 }

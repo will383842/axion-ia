@@ -33,7 +33,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { journaliserEnAttente, cloturerJournal } from "./email-log";
+import { journaliserEnAttente, cloturerJournal, noterTentativeEchouee } from "./email-log";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
 const BASE = {
@@ -111,7 +111,7 @@ describe("cloturerJournal — la ligne que le worker referme", () => {
     });
 
     expect(updateManyMock).toHaveBeenCalledWith({
-      where: { jobId: "job-1", status: EmailLogStatus.pending },
+      where: { jobId: "job-1", status: { not: EmailLogStatus.sent } },
       data: expect.objectContaining({ status: EmailLogStatus.sent, attempts: 1 }),
     });
     // Le point entier du chantier : une ligne par envoi, close — pas deux, dont
@@ -129,7 +129,7 @@ describe("cloturerJournal — la ligne que le worker referme", () => {
       failedAt: new Date("2026-08-16T09:00:00.000Z"),
     });
     expect(updateManyMock).toHaveBeenCalledWith({
-      where: { jobId: "job-1", status: EmailLogStatus.pending },
+      where: { jobId: "job-1", status: { not: EmailLogStatus.sent } },
       data: expect.objectContaining({
         status: EmailLogStatus.failed,
         error: "535 authentification refusée",
@@ -193,6 +193,46 @@ describe("cloturerJournal — la ligne que le worker referme", () => {
         status: EmailLogStatus.sent,
         sentAt: new Date(),
       }),
+    ).resolves.toBeUndefined();
+  });
+});
+
+describe("lot 2 — une ligne par job", () => {
+  it("🔴 clôt la ligne du job même après une tentative ratée (statut ≠ envoyé), sans en créer une seconde", async () => {
+    updateManyMock.mockResolvedValue({ count: 1 });
+    await cloturerJournal({
+      ...BASE,
+      jobId: "job-1",
+      attempts: 2,
+      status: EmailLogStatus.sent,
+      sentAt: new Date(),
+    });
+    expect(updateManyMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { jobId: "job-1", status: { not: EmailLogStatus.sent } },
+      }),
+    );
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
+  it("une tentative ratée non définitive note la tentative et le motif, la ligne reste « en attente »", async () => {
+    await noterTentativeEchouee({ ...BASE, jobId: "job-1", attempts: 1, error: "SMTP 421" });
+    expect(updateManyMock).toHaveBeenCalledWith({
+      where: { jobId: "job-1", status: EmailLogStatus.pending },
+      data: { attempts: 1, error: "SMTP 421" },
+    });
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
+  it("sans jobId, une tentative ratée ne touche à rien", async () => {
+    await noterTentativeEchouee({ ...BASE, attempts: 1, error: "x" });
+    expect(updateManyMock).not.toHaveBeenCalled();
+  });
+
+  it("n'échoue jamais le worker quand la base refuse la note", async () => {
+    updateManyMock.mockRejectedValue(new Error("base morte"));
+    await expect(
+      noterTentativeEchouee({ ...BASE, jobId: "job-1", attempts: 1, error: "x" }),
     ).resolves.toBeUndefined();
   });
 });

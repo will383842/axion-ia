@@ -14,7 +14,12 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { resoudreModeEnvoi, type ModeEnvoi, type RegleAutomatisation } from "./outbox-policy";
+import {
+  resoudreModeEnvoi,
+  modeParDefaut,
+  type ModeEnvoi,
+  type RegleAutomatisation,
+} from "./outbox-policy";
 
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
@@ -38,8 +43,12 @@ export async function resoudreMode(template: string, clientId?: string | null): 
     });
     return resoudreModeEnvoi(template, lignes as RegleAutomatisation[]);
   } catch {
-    // Voir l'en-tête : l'incertitude ne doit jamais retenir un email.
-    return "auto";
+    // 🔴 Lot 2 (2026-09-02) — base muette : on applique la POLITIQUE PAR DÉFAUT
+    // du gabarit, pas « auto ». « auto » faisait partir devis, conventions et
+    // factures sans relecture précisément quand la base était indisponible ;
+    // le défaut, lui, dit « validation » pour ces trois-là et « auto » pour la
+    // chaîne Qualiopi, qui doit partir seule.
+    return modeParDefaut(template);
   }
 }
 

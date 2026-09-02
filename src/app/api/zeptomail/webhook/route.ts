@@ -23,6 +23,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { notify } from "@/server/notifications";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-signature";
@@ -210,14 +211,28 @@ export async function POST(req: NextRequest): Promise<Response> {
       // La réponse à un message de contact porte son propre état, et c'est LUI
       // que la console filtre sous « Rejeté ». Le mettre à jour aussi : sinon le
       // filtre resterait vide alors que le rebond est connu.
-      await prisma.submissionReply.updateMany({
-        where: {
-          toEmail: rebond.destinataire,
-          sentAt: { gte: depuis, lte: survenuLe },
-          deliveryStatus: "sent",
-        },
-        data: { deliveryStatus: "bounced" },
-      });
+      // 🔴 Lot 2 (2026-09-02) — `toEmail` est la PII CHIFFRÉE de la demande
+      // (`encryptPii`, non déterministe) : la comparer à une adresse en clair
+      // ne pouvait JAMAIS correspondre, et ce bloc n'a rattaché aucun rebond
+      // depuis sa naissance. On passe par l'empreinte de recherche que porte la
+      // demande (`contactEmailHash`), faite pour ça.
+      const empreinte = hashEmailForLookup(rebond.destinataire);
+      if (empreinte !== null) {
+        const demandes = await prisma.submission.findMany({
+          where: { contactEmailHash: empreinte },
+          select: { id: true },
+        });
+        if (demandes.length > 0) {
+          await prisma.submissionReply.updateMany({
+            where: {
+              submissionId: { in: demandes.map((d) => d.id) },
+              sentAt: { gte: depuis, lte: survenuLe },
+              deliveryStatus: "sent",
+            },
+            data: { deliveryStatus: "bounced" },
+          });
+        }
+      }
     } catch {
       // Base indisponible : on ne perd pas le rebond pour autant, l'alerte
       // ci-dessous part quand même. Répondre en erreur ferait retenter — et

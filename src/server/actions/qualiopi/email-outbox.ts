@@ -118,6 +118,12 @@ export async function approuverEmailAction(
         // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
         // corbeille se remplirait d'elle-même à l'infini.
         bypassValidation: true,
+        // Lot 2 (2026-09-02) : l'objet corrigé par l'admin traverse enfin la file.
+        // Il était persisté, journalisé « modifié », puis jeté : le worker
+        // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
+        // objet inchangé (ou le nom technique d'un vieux garage) laisse le
+        // gabarit décider, comme avant.
+        ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
         ...(email.entityType ? { entityType: email.entityType } : {}),
         ...(email.entityId ? { entityId: email.entityId } : {}),
         ...(attachments && attachments.length > 0 ? { attachments } : {}),
