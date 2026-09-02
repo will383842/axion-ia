@@ -27,17 +27,18 @@ import { usePathname } from "next/navigation";
 import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
-import { isAdLandingRoute } from "@/lib/analytics/ad-landing-routes";
+import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 
 export function Clarity() {
   const projectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!projectId) return null;
-  // Pages d'atterrissage publicitaire : Clarity n'est PAS chargé, ce qui rend la
-  // bannière de consentement inutile — elle mangeait la moitié du premier écran
-  // au mobile. Cf. `lib/analytics/ad-landing-routes.ts`.
-  if (isAdLandingRoute(pathname)) return null;
+  // Pages d'atterrissage publicitaire et écrans de fin du parcours d'appel :
+  // Clarity n'est PAS chargé, ce qui rend la bannière de consentement inutile —
+  // elle mangeait la moitié du premier écran au mobile. Cf.
+  // `lib/analytics/ad-landing-routes.ts`.
+  if (isRouteSansScriptsTiers(pathname)) return null;
   if (consent !== "accepted") return null;
   // 🔴 Clarity enregistre l'URL ET le DOM, avec transfert hors UE. Sur le
   // portail, cela signifie le jeton d'émargement en clair plus la feuille

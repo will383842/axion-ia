@@ -48,14 +48,14 @@ import { usePathname } from "next/navigation";
 import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
-import { isAdLandingRoute } from "@/lib/analytics/ad-landing-routes";
+import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 
 export function LinkedInInsight() {
   const partnerId = env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID;
   const consent = useAnalyticsConsent();
   const pathname = usePathname();
   if (!partnerId) return null;
-  if (isAdLandingRoute(pathname)) return null;
+  if (isRouteSansScriptsTiers(pathname)) return null;
   if (consent !== "accepted") return null;
   if (urlPorteUnSecret(pathname)) return null;
 

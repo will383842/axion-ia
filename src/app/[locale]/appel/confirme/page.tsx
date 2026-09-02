@@ -33,16 +33,33 @@ import { CalendarCheck, Clock, Mail, AlertTriangle, HelpCircle } from "lucide-re
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { Link } from "@/i18n/navigation";
+import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
 import { canalDuRendezVous } from "@/server/calendly/canal";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: { absolute: "Rendez-vous confirmé · Axion-IA" },
-  robots: { index: false, follow: false },
-};
+/**
+ * Le titre de l'onglet dit l'ÉTAT, pas l'espoir.
+ *
+ * Un seul titre « Rendez-vous confirmé » pour les trois états faisait mentir
+ * l'onglet et l'historique sur le cas incertain — celui où, précisément, on ne
+ * sait pas. Un visiteur qui retrouve l'onglet une heure plus tard lit d'abord
+ * son titre.
+ */
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const sp = await searchParams;
+  const e = typeof sp["e"] === "string" ? sp["e"] : "";
+  const titre =
+    e !== "" && !FORME_IDENTIFIANT.test(e)
+      ? "Page introuvable · Axion-IA"
+      : sp["incertain"] === "1"
+        ? "Réservation en cours de vérification · Axion-IA"
+        : sp["v"] === "1"
+          ? "Rendez-vous pris, format à confirmer · Axion-IA"
+          : "Rendez-vous confirmé · Axion-IA";
+  return { title: { absolute: titre }, robots: { index: false, follow: false } };
+}
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -56,6 +73,13 @@ interface DetailEvenement {
 }
 
 /**
+ * La forme d'un identifiant d'événement Calendly. Partagée entre la garde de
+ * la page et la relecture : deux jugements sur le même identifiant ne doivent
+ * pas pouvoir diverger.
+ */
+const FORME_IDENTIFIANT = /^[a-f0-9-]{10,64}$/i;
+
+/**
  * Relit l'événement pour l'afficher.
  *
  * ⚠️ Rend `null` sans jamais lever. Une relecture qui échoue ne remet pas la
@@ -65,7 +89,7 @@ interface DetailEvenement {
  */
 async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
   const token = process.env.CALENDLY_API_TOKEN?.trim();
-  if (!token || !/^[a-f0-9-]{10,64}$/i.test(uuid)) return null;
+  if (!token || !FORME_IDENTIFIANT.test(uuid)) return null;
   try {
     const res = await fetch(`${CALENDLY_API_BASE}/scheduled_events/${uuid}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -126,6 +150,12 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
   // laisse pas exister vide — elle serait indexable et trompeuse.
   if (!incertain && uuid === "") notFound();
 
+  // 🔴 Un identifiant qui n'a pas la FORME d'un identifiant Calendly n'est pas
+  // une réservation dont la relecture a échoué : c'est une adresse forgée ou
+  // tronquée. Lui répondre « c'est réservé » confirmerait un rendez-vous qui
+  // n'a jamais existé — mesuré en prod avec `?e=bidon`, le 2026-09-02.
+  if (uuid !== "" && !FORME_IDENTIFIANT.test(uuid)) notFound();
+
   const detail = uuid !== "" ? await relireLEvenement(uuid) : null;
 
   return (
@@ -140,48 +170,9 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
             <Confirme detail={detail} />
           )}
 
-          <div className="border-border mt-8 border-t pt-6">
-            <Link
-              href="/"
-              className="text-fg-soft hover:text-terracotta-deep text-sm font-medium underline underline-offset-2"
-            >
-              Retour à l&apos;accueil
-            </Link>
-          </div>
+          <SortiesDeParcours secondaire={{ href: "/", label: "Retour à l'accueil" }} />
         </div>
       </Container>
-    </div>
-  );
-}
-
-/** Le bandeau de tête, commun aux trois états. */
-function Tete({
-  icone,
-  ton,
-  titre,
-  sous,
-}: {
-  icone: React.ReactNode;
-  ton: "ok" | "attention";
-  titre: string;
-  sous: string;
-}) {
-  return (
-    <div className="mb-6">
-      <div
-        className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${
-          ton === "ok" ? "bg-sage text-mocha-fg" : "bg-terracotta text-mocha-fg"
-        }`}
-      >
-        {icone}
-      </div>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        {titre}
-      </h1>
-      <p className="text-fg-soft mt-2 text-[15px]">{sous}</p>
     </div>
   );
 }
@@ -189,12 +180,26 @@ function Tete({
 function Confirme({ detail }: { detail: DetailEvenement | null }) {
   return (
     <>
-      <Tete
-        icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
-        ton="ok"
-        titre="C'est réservé."
-        sous="Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
-      />
+      {detail?.debut ? (
+        <TeteDeParcours
+          icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
+          ton="ok"
+          titre="C'est réservé."
+          sous="Vous allez recevoir un e-mail de confirmation, avec le lien pour annuler ou déplacer si besoin."
+        />
+      ) : (
+        // 🔴 Sans détail, on ne dit pas « c'est réservé » avec l'assurance d'un
+        // écran qui affiche la date. La réservation existe — l'API l'a
+        // confirmée au POST — mais un écran sans date ni format ressemblait
+        // trait pour trait au succès complet, et rien n'indiquait au visiteur
+        // OÙ vérifier. On le dit : l'e-mail fait foi.
+        <TeteDeParcours
+          icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
+          ton="ok"
+          titre="Votre réservation est enregistrée."
+          sous="Nous n'avons pas pu afficher le détail ici. L'e-mail de confirmation, qui arrive dans la minute, fait foi : il porte la date, le format et le lien pour annuler ou déplacer."
+        />
+      )}
 
       {/* Le récapitulatif n'apparaît que si la relecture a abouti. Inventer une
           heure serait pire que de n'en afficher aucune : l'e-mail, lui, porte
@@ -252,7 +257,7 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
 function ADeuxVerifier({ detail }: { detail: DetailEvenement | null }) {
   return (
     <>
-      <Tete
+      <TeteDeParcours
         icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Votre rendez-vous est pris."
@@ -278,7 +283,7 @@ function ADeuxVerifier({ detail }: { detail: DetailEvenement | null }) {
 function EnCoursDeVerification() {
   return (
     <>
-      <Tete
+      <TeteDeParcours
         icone={<HelpCircle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Nous vérifions votre réservation."
