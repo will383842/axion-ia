@@ -29,6 +29,10 @@ import {
   WIZARD_SEARCH_INTENTS,
 } from "@/server/actions/content-gen/campaign-wizard-constants";
 import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
+import { perimetreCampagneLabelFr } from "@/server/content-gen/shared/campaign-labels";
+import { SERVICE_SECTOR_LABELS } from "@/server/content-gen/shared/editorial-mix-rules";
+
+type ServiceSector = keyof typeof SERVICE_SECTOR_LABELS;
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
@@ -88,6 +92,26 @@ interface Props {
  * `<pre>` : `{ "blog_article": 18, "guide_pilier": 12 }`. Accolades,
  * guillemets et clés d'enum pour ce qui tient en une liste.
  */
+/** Secteur client (axe 3) : clé d'enum → libellé lisible, la clé brute en repli. */
+function libelleSecteurClient(cle: string): string {
+  const libelles: Record<string, string> = {
+    juridique: "Juridique",
+    btp_immobilier: "BTP & immobilier",
+    sante: "Santé",
+    industrie: "Industrie",
+    commerce: "Commerce",
+    services: "Services",
+    finance_assurance: "Finance & assurance",
+    tourisme_restauration: "Tourisme & restauration",
+    education_formation: "Éducation & formation",
+    tech_numerique: "Tech & numérique",
+    agriculture_agroalimentaire: "Agriculture & agroalimentaire",
+    transport_logistique: "Transport & logistique",
+    secteur_public: "Secteur public",
+  };
+  return libelles[cle] ?? cle.replace(/_/g, " ");
+}
+
 function Repartition({
   valeurs,
   libelle,
@@ -171,10 +195,15 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
     redirect(`/fr/${adminPrefix ?? "admin"}/content-gen/coverage`);
   }
 
-  const progressPct =
+  // 2026-09-02 — « 324 % de la cible » : en durée « sans limite », la cible
+  // n'est qu'une estimation initiale et le worker continue au-delà. La barre
+  // clampait déjà à 100 %, le texte non : les deux se contredisaient.
+  const pctBrut =
     campaign.totalTargetCount > 0
       ? Math.round((campaign.generatedCount / campaign.totalTargetCount) * 100)
       : 0;
+  const progressPct = Math.min(100, pctBrut);
+  const depassement = Math.max(0, campaign.generatedCount - campaign.totalTargetCount);
 
   return (
     <AdminPageShell>
@@ -217,7 +246,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                   <button
                     type="submit"
                     className="admin-button-ghost"
-                    title="Cancel les jobs queued/running uniquement — préserve les contenus déjà générés en review"
+                    title="Annule uniquement les générations en file ou en cours — les contenus déjà générés et en relecture sont conservés"
                   >
                     Annuler les générations en cours
                   </button>
@@ -226,7 +255,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                   <button
                     type="submit"
                     className="admin-button-ghost admin-button-ghost-danger"
-                    title="Cancel TOUS les jobs non publiés — incluant needs_review/approved"
+                    title="Annule TOUS les contenus non publiés — y compris ceux en relecture ou approuvés"
                   >
                     Tout annuler
                   </button>
@@ -267,7 +296,10 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Avancement</h2>
         <p className="admin-meta-block">
-          {campaign.generatedCount} / {campaign.totalTargetCount} générés ({progressPct} %)
+          {campaign.generatedCount} / {campaign.totalTargetCount} générés{" "}
+          {depassement > 0
+            ? `(cible dépassée de ${depassement}${campaign.durationMode === "unlimited" ? ", durée sans limite" : ""})`
+            : `(${progressPct} %)`}
         </p>
         <progress
           value={campaign.generatedCount}
@@ -302,11 +334,19 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Scope</h2>
+        <h2 className="admin-h2">Périmètre</h2>
         <ul className="admin-inline-list">
-          <li>Villes : {campaign.anchorVilleSlugs.join(", ") || "—"}</li>
-          <li>Départements : {campaign.anchorDepartementCodes.join(", ") || "—"}</li>
-          <li>Régions : {campaign.anchorRegionSlugs.join(", ") || "—"}</li>
+          {/* 2026-09-02 — une campagne nationale n'a pas d'ancres par
+              construction : trois tirets sans le mot « national » se lisaient
+              comme un périmètre vide. */}
+          <li>Périmètre : {perimetreCampagneLabelFr(campaign.scope)}</li>
+          {campaign.scope !== "national" ? (
+            <>
+              <li>Villes : {campaign.anchorVilleSlugs.join(", ") || "—"}</li>
+              <li>Départements : {campaign.anchorDepartementCodes.join(", ") || "—"}</li>
+              <li>Régions : {campaign.anchorRegionSlugs.join(", ") || "—"}</li>
+            </>
+          ) : null}
         </ul>
       </AdminCard>
 
@@ -334,16 +374,23 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
           <li>
             Activités (axe 2) :{" "}
             {campaign.serviceSectorWeights &&
-            Object.keys(campaign.serviceSectorWeights).length > 0
-              ? JSON.stringify(campaign.serviceSectorWeights)
-              : "activité unique (serviceSector)"}
+            Object.keys(campaign.serviceSectorWeights).length > 0 ? (
+              <Repartition
+                valeurs={campaign.serviceSectorWeights}
+                libelle={(cle) => SERVICE_SECTOR_LABELS[cle as ServiceSector] ?? cle}
+              />
+            ) : (
+              "activité unique"
+            )}
           </li>
           <li>
             Secteurs clients (axe 3) :{" "}
             {campaign.targetSecteurWeights &&
-            Object.keys(campaign.targetSecteurWeights).length > 0
-              ? JSON.stringify(campaign.targetSecteurWeights)
-              : "non ciblé"}
+            Object.keys(campaign.targetSecteurWeights).length > 0 ? (
+              <Repartition valeurs={campaign.targetSecteurWeights} libelle={libelleSecteurClient} />
+            ) : (
+              "non ciblé"
+            )}
           </li>
           <li>
             Ville &amp; alentours (axe 6) :{" "}
@@ -372,8 +419,8 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
             Durée est. :{" "}
             {campaign.estimatedDurationMinutes ? `${campaign.estimatedDurationMinutes} min` : "—"}
           </li>
-          <li>Démarrée : {campaign.startedAt?.toISOString() ?? "—"}</li>
-          <li>Terminée : {campaign.completedAt?.toISOString() ?? "—"}</li>
+          <li>Démarrée : {campaign.startedAt ? formatDateFrShort(campaign.startedAt) : "—"}</li>
+          <li>Terminée : {campaign.completedAt ? formatDateFrShort(campaign.completedAt) : "—"}</li>
         </ul>
       </AdminCard>
 

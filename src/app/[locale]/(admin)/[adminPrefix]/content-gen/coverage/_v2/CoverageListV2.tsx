@@ -73,7 +73,10 @@ const STATUSES: ReadonlyArray<CoverageStatus> = [
 // Onglets de vue — distinguent clairement en cours/pause vs terminées vs archivées.
 const VIEW_LABEL: Record<CampaignListView, string> = {
   active: "Actives",
-  paused: "En pause",
+  // 2026-09-02 — l'onglet exclut les campagnes archivées (statut et archivage
+  // sont orthogonaux) : « 0 campagne » à côté de 3 « En pause » archivées
+  // se lisait comme un compteur faux. Le libellé porte désormais la règle.
+  paused: "En pause (non archivées)",
   terminated: "Terminées",
   archived: "Archivées",
   all: "Toutes",

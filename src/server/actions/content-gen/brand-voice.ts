@@ -295,3 +295,26 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
     referenceConfigured: !!referenceRow?.value,
   };
 }
+
+/**
+ * Identifiants des derniers articles publiés qui portent une empreinte.
+ *
+ * 2026-09-02 — l'écran de dérive tirait ses candidats au recalibrage des
+ * dérives DÉJÀ détectées : sans référentiel, pas de run ; sans run, pas de
+ * dérive ; sans dérive, « Aucun article disponible » à côté de 244 publiés.
+ * Boucle morte. On part des articles eux-mêmes.
+ */
+export async function listRecentArticleIdsWithEmbedding(limit = 200): Promise<string[]> {
+  await requireAdmin();
+  const take = Math.max(1, Math.min(500, Math.floor(limit)));
+  const rows = (await prisma.$queryRawUnsafe(
+    `SELECT a.id
+       FROM articles a
+      WHERE a.status = 'published'
+        AND a.embedding IS NOT NULL
+      ORDER BY a.published_at DESC NULLS LAST
+      LIMIT $1`,
+    take,
+  )) as Array<{ id: string }>;
+  return rows.map((r) => r.id);
+}

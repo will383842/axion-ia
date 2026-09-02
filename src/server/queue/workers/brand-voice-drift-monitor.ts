@@ -120,6 +120,30 @@ async function fetchRecentArticlesWithEmbeddings(since: Date): Promise<ArticleEm
   return rows;
 }
 
+/** Un passage sans travail reste un passage : la console doit le dater. */
+async function recordSkippedRun(skippedReason: string): Promise<void> {
+  const value = {
+    analyzedAt: new Date().toISOString(),
+    articlesAnalyzed: 0,
+    articlesFlagged: 0,
+    articlesNeedsReview: 0,
+    skippedReason,
+  };
+  try {
+    await prisma.contentGenConfig.upsert({
+      where: { key: DRIFT_LAST_RUN_KEY },
+      create: {
+        key: DRIFT_LAST_RUN_KEY,
+        value: value as never,
+        updatedBy: "brand-voice-drift-monitor",
+      },
+      update: { value: value as never, updatedBy: "brand-voice-drift-monitor" },
+    });
+  } catch (err: unknown) {
+    console.warn("[brand-voice-drift-monitor] last-run trace not written:", err);
+  }
+}
+
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
@@ -127,6 +151,9 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const referenceEmbedding = await loadReferenceEmbedding();
   if (!referenceEmbedding) {
     console.info("[brand-voice-drift-monitor] no reference embedding configured — skipping run");
+    // 2026-09-02 — sans cette trace, la console affichait « Jamais exécuté »
+    // pendant des semaines alors que le cron tournait chaque nuit à 04:00.
+    await recordSkippedRun("Aucun référentiel de voix de marque : recalibrez depuis la console.");
     return;
   }
 
@@ -137,6 +164,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     console.info(
       "[brand-voice-drift-monitor] nothing to process — no articles published in last 24h",
     );
+    await recordSkippedRun("Aucun article publié avec empreinte dans les dernières 24 h.");
     return;
   }
 

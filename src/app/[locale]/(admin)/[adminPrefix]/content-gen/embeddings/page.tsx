@@ -133,8 +133,25 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
         title="Suivi des vecteurs de similarité"
         description={`Chaque article publié reçoit une empreinte qui permet de détecter les doublons. ${stats.countWith.toLocaleString("fr-FR")} article${stats.countWith > 1 ? "s" : ""} traité${stats.countWith > 1 ? "s" : ""} sur ${stats.totalPublished.toLocaleString("fr-FR")}.`}
         meta={
-          <AdminBadge tone={stats.embeddingsEnabled ? "success" : "warning"}>
-            {stats.embeddingsEnabled ? "Analyse activée" : "Analyse désactivée"}
+          /* 2026-09-02 — « Analyse activée » à côté de « Ignoré —
+             OPENAI_EMBEDDINGS_ENABLED=false » : le badge lisait l'env du
+             conteneur WEB, le dernier passage vient du conteneur WORKER
+             (deux applications Coolify, deux jeux de variables). L'état qui
+             compte est celui du dernier passage. */
+          <AdminBadge
+            tone={
+              !stats.embeddingsEnabled
+                ? "warning"
+                : stats.lastRun?.skippedReason
+                  ? "warning"
+                  : "success"
+            }
+          >
+            {!stats.embeddingsEnabled
+              ? "Analyse désactivée"
+              : stats.lastRun?.skippedReason
+                ? "Analyse activée ici, ignorée au dernier passage"
+                : "Analyse activée"}
           </AdminBadge>
         }
       />

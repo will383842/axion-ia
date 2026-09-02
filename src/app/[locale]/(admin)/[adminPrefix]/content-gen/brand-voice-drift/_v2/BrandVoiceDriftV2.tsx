@@ -6,7 +6,10 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { FileText, AlertTriangle, AlertOctagon } from "lucide-react";
-import { getBrandVoiceDriftStats } from "@/server/actions/content-gen/brand-voice";
+import {
+  getBrandVoiceDriftStats,
+  listRecentArticleIdsWithEmbedding,
+} from "@/server/actions/content-gen/brand-voice";
 import { RecalibrateBrandVoiceForm } from "./RecalibrateBrandVoiceForm";
 
 interface Props {
@@ -16,13 +19,16 @@ interface Props {
 export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.ReactElement> {
   const base = `/fr/${adminPrefix}/content-gen`;
 
-  const stats = await getBrandVoiceDriftStats().catch(() => null);
+  const [stats, publishedWithEmbedding] = await Promise.all([
+    getBrandVoiceDriftStats().catch(() => null),
+    listRecentArticleIdsWithEmbedding(200).catch(() => [] as string[]),
+  ]);
 
-  // Articles de référence pour la recalibration : on s'appuie sur les articles
-  // récemment analysés (dérives détectées). L'action serveur ignore ceux sans
-  // embedding et throw si aucun n'en a — feedback géré dans le form.
+  // Candidats au recalibrage : les articles publiés qui portent une empreinte,
+  // les dérives détectées en tête si elles existent. (2026-09-02 : ne plus
+  // dépendre des seules dérives, cf. `listRecentArticleIdsWithEmbedding`.)
   const recalibrateArticleIds = Array.from(
-    new Set((stats?.recentDrifts ?? []).map((d) => d.articleId)),
+    new Set([...(stats?.recentDrifts ?? []).map((d) => d.articleId), ...publishedWithEmbedding]),
   );
 
   const lastRunLabel = stats?.lastRunAt
