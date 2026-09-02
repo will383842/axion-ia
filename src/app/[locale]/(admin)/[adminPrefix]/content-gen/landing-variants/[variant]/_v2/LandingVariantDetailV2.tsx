@@ -36,7 +36,7 @@ export async function LandingVariantDetailV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title={`Variant ${variant}`}
+        title={`Variante « ${variant} »`}
         description={`${templates.length} template${templates.length > 1 ? "s" : ""} · ${jobsCount} job${jobsCount > 1 ? "s" : ""} générés`}
       />
 

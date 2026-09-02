@@ -658,40 +658,65 @@ jobs:
           # vraies régressions, sans relâcher le PR-gate (lighthouserc.json,
           # mesuré chaud en localhost, reste 0.05 partout). Voir le bloc
           # `//doctrine` du fichier de config pour le détail + la réversibilité.
+          # ── Valeurs mesurees, TOUTES (2026-09-02) ──────────────────────────
+          # `lhci assert` n'imprime que ce qui DEPASSE : une valeur conforme est
+          # invisible, donc aucune ligne de base ne se relit apres coup. Le 2026-09-02,
+          # la premiere lecture des chiffres mobiles n'a pu dire que « ≤ seuil » pour
+          # tout ce qui passait. On imprime desormais chaque rapport, colonne par
+          # colonne, AVANT l'assert — c'est ce tableau qu'on lit pour serrer un seuil.
+          imprimer_valeurs() {
+            echo "url | perf | LCP | FCP | SI | TBT | CLS  ($1)"
+            for f in .lighthouseci/lhr-*.json; do
+              jq -r '[.finalDisplayedUrl, (.categories.performance.score*100|floor),
+                (.audits["largest-contentful-paint"].numericValue|floor),
+                (.audits["first-contentful-paint"].numericValue|floor),
+                (.audits["speed-index"].numericValue|floor),
+                (.audits["total-blocking-time"].numericValue|floor),
+                (.audits["cumulative-layout-shift"].numericValue*1000|floor/1000)] | @tsv' "$f"
+            done | sort
+          }
+          imprimer_valeurs desktop
+          # Les rapports COMPLETS (elements qui decalent la page, element LCP,
+          # arbre des requetes) partent en artefact : c'est la seule facon de
+          # diagnostiquer un CLS que le poste de dev ne reproduit pas — le
+          # 2026-09-02, 0,222 sur le runner et 0 en local sur la meme page.
+          mkdir -p lighthouse-rapports/desktop
+          cp .lighthouseci/lhr-*.json lighthouse-rapports/desktop/ 2>/dev/null || true
           pnpm exec lhci assert --config=lighthouserc.postdeploy.json
 
           # ── GEO-121 — passe MOBILE (audit GEO/AEO 2026-08-14, lot 16) ──────
-          # Aucune porte ne mesurait le mobile : ce gate tournait desktop seul,
-          # et les 2 projets Playwright mobile ne sont executes nulle part. Or
+          # Aucune porte ne mesurait le mobile : ce gate tournait desktop seul, or
           # l'indexation de Google est mobile-first — la version mesuree n'etait
           # pas celle qui est classee.
           #
-          # Les assertions mobiles sont TOUTES en WARN (cf. le bloc //doctrine
-          # de lighthouserc.postdeploy.mobile.json) : on n'a aucune ligne de
-          # base, et poser des seuils bloquants a l'aveugle bloquerait tous les
-          # deploiements des le premier run. Un gate qui bloque tout se fait
-          # desactiver, donc ne garde plus rien.
+          # 🔴 CORRIGE LE 2026-08-31 — CETTE PASSE N'A JAMAIS MESURE QUOI QUE CE SOIT.
+          # `--settings.preset=mobile` n'existe pas (Lighthouse : perf, experimental,
+          # desktop ; le mobile est le DEFAUT, il s'obtient en OMETTANT l'option).
+          # Chaque run mourait, le `|| true` avalait l'echec, l'assert tournait sur un
+          # dossier vide : « Checking assertions against 0 URL(s) ». Dix-sept jours
+          # (2026-08-14 → 2026-08-31) sans mesurer ce que Google indexe.
           #
-          # 🔴 CORRIGÉ LE 2026-08-31 — CETTE PASSE N'A JAMAIS MESURÉ QUOI QUE CE SOIT.
+          # 🔴 2026-09-02 — LES ASSERTIONS PASSENT EN ERROR. Elles etaient toutes en
+          # WARN « faute de ligne de base ». Trois deploiements du 2026-09-01 l'ont
+          # etablie (runs 33542614678, 33557264126, 33566337853) : score < 0,9 sur 6
+          # pages sur 6, TBT hors budget partout (371–717 ms pour 150), CLS
+          # deterministe a 0,222 / 0,194 / 0,153 sur formations / ville / audit, LCP a
+          # 4 s sur /contact et 7 a 10 s sur /appel. lighthouserc.postdeploy.mobile.json
+          # porte donc une matrice PAR PAGE : le contrat en error la ou les 3 runs
+          # passaient, un cliquet en error (pire valeur + marge) la ou il est depasse,
+          # jamais un seuil deja franchi — AGENTS.md : « seuil aligne d'abord, blocage
+          # ensuite ». INP reste en WARN : non mesurable en navigation.
           #
-          # `--settings.preset=mobile` n'existe pas. Lighthouse n'accepte que
-          # `perf`, `experimental` et `desktop` ; le mobile est le DÉFAUT, il
-          # s'obtient en OMETTANT l'option. Chaque run mourait donc sur
-          # « Invalid values: Argument: preset, Given: "mobile" », le `|| true`
-          # avalait l'echec, et l'assert enchainait sur un dossier vide :
-          # « Checking assertions against 0 URL(s), 0 total run(s) ». Le job
-          # ressortait vert. Depuis GEO-121 (2026-08-14) jusqu'au 2026-08-31,
-          # soit 17 jours, la version que Google indexe n'a jamais ete mesuree —
-          # alors meme que cette etape avait ete creee pour ca.
+          # Trois runs et une mediane, au lieu d'un run : sur la home le TBT a oscille
+          # de 421 a 707 ms d'un deploiement a l'autre — un seul run ferait basculer
+          # le verdict sur du bruit de runner.
           #
-          # Le `|| true` sur le collect RESTE (une passe mobile qui echoue ne
-          # doit pas faire tomber un deploiement par ailleurs sain), mais il ne
-          # peut plus masquer le cas « rien n'a ete collecte » : le garde-fou
-          # ci-dessous compte les rapports produits et ROUGIT s'il n'y en a
-          # aucun. Une garde qui ne peut pas rougir ne garde rien — et c'est
-          # precisement ce silence qui a tenu 17 jours.
+          # Le `|| true` sur le collect RESTE (une passe mobile qui echoue ne doit pas
+          # faire tomber un deploiement par ailleurs sain), mais il ne peut plus
+          # masquer le cas « rien n'a ete collecte » : le garde-fou ci-dessous compte
+          # les rapports produits et ROUGIT s'il n'y en a aucun.
           rm -rf .lighthouseci
-          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1 --settings.throttlingMethod=devtools || true
+          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=3 --settings.throttlingMethod=devtools || true
 
           # ⚠️ `set -euo pipefail` est actif : un `ls` sans correspondance rend 1
           # et, via pipefail, tuerait l'etape AVANT le message ci-dessous — la
@@ -707,14 +732,24 @@ jobs:
             echo "::error::Passe Lighthouse MOBILE : 0 rapport collecte. Les assertions vont porter sur 0 URL et le job serait vert pour une mauvaise raison. Lire l'erreur de collecte ci-dessus (option invalide, Chrome absent, prod injoignable)."
             exit 1
           fi
+          imprimer_valeurs mobile
+          mkdir -p lighthouse-rapports/mobile
+          cp .lighthouseci/lhr-*.json lighthouse-rapports/mobile/ 2>/dev/null || true
 
-          # L'assert ne peut pas echouer sur les seuils (tout est en WARN dans
-          # lighthouserc.postdeploy.mobile.json, faute de ligne de base) : il
-          # sert a IMPRIMER les valeurs. On retire le `|| true` — desormais il
-          # n'y a plus de raison legitime qu'il echoue, donc s'il echoue on veut
-          # le voir plutot que de decouvrir 17 jours plus tard qu'il criait dans
-          # le vide.
+          # Depuis le 2026-09-02 l'assert PEUT echouer sur les seuils — c'est le but.
+          # Pas de `|| true` : un rouge ici est une regression ou un cliquet a lire,
+          # jamais un bruit a avaler.
           pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json
+
+      - name: Rapports Lighthouse complets (desktop + mobile)
+        # `always()` : un assert rouge est precisement le moment ou l'on veut le rapport.
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-rapports-${{ github.sha }}
+          path: lighthouse-rapports/
+          retention-days: 14
+          if-no-files-found: ignore
 
   # ───────────────────────────────────────────────────────────────────────
   # IndexNow post-deploy — Audit indexation 2026-06-20.

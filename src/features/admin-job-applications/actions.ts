@@ -10,23 +10,22 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
-import { decryptPii } from "@/lib/pii-crypto";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
-import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
+// La lecture SANS session, et les trois valeurs qu'un module `"use server"` ne
+// peut pas exporter (statuts, schéma, déchiffrement tolérant). Une seule
+// écriture : elles ne sont pas dupliquées ici.
+import { STATUSES, safeDecrypt, listApplications } from "./reads";
+import type { ListApplicationsInput } from "./reads";
+export type {
+  ListApplicationsInput,
+  JobApplicationListItem,
+  JobApplicationListResult,
+} from "./reads";
 import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
 
-const STATUSES = ["new", "reviewing", "shortlisted", "rejected", "hired", "archived"] as const;
-
 /** Déchiffrement tolérant : un ciphertext corrompu ne casse pas la page entière. */
-function safeDecrypt(v: string): string {
-  try {
-    return decryptPii(v);
-  } catch {
-    return "[déchiffrement échoué]";
-  }
-}
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -69,94 +68,20 @@ async function requireSuperAdmin() {
 }
 
 // ============================================================ list
-const listSchema = z.object({
-  offerId: z.preprocess(
-    (v) => (v === "" || v == null ? undefined : v),
-    z.string().uuid().optional(),
-  ),
-  status: z.enum([...STATUSES, "all"]).default("all"),
-  // Vues séparées (demande Will 2026-08-12) : la vue standard EXCLUT l'offre
-  // monteur vidéo freelance, qui a son propre onglet. L'onglet « Toutes »
-  // (demande Will 2026-08-13) passe `all` : aucune contrainte d'offre.
-  // Le défaut reste `standard` — la boîte de réception unifiée appelle cette
-  // action sans `view` et son canal Candidatures ne doit pas changer de
-  // périmètre en silence.
-  view: z.enum(["standard", "monteur", "all"]).default("standard"),
-  onlyAttention: z.coerce.boolean().optional(),
-  page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(10).max(100).default(50),
-});
-export type ListApplicationsInput = z.infer<typeof listSchema>;
 
-export interface JobApplicationListItem {
-  id: string;
-  offerId: string;
-  offerTitleSnap: string;
-  contactName: string;
-  contactEmail: string;
-  status: JobApplicationStatus;
-  hasCv: boolean;
-  needsAttention: boolean;
-  submittedAt: Date;
-}
-
+/**
+ * ⚠️ **LA GARDE EST INTACTE.** Le corps a été déplacé dans `./reads` — mot pour
+ *    mot — pour qu'un appelant SANS session de navigateur (le handler
+ *    `/api/mcp`, qui porte un secret partagé) puisse lire. Ce fichier est
+ *    `"use server"` : **chaque export y devient un point d'entrée réseau**, donc
+ *    la lecture nue ne peut pas y vivre.
+ */
 export async function listApplicationsAction(input: Partial<ListApplicationsInput> = {}) {
-  await requireAdminRead();
-  const parsed = listSchema.parse(input);
-  const where: Record<string, unknown> = {};
-  if (parsed.offerId) where.offerId = parsed.offerId;
-  if (parsed.status !== "all") where.status = parsed.status;
-  if (parsed.onlyAttention) where.needsAttention = true;
-  if (parsed.view === "monteur") {
-    where.offer = { slug: VIDEO_EDITOR_OFFER_SLUG };
-  } else if (parsed.view === "standard" && !parsed.offerId) {
-    // Vue standard sans filtre d'offre explicite : les candidatures monteur
-    // vidéo restent dans leur onglet. Un `offerId` explicite (lien depuis la
-    // fiche offre) garde la priorité et n'est pas amputé.
-    where.offer = { slug: { not: VIDEO_EDITOR_OFFER_SLUG } };
-  }
-
-  const [total, rows] = await Promise.all([
-    prisma.jobApplication.count({ where }),
-    prisma.jobApplication.findMany({
-      where,
-      orderBy: [{ submittedAt: "desc" }],
-      skip: (parsed.page - 1) * parsed.pageSize,
-      take: parsed.pageSize,
-      select: {
-        id: true,
-        offerId: true,
-        offerTitleSnap: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        status: true,
-        cvStoragePath: true,
-        needsAttention: true,
-        submittedAt: true,
-      },
-    }),
-  ]);
-
-  const items: JobApplicationListItem[] = rows.map((r) => ({
-    id: r.id,
-    offerId: r.offerId,
-    offerTitleSnap: r.offerTitleSnap,
-    contactName: `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim(),
-    contactEmail: safeDecrypt(r.email),
-    status: r.status,
-    hasCv: Boolean(r.cvStoragePath),
-    needsAttention: r.needsAttention,
-    submittedAt: r.submittedAt,
-  }));
-
-  return {
-    items,
-    total,
-    page: parsed.page,
-    pageSize: parsed.pageSize,
-    totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
-  };
+  // `requireAdminRead()` a déjà refusé tout rôle hors du prédicat commun. On lui
+  // repasse néanmoins le RÔLE, pas un `true` : la lecture réapplique le prédicat,
+  // et les deux étages ne peuvent pas diverger.
+  const acteur = await requireAdminRead();
+  return listApplications(input, { role: acteur.role, acteurId: acteur.userId });
 }
 
 // ============================================================ vues fusionnées
@@ -187,8 +112,13 @@ export interface CandidatureUnifieeItem {
    *  "commerciale" = Submission du tunnel commercial (détail /contacts/commercial/[id]). */
   source: "emploi" | "commerciale";
   offerLabel: string;
-  contactName: string;
-  contactEmail: string;
+  /**
+   * 🔴 `null` quand le rôle n'ouvre pas le dossier de candidat. L'écran le rend
+   * alors « masqué » — jamais une chaîne vide, qui se lirait comme un candidat
+   * sans nom. Cf. `reads.ts`, `AccesDossierCandidat`.
+   */
+  contactName: string | null;
+  contactEmail: string | null;
   /** JobApplicationStatus (emploi) ou SubmissionStatus (commerciale). */
   status: string;
   /** null = sans objet (le tunnel commercial ne collecte pas de CV). */

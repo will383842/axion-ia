@@ -119,7 +119,35 @@ export async function listTemplates(filters?: {
     },
     orderBy: [{ contentType: "asc" }, { variant: "asc" }, { version: "desc" }],
   });
-  return rows.map(toRow);
+  // 2026-09-02 — les colonnes `generatedItems/publishedItems/failedItems` de la
+  // table ne sont incrémentées NULLE PART : « 0 / 0 / 0 » pour les 9 templates
+  // face à des milliers de jobs. On dérive les compteurs des jobs qui portent
+  // `templateId` (posé par « Tester » et, depuis ce jour, par le worker à la
+  // résolution). Les colonnes restent en base, ignorées à l'affichage.
+  const usage = await prisma.contentGenJob
+    .groupBy({
+      by: ["templateId", "status"],
+      where: { templateId: { in: rows.map((r) => r.id) } },
+      _count: { _all: true },
+    })
+    .catch(() => []);
+  const byTemplate = new Map<string, { generated: number; published: number; failed: number }>();
+  for (const u of usage) {
+    if (!u.templateId) continue;
+    const acc = byTemplate.get(u.templateId) ?? { generated: 0, published: 0, failed: 0 };
+    acc.generated += u._count._all;
+    if (u.status === "published") acc.published += u._count._all;
+    if (u.status === "failed") acc.failed += u._count._all;
+    byTemplate.set(u.templateId, acc);
+  }
+  return rows.map((r) => {
+    const u = byTemplate.get(r.id);
+    return toRow(
+      u
+        ? { ...r, generatedItems: u.generated, publishedItems: u.published, failedItems: u.failed }
+        : r,
+    );
+  });
 }
 
 export async function getTemplate(id: string): Promise<TemplateDetail | null> {

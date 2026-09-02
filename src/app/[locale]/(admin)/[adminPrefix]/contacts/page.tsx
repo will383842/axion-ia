@@ -17,6 +17,7 @@ import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
 import { clientsParEmail } from "@/server/qualiopi/crm/entrees";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
+
 import {
   INBOX_CHANNEL_LABELS,
   INBOX_CHANNEL_ORDER,
@@ -89,11 +90,17 @@ export default async function InboxPage({
   // chaque prospect à tous les rôles, y compris ceux à qui la fiche du même
   // appel est refusée depuis le 2026-08-27. Les lignes restent (compteurs et
   // chronologie justes) ; les coordonnées, non.
-  const peutVoirAppels = peutVoirLesAppels((session?.user as { role?: string } | undefined)?.role);
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  const peutVoirAppels = peutVoirLesAppels(role);
+  // Le canal « candidature » suit la même règle, mais par le RÔLE : c'est la
+  // lecture qui applique le prédicat commun. Sans ce rôle, la Boîte servait le
+  // nom et l'adresse de chaque candidat à `reader` — le défaut du 2026-08-25,
+  // rouvert par l'extraction de la lecture sans session, rattrapé par sa garde.
 
   const result = await listInbox({
     adminUserId,
     peutVoirAppels,
+    roleAdmin: role ?? null,
     ...(channel ? { channel } : {}),
     ...(onlyAction ? { onlyAction: true } : {}),
     page,
