@@ -33,7 +33,6 @@
 // puisse honnêtement faire ici.
 
 import { prisma } from "@/lib/prisma";
-import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 
 export type MotifRetenue = "rebond_dur" | "desabonne";
 
@@ -134,6 +133,14 @@ export async function signalerRetenue(
         `consentement newsletter. Un envoi marketing vers un désabonné est une plainte pour spam en ` +
         `puissance, et la plainte abîme le domaine pour tous les flux. Aucune action : le retrait est honoré.`;
   try {
+    // 🔴 Import DYNAMIQUE, jamais statique : `alertes-service` tire son
+    // évaluateur, qui tire `next-auth` → `next/server`. Ce module est importé par
+    // `enqueueEmail`, donc par tout ce qui enfile un e-mail (workers, outils du
+    // chatbot, portail, routes internes) : en import statique, sept suites de
+    // tests tombaient à la collecte sur « Cannot find module next/server » —
+    // sur le runner comme en local — et j'ai d'abord cru à un artefact
+    // d'environnement. Un module qui enfile ne charge rien qui authentifie.
+    const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
     await creerOuDedup({
       code: `email_retenu_${verdict.motif}`,
       niveau: "important",
