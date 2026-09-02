@@ -220,11 +220,12 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     expect(r.raison).toBe("creneau_pris");
   });
 
-  it("🔴 la forme RÉELLE de Calendly : message générique + details[] sur start_time", async () => {
-    // Mesuré en prod le 2026-09-02 (9 septembre 10:00, pris trente secondes
-    // plus tôt par un report) : le message de premier niveau ne dit rien, la
-    // raison est dans `details`. Le prospect lisait « Réessayez » — et
-    // réessayer aurait échoué pareil.
+  it("🔴 la forme RÉELLE de Calendly, recopiée VERBATIM de la prod (2026-09-02)", async () => {
+    // Sonde du workflow jeton sur un créneau pris trente secondes plus tôt.
+    // Trois pièges que la première correction avait manqués : le paramètre est
+    // préfixé (`event.start_time`), le message est en FRANÇAIS, et le code
+    // `already_filled` est la seule constante. Le prospect lisait « Réessayez »
+    // — et réessayer aurait échoué pareil.
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(
@@ -232,7 +233,51 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
           JSON.stringify({
             title: "Invalid Argument",
             message: "The supplied parameters are invalid.",
-            details: [{ parameter: "start_time", message: "must be a valid available time" }],
+            details: [
+              {
+                parameter: "event.start_time",
+                message: "Cette heure de début est déjà occupée",
+                code: "already_filled",
+              },
+            ],
+          }),
+          { status: 400 },
+        ),
+      ),
+    );
+    const r = await reserverCreneau(demande());
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("creneau_pris");
+  });
+
+  it("🔑 le code seul suffit — même si Calendly renomme le paramètre et traduit le message", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            message: "Ungültige Parameter.",
+            details: [{ parameter: "irgendwas", message: "belegt", code: "already_filled" }],
+          }),
+          { status: 400 },
+        ),
+      ),
+    );
+    const r = await reserverCreneau(demande());
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("creneau_pris");
+  });
+
+  it("🔑 le suffixe start_time suffit aussi, sans code ni mot connu", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            message: "The supplied parameters are invalid.",
+            details: [{ parameter: "event.start_time", message: "must be a valid available time" }],
           }),
           { status: 422 },
         ),
@@ -265,6 +310,7 @@ describe("reserverCreneau — chaque panne a sa réponse", () => {
     expect(r.raison).toBe("refus");
     if (r.raison !== "refus") return;
     expect(r.detail).toContain("event_type: does not exist");
+    expect(r.detail).not.toContain("[]");
   });
 
   it("🔴 un délai dépassé rend « silence », jamais « refus »", async () => {
