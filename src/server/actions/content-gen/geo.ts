@@ -43,8 +43,14 @@ const REGION_BY_VILLE: ReadonlyMap<string, string> = new Map(
   VILLES_CORE.map((v) => [v.slug, v.region] as const),
 );
 
-/** Région d'ancrage d'un job qui ne porte qu'une ville. */
-export function regionOfVille(villeSlug: string | null | undefined): string | null {
+/**
+ * Région d'ancrage d'un job qui ne porte qu'une ville.
+ *
+ * Privée au module : ce fichier est `"use server"`, où tout export doit être
+ * une fonction asynchrone (Gate B du 2026-09-02 : « Server Actions must be
+ * async functions »).
+ */
+function regionOfVille(villeSlug: string | null | undefined): string | null {
   if (!villeSlug) return null;
   return REGION_BY_VILLE.get(villeSlug) ?? null;
 }
