@@ -12,19 +12,12 @@ import {
   type RssSourceInput,
   type RssSourceRow,
 } from "@/server/actions/content-gen/rss-sources";
+import { RSS_VERTICALE_OPTIONS } from "@/components/admin/content-gen/rss-verticale-options";
 
 interface Props {
   adminPrefix: string;
   source: RssSourceRow;
 }
-
-const VERTICALE_OPTIONS = [
-  { value: "", label: "— (transversal)" },
-  { value: "interventions", label: "Interventions" },
-  { value: "audit", label: "Audit" },
-  { value: "implementations", label: "Implémentations" },
-  { value: "un_a_un", label: "Un à un" },
-] as const;
 
 export function RssDetailV2({ adminPrefix, source }: Props): React.ReactElement {
   const id = source.id;
@@ -139,7 +132,7 @@ export function RssDetailV2({ adminPrefix, source }: Props): React.ReactElement 
                 className="admin-input"
                 defaultValue={source.verticale ?? ""}
               >
-                {VERTICALE_OPTIONS.map((opt) => (
+                {RSS_VERTICALE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
                     {opt.label}
                   </option>

@@ -8,10 +8,16 @@ import { Eye } from "lucide-react";
 import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { deleteArticle, updateArticle } from "@/server/actions/content-gen/article";
+import {
+  INDEXATION_TIER_LABELS_FR,
+  articleStatusLabelFr,
+} from "@/server/content-gen/shared/admin-labels";
 
 interface ArticleData {
   id: string;
-  indexationTier: string;
+  // Typé sur les clés de la table de libellés (= l'enum Prisma `IndexationTier`) :
+  // un niveau sans libellé ne peut pas arriver jusqu'ici.
+  indexationTier: keyof typeof INDEXATION_TIER_LABELS_FR;
   status: string;
   qualityScore: number | null;
   seoScore: number | null;
@@ -65,7 +71,9 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
     <AdminPageShell>
       <AdminPageHeader
         title={`Édition · ${t.title}`}
-        description={`${id} · ${article.indexationTier} · ${article.status} · score ${article.qualityScore ?? "—"}/${article.seoScore ?? "—"}`}
+        // 🔴 Le sous-titre affichait « tier_1_indexable · published · score 65/54 » :
+        // deux enums bruts et deux nombres sans nom (qualité, puis SEO).
+        description={`${id} · ${INDEXATION_TIER_LABELS_FR[article.indexationTier]} · ${articleStatusLabelFr(article.status)} · Qualité ${article.qualityScore ?? "—"} · SEO ${article.seoScore ?? "—"}`}
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
             <a

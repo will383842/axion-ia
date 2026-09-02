@@ -32,6 +32,56 @@ function buildHref(
   return `${baseHref}?${params.toString()}`;
 }
 
+const PAGE_LINK_BASE = cn(
+  "inline-flex items-center gap-[var(--space-admin-2)]",
+  "px-[var(--space-admin-5)] py-[var(--space-admin-4)]",
+  "text-[length:var(--text-admin-sm)]",
+  "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
+  "min-h-[var(--target-admin-min-desktop)]",
+);
+
+/**
+ * 🔴 EN PREMIÈRE PAGE, « Précédent » ÉTAIT UN LIEN ACTIF VERS `#` (et
+ * « Suivant » en dernière page). `aria-disabled` seul ne retire ni le rôle
+ * ni la cible : un lecteur d'écran annonçait un lien, un clic remontait en
+ * haut de page, un moteur y voyait une URL. Sans page à atteindre, il n'y a
+ * pas de lien à rendre — un élément inerte, marqué désactivé, sans `href`.
+ */
+function PageLink({
+  href,
+  children,
+}: {
+  href: string | null;
+  children: React.ReactNode;
+}): React.ReactElement {
+  if (href === null) {
+    return (
+      <span
+        role="link"
+        aria-disabled="true"
+        className={cn(
+          PAGE_LINK_BASE,
+          "pointer-events-none cursor-default select-none",
+          "text-[color:var(--color-admin-fg-disabled)]",
+        )}
+      >
+        {children}
+      </span>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      className={cn(
+        PAGE_LINK_BASE,
+        "text-[color:var(--color-admin-fg)] hover:bg-[color:var(--color-admin-surface-hover)]",
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+
 export function AdminPagination({
   page,
   totalPages,
@@ -41,10 +91,12 @@ export function AdminPagination({
   className,
 }: AdminPaginationProps): React.ReactElement | null {
   if (totalPages <= 1) return null;
-  const prevPage = Math.max(1, page - 1);
-  const nextPage = Math.min(totalPages, page + 1);
-  const hasPrev = page > 1;
-  const hasNext = page < totalPages;
+  const prevHref =
+    page > 1 ? buildHref(baseHref, paramName, Math.max(1, page - 1), preservedParams) : null;
+  const nextHref =
+    page < totalPages
+      ? buildHref(baseHref, paramName, Math.min(totalPages, page + 1), preservedParams)
+      : null;
   return (
     <nav
       aria-label="Pagination"
@@ -54,23 +106,10 @@ export function AdminPagination({
         className,
       )}
     >
-      <Link
-        href={hasPrev ? buildHref(baseHref, paramName, prevPage, preservedParams) : "#"}
-        aria-disabled={!hasPrev}
-        tabIndex={hasPrev ? 0 : -1}
-        className={cn(
-          "inline-flex items-center gap-[var(--space-admin-2)]",
-          "px-[var(--space-admin-5)] py-[var(--space-admin-4)]",
-          "text-[length:var(--text-admin-sm)]",
-          "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
-          "min-h-[var(--target-admin-min-desktop)]",
-          hasPrev
-            ? "text-[color:var(--color-admin-fg)] hover:bg-[color:var(--color-admin-surface-hover)]"
-            : "pointer-events-none text-[color:var(--color-admin-fg-disabled)]",
-        )}
-      >
-        ← Précédent
-      </Link>
+      <PageLink href={prevHref}>← Précédent</PageLink>
+      {/* Un seul nœud texte : « Page 2 sur 5 » se lit d'une traite, au lieu de
+          trois fragments (« Page », « 2 », « sur », « 5 ») que les lecteurs
+          d'écran et les outils d'audit découpaient. */}
       <span
         aria-live="polite"
         className={cn(
@@ -78,25 +117,9 @@ export function AdminPagination({
           "text-[color:var(--color-admin-fg-soft)]",
         )}
       >
-        Page <strong>{page}</strong> sur <strong>{totalPages}</strong>
+        {`Page ${page} sur ${totalPages}`}
       </span>
-      <Link
-        href={hasNext ? buildHref(baseHref, paramName, nextPage, preservedParams) : "#"}
-        aria-disabled={!hasNext}
-        tabIndex={hasNext ? 0 : -1}
-        className={cn(
-          "inline-flex items-center gap-[var(--space-admin-2)]",
-          "px-[var(--space-admin-5)] py-[var(--space-admin-4)]",
-          "text-[length:var(--text-admin-sm)]",
-          "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]",
-          "min-h-[var(--target-admin-min-desktop)]",
-          hasNext
-            ? "text-[color:var(--color-admin-fg)] hover:bg-[color:var(--color-admin-surface-hover)]"
-            : "pointer-events-none text-[color:var(--color-admin-fg-disabled)]",
-        )}
-      >
-        Suivant →
-      </Link>
+      <PageLink href={nextHref}>Suivant →</PageLink>
     </nav>
   );
 }

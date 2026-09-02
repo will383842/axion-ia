@@ -98,6 +98,32 @@ export interface CampaignTickBudgetInput {
  * et jamais au-delà de la cible du jour. Le rattrapage d'un tick manqué reste
  * automatique (le retard est repris au tick suivant).
  */
+/**
+ * Plafond quotidien GLOBAL de génération, tous canaux confondus (décision Will
+ * 2026-08-15, clé `ContentGenConfig.daily_generation_cap` ; 15/jour en prod
+ * depuis le 16/08, valeur par défaut 20 si la clé est absente).
+ *
+ * Déplacé ici depuis l'orchestrateur le 2026-09-02 : le monitoring doit
+ * connaître le même plafond pour savoir si « rien lancé depuis 4 h » est une
+ * panne ou simplement un budget consommé. Une seule définition, deux lecteurs.
+ */
+export interface DailyGenerationCap {
+  readonly maxPerDay: number;
+}
+
+export const DEFAULT_DAILY_GENERATION_CAP: DailyGenerationCap = { maxPerDay: 20 };
+
+/**
+ * Plafond effectif : défensif, une valeur absente ou aberrante retombe sur le
+ * défaut et ne produit jamais un budget NaN (qui gèlerait la production).
+ */
+export function resolveCapPerDay(cap: DailyGenerationCap | null | undefined): number {
+  const raw = cap?.maxPerDay;
+  return typeof raw === "number" && Number.isFinite(raw) && raw > 0
+    ? raw
+    : DEFAULT_DAILY_GENERATION_CAP.maxPerDay;
+}
+
 export function computeCampaignTickBudget(input: CampaignTickBudgetInput): number {
   const target = Math.max(0, Math.floor(input.dailyTarget));
   if (target <= 0) return 0;

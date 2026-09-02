@@ -5,7 +5,8 @@
  * de « Connaissances » remplace strictement l'ancien détail read-only.
  */
 
-import { permanentRedirect, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { isUuid } from "@/lib/is-uuid";
 import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +19,8 @@ export default async function KbReadonlyDetailPage({ params }: PageProps): Promi
   const { adminPrefix, id } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+  // Ne pas rediriger un identifiant mal formé vers une page qui plantera.
+  if (!isUuid(id)) notFound();
 
   permanentRedirect(`/fr/${adminPrefix}/connaissances/${id}/apercu`);
 }
