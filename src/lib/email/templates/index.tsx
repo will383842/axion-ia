@@ -305,6 +305,18 @@ export function familleDuHtml(html: string): FamilleEmail | null {
   return m ? (m[1] as FamilleEmail) : null;
 }
 
+/**
+ * Objet d'un gabarit SANS rendu — lot 2 (2026-09-02). Sert à la corbeille de
+ * validation, qui doit afficher quelque chose de lisible avant tout rendu.
+ */
+export function sujetDuGabarit(
+  name: EmailJobName,
+  locale: Locale,
+  payload: Record<string, unknown>,
+): string {
+  return TEMPLATES[name].subject(locale, payload);
+}
+
 export interface RenderedEmail {
   subject: string;
   html: string;

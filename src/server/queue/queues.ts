@@ -695,6 +695,44 @@ export async function enqueueImageBankAutoConvert(
   });
 }
 
+/** Objet du gabarit, sans rendu HTML — pour l'affichage de la corbeille (lot 2). */
+async function sujetLisible(
+  template: EmailJobName,
+  locale: "fr" | "en",
+  payload: Record<string, unknown>,
+): Promise<string> {
+  try {
+    const { sujetDuGabarit } = await import("@/lib/email/templates");
+    return sujetDuGabarit(template, locale, payload);
+  } catch {
+    return template;
+  }
+}
+
+/** Alerte console dédoublonnée : la corbeille n'a pas pu retenir un email (lot 2). */
+async function signalerCorbeilleIndisponible(template: EmailJobName, to: string): Promise<void> {
+  try {
+    const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
+    await creerOuDedup({
+      code: "email_corbeille_indisponible",
+      niveau: "critique",
+      titre: "Un email à relire n'a pas pu être mis en attente — il n'est PAS parti",
+      message:
+        `« ${template} » vers ${to} devait passer par la corbeille de validation, et la base n'a pas ` +
+        `pu l'y écrire. Il n'a été ni envoyé, ni gardé : le renvoyer depuis son écran d'origine une ` +
+        `fois Postgres rétabli. Tant que cette alerte est ouverte, aucun devis, convention ou facture ` +
+        `n'est parti sans relecture — c'est voulu.`,
+      cibleType: "EmailOutbox",
+      cibleId: `${template}:${to}`,
+    });
+  } catch (e) {
+    console.error(
+      "[bullmq] alerte « corbeille indisponible » impossible :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+}
+
 export async function enqueueEmail(
   template: EmailJobName,
   to: string,
@@ -725,6 +763,12 @@ export async function enqueueEmail(
      * fois l'email approuvé — sinon on bouclerait indéfiniment.
      */
     bypassValidation?: boolean;
+    /**
+     * Objet forcé par l'admin depuis la corbeille (lot 2). Traverse la file tel
+     * quel et prime sur l'objet du gabarit. Ne pas confondre avec `sujet`, qui
+     * ne sert qu'à l'affichage de la corbeille.
+     */
+    sujetForce?: string;
   },
 ): Promise<{
   enqueued: boolean;
@@ -732,6 +776,8 @@ export async function enqueueEmail(
   outboxId?: string;
   /** Envoi RETENU par la liste de suppression (adresse morte, désabonnement). */
   retenu?: MotifRetenue;
+  /** La corbeille devait retenir cet email et n'a pas pu l'écrire : rien n'est parti (lot 2). */
+  corbeilleIndisponible?: boolean;
 }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
@@ -760,8 +806,14 @@ export async function enqueueEmail(
   // pour le raisonnement — retenir une convocation exposerait un stagiaire à ne
   // jamais la recevoir, et les indicateurs 4, 9, 11, 30 et 32 en dépendent.
   //
-  // Toute défaillance de cette couche retombe sur l'envoi direct : l'incertitude
-  // ne doit jamais retenir un email.
+  // 🔴 Lot 2 (2026-09-02) — le repli est FERMÉ. Jusqu'ici, une base Postgres
+  // muette faisait retomber un devis, une convention ou une facture « à
+  // valider » sur l'envoi DIRECT : la file Redis, elle, répondait. Le message
+  // partait sans relecture, précisément quand la base était indisponible. On
+  // n'enfile plus : on journalise, on alerte, et l'appelant reçoit un refus
+  // explicite (`corbeilleIndisponible`) plutôt qu'un faux succès. Un email de
+  // relecture qui attend vaut mieux qu'un email de relecture parti sans
+  // relecture — c'est toute la raison d'être de la corbeille.
   if (options?.bypassValidation !== true) {
     const mode = await resoudreMode(template, options?.clientId ?? null);
     if (mode === "validation") {
@@ -770,7 +822,11 @@ export async function enqueueEmail(
         recipient: to,
         locale,
         payload,
-        sujet: options?.sujet ?? template,
+        // Lot 2 : l'objet affiché dans la corbeille est celui du gabarit, pas son
+        // nom technique — `devis-envoi` ne dit rien à un admin, « Votre devis
+        // AXI-2026-118 » si. Résolu à la demande pour ne pas charger les
+        // gabarits (React Email) dans chaque appelant de la file.
+        sujet: options?.sujet ?? (await sujetLisible(template, locale, payload)),
         clientId: options?.clientId ?? null,
         entityType: options?.entityType ?? null,
         entityId: options?.entityId ?? null,
@@ -779,7 +835,12 @@ export async function enqueueEmail(
       if (outboxId !== null) {
         return { enqueued: false, garePourValidation: true, outboxId };
       }
-      // Mise en attente impossible : on envoie plutôt que de perdre le message.
+      console.error(
+        `[bullmq] corbeille de validation INDISPONIBLE pour ${template} → ${to} : ` +
+          `l'email n'est PAS parti (il devait être relu). Vérifier Postgres, puis ré-émettre depuis l'écran d'origine.`,
+      );
+      await signalerCorbeilleIndisponible(template, to);
+      return { enqueued: false, corbeilleIndisponible: true };
     }
   }
 
@@ -788,6 +849,7 @@ export async function enqueueEmail(
     to,
     locale,
     payload,
+    ...(options?.sujetForce ? { sujet: options.sujetForce } : {}),
     ...(options?.marketing ? { marketing: true } : {}),
     ...(options?.entityType ? { entityType: options.entityType } : {}),
     ...(options?.entityId ? { entityId: options.entityId } : {}),

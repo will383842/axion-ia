@@ -40,6 +40,13 @@ vi.mock("@/server/email/outbox-service", () => ({
 vi.mock("@/server/email/email-log", () => ({
   journaliserEnAttente: (...a: unknown[]) => doublures.journaliser(...a),
 }));
+vi.mock("@/lib/email/templates", () => ({
+  sujetDuGabarit: () => "Votre devis AXI-2026-118",
+}));
+const creerOuDedup = vi.hoisted(() => vi.fn());
+vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
+  creerOuDedup: (...a: unknown[]) => creerOuDedup(...a),
+}));
 vi.mock("@/server/email/suppression", () => ({
   verdictAvantEnvoi: (...a: unknown[]) => doublures.verdict(...a),
   signalerRetenue: (...a: unknown[]) => doublures.signaler(...a),
@@ -110,5 +117,54 @@ describe("enqueueEmail — liste de suppression", () => {
     );
     expect(res).toEqual({ enqueued: false, retenu: "desabonne" });
     expect(doublures.add).not.toHaveBeenCalled();
+  });
+});
+
+describe("enqueueEmail — corbeille de validation (lot 2)", () => {
+  it("🔴 corbeille INDISPONIBLE : rien ne part, l'appelant le sait, une alerte est levée", async () => {
+    doublures.resoudreMode.mockResolvedValue("validation");
+    doublures.garer.mockResolvedValue(null);
+    creerOuDedup.mockResolvedValue(null);
+    const res = await enqueueEmail("devis-envoi", "client@x.fr", "fr", { n: 1 });
+    expect(res).toEqual({ enqueued: false, corbeilleIndisponible: true });
+    expect(doublures.add).not.toHaveBeenCalled();
+    expect(doublures.journaliser).not.toHaveBeenCalled();
+    expect(creerOuDedup).toHaveBeenCalledWith(
+      expect.objectContaining({ code: "email_corbeille_indisponible", niveau: "critique" }),
+    );
+  });
+
+  it("la corbeille affiche l'objet du gabarit, pas son nom technique", async () => {
+    doublures.resoudreMode.mockResolvedValue("validation");
+    await enqueueEmail("devis-envoi", "client@x.fr", "fr", { n: 1 });
+    expect(doublures.garer).toHaveBeenCalledWith(
+      expect.objectContaining({ sujet: "Votre devis AXI-2026-118" }),
+    );
+  });
+
+  it("un sujet fourni par l'appelant garde la priorité pour l'affichage", async () => {
+    doublures.resoudreMode.mockResolvedValue("validation");
+    await enqueueEmail("devis-envoi", "client@x.fr", "fr", {}, { sujet: "Devis toiture" });
+    expect(doublures.garer).toHaveBeenCalledWith(
+      expect.objectContaining({ sujet: "Devis toiture" }),
+    );
+  });
+
+  it("🔴 l'objet forcé depuis la corbeille traverse la file dans le job", async () => {
+    await enqueueEmail(
+      "devis-envoi",
+      "client@x.fr",
+      "fr",
+      {},
+      {
+        bypassValidation: true,
+        sujetForce: "Votre devis, version corrigée",
+      },
+    );
+    expect(doublures.add).toHaveBeenCalledWith(
+      "devis-envoi",
+      expect.objectContaining({ sujet: "Votre devis, version corrigée" }),
+      undefined,
+    );
   });
 });
