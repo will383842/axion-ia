@@ -1,7 +1,7 @@
 /**
  * Le bloc d'appel à l'action se resserre en fin d'article, pas ailleurs.
  *
- * 2026-09-02 : après le premier correctif (#937), six blocs de fin d'article
+ * 2026-09-02 : après le premier correctif (PR 937), six blocs de fin d'article
  * gardaient encore le rythme d'une section de page — dont ce `CtaBlock`, qui
  * est aussi utilisé sur une vingtaine de pages marketing où le rythme large
  * est voulu. D'où une option, pas un changement global.
