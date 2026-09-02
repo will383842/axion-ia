@@ -62,6 +62,11 @@ on:
         required: false
         default: ""
 
+      annuler_evenement:
+        description: "OUTIL : uuid d'un événement Calendly à annuler par l'API (nettoyage d'un rendez-vous de test). Aucune écriture Coolify, aucun redeploy."
+        required: false
+        default: ""
+
 permissions:
   contents: read
 
@@ -154,8 +159,21 @@ jobs:
           echo "$resp"
           echo "────────────────────────────────"
 
+      - name: Outil — annuler un événement Calendly par l'API
+        if: ${{ inputs.annuler_evenement != '' }}
+        env:
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+          UUID: ${{ inputs.annuler_evenement }}
+        run: |
+          set -euo pipefail
+          CALENDLY_API_TOKEN=$(printf '%s' "${CALENDLY_API_TOKEN:-}" | tr -cd 'A-Za-z0-9._-')
+          resp=$(curl -sS -m 30 -w "\nHTTP=%{http_code}" -X POST -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" -H "Content-Type: application/json" \
+            -d '{"reason":"Rendez-vous de test (recette automatisée) — nettoyage"}' "https://api.calendly.com/scheduled_events/${UUID}/cancellation")
+          echo "──── ANNULATION ${UUID} ────"
+          echo "$resp"
+
       - name: Écrire CALENDLY_API_TOKEN dans Coolify (Production seulement)
-        if: ${{ inputs.sonde_creneau == '' }}
+        if: ${{ inputs.sonde_creneau == '' && inputs.annuler_evenement == '' }}
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
@@ -276,7 +294,7 @@ jobs:
           CALENDLY_WEBHOOK_SIGNING_KEY="$key" pnpm tsx scripts/calendly-webhook-subscribe.ts 2>&1 | sed "s/$key/[clé masquée]/g"
 
       - name: Redéployer (POST /api/v1/deploy)
-        if: ${{ inputs.redeploy == 'true' && inputs.sonde_creneau == '' }}
+        if: ${{ inputs.redeploy == 'true' && inputs.sonde_creneau == '' && inputs.annuler_evenement == '' }}
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
