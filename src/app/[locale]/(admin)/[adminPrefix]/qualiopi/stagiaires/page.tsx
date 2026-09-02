@@ -134,15 +134,32 @@ export default async function QualiopiStagiairesPage({ params, searchParams }: P
       )}
 
       {trainees.length === 0 ? (
-        <AdminEmptyState
-          title="Aucun stagiaire enregistré"
-          description="Les stagiaires s'inscrivent ensuite à une session depuis le dossier de celle-ci."
-          primaryAction={
-            <Link href={`${base}/new`} className="admin-button">
-              + Nouveau stagiaire
-            </Link>
-          }
-        />
+        /* 🔴 Le vide N'A PAS UNE SEULE CAUSE. « Aucun stagiaire enregistré » est
+           vrai quand le registre est vide ; devant une recherche sans résultat,
+           c'est FAUX — et c'est le pire moment pour se tromper, puisque le
+           lecteur vient précisément de demander à voir quelqu'un. Les deux cas
+           se distinguent par le registre, jamais par la page affichée. */
+        recherche !== "" ? (
+          <AdminEmptyState
+            title={`Aucun stagiaire ne correspond à « ${recherche} »`}
+            description={`Le registre en compte ${totalRegistre}. Vérifiez l'orthographe, ou cherchez sur l'e-mail ou l'entreprise.`}
+            primaryAction={
+              <Link href={base} className="admin-button">
+                Effacer la recherche
+              </Link>
+            }
+          />
+        ) : (
+          <AdminEmptyState
+            title="Aucun stagiaire enregistré"
+            description="Les stagiaires s'inscrivent ensuite à une session depuis le dossier de celle-ci."
+            primaryAction={
+              <Link href={`${base}/new`} className="admin-button">
+                + Nouveau stagiaire
+              </Link>
+            }
+          />
+        )
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">

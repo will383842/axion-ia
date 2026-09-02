@@ -186,10 +186,17 @@ export async function countNonLues(): Promise<number> {
  * porte 1 589. Le COMPTE vient donc d'un compteur, l'AFFICHAGE d'une liste
  * bornée — jamais l'un déduit de l'autre.
  */
-export async function countAlertesActives(niveau?: AlerteNiveau): Promise<number> {
+export async function countAlertesActives(
+  niveau?: AlerteNiveau,
+  opts?: { readonly lu?: boolean },
+): Promise<number> {
   if (isStub()) return 0;
   return prisma.alerteSysteme.count({
-    where: { resolue: false, ...(niveau !== undefined ? { niveau } : {}) },
+    where: {
+      resolue: false,
+      ...(niveau !== undefined ? { niveau } : {}),
+      ...(opts?.lu !== undefined ? { lu: opts.lu } : {}),
+    },
   });
 }
 

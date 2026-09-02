@@ -14,7 +14,11 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
-import { countAlertesActives, listAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import {
+  countAlertesActives,
+  countNonLues,
+  listAlertes,
+} from "@/server/qualiopi/alertes/alertes-service";
 import { AlerteActions } from "@/components/admin/qualiopi/AlerteActions";
 import { AlertesLiveBadge } from "@/components/admin/qualiopi/AlertesLiveBadge";
 import {
@@ -145,8 +149,19 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
   // Le COMPTE vient d'un compteur, l'AFFICHAGE d'une liste plafonnée : le total
   // annoncé reste exact même quand la liste est tronquée. Écrire le nombre de
   // lignes affichées à la place du total mentirait sur le registre lui-même.
-  const [total, alertes] = await Promise.all([
+  //
+  // ⚠️ `nonLues` a DEUX lecteurs qui n'attendent pas la même chose, et les
+  // confondre serait rejouer un défaut déjà corrigé (« la pastille affichait 17
+  // là où la page listait 5 ») :
+  //   - la PASTILLE temps réel est un signal GLOBAL : elle ignore le filtre en
+  //     cours, sinon elle descendrait en cliquant sur « Critique » ;
+  //   - la ligne de résumé, elle, décrit ce que le filtre a sélectionné.
+  // Les deux viennent de compteurs distincts, jamais du tableau rendu — qui est
+  // plafonné et ne dirait donc plus la vérité.
+  const [total, nonLuesFiltre, nonLuesGlobal, alertes] = await Promise.all([
     countAlertesActives(niveauFiltre),
+    countAlertesActives(niveauFiltre, { lu: false }),
+    countNonLues(),
     listAlertes({
       resolue: false,
       ...(niveauFiltre !== undefined ? { niveau: niveauFiltre } : {}),
@@ -163,10 +178,6 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
       alertes.filter((a) => a.niveau === niveau),
     );
   }
-
-  // `nonLues` porte sur ce qui est AFFICHÉ : le dire autrement demanderait un
-  // second compteur, et l'écran annonce déjà le total exact juste à côté.
-  const nonLues = alertes.filter((a) => !a.lu).length;
 
   // Formater la date en français
   function fmtDate(d: Date): string {
@@ -189,11 +200,11 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
         />
         <div className="flex shrink-0 flex-col items-end gap-[var(--space-admin-3)]">
           {/* Badge SSE — mis à jour en temps réel */}
-          <AlertesLiveBadge initialCount={nonLues} />
+          <AlertesLiveBadge initialCount={nonLuesGlobal} />
           {/* Bouton synchroniser */}
           <AlerteActions mode="synchroniser" synchroniserAction={synchroniserAlertesAction} />
           {/* Bouton tout marquer comme lu */}
-          {nonLues > 0 && (
+          {nonLuesGlobal > 0 && (
             <AlerteActions mode="tout-lu" marquerToutLuAction={marquerToutLuAction} />
           )}
         </div>
@@ -205,10 +216,10 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
           <span className="font-semibold text-[color:var(--color-admin-fg)]">{total}</span> alerte
           {total !== 1 ? "s" : ""} active{total !== 1 ? "s" : ""}
         </span>
-        {nonLues > 0 && (
+        {nonLuesFiltre > 0 && (
           <span className="text-[color:var(--color-admin-warning-fg)]">
-            <span className="font-semibold">{nonLues}</span> non lue{nonLues !== 1 ? "s" : ""}
-            {tronque ? " parmi les alertes affichées" : ""}
+            <span className="font-semibold">{nonLuesFiltre}</span> non lue
+            {nonLuesFiltre !== 1 ? "s" : ""}
           </span>
         )}
       </div>
