@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 /**
  * ⚠️ **CE QUE CETTE GARDE MESURE, ET CE QU'ELLE NE MESURE PAS.**
@@ -56,6 +56,17 @@ async function charger() {
   vi.resetModules();
   return import("../route");
 }
+
+// ⚠️ LE PREMIER IMPORT DE LA ROUTE EST LOURD. Depuis le lot 4b, elle tire le
+//    registre, donc les six outils, donc la couche service (Prisma, Google) :
+//    ~5 s à froid, davantage sous la charge du `pre-push` — c'est exactement là
+//    qu'un premier test a expiré à 5 000 ms. On chauffe une fois, hors des tests,
+//    et on laisse une marge à la mesure suivante.
+vi.setConfig({ testTimeout: 30_000 });
+
+beforeAll(async () => {
+  await import("../route");
+});
 
 beforeEach(() => {
   limiteAtteinte.valeur = false;

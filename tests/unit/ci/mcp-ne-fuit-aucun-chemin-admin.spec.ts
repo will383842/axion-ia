@@ -121,14 +121,23 @@ describe("admin-nav:routes-check refuse toute fuite de chemin d'administration",
     // Un test de l'adaptateur écrira forcément `detailHref` pour vérifier qu'il
     // est absent. Le compter comme une fuite rendrait la garde impossible à
     // satisfaire, donc, tôt ou tard, désarmée.
+    // ⚠️ NE JAMAIS EFFACER UN DOSSIER QU'ON N'A PAS CRÉÉ. Le 2026-09-02, ce test
+    //    a supprimé `src/server/mcp/__tests__` ENTIER — les quatre gardes du
+    //    lot 4b, écrites une heure plus tôt et pas encore commitées — parce
+    //    qu'il retirait le dossier au lieu de son seul fichier témoin. On ne
+    //    détruit que ce qu'on a posé, et le dossier seulement s'il n'existait pas.
     const dossierTests = join(DOSSIER_MCP, "__tests__");
+    const dossierTestsPreexistant = existsSync(dossierTests);
     mkdirSync(dossierTests, { recursive: true });
-    const fichierTest = join(dossierTests, "exemple.spec.ts");
+    const fichierTest = join(dossierTests, "__temoin-exemple.spec.ts");
     writeFileSync(fichierTest, 'export const p = ADMIN_URL_PREFIX + "detailHref";\n', "utf8");
 
-    const { code, sortie } = lancerLaGarde();
-    expect(code, `un fichier de test ne doit pas compter pour une fuite.\n${sortie}`).toBe(0);
-
-    rmSync(dossierTests, { recursive: true, force: true });
+    try {
+      const { code, sortie } = lancerLaGarde();
+      expect(code, `un fichier de test ne doit pas compter pour une fuite.\n${sortie}`).toBe(0);
+    } finally {
+      rmSync(fichierTest, { force: true });
+      if (!dossierTestsPreexistant) rmSync(dossierTests, { recursive: true, force: true });
+    }
   });
 });
