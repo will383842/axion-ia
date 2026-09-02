@@ -568,7 +568,14 @@ jobs:
     # `if: success()` ne suffit pas car skipped est considéré comme success.
     if: needs.deploy.result == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 🔴 2026-09-02 — 20 minutes ne suffisaient plus. Le job fait désormais
+    # 1 passe de chauffe (6 URL) + 2 runs desktop (12) + 3 runs mobile (18),
+    # soit 36 audits d'environ 35 s, plus l'installation : ~24 min. Au premier
+    # déploiement après #924 (run 33606616435), le job a été tué à 20 min 16 s,
+    # en pleine passe mobile — conclusion « cancelled », lue d'abord comme une
+    # annulation par la fusion suivante. C'était le délai. Un gate qui meurt
+    # de son propre chronomètre ne mesure rien : 45 min laissent une marge.
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v6
