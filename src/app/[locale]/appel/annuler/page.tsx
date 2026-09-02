@@ -32,11 +32,12 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { CalendarX, Clock, AlertTriangle } from "lucide-react";
+import { CalendarX, CalendarOff, Clock, AlertTriangle } from "lucide-react";
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
+import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
 import { prisma } from "@/lib/prisma";
 import {
   lireLeLien,
@@ -199,32 +200,23 @@ function Cadre({ children }: { children: React.ReactNode }) {
 function Accompli({ locale, deja }: { locale: string; deja: boolean }) {
   return (
     <Cadre>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        {/* 🔑 Deux phrases distinctes, et ce n'est pas cosmétique. Dire « nous
-            venons de l'annuler » à quelqu'un qui clique son lien une seconde
-            fois lui ferait croire qu'il vient d'annuler autre chose. */}
-        {deja ? "Ce rendez-vous est déjà annulé." : "C'est annulé."}
-      </h1>
-      <p className="text-fg-soft mt-2 text-[15px]">
-        {deja
-          ? "Il n'y a rien de plus à faire — le créneau est libéré."
-          : "Le créneau est libéré. Vous ne recevrez plus de rappel."}
-      </p>
-      <div className="border-border mt-8 border-t pt-6">
-        <Link
-          href="/appel"
-          className="text-terracotta-deep text-sm font-medium underline underline-offset-2"
-        >
-          Reprendre un rendez-vous quand vous voulez
-        </Link>
-        <span className="text-fg-soft mx-2 text-sm">·</span>
-        <Link href="/" className="text-fg-soft text-sm underline underline-offset-2">
-          Retour à l&apos;accueil
-        </Link>
-      </div>
+      {/* 🔑 Deux phrases distinctes, et ce n'est pas cosmétique. Dire « nous
+          venons de l'annuler » à quelqu'un qui clique son lien une seconde
+          fois lui ferait croire qu'il vient d'annuler autre chose. */}
+      <TeteDeParcours
+        icone={<CalendarX className="h-6 w-6" aria-hidden="true" />}
+        ton="ok"
+        titre={deja ? "Ce rendez-vous est déjà annulé." : "C'est annulé."}
+        sous={
+          deja
+            ? "Il n'y a rien de plus à faire — le créneau est libéré."
+            : "Le créneau est libéré. Vous ne recevrez plus de rappel."
+        }
+      />
+      <SortiesDeParcours
+        principale={{ href: "/appel", label: "Reprendre un rendez-vous" }}
+        secondaire={{ href: "/", label: "Retour à l'accueil" }}
+      />
       <span hidden>{locale}</span>
     </Cadre>
   );
@@ -264,17 +256,13 @@ function LienRefuse({
 
   return (
     <Cadre>
-      <div className="bg-terracotta text-mocha-fg mb-4 flex h-12 w-12 items-center justify-center rounded-2xl">
-        <AlertTriangle className="h-6 w-6" aria-hidden="true" />
-      </div>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        {texte.titre}
-      </h1>
-      <p className="text-fg-soft mt-2 text-[15px]">{texte.corps}</p>
-      <div className="border-border bg-paper text-fg-soft mt-6 rounded-2xl border p-5 text-[15px]">
+      <TeteDeParcours
+        icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
+        ton="attention"
+        titre={texte.titre}
+        sous={texte.corps}
+      />
+      <div className="border-border bg-paper text-fg-soft rounded-2xl border p-5 text-[15px]">
         <p className="text-fg font-semibold">Ce que vous pouvez faire</p>
         <p className="mt-2">
           Écrivez-nous à{" "}
@@ -295,27 +283,16 @@ function LienRefuse({
 function Introuvable({ locale }: { locale: string }) {
   return (
     <Cadre>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        Ce rendez-vous n&apos;existe plus.
-      </h1>
       {/* ⚠️ On ne dit PAS « lien invalide » : ce serait faux. Le lien est bon,
           c'est la ligne qui a disparu — effacement RGPD, purge, ou un
           identifiant venu d'un autre environnement. */}
-      <p className="text-fg-soft mt-2 text-[15px]">
-        Il a peut-être déjà été annulé, ou les données ont été effacées à votre demande. Vous
-        n&apos;avez rien à faire.
-      </p>
-      <div className="border-border mt-8 border-t pt-6">
-        <Link
-          href="/appel"
-          className="text-terracotta-deep text-sm font-medium underline underline-offset-2"
-        >
-          Prendre un nouveau rendez-vous
-        </Link>
-      </div>
+      <TeteDeParcours
+        icone={<CalendarOff className="h-6 w-6" aria-hidden="true" />}
+        ton="attention"
+        titre="Ce rendez-vous n'existe plus."
+        sous="Il a peut-être déjà été annulé, ou les données ont été effacées à votre demande. Vous n'avez rien à faire."
+      />
+      <SortiesDeParcours principale={{ href: "/appel", label: "Prendre un nouveau rendez-vous" }} />
       <span hidden>{locale}</span>
     </Cadre>
   );

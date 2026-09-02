@@ -35,11 +35,18 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { CalendarClock, ArrowRight } from "lucide-react";
+import {
+  CalendarClock,
+  CalendarCheck,
+  CalendarX,
+  CalendarOff,
+  AlertTriangle,
+  ArrowRight,
+} from "lucide-react";
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { Link } from "@/i18n/navigation";
+import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
 import { prisma } from "@/lib/prisma";
 import { CalendlySlotPicker } from "@/components/booking/CalendlySlotPicker";
 import { fetchAvailableSlots } from "@/server/calendly/availability";
@@ -252,43 +259,52 @@ export default async function ReporterPage({ params, searchParams }: Props) {
 function Deplace({ locale }: { locale: string }) {
   return (
     <Cadre>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        C&apos;est déplacé.
-      </h1>
-      <p className="text-fg-soft mt-2 text-[15px]">
-        Vous allez recevoir une nouvelle confirmation, avec l&apos;invitation d&apos;agenda mise à
-        jour. L&apos;ancien créneau est libéré.
-      </p>
-      <div className="border-border mt-8 border-t pt-6">
-        <Link href="/" className="text-fg-soft text-sm underline underline-offset-2">
-          Retour à l&apos;accueil
-        </Link>
-      </div>
+      <TeteDeParcours
+        icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
+        ton="ok"
+        titre="C'est déplacé."
+        sous="Vous allez recevoir une nouvelle confirmation, avec l'invitation d'agenda mise à jour. L'ancien créneau est libéré."
+      />
+      <SortiesDeParcours secondaire={{ href: "/", label: "Retour à l'accueil" }} />
       <span hidden>{locale}</span>
     </Cadre>
   );
 }
 
+/**
+ * Un lien refusé — même structure et même ton que le refus d'annulation :
+ * ce qui s'est passé, puis une sortie qui marche. Le refus de report était
+ * plus sec (un titre, pas d'explication) ; le visiteur ne comprenait pas
+ * pourquoi son lien, reçu la veille, ne marchait pas.
+ */
 function LienRefuse({ raison }: { raison: "expire" | "invalide" | "mauvais_geste" }) {
-  const t =
+  const texte =
     raison === "expire"
-      ? "Ce lien a expiré."
+      ? {
+          titre: "Ce lien a expiré.",
+          corps:
+            "Les liens de déplacement cessent d'être valables peu après l'heure du rendez-vous.",
+        }
       : raison === "mauvais_geste"
-        ? "Ce lien ne sert pas à déplacer un rendez-vous."
-        : "Ce lien n'est pas lisible.";
+        ? {
+            titre: "Ce lien ne sert pas à déplacer un rendez-vous.",
+            corps: "Il correspond à une annulation, pas à un déplacement.",
+          }
+        : {
+            titre: "Ce lien n'est pas lisible.",
+            corps:
+              "Il a peut-être été coupé par votre messagerie — cela arrive quand un lien passe à la ligne.",
+          };
   return (
     <Cadre>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        {t}
-      </h1>
+      <TeteDeParcours
+        icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
+        ton="attention"
+        titre={texte.titre}
+        sous={texte.corps}
+      />
       {/* Jamais de cul-de-sac : une sortie qui marche, toujours. */}
-      <div className="border-border bg-paper text-fg-soft mt-6 rounded-2xl border p-5 text-[15px]">
+      <div className="border-border bg-paper text-fg-soft rounded-2xl border p-5 text-[15px]">
         <p className="text-fg font-semibold">Ce que vous pouvez faire</p>
         <p className="mt-2">
           Écrivez-nous à{" "}
@@ -298,7 +314,7 @@ function LienRefuse({ raison }: { raison: "expire" | "invalide" | "mauvais_geste
           >
             contact@axion-ia.com
           </a>{" "}
-          en indiquant la date souhaitée : nous déplaçons le rendez-vous à la main.
+          en indiquant la date souhaitée : nous déplaçons le rendez-vous à la main, tout de suite.
         </p>
       </div>
     </Cadre>
@@ -308,15 +324,15 @@ function LienRefuse({ raison }: { raison: "expire" | "invalide" | "mauvais_geste
 function Introuvable() {
   return (
     <Cadre>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        Ce rendez-vous n&apos;existe plus.
-      </h1>
-      <p className="text-fg-soft mt-2 text-[15px]">
-        Il a peut-être été annulé, ou les données ont été effacées à votre demande.
-      </p>
+      <TeteDeParcours
+        icone={<CalendarOff className="h-6 w-6" aria-hidden="true" />}
+        ton="attention"
+        titre="Ce rendez-vous n'existe plus."
+        sous="Il a peut-être été annulé, ou les données ont été effacées à votre demande. Vous n'avez rien à faire."
+      />
+      {/* ⚠️ Cet écran n'avait AUCUNE sortie : un mur. Son jumeau côté
+          annulation en avait une. */}
+      <SortiesDeParcours principale={{ href: "/appel", label: "Prendre un nouveau rendez-vous" }} />
     </Cadre>
   );
 }
@@ -324,25 +340,15 @@ function Introuvable() {
 function DejaAnnule({ locale }: { locale: string }) {
   return (
     <Cadre>
-      <h1
-        className="text-fg text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        Ce rendez-vous est annulé.
-      </h1>
       {/* ⚠️ On ne propose PAS de le déplacer : il n'y a rien à déplacer. Un
           bouton qui ne peut pas aboutir est pire que son absence. */}
-      <p className="text-fg-soft mt-2 text-[15px]">
-        Il n&apos;y a donc rien à déplacer — mais vous pouvez en reprendre un quand vous voulez.
-      </p>
-      <div className="border-border mt-8 border-t pt-6">
-        <Link
-          href="/appel"
-          className="text-terracotta-deep text-sm font-medium underline underline-offset-2"
-        >
-          Prendre un nouveau rendez-vous
-        </Link>
-      </div>
+      <TeteDeParcours
+        icone={<CalendarX className="h-6 w-6" aria-hidden="true" />}
+        ton="attention"
+        titre="Ce rendez-vous est annulé."
+        sous="Il n'y a donc rien à déplacer — mais vous pouvez en reprendre un quand vous voulez."
+      />
+      <SortiesDeParcours principale={{ href: "/appel", label: "Prendre un nouveau rendez-vous" }} />
       <span hidden>{locale}</span>
     </Cadre>
   );
