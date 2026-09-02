@@ -34,8 +34,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
+import { estOpposee } from "./opposition";
 
-export type MotifRetenue = "rebond_dur" | "desabonne";
+export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose";
 
 export type VerdictEnvoi =
   | { readonly retenu: false }
@@ -93,6 +94,11 @@ export async function verdictAvantEnvoi(
       if (abonne?.status === "unsubscribed") {
         return { retenu: true, motif: "desabonne", depuis: abonne.unsubscribedAt };
       }
+      // Lot 1b : l'opposition à la prospection, exprimée depuis n'importe quel
+      // e-mail, retient les envois marketing au même titre que le désabonnement.
+      if (await estOpposee(adresse)) {
+        return { retenu: true, motif: "oppose", depuis: null };
+      }
     } catch (e) {
       console.error(
         `[email-suppression] lecture du désabonnement impossible pour ${adresse} — envoi maintenu :`,
@@ -122,7 +128,9 @@ export async function signalerRetenue(
   const titre =
     verdict.motif === "rebond_dur"
       ? "Un envoi a été retenu : l'adresse a déjà rebondi définitivement"
-      : "Un envoi marketing a été retenu : la personne s'est désabonnée";
+      : verdict.motif === "oppose"
+        ? "Un envoi marketing a été retenu : la personne s'est opposée à la prospection"
+        : "Un envoi marketing a été retenu : la personne s'est désabonnée";
   const message =
     verdict.motif === "rebond_dur"
       ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : le serveur destinataire a déjà refusé ` +

@@ -19,6 +19,8 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   creerOuDedup: (...a: unknown[]) => creerOuDedup(...a),
 }));
+const estOpposee = vi.fn();
+vi.mock("./opposition", () => ({ estOpposee: (...a: unknown[]) => estOpposee(...a) }));
 
 import { verdictAvantEnvoi, signalerRetenue } from "./suppression";
 
@@ -26,6 +28,7 @@ beforeEach(() => {
   findFirst.mockReset().mockResolvedValue(null);
   findUnique.mockReset().mockResolvedValue(null);
   creerOuDedup.mockReset().mockResolvedValue(null);
+  estOpposee.mockReset().mockResolvedValue(false);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
@@ -113,6 +116,25 @@ describe("verdictAvantEnvoi — désabonnement", () => {
       marketing: true,
     });
     expect(v).toEqual({ retenu: false });
+  });
+
+  it("🔴 lot 1b : une opposition à la prospection retient un envoi marketing", async () => {
+    estOpposee.mockResolvedValue(true);
+    const v = await verdictAvantEnvoi("oppose@client.fr", {
+      template: "campagne-x",
+      marketing: true,
+    });
+    expect(v).toEqual({ retenu: true, motif: "oppose", depuis: null });
+  });
+
+  it("l'opposition ne retient PAS un envoi transactionnel (facture, convocation)", async () => {
+    estOpposee.mockResolvedValue(true);
+    const v = await verdictAvantEnvoi("oppose@client.fr", {
+      template: "qualiopi-convocation",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+    expect(estOpposee).not.toHaveBeenCalled();
   });
 
   it("un abonné actif ou inconnu passe", async () => {
