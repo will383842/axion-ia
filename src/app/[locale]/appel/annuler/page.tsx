@@ -38,6 +38,7 @@ import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
 import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
+import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { prisma } from "@/lib/prisma";
 import {
   lireLeLien,
@@ -200,6 +201,7 @@ function Cadre({ children }: { children: React.ReactNode }) {
 function Accompli({ locale, deja }: { locale: string; deja: boolean }) {
   return (
     <Cadre>
+      <RemonterAuMessage />
       {/* 🔑 Deux phrases distinctes, et ce n'est pas cosmétique. Dire « nous
           venons de l'annuler » à quelqu'un qui clique son lien une seconde
           fois lui ferait croire qu'il vient d'annuler autre chose. */}
@@ -312,11 +314,15 @@ function EchecPrecedent({ raison }: { raison: string }) {
       ? "Nous n'avons pas reçu de réponse de notre agenda. Réessayez dans un instant — et si cela recommence, écrivez-nous, nous annulons à la main."
       : "Nous n'avons pas pu annuler ce rendez-vous. Réessayez, ou écrivez-nous à contact@axion-ia.com et nous le ferons pour vous.";
   return (
-    <div
-      role="alert"
-      className="border-terracotta bg-terracotta/5 text-fg mt-5 rounded-xl border px-4 py-3 text-sm"
-    >
-      {message}
-    </div>
+    <>
+      <RemonterAuMessage vers="echec-precedent" />
+      <div
+        id="echec-precedent"
+        role="alert"
+        className="border-terracotta bg-terracotta/5 text-fg mt-5 rounded-xl border px-4 py-3 text-sm"
+      >
+        {message}
+      </div>
+    </>
   );
 }

@@ -34,6 +34,7 @@ import { CalendarCheck, Clock, Mail, AlertTriangle, HelpCircle } from "lucide-re
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
+import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
 import { canalDuRendezVous } from "@/server/calendly/canal";
 
@@ -162,6 +163,10 @@ export default async function ConfirmePage({ params, searchParams }: Props) {
     <div className="bg-canvas min-h-screen pt-8 pb-20 sm:pt-14">
       <Container>
         <div className="mx-auto max-w-xl">
+          {/* On arrive ici par l'action serveur, depuis le bas du formulaire :
+              sans ce geste, « C'est réservé » s'affichait 325 px au-dessus de
+              l'écran (mesuré en prod le 2026-09-02). */}
+          <RemonterAuMessage />
           {incertain ? (
             <EnCoursDeVerification />
           ) : aVerifier ? (
