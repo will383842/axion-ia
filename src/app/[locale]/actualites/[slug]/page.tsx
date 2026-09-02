@@ -384,7 +384,7 @@ export default async function NewsArticlePage({ params }: Props) {
         : "Archive";
 
   // Accent éditorial du titre (parité /blog) — la queue rend en serif italique
-  // terracotta via `titleEm` du <Section>.
+  // terracotta via `titleEm` du <Section spacing="compact">.
   const titleParts = splitTitleEm(t.title);
   // Bannière « Dernière révision » (parité /blog) — signal de fraîcheur E-E-A-T.
   // Date de référence = updatedAt sinon publishedAt.
@@ -530,7 +530,7 @@ export default async function NewsArticlePage({ params }: Props) {
 
         <div className="min-w-0 lg:col-start-2 lg:row-start-1">
           {tldrText ? (
-            <Section>
+            <Section spacing="compact">
               <Container className="max-w-3xl">
                 <AnswerCard
                   locale="fr"
@@ -548,7 +548,7 @@ export default async function NewsArticlePage({ params }: Props) {
 
           {/* A11y — <article> sémantique (contenu éditorial). */}
           <article>
-            <Section>
+            <Section spacing="compact">
               <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
                 {bodyHtmlFallback ? (
                   <div
@@ -563,7 +563,7 @@ export default async function NewsArticlePage({ params }: Props) {
           </article>
 
           {/* Carte auteur E-E-A-T EN BAS (parité blog). */}
-          <Section>
+          <Section spacing="compact">
             <Container className="max-w-[52rem]">
               <AuthorByline
                 authorName={article.author?.name ?? "Manon"}
@@ -616,7 +616,7 @@ export default async function NewsArticlePage({ params }: Props) {
             locale="fr"
           />
 
-          <Section>
+          <Section spacing="compact">
             <Container className="max-w-3xl">
               <AiContentDisclaimer locale="fr" />
             </Container>
