@@ -35,6 +35,7 @@ on:
           # lu par `src/server/deploiement/etat.ts` pour l'outil MCP `deploiement.etat`.
           # Sans lui, l'outil se rabat sur GH_DISPATCH_TOKEN — qui sait DÉCLENCHER un
           # workflow, soit bien plus que lire. Le moindre privilège est ce jeton-ci.
+          # Porté par le secret GitHub GH_READ_TOKEN (voir l'étape « Poser »).
           - GITHUB_READ_TOKEN
           - lister-seulement
       confirmer:
@@ -103,7 +104,10 @@ jobs:
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           MCP_SHARED_SECRET: ${{ secrets.MCP_SHARED_SECRET }}
-          GITHUB_READ_TOKEN: ${{ secrets.GITHUB_READ_TOKEN }}
+          # ⚠️ Le secret GitHub s'appelle GH_READ_TOKEN : l'API refuse tout nom de
+          #    secret commençant par « GITHUB_ » (422, mesuré le 2026-09-02). La
+          #    variable Coolify, elle, garde le nom que le code lit : GITHUB_READ_TOKEN.
+          GITHUB_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
