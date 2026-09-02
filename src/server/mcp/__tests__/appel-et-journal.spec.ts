@@ -53,6 +53,15 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   listAlertes: (...a: unknown[]) => alertesMock.listAlertes(...a),
 }));
 
+// ⚠️ SIMULER LA COUCHE SERVICE DU DÉPLOIEMENT, PAS `fetch`. Sans ce mock, le
+//    test partirait vraiment sur l'API GitHub : il dépendrait du réseau, d'un
+//    jeton, et il mesurerait GitHub au lieu de mesurer l'outil.
+const deploiementMock = vi.hoisted(() => ({ lireEtatDuDeploiement: vi.fn() }));
+vi.mock("@/server/deploiement/etat", async (original) => ({
+  ...(await original<Record<string, unknown>>()),
+  lireEtatDuDeploiement: () => deploiementMock.lireEtatDuDeploiement(),
+}));
+
 import { executerAppel, MARGE_DE_COMPACTION } from "../appel";
 import { nomComplet } from "../contrat";
 import { CLES_DU_JOURNAL, PREFIXE_DU_JOURNAL } from "../journal";
@@ -159,6 +168,17 @@ beforeEach(() => {
       items: [{ label: `Session A — ${TELEPHONE}`, href: "/x/planning/1" }],
     },
   ]);
+  deploiementMock.lireEtatDuDeploiement.mockResolvedValue({
+    etat: "a-jour",
+    resume: "le dernier déploiement a réussi, et c'est bien ce commit qui est servi.",
+    commit: "0a1b2c3d4e5f60718293a4b5c6d7e8f901234567",
+    titreDuCommit: `déploiement demandé par ${EMAIL}`,
+    branche: "main",
+    termineLe: "2026-09-02T03:00:00.000Z",
+    dureeSecondes: 1500,
+    commitEnService: "0a1b2c3d4e5f60718293a4b5c6d7e8f901234567",
+    numeroDeRun: 4321,
+  });
   alertesMock.listAlertes.mockResolvedValue([
     {
       id: "00000000-0000-4000-8000-000000000001",
@@ -190,6 +210,7 @@ const ARGUMENTS_PAR_OUTIL: Record<string, unknown> = {
   "rendezvous.list": { statut: "scheduled" },
   "pilotage.alertes": { annee: 2026, mois: 9 },
   "qualiopi.conformite": { niveau: "important" },
+  "deploiement.etat": {},
 };
 
 describe("executerAppel — les six outils répondent, en sortie standard", () => {

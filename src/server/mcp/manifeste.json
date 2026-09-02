@@ -1,7 +1,7 @@
 {
   "$note": "Généré par `pnpm mcp:manifeste`. Ne pas éditer à la main : la garde compare au code. `manifestSha` couvre le texte canonique, pas ce fichier.",
-  "manifestSha": "sha256:40400c923ae3bf974cd3e289c82e6f577eba15a125c4b14c167ab87c4a471b96",
-  "octetsCanoniques": 22253,
+  "manifestSha": "sha256:b2fe01044f8940afdca5fb0eceb9c3cc133c94f466edad500fc7877cede543df",
+  "octetsCanoniques": 25391,
   "manifeste": {
     "manifestVersion": 1,
     "id": "axionia",
@@ -1406,6 +1406,237 @@
         "idFields": ["id"],
         "governanceFields": [],
         "bytes": 3489
+      },
+      {
+        "name": "deploiement.etat",
+        "version": "1.0.0",
+        "description": "L'état du dernier déploiement du site : réussi, en cours ou en échec, et si le commit déployé est bien celui qui est servi en ce moment.",
+        "effect": "read",
+        "dataClass": "internal",
+        "idempotency": "n/a",
+        "pagination": "none",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "etat": {
+                    "type": "string",
+                    "enum": [
+                      "a-jour",
+                      "en-retard",
+                      "en-cours",
+                      "echec",
+                      "non-configure",
+                      "indisponible"
+                    ]
+                  },
+                  "resume": {
+                    "type": "string"
+                  },
+                  "commit": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{7}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "commitEnService": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{7}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "branche": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "termineLe": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "titreDuCommit": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "dureeSecondes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "numeroDeRun": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["etat", "resume", "commit", "commitEnService", "branche", "termineLe"],
+                "additionalProperties": false
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "returned": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "hasMore": {
+                  "type": "boolean"
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": ["items", "aggregate"]
+                },
+                "truncated": {
+                  "type": "boolean"
+                },
+                "truncationNote": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "sourceIncomplete": {
+                  "type": "boolean"
+                },
+                "sourceNote": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "failedSources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                },
+                "deprecated": {
+                  "type": "boolean"
+                },
+                "sunsetAt": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "asOf": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                }
+              },
+              "required": [
+                "returned",
+                "hasMore",
+                "cursor",
+                "mode",
+                "truncated",
+                "truncationNote",
+                "sourceIncomplete",
+                "sourceNote",
+                "failedSources",
+                "version",
+                "deprecated",
+                "sunsetAt",
+                "asOf"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": ["items", "meta"],
+          "additionalProperties": false
+        },
+        "maxBytes": 2048,
+        "compaction": {
+          "free": ["resume", "titreDuCommit"],
+          "tier2": ["titreDuCommit", "dureeSecondes", "numeroDeRun"],
+          "aggregateBy": null
+        },
+        "idFields": ["commit", "commitEnService"],
+        "governanceFields": [],
+        "bytes": 3124
       }
     ]
   }

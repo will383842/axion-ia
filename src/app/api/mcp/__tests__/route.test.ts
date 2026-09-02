@@ -169,7 +169,7 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
     expect(Object.keys(corps.result.capabilities)).toEqual(["tools"]);
   });
 
-  it("publie les six outils du registre, chacun avec son schéma d'entrée FERMÉ", async () => {
+  it("publie les sept outils du registre, chacun avec son schéma d'entrée FERMÉ", async () => {
     const { POST } = await charger();
     const res = await POST(
       appel({ jsonrpc: "2.0", id: 8, method: "tools/list" }, { secret: SECRET }) as never,
@@ -189,6 +189,7 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
     expect(noms).toEqual([
       "axionia.agenda.jour",
       "axionia.agenda.semaine",
+      "axionia.deploiement.etat",
       "axionia.inbox.recent",
       "axionia.pilotage.alertes",
       "axionia.qualiopi.conformite",
@@ -210,7 +211,7 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
     };
     expect(corps.result.manifest.id).toBe("axionia");
     expect(corps.result.manifest.mode).toBe("fédéré");
-    expect(corps.result.manifest.tools).toHaveLength(6);
+    expect(corps.result.manifest.tools).toHaveLength(7);
 
     const sans = await POST(appel({ jsonrpc: "2.0", id: 11, method: "axionia/manifest" }) as never);
     expect(sans.status).toBe(401);

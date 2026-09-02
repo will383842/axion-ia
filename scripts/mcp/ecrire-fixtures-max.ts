@@ -155,6 +155,22 @@ const JEUX: Record<string, () => unknown> = {
     }));
     return { items, meta: meta(items.length, { failedSources: [], hasMore: false }) };
   },
+  "deploiement.etat": () => ({
+    items: [
+      {
+        etat: "en-retard",
+        resume: texte("resume", 0, 220),
+        commit: "0a1b2c3",
+        commitEnService: "9f8e7d6",
+        branche: "main",
+        termineLe: AS_OF,
+        titreDuCommit: texte("titre du commit", 0, 140),
+        dureeSecondes: 1680,
+        numeroDeRun: 4321,
+      },
+    ],
+    meta: meta(1, { failedSources: ["github"], hasMore: false }),
+  }),
   "qualiopi.conformite": () => {
     const items = Array.from({ length: 60 }, (_, i) => ({
       id: uuidFabrique(i),

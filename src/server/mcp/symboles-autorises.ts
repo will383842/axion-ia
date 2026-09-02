@@ -62,6 +62,13 @@ export const SYMBOLES_AUTORISES: readonly AutorisationDImport[] = [
     motif: "dériver l'énumération des niveaux d'alerte depuis le schéma Prisma",
   },
   {
+    module: "@/server/deploiement/etat",
+    symboles: ["lireEtatDuDeploiement", "ETATS"],
+    motif:
+      "l'état du dernier déploiement (W-9, GitHub seul) — c'est ELLE qui lit la " +
+      "configuration et le jeton, jamais l'adaptateur (contrôle 2)",
+  },
+  {
     module: "@/features/admin-calendly/acces",
     symboles: ["peutVoirLesAppels"],
     motif: "le pont d'identité : la même fonction que la console (W-6)",

@@ -29,13 +29,25 @@ travaux préalables dans ce dépôt.
    C'est le document que le socle inscrit dans `adapters.lock.json`. Une garde recalcule
    l'empreinte depuis le code : un outil modifié sans `pnpm mcp:manifeste` rougit en CI,
    au lieu d'être refusé en production pour « empreinte divergente ».
-4. **Six outils de lecture, cinq agrégateurs.** `inbox.recent` (admin-inbox, rendu sans
+4. **Sept outils de lecture : cinq agrégateurs du produit, plus l'API GitHub.** `inbox.recent` (admin-inbox, rendu sans
    session au lot 4a), `agenda.jour` et `agenda.semaine` (admin-agenda),
    `rendezvous.list` (admin-rendezvous), `pilotage.alertes` (admin-planning/hub),
    `qualiopi.conformite` (**`listAlertes()`, jamais l'évaluateur** — 47 règles, 31
    `findMany` sans `take`, coût non mesuré). `unified-contact` n'est pas branchable
-   (Turnstile, IP, cookies UTM). `deploiement.etat` attend W-9 ; `agenda.poser` et
-   `message.repondre` sont des effets — lot 7.
+   (Turnstile, IP, cookies UTM). `agenda.poser` et `message.repondre` sont des effets —
+   lot 7.
+   **`deploiement.etat` applique le défaut écrit de W-9 : « GitHub seul ».** Sa couche
+   service (`src/server/deploiement/etat.ts`) lit le dernier run du workflow de
+   déploiement, épinglé **par le nom du fichier de workflow** et non par « le dernier run
+   du dépôt », puis le confronte au commit que le processus courant exécute (`BUILD_SHA`).
+   C'est cette confrontation qui répond à la question réelle — « ma modification est-elle
+   en ligne ? » : un run vert dit qu'une image a été poussée, jamais qu'elle est servie.
+   Six états, dont trois existent pour empêcher un « tout va bien » non vérifié :
+   `non-configure` (aucun jeton — et alors **aucun appel réseau n'est tenté**, un 404 de
+   dépôt privé se lirait comme une absence de déploiement), `indisponible` (l'API n'a pas
+   répondu, ou a répondu illisible), et `en-retard` (run vert, mais autre commit servi).
+   Coolify reste hors périmètre : la décision W-9 ne l'a pas ouvert, et l'état du
+   conteneur ne s'invente pas.
 5. **Aucun outil ne rend de lien de console.** Le préfixe d'administration est un segment
    de sécurité ; un lien dans une réponse vocale finit dans une transcription. Les
    identifiants sont opaques et la console les résout. La garde
@@ -76,6 +88,8 @@ travaux préalables dans ce dépôt.
 ## Ce qui reste à décider (Will)
 
 - **W-6** : le rôle au nom duquel l'adaptateur agit. Tant que non décidé : `reader`.
-- **W-9** : `deploiement.etat` — GitHub seul, Coolify avec un jeton dédié, ou rien.
+- **W-9** : confirmer « GitHub seul » (le défaut, appliqué), ou ouvrir Coolify. En
+  attendant, poser `GITHUB_READ_TOKEN` (portée `actions: read`) dans Coolify : sans lui
+  l'outil rend « non-configure », ce qui est honnête mais inutile.
 - Le critère « POST /api/mcp sans secret rend 401/503, vérifié depuis un autre réseau »
   est une mesure d'exploitation, après déploiement.

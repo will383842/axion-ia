@@ -1,23 +1,25 @@
 /**
  * **LE REGISTRE DES OUTILS SERVIS** — la seule liste, et ce qu'on en publie.
  *
- * Cinq lectures (le cahier des charges, § 28), l'agenda en deux fenêtres :
+ * SEPT outils, tous en lecture (cahier des charges, § 28) : cinq agrégateurs
+ * du produit — l'agenda comptant pour deux fenêtres — plus l'API GitHub.
  *
  *   axionia.inbox.recent          admin-inbox            (session extraite au lot 4a)
  *   axionia.agenda.jour · semaine admin-agenda           (prêt en l'état)
  *   axionia.rendezvous.list       admin-rendezvous
  *   axionia.pilotage.alertes      admin-planning/hub
  *   axionia.qualiopi.conformite   listAlertes(), pas l'évaluateur
+ *   axionia.deploiement.etat      API GitHub Actions seule (W-9, défaut)
  *
- * `deploiement.etat` attend la décision W-9 (GitHub seul, Coolify, ou rien) :
- * il n'est pas ici. `agenda.poser` et `message.repondre` sont des EFFETS —
- * lot 7, avec l'idempotence câblée à `ctx`.
+ * `agenda.poser` et `message.repondre` sont des EFFETS — lot 7, avec
+ * l'idempotence câblée à `ctx`.
  */
 
 import { z } from "zod/v4";
 
 import { nomComplet, type OutilQuelconque } from "./contrat";
 import { agendaJour, agendaSemaine } from "./outils/agenda";
+import { deploiementEtat } from "./outils/deploiement-etat";
 import { inboxRecent } from "./outils/inbox-recent";
 import { pilotageAlertes } from "./outils/pilotage-alertes";
 import { qualiopiConformite } from "./outils/qualiopi-conformite";
@@ -30,6 +32,7 @@ export const OUTILS: readonly OutilQuelconque[] = [
   rendezVousList,
   pilotageAlertes,
   qualiopiConformite,
+  deploiementEtat,
 ];
 
 export function trouverOutil(nom: string): OutilQuelconque | null {

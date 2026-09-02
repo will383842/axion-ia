@@ -1,0 +1,30 @@
+{
+  "items": [
+    {
+      "etat": "en-retard",
+      "resume": "resume 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "commit": "0a1b2c3",
+      "commitEnService": "9f8e7d6",
+      "branche": "main",
+      "termineLe": "2026-09-02T04:00:00.000Z",
+      "titreDuCommit": "titre du commit 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "dureeSecondes": 1680,
+      "numeroDeRun": 4321
+    }
+  ],
+  "meta": {
+    "returned": 1,
+    "hasMore": false,
+    "cursor": null,
+    "mode": "items",
+    "truncated": false,
+    "truncationNote": null,
+    "sourceIncomplete": true,
+    "sourceNote": "note source 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefg",
+    "failedSources": ["github"],
+    "version": "1.0.0",
+    "deprecated": false,
+    "sunsetAt": null,
+    "asOf": "2026-09-02T04:00:00.000Z"
+  }
+}
