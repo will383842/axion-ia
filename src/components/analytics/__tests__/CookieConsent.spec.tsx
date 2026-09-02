@@ -303,3 +303,13 @@ describe("<CookieConsent> — écrans de fin du parcours d'appel", () => {
     }
   });
 });
+
+describe("<CookieConsent> — police système (régression CLS du 2026-09-02)", () => {
+  it("🔴 le bandeau n'utilise pas la police de marque : rendu SSR, elle le fait décaler au swap", () => {
+    const html = renderToString(<CookieConsent />);
+    // Mesuré sur le runner : `p#cookie-consent-body`, cause « Web font loaded »,
+    // 0,052 sur /fr, 0,062 sur /contact, 0,049 sur /appel — au-dessus du seuil.
+    expect(html).toMatch(/font-family:[^"]*system-ui/);
+    expect(html).not.toMatch(/font-family:[^"]*Manrope/);
+  });
+});
