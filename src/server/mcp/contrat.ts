@@ -141,10 +141,13 @@ export interface Habilitations {
    * un rôle — c'est le cas du dossier de candidat, où recevoir un booléen déjà
    * tranché rendrait le cloisonnement dépendant de chaque appelant.
    *
-   * ⚠️ **EXTENSION DU CONTRAT DU SOCLE, À RÉPERCUTER.** `core/types.ts`
-   *    d'`axion-ops` ne porte aujourd'hui que `peutVoirAppels`. Tant que le
-   *    socle ne le calcule pas, la valeur vient du pont d'identité local et vaut
-   *    le rôle le plus faible (défaut W-6).
+   * ✅ **RÉPERCUTÉ CÔTÉ SOCLE le 2026-09-02** (axion-ops, PR #1, commit
+   *    `ad6d77c`) : `Habilitations.roleConsole: string | null` y existe, et le
+   *    nom fait partie des 12 que le contrôle 7 du socle refuse dans un schéma
+   *    d'entrée — le même compte qu'ici. Le socle ne porte aucun nom de rôle
+   *    (`null` = « aucun rôle porté ») : la valeur vient TOUJOURS du pont
+   *    d'identité local, `identite.ts`, et vaut le rôle le plus faible (W-6,
+   *    confirmé le 2026-09-02). Rien ne la lit sur le fil, et c'est voulu.
    */
   readonly roleConsole: string;
 }

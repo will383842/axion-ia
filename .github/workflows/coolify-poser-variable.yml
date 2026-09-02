@@ -31,6 +31,12 @@ on:
         type: choice
         options:
           - MCP_SHARED_SECRET
+          # Jeton GitHub à grain fin, LECTURE SEULE (Actions: read sur ce seul dépôt),
+          # lu par `src/server/deploiement/etat.ts` pour l'outil MCP `deploiement.etat`.
+          # Sans lui, l'outil se rabat sur GH_DISPATCH_TOKEN — qui sait DÉCLENCHER un
+          # workflow, soit bien plus que lire. Le moindre privilège est ce jeton-ci.
+          # Porté par le secret GitHub GH_READ_TOKEN (voir l'étape « Poser »).
+          - GITHUB_READ_TOKEN
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -98,6 +104,10 @@ jobs:
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           MCP_SHARED_SECRET: ${{ secrets.MCP_SHARED_SECRET }}
+          # ⚠️ Le secret GitHub s'appelle GH_READ_TOKEN : l'API refuse tout nom de
+          #    secret commençant par « GITHUB_ » (422, mesuré le 2026-09-02). La
+          #    variable Coolify, elle, garde le nom que le code lit : GITHUB_READ_TOKEN.
+          GITHUB_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
@@ -106,12 +116,32 @@ jobs:
           # La valeur vient d'un secret GitHub portant le MÊME nom que la
           # variable Coolify. Aucune saisie libre n'entre ici.
           valeur="${!CIBLE:-}"
+          # ⚠️ Un secret posé par `… | gh secret set` porte le RETOUR À LA LIGNE du
+          #    pipe (mesuré le 2026-09-02 : 94 caractères pour un jeton de 93). Posé
+          #    tel quel dans Coolify, il ferait un en-tête « Bearer xxx\n » que
+          #    GitHub refuse. On retire les fins de ligne terminales, rien d'autre.
+          valeur="${valeur%%[$'\r\n']*}"
+          # ... et une marque d'ordre d'octets (BOM UTF-8) qu'un pipe PowerShell peut
+          #     placer EN TETE. Mesure du 2026-09-02 : 94 caracteres lus apres le trim
+          #     des fins de ligne -> le parasite n'etait pas a la fin.
+          valeur="${valeur#$'\xEF\xBB\xBF'}"
+          premier="${valeur:0:1}"; dernier="${valeur: -1}"
+          for c in "$premier" "$dernier"; do
+            if [[ "$c" =~ ^[A-Za-z0-9_]$ ]]; then echo "borne : alphanumerique"; else printf 'borne : code %d (non alphanumerique)\n' "'$c"; fi
+          done
           if [ -z "$valeur" ]; then
             echo "::error::le secret GitHub « $CIBLE » est vide ou absent."
             exit 1
           fi
           echo "Valeur trouvée pour $CIBLE (${#valeur} caractères — la valeur n'est pas affichée)."
 
+          # SONDE : un jeton de lecture GitHub se presente a GitHub AVANT d'etre pose.
+          # Un 401 ici vaut mieux qu'un outil MCP muet apres le prochain deploiement.
+          if [ "$CIBLE" = "GITHUB_READ_TOKEN" ]; then
+            sonde=$(curl -sS -m 20 -o /dev/null -w '%{http_code}'  -H "Authorization: Bearer ${valeur}" -H 'Accept: application/vnd.github+json'  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=1")
+            echo "Sonde GitHub Actions (lecture) : HTTP $sonde"
+            [ "$sonde" = "200" ] || { echo "::error::le jeton est refuse par GitHub ($sonde) : ne pas le poser"; exit 1; }
+          fi
           existe=$(jq --arg k "$CIBLE" '[.[] | select(.key == $k and .is_preview == false)] | length' /tmp/envs.json)
           echo "Présente en Production : $existe"
 
