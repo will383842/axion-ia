@@ -26,18 +26,18 @@ import { HoverPrefetchLink } from "../HoverPrefetchLink";
 
 describe("HoverPrefetchLink", () => {
   it("désactive le préchargement tant que le lien n'a pas été survolé", () => {
-    render(<HoverPrefetchLink href="/fr/admin/content-gen/jobs">Jobs</HoverPrefetchLink>);
+    render(<HoverPrefetchLink href="/fr/admin/agenda">Jobs</HoverPrefetchLink>);
     expect(screen.getByRole("link")).toHaveAttribute("data-prefetch", "false");
   });
 
   it("rend la main au comportement par défaut de Next au survol", () => {
-    render(<HoverPrefetchLink href="/fr/admin/content-gen/jobs">Jobs</HoverPrefetchLink>);
+    render(<HoverPrefetchLink href="/fr/admin/agenda">Jobs</HoverPrefetchLink>);
     fireEvent.mouseEnter(screen.getByRole("link"));
     expect(screen.getByRole("link")).toHaveAttribute("data-prefetch", "null");
   });
 
   it("le focus clavier vaut survol", () => {
-    render(<HoverPrefetchLink href="/fr/admin/content-gen/jobs">Jobs</HoverPrefetchLink>);
+    render(<HoverPrefetchLink href="/fr/admin/agenda">Jobs</HoverPrefetchLink>);
     fireEvent.focus(screen.getByRole("link"));
     expect(screen.getByRole("link")).toHaveAttribute("data-prefetch", "null");
   });
