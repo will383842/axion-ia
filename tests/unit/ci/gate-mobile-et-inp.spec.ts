@@ -17,16 +17,20 @@
  * celle qui est classée. Deux projets Playwright mobile existent dans le dépôt
  * et ne sont exécutés nulle part.
  *
- * ## Pourquoi ces assertions sont en WARN, et pourquoi c'est délibéré
+ * ## Trois âges de la passe mobile
  *
- * On n'a aucune ligne de base mobile. Poser des seuils bloquants à l'aveugle
- * ferait échouer tous les déploiements dès le premier run — et un gate qui
- * bloque tout se fait désactiver, donc ne garde plus rien. La bascule en ERROR
- * est une décision à prendre APRÈS 2-3 déploiements, sur des valeurs réelles.
+ * 1. 2026-08-14 → 2026-08-31 : elle ne mesurait RIEN (preset inexistant, 0 URL).
+ * 2. 2026-08-31 → 2026-09-02 : elle mesurait, tout en WARN « faute de ligne de
+ *    base » — un gate incapable de rougir, assumé comme transitoire.
+ * 3. Depuis le 2026-09-02 : la ligne de base est lue sur trois déploiements,
+ *    la config est une matrice par page, chaque page porte au moins une
+ *    assertion en ERROR, posée sur la mesure (contrat là où ça passe, cliquet
+ *    ailleurs — jamais un seuil déjà dépassé, AGENTS.md).
  *
- * 🔑 Cette garde ne vérifie donc pas « le gate bloque », mais « le gate
- * MESURE ». C'est la propriété utile à ce stade, et la seule qu'on puisse
- * honnêtement affirmer.
+ * 🔑 Cette garde vérifie deux propriétés, dans cet ordre : « le gate MESURE »
+ * (rapports comptés, plusieurs runs, valeurs imprimées), puis « le gate PEUT
+ * ROUGIR » (une entrée entièrement en warn est refusée). Éprouvée le
+ * 2026-09-02 : une entrée remise en warn la fait tomber.
  */
 
 import { readFileSync } from "node:fs";
@@ -171,32 +175,112 @@ describe("GEO-121 — le gate mesure aussi le mobile", () => {
     expect(wf).toContain(`--config=${CONF_MOBILE}`);
   });
 
-  it("la config mobile existe et couvre les métriques du contrat", () => {
+  /**
+   * 🔴 RETOURNÉ LE 2026-09-02 — le test précédent exigeait « tout en WARN ».
+   *
+   * C'était une décision datée (« faute de ligne de base »), écrite pour être
+   * renversée après 2-3 déploiements. Les trois déploiements du 2026-09-01
+   * (runs 33542614678, 33557264126, 33566337853) ont établi la ligne de base :
+   * 0 page sur 6 au contrat, TBT hors budget partout, CLS déterministe sur trois
+   * gabarits, LCP à 4 s puis 7-10 s sur /contact et /appel. La config est donc
+   * devenue une matrice PAR PAGE — contrat en error là où les 3 runs passaient,
+   * cliquet en error ailleurs, INP en warn — et ce test garde désormais la
+   * propriété qui compte : CHAQUE page peut faire rougir le gate.
+   */
+  it("🔴 la config mobile est une matrice par page, et chaque entrée peut rougir", () => {
     const conf = JSON.parse(lire(CONF_MOBILE)) as ConfigLhci;
-    const a = conf.ci.assert.assertions ?? {};
-    for (const metrique of [
-      "largest-contentful-paint",
-      "cumulative-layout-shift",
-      "total-blocking-time",
-      "interaction-to-next-paint",
-    ]) {
-      expect(a[metrique], `metrique absente de la passe mobile : ${metrique}`).toBeDefined();
+    const matrice = conf.ci.assert.assertMatrix ?? [];
+    expect(matrice.length, "la matrice mobile ne doit pas être vide").toBeGreaterThan(0);
+    for (const entree of matrice) {
+      for (const metrique of [
+        "categories:performance",
+        "largest-contentful-paint",
+        "first-contentful-paint",
+        "speed-index",
+        "cumulative-layout-shift",
+        "total-blocking-time",
+        "interaction-to-next-paint",
+      ]) {
+        expect(
+          entree.assertions[metrique],
+          `${entree.matchingUrlPattern} : métrique absente de la passe mobile : ${metrique}`,
+        ).toBeDefined();
+      }
+      const niveaux = Object.entries(entree.assertions).map(([nom, regle]) => ({
+        nom,
+        niveau: Array.isArray(regle) ? regle[0] : regle,
+      }));
+      // Une entrée dont toutes les règles sont en warn ne garde rien : c'est
+      // exactement l'état qui a duré du 2026-08-14 au 2026-09-02.
+      expect(
+        niveaux.filter((n) => n.niveau === "error").length,
+        `${entree.matchingUrlPattern} : aucune assertion en error, cette page ne peut pas faire rougir le gate`,
+      ).toBeGreaterThan(0);
+      // INP reste en warn PARTOUT, et c'est une contrainte de l'instrument, pas
+      // un choix : en navigation, Lighthouse ne mesure l'INP que si la page
+      // reçoit une interaction (auditRan = 0 sur 18 passes). Le poser en error
+      // ferait rougir sur une absence de mesure.
+      expect(
+        niveaux.find((n) => n.nom === "interaction-to-next-paint")?.niveau,
+        `${entree.matchingUrlPattern} : INP doit rester en warn (non mesurable en laboratoire)`,
+      ).toBe("warn");
     }
   });
 
-  it("⚠️ toutes les assertions mobiles sont en WARN — état transitoire assumé", () => {
-    // 🔑 Ce test documente une DECISION, il ne verrouille pas un ideal. Quand la
-    // ligne de base sera etablie (2-3 deploiements), basculer les metriques
-    // conformes en "error" ET mettre ce test a jour dans le meme commit. Le
-    // laisser vert indefiniment reviendrait a entretenir un gate qui n'a jamais
-    // la capacite de rougir.
+  it("le seuil INP mobile reste aligné sur le contrat (≤ 100 ms, ≤ 150 ms sur /appel)", () => {
+    // Dérivé d'AGENTS.md, comme pour le desktop : jamais recopié ici.
+    const contrat = lire("AGENTS.md");
+    const general = Number(/INP\*\*\s*≤\s*(\d+)\s*ms/.exec(contrat)?.[1]);
+    const derogation = Number(
+      /Exception\s*:\s*`\/appel`[^\n]*?INP\s*≤\s*(\d+)\s*ms/.exec(contrat)?.[1],
+    );
+    expect(general).toBeGreaterThan(0);
+    expect(derogation).toBeGreaterThan(0);
     const conf = JSON.parse(lire(CONF_MOBILE)) as ConfigLhci;
-    for (const [nom, regle] of Object.entries(conf.ci.assert.assertions ?? {})) {
-      const niveau = Array.isArray(regle) ? regle[0] : regle;
-      expect(niveau, `${nom} : la bascule en error est une decision, pas un effet de bord`).toBe(
-        "warn",
-      );
+    for (const entree of conf.ci.assert.assertMatrix ?? []) {
+      const regle = entree.assertions["interaction-to-next-paint"] as [
+        string,
+        { maxNumericValue: number },
+      ];
+      const plafond = /appel/.test(entree.matchingUrlPattern ?? "") ? derogation : general;
+      expect(
+        regle[1].maxNumericValue,
+        `${entree.matchingUrlPattern} : seuil INP mobile hors contrat`,
+      ).toBeLessThanOrEqual(plafond);
     }
+  });
+
+  it("🔴 la passe mobile mesure plusieurs runs et asserte sur la médiane", () => {
+    // Un seul run par URL fait basculer le verdict sur du bruit de runner : sur
+    // la home, le TBT a varié de 421 à 707 ms entre deux déploiements du même
+    // jour. Le nombre exact de runs n'est pas recopié ici — seule compte la
+    // propriété « plus d'un ».
+    const commandes = lire(WORKFLOW)
+      .split("\n")
+      .filter((l) => !/^\s*#/.test(l))
+      .join("\n");
+    const collecteMobile =
+      /lhci collect [^\n]*--numberOfRuns=(\d+) --settings\.throttlingMethod=devtools \|\| true/.exec(
+        commandes,
+      );
+    expect(collecteMobile, "collecte mobile introuvable").not.toBeNull();
+    expect(Number(collecteMobile?.[1])).toBeGreaterThan(1);
+    const conf = JSON.parse(lire(CONF_MOBILE)) as {
+      ci: { assert: { aggregationMethod?: string } };
+    };
+    expect(conf.ci.assert.aggregationMethod).toBe("median");
+  });
+
+  it("🔴 le job imprime TOUTES les valeurs mesurées, pas seulement les dépassements", () => {
+    // `lhci assert` n'imprime que ce qui dépasse. Le 2026-09-02, la première
+    // lecture des chiffres mobiles n'a pu dire que « ≤ seuil » pour tout ce qui
+    // passait : aucune ligne de base ne se relit sans ce tableau.
+    const commandes = lire(WORKFLOW)
+      .split("\n")
+      .filter((l) => !/^\s*#/.test(l))
+      .join("\n");
+    expect(commandes).toContain("imprimer_valeurs desktop");
+    expect(commandes).toContain("imprimer_valeurs mobile");
   });
 
   it("la passe mobile ne renverse pas un déploiement sain, mais ne se tait plus", () => {
