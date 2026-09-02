@@ -1,0 +1,172 @@
+name: Careers · Seed d'offres (périmètre explicite)
+
+# Pousse en base PROD le texte de certaines offres, et rien d'autre.
+#
+# Modèle : `careers-grenoble-seed.yml` (SSH Hetzner + docker cp + docker exec worker).
+# Le container worker n'embarque ni `scripts/` ni `careers-gen/` → on les copie
+# depuis le checkout du runner avant d'exécuter tsx.
+#
+# 🔴 POURQUOI UN PÉRIMÈTRE OBLIGATOIRE. Relevé du 2026-09-02 : sur 55 offres en
+# ligne, 21 portaient des corrections faites en console que le dépôt n'avait
+# jamais reçues. Une passe complète les aurait effacées en silence. Le dépôt a
+# depuis été resynchronisé sur la prod, mais la règle reste : on nomme ce qu'on
+# écrit. `scripts/seed-careers-offers.ts` refuse de tourner sans `--only=` ou
+# `--all`.
+#
+# `republish` rafraîchit `publishedAt`, la date que Google for Jobs affiche.
+# C'est un geste HUMAIN : à ne cocher que sur des offres réellement ouvertes et
+# relues — jamais pour simuler de la fraîcheur (règles Google for Jobs).
+#
+# À lancer APRÈS qu'un déploiement a mis le code à jour (le seed écrit dans la
+# même Postgres, mais l'ISR ne repeuplera les pages qu'avec le code déployé).
+
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Slugs à écrire, séparés par des virgules (vide = refus)"
+        required: true
+        default: "monteur-video-freelance-distance,monteur-video-motion,monteur-son-podcast,producteur-podcast,createur-ugc-reels,photographe-crea,business-developer-ia,charge-rd-ia,charge-subventions,developpeur-web,responsable-partenariats-evenements,responsable-reseau-commercial"
+        type: string
+      republish:
+        description: "Rafraîchir publishedAt (date vue par Google for Jobs)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+      dry_run:
+        description: "Dry run (copie les fichiers, n'écrit pas en base)"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed offres carrières
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # Les entrées d'un workflow_dispatch sont du texte fourni par l'appelant :
+      # jamais interpolées dans un script shell, et validées avant usage.
+      - name: Valider le périmètre
+        id: scope
+        env:
+          SLUGS: ${{ inputs.slugs }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$SLUGS" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*(,[a-z0-9]+(-[a-z0-9]+)*)*$'; then
+            echo "::error::Périmètre invalide. Attendu : slugs en minuscules séparés par des virgules."
+            exit 1
+          fi
+          N=$(printf '%s' "$SLUGS" | tr ',' '\n' | wc -l)
+          echo "✓ $N offre(s) dans le périmètre"
+          printf '%s\n' "$SLUGS" | tr ',' '\n' | sed 's/^/    /'
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY manquant."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia WORKER container
+        id: worker
+        env:
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::error::Secret COOLIFY_WORKER_APP_UUID manquant — le seed exige le container worker (src/+tsx)."
+            exit 1
+          fi
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_WORKER_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container worker $COOLIFY_WORKER_APP_UUID introuvable."
+            echo "$ROWS"; exit 1
+          fi
+          echo "✓ Worker container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Copier les fichiers de seed dans le container
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          set -euo pipefail
+          ssh -o BatchMode=yes root@178.105.55.15 'rm -rf /tmp/careers-seed && mkdir -p /tmp/careers-seed'
+          scp -o BatchMode=yes scripts/seed-careers-offers.ts root@178.105.55.15:/tmp/careers-seed/
+          scp -o BatchMode=yes careers_seed_input.json root@178.105.55.15:/tmp/careers-seed/
+          scp -o BatchMode=yes -r careers-gen root@178.105.55.15:/tmp/careers-seed/
+          ssh -o BatchMode=yes root@178.105.55.15 "
+            set -e
+            docker exec -u 0 '$WORKER' mkdir -p /app/scripts
+            docker cp /tmp/careers-seed/seed-careers-offers.ts '$WORKER':/app/scripts/seed-careers-offers.ts
+            docker cp /tmp/careers-seed/careers_seed_input.json '$WORKER':/app/careers_seed_input.json
+            docker cp /tmp/careers-seed/careers-gen '$WORKER':/app/careers-gen
+            rm -rf /tmp/careers-seed
+          "
+          echo "✓ Fichiers copiés dans le container worker."
+
+      # Le texte AVANT écriture, pour pouvoir comparer après (et revenir en
+      # arrière à la main si le résultat ne convient pas).
+      - name: État des offres visées AVANT écriture
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+          SLUGS: ${{ inputs.slugs }}
+        run: |
+          set -euo pipefail
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec -e SLUGS='$SLUGS' '$WORKER' node -e \
+            \"const{PrismaClient}=require('/app/prisma/generated/client');const p=new PrismaClient();
+            p.jobOffer.findMany({where:{slug:{in:process.env.SLUGS.split(',')}},select:{slug:true,titleFr:true,salaryMin:true,salaryMax:true,publishedAt:true}})
+            .then(r=>{for(const o of r)console.log(o.slug,'|',o.salaryMin,'-',o.salaryMax,'|',o.publishedAt&&o.publishedAt.toISOString().slice(0,10),'|',o.titleFr);process.exit(0)})
+            .catch(e=>{console.log('lecture impossible:',e.message.slice(0,120));process.exit(0)})\"" 2>&1 || true
+
+      - name: "[DRY RUN] Ne rien écrire"
+        if: inputs.dry_run == 'true'
+        run: |
+          echo "Dry run : fichiers copiés, aucune écriture en base."
+          echo "Relancer avec dry_run=false pour appliquer."
+
+      - name: Exécuter le seed (container worker)
+        if: inputs.dry_run != 'true'
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+          SLUGS: ${{ inputs.slugs }}
+          REPUBLISH: ${{ inputs.republish }}
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          FLAGS="--only=$SLUGS"
+          if [ "$REPUBLISH" = "true" ]; then FLAGS="$FLAGS --republish"; fi
+          echo "── Seed carrières : $FLAGS ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' sh -ec 'cd /app && node_modules/.bin/tsx scripts/seed-careers-offers.ts $FLAGS'" 2>&1
+          echo "── Seed terminé ──"
+
+      - name: État des offres visées APRÈS écriture
+        if: always() && inputs.dry_run != 'true'
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+          SLUGS: ${{ inputs.slugs }}
+        run: |
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec -e SLUGS='$SLUGS' '$WORKER' node -e \
+            \"const{PrismaClient}=require('/app/prisma/generated/client');const p=new PrismaClient();
+            p.jobOffer.findMany({where:{slug:{in:process.env.SLUGS.split(',')}},select:{slug:true,titleFr:true,salaryMin:true,salaryMax:true,publishedAt:true}})
+            .then(r=>{for(const o of r)console.log(o.slug,'|',o.salaryMin,'-',o.salaryMax,'|',o.publishedAt&&o.publishedAt.toISOString().slice(0,10),'|',o.titleFr);process.exit(0)})
+            .catch(e=>{console.log('lecture impossible:',e.message.slice(0,120));process.exit(0)})\"" 2>&1 || true

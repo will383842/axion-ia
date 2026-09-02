@@ -5,6 +5,7 @@
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
+import { WORKMODE_LABELS as WORKMODE_LABELS_SSOT } from "@/lib/careers/format";
 import { ArrowRight, TriangleAlert } from "lucide-react";
 import {
   AdminPageShell,
@@ -39,11 +40,11 @@ function postedCell(postedAt: Date): React.ReactElement {
     </>
   );
 }
-const WORKMODE_LABELS: Record<string, string> = {
-  on_site: "Sur site",
-  hybrid: "Hybride",
-  remote: "À distance",
-};
+// Dérivé de la SSOT (`format.ts`) : la console disait « À distance » là où le
+// site public disait « Remote ». Un seul mot, un seul endroit.
+const WORKMODE_LABELS: Record<string, string> = Object.fromEntries(
+  Object.entries(WORKMODE_LABELS_SSOT).map(([k, v]) => [k, v.fr]),
+);
 // Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge-${status}`
 // non défini pour draft/published/archived → badge neutre non coloré).
 const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {

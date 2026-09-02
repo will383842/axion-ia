@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  WORKMODE_LABELS,
   isNew,
   workModeLabel,
   salaryLabel,
@@ -18,9 +19,17 @@ describe("isNew", () => {
 
 describe("workModeLabel", () => {
   it("traduit les modes connus", () => {
-    expect(workModeLabel("remote", true)).toBe("Remote");
+    expect(workModeLabel("remote", true)).toBe("Télétravail");
     expect(workModeLabel("on_site", true)).toBe("Sur site");
     expect(workModeLabel("hybrid", false)).toBe("Hybrid");
+  });
+  // Le libellé FR de `remote` valait « Remote » : de l'anglais sur un site FR-only,
+  // et pas le mot que les candidats tapent. Cette garde interdit la rechute — elle
+  // vaut pour TOUS les modes, pas seulement celui qu'on vient de corriger.
+  it("aucun libellé FR n'est resté en anglais", () => {
+    for (const [mode, { fr, en }] of Object.entries(WORKMODE_LABELS)) {
+      expect(fr, `le libellé FR de « ${mode} » est identique à l'anglais`).not.toBe(en);
+    }
   });
   it("fallback sur la valeur brute si inconnu", () => {
     expect(workModeLabel("zzz", true)).toBe("zzz");

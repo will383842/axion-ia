@@ -2,6 +2,7 @@
 // Stub-safe au build : sous DATABASE_URL=stub.invalid, le singleton Prisma
 // renvoie [] / null → pages rendues vides, repeuplées par ISR revalidate=3600.
 import { prisma } from "@/lib/prisma";
+import { isVideoFamilyOffer } from "./video-editor-offer";
 import type { JobOffer } from "../../../prisma/generated/client";
 
 /** Offres publiées pour le hub (triées : ordre manuel, puis plus récentes). */
@@ -59,12 +60,25 @@ export async function listIndexableJobOfferSlugs(): Promise<string[]> {
  * Renvoie [] si rien — la page masque le bloc si < 2 (anti-bloc maigre, D.1).
  */
 export async function listSuggestedOffers(current: JobOffer, limit = 4): Promise<JobOffer[]> {
+  // Plus de `take: 24`. Le plafond portait sur les offres les plus RÉCENTES, donc
+  // il écartait des offres proches avant même que le score les voie : la page d'un
+  // monteur vidéo suggérait « Prompt Engineer / AI Ops ». Le catalogue tient en
+  // quelques dizaines de lignes — le scorer peut les voir toutes.
   const pool = await prisma.jobOffer.findMany({
     where: { status: "published", filledAt: null, id: { not: current.id } },
     orderBy: [{ datePosted: "desc" }],
-    take: 24,
   });
+  const currentIsVideo = isVideoFamilyOffer(current.slug);
   const score = (o: JobOffer): number =>
-    (o.category === current.category ? 0 : 2) + (o.city && o.city === current.city ? -1 : 0);
-  return [...pool].sort((a, b) => score(a) - score(b)).slice(0, limit);
+    (o.category === current.category ? 0 : 2) +
+    // La famille vidéo est éclatée sur DEUX catégories (`design` pour les monteurs,
+    // `marketing` pour le vidéaste et le créateur UGC) : sans ce rapprochement, la
+    // page d'un monteur ne propose jamais les deux offres les plus voisines.
+    (currentIsVideo && isVideoFamilyOffer(o.slug) ? -3 : 0) +
+    (o.city && o.city === current.city ? -1 : 0);
+  // Départage explicite sur la date : à score égal, l'ordre ne dépend plus de
+  // la stabilité du tri du moteur.
+  return [...pool]
+    .sort((a, b) => score(a) - score(b) || b.datePosted.getTime() - a.datePosted.getTime())
+    .slice(0, limit);
 }
