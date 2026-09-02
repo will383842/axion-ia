@@ -31,6 +31,7 @@ import { careerImage, CAREERS_HERO } from "@/content/careers/careers-images";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
+  WORKMODE_LABELS,
   applicantCountryLabel,
   contractTypeLabel,
   normalizeApplicantCountries,
@@ -45,12 +46,6 @@ import type { JobOffer } from "../../../../../prisma/generated/client";
 import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 export const revalidate = 3600;
-
-const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
-  on_site: { fr: "Sur site", en: "On-site" },
-  hybrid: { fr: "Hybride", en: "Hybrid" },
-  remote: { fr: "Remote", en: "Remote" },
-};
 
 interface PerkItem {
   labelFr?: string;
