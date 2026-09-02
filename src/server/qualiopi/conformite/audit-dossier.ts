@@ -104,6 +104,15 @@ export const MAX_PIECES_LISTEES = 5;
  */
 export const MAX_FORMATEURS_NOMMES = 5;
 
+/**
+ * Taille d'un lot de récupération R2 pour le dossier ZIP.
+ *
+ * Assez large pour que le réseau ne soit plus le facteur limitant, assez étroit
+ * pour que la mémoire reste bornée par le lot et non par la taille du registre :
+ * un dossier d'audit peut porter plusieurs milliers de PDF.
+ */
+const LOT_RECUPERATION_R2 = 16;
+
 /** Une pièce désignable : son identifiant technique et son numéro au registre. */
 export interface PieceReference {
   /** `DocumentGenere.id` — cible de `/api/qualiopi/documents/<id>`. */
@@ -181,7 +190,7 @@ export interface ManifesteAuditResult {
  * RNQ : ils restent intégralement joints au ZIP, ils ne sont simplement pas
  * présentés comme preuve de quelque chose qu'ils ne prouvent pas.
  */
-const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
+export const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   // C1 — Information public
   // Le règlement intérieur ne dit rien des prestations, de leurs tarifs ni de
   // leurs délais d'accès : il informe sur les conditions de déroulement, donc
@@ -702,21 +711,52 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   let nbOmis = 0;
   let nbDocsInclus = 0;
 
-  for (const doc of allDocuments) {
-    // [P1] clé alignée sur l'écriture (documents-service.ts utilise l'année LOCALE
-    //   au moment de la génération) — évite d'omettre des PDF à la bascule d'année.
-    const r2Key = documentPdfKey(doc);
-    const buffer = await getObjectBufferR2(r2Key);
-
-    if (buffer !== null) {
-      // Chemin dans le ZIP : preuves/<type>/<numero>.pdf
-      zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
-      indexLines.push(`[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`);
-      nbInclus++;
-      nbDocsInclus++;
-    } else {
-      indexLines.push(`[OMIS] ${r2Key} — non disponible (R2 absent ou clé introuvable)`);
-      nbOmis++;
+  // 🔴 2026-09-02 (audit certificateur) — DEUX MESURES SUR CETTE BOUCLE.
+  //
+  //   1. Quand R2 n'est PAS configuré, elle demandait quand même chaque pièce,
+  //      une par une, et écrivait une ligne `[OMIS]` par pièce. Mesuré sur la
+  //      base de recette : 4 579 appels dont on connaissait la réponse d'avance
+  //      — `isR2Configured()` est évalué QUATORZE LIGNES PLUS HAUT — et un
+  //      `index.txt` de 4 579 lignes identiques, c'est-à-dire illisible. Un
+  //      index qu'on ne peut pas lire ne dit pas ce qui manque : il le noie.
+  //   2. Quand R2 EST configuré, le `await` dans la boucle sérialise 4 579
+  //      allers-retours réseau. C'est le bouton que le certificateur demande le
+  //      jour de sa venue ; il doit rendre la main.
+  if (!r2Ok) {
+    nbOmis = allDocuments.length;
+    indexLines.push(
+      `[OMIS] ${allDocuments.length} pièce${allDocuments.length > 1 ? "s" : ""} — stockage R2 non configuré, aucun PDF n'est restituable. Le détail par pièce n'est pas listé : la cause est unique et elle est écrite en tête de ce fichier.`,
+    );
+  } else {
+    // Récupération par lots : les requêtes d'un lot partent ensemble, et les
+    // lots s'enchaînent — la mémoire reste bornée par la taille du lot, pas par
+    // celle du registre.
+    for (let i = 0; i < allDocuments.length; i += LOT_RECUPERATION_R2) {
+      const lot = allDocuments.slice(i, i + LOT_RECUPERATION_R2);
+      const buffers = await Promise.all(
+        lot.map(async (doc) => ({
+          doc,
+          // [P1] clé alignée sur l'écriture (documents-service.ts utilise l'année
+          // LOCALE au moment de la génération) — évite d'omettre des PDF à la
+          // bascule d'année.
+          r2Key: documentPdfKey(doc),
+          buffer: await getObjectBufferR2(documentPdfKey(doc)),
+        })),
+      );
+      for (const { doc, r2Key, buffer } of buffers) {
+        if (buffer !== null) {
+          // Chemin dans le ZIP : preuves/<type>/<numero>.pdf
+          zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
+          indexLines.push(
+            `[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`,
+          );
+          nbInclus++;
+          nbDocsInclus++;
+        } else {
+          indexLines.push(`[OMIS] ${r2Key} — non disponible (clé introuvable dans R2)`);
+          nbOmis++;
+        }
+      }
     }
   }
 

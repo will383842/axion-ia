@@ -28,6 +28,10 @@ import {
   STATUT_REVUE_COUVRANTE,
   type StatutRevue,
 } from "../../../src/server/qualiopi/registres/statuts-revue";
+import {
+  TYPE_PARTENARIAT_HANDICAP,
+  type PartenariatType,
+} from "../../../src/server/qualiopi/partenariats/labels";
 import { seedGrilleV2 } from "./grille-v2";
 
 // ─── Types d'identification stables ─────────────────────────────────────────
@@ -274,7 +278,13 @@ export interface VeilleDemo {
 
 export interface PartenariatDemo {
   nom: string;
-  type: string;
+  /**
+   * 🔴 2026-09-02 (audit certificateur) — ce champ était `string`, et le seed y
+   * a écrit une PHRASE là où le moteur attend un identifiant de vocabulaire. Le
+   * TYPE est désormais la garde : un type de partenariat hors vocabulaire ne
+   * compile plus. Cf. `server/qualiopi/partenariats/labels.ts`.
+   */
+  type: PartenariatType;
   objet: string;
   dateDebut: Date;
   actif: boolean;
@@ -902,7 +912,12 @@ export function buildDemoData(): DemoData {
   // --- Partenariat -------------------------------------------------------------
   const partenariat: PartenariatDemo = {
     nom: "[DEMO] Association Numérique Inclusif Île-de-France",
-    type: "réseau handicap / inclusion numérique",
+    // 🔴 2026-09-02 (audit certificateur) — ce champ portait la PHRASE « réseau
+    // handicap / inclusion numérique ». Lisible, plausible, et invisible au
+    // moteur : il compte `type: "reseau_handicap"`. L'indicateur 26 ⭐ restait
+    // donc rouge (« 0 partenariat réseau handicap sur 1 au total ») au-dessus
+    // d'une fiche qui, à l'écran, disait le contraire. La valeur est IMPORTÉE.
+    type: TYPE_PARTENARIAT_HANDICAP,
     objet:
       "[DEMO] Convention de partenariat pour l'orientation et l'accompagnement des stagiaires " +
       "en situation de handicap vers des formations numériques adaptées. " +

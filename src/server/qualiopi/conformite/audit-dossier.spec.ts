@@ -69,10 +69,12 @@ import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-p
 import {
   genererManifesteAudit,
   genererDossierAuditZip,
+  INDICATEUR_DOCUMENT_TYPES,
   MAX_FORMATEURS_NOMMES,
   MAX_PIECES_LISTEES,
   pieceAdmissibleAuDossier,
 } from "./audit-dossier";
+import { REGISTRES_PAR_INDICATEUR } from "./registres-par-indicateur";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import JSZip from "jszip";
 // Type réel de l'énumération Prisma : un type de document mal orthographié dans
@@ -1290,5 +1292,43 @@ describe("`D2-5-12` — pièces d'une session annulée ou reportée", () => {
           `session qui n'a pas eu lieu redeviennent des preuves d'indicateur.`,
       ).toContain(`"${statut}"`);
     }
+  });
+});
+
+/**
+ * L'IMPASSE — l'écran de l'auditrice qui rend un verdict sans rien à inspecter.
+ *
+ * 🔴 2026-09-02 (audit certificateur). Dix des vingt-trois indicateurs
+ * applicables n'ont AUCUNE pièce documentaire : la veille, le réseau handicap,
+ * la sous-traitance, les réclamations, la revue de direction, les moyens, les
+ * appréciations, les compétences des intervenants. Leur preuve est un REGISTRE,
+ * tenu dans un écran de la console. Sur ces dix-là, la vue manifeste affichait un
+ * statut et proposait littéralement rien à cliquer — l'auditrice devait croire le
+ * verdict sur parole, ou refermer l'écran et chercher dans cent cinquante entrées
+ * de navigation.
+ *
+ * Cette garde interdit le retour de l'impasse : tout indicateur du TRONC COMMUN —
+ * ceux qui sont toujours applicables, dérivés du registre et jamais recopiés —
+ * doit offrir au moins une pièce OU au moins un renvoi vers un registre.
+ *
+ * ⚠️ Les conditionnels (cert / app / afest) en sont exclus à bon droit : ils sont
+ * « non applicables » au périmètre, et l'écran l'écrit au lieu de rendre un
+ * verdict.
+ */
+describe("aucun indicateur applicable ne laisse l'auditrice devant une impasse", () => {
+  it("chaque indicateur du tronc commun offre une pièce ou un registre", () => {
+    const impasses = INDICATEURS_RNQ.filter((ind) => ind.conditionnel === undefined)
+      .filter((ind) => {
+        const pieces = INDICATEUR_DOCUMENT_TYPES[ind.numero] ?? [];
+        const ecrans = REGISTRES_PAR_INDICATEUR[ind.numero] ?? [];
+        return pieces.length === 0 && ecrans.length === 0;
+      })
+      .map((ind) => `${ind.numero} — ${ind.libelleOfficiel}`);
+    expect(impasses).toEqual([]);
+  });
+
+  it("le contrôle porte sur les 23 indicateurs du tronc commun (témoin)", () => {
+    const troncCommun = INDICATEURS_RNQ.filter((ind) => ind.conditionnel === undefined);
+    expect(troncCommun.length).toBe(23);
   });
 });
