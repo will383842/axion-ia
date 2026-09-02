@@ -69,6 +69,7 @@ import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-p
 import {
   genererManifesteAudit,
   genererDossierAuditZip,
+  MAX_FORMATEURS_NOMMES,
   MAX_PIECES_LISTEES,
   pieceAdmissibleAuDossier,
 } from "./audit-dossier";
@@ -334,12 +335,42 @@ describe("genererManifesteAudit", () => {
     expect(preuvesText).toMatch(/1 formateur/i);
   });
 
-  it("off.21 : manifeste signale 0 formateur avec CV si aucun", async () => {
+  // 🔴 2026-09-02 — le libellé disait « CV téléversé », et c'était FAUX : quand
+  // l'outil génère la fiche formateur, c'est LUI qui pose `cvUrl`. L'audit blanc
+  // du 2026-08-15 l'avait corrigé dans le moteur ; le MANIFESTE, lui, n'avait
+  // pas suivi et réaffirmait « CV téléversé » deux lignes sous le libellé
+  // corrigé. Cette garde refuse le retour de l'affirmation fausse.
+  it("off.21 : manifeste signale l'absence de fiche formateur, sans parler de « CV téléversé »", async () => {
     mockPrisma.trainer.findMany.mockResolvedValue([]);
     const result = await genererManifesteAudit();
     const ind21 = result.json.indicateurs.find((i) => i.numero === 21);
     const preuvesText = ind21?.preuves.join(" ") ?? "";
-    expect(preuvesText).toMatch(/aucun formateur/i);
+    expect(preuvesText).toMatch(/aucune fiche formateur/i);
+    expect(preuvesText).not.toMatch(/téléversé/i);
+  });
+
+  // 🔴 2026-09-02 — cette énumération n'avait AUCUN plafond : sur un OF à cent
+  // intervenants, l'indicateur 21 rendait cent lignes d'annuaire au milieu du
+  // manifeste d'audit. Et chaque ligne commençait par « - », se faisant passer
+  // pour une sous-puce Markdown : le rendu écrivait « - - Sophie Durand ».
+  it("off.21 : la liste des fiches est plafonnée, la troncature se DIT, et aucune ligne ne recommence par un tiret", async () => {
+    mockPrisma.trainer.findMany.mockResolvedValue(
+      Array.from({ length: 12 }, (_, i) => ({
+        id: `t-${i}`,
+        nom: `Nom${i}`,
+        prenom: `Prenom${i}`,
+        cvUrl: `https://exemple.invalid/cv-${i}.pdf`,
+      })),
+    );
+    const result = await genererManifesteAudit();
+    const preuves = result.json.indicateurs.find((i) => i.numero === 21)?.preuves ?? [];
+    const nommes = preuves.filter((p) => p.startsWith("Fiche au dossier :"));
+    expect(nommes).toHaveLength(MAX_FORMATEURS_NOMMES);
+    expect(preuves.join(" ")).toContain("Liste plafonnée : 12 fiches au registre");
+    expect(preuves.some((p) => p.trimStart().startsWith("-"))).toBe(false);
+    // L'URL brute de la fiche n'a rien à faire dans une preuve lue en séance :
+    // elle n'est ni cliquable dans le Markdown imprimé, ni parlante.
+    expect(preuves.join(" ")).not.toContain("exemple.invalid");
   });
 
   // ── off.1 : NDA DREETS requis pour couverture (S5) ────────────────────────
@@ -1108,7 +1139,7 @@ describe("Manifeste — les pièces sont DÉSIGNABLES, et le plafond se dit", ()
     armerRegistre(emargements(12));
     const manifeste = await genererManifesteAudit();
     expect(manifeste.markdown).toContain(
-      `- \`emargement\` : 12 documents — ${MAX_PIECES_LISTEES} numéros listés sur 12 :`,
+      `- **Feuille d'émargement** (\`emargement\`) : 12 documents — ${MAX_PIECES_LISTEES} numéros listés sur 12 :`,
     );
   });
 
@@ -1116,17 +1147,22 @@ describe("Manifeste — les pièces sont DÉSIGNABLES, et le plafond se dit", ()
     armerRegistre(emargements(2));
     const manifeste = await genererManifesteAudit();
     expect(manifeste.markdown).toContain(
-      "- `emargement` : 2 documents — AXI-EMAR-2026-002, AXI-EMAR-2026-001",
+      "- **Feuille d'émargement** (`emargement`) : 2 documents — AXI-EMAR-2026-002, AXI-EMAR-2026-001",
     );
     expect(manifeste.markdown).not.toMatch(/numéros? listés? sur/);
   });
 
-  it("le format de la ligne Markdown est INCHANGÉ : les numéros s'ajoutent, ils ne remplacent rien", async () => {
+  it("la ligne Markdown nomme la pièce en français, garde sa valeur technique, et ne verse aucun identifiant", async () => {
     armerRegistre(emargements(1));
     const manifeste = await genererManifesteAudit();
-    // Le préfixe historique « - `type` : N document(s) » reste intact ; aucun
-    // identifiant technique n'est versé sur le document imprimé.
-    expect(manifeste.markdown).toContain("- `emargement` : 1 document — AXI-EMAR-2026-001");
+    // 🔴 2026-09-02 — la ligne s'écrivait « - `emargement` : 1 document ». Le
+    // premier mot que lit l'auditrice était la valeur d'énumération. Le libellé
+    // français passe devant ; la valeur technique RESTE, entre parenthèses,
+    // parce que c'est elle qui nomme le dossier `preuves/<type>/` du ZIP —
+    // la retirer romprait le lien entre le manifeste et le dossier remis.
+    expect(manifeste.markdown).toContain(
+      "- **Feuille d'émargement** (`emargement`) : 1 document — AXI-EMAR-2026-001",
+    );
     expect(manifeste.markdown).not.toContain("doc-001");
   });
 

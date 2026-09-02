@@ -18,6 +18,7 @@ import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-servi
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
+import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 /**
@@ -92,6 +93,16 @@ export interface DossierAuditZipResult {
  * l'énumération est bornée.
  */
 export const MAX_PIECES_LISTEES = 5;
+
+/**
+ * Plafond de formateurs NOMMÉS dans les preuves supplémentaires de l'indicateur
+ * 21, pour la même raison et selon la même règle : la troncature se dit.
+ *
+ * 🔴 2026-09-02 — cette énumération n'avait AUCUN plafond. Mesuré sur la base de
+ * recette : 101 formateurs actifs. Un OF de cette taille recevait cent lignes
+ * d'annuaire au milieu de son manifeste d'audit.
+ */
+export const MAX_FORMATEURS_NOMMES = 5;
 
 /** Une pièce désignable : son identifiant technique et son numéro au registre. */
 export interface PieceReference {
@@ -430,12 +441,37 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     ],
     [
       21,
+      // 🔴 2026-09-02 — TROIS défauts sur la même ligne, tous sur la pièce
+      // remise au certificateur.
+      //
+      //   1. Le libellé disait « CV téléversé ». L'audit blanc du 2026-08-15
+      //      avait établi que c'est FAUX — quand l'outil génère la fiche
+      //      formateur, c'est LUI qui pose `cvUrl`, sur la route de
+      //      téléchargement de la fiche qu'il vient d'écrire — et le moteur
+      //      avait été corrigé (« fiche formateur au dossier »). Le manifeste,
+      //      lui, n'avait pas suivi : il réaffirmait « CV téléversé » deux
+      //      lignes SOUS le libellé corrigé, dans le même bloc. Le jumeau
+      //      oublié, encore.
+      //   2. Chaque ligne commençait par « - », pour se faire passer pour une
+      //      sous-puce Markdown. Le rendu écrivait « - - Sophie Durand », et
+      //      l'écran de la console, qui préfixe déjà d'une puce, affichait
+      //      « • - Sophie Durand ».
+      //   3. La liste n'était PLAFONNÉE PAR RIEN. Sur un OF à cent
+      //      intervenants, l'indicateur 21 rendait cent lignes d'URL brutes
+      //      dans le manifeste ET sur l'écran de l'auditrice.
       trainersAvecCV.length > 0
         ? [
-            `${trainersAvecCV.length} formateur${trainersAvecCV.length > 1 ? "s" : ""} avec CV téléversé`,
-            ...trainersAvecCV.map((t) => `- ${t.prenom ?? ""} ${t.nom} (CV : ${t.cvUrl ?? "—"})`),
+            `${trainersAvecCV.length} formateur${trainersAvecCV.length > 1 ? "s" : ""} actif${trainersAvecCV.length > 1 ? "s" : ""} avec une fiche formateur au dossier`,
+            ...trainersAvecCV
+              .slice(0, MAX_FORMATEURS_NOMMES)
+              .map((t) => `Fiche au dossier : ${`${t.prenom ?? ""} ${t.nom}`.trim()}`),
+            ...(trainersAvecCV.length > MAX_FORMATEURS_NOMMES
+              ? [
+                  `Liste plafonnée : ${trainersAvecCV.length} fiches au registre, ${MAX_FORMATEURS_NOMMES} nommées ici. Le registre des formateurs les porte toutes.`,
+                ]
+              : []),
           ]
-        : ["Aucun formateur avec CV téléversé"],
+        : ["Aucune fiche formateur au dossier"],
     ],
   ]);
 
@@ -829,8 +865,15 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
           lignes.push("");
           lignes.push("**Documents :**");
           for (const d of ind.documents) {
+            // 🔴 2026-09-02 — le Markdown REMIS AU CERTIFICATEUR nommait ses
+            // pièces par la valeur d'énumération, en `code` : « `emargement` :
+            // 501 documents ». Le nom de la pièce est le premier mot que lit
+            // quelqu'un qui ne connaît pas notre base. Le libellé français
+            // passe devant ; la valeur technique reste, entre parenthèses,
+            // parce que c'est elle qui nomme le dossier `preuves/<type>/` du
+            // ZIP — la retirer romprait le lien entre le manifeste et le ZIP.
             lignes.push(
-              `- \`${d.type}\` : ${d.count} document${d.count > 1 ? "s" : ""}${suffixeNumeros(d)}`,
+              `- **${libelleTypeDocument(d.type)}** (\`${d.type}\`) : ${d.count} document${d.count > 1 ? "s" : ""}${suffixeNumeros(d)}`,
             );
           }
         }

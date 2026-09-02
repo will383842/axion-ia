@@ -10,10 +10,11 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
-import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { countAlertesActives, listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { AlerteActions } from "@/components/admin/qualiopi/AlerteActions";
 import { AlertesLiveBadge } from "@/components/admin/qualiopi/AlertesLiveBadge";
 import {
@@ -45,6 +46,23 @@ const NIVEAU_LABELS: Record<AlerteNiveau, string> = {
 };
 
 const NIVEAU_ORDER: AlerteNiveau[] = ["critique", "important", "info"];
+
+/**
+ * Plafond de lignes rendues.
+ *
+ * 🔴 2026-09-02 (audit certificateur). `listAlertes({ resolue: false })` était
+ * appelé SANS `limit` — le paramètre existe pourtant dans la signature. Mesuré
+ * sur la base de recette : **1 589 alertes actives**, donc 1 589 cartes et
+ * autant d'instances du composant CLIENT `AlerteActions` dans une seule page.
+ * 531 Ko de texte rendu, ~50 s de chargement. Un écran qu'on ne peut pas ouvrir
+ * ne signale rien.
+ *
+ * ⚠️ Un plafond n'est pas une pagination : il est ÉCRIT à l'écran, et l'écran
+ * dit par quoi filtrer. Tronquer en silence ferait lire « voilà tout ce qui
+ * reste » là où l'on n'a montré que les cent premières lignes — c'est la règle
+ * déjà posée par le registre d'émargement, appliquée ici à son jumeau.
+ */
+const PLAFOND_ALERTES = 100;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Badge couleur par niveau
@@ -110,16 +128,32 @@ function GroupeHeader({
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ niveau?: string }>;
 }
 
-export default async function QualiopiAlertesPage({ params }: PageProps) {
+export default async function QualiopiAlertesPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  const alertes = await listAlertes({ resolue: false });
+  const sp = await searchParams;
+  const niveauFiltre = NIVEAU_ORDER.find((n) => n === sp.niveau);
+  const self = `/${locale}/${adminPrefix}/qualiopi/alertes`;
+
+  // Le COMPTE vient d'un compteur, l'AFFICHAGE d'une liste plafonnée : le total
+  // annoncé reste exact même quand la liste est tronquée. Écrire le nombre de
+  // lignes affichées à la place du total mentirait sur le registre lui-même.
+  const [total, alertes] = await Promise.all([
+    countAlertesActives(niveauFiltre),
+    listAlertes({
+      resolue: false,
+      ...(niveauFiltre !== undefined ? { niveau: niveauFiltre } : {}),
+      limit: PLAFOND_ALERTES,
+    }),
+  ]);
+  const tronque = total > alertes.length;
 
   // Grouper par niveau
   const grouped = new Map<AlerteNiveau, typeof alertes>();
@@ -130,8 +164,9 @@ export default async function QualiopiAlertesPage({ params }: PageProps) {
     );
   }
 
+  // `nonLues` porte sur ce qui est AFFICHÉ : le dire autrement demanderait un
+  // second compteur, et l'écran annonce déjà le total exact juste à côté.
   const nonLues = alertes.filter((a) => !a.lu).length;
-  const total = alertes.length;
 
   // Formater la date en français
   function fmtDate(d: Date): string {
@@ -173,9 +208,47 @@ export default async function QualiopiAlertesPage({ params }: PageProps) {
         {nonLues > 0 && (
           <span className="text-[color:var(--color-admin-warning-fg)]">
             <span className="font-semibold">{nonLues}</span> non lue{nonLues !== 1 ? "s" : ""}
+            {tronque ? " parmi les alertes affichées" : ""}
           </span>
         )}
       </div>
+
+      {/* Filtre par niveau — liens serveur, aucun JS. C'est le recours que le
+          plafond doit offrir : sans lui, « affinez par niveau » serait une
+          consigne sans bouton. */}
+      <nav
+        aria-label="Filtrer les alertes par niveau"
+        className="mb-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-2)]"
+      >
+        {[
+          { cle: undefined as AlerteNiveau | undefined, libelle: "Tous les niveaux" },
+          ...NIVEAU_ORDER.map((n) => ({ cle: n, libelle: NIVEAU_LABELS[n] })),
+        ].map(({ cle, libelle }) => {
+          const actif = niveauFiltre === cle;
+          return (
+            <Link
+              key={libelle}
+              href={cle === undefined ? self : `${self}?niveau=${cle}`}
+              aria-current={actif ? "page" : undefined}
+              className={`rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] ${
+                actif
+                  ? "bg-[color:var(--color-admin-surface)] font-semibold text-[color:var(--color-admin-fg)]"
+                  : "text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg)]"
+              }`}
+            >
+              {libelle}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Une troncature muette se lit comme une liste complète : on dit le
+          plafond LÀ où il mord, et par quoi le contourner. */}
+      {tronque && (
+        <p className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+          {`Liste plafonnée : ${total} alerte${total > 1 ? "s" : ""} active${total > 1 ? "s" : ""} au registre, ${alertes.length} affichée${alertes.length > 1 ? "s" : ""} ici, les plus récentes d'abord. Filtrez par niveau pour voir les autres.`}
+        </p>
+      )}
 
       {total === 0 ? (
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-6)] py-[var(--space-admin-8)] text-center">

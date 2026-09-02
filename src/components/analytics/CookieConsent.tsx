@@ -42,6 +42,7 @@ import * as React from "react";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
+import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import { Link } from "@/i18n/navigation";
 
 export const ANALYTICS_CONSENT_KEY = "axion-cookie-consent-v1";
@@ -257,10 +258,21 @@ export function useIsHydrated(): boolean {
  *      stockage et retire le bandeau si un choix a été fait entre-temps.
  *
  * Le script est DÉRIVÉ des constantes du module (clés, durée, nom
- * d'événement) : une seule source. La CSP publique (« soft ») autorise
- * l'inline ; en mode strict (admin) ce composant n'est pas monté.
+ * d'événement) : une seule source. La CSP publique (« soft ») autorise l'inline.
+ *
+ * ⚠️ 2026-09-02 — cette phrase affirmait « en mode strict (admin) ce composant
+ * n'est pas monté ». C'était FAUX, et mesuré : le bandeau s'affichait sur la
+ * console, y compris sur l'écran « Conformité & mode auditeur », et son script
+ * en ligne y était refusé par la CSP stricte à chaque page. Le composant EST
+ * monté sur la console — le layout racine enveloppe tout, un layout imbriqué
+ * s'ajoute à son parent sans jamais le remplacer. Il y est désormais neutralisé
+ * en deux temps : le garde `estSurfaceConsole()` ci-dessous côté client, et une
+ * règle CSS du layout admin pour le rendu SERVEUR, que le client ne répare pas.
  */
-const BANNER_ID = "cookie-consent-banner";
+// L'identifiant vit dans `lib/analytics/surface-console.ts` : le layout admin
+// (Server Component) doit pouvoir le lire pour masquer le bandeau sur la
+// console, et il ne peut pas importer un module « use client » pour cela.
+const BANNER_ID = ID_BANNIERE_CONSENTEMENT;
 
 export const SCRIPT_AVANT_HYDRATATION = [
   "(function(){",
@@ -298,6 +310,24 @@ export function CookieConsent() {
   // serait un manquement. Les trois composants lisent la MÊME fonction, pour
   // qu'on ne puisse pas en modifier un sans voir les autres.
   if (isRouteSansScriptsTiers(pathname)) return null;
+  // 🔴 2026-09-02 — LA CONSOLE : le masquage est CÔTÉ LAYOUT ADMIN, en CSS, et
+  // surtout PAS ici.
+  //
+  // La bannière s'affichait sur la console, par-dessus l'écran « Conformité &
+  // mode auditeur » que lit l'auditrice. Le premier correctif a été un garde
+  // `if (estSurfaceConsole()) return null` posé ICI — et il ne marchait pas.
+  // Mesuré : le bandeau restait à l'écran, et le navigateur disait pourquoi —
+  // « A tree hydrated but some attributes of the server rendered HTML didn't
+  // match the client properties. **This won't be patched up.** » Depuis le
+  // correctif de CLS, cette bannière est rendue au SERVEUR ; React 19 ne
+  // supprime pas une branche que le serveur a écrite, et le garde ne faisait
+  // donc qu'ajouter une divergence d'hydratation à chaque page de la console.
+  //
+  // 🔑 Un garde qui ne s'exécute qu'au client ne peut pas dé-rendre ce que le
+  // serveur a déjà rendu. Le masquage vit là où il peut agir dès le premier
+  // rendu : dans la feuille de style injectée par le layout admin, exactement
+  // comme l'en-tête et le pied de page publics, et pour la même raison.
+  // Cf. `lib/analytics/surface-console.ts`.
 
   // Pendant l'hydratation, `useSyncExternalStore` rend le cliché serveur
   // (« unknown ») : le premier rendu client reproduit le HTML statique, puis

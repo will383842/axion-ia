@@ -13,7 +13,11 @@
  * Server Component pur — aucun state, 0 JS client.
  */
 
+import Link from "next/link";
+
 import type { IndicateurManifeste } from "@/server/qualiopi/conformite/audit-dossier";
+import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
+import { registresDeIndicateur } from "@/server/qualiopi/conformite/registres-par-indicateur";
 import { Star } from "lucide-react";
 
 export type MatriceVue = "tableau" | "manifeste";
@@ -55,30 +59,25 @@ function StatutBadge({ statut }: { statut: IndicateurManifeste["statut"] }): Rea
   );
 }
 
-/**
+/*
  * 🔴 LA VUE MANIFESTE — celle que consulte l'auditrice — listait ses pièces
  * en monospace et en valeurs brutes : `livret_accueil`, `reglement_interieur`,
  * `certificat_realisation`.
+ *
+ * 🔴 2026-09-02 — LE CORRECTIF DE 2026-08 N'AVAIT CORRIGÉ QU'UN TIERS DU MAL.
+ * Il avait posé ICI une table `Record<string, string>` de treize entrées, écrite
+ * à la main. `Record<string, …>` n'oblige à rien : six de ses entrées ne
+ * correspondaient à AUCUNE valeur de l'énumération `DocumentType`
+ * (`convention_formation`, `programme_formation`, `feuille_emargement`…) et,
+ * sur les huit types réellement présentés à l'auditrice le 2026-09-02, SEPT
+ * n'avaient pas de libellé. L'écran affichait donc « programme » : 578 pièces,
+ * « emargement » : 501 pièces — la valeur d'énumération, en guillemets, au
+ * certificateur.
+ *
+ * Le vocabulaire est désormais unique et EXHAUSTIF PAR TYPE
+ * (`Record<DocumentType, string>`, importé en tête de fichier) : oublier un
+ * type ne compile plus.
  */
-const TYPE_DOCUMENT_LABELS: Record<string, string> = {
-  livret_accueil: "Livret d'accueil",
-  reglement_interieur: "Règlement intérieur",
-  convention_formation: "Convention de formation",
-  convention_tripartite: "Convention tripartite",
-  contrat_formation: "Contrat de formation",
-  programme_formation: "Programme de formation",
-  certificat_realisation: "Certificat de réalisation",
-  attestation_assiduite: "Attestation d'assiduité",
-  attestation_fin_formation: "Attestation de fin de formation",
-  feuille_emargement: "Feuille d'émargement",
-  protocole_afest: "Protocole AFEST",
-  devis: "Devis",
-  facture: "Facture",
-};
-
-function libelleTypeDocument(type: string): string {
-  return TYPE_DOCUMENT_LABELS[type] ?? `« ${type} »`;
-}
 
 /**
  * Compte du registre, et — quand la liste des pièces est plafonnée — combien
@@ -139,10 +138,66 @@ const CRITERE_IDS = [1, 2, 3, 4, 5, 6, 7] as const;
 interface Props {
   indicateurs: ReadonlyArray<IndicateurManifeste>;
   vue: MatriceVue;
+  /**
+   * Racine de la console (`/{locale}/{adminPrefix}`), pour renvoyer vers les
+   * registres. Le préfixe admin est secret et variable : il ne peut pas être
+   * écrit dans le module de correspondance, il descend d'ici.
+   */
+  baseHref: string;
+}
+
+/**
+ * « Où vérifier » — les registres de la console qui portent la preuve d'un
+ * indicateur.
+ *
+ * 🔴 2026-09-02 (audit certificateur). Dix des vingt-trois indicateurs
+ * applicables n'ont AUCUNE pièce à lister : leur preuve est un registre, pas un
+ * PDF. Sur ces dix-là, l'écran de l'auditrice affichait un verdict et ne
+ * proposait rien à cliquer — elle devait le croire sur parole, ou refermer
+ * l'écran et chercher dans cent cinquante entrées de navigation.
+ *
+ * ⚠️ Ces liens ne disent RIEN de la couverture : un renvoi vers un registre
+ * vide reste juste — il mène là où la preuve devrait être, ce qui est
+ * exactement l'information utile quand elle n'y est pas.
+ */
+function OuVerifier({
+  numero,
+  baseHref,
+}: {
+  numero: number;
+  baseHref: string;
+}): React.ReactElement | null {
+  const registres = registresDeIndicateur(numero);
+  if (registres.length === 0) return null;
+  return (
+    <div className="mt-[var(--space-admin-3)]">
+      <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+        Où vérifier dans la console
+      </p>
+      <ul className="flex flex-wrap gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-1)]">
+        {registres.map((r) => (
+          <li key={r.chemin + r.libelle}>
+            <Link
+              href={`${baseHref}${r.chemin}`}
+              className="text-[length:var(--text-admin-xs)] underline"
+            >
+              {r.libelle}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 /** Vue tableau — balayage rapide, 4 colonnes, zébrage. */
-function VueTableau({ lignes }: { lignes: IndicateurManifeste[] }): React.ReactElement {
+function VueTableau({
+  lignes,
+  baseHref,
+}: {
+  lignes: IndicateurManifeste[];
+  baseHref: string;
+}): React.ReactElement {
   return (
     <div className="overflow-hidden rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
       <table className="w-full border-collapse text-[length:var(--text-admin-sm)]">
@@ -205,6 +260,7 @@ function VueTableau({ lignes }: { lignes: IndicateurManifeste[] }): React.ReactE
                     Aucun élément enregistré
                   </span>
                 )}
+                <OuVerifier numero={ind.numero} baseHref={baseHref} />
               </td>
             </tr>
           ))}
@@ -215,7 +271,13 @@ function VueTableau({ lignes }: { lignes: IndicateurManifeste[] }): React.ReactE
 }
 
 /** Vue manifeste — cartes verbeuses avec comptes de documents (l'auditrice). */
-function VueManifeste({ lignes }: { lignes: IndicateurManifeste[] }): React.ReactElement {
+function VueManifeste({
+  lignes,
+  baseHref,
+}: {
+  lignes: IndicateurManifeste[];
+  baseHref: string;
+}): React.ReactElement {
   return (
     <div className="space-y-[var(--space-admin-3)]">
       {lignes.map((ind) => (
@@ -333,13 +395,17 @@ function VueManifeste({ lignes }: { lignes: IndicateurManifeste[] }): React.Reac
                 : "Aucune preuve enregistrée pour cet indicateur."}
             </p>
           )}
+
+          {ind.statut !== "non_applicable" && (
+            <OuVerifier numero={ind.numero} baseHref={baseHref} />
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-export function MatriceIndicateurs({ indicateurs, vue }: Props): React.ReactElement {
+export function MatriceIndicateurs({ indicateurs, vue, baseHref }: Props): React.ReactElement {
   const parCritere = groupParCritere(indicateurs);
 
   if (indicateurs.length === 0) {
@@ -370,7 +436,11 @@ export function MatriceIndicateurs({ indicateurs, vue }: Props): React.ReactElem
             >
               {libelleCritere(critereId)}
             </h2>
-            {vue === "tableau" ? <VueTableau lignes={lignes} /> : <VueManifeste lignes={lignes} />}
+            {vue === "tableau" ? (
+              <VueTableau lignes={lignes} baseHref={baseHref} />
+            ) : (
+              <VueManifeste lignes={lignes} baseHref={baseHref} />
+            )}
           </section>
         );
       })}

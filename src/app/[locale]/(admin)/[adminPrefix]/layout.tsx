@@ -21,6 +21,7 @@
 // V1 visuel intact ; les ajouts sont passifs jusqu'à la PR 5/6.
 
 import type { Metadata } from "next";
+import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import localFont from "next/font/local";
 import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -381,6 +382,24 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     body:has(.admin-layout) header.bg-terracotta,
     body:has(.admin-layout) footer.bg-mocha-rich,
     body:has(.admin-layout) aside.bg-sage-soft { display: none !important; }
+    /* 🔴 2026-09-02 (audit certificateur) — LE QUATRIÈME ÉLÉMENT DU SHELL PUBLIC,
+       oublié pendant que les trois autres étaient masqués : le BANDEAU DE
+       CONSENTEMENT. Il s'affichait par-dessus la console, y compris sur l'écran
+       « Conformité & mode auditeur » que l'auditrice lit le jour de sa venue.
+       Il y est doublement hors sujet : la console n'est pas un site vitrine, et
+       Clarity — le seul script que ce bandeau sert à autoriser — refuse
+       désormais de s'y charger (lib/analytics/surface-console.ts). Aucun
+       script tiers, donc aucun consentement à demander : la CNIL est constante
+       là-dessus, et le dépôt applique déjà ce raisonnement aux pages
+       d'atterrissage publicitaire.
+       ⚠️ Le masquage est ici, en CSS, et PAS seulement dans le composant :
+       depuis le correctif de CLS le bandeau est rendu au SERVEUR, et React 19
+       ne répare pas une divergence de branche serveur/client — « This won't be
+       patched up. » Un garde purement client le laissait à l'écran. C'est
+       exactement la raison pour laquelle l'en-tête et le pied de page publics
+       sont masqués ici plutôt que conditionnés là-bas. */
+    body:has(.admin-layout-v2) #${ID_BANNIERE_CONSENTEMENT},
+    body:has(.admin-layout) #${ID_BANNIERE_CONSENTEMENT} { display: none !important; }
     /* 2026-09-02 — plus de \`display: contents\` sur #main : il supprimait la
        boîte du landmark et le lien « Aller au contenu » n'amenait sur rien.
        On neutralise seulement la mise en page héritée de la coquille publique. */

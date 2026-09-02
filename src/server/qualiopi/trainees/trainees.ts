@@ -43,6 +43,44 @@ export async function listTrainees(opts?: ListTraineesOpts): Promise<Trainee[]> 
   }
 }
 
+/** Filtres du COMPTE du registre — délibérément plus étroits que ceux de la liste. */
+export interface CountTraineesOpts {
+  situationHandicap?: boolean;
+  consentementFormation?: boolean;
+  includeDeleted?: boolean;
+}
+
+/**
+ * Combien de stagiaires au REGISTRE — pas dans la page affichée.
+ *
+ * 🔴 2026-09-02 (audit certificateur). Les trois tuiles de l'écran stagiaires
+ * (« Total », « Situation de handicap », « Consentement formation ») étaient
+ * calculées en filtrant le tableau JavaScript de la page. Tant que la page
+ * rendait le registre entier, les chiffres étaient justes ; le jour où on la
+ * plafonne, ils deviennent le décompte de ce qu'on regarde — et une tuile
+ * « Situation de handicap : 3 » qui dépend du filtre en cours n'est pas un
+ * indicateur, c'est un piège. Le compte vient donc d'un compteur.
+ *
+ * Stub-safe → 0.
+ */
+export async function countTrainees(opts?: CountTraineesOpts): Promise<number> {
+  try {
+    return await prisma.trainee.count({
+      where: {
+        ...(opts?.includeDeleted === true ? {} : { deletedAt: null }),
+        ...(opts?.situationHandicap !== undefined
+          ? { situationHandicap: opts.situationHandicap }
+          : {}),
+        ...(opts?.consentementFormation !== undefined
+          ? { consentementFormation: opts.consentementFormation }
+          : {}),
+      },
+    });
+  } catch {
+    return 0;
+  }
+}
+
 /** Stagiaire par id UUID. Stub-safe → null. */
 export async function getTrainee(id: string): Promise<Trainee | null> {
   try {
