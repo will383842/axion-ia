@@ -29,11 +29,27 @@ interface SectionProps extends Omit<ComponentPropsWithoutRef<"section">, "title"
    */
   tone?: SectionTone;
   /**
+   * Rythme vertical.
+   *
+   * `default` : section de page (96 → 144 px haut et bas). `compact` : bloc
+   * d'article (32 → 48 px). 2026-09-02, Will : sur un article publié, les
+   * blocs qui suivent le corps (point clé, badge Qualiopi, auteur, partage,
+   * citation d'expert, FAQ, avertissement IA, « on demande aussi », articles
+   * liés) étaient chacun une section de page : dix blocs de 150 px de contenu
+   * séparés par 288 px de blanc, près de 3 000 px de vide à faire défiler.
+   */
+  spacing?: "default" | "compact";
+  /**
    * Heading level for `title`. Default `h2`. Pass `h1` on listing pages
    * that don't carry a `<Hero>` so each page has exactly one h1 (WCAG 2.4.6).
    */
   titleAs?: "h1" | "h2" | "h3";
 }
+
+const spacingClasses = {
+  default: "py-24 sm:py-28 lg:py-36",
+  compact: "py-8 sm:py-10 lg:py-12",
+} as const satisfies Record<NonNullable<SectionProps["spacing"]>, string>;
 
 const toneClasses: Record<SectionTone, string> = {
   canvas: "bg-bg text-fg",
@@ -232,6 +248,7 @@ export function Section({
   children,
   titleAs = "h2",
   tone,
+  spacing = "default",
   ...rest
 }: SectionProps) {
   // Auto-default : h1 = halo-warm (page hero), sinon canvas.
@@ -351,7 +368,7 @@ export function Section({
         "relative overflow-hidden",
         // Hero : top réduit ~40 % vs bottom (Will 2026-05-08 — héro paraissait
         // trop bas sous le header). Sections de contenu : `py-` symétrique conservé.
-        isPageHero ? "pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32" : "py-24 sm:py-28 lg:py-36",
+        isPageHero ? "pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32" : spacingClasses[spacing],
         toneClasses[resolvedTone],
         className,
       )}

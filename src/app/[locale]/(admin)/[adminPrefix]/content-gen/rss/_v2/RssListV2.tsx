@@ -85,7 +85,7 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
         title="Sources RSS"
         // « toutes les heures » contredisait la colonne « Poll (min) » juste
         // en dessous : chaque source porte son propre intervalle (60 à 180 min).
-        description={`${sources.length} source${sources.length > 1 ? "s" : ""} · les sources sont relues automatiquement, selon l'intervalle de chaque source.`}
+        description={`${sources.length} source${sources.length > 1 ? "s" : ""} · les sources sont relues automatiquement, selon l'intervalle de chaque source. L'auto-publication des news est pilotée par un interrupteur unique (Réglages › Règles de publication) : la case « auto-pub » par source n'a plus d'effet.`}
         actions={
           <div className="flex gap-[var(--space-admin-2)]">
             <Link href={`/fr/${adminPrefix}/content-gen/rss/import`} className="admin-button-ghost">
