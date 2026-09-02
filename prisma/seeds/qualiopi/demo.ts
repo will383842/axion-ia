@@ -24,6 +24,10 @@
 
 import type { PrismaClient } from "../../generated/client";
 import { hacherToken } from "../../../src/server/qualiopi/tokens/hacher-token";
+import {
+  STATUT_REVUE_COUVRANTE,
+  type StatutRevue,
+} from "../../../src/server/qualiopi/registres/statuts-revue";
 import { seedGrilleV2 } from "./grille-v2";
 
 // ─── Types d'identification stables ─────────────────────────────────────────
@@ -296,7 +300,15 @@ export interface RevueDirectionDemo {
   indicateursSnapshot: Record<string, unknown>;
   decisions: Array<{ decision: string; echeance: string }>;
   planActions: Array<{ action: string; responsable: string; echeance: string; statut: string }>;
-  statut: string;
+  /**
+   * 🔴 2026-09-02 (audit certificateur) — ce champ était `string`, et le seed y
+   * écrivait « valide » quand toute l'application lit « validee ». La revue de
+   * démonstration existait donc, complète, et ne couvrait RIEN : l'indicateur
+   * 32 ⭐ restait rouge et l'écran affichait « Validées 0 » au-dessus d'une
+   * ligne « valide ». Le TYPE est désormais la garde — un statut hors liste ne
+   * compile plus. C'est la seule garde qu'on ne peut pas oublier d'écrire.
+   */
+  statut: StatutRevue;
 }
 
 export interface AppreciationDemo {
@@ -971,7 +983,12 @@ export function buildDemoData(): DemoData {
         statut: "planifiee",
       },
     ],
-    statut: "valide",
+    // 🔴 2026-09-02 (audit certificateur) — ce littéral valait « valide ».
+    // Toute l'application lit « validee » : la revue de démonstration existait,
+    // portait ses trois décisions et ses trois actions, et ne couvrait RIEN.
+    // L'écran affichait « Validées 0 » au-dessus d'une ligne « valide », et
+    // l'indicateur 32 ⭐ restait rouge. La valeur est désormais IMPORTÉE.
+    statut: STATUT_REVUE_COUVRANTE,
   };
 
   // --- Appréciations (off.30 : multi-parties) ----------------------------------

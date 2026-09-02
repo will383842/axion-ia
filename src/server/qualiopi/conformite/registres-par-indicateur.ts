@@ -109,7 +109,13 @@ export const REGISTRES_PAR_INDICATEUR: Record<number, readonly RegistreIndicateu
     { chemin: "/qualiopi/moyens", libelle: "Moyens par catégorie et leur vérification" },
     { chemin: "/qualiopi/config", libelle: "Modalités écrites de coordination des intervenants" },
   ],
-  19: [{ chemin: "/qualiopi/formations", libelle: "Supports et ressources mis à disposition" }],
+  19: [
+    { chemin: "/qualiopi/formations", libelle: "Supports et ressources mis à disposition" },
+    // L'inventaire des moyens est l'une des deux pièces documentaires de
+    // l'indicateur 19 (cf. INDICATEUR_DOCUMENT_TYPES) : l'écran des moyens le
+    // sert donc à bon droit, et l'annonce dans son sous-titre.
+    { chemin: "/qualiopi/moyens", libelle: "Inventaire des moyens mis à disposition" },
+  ],
   20: [],
 
   // C5 — Qualification du personnel

@@ -61,7 +61,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Formateurs"
-        description="Salariés, dirigeant-formateur et sous-traitants, habilitations par formation, vérification data.gouv.fr (off.6/19)."
+        description="Salariés, dirigeant-formateur et sous-traitants, habilitations par formation, vérification data.gouv.fr (off.17, 21 et 22 — compétences des intervenants ; off.27 — vigilance sur les sous-traitants)."
         actions={<GenererListeFormateursButton />}
       />
 

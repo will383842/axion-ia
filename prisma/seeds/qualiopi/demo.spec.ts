@@ -8,6 +8,7 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { STATUT_REVUE_COUVRANTE } from "@/server/qualiopi/registres/statuts-revue";
 import { buildDemoData } from "./demo";
 
 describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", () => {
@@ -199,7 +200,10 @@ describe("buildDemoData() — pureté et complétude du cycle démo Qualiopi", (
   // ── Indicateur 32 — Revue de direction ───────────────────────────────────
 
   it("indicateur 32 : revue de direction validée avec participants, décisions et plan d'actions", () => {
-    expect(data.revueDirection.statut).toBe("valide");
+    // 🔴 2026-09-02 — cette assertion VERROUILLAIT la faute : elle exigeait
+    // « valide », un statut qu'aucun lecteur de l'application ne reconnaît.
+    // Un test qui fige une valeur fausse est pire qu'un test absent.
+    expect(data.revueDirection.statut).toBe(STATUT_REVUE_COUVRANTE);
     expect(data.revueDirection.participants.length).toBeGreaterThanOrEqual(2);
     expect(data.revueDirection.decisions.length).toBeGreaterThanOrEqual(2);
     expect(data.revueDirection.planActions.length).toBeGreaterThanOrEqual(2);
