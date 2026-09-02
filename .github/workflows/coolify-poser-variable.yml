@@ -31,6 +31,11 @@ on:
         type: choice
         options:
           - MCP_SHARED_SECRET
+          # Jeton GitHub à grain fin, LECTURE SEULE (Actions: read sur ce seul dépôt),
+          # lu par `src/server/deploiement/etat.ts` pour l'outil MCP `deploiement.etat`.
+          # Sans lui, l'outil se rabat sur GH_DISPATCH_TOKEN — qui sait DÉCLENCHER un
+          # workflow, soit bien plus que lire. Le moindre privilège est ce jeton-ci.
+          - GITHUB_READ_TOKEN
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -98,6 +103,7 @@ jobs:
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           MCP_SHARED_SECRET: ${{ secrets.MCP_SHARED_SECRET }}
+          GITHUB_READ_TOKEN: ${{ secrets.GITHUB_READ_TOKEN }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
