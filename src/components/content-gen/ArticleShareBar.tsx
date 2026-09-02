@@ -41,7 +41,7 @@ export function ArticleShareBar({ url, title, locale }: ArticleShareBarProps) {
   const mailClass = `${base} border-border text-fg-soft hover:border-terracotta hover:bg-terracotta hover:text-white`;
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-[52rem]">
         <nav
           data-aeo="share-bar"

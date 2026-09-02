@@ -614,7 +614,7 @@ export default async function BlogArticle({ params }: Props) {
             « le portrait de Manon serait mieux en bas »). Voir après </article>. */}
       </Section>
 
-      {/* Photo hero déplacée DANS le <Section> ci-dessus (colonne droite, prop
+      {/* Photo hero déplacée DANS le <Section spacing="compact"> ci-dessus (colonne droite, prop
           `media`) — Will 2026-06-24 « image à droite, pas sous le héro ». */}
 
       {/* Layout 2 colonnes (Will 2026-06-25) : rail SOMMAIRE sticky à GAUCHE +
@@ -635,7 +635,7 @@ export default async function BlogArticle({ params }: Props) {
 
         <div className="min-w-0 lg:col-start-2 lg:row-start-1">
           {tldrText ? (
-            <Section>
+            <Section spacing="compact">
               <Container className="max-w-3xl">
                 <AnswerCard locale={loc}>{tldrText}</AnswerCard>
               </Container>
@@ -649,7 +649,7 @@ export default async function BlogArticle({ params }: Props) {
           cible du skip-link sont portés par <main id="main"> du layout :
           NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
           <article>
-            <Section>
+            <Section spacing="compact">
               <Container className="text-fg max-w-[52rem] space-y-6 text-lg leading-relaxed">
                 {dbBodyHtml ? (
                   // VIS-01 — Article DB : bodyHtml sanitisé (whitelist content-gen,
@@ -685,7 +685,7 @@ export default async function BlogArticle({ params }: Props) {
           {/* Badge Qualiopi (contenus) — Will 2026-07-04 : certification affichée
           en clôture d'article, NON gatée. Logo + mention « Actions de formation »,
           sans n° (non renseigné), sans CPF (non habilité). */}
-          <Section>
+          <Section spacing="compact">
             <Container className="max-w-[52rem]">
               <QualiopiContentBadge locale={loc} />
             </Container>
@@ -693,7 +693,7 @@ export default async function BlogArticle({ params }: Props) {
 
           {/* Carte auteur E-E-A-T déplacée EN BAS (Will 2026-06-25) — clôt l'article
           juste après le corps, pattern éditorial standard (bio auteur en fin). */}
-          <Section>
+          <Section spacing="compact">
             <Container className="max-w-[52rem]">
               <AuthorByline
                 authorName={view.author}
@@ -746,7 +746,7 @@ export default async function BlogArticle({ params }: Props) {
 
           {/* Maillage ville (2026-06-21) — lien retour vers la page locale. */}
           {anchorVilleHref ? (
-            <Section>
+            <Section spacing="compact">
               <Container className="max-w-3xl">
                 <p className="text-fg-muted text-sm">
                   {isFr ? "Cet article concerne " : "This article covers "}
@@ -762,7 +762,7 @@ export default async function BlogArticle({ params }: Props) {
             </Section>
           ) : null}
 
-          <Section>
+          <Section spacing="compact">
             <Container className="max-w-3xl">
               <AiContentDisclaimer locale={loc} />
             </Container>

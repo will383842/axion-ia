@@ -34,7 +34,7 @@ export function ArticlePeopleAlsoAsk({ items, locale }: ArticlePeopleAlsoAskProp
   const heading = isFr ? "Questions liées" : "People also ask";
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-3xl">
         <nav
           data-aeo="people-also-ask"

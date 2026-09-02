@@ -59,7 +59,7 @@ export function ArticleFaq({ items, locale, dateModified }: ArticleFaqProps) {
   });
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-[52rem]">
         <h2 className="text-fg inline-flex items-center gap-2.5 text-2xl font-semibold tracking-tight">
           <span aria-hidden="true" className="bg-terracotta h-5 w-1 rounded-full" />
