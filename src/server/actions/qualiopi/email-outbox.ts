@@ -106,7 +106,7 @@ export async function approuverEmailAction(
 
   // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
   // ligne resterait en `approuve` — le même tombeau, par une autre porte.
-  let res: { enqueued: boolean };
+  let res: { enqueued: boolean; retenu?: "rebond_dur" | "desabonne" };
   try {
     res = await enqueueEmail(
       email.template as EmailJobName,
@@ -145,6 +145,22 @@ export async function approuverEmailAction(
       where: { id: v.id },
       data: { statut: "envoye", envoyeAt: new Date() },
     });
+  } else if (res.retenu !== undefined) {
+    // 🔴 2026-09-02 — liste de suppression. L'adresse a rebondi dur (ou la
+    // personne s'est désabonnée d'un envoi marketing) : renvoyer l'email en
+    // corbeille sans un mot ferait ré-approuver le même envoi vers la même
+    // adresse morte, indéfiniment. On le REFUSE, avec le motif écrit là où
+    // l'admin le lira, et on le lui dit tout de suite.
+    const motif =
+      res.retenu === "rebond_dur"
+        ? `Envoi retenu automatiquement : cette adresse a déjà rebondi définitivement (rebond dur). ` +
+          `Corriger l'adresse dans la fiche du client, puis ré-émettre l'envoi depuis son écran d'origine.`
+        : `Envoi retenu automatiquement : cette personne s'est désabonnée des envois marketing.`;
+    await prisma.emailOutbox.updateMany({
+      where: { id: v.id, statut: "approuve" },
+      data: { statut: "refuse", refuseAt: new Date(), refuseMotif: motif },
+    });
+    return { error: motif };
   } else {
     await prisma.emailOutbox.updateMany({
       where: { id: v.id, statut: "approuve" },

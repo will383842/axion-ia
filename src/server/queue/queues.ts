@@ -9,6 +9,7 @@
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
+import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
 import { journaliserEnAttente } from "@/server/email/email-log";
 import type {
   EmailJobData,
@@ -725,7 +726,13 @@ export async function enqueueEmail(
      */
     bypassValidation?: boolean;
   },
-): Promise<{ enqueued: boolean; garePourValidation?: boolean; outboxId?: string }> {
+): Promise<{
+  enqueued: boolean;
+  garePourValidation?: boolean;
+  outboxId?: string;
+  /** Envoi RETENU par la liste de suppression (adresse morte, désabonnement). */
+  retenu?: MotifRetenue;
+}> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
       console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${to})`);
@@ -733,6 +740,18 @@ export async function enqueueEmail(
     // Retour détectable : les appelants qui exigent une garantie de mise en file
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
     return { enqueued: false };
+  }
+  // 🔴 Audit e-mails 2026-09-02 — liste de suppression, AVANT la corbeille et
+  // AVANT la file. Une adresse qui a rebondi dur ne reçoit plus rien ; une
+  // personne désabonnée ne reçoit plus de marketing. Voir `suppression.ts` pour
+  // les deux portées et le repli assumé (base muette = envoi maintenu).
+  const verdict = await verdictAvantEnvoi(to, {
+    template,
+    marketing: options?.marketing === true,
+  });
+  if (verdict.retenu) {
+    await signalerRetenue(to, template, verdict);
+    return { enqueued: false, retenu: verdict.motif };
   }
   // 🔴 Audit certification 2026-07-26 (F60) — corbeille de validation.
   //
