@@ -46,6 +46,7 @@ const KW = {
   "community-manager": "community engagement laptop social",
   "videaste-content-creator": "videographer filming camera",
   "monteur-video-motion": "video editing studio timeline",
+  "monteur-video-freelance-distance": "freelance video editor home desk headphones",
   "createur-ugc-reels": "smartphone content creator filming",
   "producteur-podcast": "podcast studio microphone recording",
   "monteur-son-podcast": "audio mixing console studio",

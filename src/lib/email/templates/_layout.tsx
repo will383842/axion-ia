@@ -107,6 +107,18 @@ export function setReviewStats(stats: ReviewStats): void {
   CURRENT_REVIEW_STATS = stats;
 }
 
+/**
+ * Lien « Ne plus recevoir de sollicitations commerciales » du destinataire
+ * courant — audit e-mails 2026-09-02, lot 1b. Posé par `renderEmailTemplate`
+ * quand il connaît le destinataire, lu par le pied de page des familles B, C
+ * et D. Même mécanisme que les statistiques d'avis : un contexte de rendu, pour
+ * ne pas faire porter 44 gabarits par une prop qu'aucun d'eux ne décide.
+ */
+let CURRENT_OPPOSITION_HREF: string | null = null;
+export function setOppositionHref(href: string | null): void {
+  CURRENT_OPPOSITION_HREF = href;
+}
+
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
@@ -230,7 +242,8 @@ export const REGIME_FAMILLE = {
     partage: true,
     soupapeReponse: true,
     logoCliquable: true,
-    budgetLiens: 8,
+    /** 8 liens + 1 : le lien d'opposition, obligatoire hors famille A (lot 1b). */
+    budgetLiens: 9,
   },
   C: {
     footerComplet: true,
@@ -255,7 +268,8 @@ export const REGIME_FAMILLE = {
     partage: false,
     soupapeReponse: true,
     logoCliquable: false,
-    budgetLiens: 3,
+    /** 3 liens + 1 : le lien d'opposition (lot 1b). */
+    budgetLiens: 4,
   },
   D: {
     footerComplet: true,
@@ -265,7 +279,8 @@ export const REGIME_FAMILLE = {
     /** En famille D, la réponse EST souvent le geste attendu — portée par le corps, pas par une soupape. */
     soupapeReponse: false,
     logoCliquable: true,
-    budgetLiens: 10,
+    /** 10 liens + 1 : le lien d'opposition (lot 1b). */
+    budgetLiens: 11,
   },
 } as const satisfies Record<
   FamilleEmail,
@@ -511,6 +526,18 @@ const snowballLink: React.CSSProperties = {
   textDecoration: "none",
 };
 
+/** Les seules chaînes du châssis à la 2e personne, au tutoiement (lot 4). */
+const TXT_TUTOIEMENT_FR = {
+  ctaFallback: "Le bouton ne fonctionne pas ? Copie cette adresse :",
+  soupape:
+    "Une question ? Réponds simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.",
+  reviewTitle: "Ton retour d'expérience",
+  reviewText:
+    "Deux minutes pour décrire ce que l'intervention a changé chez toi. C'est ce que lisent les dirigeants qui évaluent la même démarche.",
+  referralText:
+    "Si ce document éclaire une décision qui ne t'appartient pas seul, transfère cet e-mail : il se lit aussi bien sans contexte. En B2B, la décision est collective.",
+} as const;
+
 const DARK_MODE_STYLE = `
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
   @media (prefers-color-scheme: dark) {
@@ -520,6 +547,24 @@ const DARK_MODE_STYLE = `
     .ax-heading { color: #fdf7ec !important; }
     .ax-muted { color: #b8ac99 !important; }
     .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
   }
 `;
 
@@ -574,6 +619,14 @@ export interface EmailLayoutProps {
    * partout le vide de son sens.
    */
   signature?: boolean;
+  /**
+   * Tutoiement — lot 4 (2026-09-02). Le tunnel « devenir commercial » tutoie
+   * de bout en bout (page, assistant, erreurs) et son e-mail de confirmation
+   * aussi ; le châssis, lui, vouvoyait sous le même message (« Répondez
+   * simplement », « chez vous »). Un e-mail ne mélange pas les deux : le
+   * gabarit qui tutoie le dit, et le châssis suit.
+   */
+  tutoiement?: boolean;
   /**
    * Nom de campagne pour le `utm_campaign` des liens de partage (§5.5).
    * À renseigner sur les gabarits qui portent un bloc de partage — sans lui, le
@@ -631,6 +684,7 @@ const TXT = {
     followFounder: "Williams Jullin",
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
+    opposition: "Ne plus recevoir de sollicitations commerciales d'Axion-IA",
     /** Pied de page réduit famille A — §6.3. Remplace tout le reste. */
     autoNotice: "Cet e-mail vous a été envoyé automatiquement suite à une action sur votre compte.",
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
@@ -661,6 +715,7 @@ const TXT = {
     followFounder: "Williams Jullin",
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
+    opposition: "Stop receiving commercial messages from Axion-IA",
     autoNotice: "This email was sent automatically following an action on your account.",
     autoNoticeAsk: "Didn't request this? Write to us:",
   },
@@ -677,11 +732,13 @@ export function EmailLayout({
   trust,
   snowball,
   signature,
+  tutoiement,
   campagne,
   unsubscribeHref,
   locale,
 }: EmailLayoutProps) {
-  const t = TXT[locale];
+  const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } =
+    tutoiement && locale === "fr" ? { ...TXT.fr, ...TXT_TUTOIEMENT_FR } : TXT[locale];
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 
@@ -712,12 +769,15 @@ export function EmailLayout({
   return (
     <Html lang={locale}>
       <Head>
+        {/* Lot 4 (2026-09-02) : le <Head> de React Email ne pose pas de
+            viewport ; sans lui, Android et Outlook mobile choisissent l'échelle. */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="color-scheme" content="light dark" />
         <meta name="supported-color-schemes" content="light dark" />
         <style dangerouslySetInnerHTML={{ __html: DARK_MODE_STYLE }} />
       </Head>
       <Preview>{preview}</Preview>
-      <Body style={main} className="ax-body">
+      <Body style={main} className="ax-body" data-famille={famille}>
         {/* Bandeau accent haut — énergie de marque */}
         <Section style={topbar}>&nbsp;</Section>
 
@@ -753,13 +813,13 @@ export function EmailLayout({
           {/* Carte de contenu */}
           <Container style={card} className="ax-card">
             {eyebrow && <Text style={eyebrowStyle}>{eyebrow}</Text>}
-            <Heading style={headingStyle} className="ax-heading">
+            <Heading style={headingStyle} className="ax-heading ax-title">
               {title}
             </Heading>
             {children}
             {cta && (
               <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }}>
-                <Button href={cta.href} style={ctaStyle}>
+                <Button href={cta.href} style={ctaStyle} className="ax-cta">
                   {cta.label} &nbsp;→
                 </Button>
                 {/*
@@ -960,6 +1020,22 @@ export function EmailLayout({
                   </Link>
                 </>
               )}
+              {/* Opposition à la prospection — lot 1b (2026-09-02). Sur TOUTE
+                  famille hors A, sans que le gabarit ait rien à passer : le
+                  destinataire est connu du rendu, pas du gabarit. Portée écrite
+                  dans le libellé : les sollicitations COMMERCIALES. Un stagiaire
+                  qui clique garde sa convocation, un client garde sa facture. */}
+              {famille !== "A" && !unsubscribeHref && CURRENT_OPPOSITION_HREF && (
+                <>
+                  <br />
+                  <Link
+                    href={CURRENT_OPPOSITION_HREF}
+                    style={{ color: C.muted, textDecoration: "underline" }}
+                  >
+                    {t.opposition}
+                  </Link>
+                </>
+              )}
             </Text>
           </Section>
         </Container>
@@ -972,6 +1048,7 @@ export const emailStyles = {
   paragraphStyle,
   headingStyle,
   ctaStyle,
+  signatureStyle,
   COLORS: {
     text: C.text,
     textMuted: C.muted,

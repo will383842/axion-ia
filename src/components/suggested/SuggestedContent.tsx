@@ -95,6 +95,9 @@ export function SuggestedContent({
     <>
       {emitJsonLd ? <JsonLd data={buildItemListJsonLd(items, title)} /> : null}
       <Section
+        // 2026-09-02 — bloc de fin d'article (les 4 pages qui l'utilisent sont
+        // des articles) : rythme compact, pas celui d'une section de page.
+        spacing="compact"
         {...(eyebrow !== undefined ? { eyebrow } : {})}
         title={title}
         {...(titleEm !== undefined ? { titleEm } : {})}

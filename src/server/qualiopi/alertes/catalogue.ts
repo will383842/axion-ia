@@ -926,6 +926,19 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes`. Et surtout : elle doit être fermée à la main APRÈS un envoi de contrôle, sinon on résoudrait l'aveu d'aveuglement sans avoir rien vérifié.",
     guichet: "direction",
   },
+  emails_approuves_abandonnes: {
+    // Lot 3 (audit e-mails 2026-09-02). La transition « à valider → approuvé »
+    // est commitée AVANT la mise en file : si le conteneur meurt entre les deux
+    // (redéploiement), la ligne reste « approuvé », invisible des deux listes de
+    // la corbeille, ni ré-approuvable ni refusable. Le contrôle horaire les
+    // remet en attente et lève ce code.
+    niveau: "critique",
+    titre: "Des e-mails approuvés ne sont jamais partis",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes`. Le balayage a remis ces e-mails dans la corbeille ; ce qui ferme l'alerte, c'est de les RELIRE et de les approuver de nouveau, pas leur retour en liste.",
+    guichet: "direction",
+  },
   emails_rebonds: {
     niveau: "critique",
     titre: "E-mails rejetés par le destinataire",

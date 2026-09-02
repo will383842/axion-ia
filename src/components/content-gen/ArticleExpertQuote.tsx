@@ -69,7 +69,7 @@ export function ArticleExpertQuote({ quote, locale }: ArticleExpertQuoteProps) {
     : null;
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-3xl">
         <figure
           data-aeo="expert-quote"

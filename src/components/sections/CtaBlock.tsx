@@ -17,6 +17,13 @@ interface CtaBlockProps {
    * `dark` is kept as an alias of `mocha` for backward compat with v1/v2 callers.
    */
   tone?: "mocha" | "paper" | "sand" | "dark" | "light" | "terracotta";
+  /**
+   * Rythme vertical. `default` : bloc de page (96 → 144 px). `compact` :
+   * 32 → 48 px, pour la fin d'un article, où ce bloc suit déjà une dizaine
+   * d'autres (2026-09-02, Will : « énormément d'espace blanc, il faut pas mal
+   * scroller »). Les pages marketing gardent le rythme par défaut.
+   */
+  spacing?: "default" | "compact";
   className?: string;
 }
 
@@ -75,12 +82,14 @@ export function CtaBlock({
   description,
   cta,
   tone = "mocha",
+  spacing = "default",
   className,
 }: CtaBlockProps) {
   return (
     <section
       className={cn(
-        "relative overflow-hidden py-24 sm:py-28 lg:py-36",
+        "relative overflow-hidden",
+        spacing === "compact" ? "py-8 sm:py-10 lg:py-12" : "py-24 sm:py-28 lg:py-36",
         toneClasses[tone],
         className,
       )}

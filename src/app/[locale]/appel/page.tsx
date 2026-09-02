@@ -253,7 +253,15 @@ export default async function AppelPage({ params, searchParams }: Props) {
                       // l'invitation d'agenda), mais la phrase laissait attendre
                       // un message DE NOUS, qui n'existait pas. On annonce
                       // désormais les deux, et le second est le nôtre.
-                      "Vous recevez la confirmation dans votre agenda, puis un rappel de notre part une heure avant.",
+                      //
+                      // ⚠️ 2026-09-02 — la phrase a été RÉALIGNÉE sur ce que le
+                      // code envoie vraiment. Depuis `rappels-appel.ts`, trois
+                      // messages partent de nous : la confirmation dans la
+                      // minute, puis les rappels J-1 et H-1. Annoncer un seul
+                      // rappel faisait passer les deux autres pour des e-mails
+                      // inattendus — et un message qu'on n'attend pas se lit
+                      // comme une anomalie, pas comme une attention.
+                      "Vous recevez notre confirmation dans la minute, l'invitation d'agenda séparément, puis un rappel la veille et une heure avant.",
                       "On discute de votre projet ou tout autre besoin de renseignements.",
                     ].map((step, i) => (
                       <li key={step} className="flex gap-3">

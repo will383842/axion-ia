@@ -17,7 +17,7 @@ interface ArticleNewsletterInlineProps {
 export function ArticleNewsletterInline({ locale }: ArticleNewsletterInlineProps) {
   const isFr = locale === "fr";
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-3xl">
         <aside
           data-aeo="newsletter"

@@ -21,9 +21,10 @@ import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
-import { cloturerJournal } from "@/server/email/email-log";
+import { cloturerJournal, noterTentativeEchouee } from "@/server/email/email-log";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
@@ -110,18 +111,37 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       const attempts = job.attemptsMade + 1;
 
       try {
-        const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
+        const {
+          subject: subjectRendu,
+          html,
+          text,
+          famille,
+        } = await renderEmailTemplate(template, locale, payload, {
+          destinataire: to,
+        });
         const attachments = await resolveAttachments(job.data.attachments);
+        // Lot 2 : l'objet forcé depuis la corbeille prime sur celui du gabarit.
+        const subject = job.data.sujet?.trim() ? job.data.sujet.trim() : subjectRendu;
         // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
         // Marketing emails ET transactionnels qui contiennent un lien
         // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
         // `List-Unsubscribe-Post` pour Gmail/Yahoo/Apple/Outlook 2024+.
-        const unsubscribeToken =
+        //
+        // Lot 1b (2026-09-02) : hors famille A, l'en-tête porte le jeton
+        // d'OPPOSITION du destinataire quand le gabarit n'apporte pas de jeton
+        // newsletter. Le bouton natif « Se désabonner » de Gmail existe donc
+        // sur le rapport ROI, la confirmation de contact, le rappel — et il
+        // fait la même chose que le lien du pied de page. Jamais en famille A :
+        // une facture ou un lien de connexion ne se « désabonne » pas.
+        const jetonNewsletter =
           payload && typeof payload === "object" && "unsubscribeToken" in payload
             ? typeof (payload as { unsubscribeToken?: unknown }).unsubscribeToken === "string"
               ? (payload as { unsubscribeToken: string }).unsubscribeToken
               : undefined
             : undefined;
+        const unsubscribeToken =
+          jetonNewsletter ??
+          (famille !== null && famille !== "A" ? jetonOpposition(to) : undefined);
         const result = await sendEmail({
           to,
           subject,
@@ -148,6 +168,26 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         });
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
+        // 🔴 Lot 2 (2026-09-02) — UNE ligne par job, et « échec » seulement quand
+        // c'est fini. Avant : chaque tentative ratée clôturait la ligne en
+        // « échec », et la tentative suivante, ne trouvant plus de ligne « en
+        // attente », en CRÉAIT une autre. Un email livré au 2ᵉ essai laissait
+        // un « échec » à vie dans la console ; un job mort en laissait cinq ; et
+        // l'alarme « 3 e-mails en échec » comptait des lignes, pas des envois.
+        const tentativesMax = job.opts.attempts ?? 1;
+        const definitif = attempts >= tentativesMax;
+        if (!definitif) {
+          await noterTentativeEchouee({
+            template,
+            recipient: to,
+            locale,
+            marketing: marketing === true,
+            attempts,
+            error: msg.slice(0, 2000),
+            ...(jobId ? { jobId } : {}),
+          });
+          throw err; // BullMQ rejoue ; la ligne reste « en attente », tentative comptée
+        }
         await cloturerJournal({
           template,
           recipient: to,
@@ -161,7 +201,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           ...(entityId ? { entityId } : {}),
           ...(jobId ? { jobId } : {}),
         });
-        throw err; // rethrow : conserve le retry BullMQ + capture Sentry existante
+        throw err; // rethrow : conserve la capture Sentry existante
       }
     },
     {

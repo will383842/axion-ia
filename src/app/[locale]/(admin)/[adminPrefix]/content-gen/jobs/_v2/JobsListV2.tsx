@@ -46,6 +46,7 @@ import type {
   ContentType,
   ServiceSector,
 } from "../../../../../../../../prisma/generated/client";
+import { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";
 
 const STATUSES: ReadonlyArray<ContentGenJobStatus> = [
   "queued",
@@ -223,9 +224,12 @@ export async function JobsListV2({
         actions={
           <div className="flex flex-wrap gap-[var(--space-admin-2)]">
             <form action={retryAll}>
-              <button type="submit" className="admin-button-ghost">
+              <ConfirmSubmitButton
+                className="admin-button-ghost"
+                confirmMessage="Relancer TOUS les jobs en échec ? Chaque relance consomme un appel IA (≈ 0,05 à 0,11 $) sous le plafond quotidien. Les échecs de cause permanente resteront en échec."
+              >
                 Relancer tous les échecs
-              </button>
+              </ConfirmSubmitButton>
             </form>
             {/* Fix 2026-08-15 (audit e2e, E3) — double étape avant suppression :
                 un slot de campagne est consommé À VIE, supprimer un job en échec

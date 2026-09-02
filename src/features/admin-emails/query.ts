@@ -59,6 +59,33 @@ export const PAR_PAGE = 50;
  * sur un autre cliquet.
  */
 const STATUTS: readonly EmailLogStatus[] = Object.values(EmailLogStatusEnum);
+/** Les statuts, dans l'ordre de l'énum — pour les puces de filtre de l'écran (lot 3). */
+export const STATUTS_EMAILS: readonly EmailLogStatus[] = STATUTS;
+
+/**
+ * Libellé français de CHAQUE statut — lot 3 (2026-09-02). Typé sur l'énum :
+ * un statut ajouté sans libellé ne compile plus. Avant, la vue portait sa
+ * propre table à trois entrées, et « bounced » s'affichait en anglais brut
+ * dans une console française — sur le seul statut qui exige un geste humain.
+ */
+export const LIBELLES_STATUT_EMAIL: Readonly<Record<EmailLogStatus, string>> = {
+  pending: "En attente",
+  sent: "Envoyé",
+  failed: "Échec",
+  bounced: "Rebond",
+};
+
+/** Libellé complet d'une ligne : le type de rebond compte, il commande le geste. */
+export function libelleStatutLigne(l: Pick<LigneEmail, "status" | "bounceType">): string {
+  if (l.status === "bounced") {
+    return l.bounceType === "hard"
+      ? "Rebond définitif"
+      : l.bounceType === "soft"
+        ? "Rebond temporaire"
+        : "Rebond";
+  }
+  return LIBELLES_STATUT_EMAIL[l.status];
+}
 
 export type FiltresEmails = {
   jours: number;
@@ -81,6 +108,10 @@ export type LigneEmail = {
   sentAt: Date | null;
   failedAt: Date | null;
   createdAt: Date;
+  /** Identifiant du job BullMQ — c'est lui qu'on rejoue depuis l'écran (lot 3). */
+  jobId: string | null;
+  bounceType: string | null;
+  bounceReason: string | null;
 };
 
 export type ChargementEmails = {
@@ -89,7 +120,14 @@ export type ChargementEmails = {
   page: number;
   pages: number;
   /** Répartition par statut sur la fenêtre, tous filtres de statut ignorés. */
-  parStatut: { envoyes: number; echecs: number; enAttente: number; rebonds: number };
+  parStatut: {
+    envoyes: number;
+    echecs: number;
+    enAttente: number;
+    rebonds: number;
+    /** Rebonds DÉFINITIFS : les seuls qui demandent de corriger une adresse (lot 3). */
+    rebondsDurs: number;
+  };
   /** Gabarits présents sur la fenêtre, pour alimenter le filtre. */
   gabarits: Array<{ nom: string; envois: number }>;
 };
@@ -123,7 +161,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     total: 0,
     page: 1,
     pages: 1,
-    parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0 },
+    parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0, rebondsDurs: 0 },
     gabarits: [],
   };
 
@@ -144,7 +182,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
   // Chaque lecture est isolée : au build (base stub, ADR 0026) elles rendent du
   // vide et la page doit s'afficher plutôt qu'échouer.
   try {
-    const [total, lignes, parStatutBrut, gabaritsBruts] = await Promise.all([
+    const [total, lignes, parStatutBrut, gabaritsBruts, rebondsDurs] = await Promise.all([
       prisma.emailLog.count({ where }),
       prisma.emailLog.findMany({
         where,
@@ -164,6 +202,9 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
           sentAt: true,
           failedAt: true,
           createdAt: true,
+          jobId: true,
+          bounceType: true,
+          bounceReason: true,
         },
       }),
       // Compteurs de tête : calculés SANS le filtre de statut, sinon ils
@@ -178,6 +219,14 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
         where: fenetre,
         _count: { _all: true },
         orderBy: { _count: { template: "desc" } },
+      }),
+      prisma.emailLog.count({
+        where: {
+          ...fenetre,
+          ...(filtres.gabarit ? { template: filtres.gabarit } : {}),
+          status: "bounced",
+          bounceType: "hard",
+        },
       }),
     ]);
 
@@ -198,6 +247,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
         // jamais. C'est le seul statut qui exige un geste humain — corriger
         // l'adresse — et il n'était affiché nulle part.
         rebonds: compte("bounced"),
+        rebondsDurs,
       },
       gabarits: gabaritsBruts.map((g) => ({ nom: g.template, envois: g._count._all })),
     };

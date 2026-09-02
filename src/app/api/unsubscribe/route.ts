@@ -35,6 +35,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { unsubscribeNewsletterAction } from "@/features/newsletter/actions";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { enregistrerOpposition, estJetonOpposition } from "@/server/email/opposition";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -67,12 +68,34 @@ async function debitDepasse(req: NextRequest): Promise<boolean> {
   return !rl.allowed;
 }
 
+/**
+ * Deux sortes de jetons passent par la même porte — lot 1b (2026-09-02) :
+ *   - un jeton NEWSLETTER (chaîne opaque stockée en base) : désabonnement de la
+ *     liste ;
+ *   - un jeton d'OPPOSITION (`op1.…`, signé, dérivé de l'adresse) : « ne plus
+ *     recevoir de sollicitations commerciales », depuis n'importe quel e-mail
+ *     des familles B, C et D.
+ * Le préfixe décide. Les deux sont idempotents et rendent la même forme.
+ */
+async function retirerConsentement(
+  token: string | null,
+): Promise<
+  | { ok: true; alreadyUnsubscribed: boolean }
+  | { ok: false; error: "missing_token" | "invalid_token" | "internal" }
+> {
+  if (estJetonOpposition(token)) {
+    const r = await enregistrerOpposition(token as string);
+    return r.ok ? { ok: true, alreadyUnsubscribed: r.dejaOpposee } : r;
+  }
+  return unsubscribeNewsletterAction(token);
+}
+
 /** Porte 2 — navigateur : on agit, puis on montre le résultat. */
 async function desabonnerPuisRediriger(
   token: string | null,
   locale: "fr" | "en",
 ): Promise<NextResponse> {
-  const result = await unsubscribeNewsletterAction(token);
+  const result = await retirerConsentement(token);
   if (result.ok) {
     return NextResponse.redirect(
       pageDesabonnement(locale, `status=ok&already=${result.alreadyUnsubscribed ? "1" : "0"}`),
@@ -90,7 +113,7 @@ async function desabonnerPuisRediriger(
  * client n'a pas à distinguer), 400 sinon.
  */
 async function desabonnerEnUnClic(token: string | null): Promise<NextResponse> {
-  const result = await unsubscribeNewsletterAction(token);
+  const result = await retirerConsentement(token);
   if (result.ok) {
     return new NextResponse("unsubscribed", { status: 200 });
   }

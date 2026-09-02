@@ -30,7 +30,7 @@ export function ArticlePrevNext({ prev, next, locale }: ArticlePrevNextProps) {
   const isFr = locale === "fr";
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-3xl">
         <nav
           data-aeo="prev-next"

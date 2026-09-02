@@ -6,10 +6,15 @@
 
 import type { JobOffer } from "../../../prisma/generated/client";
 
+// SSOT du libellé de mode de travail. Trois copies coexistaient (ici, la page
+// d'offre, la liste console) et disaient trois mots différents pour le MÊME
+// état : « Remote », « Remote », « À distance ». Le FR n'avait jamais été
+// traduit — or « télétravail » est le mot que les candidats francophones
+// tapent réellement. Toute copie de cette table est un bug : importer d'ici.
 export const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
   on_site: { fr: "Sur site", en: "On-site" },
   hybrid: { fr: "Hybride", en: "Hybrid" },
-  remote: { fr: "Remote", en: "Remote" },
+  remote: { fr: "Télétravail", en: "Remote" },
 };
 
 /**

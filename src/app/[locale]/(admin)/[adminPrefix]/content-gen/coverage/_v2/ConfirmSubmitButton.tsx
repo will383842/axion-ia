@@ -1,38 +1,6 @@
-"use client";
-// use-client: confirmation navigateur (onClick + window.confirm) avant une action serveur destructive (suppression de campagne).
-
-import type { ReactNode } from "react";
-
 /**
- * Bouton de soumission (dans un <form action={serverAction}>) qui demande une
- * confirmation navigateur AVANT d'exécuter l'action serveur. Utilisé pour les
- * actions destructives/irréversibles (suppression définitive de campagne).
- * Minimal : si l'utilisateur annule, on empêche la soumission du formulaire.
+ * Déplacé dans `@/components/admin/ui/ConfirmSubmitButton` le 2026-09-02 :
+ * la confirmation sert désormais à toute la console content-gen, pas
+ * seulement aux campagnes. Ré-export pour ne pas casser les imports relatifs.
  */
-export function ConfirmSubmitButton({
-  confirmMessage,
-  className,
-  title,
-  ariaLabel,
-  children,
-}: {
-  confirmMessage: string;
-  className?: string;
-  title?: string;
-  ariaLabel?: string;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="submit"
-      title={title}
-      aria-label={ariaLabel}
-      className={className}
-      onClick={(e) => {
-        if (!window.confirm(confirmMessage)) e.preventDefault();
-      }}
-    >
-      {children}
-    </button>
-  );
-}
+export { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";

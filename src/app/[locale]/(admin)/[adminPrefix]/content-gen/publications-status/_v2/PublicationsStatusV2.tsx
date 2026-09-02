@@ -10,6 +10,7 @@ import { formatDateFrShort } from "@/lib/format-date-fr";
 import { bulkApproveReviews, bulkRejectReviews } from "@/server/actions/content-gen/review";
 import { retryAllFailed } from "@/server/actions/content-gen/jobs";
 import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
+import { ConfirmSubmitButton } from "@/components/admin/ui/ConfirmSubmitButton";
 
 interface Props {
   adminPrefix: string;
@@ -122,9 +123,12 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               className="admin-input"
               style={{ width: 60 }}
             />
-            <button type="submit" className="admin-button">
+            <ConfirmSubmitButton
+              className="admin-button"
+              confirmMessage="Approuver et PUBLIER en masse tous les contenus en relecture dont le score atteint le minimum saisi ? Ils seront mis en ligne à la prochaine fenêtre de publication."
+            >
               Approuver en masse (score ≥ min)
-            </button>
+            </ConfirmSubmitButton>
           </form>
           <form action={doBulkReject} className="flex items-center gap-[var(--space-admin-2)]">
             <label htmlFor="bulkMax" className="admin-meta">
@@ -140,14 +144,20 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               className="admin-input"
               style={{ width: 60 }}
             />
-            <button type="submit" className="admin-button-ghost">
+            <ConfirmSubmitButton
+              className="admin-button-ghost"
+              confirmMessage="Rejeter en masse tous les contenus en relecture dont le score est inférieur ou égal au maximum saisi ? Ces contenus, déjà générés et payés, ne seront pas publiés."
+            >
               Rejeter en masse (score ≤ max)
-            </button>
+            </ConfirmSubmitButton>
           </form>
           <form action={doRetryFailed}>
-            <button type="submit" className="admin-button-ghost">
+            <ConfirmSubmitButton
+              className="admin-button-ghost"
+              confirmMessage="Relancer TOUS les jobs en échec ? Chaque relance consomme un appel IA sous le plafond quotidien. Les échecs de cause permanente resteront en échec."
+            >
               <RefreshCw size={14} aria-hidden="true" /> Relancer tous les échecs
-            </button>
+            </ConfirmSubmitButton>
           </form>
         </div>
       </AdminCard>

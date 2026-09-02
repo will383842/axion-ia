@@ -14,11 +14,13 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     emailLog: { findFirst: (...a: unknown[]) => findFirst(...a) },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => findUnique(...a) },
+    emailOpposition: { findUnique: (...a: unknown[]) => oppositionFindUnique(...a) },
   },
 }));
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   creerOuDedup: (...a: unknown[]) => creerOuDedup(...a),
 }));
+const oppositionFindUnique = vi.fn();
 
 import { verdictAvantEnvoi, signalerRetenue } from "./suppression";
 
@@ -26,6 +28,7 @@ beforeEach(() => {
   findFirst.mockReset().mockResolvedValue(null);
   findUnique.mockReset().mockResolvedValue(null);
   creerOuDedup.mockReset().mockResolvedValue(null);
+  oppositionFindUnique.mockReset().mockResolvedValue(null);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
@@ -113,6 +116,29 @@ describe("verdictAvantEnvoi — désabonnement", () => {
       marketing: true,
     });
     expect(v).toEqual({ retenu: false });
+  });
+
+  it("🔴 lot 1b : une opposition à la prospection retient un envoi marketing", async () => {
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@client.fr", {
+      template: "campagne-x",
+      marketing: true,
+    });
+    expect(v).toEqual({ retenu: true, motif: "oppose", depuis: null });
+    // Lu par empreinte, jamais par adresse.
+    const lu = oppositionFindUnique.mock.calls[0]![0] as { where: Record<string, unknown> };
+    expect(lu.where).not.toHaveProperty("email");
+    expect(String(lu.where["emailHash"])).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("l'opposition ne retient PAS un envoi transactionnel (facture, convocation)", async () => {
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@client.fr", {
+      template: "qualiopi-convocation",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+    expect(oppositionFindUnique).not.toHaveBeenCalled();
   });
 
   it("un abonné actif ou inconnu passe", async () => {

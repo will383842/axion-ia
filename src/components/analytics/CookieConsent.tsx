@@ -235,11 +235,56 @@ export function useIsHydrated(): boolean {
   return React.useSyncExternalStore(subscribeNoop, snapshotTrue, snapshotFalse);
 }
 
+/**
+ * 🔴 Lot LCP (2026-09-02) — le bandeau est rendu CÔTÉ SERVEUR, et ses boutons
+ * marchent AVANT l'hydratation.
+ *
+ * Historique, pour ne pas y retomber :
+ *   1. Le bandeau était dans le HTML statique, mais ses `onClick` n'existaient
+ *      qu'après hydratation (~284 KB gz) : boutons morts pendant des secondes
+ *      sur mobile — « le bandeau ne se ferme pas, parfois ».
+ *   2. Correctif : ne rien rendre avant l'hydratation (`useIsHydrated`). Les
+ *      boutons ne sont plus jamais morts… et le bandeau devient l'ÉLÉMENT LCP
+ *      de /contact et /appel : le plus grand bloc de texte peint, peint au
+ *      moment de l'hydratation. Runner 2026-09-02 : LCP mobile 4,2–4,5 s sur
+ *      /contact, 6,8–9,7 s sur /appel — le temps que le JS arrive.
+ *   3. Ici : le HTML statique porte le bandeau (peint avec la page, donc au
+ *      FCP) ET un script en ligne de quelques lignes, exécuté à l'analyse du
+ *      document, qui (a) cache le bandeau si un choix frais est déjà enregistré
+ *      et (b) rend les deux boutons opérationnels tout de suite, avec EXACTEMENT
+ *      la même persistance que `writeAnalyticsConsent` (mêmes clés, même
+ *      format de cookie, même événement). Quand React hydrate, il relit le
+ *      stockage et retire le bandeau si un choix a été fait entre-temps.
+ *
+ * Le script est DÉRIVÉ des constantes du module (clés, durée, nom
+ * d'événement) : une seule source. La CSP publique (« soft ») autorise
+ * l'inline ; en mode strict (admin) ce composant n'est pas monté.
+ */
+const BANNER_ID = "cookie-consent-banner";
+
+export const SCRIPT_AVANT_HYDRATATION = [
+  "(function(){",
+  `var K=${JSON.stringify(ANALYTICS_CONSENT_KEY)},T=${JSON.stringify(ANALYTICS_CONSENT_TS_KEY)},E=${ANALYTICS_CONSENT_EXPIRY_MS},V=${JSON.stringify(CONSENT_CHANGE_EVENT)};`,
+  `var el=document.getElementById(${JSON.stringify(BANNER_ID)});if(!el)return;`,
+  "function frais(ts){return !ts||Date.now()-ts<=E}",
+  "function lu(){",
+  'try{var v=localStorage.getItem(K);if(v==="accepted"||v==="declined"){return frais(Number(localStorage.getItem(T)||"0"))?v:"unknown"}}catch(e){}',
+  'try{var m=document.cookie.match(new RegExp("(?:^|;\\s*)"+K+"=([^;]*)"));if(m&&m[1]){var p=decodeURIComponent(m[1]).split("|");if(p[0]==="accepted"||p[0]==="declined"){return frais(Number(p[1]||"0"))?p[0]:"unknown"}}}catch(e){}',
+  'return "unknown"}',
+  'if(lu()!=="unknown"){el.hidden=true;return}',
+  "function poser(v){var ts=Date.now();",
+  "try{localStorage.setItem(K,v);localStorage.setItem(T,String(ts))}catch(e){}",
+  'try{document.cookie=K+"="+encodeURIComponent(v+"|"+ts)+"; path=/; max-age="+Math.floor(E/1000)+"; SameSite=Lax"+(location.protocol==="https:"?"; Secure":"")}catch(e){}',
+  "el.hidden=true;try{window.dispatchEvent(new CustomEvent(V))}catch(e){}}",
+  'var bs=el.querySelectorAll("[data-consent]");',
+  'for(var i=0;i<bs.length;i++){(function(b){b.addEventListener("click",function(){poser(b.getAttribute("data-consent"))})})(bs[i])}',
+  "})();",
+].join("");
+
 export function CookieConsent() {
   const locale = useLocale();
   const isFr = locale === "fr";
   const consent = useAnalyticsConsent();
-  const isHydrated = useIsHydrated();
   const pathname = usePathname();
 
   // Pages d'atterrissage publicitaire et écrans de fin du parcours d'appel :
@@ -254,61 +299,89 @@ export function CookieConsent() {
   // qu'on ne puisse pas en modifier un sans voir les autres.
   if (isRouteSansScriptsTiers(pathname)) return null;
 
-  // Tant que l'hydratation n'a pas eu lieu, les `onClick` ne sont pas
-  // attachés : afficher le banner reviendrait à montrer des boutons morts.
-  if (!isHydrated || consent !== "unknown") return null;
+  // Pendant l'hydratation, `useSyncExternalStore` rend le cliché serveur
+  // (« unknown ») : le premier rendu client reproduit le HTML statique, puis
+  // relit le stockage et retire le bandeau si un choix existe. Les boutons,
+  // eux, vivent déjà : le script en ligne ci-dessous les a branchés.
+  if (consent !== "unknown") return null;
 
   return (
-    <div
-      role="dialog"
-      aria-labelledby="cookie-consent-title"
-      aria-describedby="cookie-consent-body"
-      className="bg-bg/95 border-terracotta-deep fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg backdrop-blur"
-    >
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-4">
-        <div className="flex flex-col gap-1">
-          <p
-            id="cookie-consent-title"
-            className="text-fg sr-only text-base font-semibold tracking-tight sm:not-sr-only"
-          >
-            {isFr ? "Cookies analytics" : "Analytics cookies"}
-          </p>
-          <p
-            id="cookie-consent-body"
-            className="text-fg-soft max-w-2xl text-[13px] leading-snug sm:text-sm"
-          >
-            {isFr
-              ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus Microsoft Clarity (heatmaps et replay anonymisés, transfert UE → US sous SCC) ? "
-              : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept Microsoft Clarity (anonymized heatmaps and replay, EU → US transfer under SCC)? "}
-            <Link href="/cookies" className="text-terracotta-deep hover:text-terracotta underline">
-              {isFr ? "Détails Cookies" : "Cookie details"}
-            </Link>
-            {" · "}
-            <Link
-              href="/sous-processeurs"
-              className="text-terracotta-deep hover:text-terracotta underline"
+    <>
+      <div
+        id={BANNER_ID}
+        role="dialog"
+        aria-labelledby="cookie-consent-title"
+        aria-describedby="cookie-consent-body"
+        // 🔴 Police SYSTÈME, délibérément (2026-09-02, mesure mobile du runner).
+        // Depuis que le bandeau est rendu côté serveur, il est peint AVANT
+        // l'arrivée de Manrope : le swap de police change sa hauteur et décale la
+        // page — 0,052 sur /fr, 0,062 sur /contact, 0,049 sur /appel, cause
+        // « Web font loaded » vérifiée dans `layout-shifts`. Avant le rendu
+        // serveur, le bandeau apparaissait APRÈS les polices et le problème
+        // n'existait pas : c'est une régression introduite avec le gain de LCP
+        // (/appel 9 690 → 1 268 ms), pas un défaut préexistant.
+        //
+        // Le bandeau est une pièce d'INTERFACE, pas du contenu éditorial : lui
+        // retirer la police de marque ne coûte rien de visible et supprime le
+        // swap, donc le décalage. Les autres décalages « Web font loaded » (titres
+        // et paragraphes éditoriaux) relèvent d'un lot police à part.
+        style={{
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif',
+        }}
+        className="bg-bg/95 border-terracotta-deep fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg backdrop-blur"
+      >
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-4">
+          <div className="flex flex-col gap-1">
+            <p
+              id="cookie-consent-title"
+              className="text-fg sr-only text-base font-semibold tracking-tight sm:not-sr-only"
             >
-              {isFr ? "Sous-processeurs" : "Sub-processors"}
-            </Link>
-          </p>
-        </div>
-        <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:flex sm:w-auto">
-          <button
-            type="button"
-            onClick={() => writeAnalyticsConsent("declined")}
-            className="border-border text-fg hover:bg-bg-soft focus-visible:ring-terracotta h-11 rounded-md border px-4 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
-          >
-            {isFr ? "Refuser" : "Decline"}
-          </button>
-          <button
-            type="button"
-            onClick={() => writeAnalyticsConsent("accepted")}
-            className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta h-11 rounded-md px-4 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
-          >
-            {isFr ? "Accepter" : "Accept"}
-          </button>
+              {isFr ? "Cookies analytics" : "Analytics cookies"}
+            </p>
+            <p
+              id="cookie-consent-body"
+              className="text-fg-soft max-w-2xl text-[13px] leading-snug sm:text-sm"
+            >
+              {isFr
+                ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus Microsoft Clarity (heatmaps et replay anonymisés, transfert UE → US sous SCC) ? "
+                : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept Microsoft Clarity (anonymized heatmaps and replay, EU → US transfer under SCC)? "}
+              <Link
+                href="/cookies"
+                className="text-terracotta-deep hover:text-terracotta underline"
+              >
+                {isFr ? "Détails Cookies" : "Cookie details"}
+              </Link>
+              {" · "}
+              <Link
+                href="/sous-processeurs"
+                className="text-terracotta-deep hover:text-terracotta underline"
+              >
+                {isFr ? "Sous-processeurs" : "Sub-processors"}
+              </Link>
+            </p>
+          </div>
+          <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:flex sm:w-auto">
+            <button
+              type="button"
+              data-consent="declined"
+              onClick={() => writeAnalyticsConsent("declined")}
+              className="border-border text-fg hover:bg-bg-soft focus-visible:ring-terracotta h-11 rounded-md border px-4 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
+            >
+              {isFr ? "Refuser" : "Decline"}
+            </button>
+            <button
+              type="button"
+              data-consent="accepted"
+              onClick={() => writeAnalyticsConsent("accepted")}
+              className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta h-11 rounded-md px-4 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
+            >
+              {isFr ? "Accepter" : "Accept"}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      <script dangerouslySetInnerHTML={{ __html: SCRIPT_AVANT_HYDRATATION }} />
+    </>
   );
 }

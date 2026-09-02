@@ -21,7 +21,7 @@ export function ArticleKeyTakeaway({ text, locale }: ArticleKeyTakeawayProps) {
   const isFr = locale === "fr";
 
   return (
-    <Section>
+    <Section spacing="compact">
       <Container className="max-w-3xl">
         <aside
           data-aeo="key-point"

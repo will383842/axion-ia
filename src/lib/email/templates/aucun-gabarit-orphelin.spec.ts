@@ -37,9 +37,24 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import { EMAIL_TEMPLATE_NAMES } from "./index";
+import { DORMANTS } from "@/server/email/apercu/catalogue";
 
 const RACINE_SRC = join(process.cwd(), "src");
 const DOSSIER_GABARITS = join("src", "lib", "email", "templates");
+/**
+ * 🔴 Lot 4 (2026-09-02) — cette garde était VERTE PAR CONSTRUCTION. Le catalogue
+ * d'aperçu (`src/server/email/apercu/catalogue.ts`) est un fichier de
+ * production qui cite les 44 noms comme clés : chaque gabarit y était « cité »,
+ * orphelin ou pas. Cinq gabarits sans aucun appelant passaient. On exclut le
+ * dossier d'aperçu du balayage, et on lit les dormants DÉCLARÉS par le
+ * catalogue plutôt qu'une liste recopiée ici.
+ */
+const DOSSIER_APERCU = join("src", "server", "email", "apercu");
+/**
+ * Même raison : l'union de types `EmailJobName` (`src/server/queue/types.ts`)
+ * énumère les 44 noms. Un TYPE n'est pas un appelant.
+ */
+const FICHIER_TYPES = join("src", "server", "queue", "types.ts");
 
 /**
  * Tous les fichiers de code de PRODUCTION : ni les gabarits eux-mêmes (qui se
@@ -59,6 +74,8 @@ function fichiersDeProduction(): string[] {
       if (!entree.endsWith(".ts") && !entree.endsWith(".tsx")) continue;
       if (entree.includes(".spec.") || entree.includes(".test.")) continue;
       if (complet.includes(DOSSIER_GABARITS)) continue;
+      if (complet.includes(DOSSIER_APERCU)) continue;
+      if (complet.endsWith(FICHIER_TYPES)) continue;
       trouves.push(complet);
     }
   };
@@ -79,7 +96,8 @@ describe("registre des gabarits — aucun orphelin", () => {
   });
 
   it(`${"🔴"} chaque gabarit est cité par du code de production`, () => {
-    const orphelins = EMAIL_TEMPLATE_NAMES.filter(
+    const dormants = new Set<string>(DORMANTS);
+    const orphelins = EMAIL_TEMPLATE_NAMES.filter((n) => !dormants.has(n)).filter(
       (nom) => !sources.some((source) => source.includes(nom)),
     );
 
@@ -92,5 +110,22 @@ describe("registre des gabarits — aucun orphelin", () => {
         "déclenche, soit les retirer du registre — mais ne pas les laisser " +
         "donner l'illusion d'un parc complet.",
     ).toEqual([]);
+  });
+});
+
+describe("registre des gabarits — les dormants sont vraiment dormants", () => {
+  it("🔴 un gabarit déclaré dormant par le catalogue n'est cité par aucun code de production", () => {
+    const sources = fichiersDeProduction().map((f) => readFileSync(f, "utf8"));
+    const reveilles = DORMANTS.filter((nom) => sources.some((s) => s.includes(`"${nom}"`)));
+    expect(
+      reveilles,
+      "ces gabarits sont cités par du code de production mais déclarés dormants dans le " +
+        "catalogue d'aperçu : mettre le catalogue à jour (`source`), sinon il ment",
+    ).toEqual([]);
+  });
+
+  it("la garde rougirait sur un nom fantôme — elle regarde bien du code", () => {
+    const sources = fichiersDeProduction().map((f) => readFileSync(f, "utf8"));
+    expect(sources.some((s) => s.includes('"gabarit-qui-n-existe-pas"'))).toBe(false);
   });
 });

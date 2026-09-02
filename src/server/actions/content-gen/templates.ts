@@ -14,23 +14,22 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { recordTemplateHistory } from "@/server/content-gen/template-history";
-import type { ContentType, ExpansionMode } from "../../../../prisma/generated/client";
+import {
+  ContentType as ContentTypeEnum,
+  type ContentType,
+  type ExpansionMode,
+} from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 const TemplateIdSchema = z.string().min(1).max(64);
 // `landing_ville` exclu : CLI-only, hors REGISTRY content-gen (generators/index.ts)
 // → un template sur ce type serait intestable (enqueue/worker le rejettent).
-const ContentTypeSchema = z.enum([
-  "blog_article",
-  "blog_from_rss",
-  "blog_from_keywords",
-  "blog_from_title",
-  "comparison",
-  "guide_pilier",
-  "qa_derived",
-  "faq_standalone",
-]);
+// 2026-09-02 — audit UI : enregistrer le modèle « Page ville » (`landing_ville`)
+// plantait l'écran en ZodError (« invalid_enum_value »), parce que cette liste
+// ne connaissait que 8 des 22 types de l'enum Prisma. La console permet de
+// créer un modèle pour n'importe quel type : le schéma accepte l'enum entier.
+const ContentTypeSchema = z.nativeEnum(ContentTypeEnum);
 // P0-NEW-1 — Aligner avec les 8 vraies valeurs DB enum ExpansionMode (schema.prisma:2568).
 // Les valeurs précédentes (per_ville, per_keyword, all_departements, all_keywords…) étaient
 // inexistantes en DB et causaient des erreurs Prisma silencieuses au upsert.

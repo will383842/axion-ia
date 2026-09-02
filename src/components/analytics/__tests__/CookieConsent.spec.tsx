@@ -4,6 +4,7 @@ import { renderToString } from "react-dom/server";
 import {
   ANALYTICS_CONSENT_KEY,
   CookieConsent,
+  SCRIPT_AVANT_HYDRATATION,
   __resetConsentSnapshotForTests,
   readAnalyticsConsent,
   resetAnalyticsConsent,
@@ -49,19 +50,84 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("<CookieConsent> — rendu SSR", () => {
-  // RÉGRESSION : le banner était rendu dans le HTML statique des 17k routes
-  // SSG, servi par Cloudflare en ~100 ms, alors que ses onClick n'existent
-  // qu'après hydratation (~284 KB gz). Il était donc visible mais MORT au
-  // clic pendant plusieurs centaines de ms (desktop) à quelques secondes
-  // (mobile) — la cause du bug « le bandeau ne se ferme pas, parfois ».
-  it("ne rend RIEN côté serveur (sinon boutons morts avant hydratation)", () => {
-    expect(renderToString(<CookieConsent />)).toBe("");
+/**
+ * Monte le HTML SERVEUR dans le document et exécute le script en ligne, comme
+ * le navigateur le fait à l'analyse — AVANT toute hydratation React.
+ */
+function monterAvantHydratation(): HTMLElement {
+  const html = renderToString(<CookieConsent />);
+  const hote = document.createElement("div");
+  hote.innerHTML = html;
+  document.body.appendChild(hote);
+  new Function(SCRIPT_AVANT_HYDRATATION)();
+  return hote;
+}
+
+describe("<CookieConsent> — rendu SSR et vie avant l'hydratation (lot LCP 2026-09-02)", () => {
+  // Historique : rendu SSR à boutons MORTS (bug « ne se ferme pas ») → puis
+  // rien avant hydratation → le bandeau devenait l'élément LCP de /contact et
+  // /appel (4 à 10 s sur mobile). Désormais : rendu SSR ET boutons vivants
+  // dès l'analyse du document, par le script en ligne.
+  afterEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  it("🔴 rend le bandeau côté serveur, avec son script en ligne", () => {
+    const html = renderToString(<CookieConsent />);
+    expect(html).toContain('role="dialog"');
+    expect(html).toContain('id="cookie-consent-banner"');
+    expect(html).toContain("<script>");
+    expect(html).toContain(ANALYTICS_CONSENT_KEY);
+  });
+
+  it("🔴 « Accepter » AVANT l'hydratation persiste (localStorage + cookie) et ferme le bandeau", () => {
+    const hote = monterAvantHydratation();
+    const bandeau = hote.querySelector("#cookie-consent-banner") as HTMLElement;
+    expect(bandeau.hidden).toBe(false);
+    const recu = vi.fn();
+    window.addEventListener("axion-consent-changed", recu);
+    (hote.querySelector('[data-consent="accepted"]') as HTMLButtonElement).click();
+    expect(bandeau.hidden).toBe(true);
+    expect(window.localStorage.getItem(ANALYTICS_CONSENT_KEY)).toBe("accepted");
+    expect(Number(window.localStorage.getItem(TS_KEY))).toBeGreaterThan(0);
+    expect(readCookieRaw()?.startsWith("accepted|")).toBe(true);
+    expect(recu).toHaveBeenCalledTimes(1);
+    // React, en hydratant ensuite, relit le même stockage : cohérent.
+    __resetConsentSnapshotForTests();
+    expect(readAnalyticsConsent()).toBe("accepted");
+  });
+
+  it("« Refuser » avant l'hydratation persiste declined", () => {
+    const hote = monterAvantHydratation();
+    (hote.querySelector('[data-consent="declined"]') as HTMLButtonElement).click();
+    expect(window.localStorage.getItem(ANALYTICS_CONSENT_KEY)).toBe("declined");
+    expect(readCookieRaw()?.startsWith("declined|")).toBe(true);
+  });
+
+  it("un choix frais déjà enregistré cache le bandeau dès l'analyse, sans attendre React", () => {
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, "declined");
+    window.localStorage.setItem(TS_KEY, String(Date.now()));
+    const hote = monterAvantHydratation();
+    expect((hote.querySelector("#cookie-consent-banner") as HTMLElement).hidden).toBe(true);
+  });
+
+  it("un choix expiré (13 mois) laisse le bandeau visible avant l'hydratation aussi", () => {
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, "accepted");
+    window.localStorage.setItem(TS_KEY, String(Date.now() - THIRTEEN_MONTHS_MS - 1));
+    const hote = monterAvantHydratation();
+    expect((hote.querySelector("#cookie-consent-banner") as HTMLElement).hidden).toBe(false);
+  });
+
+  it("le script est DÉRIVÉ des constantes du module — mêmes clés, même durée, même événement", () => {
+    expect(SCRIPT_AVANT_HYDRATATION).toContain(JSON.stringify(ANALYTICS_CONSENT_KEY));
+    expect(SCRIPT_AVANT_HYDRATATION).toContain(JSON.stringify(`${ANALYTICS_CONSENT_KEY}:ts`));
+    expect(SCRIPT_AVANT_HYDRATATION).toContain(String(THIRTEEN_MONTHS_MS));
+    expect(SCRIPT_AVANT_HYDRATATION).toContain('"axion-consent-changed"');
   });
 });
 
 describe("<CookieConsent> — affichage", () => {
-  it("s'affiche une fois hydraté quand aucun choix n'est enregistré", () => {
+  it("s'affiche quand aucun choix n'est enregistré", () => {
     render(<CookieConsent />);
     expect(banner()).not.toBeNull();
     expect(screen.getByText("Cookies analytics")).toBeTruthy();
@@ -235,5 +301,15 @@ describe("<CookieConsent> — écrans de fin du parcours d'appel", () => {
     } finally {
       cheminCourant = null;
     }
+  });
+});
+
+describe("<CookieConsent> — police système (régression CLS du 2026-09-02)", () => {
+  it("🔴 le bandeau n'utilise pas la police de marque : rendu SSR, elle le fait décaler au swap", () => {
+    const html = renderToString(<CookieConsent />);
+    // Mesuré sur le runner : `p#cookie-consent-body`, cause « Web font loaded »,
+    // 0,052 sur /fr, 0,062 sur /contact, 0,049 sur /appel — au-dessus du seuil.
+    expect(html).toMatch(/font-family:[^"]*system-ui/);
+    expect(html).not.toMatch(/font-family:[^"]*Manrope/);
   });
 });

@@ -21,6 +21,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { enqueueEmail } from "@/server/queue/queues";
+import type { MotifRetenue } from "@/server/email/suppression";
 import type { EmailJobName } from "@/server/queue/types";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -106,7 +107,7 @@ export async function approuverEmailAction(
 
   // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
   // ligne resterait en `approuve` — le même tombeau, par une autre porte.
-  let res: { enqueued: boolean; retenu?: "rebond_dur" | "desabonne" };
+  let res: { enqueued: boolean; retenu?: MotifRetenue };
   try {
     res = await enqueueEmail(
       email.template as EmailJobName,
@@ -117,6 +118,12 @@ export async function approuverEmailAction(
         // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
         // corbeille se remplirait d'elle-même à l'infini.
         bypassValidation: true,
+        // Lot 2 (2026-09-02) : l'objet corrigé par l'admin traverse enfin la file.
+        // Il était persisté, journalisé « modifié », puis jeté : le worker
+        // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
+        // objet inchangé (ou le nom technique d'un vieux garage) laisse le
+        // gabarit décider, comme avant.
+        ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
         ...(email.entityType ? { entityType: email.entityType } : {}),
         ...(email.entityId ? { entityId: email.entityId } : {}),
         ...(attachments && attachments.length > 0 ? { attachments } : {}),
@@ -155,7 +162,9 @@ export async function approuverEmailAction(
       res.retenu === "rebond_dur"
         ? `Envoi retenu automatiquement : cette adresse a déjà rebondi définitivement (rebond dur). ` +
           `Corriger l'adresse dans la fiche du client, puis ré-émettre l'envoi depuis son écran d'origine.`
-        : `Envoi retenu automatiquement : cette personne s'est désabonnée des envois marketing.`;
+        : res.retenu === "oppose"
+          ? `Envoi retenu automatiquement : cette personne s'est opposée aux sollicitations commerciales.`
+          : `Envoi retenu automatiquement : cette personne s'est désabonnée des envois marketing.`;
     await prisma.emailOutbox.updateMany({
       where: { id: v.id, statut: "approuve" },
       data: { statut: "refuse", refuseAt: new Date(), refuseMotif: motif },
