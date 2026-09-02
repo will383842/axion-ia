@@ -122,8 +122,11 @@ jobs:
 
           # Le corps est construit par jq : la valeur ne passe jamais par la
           # ligne de commande, donc jamais par un journal de processus.
+          # ⚠️ PAS DE `is_build_time` : mesuré le 2026-09-02 (run 33611251858), l API
+          #    rend 422 « This field is not allowed ». Coolify se met à jour seul et
+          #    change son API — c est le CORPS de la réponse qui l a dit.
           jq -n --arg k "$CIBLE" --arg v "$valeur" \
-            '{key: $k, value: $v, is_preview: false, is_build_time: false, is_literal: true}' \
+            '{key: $k, value: $v, is_preview: false, is_literal: true}' \
             > /tmp/corps.json
 
           if [ "$existe" -gt 0 ]; then
