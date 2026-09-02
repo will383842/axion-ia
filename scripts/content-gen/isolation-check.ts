@@ -44,6 +44,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/__tests__\/seo-content-gen-factories\.spec\.ts$/,
   // Admin layout — nav admin doit pouvoir référencer /content-gen.
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/layout\.tsx$/,
+  // next.config.ts (audit UI console 2026-09-02, PR #928) — l'en-tête global
+  // `X-Frame-Options: DENY` exclut la route `/api/content-gen/preview/` pour
+  // que l'aperçu de relecture (iframe same-origin) redevienne visible. Le
+  // marqueur est un CHEMIN cité dans une expression régulière d'en-tête, pas du
+  // code du pipeline. Même nature d'exception que `layout.tsx` ci-dessus.
+  /^next\.config\.ts$/,
   // Routes publiques générées/consommées par content-gen (Pass B P0-2 + V1.0.1 + Sprint 8).
   // - /fr/actualites/[slug]   : NewsArticle RSS (§ 28)
   // - /fr/blog/[slug]         : Article DB-driven (Sprint 8 V2)

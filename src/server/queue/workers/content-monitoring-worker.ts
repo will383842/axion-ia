@@ -33,10 +33,19 @@
 import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import {
   CLOSED_WITHOUT_RUNNING_EXCLUSION,
   STUCK_CLOSURE_FAILED_WHERE,
+  countConsumedToday,
 } from "@/server/content-gen/recovery/backlog-recovery";
+import {
+  DEFAULT_DAILY_GENERATION_CAP,
+  computeCampaignTickBudget,
+  msSinceStartOfDay,
+  resolveCapPerDay,
+  type DailyGenerationCap,
+} from "@/server/content-gen/scheduler/anti-burst";
 import {
   evaluatePipelineStall,
   evaluateRejectRate,
@@ -418,6 +427,32 @@ async function checkAnomalies(): Promise<void> {
   // « Produire » = atteindre un état où le contenu EXISTE (`published`,
   // `approved`, `needs_review`). `failed` n'en fait évidemment pas partie, et
   // `quality_improving` non plus : y rester 24 h est aussi une panne.
+  //
+  // 2026-09-02 — la règle A ne vaut que si l'orchestrateur AVAIT du budget.
+  // La rafale RSS de minuit consomme 5 des 15 contenus du jour, et le lissage
+  // horaire n'en rouvre pas avant 08:00 : à 04:00, « rien lancé depuis 4 h »
+  // était vrai ET parfaitement sain. On mesure la place restante maintenant
+  // ET il y a une heure : l'alarme ne part que si le budget était ouvert
+  // depuis au moins une heure (quatre ticks) sans qu'un lancement ait eu lieu.
+  const startOfDayUtc = new Date();
+  startOfDayUtc.setUTCHours(0, 0, 0, 0);
+  const [dailyCap, consumed] = await Promise.all([
+    readContentGenConfig<DailyGenerationCap>("daily_generation_cap", DEFAULT_DAILY_GENERATION_CAP),
+    countConsumedToday(startOfDayUtc).catch(() => null),
+  ]);
+  const capPerDay = resolveCapPerDay(dailyCap);
+  const roomAt = (msSince: number) =>
+    computeCampaignTickBudget({
+      dailyTarget: capPerDay,
+      createdToday: consumed?.consumedToday ?? 0,
+      msSinceStartOfDay: msSince,
+      antiBurstEnabled: true,
+    });
+  const budgetRoom =
+    consumed === null
+      ? 1 // comptage indisponible : on garde l'ancien comportement, l'alarme peut partir
+      : Math.min(roomAt(msSinceStartOfDay()), roomAt(msSinceStartOfDay() - 60 * 60 * 1000));
+
   const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
   const [runningCampaigns, recentJobs, createdDay, productiveDay] = await Promise.all([
     prisma.coverageCampaign.count({ where: { status: "running" } }).catch(() => 0),
@@ -439,6 +474,7 @@ async function checkAnomalies(): Promise<void> {
     recentJobs,
     createdDay,
     productiveDay,
+    budgetRoom,
   });
   const rienDeLance = stall === "rien_lance";
   /**

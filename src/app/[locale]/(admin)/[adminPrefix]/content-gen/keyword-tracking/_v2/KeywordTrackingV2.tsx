@@ -45,6 +45,22 @@ const SOURCE_LABELS: Record<string, string> = {
   manual: "Saisie manuelle",
 };
 
+// 🔴 La colonne « Signal » affichait `opportunity` / `cannibalization` bruts.
+// Les deux signaux sont calculés ici même (pas un enum Prisma) : le type
+// union est la source, la table est exhaustive par construction.
+type Signal = "opportunity" | "cannibalization";
+
+const SIGNAL_LABELS: Record<Signal, { libelle: string; explication: string }> = {
+  opportunity: {
+    libelle: "Opportunité",
+    explication: "Position 11 à 20 avec plus de 100 impressions : la première page est à portée.",
+  },
+  cannibalization: {
+    libelle: "Cannibalisation",
+    explication: "Plusieurs URL du site se positionnent sur le même mot-clé.",
+  },
+} satisfies Record<Signal, { libelle: string; explication: string }>;
+
 export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<React.ReactElement> {
   const sourceFilter =
     sp.source && ["gsc", "serpapi", "manual"].includes(sp.source) ? sp.source : null;
@@ -127,8 +143,16 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
       header: "Signal",
       cell: (r) => (
         <>
-          {r.gap ? <AdminBadge tone="warning">opportunity</AdminBadge> : null}{" "}
-          {r.isCanib ? <AdminBadge tone="destructive">cannibalization</AdminBadge> : null}
+          {r.gap ? (
+            <span title={SIGNAL_LABELS.opportunity.explication}>
+              <AdminBadge tone="warning">{SIGNAL_LABELS.opportunity.libelle}</AdminBadge>
+            </span>
+          ) : null}{" "}
+          {r.isCanib ? (
+            <span title={SIGNAL_LABELS.cannibalization.explication}>
+              <AdminBadge tone="destructive">{SIGNAL_LABELS.cannibalization.libelle}</AdminBadge>
+            </span>
+          ) : null}
         </>
       ),
     },

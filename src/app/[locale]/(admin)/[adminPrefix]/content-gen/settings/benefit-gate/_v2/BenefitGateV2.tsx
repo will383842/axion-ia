@@ -19,6 +19,12 @@ const PROFIL_LABELS: Record<string, string> = {
   news: "Actualité",
 };
 
+// Mode de seuil qualité (`QualityProfileGates.qualityThresholdMode`), en clair.
+const MODE_SEUIL_LABELS: Record<string, string> = {
+  global: "Plancher global seul",
+  max: "Le plus exigeant (seuil du niveau ou plancher global)",
+};
+
 interface Config {
   enabled: boolean;
   llmJudge: boolean;
@@ -103,13 +109,11 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
                   {/* 🔴 Les deux colonnes affichaient les valeurs brutes —
                       `pain_point_solution`, `informational_aeo` — en monospace,
                       alors qu'un commentaire de ce fichier affirmait le
-                      contraire. */}
-                  <td className="py-1" title={type}>
-                    {contentTypeLabelFr(type)}
-                  </td>
-                  <td className="py-1" title={profile}>
-                    {PROFIL_LABELS[profile] ?? profile}
-                  </td>
+                      contraire. Puis la clé brute avait survécu dans un `title` :
+                      le visuel était traduit, le nom accessible (et l'infobulle)
+                      restait `pain_point_solution`. Le libellé suffit. */}
+                  <td className="py-1">{contentTypeLabelFr(type)}</td>
+                  <td className="py-1">{PROFIL_LABELS[profile] ?? profile}</td>
                 </tr>
               ))}
           </tbody>
@@ -121,10 +125,18 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
         <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="text-left text-[color:var(--color-admin-fg-muted)]">
-              <th className="py-1">Niveau d&apos;exigence</th>
-              <th className="py-1">Bénéfice minimal exigé</th>
-              <th className="py-1">Mode de seuil qualité</th>
-              <th className="py-1">mutation tier ville</th>
+              <th scope="col" className="py-1">
+                Niveau d&apos;exigence
+              </th>
+              <th scope="col" className="py-1">
+                Bénéfice minimal exigé
+              </th>
+              <th scope="col" className="py-1">
+                Mode de seuil qualité
+              </th>
+              <th scope="col" className="py-1">
+                Peut modifier la visibilité Google d&apos;une ville
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -132,9 +144,16 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
               const g = QUALITY_PROFILE_GATES[p];
               return (
                 <tr key={p} className="border-t border-[color:var(--color-admin-border)]">
-                  <td className="py-1">{p}</td>
+                  {/* Quatre en-têtes, quatre cellules — et plus une seule valeur
+                      brute : `informational_aeo`, `global`, `max` étaient les
+                      noms du code, pas des libellés. */}
+                  <th scope="row" className="py-1 text-left font-normal">
+                    {PROFIL_LABELS[p] ?? p}
+                  </th>
                   <td className="py-1">{g.benefitMin === null ? "—" : g.benefitMin}</td>
-                  <td className="py-1">{g.qualityThresholdMode}</td>
+                  <td className="py-1">
+                    {MODE_SEUIL_LABELS[g.qualityThresholdMode] ?? g.qualityThresholdMode}
+                  </td>
                   <td className="py-1">
                     {g.mayMutateVilleTier ? "oui" : "non (journalisé seulement)"}
                   </td>

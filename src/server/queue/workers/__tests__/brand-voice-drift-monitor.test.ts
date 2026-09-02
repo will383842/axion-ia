@@ -109,7 +109,7 @@ function makeEmbeddingPair(similarity: number, dim = 4) {
 
 describe("brand-voice-drift-monitor worker", () => {
   // Test 1 — No reference embedding → skips gracefully
-  it("T1: no reference embedding → skips run, no DB writes", async () => {
+  it("T1: no reference embedding → skips run, writes only the skip trace", async () => {
     configFindUniqueMock.mockResolvedValue(null); // no reference stored
     queryRawUnsafeMock.mockResolvedValue([]); // no articles (doesn't matter)
 
@@ -119,8 +119,16 @@ describe("brand-voice-drift-monitor worker", () => {
     // Should not update articles or write audit logs
     expect(articleUpdateMock).not.toHaveBeenCalled();
     expect(auditLogCreateMock).not.toHaveBeenCalled();
-    // Should not upsert stats either (early return before stats)
-    expect(configUpsertMock).not.toHaveBeenCalled();
+    // 2026-09-02 — un passage sauté laisse une trace datée (sinon la console
+    // affichait « Jamais exécuté » pendant que le cron tournait chaque nuit).
+    expect(configUpsertMock).toHaveBeenCalledTimes(1);
+    const args = configUpsertMock.mock.calls[0]?.[0] as {
+      where: { key: string };
+      update: { value: { articlesAnalyzed: number; skippedReason?: string } };
+    };
+    expect(args.where.key).toBe("brand_voice_drift_last_run");
+    expect(args.update.value.articlesAnalyzed).toBe(0);
+    expect(args.update.value.skippedReason).toMatch(/référentiel/i);
   });
 
   // Test 2 — Article with similarity 0.95 → no flag
@@ -188,7 +196,7 @@ describe("brand-voice-drift-monitor worker", () => {
   });
 
   // Test 5 — No articles published in last 24h → logs "nothing to process"
-  it("T5: no articles published in last 24h → no audit writes, stats not stored", async () => {
+  it("T5: no articles published in last 24h → no audit writes, skip trace stored", async () => {
     const reference = makeVector(4, 0);
     configFindUniqueMock.mockResolvedValue({ value: reference });
     queryRawUnsafeMock.mockResolvedValue([]); // empty results
@@ -198,8 +206,13 @@ describe("brand-voice-drift-monitor worker", () => {
 
     expect(auditLogCreateMock).not.toHaveBeenCalled();
     expect(articleUpdateMock).not.toHaveBeenCalled();
-    // Stats not stored when no articles to process
-    expect(configUpsertMock).not.toHaveBeenCalled();
+    // La trace du passage est écrite, avec le motif du saut (2026-09-02).
+    expect(configUpsertMock).toHaveBeenCalledTimes(1);
+    const args = configUpsertMock.mock.calls[0]?.[0] as {
+      update: { value: { articlesAnalyzed: number; skippedReason?: string } };
+    };
+    expect(args.update.value.articlesAnalyzed).toBe(0);
+    expect(args.update.value.skippedReason).toMatch(/24 h/);
   });
 
   // Test 6 — Article with null embedding → skipped
