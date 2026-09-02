@@ -37,7 +37,6 @@ import {
   separerLesInvites,
   fuseauValide,
   FUSEAU_DEFAUT,
-  FUSEAUX_PROPOSES,
   HORIZON_JOURS,
   CHAMPS,
 } from "../formulaire-reservation";
@@ -319,19 +318,23 @@ describe("les questions de l'event-type", () => {
   });
 });
 
-describe("le fuseau horaire, faute de JavaScript pour le détecter", () => {
-  it("🔑 les fuseaux PROPOSÉS sont tous réellement valides", () => {
-    // Une faute de frappe dans la liste donnerait un menu dont une entrée fait
-    // échouer la réservation — et ce serait le visiteur qui la découvrirait.
-    for (const f of FUSEAUX_PROPOSES) {
-      expect(fuseauValide(f.id), `« ${f.id} » figure au menu mais n'est pas un fuseau`).toBe(true);
-    }
-    expect(FUSEAUX_PROPOSES.some((f) => f.id === FUSEAU_DEFAUT)).toBe(true);
+describe("le fuseau horaire, qui n'est plus demandé au visiteur", () => {
+  // Le menu de quinze fuseaux a été retiré du formulaire le 2026-09-02 : il
+  // servait un visiteur sur cent et allongeait l'écran pour tous les autres.
+  // Le VALIDATEUR, lui, continue de traiter le champ — le formulaire est du
+  // HTML natif, et ce qui peut être posté doit être jugé.
+
+  it("🔑 le fuseau par défaut est un fuseau que le moteur sait lire", () => {
+    // Le défaut est désormais la SEULE valeur que reçoivent 100 % des
+    // réservations. Une faute de frappe ici ne dégraderait plus un cas
+    // marginal : elle casserait toutes les réservations, d'un coup.
+    expect(fuseauValide(FUSEAU_DEFAUT), `« ${FUSEAU_DEFAUT} » n'est pas un fuseau`).toBe(true);
   });
 
-  it("un fuseau hors liste mais légitime est accepté", () => {
-    // La liste est une commodité d'affichage, pas une frontière : refuser
-    // Asia/Tokyo parce qu'il n'y figure pas serait arbitraire.
+  it("un fuseau posté à la main, mais légitime, est accepté", () => {
+    // Le champ n'est plus rendu ; il reste postable. Refuser Asia/Tokyo parce
+    // qu'aucun menu ne le propose serait arbitraire — c'est le moteur qui fait
+    // autorité, et c'est lui que Calendly consultera.
     const r = valider(saisie({ [CHAMPS.fuseau]: "Asia/Tokyo" }));
     expect(r.ok).toBe(true);
   });

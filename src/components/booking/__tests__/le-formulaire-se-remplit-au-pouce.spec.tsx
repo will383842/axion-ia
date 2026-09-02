@@ -27,7 +27,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, cleanup, within } from "@testing-library/react";
 
-import { FormulaireReservation } from "../FormulaireReservation";
+import { FormulaireReservation, separerLaParenthese } from "../FormulaireReservation";
 import type { QuestionEventType } from "@/server/calendly/questions";
 
 vi.mock("@/i18n/navigation", () => ({
@@ -104,7 +104,7 @@ describe("🔴 les cibles se visent au pouce", () => {
     // En dessous de 16 px, iOS agrandit la page à la mise au point et la
     // décale : le visiteur perd le champ des yeux en commençant à taper.
     await rendre();
-    for (const nom of ["nom", "email", "telephone", "fuseau", "q0", "invites"]) {
+    for (const nom of ["nom", "email", "telephone", "q0", "invites"]) {
       expect(
         champ(nom).className,
         `« ${nom} » doit porter text-base (16 px), sinon iOS zoome à la mise au point`,
@@ -114,7 +114,7 @@ describe("🔴 les cibles se visent au pouce", () => {
 
   it("les champs d'une ligne font 48 px de haut", async () => {
     await rendre();
-    for (const nom of ["nom", "email", "telephone", "fuseau"]) {
+    for (const nom of ["nom", "email", "telephone"]) {
       expect(champ(nom).className, `« ${nom} » doit faire h-12`).toContain("h-12");
     }
   });
@@ -250,5 +250,125 @@ describe("le créneau et la locale voyagent sans être saisis", () => {
     await rendre();
     expect((champ("debut") as HTMLInputElement).value).toBe("2026-09-10T09:30:00.000Z");
     expect((champ("locale") as HTMLInputElement).value).toBe("fr");
+  });
+});
+
+describe("🔴 la page ne DOIT PAS avoir l'air longue", () => {
+  // Le premier facteur d'abandon d'un formulaire mobile n'est pas le nombre de
+  // champs : c'est la longueur PERÇUE au moment où l'écran s'affiche. Chacune
+  // des gardes ci-dessous protège un champ retiré ou replié — et chacune
+  // rougirait si quelqu'un le remettait « juste pour cette fois ».
+
+  it("🔑 le fuseau horaire n'est plus demandé", async () => {
+    // Il servait un visiteur sur cent (celui qui n'est pas à l'heure de Paris)
+    // et coûtait à tous les autres une étiquette, une aide et 48 px. Le
+    // validateur retombe sur Europe/Paris, et chaque surface écrit « heure de
+    // Paris » à côté de l'heure. Arbitrage Will, 2026-09-02.
+    await rendre();
+    expect(document.querySelector('[name="fuseau"]')).toBeNull();
+  });
+
+  it("🔴 les invités sont derrière un volet qu'on DÉPLIE, et le volet est natif", async () => {
+    // Demande de Will : « inviter des amis, il faut un bouton pour développer
+    // s'ils en ont besoin. » Neuf visiteurs sur dix réservent seuls.
+    //
+    // 🔑 On exige un `<details>` NATIF et pas seulement « un champ caché
+    // quelque part » : une version en JavaScript coûterait l'hydratation de
+    // toute la page, que ce formulaire refuse depuis le premier jour.
+    await rendre();
+    const zone = champ("invites");
+    const volet = zone.closest("details");
+    expect(volet, "la zone d'invités doit vivre dans un <details> natif").not.toBeNull();
+    expect(volet?.querySelector("summary"), "le volet doit avoir son bouton").not.toBeNull();
+    expect(volet?.open, "le volet est REPLIÉ au premier affichage").toBe(false);
+  });
+
+  it("🔴 le volet s'ouvre TOUT SEUL quand il porte une erreur", async () => {
+    // LE CAS QUI COMPTE. Une erreur sur les adresses d'invités, annoncée par le
+    // récapitulatif « 1 point à corriger » mais repliée dans un volet fermé,
+    // donnerait au visiteur un message sans champ à réparer — la même boucle
+    // sans sortie que l'erreur de créneau a déjà coûtée une fois.
+    await rendre({ erreurs: { invites: "Cette adresse semble incomplète : marc@" } });
+    expect(champ("invites").closest("details")?.open).toBe(true);
+  });
+
+  it("le volet s'ouvre aussi quand il porte une saisie conservée", async () => {
+    // Contre-témoin du précédent : sans erreur, mais avec du texte, il doit
+    // s'ouvrir quand même — sinon le visiteur croirait ses adresses perdues.
+    await rendre({ valeurs: { invites: "marc@exemple.fr" } });
+    expect(champ("invites").closest("details")?.open).toBe(true);
+  });
+
+  it("🔑 « votre besoin » tient sur DEUX lignes, pas quatre", async () => {
+    // Une zone de texte haute LIT comme une obligation d'écrire long. Will :
+    // « quel est votre besoin doit être beaucoup moins grand. »
+    await rendre();
+    expect(champ("q0").getAttribute("rows")).toBe("2");
+  });
+});
+
+describe("🔴 le téléphone ne disparaît que dans le sens qui ÉCHOUE OUVERT", () => {
+  it("il est masqué QUAND LA VISIO EST COCHÉE, jamais « tant que le téléphone ne l'est pas »", async () => {
+    // Le sens du test CSS décide de ce qui se passe sur un navigateur sans
+    // `:has()` :
+    //   — « masquer tant que le téléphone n'est pas coché » condamnerait ce
+    //     navigateur à ne jamais montrer le champ, donc à refuser la
+    //     réservation de qui choisit l'appel ;
+    //   — « masquer quand la visio est cochée », ci-dessous, retombe sur le
+    //     comportement d'hier : le champ reste affiché. On perd le confort,
+    //     jamais le rendez-vous.
+    await rendre();
+    const conteneur = champ("telephone").closest("div[class*='group-has-']");
+    expect(
+      conteneur,
+      "le champ téléphone doit vivre dans un conteneur conditionnel",
+    ).not.toBeNull();
+    const classes = conteneur?.className ?? "";
+    expect(classes, "le masquage doit viser la VISIO cochée").toContain("#format-visio:checked");
+    expect(classes, "et il doit masquer, pas révéler").toContain("hidden");
+  });
+
+  it("le bouton radio « visio » porte l'identifiant que vise ce sélecteur", async () => {
+    // Sans cet `id`, le sélecteur ci-dessus ne désignerait rien, et la garde
+    // précédente resterait verte en ne mesurant qu'une chaîne de caractères.
+    await rendre();
+    expect(document.querySelector("#format-visio")).not.toBeNull();
+    expect(document.querySelector("#format-visio")?.getAttribute("value")).toBe("visio");
+  });
+});
+
+describe("separerLaParenthese — raccourcir l'étiquette sans amputer le sens", () => {
+  it("🔑 la question réelle de Calendly se coupe en étiquette + aide", () => {
+    const r = separerLaParenthese(
+      "Quel est votre besoin (formation, 1 to 1, audit, implémentation, plateforme web) ?",
+    );
+    expect(r.label).toBe("Quel est votre besoin ?");
+    expect(r.aide).toBe("Formation, 1 to 1, audit, implémentation, plateforme web.");
+  });
+
+  it("🔴 un libellé dont la parenthèse porte le SENS reste intact", () => {
+    // Contre-témoin. Couper « Budget (€) » ou « Effectif (obligatoire) »
+    // fabriquerait une étiquette amputée — pire que longue.
+    expect(separerLaParenthese("Budget (€)").aide).toBeUndefined();
+    expect(separerLaParenthese("Effectif (salariés)").aide).toBeUndefined();
+    expect(separerLaParenthese("Nom de l'entreprise").label).toBe("Nom de l'entreprise");
+  });
+
+  it("la question envoyée à Calendly reste le libellé EXACT, jamais le raccourci", async () => {
+    // 🔴 Ce que cette garde protège : Calendly apparie les réponses sur le TEXTE
+    // de la question. Si le raccourci d'affichage partait dans
+    // `questions_and_answers`, la réponse ne correspondrait à rien.
+    // Le raccourci ne vit donc QUE dans le rendu ; le `name` du champ, lui,
+    // reste dérivé de la position.
+    await rendre({
+      questions: [
+        {
+          ...QUESTION,
+          libelle: "Quel est votre besoin (formation, 1 to 1, audit, plateforme web) ?",
+        },
+      ],
+    });
+    expect(champ("q0")).toBeTruthy();
+    expect(screen.getByText(/Quel est votre besoin/)).toBeTruthy();
   });
 });

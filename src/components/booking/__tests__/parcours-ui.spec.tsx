@@ -91,3 +91,50 @@ describe("<SortiesDeParcours>", () => {
     expect(container.textContent).not.toContain("·");
   });
 });
+
+describe("🎯 le passage « punch » du 2026-09-02 tient", () => {
+  it("🔴 la pastille porte un halo, et le titre reste son voisin immédiat", () => {
+    // La garde voisine distingue les deux tons en lisant
+    // `h1.previousElementSibling`. Un surtitre intercalé entre la pastille et
+    // le titre casserait cette lecture sans rien changer à l'œil.
+    cleanup();
+    const { container } = render(
+      <TeteDeParcours
+        surtitre="Premier contact · confirmé"
+        icone={null}
+        ton="ok"
+        titre="C'est réservé."
+        sous="…"
+      />,
+    );
+    expect(screen.getByText("Premier contact · confirmé")).toBeTruthy();
+    const pastille = container.querySelector("h1")?.previousElementSibling?.className ?? "";
+    expect(pastille, "la pastille reste le voisin immédiat du titre").toContain("rounded-2xl");
+    expect(pastille, "le halo est ce qui affirme la pastille").toContain("ring-4");
+  });
+
+  it("🔴 le halo reprend la couleur douce du ton, jamais celle de l'autre", () => {
+    cleanup();
+    const { container: ok } = render(<TeteDeParcours icone={null} ton="ok" titre="a" sous="b" />);
+    const okClasses = ok.querySelector("h1")?.previousElementSibling?.className ?? "";
+    cleanup();
+    const { container: att } = render(
+      <TeteDeParcours icone={null} ton="attention" titre="a" sous="b" />,
+    );
+    const attClasses = att.querySelector("h1")?.previousElementSibling?.className ?? "";
+    expect(okClasses).toContain("ring-sage-soft");
+    expect(attClasses).toContain("ring-terracotta-soft");
+  });
+
+  it("🔴 le bouton de sortie n'appaire JAMAIS le terracotta avec du blanc pur", () => {
+    // Règle du dépôt (cf. `src/components/ui/button.tsx`) : le terracotta se
+    // porte avec `text-mocha-fg`. `/fr/appel` est tenue à zéro violation axe
+    // serious, et `color-contrast` y est classé serious.
+    cleanup();
+    render(<SortiesDeParcours principale={{ href: "/appel", label: "Reprendre" }} />);
+    const classes = screen.getByRole("link", { name: "Reprendre" }).className;
+    expect(classes).toContain("text-mocha-fg");
+    expect(classes).not.toContain("text-white");
+    expect(classes).not.toContain("text-paper");
+  });
+});

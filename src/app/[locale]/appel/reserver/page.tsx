@@ -28,7 +28,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
@@ -144,28 +144,52 @@ export default async function ReserverPage({ params, searchParams }: Props) {
         <div className="mx-auto max-w-xl">
           <Link
             href="/appel"
-            className="text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta -ml-1 inline-flex items-center gap-1.5 rounded px-1 py-1 text-sm font-medium focus-visible:ring-2 focus-visible:outline-none"
+            className="text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta -ml-1 inline-flex min-h-11 items-center gap-1.5 rounded px-1 py-1 text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Choisir un autre créneau
           </Link>
 
+          {/* FIL D'ÉTAPES — deux traits et trois mots.
+
+              🔑 Ce n'est pas de la décoration : le visiteur arrive ici après
+              avoir cliqué un créneau sur une AUTRE page, sans savoir combien
+              d'écrans le séparent encore de la fin. Un formulaire dont on
+              ignore la longueur se lit comme un formulaire long. Dire « étape 2
+              sur 2 » retire cette incertitude au moment exact où elle coûte.
+
+              Rendu en `<ol>` : l'ordre est l'information, et un lecteur d'écran
+              annonce « liste de 3 éléments » plutôt qu'une suite de mots. */}
+          <ol className="text-fg-muted mt-4 flex items-center gap-2 text-[11px] font-semibold tracking-wide uppercase">
+            <li className="text-sage flex items-center gap-1.5">
+              <Check className="h-3.5 w-3.5" aria-hidden="true" />
+              Créneau
+            </li>
+            <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
+            <li className="text-terracotta-deep">Vos coordonnées</li>
+            <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
+            <li>C&apos;est réservé</li>
+          </ol>
+
           <h1
-            className="text-fg mt-3 mb-1 text-[clamp(1.5rem,5vw,2rem)] leading-tight font-semibold tracking-tight"
+            className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Confirmer votre rendez-vous
+            Plus qu&apos;une minute et c&apos;est réservé
           </h1>
-          <p className="text-fg-soft mb-6 text-[15px]">
-            Dernière étape. Sans engagement — vous pourrez annuler ou déplacer d&apos;un clic depuis
-            l&apos;e-mail de confirmation.
+          {/* 🔑 Le sous-titre chiffre l'effort restant AVANT de rassurer sur
+              l'engagement. « Dernière étape » ne disait pas combien de temps ;
+              « une minute » se compare à l'envie d'abandonner. */}
+          <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
+            Une minute, pas de carte bancaire, aucun engagement — et vous pourrez annuler ou
+            déplacer d&apos;un clic depuis l&apos;e-mail de confirmation.
           </p>
 
           {/* ⚠️ Quand la reprise n'a pas pu tout garder, on le DIT. Un champ vide
               sans explication ferait croire à une perte de données ; un champ
               vide annoncé se retape. Voir `reprise-formulaire.ts`. */}
           {reprise && reprise.abandonnes.length > 0 ? (
-            <div className="border-border bg-sand text-fg-soft mb-5 rounded-xl border px-4 py-3 text-sm">
+            <div className="border-border-strong bg-sand text-fg mb-5 rounded-xl border px-4 py-3 text-sm">
               Votre réponse la plus longue était trop volumineuse pour être conservée pendant
               l&apos;aller-retour. Elle est à ressaisir&nbsp;; le reste est intact.
             </div>
