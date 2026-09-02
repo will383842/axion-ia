@@ -12,8 +12,8 @@
 // correspond segment à segment — un segment dynamique `[x]` acceptant n'importe
 // quel segment concret.
 
-import { existsSync, readdirSync, statSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join, relative, resolve } from "node:path";
 import { buildAdminNav } from "../src/lib/admin-nav";
 
 const ADMIN_ROOT = resolve(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix]");
@@ -112,7 +112,82 @@ if (missing.length > 0 || externesInvalides.length > 0) {
   process.exit(1);
 }
 
+// ═════════════════════════════════════════════════════════════════════════════
+//  DEUXIÈME PASSE — L'ADAPTATEUR MCP NE DOIT JAMAIS RENDRE UN LIEN D'ADMIN
+// ═════════════════════════════════════════════════════════════════════════════
+//
+// ⚠️ `ADMIN_URL_PREFIX` EST UN SEGMENT DE SÉCURITÉ, pas un chemin ordinaire.
+//    En production il vaut quelque chose comme `admin-xxxxxxxx` : c'est ce qui
+//    fait qu'un balayeur ne trouve pas la console. Un outil MCP qui rendrait un
+//    `detailHref` le recopierait dans une réponse — donc, un jour, dans une
+//    transcription, un journal, ou l'écran de quelqu'un d'autre.
+//
+//    Le cahier des charges le tranche en une phrase : « AUCUN outil ne rend de
+//    detailHref ». Cette passe le REND VÉRIFIABLE, au lieu de compter sur la
+//    relecture.
+//
+// ⚠️ ELLE ANNONCE COMBIEN DE FICHIERS ELLE A LUS. Sans ce compte, un adaptateur
+//    rangé ailleurs rendrait la garde muette sans un mot — le défaut mesuré sur
+//    `surface-server-actions.spec.ts`.
+
+// ⚠️ DEUX RACINES, PAS UNE. La porte HTTP vit sous `src/app/api/mcp` (route
+//    Next), la couche outils vivra sous `src/server/mcp` (lot 4b). Une garde qui
+//    ne lirait que la seconde serait verte aujourd'hui en n'ayant rien lu — et
+//    resterait aveugle au fichier qui, précisément, rend la réponse au socle.
+const RACINES_MCP: readonly string[] = [
+  resolve(process.cwd(), "src/app/api/mcp"),
+  resolve(process.cwd(), "src/server/mcp"),
+];
+
+/** Ce qu'un fichier de l'adaptateur ne doit pas contenir, et pourquoi. */
+const INTERDITS_DANS_MCP: readonly { readonly motif: RegExp; readonly quoi: string }[] = [
+  { motif: /\badminPath\s*\(/, quoi: "adminPath() construit une URL de console" },
+  { motif: /ADMIN_URL_PREFIX/, quoi: "le préfixe d'administration est un segment de sécurité" },
+  { motif: /detailHref/, quoi: "aucun outil ne rend de detailHref (§ 28)" },
+  { motif: /["'`]\/(?:fr|en)\/admin/, quoi: "un chemin de console écrit en dur" },
+];
+
+function fichiersDeLAdaptateur(dir: string): string[] {
+  if (!existsSync(dir)) return [];
+  const out: string[] = [];
+  for (const nom of readdirSync(dir)) {
+    const chemin = join(dir, nom);
+    if (statSync(chemin).isDirectory()) {
+      if (nom === "__tests__" || nom === "node_modules") continue;
+      out.push(...fichiersDeLAdaptateur(chemin));
+      continue;
+    }
+    if (!/\.tsx?$/.test(nom)) continue;
+    if (/\.(?:test|spec)\.tsx?$/.test(nom)) continue;
+    out.push(chemin);
+  }
+  return out;
+}
+
+const fichiersMcp = RACINES_MCP.flatMap((racine) => fichiersDeLAdaptateur(racine));
+const violationsMcp: string[] = [];
+
+for (const chemin of fichiersMcp) {
+  const source = readFileSync(chemin, "utf8");
+  for (const { motif, quoi } of INTERDITS_DANS_MCP) {
+    if (motif.test(source)) {
+      violationsMcp.push(`${relative(process.cwd(), chemin)} → ${quoi}`);
+    }
+  }
+}
+
+if (violationsMcp.length > 0) {
+  console.error(
+    `❌ [admin-nav:routes] ${violationsMcp.length} fuite(s) de chemin d'administration ` +
+      `dans l'adaptateur MCP (${fichiersMcp.length} fichier(s) lu(s)) :`,
+  );
+  for (const v of violationsMcp) console.error(`  - ${v}`);
+  process.exit(1);
+}
+
 console.log(
   `✅ [admin-nav:routes] OK — ${internes.length} routes internes résolues, ` +
-    `${externes.length} lien(s) externe(s) valides.`,
+    `${externes.length} lien(s) externe(s) valides · ` +
+    `${fichiersMcp.length} fichier(s) d'adaptateur MCP lu(s), ` +
+    `${INTERDITS_DANS_MCP.length} motif(s) interdit(s) confronté(s).`,
 );

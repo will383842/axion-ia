@@ -1,0 +1,335 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-4000-8000-000000000000",
+      "canal": "appel",
+      "recuLe": "2026-09-01T08:00:00.000Z",
+      "objet": "objet 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 1 abcdefghij abcd",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "canal": "message",
+      "recuLe": "2026-09-02T09:00:00.000Z",
+      "objet": "objet 2 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 2 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 2 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 2 abcdefghij abcd",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "canal": "candidature",
+      "recuLe": "2026-09-03T10:00:00.000Z",
+      "objet": "objet 3 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 3 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 3 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 3 abcdefghij abcd",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "canal": "podcast",
+      "recuLe": "2026-09-04T11:00:00.000Z",
+      "objet": "objet 4 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 4 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 4 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 4 abcdefghij abcd",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "canal": "appel",
+      "recuLe": "2026-09-05T12:00:00.000Z",
+      "objet": "objet 5 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 5 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 5 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 5 abcdefghij abcd",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "canal": "message",
+      "recuLe": "2026-09-06T13:00:00.000Z",
+      "objet": "objet 6 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 6 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 6 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 6 abcdefghij abcd",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000006",
+      "canal": "candidature",
+      "recuLe": "2026-09-07T14:00:00.000Z",
+      "objet": "objet 7 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 7 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 7 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 7 abcdefghij abcd",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000007",
+      "canal": "podcast",
+      "recuLe": "2026-09-08T15:00:00.000Z",
+      "objet": "objet 8 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 8 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 8 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 8 abcdefghij abcd",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000008",
+      "canal": "appel",
+      "recuLe": "2026-09-09T16:00:00.000Z",
+      "objet": "objet 9 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij ab",
+      "contact": "contact 9 abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "contexte": "contexte 9 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdef",
+      "statut": "statut 9 abcdefghij abcd",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000009",
+      "canal": "message",
+      "recuLe": "2026-09-10T08:00:00.000Z",
+      "objet": "objet 10 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 10 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 10 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 10 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000a",
+      "canal": "candidature",
+      "recuLe": "2026-09-11T09:00:00.000Z",
+      "objet": "objet 11 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 11 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 11 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 11 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000b",
+      "canal": "podcast",
+      "recuLe": "2026-09-12T10:00:00.000Z",
+      "objet": "objet 12 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 12 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 12 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 12 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000c",
+      "canal": "appel",
+      "recuLe": "2026-09-13T11:00:00.000Z",
+      "objet": "objet 13 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 13 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 13 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 13 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000d",
+      "canal": "message",
+      "recuLe": "2026-09-14T12:00:00.000Z",
+      "objet": "objet 14 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 14 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 14 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 14 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000e",
+      "canal": "candidature",
+      "recuLe": "2026-09-15T13:00:00.000Z",
+      "objet": "objet 15 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 15 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 15 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 15 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000f",
+      "canal": "podcast",
+      "recuLe": "2026-09-16T14:00:00.000Z",
+      "objet": "objet 16 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 16 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 16 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 16 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000010",
+      "canal": "appel",
+      "recuLe": "2026-09-17T15:00:00.000Z",
+      "objet": "objet 17 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 17 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 17 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 17 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000011",
+      "canal": "message",
+      "recuLe": "2026-09-18T16:00:00.000Z",
+      "objet": "objet 18 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 18 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 18 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 18 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000012",
+      "canal": "candidature",
+      "recuLe": "2026-09-19T08:00:00.000Z",
+      "objet": "objet 19 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 19 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 19 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 19 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000013",
+      "canal": "podcast",
+      "recuLe": "2026-09-20T09:00:00.000Z",
+      "objet": "objet 20 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 20 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 20 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 20 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000014",
+      "canal": "appel",
+      "recuLe": "2026-09-21T10:00:00.000Z",
+      "objet": "objet 21 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 21 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 21 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 21 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000015",
+      "canal": "message",
+      "recuLe": "2026-09-22T11:00:00.000Z",
+      "objet": "objet 22 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 22 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 22 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 22 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000016",
+      "canal": "candidature",
+      "recuLe": "2026-09-23T12:00:00.000Z",
+      "objet": "objet 23 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 23 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 23 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 23 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000017",
+      "canal": "podcast",
+      "recuLe": "2026-09-24T13:00:00.000Z",
+      "objet": "objet 24 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 24 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 24 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 24 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000018",
+      "canal": "appel",
+      "recuLe": "2026-09-25T14:00:00.000Z",
+      "objet": "objet 25 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 25 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 25 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 25 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000019",
+      "canal": "message",
+      "recuLe": "2026-09-26T15:00:00.000Z",
+      "objet": "objet 26 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 26 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 26 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 26 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000001a",
+      "canal": "candidature",
+      "recuLe": "2026-09-27T16:00:00.000Z",
+      "objet": "objet 27 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 27 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 27 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 27 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000001b",
+      "canal": "podcast",
+      "recuLe": "2026-09-28T08:00:00.000Z",
+      "objet": "objet 28 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 28 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 28 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 28 abcdefghij abc",
+      "aAgir": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000001c",
+      "canal": "appel",
+      "recuLe": "2026-09-01T09:00:00.000Z",
+      "objet": "objet 29 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 29 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 29 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 29 abcdefghij abc",
+      "aAgir": true
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000001d",
+      "canal": "message",
+      "recuLe": "2026-09-02T10:00:00.000Z",
+      "objet": "objet 30 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij a",
+      "contact": "contact 30 abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "contexte": "contexte 30 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcde",
+      "statut": "statut 30 abcdefghij abc",
+      "aAgir": false
+    }
+  ],
+  "meta": {
+    "returned": 30,
+    "hasMore": true,
+    "cursor": null,
+    "mode": "items",
+    "truncated": false,
+    "truncationNote": null,
+    "sourceIncomplete": true,
+    "sourceNote": "note source 1 abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefghij abcdefg",
+    "failedSources": ["podcast"],
+    "version": "1.0.0",
+    "deprecated": false,
+    "sunsetAt": null,
+    "asOf": "2026-09-02T04:00:00.000Z"
+  },
+  "synthese": {
+    "total": 400,
+    "parCanal": {
+      "appel": 100,
+      "message": 100,
+      "candidature": 100,
+      "podcast": 100
+    },
+    "aAgir": 200,
+    "aAgirParCanal": {
+      "appel": 100,
+      "message": 100,
+      "candidature": 100,
+      "podcast": 100
+    }
+  }
+}
