@@ -1,0 +1,258 @@
+name: Calendly · poser le jeton dans Coolify (site + worker)
+# Workflow utilitaire workflow_dispatch — copie le secret GitHub CALENDLY_API_TOKEN
+# vers la variable d'environnement Production `CALENDLY_API_TOKEN` des deux
+# applications Coolify (site ET worker), puis redéploie.
+#
+# ── Pourquoi ce détour, et pas un collage dans l'interface Coolify ────────────
+# Le jeton ne doit transiter NI par une conversation avec un agent, NI par un
+# champ de formulaire piloté à distance : un secret vu en clair finit dans un
+# journal (jeton Coolify et clé Google, tous deux révoqués pour cette raison le
+# 2026-08-27 et le 2026-08-30). Le chemin retenu : presse-papiers de la machine
+# de Will → `gh secret set CALENDLY_API_TOKEN` (chiffré côté GitHub, jamais
+# affiché) → ce workflow → API Coolify. GitHub masque le secret dans les logs.
+#
+# ── Ce que le workflow VÉRIFIE avant d'écrire ─────────────────────────────────
+# Le jeton est sondé contre l'API Calendly : `GET /users/me` doit répondre 200,
+# et `GET /webhook_subscriptions` ne doit plus rendre 403 `required_scopes`.
+# Le 2026-08-31, le jeton de prod n'avait que trois portées de lecture, et le
+# webhook n'avait donc JAMAIS pu exister. Un jeton qui échoue à la sonde n'est
+# pas posé : on ne remplace pas un jeton faible par un jeton faux.
+#
+# ⚠️ `scheduled_events:write` n'a pas de sonde en lecture seule : la seule
+# preuve est une réservation réelle, faite après coup depuis le formulaire.
+#
+# ── Le worker est une 2e application Coolify ──────────────────────────────────
+# Il porte la synchro (cron refresh), les rappels J-1/H-1 et les liens
+# d'annulation dans les e-mails. Un jeton posé sur le site seul laisse la
+# moitié du système sur l'ancien jeton.
+#
+# Sécurité : workflow_dispatch only. Aucune entrée ne porte le secret.
+
+on:
+  workflow_dispatch:
+    inputs:
+      cible:
+        description: "Application(s) à mettre à jour"
+        required: true
+        default: "les-deux"
+        type: choice
+        options:
+          - "les-deux"
+          - "site"
+          - "worker"
+      redeploy:
+        description: "Redéployer après la mise à jour (Restart ne recharge pas les variables)"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      webhook:
+        description: "Créer aussi l'abonnement webhook Calendly (clé de signature fabriquée sur le runner, posée sur le site, jamais affichée)"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: read
+
+jobs:
+  poser-le-jeton:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Valider les secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID CALENDLY_API_TOKEN; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Secret manquant : $v"
+              exit 1
+            fi
+          done
+          echo "Secrets présents. Longueur du jeton Calendly : ${#CALENDLY_API_TOKEN} caractères (valeur jamais affichée)."
+
+      - name: Sonder le jeton contre l'API Calendly (lecture seule)
+        env:
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          me=$(curl -sS -m 20 -w "\nHTTP=%{http_code}" \
+            -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" \
+            https://api.calendly.com/users/me)
+          code=$(echo "$me" | tail -1 | sed 's/HTTP=//')
+          body=$(echo "$me" | sed '$d')
+          if [ "$code" != "200" ]; then
+            echo "::error::GET /users/me → HTTP $code. Le jeton n'est pas accepté par Calendly. Corps : $(echo "$body" | head -c 300)"
+            exit 1
+          fi
+          org=$(echo "$body" | jq -r '.resource.current_organization')
+          echo "users:read ✅ — organisation : $org"
+
+          probe=$(curl -sS -m 20 -w "\nHTTP=%{http_code}" \
+            -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" \
+            "https://api.calendly.com/webhook_subscriptions?organization=$(printf %s "$org" | jq -sRr @uri)&scope=organization")
+          pcode=$(echo "$probe" | tail -1 | sed 's/HTTP=//')
+          pbody=$(echo "$probe" | sed '$d')
+          if [ "$pcode" = "403" ]; then
+            echo "::error::webhooks:read ABSENT — Calendly répond 403 : $(echo "$pbody" | head -c 300). Régénérer le jeton avec les portées webhooks."
+            exit 1
+          elif [ "$pcode" != "200" ]; then
+            echo "::error::GET /webhook_subscriptions → HTTP $pcode : $(echo "$pbody" | head -c 300)"
+            exit 1
+          fi
+          echo "webhooks:read ✅ — $(echo "$pbody" | jq -r '.collection | length') abonnement(s) existant(s)"
+
+          et=$(curl -sS -m 20 -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" \
+            "https://api.calendly.com/event_types?organization=$(printf %s "$org" | jq -sRr @uri)&count=1")
+          [ "$et" = "200" ] && echo "event_types:read ✅" || { echo "::error::event_types:read → HTTP $et"; exit 1; }
+          echo "⚠️ scheduled_events:write n'est pas sondable en lecture : la preuve sera une réservation réelle."
+
+      - name: Écrire CALENDLY_API_TOKEN dans Coolify (Production seulement)
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+          CIBLE: ${{ inputs.cible }}
+        run: |
+          set -euo pipefail
+          # ⚠️ is_preview:false — on ne touche JAMAIS à la ligne Preview, qui porte
+          # volontairement un jeton mort (un déploiement éphémère ne doit pas
+          # parler à Calendly avec le jeton de prod).
+          payload=$(jq -nc --arg value "$CALENDLY_API_TOKEN" '{
+            key: "CALENDLY_API_TOKEN",
+            value: $value,
+            is_preview: false,
+            is_literal: false,
+            is_multiline: false,
+            is_shown_once: false
+          }')
+          upsert() {
+            local uuid="$1" nom="$2"
+            echo "──── $nom ($uuid) ────"
+            local code
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "PATCH ✅ ($code)"; return 0; fi
+            echo "PATCH → $code : $(head -c 200 /tmp/resp) — tentative POST"
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "POST ✅ ($code)"; return 0; fi
+            echo "::error::$nom : POST → $code : $(head -c 300 /tmp/resp)"
+            return 1
+          }
+          case "$CIBLE" in
+            site) upsert "$COOLIFY_APP_UUID" site ;;
+            worker) upsert "$COOLIFY_WORKER_APP_UUID" worker ;;
+            *) upsert "$COOLIFY_APP_UUID" site; upsert "$COOLIFY_WORKER_APP_UUID" worker ;;
+          esac
+
+      # ── Webhook Calendly ───────────────────────────────────────────────────
+      # Tout le code existe depuis le 2026-08-09 (route, vérification HMAC,
+      # script d'abonnement). Ce qui n'a JAMAIS existé, c'est l'abonnement
+      # lui-même — le jeton n'avait pas `webhooks:write` — et la clé de
+      # signature dans Coolify. Les deux se posent ici, ensemble : la clé est
+      # fabriquée sur le runner, écrite dans l'application SITE, transmise à
+      # Calendly par le script du dépôt, et masquée dans les journaux.
+      - uses: actions/checkout@v5
+        if: ${{ inputs.webhook == 'true' }}
+      - uses: pnpm/action-setup@v5
+        if: ${{ inputs.webhook == 'true' }}
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        if: ${{ inputs.webhook == 'true' }}
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: ${{ inputs.webhook == 'true' }}
+
+      - name: Créer l'abonnement webhook (clé de signature fabriquée ici)
+        if: ${{ inputs.webhook == 'true' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+          NEXT_PUBLIC_SITE_URL: https://axion-ia.com
+          SKIP_ENV_VALIDATION: "true"
+        run: |
+          set -euo pipefail
+          # 1. Existe-t-il déjà un abonnement pour notre URL ? Le script le
+          #    détecte et s'arrête ; dans ce cas la clé posée en Coolify doit
+          #    être celle de CET abonnement, qu'on ne connaît pas → on refuse
+          #    de fabriquer une clé qui ne vérifierait rien.
+          me=$(curl -sS -m 20 -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" https://api.calendly.com/users/me)
+          org=$(echo "$me" | jq -r '.resource.current_organization')
+          user=$(echo "$me" | jq -r '.resource.uri')
+          existants=$(curl -sS -m 20 -H "Authorization: Bearer ${CALENDLY_API_TOKEN}" \
+            "https://api.calendly.com/webhook_subscriptions?organization=$(printf %s "$org" | jq -sRr @uri)&user=$(printf %s "$user" | jq -sRr @uri)&scope=user&count=100")
+          deja=$(echo "$existants" | jq -r '[.collection[]? | select(.callback_url == "https://axion-ia.com/api/calendly/webhook")] | length')
+          if [ "$deja" != "0" ]; then
+            echo "::error::Un abonnement existe déjà pour https://axion-ia.com/api/calendly/webhook. Sa clé n'est pas re-montrable : le supprimer côté Calendly (API DELETE) puis relancer."
+            echo "$existants" | jq -r '.collection[] | "\(.uri) \(.state) \(.callback_url)"'
+            exit 1
+          fi
+
+          # 2. La clé : 24 octets, masquée dans les journaux dès sa naissance.
+          key=$(openssl rand -hex 24)
+          echo "::add-mask::$key"
+
+          # 3. D'abord Coolify (application SITE, Production). Si cette écriture
+          #    échoue, on n'a rien envoyé à Calendly : pas d'abonnement orphelin.
+          payload=$(jq -nc --arg value "$key" '{ key: "CALENDLY_WEBHOOK_SIGNING_KEY", value: $value, is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false }')
+          code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" -d "$payload" "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          if [ "$code" != "200" ] && [ "$code" != "201" ]; then
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X POST -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" -d "$payload" "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          fi
+          if [ "$code" != "200" ] && [ "$code" != "201" ]; then
+            echo "::error::Coolify a refusé CALENDLY_WEBHOOK_SIGNING_KEY (HTTP $code) : $(head -c 300 /tmp/resp)"
+            exit 1
+          fi
+          echo "CALENDLY_WEBHOOK_SIGNING_KEY posée sur le site ✅"
+
+          # 4. Puis Calendly, par le script du dépôt (même liste d'évènements que
+          #    la route). La clé est reprise de l'environnement, donc identique.
+          CALENDLY_WEBHOOK_SIGNING_KEY="$key" pnpm tsx scripts/calendly-webhook-subscribe.ts 2>&1 | sed "s/$key/[clé masquée]/g"
+
+      - name: Redéployer (POST /api/v1/deploy)
+        if: ${{ inputs.redeploy == 'true' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CIBLE: ${{ inputs.cible }}
+        run: |
+          set -euo pipefail
+          deploy() {
+            local uuid="$1" nom="$2"
+            local r
+            r=$(curl -fsSL -X POST -m 30 \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
+              --data-urlencode "uuid=${uuid}" --data-urlencode "force=true" \
+              "${COOLIFY_URL}/api/v1/deploy")
+            echo "$nom : $r"
+          }
+          case "$CIBLE" in
+            site) deploy "$COOLIFY_APP_UUID" site ;;
+            worker) deploy "$COOLIFY_WORKER_APP_UUID" worker ;;
+            *) deploy "$COOLIFY_APP_UUID" site; deploy "$COOLIFY_WORKER_APP_UUID" worker ;;
+          esac
+          echo "Redeploy demandé. Vérifier ensuite x-axion-build-sha et une lecture Calendly depuis la prod."

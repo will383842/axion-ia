@@ -12,6 +12,9 @@ import {
 import { Clarity } from "../Clarity";
 
 vi.mock("next-intl", () => ({ useLocale: () => "fr" }));
+// Le chemin courant, pilotable par test : null = hors App Router, comme avant.
+let cheminCourant: string | null = null;
+vi.mock("next/navigation", () => ({ usePathname: () => cheminCourant }));
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
     <a href={href}>{children}</a>
@@ -174,5 +177,63 @@ describe("<Clarity> — gate consent", () => {
     writeAnalyticsConsent("accepted");
     render(<Clarity />);
     expect(screen.queryByTestId("ms-clarity")).not.toBeNull();
+  });
+});
+
+describe("<CookieConsent> — compact au téléphone", () => {
+  // Mesuré le 2026-09-02 sur iPhone 375 px : 249 px sur 629, soit 40 % de
+  // l'écran, qui recouvraient les deux phrases clés de la page « nous
+  // vérifions votre réservation ». La hauteur vient d'abord du TEXTE : on le
+  // borne, et on exige des boutons de 44 px (h-11) côte à côte.
+  it("🔴 le texte du bandeau tient sous 200 caractères, liens compris", () => {
+    render(<CookieConsent />);
+    const corps = document.getElementById("cookie-consent-body");
+    expect(corps, "le corps du bandeau existe").toBeTruthy();
+    expect((corps?.textContent ?? "").trim().length).toBeLessThanOrEqual(200);
+  });
+
+  it("🔴 les deux boutons font 44 px de haut et partagent la largeur", () => {
+    render(<CookieConsent />);
+    for (const nom of ["Refuser", "Accepter"]) {
+      const classes = screen.getByRole("button", { name: nom }).className.split(/\s+/);
+      expect(classes, `${nom} : h-11`).toContain("h-11");
+    }
+    const rangee = screen.getByRole("button", { name: "Refuser" }).parentElement;
+    expect(rangee?.className.split(/\s+/)).toContain("grid-cols-2");
+  });
+
+  it("le titre reste lisible par les lecteurs d'écran (aria-labelledby) même masqué", () => {
+    render(<CookieConsent />);
+    const titre = document.getElementById("cookie-consent-title");
+    expect(titre?.textContent).toBe("Cookies analytics");
+    expect(banner()?.getAttribute("aria-labelledby")).toBe("cookie-consent-title");
+  });
+});
+
+describe("<CookieConsent> — écrans de fin du parcours d'appel", () => {
+  // Aucun script tiers n'y est chargé (Clarity, LinkedIn s'abstiennent via la
+  // même fonction), donc rien à consentir : la bannière ne recouvre plus
+  // « merci de ne pas réserver à nouveau » sur un téléphone.
+  it.each(["/fr/appel/confirme", "/fr/appel/annuler", "/fr/appel/reporter"])(
+    "ne s'affiche pas sur %s",
+    (p) => {
+      cheminCourant = p;
+      try {
+        render(<CookieConsent />);
+        expect(banner()).toBeNull();
+      } finally {
+        cheminCourant = null;
+      }
+    },
+  );
+
+  it("🔑 CONTRE-TÉMOIN : s'affiche toujours sur /fr/appel, l'entrée de l'entonnoir", () => {
+    cheminCourant = "/fr/appel";
+    try {
+      render(<CookieConsent />);
+      expect(banner()).not.toBeNull();
+    } finally {
+      cheminCourant = null;
+    }
   });
 });
