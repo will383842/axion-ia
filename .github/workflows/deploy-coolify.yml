@@ -676,6 +676,12 @@ jobs:
             done | sort
           }
           imprimer_valeurs desktop
+          # Les rapports COMPLETS (elements qui decalent la page, element LCP,
+          # arbre des requetes) partent en artefact : c'est la seule facon de
+          # diagnostiquer un CLS que le poste de dev ne reproduit pas — le
+          # 2026-09-02, 0,222 sur le runner et 0 en local sur la meme page.
+          mkdir -p lighthouse-rapports/desktop
+          cp .lighthouseci/lhr-*.json lighthouse-rapports/desktop/ 2>/dev/null || true
           pnpm exec lhci assert --config=lighthouserc.postdeploy.json
 
           # ── GEO-121 — passe MOBILE (audit GEO/AEO 2026-08-14, lot 16) ──────
@@ -727,11 +733,23 @@ jobs:
             exit 1
           fi
           imprimer_valeurs mobile
+          mkdir -p lighthouse-rapports/mobile
+          cp .lighthouseci/lhr-*.json lighthouse-rapports/mobile/ 2>/dev/null || true
 
           # Depuis le 2026-09-02 l'assert PEUT echouer sur les seuils — c'est le but.
           # Pas de `|| true` : un rouge ici est une regression ou un cliquet a lire,
           # jamais un bruit a avaler.
           pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json
+
+      - name: Rapports Lighthouse complets (desktop + mobile)
+        # `always()` : un assert rouge est precisement le moment ou l'on veut le rapport.
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-rapports-${{ github.sha }}
+          path: lighthouse-rapports/
+          retention-days: 14
+          if-no-files-found: ignore
 
   # ───────────────────────────────────────────────────────────────────────
   # IndexNow post-deploy — Audit indexation 2026-06-20.
