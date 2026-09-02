@@ -107,6 +107,18 @@ export function setReviewStats(stats: ReviewStats): void {
   CURRENT_REVIEW_STATS = stats;
 }
 
+/**
+ * Lien « Ne plus recevoir de sollicitations commerciales » du destinataire
+ * courant — audit e-mails 2026-09-02, lot 1b. Posé par `renderEmailTemplate`
+ * quand il connaît le destinataire, lu par le pied de page des familles B, C
+ * et D. Même mécanisme que les statistiques d'avis : un contexte de rendu, pour
+ * ne pas faire porter 44 gabarits par une prop qu'aucun d'eux ne décide.
+ */
+let CURRENT_OPPOSITION_HREF: string | null = null;
+export function setOppositionHref(href: string | null): void {
+  CURRENT_OPPOSITION_HREF = href;
+}
+
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
@@ -230,7 +242,8 @@ export const REGIME_FAMILLE = {
     partage: true,
     soupapeReponse: true,
     logoCliquable: true,
-    budgetLiens: 8,
+    /** 8 liens + 1 : le lien d'opposition, obligatoire hors famille A (lot 1b). */
+    budgetLiens: 9,
   },
   C: {
     footerComplet: true,
@@ -255,7 +268,8 @@ export const REGIME_FAMILLE = {
     partage: false,
     soupapeReponse: true,
     logoCliquable: false,
-    budgetLiens: 3,
+    /** 3 liens + 1 : le lien d'opposition (lot 1b). */
+    budgetLiens: 4,
   },
   D: {
     footerComplet: true,
@@ -265,7 +279,8 @@ export const REGIME_FAMILLE = {
     /** En famille D, la réponse EST souvent le geste attendu — portée par le corps, pas par une soupape. */
     soupapeReponse: false,
     logoCliquable: true,
-    budgetLiens: 10,
+    /** 10 liens + 1 : le lien d'opposition (lot 1b). */
+    budgetLiens: 11,
   },
 } as const satisfies Record<
   FamilleEmail,
@@ -631,6 +646,7 @@ const TXT = {
     followFounder: "Williams Jullin",
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
+    opposition: "Ne plus recevoir de sollicitations commerciales d'Axion-IA",
     /** Pied de page réduit famille A — §6.3. Remplace tout le reste. */
     autoNotice: "Cet e-mail vous a été envoyé automatiquement suite à une action sur votre compte.",
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
@@ -661,6 +677,7 @@ const TXT = {
     followFounder: "Williams Jullin",
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
+    opposition: "Stop receiving commercial messages from Axion-IA",
     autoNotice: "This email was sent automatically following an action on your account.",
     autoNoticeAsk: "Didn't request this? Write to us:",
   },
@@ -717,7 +734,7 @@ export function EmailLayout({
         <style dangerouslySetInnerHTML={{ __html: DARK_MODE_STYLE }} />
       </Head>
       <Preview>{preview}</Preview>
-      <Body style={main} className="ax-body">
+      <Body style={main} className="ax-body" data-famille={famille}>
         {/* Bandeau accent haut — énergie de marque */}
         <Section style={topbar}>&nbsp;</Section>
 
@@ -957,6 +974,22 @@ export function EmailLayout({
                     style={{ color: C.muted, textDecoration: "underline" }}
                   >
                     {t.unsubscribe}
+                  </Link>
+                </>
+              )}
+              {/* Opposition à la prospection — lot 1b (2026-09-02). Sur TOUTE
+                  famille hors A, sans que le gabarit ait rien à passer : le
+                  destinataire est connu du rendu, pas du gabarit. Portée écrite
+                  dans le libellé : les sollicitations COMMERCIALES. Un stagiaire
+                  qui clique garde sa convocation, un client garde sa facture. */}
+              {famille !== "A" && !unsubscribeHref && CURRENT_OPPOSITION_HREF && (
+                <>
+                  <br />
+                  <Link
+                    href={CURRENT_OPPOSITION_HREF}
+                    style={{ color: C.muted, textDecoration: "underline" }}
+                  >
+                    {t.opposition}
                   </Link>
                 </>
               )}
