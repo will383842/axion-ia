@@ -1,4 +1,5 @@
 "use client";
+// use-client: état local de survol/focus (useState) pour n'armer le préchargement Next qu'au survol
 
 import Link from "next/link";
 import { useState, type ComponentProps } from "react";
