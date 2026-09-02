@@ -1,0 +1,158 @@
+name: Coolify · basculer un drapeau (site + worker)
+# Workflow utilitaire workflow_dispatch — pose une variable d'environnement
+# NON SECRÈTE (un drapeau vrai/faux) en Production sur le site, le worker, ou
+# les deux, puis redéploie.
+#
+# ── Pourquoi une liste FERMÉE de clés ─────────────────────────────────────────
+# Les entrées d'un workflow_dispatch sont visibles dans l'interface GitHub et
+# dans les journaux. Ce workflow ne doit donc jamais servir à poser un secret :
+# la clé est choisie dans une liste, la valeur est `true` ou `false`, point.
+# Pour un secret, voir `calendly-jeton-vers-coolify.yml`.
+#
+# ── Pourquoi les deux applications par défaut ─────────────────────────────────
+# `RESERVATION_DIRECTE_ACTIVE` est lu par le site (sélecteur de créneaux, page
+# de réservation) ET par le worker (liens d'annulation/report dans les e-mails
+# de rappel). Un drapeau allumé d'un seul côté produirait des e-mails qui
+# pointent vers un formulaire éteint — le cul-de-sac muet décrit dans
+# `src/server/calendly/formulaire-reservation.ts`.
+#
+# Sécurité : workflow_dispatch only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      cle:
+        description: "Drapeau à basculer"
+        required: true
+        default: "RESERVATION_DIRECTE_ACTIVE"
+        type: choice
+        options:
+          - "RESERVATION_DIRECTE_ACTIVE"
+          - "EN_LOCALE_ENABLED"
+      valeur:
+        description: "Valeur"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      cible:
+        description: "Application(s)"
+        required: true
+        default: "les-deux"
+        type: choice
+        options:
+          - "les-deux"
+          - "site"
+          - "worker"
+      redeploy:
+        description: "Redéployer après (Restart ne recharge pas les variables)"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: read
+
+jobs:
+  basculer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Valider les secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Secret manquant : $v"
+              exit 1
+            fi
+          done
+          echo "Secrets présents."
+
+      - name: Lire l'état actuel
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CLE: ${{ inputs.cle }}
+        run: |
+          set -euo pipefail
+          for pair in "site:$COOLIFY_APP_UUID" "worker:$COOLIFY_WORKER_APP_UUID"; do
+            nom="${pair%%:*}"; uuid="${pair#*:}"
+            echo "──── $nom ────"
+            curl -fsSL -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/applications/${uuid}/envs" \
+              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | "\(.key) = \(.value) (preview=\(.is_preview))"' \
+              || echo "(lecture impossible)"
+          done
+
+      - name: Écrire le drapeau (Production seulement)
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CLE: ${{ inputs.cle }}
+          VALEUR: ${{ inputs.valeur }}
+          CIBLE: ${{ inputs.cible }}
+        run: |
+          set -euo pipefail
+          payload=$(jq -nc --arg key "$CLE" --arg value "$VALEUR" '{
+            key: $key, value: $value,
+            is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
+          }')
+          upsert() {
+            local uuid="$1" nom="$2" code
+            echo "──── $nom ($uuid) : $CLE=$VALEUR ────"
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "PATCH ✅ ($code)"; return 0; fi
+            echo "PATCH → $code : $(head -c 200 /tmp/resp) — tentative POST"
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "POST ✅ ($code)"; return 0; fi
+            echo "::error::$nom : POST → $code : $(head -c 300 /tmp/resp)"
+            return 1
+          }
+          case "$CIBLE" in
+            site) upsert "$COOLIFY_APP_UUID" site ;;
+            worker) upsert "$COOLIFY_WORKER_APP_UUID" worker ;;
+            *) upsert "$COOLIFY_APP_UUID" site; upsert "$COOLIFY_WORKER_APP_UUID" worker ;;
+          esac
+
+      - name: Redéployer (POST /api/v1/deploy)
+        if: ${{ inputs.redeploy == 'true' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CIBLE: ${{ inputs.cible }}
+        run: |
+          set -euo pipefail
+          deploy() {
+            local uuid="$1" nom="$2" r
+            r=$(curl -fsSL -X POST -m 30 \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
+              --data-urlencode "uuid=${uuid}" --data-urlencode "force=true" \
+              "${COOLIFY_URL}/api/v1/deploy")
+            echo "$nom : $r"
+          }
+          case "$CIBLE" in
+            site) deploy "$COOLIFY_APP_UUID" site ;;
+            worker) deploy "$COOLIFY_WORKER_APP_UUID" worker ;;
+            *) deploy "$COOLIFY_APP_UUID" site; deploy "$COOLIFY_WORKER_APP_UUID" worker ;;
+          esac
