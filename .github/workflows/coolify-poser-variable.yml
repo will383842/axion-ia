@@ -116,6 +116,13 @@ jobs:
           # La valeur vient d'un secret GitHub portant le MÊME nom que la
           # variable Coolify. Aucune saisie libre n'entre ici.
           valeur="${!CIBLE:-}"
+          # ⚠️ Un secret posé par `… | gh secret set` porte le RETOUR À LA LIGNE du
+          #    pipe (mesuré le 2026-09-02 : 94 caractères pour un jeton de 93). Posé
+          #    tel quel dans Coolify, il ferait un en-tête « Bearer xxx
+ » que
+          #    GitHub refuse. On retire les fins de ligne terminales, rien d'autre.
+          valeur="${valeur%%[$'
+']*}"
           if [ -z "$valeur" ]; then
             echo "::error::le secret GitHub « $CIBLE » est vide ou absent."
             exit 1
