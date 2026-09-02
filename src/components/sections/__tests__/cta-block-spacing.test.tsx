@@ -19,7 +19,7 @@ function classesOf(ui: React.ReactElement): string {
 
 describe("CtaBlock — spacing", () => {
   it("par défaut : bloc de page, 96 → 144 px (pages marketing inchangées)", () => {
-    const cls = classesOf(<CtaBlock title="Parlons-en" cta={<a href="/contact">Nous écrire</a>} />);
+    const cls = classesOf(<CtaBlock title="Parlons-en" cta={<span>Nous écrire</span>} />);
     expect(cls).toContain("py-24");
     expect(cls).toContain("lg:py-36");
     expect(cls).not.toContain("py-8");
@@ -30,7 +30,7 @@ describe("CtaBlock — spacing", () => {
       <CtaBlock
         title="Mettre en pratique"
         spacing="compact"
-        cta={<a href="/formations">Voir nos formations</a>}
+        cta={<span>Voir nos formations</span>}
       />,
     );
     expect(cls).toContain("py-8");
@@ -41,10 +41,10 @@ describe("CtaBlock — spacing", () => {
 
   it("le ton reste indépendant de l'espacement", () => {
     const clair = classesOf(
-      <CtaBlock title="x" tone="paper" spacing="compact" cta={<a href="/x">x</a>} />,
+      <CtaBlock title="x" tone="paper" spacing="compact" cta={<span>x</span>} />,
     );
     const sombre = classesOf(
-      <CtaBlock title="x" tone="dark" spacing="compact" cta={<a href="/x">x</a>} />,
+      <CtaBlock title="x" tone="dark" spacing="compact" cta={<span>x</span>} />,
     );
     expect(clair).not.toBe(sombre);
     expect(clair).toContain("py-8");
