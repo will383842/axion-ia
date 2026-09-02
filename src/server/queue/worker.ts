@@ -4,6 +4,14 @@
 // Run via `pnpm worker`. En production, tourner en process separe (Coolify
 // service dedicated) pour isoler le throughput email du throughput web.
 
+// ⚠️ PREMIER import, et ce n'est pas cosmétique : le worker tourne HORS de
+// Next, donc le hook d'instrumentation qui initialise Sentry côté web ne
+// s'exécute jamais ici. Sans cette ligne, `captureWorkerError()` résout sa
+// fonction (PR #913) mais l'envoie à un client inexistant — un appel qui
+// part nulle part a la même tête qu'un appel qui marche.
+// Gardé par `lib/__tests__/le-worker-initialise-sentry.spec.ts`.
+import { initialiserSentryWorker } from "./lib/sentry-worker-init";
+
 import { startEmailWorker } from "./workers/email-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { startCalendlyPollWorker } from "./workers/calendly-poll-worker";
@@ -68,7 +76,16 @@ async function main() {
     console.warn("→ Axion-IA · BULLMQ_DISABLED=true, worker process aborting (intentional).");
     process.exit(0);
   }
-  console.log("→ Axion-IA · BullMQ workers booting…");
+
+  // AVANT tout démarrage de worker : une erreur levée pendant le boot, avant
+  // l'initialisation, ne serait capturée par personne. Placé après la sortie
+  // `BULLMQ_DISABLED` uniquement parce que ce chemin-là quitte immédiatement —
+  // c'est le build SSG, qui n'a ni DSN ni erreurs à remonter.
+  const sentryPret = initialiserSentryWorker();
+
+  console.log(
+    `→ Axion-IA · BullMQ workers booting… (Sentry ${sentryPret ? "actif ✓" : "INACTIF — voir le message ci-dessus"})`,
+  );
 
   const workers = [
     startEmailWorker(),
