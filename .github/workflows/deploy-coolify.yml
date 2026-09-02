@@ -689,7 +689,19 @@ jobs:
           # 2026-09-02, 0,222 sur le runner et 0 en local sur la meme page.
           mkdir -p lighthouse-rapports/desktop
           cp .lighthouseci/lhr-*.json lighthouse-rapports/desktop/ 2>/dev/null || true
-          pnpm exec lhci assert --config=lighthouserc.postdeploy.json
+          # 🔴 2026-09-02 — LE VERDICT EST DIFFÉRÉ, PAS AVALÉ.
+          #
+          # `set -euo pipefail` est actif : un assert desktop en échec arrêtait
+          # l'étape SUR-LE-CHAMP, donc la passe mobile ne tournait pas du tout.
+          # Constaté au déploiement de #933 (run 33631339912) : LCP desktop de
+          # /fr/appel à 1835 ms contre 1800, et « Passe mobile : … » n'apparaît
+          # NULLE PART dans le journal. Le desktop tenait le mobile en otage —
+          # soit exactement l'angle mort que la passe mobile devait fermer.
+          #
+          # On collecte donc les DEUX verdicts, et on sort en erreur à la fin si
+          # l'un des deux a rougi. Le job reste bloquant ; il mesure d'abord.
+          VERDICT=0
+          pnpm exec lhci assert --config=lighthouserc.postdeploy.json || VERDICT=1
 
           # ── GEO-121 — passe MOBILE (audit GEO/AEO 2026-08-14, lot 16) ──────
           # Aucune porte ne mesurait le mobile : ce gate tournait desktop seul, or
@@ -746,7 +758,14 @@ jobs:
           # Depuis le 2026-09-02 l'assert PEUT echouer sur les seuils — c'est le but.
           # Pas de `|| true` : un rouge ici est une regression ou un cliquet a lire,
           # jamais un bruit a avaler.
-          pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json
+          pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json || VERDICT=1
+
+          # Verdict unique des deux passes. Rouge = régression ou cliquet à
+          # relire, jamais un bruit avalé.
+          if [ "$VERDICT" -ne 0 ]; then
+            echo "::error::Gate Lighthouse : au moins une assertion a échoué (desktop et/ou mobile). Lire les deux tableaux « url | perf | LCP | … » ci-dessus, puis l'artefact lighthouse-rapports-<sha>."
+            exit 1
+          fi
 
       - name: Rapports Lighthouse complets (desktop + mobile)
         # `always()` : un assert rouge est precisement le moment ou l'on veut le rapport.
