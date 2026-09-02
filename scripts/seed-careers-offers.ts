@@ -10,9 +10,20 @@
  * EN = FR (site FR-only). Salaire affiché si fourchette (directive UE 2023/970).
  * Postes itinérants → jobLocations = 41 villes (JobPosting multi-location, anti-doorway).
  *
+ * 🔴 CE SCRIPT ÉCRASE LE TEXTE PUBLIÉ. Relevé du 2026-09-02 : sur 55 offres en
+ * ligne, 20 portaient des corrections faites en console que le dépôt n'a jamais
+ * reçues (titres raccourcis, accents rétablis, corps retouchés). Une passe
+ * complète les aurait toutes effacées, sans un mot. Pour une offre PUBLIÉE, la
+ * console est la source de vérité ; ce script sert à créer et à pousser des lots
+ * précis — d'où le périmètre désormais obligatoire.
+ *
  * Lancement :
- *   pnpm tsx scripts/seed-careers-offers.ts            (DATABASE_URL de l'env)
- *   DATABASE_URL=... pnpm tsx scripts/seed-careers-offers.ts
+ *   pnpm tsx scripts/seed-careers-offers.ts --only=slug-a,slug-b   (recommandé)
+ *   pnpm tsx scripts/seed-careers-offers.ts --all                  (écrase les 45)
+ *   ... --republish   → rafraîchit aussi publishedAt (date vue par Google for Jobs)
+ *
+ * `--republish` est un geste HUMAIN : à n'utiliser que sur des offres réellement
+ * ouvertes et relues, jamais pour simuler de la fraîcheur (règles Google for Jobs).
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -59,7 +70,33 @@ function stripHtml(html: string): string {
 const cut = (s: string, n: number): string =>
   s.length <= n ? s : s.slice(0, n - 1).trimEnd() + "…";
 
+/** Périmètre d'écriture : `--only=a,b` ou `--all`. Rien = on refuse d'écrire. */
+function parseScope(argv: string[]): { slugs: Set<string> | null; republish: boolean } {
+  const only = argv.find((a) => a.startsWith("--only="));
+  const republish = argv.includes("--republish");
+  if (only) {
+    const slugs = new Set(
+      only
+        .slice("--only=".length)
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean),
+    );
+    if (slugs.size === 0) throw new Error("--only= est vide.");
+    return { slugs, republish };
+  }
+  if (argv.includes("--all")) return { slugs: null, republish };
+  throw new Error(
+    "Périmètre manquant. Ce script écrase le texte publié : 20 des 55 offres en " +
+      "ligne portent des corrections console absentes du dépôt (relevé 2026-09-02).\n" +
+      "  --only=slug-a,slug-b   n'écrit que ces offres (recommandé)\n" +
+      "  --all                  écrit les 45 et écrase les corrections console\n" +
+      "  --republish            rafraîchit en plus publishedAt (geste humain)",
+  );
+}
+
 async function main() {
+  const { slugs: scope, republish } = parseScope(process.argv.slice(2));
   const input = JSON.parse(fs.readFileSync(INPUT, "utf8")) as {
     postes: Poste[];
     cities: Array<{ city: string; region: string }>;
@@ -71,7 +108,12 @@ async function main() {
   let updated = 0;
   const missing: string[] = [];
 
+  let skipped = 0;
   for (const p of input.postes) {
+    if (scope && !scope.has(p.slug)) {
+      skipped++;
+      continue;
+    }
     const genPath = path.join(GEN_DIR, `${p.slug}.json`);
     if (!fs.existsSync(genPath)) {
       missing.push(p.slug);
@@ -122,7 +164,7 @@ async function main() {
       where: { slug: p.slug },
       // En update, on ne réécrase pas publishedAt s'il existe déjà.
       create: data,
-      update: (({ publishedAt: _publishedAt, ...rest }) => rest)(data),
+      update: republish ? data : (({ publishedAt: _publishedAt, ...rest }) => rest)(data),
     });
     if (existing) updated++;
     else created++;
@@ -130,9 +172,9 @@ async function main() {
   }
 
   console.log(
-    `\n=== SEED TERMINÉ : ${created} créées, ${updated} mises à jour${
-      missing.length ? `, ${missing.length} manquantes : ${missing.join(", ")}` : ""
-    } ===`,
+    `\n=== SEED TERMINÉ : ${created} créées, ${updated} mises à jour${republish ? " (publishedAt rafraîchi)" : ""}${
+      skipped ? `, ${skipped} hors périmètre` : ""
+    }${missing.length ? `, ${missing.length} manquantes : ${missing.join(", ")}` : ""} ===`,
   );
   await prisma.$disconnect();
 }

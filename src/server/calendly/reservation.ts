@@ -217,7 +217,9 @@ function texte(o: unknown, cle: string): string | null {
  * celle qui distingue « choisissez un autre créneau » de « le formulaire est
  * cassé » — dormait dans `details`, que personne ne lisait.
  */
-function detailsDeLErreur(o: unknown): ReadonlyArray<{ parameter: string; message: string }> {
+function detailsDeLErreur(
+  o: unknown,
+): ReadonlyArray<{ parameter: string; message: string; code: string }> {
   if (typeof o !== "object" || o === null) return [];
   const brut = (o as Record<string, unknown>)["details"];
   if (!Array.isArray(brut)) return [];
@@ -228,6 +230,7 @@ function detailsDeLErreur(o: unknown): ReadonlyArray<{ parameter: string; messag
       {
         parameter: typeof r["parameter"] === "string" ? r["parameter"] : "?",
         message: typeof r["message"] === "string" ? r["message"] : "",
+        code: typeof r["code"] === "string" ? r["code"] : "",
       },
     ];
   });
@@ -352,7 +355,7 @@ export async function reserverCreneau(d: DemandeReservation): Promise<ResultatRe
     // disait que « The supplied parameters are invalid. »
     const detail = [
       texte(corps, "message") ?? texte(corps, "title") ?? `HTTP ${res.status}`,
-      ...details.map((x) => `${x.parameter}: ${x.message}`),
+      ...details.map((x) => `${x.parameter}: ${x.message}${x.code ? ` [${x.code}]` : ""}`),
     ].join(" — ");
 
     // 🔴 AVANT TOUT LE RESTE. Un 403 de portée n'est pas un refus de la demande,
@@ -376,14 +379,21 @@ export async function reserverCreneau(d: DemandeReservation): Promise<ResultatRe
     // Le créneau pris entre-temps est le refus le PLUS FRÉQUENT, et il ne doit
     // surtout pas être traité comme une panne : rediriger vers Calendly ferait
     // lire au prospect le même refus, en moins bien, sur une page étrangère.
-    // Deux signatures : le texte (ancienne forme, conservée) et le PARAMÈTRE
-    // fautif. Un refus sur `start_time` dit toujours la même chose au prospect :
-    // cet horaire n'est plus prenable, choisissez-en un autre — la saisie est
-    // conservée. Mesuré le 2026-09-02 : sans la seconde, un créneau pris
-    // rendait le message de panne « Réessayez », qui aurait échoué pareil.
+    // 🔴 LA FORME RÉELLE, mesurée en prod le 2026-09-02 (sonde du workflow
+    // jeton sur un créneau pris trente secondes plus tôt) :
+    //   400 { title: "Invalid Argument", message: "The supplied parameters are
+    //   invalid.", details: [{ parameter: "event.start_time",
+    //   message: "Cette heure de début est déjà occupée", code: "already_filled" }] }
+    // Trois enseignements : le paramètre est PRÉFIXÉ (`event.start_time`, pas
+    // `start_time`), le message est LOCALISÉ (français ici, donc aucun mot
+    // anglais à attendre), et un `code` stable existe. On lit le code d'abord,
+    // le suffixe du paramètre ensuite, le texte en dernier recours — dans cet
+    // ordre de fiabilité. Un refus sur l'heure de début dit toujours la même
+    // chose au prospect : cet horaire n'est plus prenable, choisissez-en un
+    // autre — la saisie est conservée.
     if (
-      /already|no longer available|not available|taken|slot/i.test(detail) ||
-      details.some((x) => x.parameter === "start_time")
+      details.some((x) => x.code === "already_filled" || /(^|\.)start_time$/.test(x.parameter)) ||
+      /already|no longer available|not available|taken|slot|occup/i.test(detail)
     ) {
       return { ok: false, raison: "creneau_pris" };
     }
