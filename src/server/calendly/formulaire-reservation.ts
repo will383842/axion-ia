@@ -99,55 +99,37 @@ export const HORIZON_JOURS = 32;
 export const PREAVIS_MINUTES = 15;
 
 /**
- * Fuseaux proposés, dans l'ordre où ils servent.
+ * Le fuseau du rendez-vous — Paris, et il n'est plus demandé au visiteur.
  *
- * ## Pourquoi une liste, et pas une détection
+ * ## Ce qui a été retiré le 2026-09-02, et pourquoi
  *
- * Cette page n'envoie aucun JavaScript — c'est ce qui la rend rapide et
- * fonctionnelle sur un réseau qui vacille. Le prix : le serveur ne peut pas
- * connaître le fuseau du visiteur. Calendly, lui, le détecte dans le navigateur.
+ * Le formulaire portait un menu de quinze fuseaux. Il ne servait qu'à une
+ * chose : écrire la confirmation d'un visiteur de Montréal dans SON heure. Le
+ * prix était payé par tout le monde — un seizième champ, avec son étiquette,
+ * son texte d'aide et ses deux lignes de hauteur, sur un écran dont la longueur
+ * perçue décide qui va au bout. Arbitrage Will : « supprimer le fuseau
+ * horaire. »
  *
- * Trois réponses possibles ; la liste est la moins mauvaise :
- * — figer Europe/Paris ferait recevoir à un visiteur de Montréal une
- *   confirmation à une heure qui n'est pas la sienne, sans qu'il puisse
- *   corriger ;
- * — la liste IANA complète fait plus de quatre cents entrées, illisible au
- *   pouce et lourde dans le HTML ;
- * — une liste courte, ordonnée par usage réel, tient dans un menu natif que le
- *   téléphone rend lui-même, et couvre l'audience francophone.
+ * ⚠️ Ce que cela coûte, écrit noir sur blanc : un visiteur hors de France
+ * métropolitaine lit une heure de Paris. Le compenser tient en un mot — toutes
+ * nos surfaces (page, récapitulatif, e-mail) écrivent « heure de Paris » à
+ * côté de l'heure, sans exception. Une heure sans son fuseau serait le vrai
+ * défaut ; une heure de Paris annoncée comme telle se convertit de tête.
  *
- * ⚠️ Le champ reste validé au-delà de cette liste (voir `fuseauValide`) : un
- * visiteur qui poste un fuseau IANA légitime absent d'ici est accepté. La liste
- * est une commodité d'affichage, pas une frontière.
+ * 🔑 Le champ reste ACCEPTÉ par le validateur. Ce n'est pas un reste : le
+ * formulaire est du HTML natif, et un `fuseau` posté à la main (ou par une
+ * future version qui le redemanderait) doit être validé plutôt qu'ignoré.
+ * Absent, il retombe ici.
  */
-export const FUSEAUX_PROPOSES: ReadonlyArray<{ readonly id: string; readonly libelle: string }> = [
-  { id: "Europe/Paris", libelle: "France métropolitaine (Paris)" },
-  { id: "Europe/Brussels", libelle: "Belgique (Bruxelles)" },
-  { id: "Europe/Zurich", libelle: "Suisse (Zurich)" },
-  { id: "Europe/Luxembourg", libelle: "Luxembourg" },
-  { id: "Europe/London", libelle: "Royaume-Uni (Londres)" },
-  { id: "America/Montreal", libelle: "Québec (Montréal)" },
-  { id: "Africa/Casablanca", libelle: "Maroc (Casablanca)" },
-  { id: "Africa/Tunis", libelle: "Tunisie (Tunis)" },
-  { id: "Africa/Algiers", libelle: "Algérie (Alger)" },
-  { id: "Africa/Dakar", libelle: "Sénégal (Dakar)" },
-  { id: "Africa/Abidjan", libelle: "Côte d'Ivoire (Abidjan)" },
-  { id: "Indian/Reunion", libelle: "La Réunion" },
-  { id: "America/Guadeloupe", libelle: "Guadeloupe · Martinique" },
-  { id: "Pacific/Noumea", libelle: "Nouvelle-Calédonie (Nouméa)" },
-  { id: "UTC", libelle: "UTC (temps universel)" },
-];
-
-/** Le fuseau retenu quand le visiteur n'en choisit pas. */
 export const FUSEAU_DEFAUT = "Europe/Paris";
 
 /**
  * Un fuseau IANA que le moteur sait interpréter.
  *
- * 🔑 On n'apparie PAS sur la liste ci-dessus : elle est courte par choix
- * d'ergonomie, et refuser `Asia/Tokyo` parce qu'il n'y figure pas serait
- * arbitraire. On demande au moteur, qui est l'autorité réelle — et c'est aussi
- * lui que Calendly consultera.
+ * 🔑 On n'apparie sur AUCUNE liste : refuser `Asia/Tokyo` parce qu'il ne
+ * figurerait pas dans une énumération à nous serait arbitraire. On demande au
+ * moteur, qui est l'autorité réelle — et c'est aussi lui que Calendly
+ * consultera.
  */
 export function fuseauValide(v: string): boolean {
   if (v.trim() === "") return false;

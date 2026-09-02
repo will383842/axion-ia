@@ -23,13 +23,48 @@
  * adresse d'URL finit dans l'historique du navigateur, dans les journaux du
  * serveur et de Cloudflare, et dans l'en-tête `Referer`. Le détail est relu
  * chez Calendly avec notre jeton, côté serveur.
+ *
+ * ## 🎯 Le passage « punch » du 2026-09-02
+ *
+ * Will : « il manque de punch », « je veux la perfection […] pour ne pas perdre
+ * de prospect en cours de route ». Trois manques mesurés sur cet écran :
+ *
+ * 1. **Le récapitulatif ne se lisait pas.** Un `<dl>` beige plat, deux lignes
+ *    de 16 px, aucune hiérarchie : la date — la seule information que le
+ *    visiteur est venu vérifier — avait exactement le poids visuel du mot
+ *    « Quand ». Elle passe en serif large dans une carte à en-tête, et la carte
+ *    porte une bordure `border-strong` au lieu du sable presque invisible.
+ * 2. **Rien ne disait la SUITE.** Le prospect quittait la page en sachant
+ *    seulement qu'un e-mail arrivait. Deux messages distincts vont pourtant lui
+ *    parvenir — le nôtre et l'invitation d'agenda de Calendly — puis deux
+ *    rappels. Ne pas l'annoncer, c'est fabriquer le doute qui produit le
+ *    deuxième e-mail « je n'ai rien reçu » et, pire, la seconde réservation.
+ *    D'où `<CeQuiSePasseMaintenant>`.
+ * 3. **Le lien de visio était une URL brute en `break-all`.** Illisible, et
+ *    impossible à viser au pouce. C'est devenu une action nommée de 44 px.
+ *
+ * ⛔ Ce qui n'a PAS changé, et ne doit pas changer : on n'invente ni date, ni
+ * heure, ni format. Quand `relireLEvenement` rend `null`, la carte disparaît et
+ * la tête renvoie à l'e-mail, qui fait foi.
  */
 
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { CalendarCheck, Clock, Mail, AlertTriangle, HelpCircle } from "lucide-react";
+import {
+  CalendarCheck,
+  CalendarClock,
+  CalendarPlus,
+  Clock,
+  Mail,
+  AlertTriangle,
+  BellRing,
+  ExternalLink,
+  HelpCircle,
+  Phone,
+  Video,
+} from "lucide-react";
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
@@ -69,6 +104,7 @@ interface Props {
 
 interface DetailEvenement {
   readonly debut: Date | null;
+  readonly fin: Date | null;
   readonly format: "telephone" | "visio" | "inconnu";
   readonly lienReunion: string | null;
 }
@@ -103,14 +139,16 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
     if (typeof r !== "object" || r === null) return null;
     const o = r as Record<string, unknown>;
     const lieu = o["location"];
-    const debutBrut = o["start_time"];
-    const debut = typeof debutBrut === "string" ? new Date(debutBrut) : null;
     const join =
       typeof lieu === "object" && lieu !== null
         ? (lieu as Record<string, unknown>)["join_url"]
         : null;
     return {
-      debut: debut && !Number.isNaN(debut.getTime()) ? debut : null,
+      debut: dateOuNull(o["start_time"]),
+      // La fin sert UNIQUEMENT à afficher une durée mesurée. Sans elle, aucune
+      // durée n'est écrite : « 45 minutes » recopié depuis la page de
+      // réservation serait une durée inventée le jour où l'event-type change.
+      fin: dateOuNull(o["end_time"]),
       // 🔑 La MÊME dérivation que partout ailleurs. Écrire ici une seconde
       // façon de lire le format ferait diverger la page de l'e-mail que le
       // visiteur reçoit dans la minute.
@@ -122,7 +160,20 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
   }
 }
 
-function quand(d: Date): string {
+function dateOuNull(brut: unknown): Date | null {
+  if (typeof brut !== "string") return null;
+  const d = new Date(brut);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+/**
+ * Le jour et l'heure, séparés — parce qu'ils ne se lisent pas au même poids.
+ *
+ * 🔑 Une seule dérivation. `quand()` compose ces deux morceaux au lieu de
+ * refaire ses propres `Intl.DateTimeFormat` : deux formatages du même instant
+ * finiraient par diverger d'un fuseau ou d'une capitale.
+ */
+function quandEnDeux(d: Date): { jour: string; heure: string } {
   const jour = new Intl.DateTimeFormat("fr-FR", {
     weekday: "long",
     day: "numeric",
@@ -134,7 +185,19 @@ function quand(d: Date): string {
     minute: "2-digit",
     timeZone: "Europe/Paris",
   }).format(d);
-  return `${jour.charAt(0).toUpperCase()}${jour.slice(1)} à ${heure} (heure de Paris)`;
+  return { jour: `${jour.charAt(0).toUpperCase()}${jour.slice(1)}`, heure };
+}
+
+function quand(d: Date): string {
+  const { jour, heure } = quandEnDeux(d);
+  return `${jour} à ${heure} (heure de Paris)`;
+}
+
+/** La durée en minutes, ou `null` si l'un des deux bouts manque. */
+function dureeEnMinutes(debut: Date, fin: Date | null): number | null {
+  if (!fin) return null;
+  const minutes = Math.round((fin.getTime() - debut.getTime()) / 60_000);
+  return minutes > 0 && minutes < 24 * 60 ? minutes : null;
 }
 
 export default async function ConfirmePage({ params, searchParams }: Props) {
@@ -187,6 +250,7 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
     <>
       {detail?.debut ? (
         <TeteDeParcours
+          surtitre="Premier contact · confirmé"
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="C'est réservé."
@@ -199,6 +263,7 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
         // trait pour trait au succès complet, et rien n'indiquait au visiteur
         // OÙ vérifier. On le dit : l'e-mail fait foi.
         <TeteDeParcours
+          surtitre="Premier contact · enregistré"
           icone={<CalendarCheck className="h-6 w-6" aria-hidden="true" />}
           ton="ok"
           titre="Votre réservation est enregistrée."
@@ -210,52 +275,207 @@ function Confirme({ detail }: { detail: DetailEvenement | null }) {
           heure serait pire que de n'en afficher aucune : l'e-mail, lui, porte
           la bonne, et deux versions différentes se contrediraient. */}
       {detail?.debut ? (
-        <dl className="bg-sand space-y-3 rounded-2xl p-5">
-          <div className="flex gap-3">
-            <Clock className="text-fg-soft mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-            <div>
-              <dt className="text-fg-soft text-[11px] font-semibold tracking-widest uppercase">
-                Quand
-              </dt>
-              <dd className="text-fg mt-0.5 font-medium">{quand(detail.debut)}</dd>
-            </div>
+        <CarteRendezVous
+          debut={detail.debut}
+          fin={detail.fin}
+          format={detail.format}
+          lienReunion={detail.lienReunion}
+        />
+      ) : null}
+
+      {/* ⚠️ La chronologie s'affiche dans les DEUX branches, y compris sans
+          détail. Elle ne dit rien de la date ni du format : elle dit ce qui
+          arrive ensuite, et c'est précisément là que le visiteur privé de
+          récapitulatif a le plus besoin d'être tenu. */}
+      <CeQuiSePasseMaintenant format={detail?.format ?? "inconnu"} />
+    </>
+  );
+}
+
+/**
+ * Le récapitulatif — la carte que le visiteur est venu lire.
+ *
+ * 🔑 Une seule information est mise en avant : QUAND. Le format vient ensuite,
+ * et l'action de visio en dernier, parce qu'elle ne sert que le jour J. Aucun
+ * champ n'est écrit sans donnée : la durée disparaît si l'API n'a pas rendu
+ * l'heure de fin, le bloc visio si le format n'est pas une visio.
+ */
+function CarteRendezVous({
+  debut,
+  fin,
+  format,
+  lienReunion,
+}: {
+  debut: Date;
+  fin: Date | null;
+  format: DetailEvenement["format"];
+  lienReunion: string | null;
+}) {
+  const { jour, heure } = quandEnDeux(debut);
+  const minutes = dureeEnMinutes(debut, fin);
+  const PictoFormat = format === "visio" ? Video : format === "telephone" ? Phone : Mail;
+
+  return (
+    <section
+      aria-label="Votre rendez-vous"
+      className="border-border-strong bg-paper overflow-hidden rounded-2xl border shadow-sm"
+    >
+      <p className="bg-sage-soft text-fg border-border-strong border-b px-5 py-2.5 text-[11px] font-semibold tracking-widest uppercase">
+        Votre rendez-vous
+      </p>
+
+      <div className="p-5 sm:p-6">
+        <div className="flex gap-4">
+          <span
+            className="bg-sage-soft text-sage flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+            aria-hidden="true"
+          >
+            <Clock className="h-4 w-4" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-fg-muted text-[11px] font-semibold tracking-widest uppercase">
+              Quand
+            </p>
+            <p
+              className="text-fg mt-1 text-[clamp(1.0625rem,4.8vw,1.375rem)] leading-snug font-semibold"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {jour} à {heure}
+            </p>
+            <p className="text-fg-soft mt-1 text-sm">
+              Heure de Paris{minutes ? ` · ${minutes} minutes` : ""}
+            </p>
           </div>
-          <div className="flex gap-3">
-            <Mail className="text-fg-soft mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-            <div>
-              <dt className="text-fg-soft text-[11px] font-semibold tracking-widest uppercase">
+        </div>
+
+        <div className="border-border-strong mt-5 border-t pt-5">
+          <div className="flex gap-4">
+            <span
+              className="bg-sage-soft text-sage flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+              aria-hidden="true"
+            >
+              <PictoFormat className="h-4 w-4" />
+            </span>
+            <div className="min-w-0">
+              <p className="text-fg-muted text-[11px] font-semibold tracking-widest uppercase">
                 Comment
-              </dt>
-              <dd className="text-fg mt-0.5 font-medium">
-                {detail.format === "visio"
+              </p>
+              <p className="text-fg mt-1 font-semibold">
+                {format === "visio"
                   ? "En visioconférence"
-                  : detail.format === "telephone"
+                  : format === "telephone"
                     ? "Par téléphone — nous vous appelons"
                     : "Le format vous sera précisé par e-mail"}
-              </dd>
-              {detail.format === "visio" ? (
-                detail.lienReunion ? (
-                  <dd className="mt-1 text-sm break-all">
-                    <a
-                      href={detail.lienReunion}
-                      className="text-terracotta-deep underline underline-offset-2"
-                    >
-                      {detail.lienReunion}
-                    </a>
-                  </dd>
+              </p>
+
+              {format === "visio" ? (
+                lienReunion ? (
+                  // 🔴 Une action nommée, pas une URL. L'adresse brute en
+                  // `break-all` occupait trois lignes illisibles et n'offrait
+                  // aucune cible franche au pouce.
+                  <a
+                    href={lienReunion}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border-terracotta text-terracotta-deep hover:bg-terracotta-soft focus-visible:ring-terracotta mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 px-4 py-2 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:w-auto"
+                  >
+                    <Video className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    Ouvrir le lien de la visioconférence
+                    <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  </a>
                 ) : (
                   // Un lien encore absent est un état d'attente légitime :
                   // Google le crée quelques secondes après la réservation.
-                  <dd className="text-fg-soft mt-1 text-sm">
+                  <p className="text-fg-soft mt-2 text-sm">
                     Le lien de connexion arrive dans votre e-mail de confirmation.
-                  </dd>
+                  </p>
                 )
               ) : null}
             </div>
           </div>
-        </dl>
-      ) : null}
-    </>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * 🔴 LA CHRONOLOGIE — c'est elle qui empêche de perdre le prospect ici.
+ *
+ * Le parcours envoie DEUX messages distincts (le nôtre et l'invitation
+ * d'agenda émise par Calendly), puis deux rappels. Un visiteur qui n'a pas été
+ * prévenu de cette séquence interprète le second message comme un doublon, le
+ * premier rappel comme une erreur, et l'absence d'invitation dans les trente
+ * secondes comme un échec de réservation — celui qui produit la deuxième
+ * réservation, la seule panne réellement coûteuse de cet écran.
+ *
+ * ⚠️ Aucune ligne ne cite d'horaire : la séquence est vraie quelle que soit la
+ * date, et le reste vrai même quand la relecture Calendly n'a rien rendu.
+ */
+function CeQuiSePasseMaintenant({ format }: { format: DetailEvenement["format"] }) {
+  const etapes = [
+    {
+      Picto: Mail,
+      titre: "Notre e-mail de confirmation",
+      corps:
+        "Il arrive dans la minute et récapitule tout, avec vos liens pour annuler ou déplacer.",
+    },
+    {
+      Picto: CalendarPlus,
+      titre: "L'invitation dans votre agenda",
+      corps:
+        format === "visio"
+          ? "Elle arrive séparément, envoyée par Calendly. Acceptez-la pour bloquer le créneau : le lien de connexion y figure aussi."
+          : "Elle arrive séparément, envoyée par Calendly. Acceptez-la pour bloquer le créneau dans votre agenda.",
+    },
+    {
+      Picto: BellRing,
+      titre: "Deux rappels, sans rien faire",
+      corps: "Un la veille, un autre une heure avant. Vous ne pouvez pas l'oublier.",
+    },
+    {
+      Picto: CalendarClock,
+      titre: "Un empêchement ?",
+      corps:
+        "Annulez ou déplacez en un clic depuis l'e-mail, jusqu'à la dernière minute. Aucune justification à donner.",
+    },
+  ];
+
+  return (
+    <section aria-labelledby="suite-du-parcours" className="mt-9">
+      <h2
+        id="suite-du-parcours"
+        className="text-terracotta text-[11px] font-semibold tracking-widest uppercase sm:text-xs"
+      >
+        Ce qui se passe maintenant
+      </h2>
+      <ol className="mt-5">
+        {etapes.map(({ Picto, titre, corps }, i) => {
+          const dernier = i === etapes.length - 1;
+          return (
+            <li key={titre} className="flex gap-4">
+              <div className="flex shrink-0 flex-col items-center">
+                <span
+                  className="border-border-strong bg-paper text-terracotta flex h-9 w-9 items-center justify-center rounded-full border"
+                  aria-hidden="true"
+                >
+                  <Picto className="h-4 w-4" />
+                </span>
+                {/* Le fil qui relie les étapes : il n'existe qu'entre deux
+                    pastilles, jamais après la dernière. */}
+                {dernier ? null : (
+                  <span className="bg-border-strong w-px grow" aria-hidden="true" />
+                )}
+              </div>
+              <div className={dernier ? "" : "pb-6"}>
+                <p className="text-fg font-semibold">{titre}</p>
+                <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">{corps}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
   );
 }
 
@@ -263,15 +483,24 @@ function ADeuxVerifier({ detail }: { detail: DetailEvenement | null }) {
   return (
     <>
       <TeteDeParcours
+        surtitre="Premier contact · un point à confirmer"
         icone={<AlertTriangle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Votre rendez-vous est pris."
         sous="Un point reste à confirmer de notre côté : le format de l'échange. Nous vous écrivons pour le préciser — vous n'avez rien à faire."
       />
+      {/* ⚠️ La date, et RIEN d'autre. C'est précisément le format qui est en
+          doute ici : afficher une ligne « Comment » reviendrait à confirmer ce
+          qu'on vient d'annoncer comme incertain. */}
       {detail?.debut ? (
-        <div className="bg-sand rounded-2xl p-5">
-          <p className="text-fg-soft text-[11px] font-semibold tracking-widest uppercase">Quand</p>
-          <p className="text-fg mt-0.5 font-medium">{quand(detail.debut)}</p>
+        <div className="border-border-strong bg-paper rounded-2xl border p-5 shadow-sm">
+          <p className="text-fg-muted text-[11px] font-semibold tracking-widest uppercase">Quand</p>
+          <p
+            className="text-fg mt-1 text-[clamp(1.0625rem,4.8vw,1.375rem)] leading-snug font-semibold"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {quand(detail.debut)}
+          </p>
         </div>
       ) : null}
     </>
@@ -284,24 +513,36 @@ function ADeuxVerifier({ detail }: { detail: DetailEvenement | null }) {
  * Ne JAMAIS remplacer ce texte par « une erreur est survenue, réessayez ». Nous
  * ne savons pas si la réservation existe : inviter à recommencer produirait un
  * doublon dans la moitié des cas, et un doublon coûte plus qu'une attente.
+ *
+ * ⚠️ Aucune chronologie ici, et c'est délibéré : annoncer « votre invitation
+ * d'agenda arrive » à quelqu'un dont on ignore si la réservation existe serait
+ * une promesse qu'on ne sait pas tenir.
+ *
+ * ⚠️ Cette fonction est la DERNIÈRE du fichier, et doit le rester : la garde
+ * `les-ecrans-de-fin-disent-vrai.spec.ts` lit son corps jusqu'à la fin du
+ * fichier pour vérifier qu'il ne contient ni « erreur » ni invitation à
+ * recommencer. Une fonction ajoutée après elle entrerait dans la mesure.
  */
 function EnCoursDeVerification() {
   return (
     <>
       <TeteDeParcours
+        surtitre="Premier contact · en cours de vérification"
         icone={<HelpCircle className="h-6 w-6" aria-hidden="true" />}
         ton="attention"
         titre="Nous vérifions votre réservation."
         sous="Votre demande est partie, mais nous n'avons pas reçu la confirmation de notre agenda. Nous vérifions à la main, tout de suite."
       />
-      <div className="border-border bg-paper text-fg-soft space-y-3 rounded-2xl border p-5 text-[15px]">
-        <p className="text-fg font-semibold">Ce que vous avez à faire : rien.</p>
-        <p>
+      <div className="border-border-strong bg-paper text-fg-soft space-y-3 rounded-2xl border p-5 text-[15px] shadow-sm sm:p-6">
+        <p className="text-fg text-lg font-semibold" style={{ fontFamily: "var(--font-serif)" }}>
+          Ce que vous avez à faire : rien.
+        </p>
+        <p className="leading-relaxed">
           Vous recevrez un e-mail dans les prochaines minutes — soit la confirmation de votre
           rendez-vous, soit une invitation à en choisir un autre.
         </p>
-        <p>
-          <strong className="text-fg">Merci de ne pas réserver à nouveau</strong> dans
+        <p className="border-terracotta bg-terracotta-soft text-fg rounded-lg border-l-4 px-4 py-3 leading-relaxed">
+          <strong className="font-semibold">Merci de ne pas réserver à nouveau</strong> dans
           l&apos;intervalle&nbsp;: si votre premier rendez-vous a bien été enregistré, vous en
           auriez deux.
         </p>

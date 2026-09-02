@@ -178,3 +178,72 @@ describe("🔴 après une action serveur, l'écran REMONTE au message", () => {
     expect(sansCommentaires(src)).not.toMatch(/fetch|localStorage|router/);
   });
 });
+
+describe("🔴 /confirme — l'état INCERTAIN n'invite jamais à recommencer", () => {
+  // C'est l'état où l'on ne SAIT PAS si la réservation existe. Écrire
+  // « une erreur est survenue, réessayez » y produirait un doublon dans la
+  // moitié des cas. La fonction est la dernière du fichier : son corps est lu
+  // jusqu'à la fin, donc cette garde couvre aussi tout ce qu'on ajouterait
+  // après elle.
+  const ecran = corpsDe(confirme, "EnCoursDeVerification");
+
+  it("le contre-témoin : le corps mesuré contient bien le texte de l'écran", () => {
+    expect(ecran).toContain("Nous vérifions votre réservation.");
+  });
+
+  it("ne prononce jamais le mot « erreur »", () => {
+    expect(ecran).not.toMatch(/erreur/i);
+  });
+
+  it("n'invite ni à réessayer, ni à recommencer, ni à réserver de nouveau", () => {
+    expect(ecran).not.toMatch(/r[ée]essay|recommenc|nouvelle tentative|nouveau formulaire/i);
+    // Et il dit explicitement le contraire.
+    expect(ecran).toMatch(/ne pas réserver à nouveau/i);
+  });
+});
+
+describe("🔴 /confirme — l'écran confirmé annonce la SUITE, et pas seulement le fait", () => {
+  // Deux messages distincts partent (le nôtre, puis l'invitation d'agenda de
+  // Calendly), puis deux rappels. Ne pas l'annoncer fabrique le doute qui
+  // produit la seconde réservation.
+  const suite = corpsDe(confirme, "CeQuiSePasseMaintenant");
+
+  it("l'écran confirmé rend bien la chronologie", () => {
+    expect(corpsDe(confirme, "Confirme")).toMatch(/<CeQuiSePasseMaintenant\b/);
+  });
+
+  it("la chronologie couvre les quatre moments : e-mail, agenda, rappels, sortie", () => {
+    expect(suite).toMatch(/e-mail de confirmation/i);
+    expect(suite).toMatch(/agenda/i);
+    expect(suite).toMatch(/rappel/i);
+    expect(suite).toMatch(/annulez ou déplacez/i);
+  });
+
+  it("elle ne cite AUCUN horaire — elle reste vraie sans relecture Calendly", () => {
+    expect(suite).not.toMatch(/quandEnDeux|\bquand\(/);
+  });
+});
+
+describe("🔴 /confirme — le lien de visioconférence est une action, pas une URL", () => {
+  const carte = corpsDe(confirme, "CarteRendezVous");
+
+  it("l'URL ne sert pas de libellé, et ne se coupe plus au milieu d'un mot", () => {
+    expect(carte).toContain("Ouvrir le lien de la visioconférence");
+    expect(carte, "l'URL brute comme texte du lien").not.toMatch(/>\s*\{lienReunion\}\s*</);
+    expect(carte, "break-all était le symptôme de l'URL affichée").not.toContain("break-all");
+  });
+
+  it("le lien s'ouvre dans un onglet neuf, sans fuite d'opener", () => {
+    expect(carte).toContain('rel="noopener noreferrer"');
+  });
+
+  it("sans lien encore créé, l'attente est dite — jamais un vide", () => {
+    expect(carte).toMatch(/lien de connexion arrive dans votre e-mail/i);
+  });
+
+  it("aucun champ n'est écrit sans donnée : la durée dépend de l'heure de fin", () => {
+    expect(carte).toContain("minutes");
+    expect(confirme).toMatch(/function dureeEnMinutes\(debut: Date, fin: Date \| null\)/);
+    expect(confirme).toMatch(/if \(!fin\) return null;/);
+  });
+});

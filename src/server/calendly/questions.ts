@@ -75,6 +75,55 @@ export function champDeLaPosition(position: number): string {
   return `${PREFIXE_CHAMP}${position}`;
 }
 
+/**
+ * Les questions que NOUS ne posons pas, même quand Calendly les propose.
+ *
+ * ## Pourquoi cette liste ne contredit pas la règle du fichier
+ *
+ * L'en-tête interdit de recopier des libellés parce qu'une recopie crée une
+ * seconde vérité qui pourrit en silence. Ici, la recopie est le SUJET : Will a
+ * demandé le 2026-09-02 que « Ville de l'entreprise » disparaisse du formulaire
+ * — un champ de plus à remplir pour une information qu'on obtiendra en trois
+ * secondes pendant l'appel, sur un écran dont la longueur perçue décide déjà
+ * qui va au bout.
+ *
+ * Et surtout, le mode de rupture est le BON sens : si Will reformule la
+ * question chez Calendly, le libellé ne correspond plus, et la question
+ * REDEVIENT visible. Un champ qui réapparaît se voit ; un champ qui disparaît,
+ * non. C'est exactement l'inverse du défaut que l'en-tête décrit.
+ *
+ * ## 🔴 UNE QUESTION REQUISE NE SE MASQUE JAMAIS
+ *
+ * Le masquage ne s'applique qu'aux questions FACULTATIVES. Masquer une question
+ * obligatoire produirait la panne que tout ce module cherche à éviter : un
+ * formulaire qui a l'air complet, une réservation qui aboutit, et une réponse
+ * obligatoire vide que personne ne réclame. Si Will rend « Ville de
+ * l'entreprise » obligatoire chez Calendly, elle revient — et c'est la bonne
+ * réponse, parce que c'est lui qui l'aura décidé.
+ *
+ * La durabilité, elle, est ailleurs : la vraie suppression se fait dans le
+ * tableau de bord Calendly (désactiver la question). Cette liste est le geste
+ * qu'on peut poser depuis le code, pas la solution définitive.
+ */
+export const QUESTIONS_MASQUEES: readonly string[] = ["Ville de l'entreprise"];
+
+/** Compare deux libellés sans buter sur la casse, les accents ou la ponctuation. */
+function normaliserLibelle(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+const MASQUEES_NORMALISEES = new Set(QUESTIONS_MASQUEES.map(normaliserLibelle));
+
+/** Cette question active et FACULTATIVE est-elle de celles qu'on ne pose plus ? */
+export function questionMasquee(libelle: string, requise: boolean): boolean {
+  return !requise && MASQUEES_NORMALISEES.has(normaliserLibelle(libelle));
+}
+
 function estUnTypeRendu(v: unknown): v is TypeQuestion {
   return typeof v === "string" && (TYPES_RENDUS as readonly string[]).includes(v);
 }
@@ -159,6 +208,12 @@ export function lireLesQuestions(customQuestions: unknown): LectureQuestions {
       typesInconnus.push(`liste vide pour « ${libelle} »`);
       continue;
     }
+
+    // 🔑 Le masquage vient APRÈS tous les contrôles de rendabilité, et c'est
+    // délibéré : une question masquée dont le TYPE est inconnu doit quand même
+    // fermer le formulaire. Sinon, ajouter un libellé à `QUESTIONS_MASQUEES`
+    // reviendrait à désarmer la règle du fichier pour cette question-là.
+    if (questionMasquee(libelle, q["required"] === true)) continue;
 
     questions.push({
       libelle,

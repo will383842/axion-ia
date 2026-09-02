@@ -30,7 +30,12 @@
 
 import { describe, expect, it } from "vitest";
 
-import { lireLesQuestions, champDeLaPosition, TYPES_RENDUS } from "../questions";
+import {
+  lireLesQuestions,
+  champDeLaPosition,
+  TYPES_RENDUS,
+  QUESTIONS_MASQUEES,
+} from "../questions";
 
 /** Une question telle que l'API la renvoie. */
 function q(over: Record<string, unknown> = {}): Record<string, unknown> {
@@ -154,5 +159,66 @@ describe("🔑 une question DÉSACTIVÉE n'est pas une question inconnue", () =>
     // exotique fermerait le formulaire pour toujours, sans raison.
     const r = lireLesQuestions([q(), q({ type: "multi_select", position: 1, enabled: false })]);
     expect(r.ok, "l'activation doit être examinée AVANT le type").toBe(true);
+  });
+});
+
+describe("🔴 les questions que NOUS ne posons plus", () => {
+  // Will, 2026-09-02 : « enlever ville de l'entreprise ». Elle vit chez
+  // Calendly, pas chez nous — on la masque donc à la lecture, à un seul
+  // endroit, et sous une condition stricte.
+
+  const VILLE = "Ville de l'entreprise";
+
+  it("la liste des masquées n'est pas vide, sinon ces gardes ne mesurent rien", () => {
+    // Contre-témoin de tout le bloc : si quelqu'un vide `QUESTIONS_MASQUEES`,
+    // les tests ci-dessous passeraient encore en ne regardant rien.
+    expect(QUESTIONS_MASQUEES.length).toBeGreaterThan(0);
+    expect(QUESTIONS_MASQUEES).toContain(VILLE);
+  });
+
+  it("une question masquée et FACULTATIVE disparaît du formulaire", () => {
+    const r = lireLesQuestions([q(), q({ name: VILLE, position: 1, required: false })]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.questions.map((x) => x.libelle)).toEqual(["Quel est votre besoin ?"]);
+  });
+
+  it("🔴 la même question RENDUE OBLIGATOIRE réapparaît", () => {
+    // LE CAS QUI JUSTIFIE LA CONDITION. Masquer une question obligatoire
+    // produirait exactement la panne que ce fichier interdit : un formulaire
+    // qui a l'air complet, une réservation qui aboutit, et une réponse
+    // obligatoire vide que personne ne réclame. La décision appartient à
+    // Calendly, pas à notre liste.
+    const r = lireLesQuestions([q({ name: VILLE, required: true })]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.questions.map((x) => x.libelle)).toEqual([VILLE]);
+  });
+
+  it("le masquage ne dépend ni de la casse, ni des accents, ni de la ponctuation", () => {
+    // Le libellé exact chez Calendly peut gagner une majuscule ou un point
+    // d'interrogation sans que personne ne s'en aperçoive.
+    const r = lireLesQuestions([q({ name: "  VILLE DE L'ENTREPRISE ? ", required: false })]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.questions).toHaveLength(0);
+  });
+
+  it("🔴 une question masquée d'un type INCONNU ferme quand même le formulaire", () => {
+    // L'ordre des contrôles compte : le masquage vient APRÈS la rendabilité.
+    // Sinon, ajouter un libellé à la liste désarmerait la règle du fichier pour
+    // cette question-là — et une `multi_select` masquée passerait en silence,
+    // alors qu'elle prouve que notre lecture de l'event-type est incomplète.
+    const r = lireLesQuestions([q({ name: VILLE, type: "multi_select", required: false })]);
+    expect(r.ok, "un type inconnu ferme, masqué ou non").toBe(false);
+  });
+
+  it("🔑 une question qui n'est PAS dans la liste n'est jamais masquée", () => {
+    // Contre-témoin : sans lui, un masquage trop large rendrait les tests
+    // ci-dessus vrais pour la mauvaise raison.
+    const r = lireLesQuestions([q({ name: "Nom de l'entreprise", required: false })]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.questions).toHaveLength(1);
   });
 });
