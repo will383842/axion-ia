@@ -121,12 +121,27 @@ jobs:
           #    tel quel dans Coolify, il ferait un en-tête « Bearer xxx\n » que
           #    GitHub refuse. On retire les fins de ligne terminales, rien d'autre.
           valeur="${valeur%%[$'\r\n']*}"
+          # ... et une marque d'ordre d'octets (BOM UTF-8) qu'un pipe PowerShell peut
+          #     placer EN TETE. Mesure du 2026-09-02 : 94 caracteres lus apres le trim
+          #     des fins de ligne -> le parasite n'etait pas a la fin.
+          valeur="${valeur#$'\xEF\xBB\xBF'}"
+          premier="${valeur:0:1}"; dernier="${valeur: -1}"
+          for c in "$premier" "$dernier"; do
+            if [[ "$c" =~ ^[A-Za-z0-9_]$ ]]; then echo "borne : alphanumerique"; else printf 'borne : code %d (non alphanumerique)\n' "'$c"; fi
+          done
           if [ -z "$valeur" ]; then
             echo "::error::le secret GitHub « $CIBLE » est vide ou absent."
             exit 1
           fi
           echo "Valeur trouvée pour $CIBLE (${#valeur} caractères — la valeur n'est pas affichée)."
 
+          # SONDE : un jeton de lecture GitHub se presente a GitHub AVANT d'etre pose.
+          # Un 401 ici vaut mieux qu'un outil MCP muet apres le prochain deploiement.
+          if [ "$CIBLE" = "GITHUB_READ_TOKEN" ]; then
+            sonde=$(curl -sS -m 20 -o /dev/null -w '%{http_code}' \n              -H "Authorization: Bearer ${valeur}" -H 'Accept: application/vnd.github+json' \n              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs?per_page=1")
+            echo "Sonde GitHub Actions (lecture) : HTTP $sonde"
+            [ "$sonde" = "200" ] || { echo "::error::le jeton est refuse par GitHub ($sonde) : ne pas le poser"; exit 1; }
+          fi
           existe=$(jq --arg k "$CIBLE" '[.[] | select(.key == $k and .is_preview == false)] | length' /tmp/envs.json)
           echo "Présente en Production : $existe"
 
