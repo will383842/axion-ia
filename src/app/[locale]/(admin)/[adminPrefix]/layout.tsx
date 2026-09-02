@@ -377,10 +377,15 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const adminHidePublicShellCss = `
     body:has(.admin-layout-v2) header.bg-terracotta,
     body:has(.admin-layout-v2) footer.bg-mocha-rich,
+    body:has(.admin-layout-v2) aside.bg-sage-soft,
     body:has(.admin-layout) header.bg-terracotta,
-    body:has(.admin-layout) footer.bg-mocha-rich { display: none !important; }
+    body:has(.admin-layout) footer.bg-mocha-rich,
+    body:has(.admin-layout) aside.bg-sage-soft { display: none !important; }
+    /* 2026-09-02 — plus de \`display: contents\` sur #main : il supprimait la
+       boîte du landmark et le lien « Aller au contenu » n'amenait sur rien.
+       On neutralise seulement la mise en page héritée de la coquille publique. */
     body:has(.admin-layout-v2) #main,
-    body:has(.admin-layout) #main { display: contents; }
+    body:has(.admin-layout) #main { display: block; padding: 0; margin: 0; max-width: none; }
   `.trim();
 
   if (showSidebar && session?.user) {

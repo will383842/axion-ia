@@ -83,7 +83,9 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Sources RSS"
-        description={`${sources.length} source${sources.length > 1 ? "s" : ""} · les sources sont relues automatiquement toutes les heures.`}
+        // « toutes les heures » contredisait la colonne « Poll (min) » juste
+        // en dessous : chaque source porte son propre intervalle (60 à 180 min).
+        description={`${sources.length} source${sources.length > 1 ? "s" : ""} · les sources sont relues automatiquement, selon l'intervalle de chaque source.`}
         actions={
           <div className="flex gap-[var(--space-admin-2)]">
             <Link href={`/fr/${adminPrefix}/content-gen/rss/import`} className="admin-button-ghost">

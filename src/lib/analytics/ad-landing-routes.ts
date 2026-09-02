@@ -48,14 +48,65 @@ const AD_LANDING_SEGMENTS = ["/diagnostic", "/simulateur", "/roi"] as const;
 
 /**
  * True si le chemin est une page d'atterrissage publicitaire.
+ */
+export function isAdLandingRoute(pathname: string | null | undefined): boolean {
+  return correspond(pathname, AD_LANDING_SEGMENTS);
+}
+
+/**
+ * Les écrans de FIN du parcours d'appel — confirmation, annulation, report.
  *
+ * ── Ajoutés le 2026-09-02, après la passe au téléphone ───────────────────
+ * Mesuré sur iPhone 375 px, en prod : la bannière de consentement prenait
+ * 40 % de l'écran de `/appel/confirme?incertain=1` et recouvrait exactement
+ * les deux phrases qui comptent — « vous recevrez un e-mail » et « merci de ne
+ * pas réserver à nouveau ». Rendue compacte, elle en prenait encore 24 % et les
+ * recouvrait toujours.
+ *
+ * Ces pages ont deux particularités qui tranchent :
+ * — on y arrive depuis un e-mail, souvent au téléphone, pour UN geste (lire,
+ *   annuler, déplacer). Un prospect qui veut se décommander et tombe d'abord
+ *   sur un pavé de cookies ne se décommande pas : il ne vient pas.
+ * — elles affichent le détail d'un rendez-vous nominatif. Un replay de session
+ *   (Clarity) ou un pixel publicitaire (LinkedIn) n'y a rien à faire.
+ *
+ * Même règle que les pages d'atterrissage : aucun script tiers n'y est chargé,
+ * donc aucun consentement n'est requis, donc pas de bannière. Plausible
+ * (anonyme, sans cookie) continue de compter la visite.
+ *
+ * ⚠️ `/appel` et `/appel/reserver` n'y figurent PAS : ce sont les pages
+ * d'entrée du seul entonnoir du site, où la carte de chaleur garde son sens.
+ */
+const FIN_DE_PARCOURS_SEGMENTS = ["/appel/confirme", "/appel/annuler", "/appel/reporter"] as const;
+
+/**
+ * True si le chemin est un écran de fin du parcours d'appel.
+ */
+export function isFinDeParcoursAppel(pathname: string | null | undefined): boolean {
+  return correspond(pathname, FIN_DE_PARCOURS_SEGMENTS);
+}
+
+/**
+ * 🔑 LA question que posent `Clarity`, `LinkedInInsight` et `CookieConsent`.
+ *
+ * Les trois DOIVENT lire la même fonction : si la bannière disparaissait sur
+ * une route où un script tiers se charge encore, on déposerait des cookies
+ * tiers sans consentement — un manquement, pas une optimisation. Et si un
+ * script se taisait sans que la bannière disparaisse, on demanderait un
+ * consentement pour rien.
+ */
+export function isRouteSansScriptsTiers(pathname: string | null | undefined): boolean {
+  return isAdLandingRoute(pathname) || isFinDeParcoursAppel(pathname);
+}
+
+/**
  * Compare le chemin APRÈS retrait du préfixe de langue (`/fr`, `/en`), de façon
  * à couvrir les deux locales sans les énumérer.
  */
-export function isAdLandingRoute(pathname: string | null | undefined): boolean {
+function correspond(pathname: string | null | undefined, segments: ReadonlyArray<string>): boolean {
   if (!pathname) return false;
   const withoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "");
-  return AD_LANDING_SEGMENTS.some(
+  return segments.some(
     (segment) => withoutLocale === segment || withoutLocale.startsWith(`${segment}/`),
   );
 }

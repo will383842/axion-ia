@@ -22,6 +22,13 @@
 //  - Banner sticky bottom, terracotta border, fond cream backdrop-blur.
 //  - 2 boutons explicites (refus = même hierarchy que accept, doctrine CNIL).
 //  - Aucun cookie déposé tant que pas de clic visiteur.
+//  - 📱 COMPACT AU TÉLÉPHONE. Mesuré le 2026-09-02 sur iPhone 375 px : le
+//    bandeau prenait 249 px sur 629, soit 40 % de l'écran, et recouvrait sur
+//    la page « nous vérifions votre réservation » exactement les deux phrases
+//    qui comptent (« vous recevrez un e-mail », « ne réservez pas à nouveau »).
+//    Sous `sm` : titre réservé aux lecteurs d'écran, texte 13 px raccourci,
+//    deux boutons de 44 px côte à côte sur toute la largeur. L'information
+//    reste complète : la finalité, le transfert, et le lien vers le détail.
 //
 // ⚠️ Le banner n'est JAMAIS rendu côté serveur (cf. `useIsHydrated`). Le HTML
 // des 17k routes SSG est servi par Cloudflare (`cf-cache-status: HIT`) donc
@@ -34,7 +41,7 @@
 import * as React from "react";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
-import { isAdLandingRoute } from "@/lib/analytics/ad-landing-routes";
+import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
 import { Link } from "@/i18n/navigation";
 
 export const ANALYTICS_CONSENT_KEY = "axion-cookie-consent-v1";
@@ -235,15 +242,17 @@ export function CookieConsent() {
   const isHydrated = useIsHydrated();
   const pathname = usePathname();
 
-  // Pages d'atterrissage publicitaire : aucun script tiers n'y est chargé
-  // (`Clarity` s'y abstient), donc aucun consentement n'est requis et la
-  // bannière n'a pas lieu d'être. Elle occupait 48 % du premier écran au
-  // mobile, sur des visiteurs payés au clic.
-  // ⚠️ Ce retrait n'est légitime QUE parce que Clarity ne se charge pas sur ces
-  // routes. Masquer la bannière sans supprimer le dépôt de cookies serait un
-  // manquement. Les deux conditions vivent dans le même module, pour qu'on ne
-  // puisse pas en modifier une sans voir l'autre.
-  if (isAdLandingRoute(pathname)) return null;
+  // Pages d'atterrissage publicitaire et écrans de fin du parcours d'appel :
+  // aucun script tiers n'y est chargé (`Clarity` et `LinkedInInsight` s'y
+  // abstiennent), donc aucun consentement n'est requis et la bannière n'a pas
+  // lieu d'être. Elle occupait 48 % du premier écran d'une page payée au clic,
+  // et 40 % de l'écran « nous vérifions votre réservation » — en recouvrant
+  // les deux phrases qui comptaient.
+  // ⚠️ Ce retrait n'est légitime QUE parce qu'aucun script tiers ne se charge
+  // sur ces routes. Masquer la bannière sans supprimer le dépôt de cookies
+  // serait un manquement. Les trois composants lisent la MÊME fonction, pour
+  // qu'on ne puisse pas en modifier un sans voir les autres.
+  if (isRouteSansScriptsTiers(pathname)) return null;
 
   // Tant que l'hydratation n'a pas eu lieu, les `onClick` ne sont pas
   // attachés : afficher le banner reviendrait à montrer des boutons morts.
@@ -256,15 +265,21 @@ export function CookieConsent() {
       aria-describedby="cookie-consent-body"
       className="bg-bg/95 border-terracotta-deep fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg backdrop-blur"
     >
-      <div className="mx-auto flex max-w-5xl flex-col items-start gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-4">
         <div className="flex flex-col gap-1">
-          <p id="cookie-consent-title" className="text-fg text-base font-semibold tracking-tight">
+          <p
+            id="cookie-consent-title"
+            className="text-fg sr-only text-base font-semibold tracking-tight sm:not-sr-only"
+          >
             {isFr ? "Cookies analytics" : "Analytics cookies"}
           </p>
-          <p id="cookie-consent-body" className="text-fg-soft max-w-2xl text-sm leading-snug">
+          <p
+            id="cookie-consent-body"
+            className="text-fg-soft max-w-2xl text-[13px] leading-snug sm:text-sm"
+          >
             {isFr
-              ? "Plausible (anonyme, EU, sans cookie) est toujours actif. Vous pouvez en plus accepter Microsoft Clarity (heatmaps + session replay anonymisé, transfert UE → US sous SCC) pour nous aider à améliorer l'UX. "
-              : "Plausible (anonymous, EU, cookie-less) is always active. You can additionally accept Microsoft Clarity (anonymized heatmaps + session replay, EU → US transfer under SCC) to help us improve UX. "}
+              ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus Microsoft Clarity (heatmaps et replay anonymisés, transfert UE → US sous SCC) ? "
+              : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept Microsoft Clarity (anonymized heatmaps and replay, EU → US transfer under SCC)? "}
             <Link href="/cookies" className="text-terracotta-deep hover:text-terracotta underline">
               {isFr ? "Détails Cookies" : "Cookie details"}
             </Link>
@@ -277,18 +292,18 @@ export function CookieConsent() {
             </Link>
           </p>
         </div>
-        <div className="flex shrink-0 gap-2">
+        <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:flex sm:w-auto">
           <button
             type="button"
             onClick={() => writeAnalyticsConsent("declined")}
-            className="border-border text-fg hover:bg-bg-soft focus-visible:ring-terracotta rounded-md border px-4 py-2 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="border-border text-fg hover:bg-bg-soft focus-visible:ring-terracotta h-11 rounded-md border px-4 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
           >
             {isFr ? "Refuser" : "Decline"}
           </button>
           <button
             type="button"
             onClick={() => writeAnalyticsConsent("accepted")}
-            className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta rounded-md px-4 py-2 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="bg-terracotta-deep hover:bg-terracotta focus-visible:ring-terracotta h-11 rounded-md px-4 text-sm font-medium text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-auto sm:py-2"
           >
             {isFr ? "Accepter" : "Accept"}
           </button>

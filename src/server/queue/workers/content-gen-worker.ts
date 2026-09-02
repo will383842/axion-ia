@@ -25,7 +25,7 @@ import { getGenerator } from "@/server/content-gen/generators";
 import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
 import { ensureDirectAnswer } from "@/server/content-gen/shared/ensure-direct-answer";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
-import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
+import { checkDedup, titleOfPayload } from "@/server/content-gen/quality/dedup-guard";
 import { checkPlagiarism } from "@/server/content-gen/quality/plagiarism";
 import { validateIntentAlignment } from "@/server/content-gen/quality/search-intent-validator";
 import {
@@ -342,10 +342,12 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       data: { status: "running", startedAt: new Date() },
     });
 
-    const title = typeof inputPayload["title"] === "string" ? inputPayload["title"] : "";
+    // 2026-09-02 — `rssTitle` compris : les news RSS échappaient au contrôle.
+    const title = titleOfPayload(inputPayload);
     if (title) {
       const dedup = await checkDedup({
         title,
+        excludeJobId: contentGenJobId,
         ...(typeof inputPayload["primaryKeyword"] === "string"
           ? { primaryKeyword: inputPayload["primaryKeyword"] }
           : {}),
@@ -561,6 +563,17 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         has_system_prompt: Boolean(templateOverride.systemPrompt),
         resolved_by: targetTemplateId ? "explicit_id" : "content_type",
       });
+      // 2026-09-02 — le job garde le template qui l'a produit (résolution par
+      // type comprise) : sans cela la console ne pouvait compter aucun usage.
+      // Fail-soft : un échec d'écriture ne doit pas coûter une génération.
+      if (!dbJob.templateId) {
+        await prisma.contentGenJob
+          .update({
+            where: { id: contentGenJobId },
+            data: { templateId: templateOverride.templateId },
+          })
+          .catch(() => undefined);
+      }
     }
 
     const startedAt = Date.now();

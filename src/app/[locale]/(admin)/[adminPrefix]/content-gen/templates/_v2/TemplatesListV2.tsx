@@ -104,13 +104,8 @@ export async function TemplatesListV2({
           <Info size={14} aria-hidden="true" className="inline-block align-[-0.125em]" /> Un modèle{" "}
           <strong>actif</strong> remplace, à la génération, l&apos;invite système (ainsi que la
           température et le nombre maximal de jetons) définie dans le code — la voix de marque,
-          elle, reste toujours appliquée. Disponible pour :{" "}
-          <strong>
-            {["blog_article", "blog_from_keywords", "blog_from_title", "blog_from_rss"]
-              .map((t) => contentTypeLabelFr(t))
-              .join(", ")}
-          </strong>
-          . Les autres types emploient encore l&apos;invite définie dans le code.
+          elle, reste toujours appliquée. Un modèle actif s&apos;applique à tout job de son type de
+          contenu ; sans modèle actif, le type emploie l&apos;invite définie dans le code.
         </p>
       </AdminCard>
 

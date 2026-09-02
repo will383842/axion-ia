@@ -32,6 +32,7 @@ import { formatDateFr } from "@/lib/format-date-fr";
 import { listTemplates } from "@/server/actions/content-gen/templates";
 import { libelleInstructionIA } from "@/components/admin/content-gen/template-labels";
 import {
+  CONTENT_TYPE_LABELS_FR,
   JOB_STATUS_LABELS_FR,
   JOB_STATUS_TONE,
   contentTypeLabelFr,
@@ -63,17 +64,18 @@ const STATUSES: ReadonlyArray<ContentGenJobStatus> = [
   "quarantined_factcheck",
 ];
 
-const TYPES: ReadonlyArray<ContentType> = [
-  "landing_ville",
-  "blog_article",
-  "blog_from_title",
-  "blog_from_keywords",
-  "blog_from_rss",
-  "comparison",
-  "guide_pilier",
-  "qa_derived",
-  "faq_standalone",
-];
+// 🔴 LE FILTRE « TYPE » PROPOSAIT 9 VALEURS RECOPIÉES À LA MAIN, alors que la
+// liste affichait des jobs `case_study_local`, `what_is_x`, `vs_comparator`,
+// `glossary_term`, `calculator_roi`… — 13 types sur 22 étaient infiltrables.
+// La liste est désormais DÉRIVÉE du SSOT des libellés (`Record<ContentType,
+// string>`, exhaustif par construction : un nouveau type de l'enum Prisma y
+// entre à la compilation, et donc ici). Triée par libellé FR pour un menu de
+// 22 entrées lisible.
+const TYPES: ReadonlyArray<ContentType> = (
+  Object.keys(CONTENT_TYPE_LABELS_FR) as ReadonlyArray<ContentType>
+)
+  .slice()
+  .sort((a, b) => contentTypeLabelFr(a).localeCompare(contentTypeLabelFr(b), "fr"));
 
 // Libellés FR + tonalités : centralisés dans `admin-labels.ts` (SSOT, exhaustif
 // sur les enums Prisma, testé). On n'affiche plus jamais un slug technique.

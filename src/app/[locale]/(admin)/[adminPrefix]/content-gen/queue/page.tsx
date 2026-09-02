@@ -20,5 +20,8 @@ interface PageProps {
 
 export default async function QueueRedirect({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/jobs?view=queue`);
+  // 2026-09-02 — `view=queue` n'était lu par personne : la « file » affichait
+  // les 2 498 jobs, publiés et échoués compris. `status=queued` est le filtre
+  // que la liste sait appliquer.
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/jobs?status=queued`);
 }

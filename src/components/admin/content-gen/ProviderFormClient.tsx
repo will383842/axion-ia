@@ -23,6 +23,44 @@ interface Props {
   resetSpendAction: (formData: FormData) => Promise<void>;
 }
 
+// ─── Formatage FR des montants (audit console 2026-09-02) ───────────────────
+// 🔴 « $0.78 / $200.00 (0%) » : format anglo-saxon, et un arrondi à l'entier qui
+// affichait « 0 % » pour une dépense réelle. Aucun formateur USD n'existe dans
+// `src/lib` (`formatAmount` de `src/content/pricing.ts` est EUR HT, hors sujet) :
+// formateur local, espace insécable avant le symbole comme le veut la typographie
+// française.
+const NBSP = "\u00a0";
+const USD_FR_2 = new Intl.NumberFormat("fr-FR", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+const USD_FR_COURT = new Intl.NumberFormat("fr-FR", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
+const PCT_FR_1 = new Intl.NumberFormat("fr-FR", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+const PCT_FR_0 = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
+
+/** « 0,78 $ » ; en forme courte, « 200 $ » (plafond saisi en entier). */
+function formatUsdFr(montant: number, forme: "deux-decimales" | "court" = "deux-decimales") {
+  return `${(forme === "court" ? USD_FR_COURT : USD_FR_2).format(montant)}${NBSP}$`;
+}
+
+/**
+ * Part consommée du plafond : une décimale sous 10 % (« 0,4 % »), entier
+ * au-delà (« 37 % »). Une dépense réelle qui arrondirait à zéro est dite
+ * « < 0,1 % », jamais « 0,0 % ».
+ */
+function formatPartPlafondFr(depense: number, plafond: number): string {
+  const ratio = (depense / plafond) * 100;
+  if (ratio >= 10) return `${PCT_FR_0.format(ratio)}${NBSP}%`;
+  if (depense > 0 && ratio < 0.05) return `<${NBSP}0,1${NBSP}%`;
+  return `${PCT_FR_1.format(ratio)}${NBSP}%`;
+}
+
 export function ProviderFormClient({
   row,
   saveAction,
@@ -35,7 +73,12 @@ export function ProviderFormClient({
 
   const spent = Number(row.currentMonthSpentUsd);
   const cap = Number(row.monthlyCapUsd);
-  const pct = cap > 0 ? Math.round((spent / cap) * 100) : 0;
+  // Sans plafond (0), un ratio n'a pas de sens : « 0,00 $ / 0,00 $ (0 %) »
+  // laissait croire à un plafond atteint ou à une dépense nulle plafonnée.
+  const depenseMois =
+    cap > 0
+      ? `${formatUsdFr(spent)} / ${formatUsdFr(cap, "court")} (${formatPartPlafondFr(spent, cap)})`
+      : `${formatUsdFr(spent)} · sans plafond`;
 
   function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -93,8 +136,7 @@ export function ProviderFormClient({
           {row.provider} <span className="admin-meta">({row.role})</span>
         </h2>
         <p className="admin-meta-block">
-          Clé env : <code>{row.apiKeyEnvVar}</code> · Dépensé ce mois : ${spent.toFixed(2)} / $
-          {cap.toFixed(2)} ({pct}%)
+          Clé env : <code>{row.apiKeyEnvVar}</code> · Dépensé ce mois : {depenseMois}
         </p>
 
         <div className="admin-filters-grid">

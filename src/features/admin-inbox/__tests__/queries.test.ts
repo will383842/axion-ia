@@ -9,13 +9,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const listSubmissionsMock = vi.fn();
-vi.mock("@/features/admin-submissions/actions", () => ({
-  listSubmissionsAction: (...a: unknown[]) => listSubmissionsMock(...a),
+// ⚠️ ON SIMULE LA LECTURE, PAS L ACTION. Depuis le lot 4a, `listInbox` appelle
+//    `reads.listSubmissions` — la lecture SANS session — parce que l action
+//    commence par `auth()`, qui lit un cookie de navigateur qu un appel MCP n a
+//    pas. Simuler l ancien chemin rendrait ce test VERT sur du code mort.
+vi.mock("@/features/admin-submissions/reads", () => ({
+  listSubmissions: (...a: unknown[]) => listSubmissionsMock(...a),
 }));
 
 const listApplicationsMock = vi.fn();
-vi.mock("@/features/admin-job-applications/actions", () => ({
-  listApplicationsAction: (...a: unknown[]) => listApplicationsMock(...a),
+vi.mock("@/features/admin-job-applications/reads", () => ({
+  listApplications: (...a: unknown[]) => listApplicationsMock(...a),
 }));
 
 const listRendezVousMock = vi.fn();
@@ -157,8 +161,8 @@ describe("listInbox", () => {
 
   // ── Régression 2026-07-29 (constatée EN PRODUCTION, pas par ces tests) ────
   //
-  // `listInbox` passait `pageSize: 200` alors que `listSubmissionsAction` et
-  // `listApplicationsAction` valident `pageSize.max(100)` : le `.parse()` Zod
+  // `listInbox` passait `pageSize: 200` alors que `listSubmissions` et
+  // `listApplications` valident `pageSize.max(100)` : le `.parse()` Zod
   // levait, `Promise.allSettled` avalait l'erreur, et la boîte affichait
   // « Message 0 » en permanence — sans la moindre alerte. Les mocks de ce
   // fichier acceptent n'importe quel argument, donc rien ne pouvait le voir.

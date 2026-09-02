@@ -38,6 +38,20 @@ interface Props {
 
 type PipelineFilter = "all" | "editorial" | "landings" | "rss" | "combined";
 
+type StatutVille = CoverageMapCityRow["status"];
+
+// 🔴 La colonne « Statut » affichait la valeur technique (« IDLE »,
+// « IN_PROGRESS » — le badge met en capitales) pendant que le filtre, juste
+// au-dessus, parlait français. Table exhaustive : une valeur ajoutée au type
+// source sans libellé est une erreur de compilation.
+const STATUT_VILLE_LABELS = {
+  complete: "Complète",
+  in_progress: "En cours",
+  idle: "Au repos",
+} as const satisfies Record<StatutVille, string>;
+
+const STATUT_VILLE_ORDRE: ReadonlyArray<StatutVille> = ["complete", "in_progress", "idle"];
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function formatPop(n: number): string {
@@ -58,9 +72,7 @@ function pctTone(pct: number): "neutral" | "warning" | "info" | "success" {
   return "neutral";
 }
 
-function statusTone(
-  status: "complete" | "in_progress" | "idle",
-): "success" | "warning" | "neutral" {
+function statusTone(status: StatutVille): "success" | "warning" | "neutral" {
   if (status === "complete") return "success";
   if (status === "in_progress") return "warning";
   return "neutral";
@@ -72,9 +84,7 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
   // Filtres
   const [filterTier, setFilterTier] = useState<string>("");
   const [filterPipeline, setFilterPipeline] = useState<PipelineFilter>("all");
-  const [filterStatus, setFilterStatus] = useState<"all" | "complete" | "in_progress" | "idle">(
-    "all",
-  );
+  const [filterStatus, setFilterStatus] = useState<"all" | StatutVille>("all");
   const [filterDept, setFilterDept] = useState<string>("");
   const [searchInput, setSearchInput] = useState<string>("");
   const search = useDeferredValue(searchInput);
@@ -200,16 +210,16 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
           </select>
           <select
             value={filterStatus}
-            onChange={(e) =>
-              setFilterStatus(e.target.value as "all" | "complete" | "in_progress" | "idle")
-            }
+            onChange={(e) => setFilterStatus(e.target.value as "all" | StatutVille)}
             className="admin-select rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2 text-[length:var(--text-admin-sm)]"
             aria-label="Filtre statut"
           >
             <option value="all">Tous statuts</option>
-            <option value="complete">Complète</option>
-            <option value="in_progress">En cours</option>
-            <option value="idle">Inactif</option>
+            {STATUT_VILLE_ORDRE.map((s) => (
+              <option key={s} value={s}>
+                {STATUT_VILLE_LABELS[s]}
+              </option>
+            ))}
           </select>
           <select
             value={filterDept}
@@ -411,7 +421,7 @@ function CityRowRender({ city, style }: CityRowRenderProps): React.ReactElement 
         <AdminBadge tone={pctTone(city.coveragePct)}>{city.coveragePct}%</AdminBadge>
       </span>
       <span className="col-span-2">
-        <AdminBadge tone={statusTone(city.status)}>{city.status}</AdminBadge>
+        <AdminBadge tone={statusTone(city.status)}>{STATUT_VILLE_LABELS[city.status]}</AdminBadge>
       </span>
     </div>
   );
