@@ -1,0 +1,171 @@
+name: Coolify — poser une variable d'environnement (manuel)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  POURQUOI CE WORKFLOW EXISTE, ET POURQUOI IL PASSE PAR GITHUB ACTIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Le jeton d'API Coolify vit dans les secrets GitHub, et NULLE PART sur un poste
+# de travail — c'est la conséquence de la rotation du 2026-08-30. Poser une
+# variable dans Coolify depuis une machine locale supposerait donc d'en sortir le
+# jeton, ce qu'on refuse. Ce workflow est le chemin qui n'expose rien : la valeur
+# est un secret GitHub, elle voyage dans un runner, et elle n'apparaît dans aucun
+# journal.
+#
+# ⚠️ IL N'ACCEPTE QUE DES VARIABLES DÉCLARÉES ICI. Un workflow qui poserait
+#    n'importe quelle clé à partir d'une saisie libre serait une porte d'écriture
+#    en production ouverte à qui peut lancer un workflow. La liste est fermée, et
+#    chaque entrée nomme le secret GitHub qui la porte.
+#
+# ⚠️ IL NE REDÉPLOIE PAS. Une variable de portée `RUN` n'est prise en compte
+#    qu'au prochain démarrage du conteneur. Forcer un redéploiement ici
+#    ajouterait un second producteur à la file Coolify — la famine mesurée le
+#    2026-08-27, ~1 h de déploiement au lieu de 25 min. Le prochain déploiement
+#    la prendra ; s'il faut l'avancer, c'est une décision humaine.
+
+on:
+  workflow_dispatch:
+    inputs:
+      variable:
+        description: "La variable à poser (liste fermée)"
+        required: true
+        type: choice
+        options:
+          - MCP_SHARED_SECRET
+          - lister-seulement
+      confirmer:
+        description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
+        required: true
+        default: "non"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  poser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Vérifier la configuration
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          manque=0
+          for nom in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID; do
+            if [ -z "${!nom:-}" ]; then echo "::error::secret $nom absent"; manque=1; fi
+          done
+          [ "$manque" -eq 0 ] || exit 1
+          echo "Configuration présente."
+
+      - name: Inventaire des variables (NOMS seuls, jamais les valeurs)
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          # ⚠️ `-f` est volontairement ABSENT : on veut LIRE le corps d'une
+          #    réponse d'erreur. Coolify se met à jour seul et change son API ;
+          #    un code HTTP seul ne dit pas ce qui a changé.
+          reponse=$(curl -sS -m 20 -w '\n%{http_code}' \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          code=$(printf '%s' "$reponse" | tail -n1)
+          corps=$(printf '%s' "$reponse" | sed '$d')
+          echo "HTTP $code"
+          if [ "$code" != "200" ]; then
+            echo "::error::l'API a répondu $code — corps ci-dessous"
+            printf '%s\n' "$corps" | head -c 2000
+            exit 1
+          fi
+          # is_preview distingue les paires Production/Preview : deux lignes de
+          # même nom ne sont PAS un doublon (mesuré le 2026-08-31).
+          printf '%s' "$corps" | jq -r '
+            [.[] | {key, is_preview, is_build_time}]
+            | sort_by(.key)
+            | .[] | "\(.key)\tpreview=\(.is_preview)\tbuild=\(.is_build_time)"'
+          echo ""
+          echo "Total : $(printf '%s' "$corps" | jq 'length') variable(s)."
+          printf '%s' "$corps" > /tmp/envs.json
+
+      - name: Poser la variable
+        if: ${{ inputs.variable != 'lister-seulement' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          MCP_SHARED_SECRET: ${{ secrets.MCP_SHARED_SECRET }}
+          CIBLE: ${{ inputs.variable }}
+          CONFIRMER: ${{ inputs.confirmer }}
+        run: |
+          set -euo pipefail
+
+          # La valeur vient d'un secret GitHub portant le MÊME nom que la
+          # variable Coolify. Aucune saisie libre n'entre ici.
+          valeur="${!CIBLE:-}"
+          if [ -z "$valeur" ]; then
+            echo "::error::le secret GitHub « $CIBLE » est vide ou absent."
+            exit 1
+          fi
+          echo "Valeur trouvée pour $CIBLE (${#valeur} caractères — la valeur n'est pas affichée)."
+
+          existe=$(jq --arg k "$CIBLE" '[.[] | select(.key == $k and .is_preview == false)] | length' /tmp/envs.json)
+          echo "Présente en Production : $existe"
+
+          if [ "$CONFIRMER" != "OUI" ]; then
+            echo "SIMULATION — rien n'est écrit. Relancer avec confirmer=OUI."
+            exit 0
+          fi
+
+          # Le corps est construit par jq : la valeur ne passe jamais par la
+          # ligne de commande, donc jamais par un journal de processus.
+          jq -n --arg k "$CIBLE" --arg v "$valeur" \
+            '{key: $k, value: $v, is_preview: false, is_build_time: false, is_literal: true}' \
+            > /tmp/corps.json
+
+          if [ "$existe" -gt 0 ]; then
+            methode=PATCH
+          else
+            methode=POST
+          fi
+          echo "Méthode : $methode"
+
+          reponse=$(curl -sS -m 20 -w '\n%{http_code}' -X "$methode" \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data @/tmp/corps.json \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          code=$(printf '%s' "$reponse" | tail -n1)
+          corps=$(printf '%s' "$reponse" | sed '$d')
+          echo "HTTP $code"
+          printf '%s\n' "$corps" | head -c 1000
+          case "$code" in
+            200 | 201) echo "" ; echo "Écriture acceptée." ;;
+            *) echo "::error::écriture refusée ($code) — lire le corps ci-dessus" ; exit 1 ;;
+          esac
+
+      - name: Vérifier que la variable est bien là (par son NOM)
+        if: ${{ inputs.variable != 'lister-seulement' && inputs.confirmer == 'OUI' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          CIBLE: ${{ inputs.variable }}
+        run: |
+          set -euo pipefail
+          # ⚠️ Relire depuis l'API, pas depuis le fichier d'avant : une écriture
+          #    qui rend 200 sans rien persister est un cas réel.
+          corps=$(curl -sS -m 20 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          trouve=$(printf '%s' "$corps" | jq --arg k "$CIBLE" \
+            '[.[] | select(.key == $k and .is_preview == false)] | length')
+          echo "« $CIBLE » en Production : $trouve occurrence(s)"
+          [ "$trouve" -ge 1 ] || { echo "::error::variable absente APRÈS écriture"; exit 1; }
+          echo ""
+          echo "⚠️ La variable ne sera prise en compte qu'au PROCHAIN déploiement."
+          echo "   Ce workflow ne redéploie pas volontairement : deux producteurs"
+          echo "   dans la file Coolify font passer un déploiement de 25 min à ~1 h."

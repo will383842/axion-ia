@@ -36,7 +36,8 @@ travaux préalables dans ce dépôt.
    `findMany` sans `take`, coût non mesuré). `unified-contact` n'est pas branchable
    (Turnstile, IP, cookies UTM). `agenda.poser` et `message.repondre` sont des effets —
    lot 7.
-   **`deploiement.etat` applique le défaut écrit de W-9 : « GitHub seul ».** Sa couche
+   **`deploiement.etat` — W-9 TRANCHÉE par Will le 2026-09-02 : « GitHub seul ».**
+   Coolify n'est pas ouvert à l'adaptateur, et ce n'est plus une attente mais un choix. Sa couche
    service (`src/server/deploiement/etat.ts`) lit le dernier run du workflow de
    déploiement, épinglé **par le nom du fichier de workflow** et non par « le dernier run
    du dépôt », puis le confronte au commit que le processus courant exécute (`BUILD_SHA`).
@@ -53,9 +54,13 @@ travaux préalables dans ce dépôt.
    identifiants sont opaques et la console les résout. La garde
    `admin-nav:routes-check` lit `src/app/api/mcp` **et** `src/server/mcp` et refuse
    quatre motifs, prouvés par des témoins fabriqués.
-6. **Pont d'identité — W-6 non décidée, le défaut s'applique.** L'adaptateur agit au nom
-   du rôle le plus faible (`reader`) : `peutVoirAppels: false`, dérivé de la fonction
-   que la console utilise elle-même. Aucune coordonnée (e-mail, téléphone) n'est dans
+6. **Pont d'identité — W-6 TRANCHÉE par Will le 2026-09-02 : le rôle le plus faible.**
+   L'adaptateur agit en tant que `reader`, `peutVoirAppels: false`, dérivé de la fonction
+   que la console utilise elle-même. Ce n'est plus un défaut en attente : c'est la
+   décision. Conséquence assumée — l'adaptateur ne voit ni les coordonnées des prospects,
+   ni l'identité des candidats. Le § 18 du cahier n'a donc PAS à être repris : une
+   injection réussie s'exécuterait au rôle le plus faible de la console, pas au plus
+   haut. Aucune coordonnée (e-mail, téléphone) n'est dans
    les schémas de sortie ; noms de contact et notes des rendez-vous sont masqués.
    **Rien ne lit une habilitation dans la charge utile** : les onze noms réservés au
    contexte sont refusés dans tout schéma d'entrée (contrôle 7), chacun par un témoin.
@@ -87,9 +92,16 @@ travaux préalables dans ce dépôt.
 
 ## Ce qui reste à décider (Will)
 
-- **W-6** : le rôle au nom duquel l'adaptateur agit. Tant que non décidé : `reader`.
-- **W-9** : confirmer « GitHub seul » (le défaut, appliqué), ou ouvrir Coolify. En
-  attendant, poser `GITHUB_READ_TOKEN` (portée `actions: read`) dans Coolify : sans lui
-  l'outil rend « non-configure », ce qui est honnête mais inutile.
+✅ **W-6 et W-9 sont tranchées** (Will, 2026-09-02) — voir les décisions 4 et 6.
+
+Il reste :
+
+- **`MCP_SHARED_SECRET`** — la valeur est générée et déposée dans les secrets GitHub
+  (2026-09-02) ; le workflow manuel `coolify-poser-variable.yml` la portera dans Coolify
+  dès qu'il sera sur la branche par défaut. La valeur n'a jamais transité en clair.
+- **`GITHUB_READ_TOKEN`** — un jeton personnel ne peut pas être créé par un programme :
+  il se crée dans l'interface GitHub, portée `actions: read`. En attendant,
+  `GH_DISPATCH_TOKEN` sert de repli s'il est déjà posé dans Coolify ; sinon l'outil rend
+  « non-configure », ce qui est honnête et sans danger.
 - Le critère « POST /api/mcp sans secret rend 401/503, vérifié depuis un autre réseau »
-  est une mesure d'exploitation, après déploiement.
+  est une mesure d'exploitation, après déploiement : `pnpm mcp:verifier-la-porte`.
