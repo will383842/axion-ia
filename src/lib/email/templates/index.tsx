@@ -4,6 +4,8 @@
 // `renderEmailTemplate(name, locale, payload)` retourne { subject, html, text }.
 
 import { render } from "@react-email/render";
+import { setOppositionHref, type FamilleEmail } from "./_layout";
+import { urlOpposition } from "@/server/email/opposition-jeton";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -293,20 +295,39 @@ const TEMPLATES: TemplateMap = {
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */
 export const EMAIL_TEMPLATE_NAMES = Object.keys(TEMPLATES) as EmailJobName[];
 
+/**
+ * Famille du gabarit, lue dans le HTML rendu : le châssis l'estampille sur le
+ * `<body>` (`data-famille`). Une seule source — le gabarit — et aucune table à
+ * tenir à jour. Null si le HTML n'est pas passé par `EmailLayout`.
+ */
+export function familleDuHtml(html: string): FamilleEmail | null {
+  const m = /data-famille="([ABCD])"/.exec(html);
+  return m ? (m[1] as FamilleEmail) : null;
+}
+
 export interface RenderedEmail {
   subject: string;
   html: string;
   text: string;
+  /** Famille du gabarit rendu (lue dans le châssis) — null si le rendu n'est pas passé par `EmailLayout`. */
+  famille: FamilleEmail | null;
 }
 
 export async function renderEmailTemplate(
   name: EmailJobName,
   locale: Locale,
   payload: Record<string, unknown>,
+  /**
+   * Destinataire — lot 1b (2026-09-02). Quand il est connu, le pied de page
+   * des familles B, C et D porte son lien d'opposition signé. Le worker le
+   * fournit toujours ; les aperçus de la console et les tests peuvent l'omettre.
+   */
+  contexte: { destinataire?: string | null } = {},
 ): Promise<RenderedEmail> {
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
   const subject = tpl.subject(locale, payload);
+  setOppositionHref(contexte.destinataire ? urlOpposition(contexte.destinataire) : null);
   // Injecte les stats avis RÉELLES (DB, cache 15 min) dans le bandeau de confiance
   // de tous les templates, sans changer chaque template. On pose la valeur AVANT
   // chaque `render` synchrone (parcours React sync → pas d'interleave concurrent).
@@ -316,5 +337,6 @@ export async function renderEmailTemplate(
   const html = await render(element, { pretty: false });
   setReviewStats(reviewStats);
   const text = await render(element, { plainText: true });
-  return { subject, html, text };
+  const famille = familleDuHtml(html);
+  return { subject, html, text, famille };
 }

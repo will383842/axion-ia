@@ -21,6 +21,7 @@ import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal } from "@/server/email/email-log";
@@ -110,18 +111,35 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       const attempts = job.attemptsMade + 1;
 
       try {
-        const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
+        const { subject, html, text, famille } = await renderEmailTemplate(
+          template,
+          locale,
+          payload,
+          {
+            destinataire: to,
+          },
+        );
         const attachments = await resolveAttachments(job.data.attachments);
         // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
         // Marketing emails ET transactionnels qui contiennent un lien
         // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
         // `List-Unsubscribe-Post` pour Gmail/Yahoo/Apple/Outlook 2024+.
-        const unsubscribeToken =
+        //
+        // Lot 1b (2026-09-02) : hors famille A, l'en-tête porte le jeton
+        // d'OPPOSITION du destinataire quand le gabarit n'apporte pas de jeton
+        // newsletter. Le bouton natif « Se désabonner » de Gmail existe donc
+        // sur le rapport ROI, la confirmation de contact, le rappel — et il
+        // fait la même chose que le lien du pied de page. Jamais en famille A :
+        // une facture ou un lien de connexion ne se « désabonne » pas.
+        const jetonNewsletter =
           payload && typeof payload === "object" && "unsubscribeToken" in payload
             ? typeof (payload as { unsubscribeToken?: unknown }).unsubscribeToken === "string"
               ? (payload as { unsubscribeToken: string }).unsubscribeToken
               : undefined
             : undefined;
+        const unsubscribeToken =
+          jetonNewsletter ??
+          (famille !== null && famille !== "A" ? jetonOpposition(to) : undefined);
         const result = await sendEmail({
           to,
           subject,

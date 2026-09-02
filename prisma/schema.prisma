@@ -11289,3 +11289,41 @@ model EdCanalNotification {
 
   @@map("ed_canaux_notification")
 }
+
+// ============================================================
+// Opposition à la prospection commerciale — audit e-mails 2026-09-02, lot 1b
+// ============================================================
+
+/// Une personne qui a cliqué « Ne plus recevoir de sollicitations commerciales »
+/// depuis un e-mail. Sans compte ni inscription : le jeton signé dérivé de
+/// l'adresse suffit (cf. `src/server/email/opposition-jeton.ts`). Relue par la
+/// liste de suppression (envois marketing retenus) et poussée vers la liste
+/// d'opposition du CRM, qui gouverne la prospection humaine.
+///
+/// 🔴 AUCUNE ADRESSE EN CLAIR. La table ne porte que l'EMPREINTE de recherche
+/// (`hashEmailForLookup`, la même que `Submission.contactEmailHash`). Deux
+/// raisons, dans cet ordre :
+///
+///  1. Une liste d'opposition doit SURVIVRE à l'effacement — l'effacer ferait
+///     recommencer les envois, c'est-à-dire desservir la personne qui s'est
+///     opposée (RGPD art. 17.3 et doctrine CNIL sur les listes d'opposition).
+///     Une table qu'on ne peut pas effacer n'a rien à faire de lisible.
+///  2. Ce qu'on doit pouvoir faire, on le fait toujours : vérifier avant
+///     l'envoi qu'une adresse donnée s'est opposée, et le prouver. Une
+///     empreinte déterministe suffit pour les deux.
+///
+/// Conséquence assumée : on ne peut pas LISTER les opposants, seulement
+/// tester une adresse qu'on a déjà. C'est exactement ce dont la chaîne
+/// d'envoi a besoin, et rien de plus.
+model EmailOpposition {
+  id        String   @id @default(uuid()) @db.Uuid
+  /// `hashEmailForLookup(adresse)` — 64 caractères hexadécimaux. Jamais l'adresse.
+  emailHash String   @unique @map("email_hash") @db.VarChar(64)
+  /// Gabarit depuis lequel le lien a été cliqué — une trace, pas un secret.
+  template  String?  @db.VarChar(60)
+  source    String   @default("lien-email") @db.VarChar(40)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_oppositions")
+}
