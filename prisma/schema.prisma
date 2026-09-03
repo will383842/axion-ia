@@ -1462,6 +1462,8 @@ model AdminUser {
   siteSettingsUpdated             SiteSetting[]
   // Sprint Notif Infra 2026-05-26 — reply system admin
   submissionReplies               SubmissionReply[]
+  jobApplicationEvents            JobApplicationEvent[]
+  jobApplicationReplies           JobApplicationReply[]
   // Preuve de signature au grain document — provenance et révocation.
   documentSignaturesRecueillies   DocumentSignature[]      @relation("DocumentSignatureRecueillie")
   documentSignaturesRevoquees     DocumentSignature[]      @relation("DocumentSignatureRevoquee")
@@ -8345,6 +8347,13 @@ model JobApplication {
   submittedAt    DateTime             @default(now()) @map("submitted_at")
   updatedAt      DateTime             @updatedAt @map("updated_at")
 
+  /// Lot 1 — le JOURNAL et les RÉPONSES. Les deux en cascade : effacer une
+  /// candidature (droit à l'effacement, ou purge de rétention) doit emporter
+  /// tout ce qui la décrit, y compris le corps des e-mails déjà rendus, qui
+  /// portent le nom de la personne.
+  events  JobApplicationEvent[]
+  replies JobApplicationReply[]
+
   @@index([offerId])
   @@index([status, needsAttention])
   @@index([submittedAt])
@@ -8353,6 +8362,147 @@ model JobApplication {
   /// table à chaque passage quotidien.
   @@index([vivierInfoSentAt, vivierOpposedAt, vivierSyncedAt])
   @@map("job_applications")
+}
+
+// ============================================================================
+// LOT 1 — LE JOURNAL DU CANDIDAT ET LES RÉPONSES DEPUIS LA CONSOLE
+//
+// Ce qu'il ferme : jusqu'ici, écrire à un candidat imposait de sortir sur une
+// boîte mail, et il ne restait AUCUNE trace côté produit de ce qui avait été
+// dit, quand, ni par qui. `internalNotes` n'y suppléait pas : une zone de texte
+// unique, écrasée à chaque enregistrement — un post-it, pas un journal.
+//
+// Le mécanisme existait déjà, mais pour les MESSAGES (`SubmissionReply`). Il est
+// repris ici avec un écart obligatoire, documenté sur `toEmail`.
+// ============================================================================
+
+/// Ce qu'un événement du journal RACONTE. Une valeur par fait observable, et
+/// aucune valeur « autre » : un fait qu'on ne sait pas nommer est un fait qu'on
+/// ne saura pas relire.
+enum JobApplicationEventType {
+  statut_change
+  email_envoye
+  /// Réponse du candidat, rapatriée à la main depuis la boîte mail. Le produit
+  /// ne reçoit pas d'e-mail entrant : la consigner reste un geste humain.
+  email_recu
+  appel
+  note
+  entretien_planifie
+  entretien_tenu
+  piece_recue
+  vivier_info
+  vivier_opposition
+  decision
+
+  @@map("job_application_event_type")
+}
+
+/// Journal d'une candidature — EN AJOUT SEUL.
+///
+/// 🔴 Aucune action de ce dépôt ne doit modifier ni supprimer une ligne d'ici,
+/// hors cascade d'effacement. Un journal qu'on peut réécrire ne prouve rien, et
+/// c'est précisément ce qu'on lui demande : dire qui a écrit quoi à un candidat,
+/// et quand. La garde `le-journal-est-en-ajout-seul.spec.ts` le vérifie.
+model JobApplicationEvent {
+  id            String                  @id @default(uuid()) @db.Uuid
+  applicationId String                  @map("application_id") @db.Uuid
+  application   JobApplication          @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  type          JobApplicationEventType
+
+  /// Auteur — la FK pour naviguer, l'instantané pour survivre.
+  ///
+  /// 🔑 `authorName` n'est PAS dérivable de `authorId` : le compte peut être
+  /// supprimé (la FK passe alors à NULL) et le journal doit continuer de dire
+  /// QUI a agi. Même doctrine que `SubmissionReply.repliedByName`.
+  authorId   String?    @map("author_id") @db.Uuid
+  author     AdminUser? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorName String     @map("author_name") @db.VarChar(255)
+
+  /// Quand le FAIT a eu lieu — distinct de `createdAt`, qui dit quand on l'a
+  /// écrit. Un appel passé lundi et consigné mardi se lit à lundi : sans cette
+  /// distinction, la frise raconte l'ordre de la saisie, pas celui des faits.
+  occurredAt DateTime @map("occurred_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  /// Une ligne lisible seule, sans ouvrir le corps. C'est elle que la frise rend.
+  summary String  @db.VarChar(300)
+  body    String? @db.Text
+
+  /// Rattachements facultatifs — la réponse envoyée, l'entretien concerné.
+  /// Volontairement SANS contrainte de clé étrangère : un événement survit à la
+  /// suppression de ce qu'il mentionne, sinon le journal se trouerait au premier
+  /// nettoyage. C'est une référence, pas une dépendance.
+  replyId     String? @map("reply_id")
+  interviewId String? @map("interview_id") @db.Uuid
+
+  /// Ce que le type seul ne porte pas — ancien et nouveau statut, motif, durée.
+  meta Json?
+
+  /// La frise se lit dans l'ordre des FAITS. Sans cet index, chaque ouverture de
+  /// fiche trierait en mémoire tout l'historique du candidat.
+  @@index([applicationId, occurredAt])
+  @@index([type, occurredAt])
+  @@map("job_application_events")
+}
+
+enum JobApplicationReplyStatus {
+  pending
+  sent
+  failed
+  bounced
+
+  @@map("job_application_reply_status")
+}
+
+/// Une réponse écrite À LA MAIN depuis la console, et son sort à l'envoi.
+///
+/// Miroir de `SubmissionReply`, avec UN ÉCART OBLIGATOIRE, sur `toEmail`.
+model JobApplicationReply {
+  id            String         @id @default(cuid())
+  applicationId String         @map("application_id") @db.Uuid
+  application   JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  repliedByUserId String?    @map("replied_by_user_id") @db.Uuid
+  repliedByUser   AdminUser? @relation(fields: [repliedByUserId], references: [id], onDelete: SetNull)
+  repliedByName   String     @map("replied_by_name") @db.VarChar(255)
+  repliedAt       DateTime   @default(now()) @map("replied_at")
+
+  /// 🔴 CHIFFRÉ, et c'est l'écart avec le modèle dont celui-ci est la copie.
+  ///
+  /// `SubmissionReply.toEmail` est un `citext` EN CLAIR. Le recopier tel quel
+  /// déchiffrerait par la bande l'adresse du candidat, que
+  /// `JobApplication.email` protège justement au repos — on aurait chiffré la
+  /// porte et laissé la fenêtre ouverte, exactement le défaut déjà corrigé sur
+  /// l'ouverture des dossiers.
+  ///
+  /// Conséquences assumées : le type est `Text` (un ciphertext n'est pas une
+  /// adresse), et aucune égalité SQL n'est possible dessus — la recherche passe
+  /// par `JobApplication.emailHash`, comme partout ailleurs.
+  toEmail String @map("to_email") @db.Text
+
+  subject  String @db.VarChar(500)
+  bodyHtml String @map("body_html") @db.Text
+  bodyText String @map("body_text") @db.Text
+
+  deliveryStatus    JobApplicationReplyStatus @default(pending) @map("delivery_status")
+  providerMessageId String?                   @map("provider_message_id") @db.VarChar(500)
+  sentAt            DateTime?                 @map("sent_at")
+  failedAt          DateTime?                 @map("failed_at")
+  errorMsg          String?                   @map("error_msg") @db.Text
+  retryCount        Int                       @default(0) @map("retry_count")
+
+  /// Le modèle de texte utilisé au départ (`refus`, `invitation-entretien`,
+  /// `demande-piece`, `relance`, `libre`) — pour savoir plus tard lesquels
+  /// servent vraiment. Le corps envoyé reste celui qui a été relu, jamais le
+  /// gabarit.
+  modeleUtilise String? @map("modele_utilise") @db.VarChar(40)
+
+  /// Note privée sur cette réponse. JAMAIS envoyée au candidat.
+  internalNote String? @map("internal_note") @db.Text
+
+  @@index([applicationId, repliedAt])
+  @@index([deliveryStatus])
+  @@map("job_application_replies")
 }
 
 // ============================================================================
