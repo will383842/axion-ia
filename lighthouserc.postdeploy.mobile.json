@@ -4,7 +4,8 @@
     "Le cliquet n'excuse pas la dette : chaque cliquet porte la cible du contrat dans son commentaire. On l'abaisse APRÈS le lot de correction, jamais avant.",
     "INP reste en WARN partout : en navigation Lighthouse ne mesure l'INP que si la page reçoit une interaction (auditRan = 0 sur les 12 passes desktop + 6 passes mobile). La source de vérité INP est le RUM /api/vitals, pas ce gate.",
     "Passer en ERROR ne bloque rien : ce job est post-deploy. Il rougit le workflow et alerte, c'est tout ce qu'il peut faire — et c'est ce qu'il ne faisait pas.",
-    "🔴 2026-09-03 — CETTE PASSE N'ASSERTAIT RIEN DEPUIS SA MISE EN PLACE. `aggregationMethod` etait declare A COTE de `assertMatrix` dans `ci.assert` : lhci REFUSE cette combinaison et leve « Cannot use assertMatrix with other options » (@lhci/utils/src/assertions.js:464 — le throw vise `assertions`, `preset`, `budgetsFile` et `aggregationMethod`). La passe collectait bien ses 18 rapports, puis mourait AVANT d'asserter, et le job rendait « au moins une assertion a echoue » — message qui dit l'exact contraire de ce qui se passait. Mesure sur le run 33715874962 (atterrissage de #947). Le budget mobile n'etait donc garde par RIEN, pendant que le desktop, lui, tournait normalement (sa config n'a jamais porte que `assertMatrix`). Correction : la mediane descend dans CHAQUE entree de la matrice, ou lhci la propage a chaque assertion (`const options = {aggregationMethod, ...assertionOptions}`, meme fichier ligne 426). Semantique identique, forme legale. ⚠️ La garde `tests/unit/ci/gate-mobile-et-inp.spec.ts` EXIGEAIT la forme cassee (`expect(conf.ci.assert.aggregationMethod).toBe('median')`) : elle a donc epingle la panne au lieu de l'attraper. Elle execute desormais le VRAI moteur d'assertion de lhci sur les deux configs — une garde qui derive du tiers au lieu de recopier sa regle."
+    "🔴 2026-09-03 — CETTE PASSE N'ASSERTAIT RIEN DEPUIS SA MISE EN PLACE. `aggregationMethod` etait declare A COTE de `assertMatrix` dans `ci.assert` : lhci REFUSE cette combinaison et leve « Cannot use assertMatrix with other options » (@lhci/utils/src/assertions.js:464 — le throw vise `assertions`, `preset`, `budgetsFile` et `aggregationMethod`). La passe collectait bien ses 18 rapports, puis mourait AVANT d'asserter, et le job rendait « au moins une assertion a echoue » — message qui dit l'exact contraire de ce qui se passait. Mesure sur le run 33715874962 (atterrissage de #947). Le budget mobile n'etait donc garde par RIEN, pendant que le desktop, lui, tournait normalement (sa config n'a jamais porte que `assertMatrix`). Correction : la mediane descend dans CHAQUE entree de la matrice, ou lhci la propage a chaque assertion (`const options = {aggregationMethod, ...assertionOptions}`, meme fichier ligne 426). Semantique identique, forme legale. ⚠️ La garde `tests/unit/ci/gate-mobile-et-inp.spec.ts` EXIGEAIT la forme cassee (`expect(conf.ci.assert.aggregationMethod).toBe('median')`) : elle a donc epingle la panne au lieu de l'attraper. Elle execute desormais le VRAI moteur d'assertion de lhci sur les deux configs — une garde qui derive du tiers au lieu de recopier sa regle.",
+    "🔴 2026-09-03, SECONDE LECTURE — LES CLIQUETS TBT ETAIENT POSES SUR UN SEUL RUN, ET UN SEUL RUN NE BORNE PAS CETTE METRIQUE. Le premier deploiement reellement asserte (run 33743164143, commit 5f6aba9b5) a rougi sur `/fr/audit` : mediane 857 ms contre un cliquet a 800. Ce n'etait PAS une regression. Meme instrument, memes URLs, memes 3 runs, trois heures plus tot (run 33715874962, commit 199d3978a — la passe collectait deja, seule l'assertion mourait) : /fr 577→771 (+34 %), /fr/appel 612→734 (+20 %), /fr/audit 631→857 (+36 %), /fr/contact 487→550 (+13 %), /fr/formations 526→698 (+33 %), gabarit ville 551→699 (+27 %). LES SIX MONTENT ENSEMBLE — aucune regression de code ne ralentit uniformement six pages sans rapport, et aucune des trois PR atterries entre les deux mesures ne touche leur JavaScript client (#953 doc, #952 worker serveur + prose, #950 cette config et un test). C'est la charge du runner partage, pas le site. Cliquet reporte a 950 ms = maximum observe (863 ms) + ~10 % de marge, borne sur DEUX runs au lieu d'un. ⚠️ LA CIBLE DU CONTRAT RESTE 150 ms (AGENTS.md) : 700-860 ms de blocage sur mobile est un vrai defaut, desormais garde contre l'aggravation et NON corrige. Le cliquet n'excuse pas la dette — il empeche seulement qu'elle grossisse, ce qui est le seul risque qu'une gate sache traiter. 🔑 Regle qui en decoule : un seuil de TEMPS se borne sur plusieurs runs et se lit en mediane ; un seuil d'OCTETS est deterministe et se lit sur une passe."
   ],
   "ci": {
     "assert": {
@@ -47,7 +48,7 @@
             "total-blocking-time": [
               "error",
               {
-                "maxNumericValue": 800
+                "maxNumericValue": 950
               }
             ],
             "interaction-to-next-paint": [
@@ -96,7 +97,7 @@
             "total-blocking-time": [
               "error",
               {
-                "maxNumericValue": 800
+                "maxNumericValue": 950
               }
             ],
             "interaction-to-next-paint": [
@@ -145,7 +146,7 @@
             "total-blocking-time": [
               "error",
               {
-                "maxNumericValue": 800
+                "maxNumericValue": 950
               }
             ],
             "interaction-to-next-paint": [
@@ -194,7 +195,7 @@
             "total-blocking-time": [
               "error",
               {
-                "maxNumericValue": 800
+                "maxNumericValue": 950
               }
             ],
             "interaction-to-next-paint": [
@@ -243,7 +244,7 @@
             "total-blocking-time": [
               "error",
               {
-                "maxNumericValue": 800
+                "maxNumericValue": 950
               }
             ],
             "interaction-to-next-paint": [
@@ -292,7 +293,7 @@
             "total-blocking-time": [
               "error",
               {
-                "maxNumericValue": 800
+                "maxNumericValue": 950
               }
             ],
             "interaction-to-next-paint": [
