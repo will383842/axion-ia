@@ -82,6 +82,85 @@ function titre(t) {
   console.log(`\n${"=".repeat(72)}\n${t}\n${"=".repeat(72)}`);
 }
 
+/**
+ * 🔍 MODE LECTURE — l'état RÉEL d'un événement, sans rien créer.
+ *
+ * Ajouté le 2026-09-03 : après le test de bout en bout, deux surfaces se
+ * contredisaient sur le sort du rendez-vous de sonde. La page `/appel` le
+ * disait libre (sa liste de créneaux vient d'un cache de quinze minutes) et la
+ * page de confirmation le disait réservé. Aucune des deux ne fait autorité —
+ * seul Calendly la fait, et personne ne le lui avait demandé.
+ *
+ * ⚠️ Et un point qui compte pour l'agenda : supprimer l'événement dans Google
+ * Calendar N'ANNULE PAS la réservation chez Calendly. Le créneau resterait
+ * bloqué pour un vrai prospect, sans que rien ne le signale.
+ */
+const EVENT_A_LIRE = (process.env.SONDE_EVENT_URI ?? "").trim();
+const ANNULER = (process.env.SONDE_ANNULER ?? "").trim() === "true";
+
+if (EVENT_A_LIRE) {
+  const uri = EVENT_A_LIRE.startsWith("http")
+    ? EVENT_A_LIRE
+    : `${API}/scheduled_events/${EVENT_A_LIRE}`;
+  titre(`LECTURE — ${uri}`);
+  const ev = await appel(uri);
+  console.log(`→ HTTP ${ev.status}`);
+  const r = ev.corps?.resource ?? null;
+  console.log(
+    JSON.stringify(
+      r && {
+        status: r.status,
+        start_time: r.start_time,
+        name: r.name,
+        location: r.location,
+        cancellation: r.cancellation ?? null,
+      },
+      null,
+      2,
+    ),
+  );
+
+  const inv = await appel(`${uri}/invitees`);
+  const premier = inv.corps?.collection?.[0] ?? null;
+  console.log("\ninvité :");
+  console.log(
+    JSON.stringify(
+      premier && {
+        name: premier.name,
+        email: premier.email,
+        status: premier.status,
+        text_reminder_number: premier.text_reminder_number ?? null,
+        cancel_url: premier.cancel_url,
+      },
+      null,
+      2,
+    ),
+  );
+
+  titre("VERDICT");
+  if (r?.status === "active") {
+    console.log("🔴 L'ÉVÉNEMENT EST TOUJOURS ACTIF CHEZ CALENDLY.");
+    console.log("   Le créneau reste bloqué pour un vrai prospect.");
+    if (ANNULER) {
+      const a = await appel(`${uri}/cancellation`, { method: "POST", body: "{}" });
+      console.log(
+        a.status === 201
+          ? "\n✓ ANNULÉ à l'instant."
+          : `\n🔴 annulation refusée (HTTP ${a.status}) : ${JSON.stringify(a.corps)}`,
+      );
+      if (a.status !== 201) process.exitCode = 1;
+    } else {
+      console.log("   (relancer avec annuler=true pour le supprimer)");
+    }
+  } else if (r?.status === "canceled") {
+    console.log("✅ Déjà annulé chez Calendly — le créneau est rendu.");
+    console.log(`   annulé par : ${r?.cancellation?.canceler_type ?? "?"}`);
+  } else {
+    console.log(`⚠️ Statut inattendu : ${r?.status ?? "(illisible)"}`);
+  }
+  process.exit(process.exitCode ?? 0);
+}
+
 let eventUri = null;
 
 try {
