@@ -65,7 +65,7 @@ WORK=$(mktemp -d); chmod 700 "${WORK}"
 trap 'rm -rf "${WORK}"' EXIT INT TERM
 
 # ─── 1. État du coffre ───────────────────────────────────────────────────────
-echo "── 1/4 · état du coffre ────────────────────────────────────────────────"
+echo "── 1/5 · état du coffre ────────────────────────────────────────────────"
 ETAT=$("${BW}" status 2>/dev/null | python -c "import json,sys; print(json.load(sys.stdin).get('status','inconnu'))" 2>/dev/null || echo "inconnu")
 echo "   ${ETAT}"
 
@@ -106,7 +106,7 @@ export BW_SESSION="${SESSION}"
 
 # ─── 2. L'archive de référence ───────────────────────────────────────────────
 echo ""
-echo "── 2/4 · dernière sauvegarde de secrets sur R2 ─────────────────────────"
+echo "── 2/5 · dernière sauvegarde de secrets sur R2 ─────────────────────────"
 r2() {
   curl -sS --fail-with-body --aws-sigv4 "aws:amz:auto:s3" \
     --user "${R2_ACCESS_KEY_ID}:${R2_SECRET_ACCESS_KEY}" \
@@ -124,7 +124,7 @@ echo "   $(wc -c < "${WORK}/archive.enc") octets"
 
 # ─── 3. Les candidats du coffre ──────────────────────────────────────────────
 echo ""
-echo "── 3/4 · lecture du coffre ─────────────────────────────────────────────"
+echo "── 3/5 · lecture du coffre ─────────────────────────────────────────────"
 if ! "${BW}" list items --session "${SESSION}" > "${WORK}/items.json" 2>"${WORK}/bw.err"; then
   echo "❌ Lecture du coffre impossible :"; head -3 "${WORK}/bw.err"; exit 1
 fi
@@ -187,7 +187,7 @@ PY
 
 # ─── 4. Laquelle ouvre l'archive ? ───────────────────────────────────────────
 echo ""
-echo "── 4/4 · laquelle ouvre l'archive ? ────────────────────────────────────"
+echo "── 4/5 · laquelle ouvre l'archive ? ────────────────────────────────────"
 TROUVE=""
 ESSAIS=0
 while IFS=$'\t' read -r ENTREE CHAMP VALEUR; do
@@ -243,3 +243,71 @@ if [ "${F}" = "ajuste" ]; then
 fi
 echo ""
 echo "   La reprise à froid est possible avec cette entrée seule + le runbook R33."
+
+# ─── 5. Axion Audit : deux AUTRES passphrases ────────────────────────────────
+#
+# Axion Audit partage le VPS mais pas ses secrets. Il en porte DEUX, distinctes
+# de celle d'Axion-IA et distinctes entre elles :
+#   BACKUP_ENCRYPTION_PASSPHRASE (43 car.) ouvre ses archives de données ;
+#   BACKUP_SECRETS_PASSPHRASE    (64 car.) ouvre son coffre de secrets.
+# Vérifié le 2026-09-03 en déchiffrant les 14 archives locales : chacune ne
+# s'ouvre qu'avec la sienne. Une reprise complète des deux projets exige donc
+# TROIS phrases, pas une.
+#
+# Ici on ne re-déchiffre pas : on compare des empreintes SHA-256 aux valeurs
+# vivantes, lues sur le VPS. C'est suffisant PARCE QUE ces valeurs vivantes ont
+# déjà été prouvées capables d'ouvrir les archives — sans cette preuve, une
+# concordance d'empreintes ne dirait rien d'utile.
+echo ""
+echo "── 5/5 · Axion Audit — ses deux passphrases sont-elles au coffre ? ─────"
+
+IP_VPS="${AXION_VPS_IP:-}"
+if [ -z "${IP_VPS}" ] && [ -f "${CREDS}" ]; then
+  IP_VPS=$(grep -E '^HETZNER_SERVER_IP=' "${CREDS}" | head -1 | cut -d= -f2- | tr -d '"'"'"'\r')
+fi
+
+if [ -z "${IP_VPS}" ]; then
+  echo "   ⚠️  Adresse du VPS introuvable — contrôle Axion Audit ignoré."
+elif ! ssh -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=no \
+       "root@${IP_VPS}" true 2>/dev/null; then
+  echo "   ⚠️  VPS injoignable en SSH — contrôle Axion Audit ignoré."
+  echo "      (sans conséquence sur le résultat ci-dessus, qui concerne Axion-IA)"
+else
+  # Empreintes des valeurs vivantes. Aucune valeur ne transite ni ne s'affiche.
+  ssh -o BatchMode=yes -o StrictHostKeyChecking=no "root@${IP_VPS}" '
+    SB=$(docker ps --format "{{.Names}}" | grep "^sauvegarde-wrunr6mwq2oxqq392i4myzjn" | head -1)
+    for K in BACKUP_ENCRYPTION_PASSPHRASE BACKUP_SECRETS_PASSPHRASE; do
+      V=$(docker exec "$SB" printenv "$K" 2>/dev/null | tr -d "\n")
+      [ -n "$V" ] && printf "%s %s %s\n" "$K" "${#V}" "$(printf %s "$V" | sha256sum | cut -d" " -f1)"
+    done' > "${WORK}/audit-fp.txt" 2>/dev/null
+
+  if [ ! -s "${WORK}/audit-fp.txt" ]; then
+    echo "   ⚠️  Passphrases d'Axion Audit illisibles sur le VPS — contrôle ignoré."
+  else
+    while read -r NOM LONGUEUR EMPREINTE; do
+      [ -z "${NOM}" ] && continue
+      OU=""
+      while IFS=$'\t' read -r E2 C2 V2; do
+        [ -z "${V2}" ] && continue
+        for FORME in "${V2}" "$(printf '%s' "${V2}" | tr -d ' \t\r\n')"; do
+          if [ "$(printf %s "${FORME}" | sha256sum | cut -d' ' -f1)" = "${EMPREINTE}" ]; then
+            OU="${E2} → ${C2}"; break 2
+          fi
+        done
+      done < "${WORK}/candidats.tsv"
+      if [ -n "${OU}" ]; then
+        echo "   🟢 ${NOM} (${LONGUEUR} car.) : au coffre — ${OU}"
+      else
+        echo "   🔴 ${NOM} (${LONGUEUR} car.) : ABSENTE DU COFFRE"
+        MANQUE=1
+      fi
+    done < "${WORK}/audit-fp.txt"
+
+    if [ "${MANQUE:-0}" = "1" ]; then
+      echo ""
+      echo "   ⚠️  Axion Audit ne se restaurerait PAS sans ces phrases. Les récupérer :"
+      echo "      Coolify → Applications → axion-audit-staging → Environment Variables"
+      echo "      → l'œil pour révéler → une entrée Bitwarden par phrase, nom identique."
+    fi
+  fi
+fi
