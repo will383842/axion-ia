@@ -5,6 +5,8 @@
 set -e
 APP_CT=$(docker ps --filter "name=mqbmlz1bcwsdwi3t9fxsllqt" --format '{{.Names}}' | head -1)
 docker run --rm \
+  -v /var/lib/axion-backup:/state \
+  -e FAIL_COUNT_FILE="/state/backup-fails-r2-count.log" \
   --network=coolify \
   -e DATABASE_URL="$(docker exec $APP_CT printenv DATABASE_URL)" \
   -e BACKUP_ENCRYPTION_PASSPHRASE="$(docker exec $APP_CT printenv BACKUP_ENCRYPTION_PASSPHRASE)" \

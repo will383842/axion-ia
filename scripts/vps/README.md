@@ -55,10 +55,20 @@ Trois défauts mesurés en auditant le scénario « Coolify tombe » :
    que **7** emplacements de snapshot — nombre non réglable. Une suppression repérée après
    trois semaines n'était donc plus récupérable nulle part, pour des pièces dont la
    rétention légale est de cinq ans. D'où les paliers hebdo et mensuel ajoutés ci-dessus.
-3. **Le compteur de fails consécutifs vivait dans le conteneur éphémère.** Il repartait de
-   zéro à chaque exécution, donc l'alerte « CASCADING FAIL » ne pouvait jamais se
-   déclencher. `run-secrets-backup.sh` le range maintenant dans `/var/lib/axion-backup`,
-   monté depuis l'hôte. **Les cinq autres wrappers ont toujours le défaut** — à reprendre.
+3. **L'alerte « CASCADING FAIL » ne pouvait pas se déclencher.** Elle n'escalade qu'à
+   partir de **deux** échecs consécutifs, mais le compteur vivait dans le conteneur
+   éphémère : il repartait de zéro à chaque exécution et valait donc 1 pour l'éternité.
+   Une sauvegarde pouvait échouer toutes les nuits sans qu'aucune escalade ne parte.
+   Les **six** wrappers montent désormais `/var/lib/axion-backup` et passent
+   `FAIL_COUNT_DIR` (ou `FAIL_COUNT_FILE` pour `run-r2-backup.sh`, qui redéfinit
+   `record_fail`). Au passage, `backup-lib.sh` calcule le chemin **à l'appel** et non au
+   `source` : `backup-plausible.sh` bascule sur `plausible_clickhouse` après avoir sourcé,
+   si bien que ses échecs ClickHouse comptaient dans le compteur de Postgres.
+   Verrouillé par `tests/unit/ci/compteur-de-fails-survit-au-conteneur.spec.ts`.
+
+> ⚠️ **Ordre de déploiement.** Les wrappers tirent `backup-lib.sh` depuis `main` à chaque
+> exécution. `FAIL_COUNT_DIR` n'existe donc qu'une fois la PR fusionnée : déployer les
+> wrappers sur le VPS **après** la fusion, pas avant.
 
 ## Sécurité
 

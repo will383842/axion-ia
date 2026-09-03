@@ -50,9 +50,9 @@ set -euo pipefail
 apk add --no-cache aws-cli openssl curl jq >/dev/null
 
 export COMPONENT=secrets COMPONENT_LABEL=SECRETS HOSTNAME_TAG=vps
-# Monté depuis l'hôte : sans cela le compteur de fails consécutifs naît et meurt
-# avec le conteneur éphémère, et le « CASCADING FAIL » ne se déclenche jamais.
-export FAIL_COUNT_FILE=/state/backup-fails-secrets-count.log
+# `FAIL_COUNT_DIR` est passé par le `docker run` et pointe sur un volume de
+# l'hôte : sans cela le compteur de fails consécutifs naît et meurt avec le
+# conteneur éphémère, et le « CASCADING FAIL » ne se déclenche jamais.
 export DATE_TAG=$(date -u +%Y%m%d-%H%M%S)
 curl -fsS https://raw.githubusercontent.com/will383842/axion-ia/main/scripts/backup-lib.sh -o /tmp/backup-lib.sh
 source /tmp/backup-lib.sh
@@ -203,6 +203,7 @@ docker run --rm \
   -v "${WORK}/payload:/payload" \
   -v "${WORK}/inner.sh:/inner.sh:ro" \
   -v /var/lib/axion-backup:/state \
+  -e FAIL_COUNT_DIR=/state \
   -e BACKUP_TYPE="daily" \
   -e BACKUP_ENCRYPTION_PASSPHRASE="$(env_of BACKUP_ENCRYPTION_PASSPHRASE)" \
   -e R2_ACCOUNT_ID="$(env_of R2_ACCOUNT_ID)" \

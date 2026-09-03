@@ -33,7 +33,29 @@ DATE_TAG="${DATE_TAG:-$(date -u +%Y%m%d-%H%M%S)}"
 HOSTNAME_TAG="${HOSTNAME_TAG:-$(hostname -s 2>/dev/null || echo unknown)}"
 
 # Compteur fails consécutifs propre à chaque composant.
-FAIL_COUNT_FILE="${FAIL_COUNT_FILE:-/var/log/backup-fails-${COMPONENT}-count.log}"
+#
+# ⚠️ Deux défauts fermés ici le 2026-09-03, l'un et l'autre rendaient l'alerte
+# « CASCADING FAIL » inatteignable :
+#
+#  1. Les wrappers `vps/run-*.sh` exécutent tout dans un conteneur ÉPHÉMÈRE. Le
+#     compteur naissait et mourait avec lui : il repartait de zéro à chaque run,
+#     donc il n'atteignait jamais 2. D'où `FAIL_COUNT_DIR`, que les wrappers
+#     pointent sur un volume de l'hôte (`/var/lib/axion-backup`).
+#  2. Le chemin était figé AU MOMENT DU `source`. `backup-plausible.sh` passe à
+#     `COMPONENT="plausible_clickhouse"` APRÈS avoir sourcé : les échecs
+#     ClickHouse incrémentaient donc le compteur de Postgres, et deux composants
+#     partageaient un seul témoin. Le chemin est maintenant calculé à l'appel.
+#
+# `FAIL_COUNT_FILE` reste honoré s'il est posé explicitement (chemin unique,
+# tous composants confondus) ; sinon un fichier par composant dans FAIL_COUNT_DIR.
+FAIL_COUNT_DIR="${FAIL_COUNT_DIR:-/var/log}"
+_fail_count_file() {
+  if [ -n "${FAIL_COUNT_FILE:-}" ]; then
+    printf '%s' "${FAIL_COUNT_FILE}"
+  else
+    printf '%s/backup-fails-%s-count.log' "${FAIL_COUNT_DIR}" "${COMPONENT}"
+  fi
+}
 
 # ─── Telegram ────────────────────────────────────────────────────────────────
 notify_telegram() {
@@ -60,11 +82,13 @@ require_var() {
 # ─── Anti-spam fail consécutifs (cf. audit D5+D6 P1-9) ───────────────────────
 record_fail() {
   local reason="$1"
-  mkdir -p "$(dirname "${FAIL_COUNT_FILE}")" 2>/dev/null || true
+  local fichier
+  fichier="$(_fail_count_file)"
+  mkdir -p "$(dirname "${fichier}")" 2>/dev/null || true
   local count
-  count=$(cat "${FAIL_COUNT_FILE}" 2>/dev/null || echo 0)
+  count=$(cat "${fichier}" 2>/dev/null || echo 0)
   count=$((count + 1))
-  echo "${count}" > "${FAIL_COUNT_FILE}"
+  echo "${count}" > "${fichier}"
   CONSECUTIVE_FAILURES="${count}"
   if [ "${count}" -ge 2 ]; then
     notify_telegram "🔴🔴 CASCADING FAIL — ${count} backups consécutifs échoués (raison : ${reason}). Investigation P0." "🔴"
@@ -76,13 +100,15 @@ record_fail() {
 
 record_success() {
   CONSECUTIVE_FAILURES=0
-  if [ -f "${FAIL_COUNT_FILE}" ]; then
+  local fichier
+  fichier="$(_fail_count_file)"
+  if [ -f "${fichier}" ]; then
     local count
-    count=$(cat "${FAIL_COUNT_FILE}" 2>/dev/null || echo 0)
+    count=$(cat "${fichier}" 2>/dev/null || echo 0)
     if [ "${count}" -ge 1 ]; then
       notify_telegram "🟢 Recovery OK après ${count} échecs consécutifs" "🟢"
     fi
-    rm -f "${FAIL_COUNT_FILE}"
+    rm -f "${fichier}"
   fi
 }
 
