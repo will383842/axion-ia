@@ -197,6 +197,56 @@ code serveur, 29 fichiers, aucune route nouvelle.
 4. **Job `purge`** : Cloudflare `purge_everything`
 5. **Job `lhci`** : Lighthouse CI gate 5 URLs prod live
 
+### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
+
+`scripts/docker-entrypoint.sh` lance `prisma migrate deploy` **en best-effort** : la
+commande tourne dans un sous-shell `set +e`, avec un repli `npx prisma@5.22.0`, et **si
+les deux échouent l'entrypoint logue un `WARNING` puis démarre Next.js quand même**. Le
+`exec node server.js` final rend donc un code de sortie 0 à Coolify alors que la
+migration n'est jamais passée.
+
+Conséquence, et elle s'est déjà produite — incident du **2026-05-18**, raconté dans les
+commentaires du `Dockerfile` (~l. 206 et 280) : des symlinks pnpm cassés empêchaient
+`prisma migrate deploy` de s'exécuter, l'application tournait, et le **drift de schéma est
+resté invisible jusqu'au crash de la console admin**, sur des requêtes portant des
+colonnes absentes.
+
+**Ce que chaque signal prouve, et ce qu'il ne prouve pas :**
+
+| Signal                                         | Ce qu'il prouve                            | Ce qu'il ne prouve pas          |
+| ---------------------------------------------- | ------------------------------------------ | ------------------------------- |
+| Job `deploy` vert                              | Coolify a accepté la commande              | que le conteneur a démarré sain |
+| `x-axion-build-sha` à jour                     | l'**image** est servie                     | que le **schéma** a bougé       |
+| `[entrypoint] Migrations applied successfully` | la commande a réussi                       | —                               |
+| `prisma migrate status`                        | le journal `_prisma_migrations` est à jour | —                               |
+
+**Après tout atterrissage qui porte une migration, vérifier** (accès SSH VPS requis) :
+
+```bash
+# 1. Identifier le conteneur applicatif — l'image porte le SHA du commit.
+#    ⚠️ Il y a DEUX conteneurs applicatifs ; un seul porte les lignes d'entrypoint.
+ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}\t{{.Image}}\t{{.Status}}"'
+
+# 2. Ce que l'entrypoint a fait. Échec = « WARNING: prisma migrate deploy failed … AND npx ».
+docker logs <conteneur> 2>&1 | grep entrypoint
+
+# 3. Preuve par le schéma, lecture seule sur la vraie base de production.
+docker exec <conteneur> /app/prisma-cli/node_modules/.bin/prisma migrate status \
+  --schema=./prisma/schema.prisma
+```
+
+⚠️ `migrate status` lit la table `_prisma_migrations`. Sur une base dont le schéma a été
+posé autrement (certaines bases de développement), elle annonce « N migrations non
+appliquées » alors que toutes les tables sont là. En production c'est un non-sujet —
+l'entrypoint migre depuis l'origine — mais si la réponse paraît absurde, c'est la piste.
+La preuve dure reste l'existence de la colonne elle-même.
+
+**Si la migration n'est pas passée**, le filet est documenté par l'entrypoint lui-même :
+
+```bash
+gh workflow run admin-emergency-migrate.yml -f action=migrate
+```
+
 ### Modifs Coolify côté plateforme
 
 - `build_pack` : `dockerfile` (inchangé)
