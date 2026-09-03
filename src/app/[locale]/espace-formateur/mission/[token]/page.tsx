@@ -48,7 +48,7 @@ export default async function Page({
   const mission = await lireMissionParJeton(token);
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-10">
+    <div className="mx-auto max-w-2xl px-4 py-10">
       <p className="text-fg-muted text-xs tracking-wide uppercase">Espace formateur</p>
       <h1 className="text-mocha mt-1 font-serif text-2xl font-semibold">Proposition de mission</h1>
 
@@ -140,6 +140,6 @@ export default async function Page({
           </div>
         </>
       )}
-    </main>
+    </div>
   );
 }
