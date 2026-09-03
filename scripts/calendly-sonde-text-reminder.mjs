@@ -82,6 +82,140 @@ function titre(t) {
   console.log(`\n${"=".repeat(72)}\n${t}\n${"=".repeat(72)}`);
 }
 
+/**
+ * 🔍 MODE LECTURE — l'état RÉEL d'un événement, sans rien créer.
+ *
+ * Ajouté le 2026-09-03 : après le test de bout en bout, deux surfaces se
+ * contredisaient sur le sort du rendez-vous de sonde. La page `/appel` le
+ * disait libre (sa liste de créneaux vient d'un cache de quinze minutes) et la
+ * page de confirmation le disait réservé. Aucune des deux ne fait autorité —
+ * seul Calendly la fait, et personne ne le lui avait demandé.
+ *
+ * ⚠️ Et un point qui compte pour l'agenda : supprimer l'événement dans Google
+ * Calendar N'ANNULE PAS la réservation chez Calendly. Le créneau resterait
+ * bloqué pour un vrai prospect, sans que rien ne le signale.
+ */
+const LIRE_EVENT_TYPE = (process.env.SONDE_EVENT_TYPE ?? "").trim() === "true";
+const EVENT_A_LIRE = (process.env.SONDE_EVENT_URI ?? "").trim();
+const ANNULER = (process.env.SONDE_ANNULER ?? "").trim() === "true";
+
+if (LIRE_EVENT_TYPE) {
+  // 🔍 MODE EVENT-TYPE — les questions RÉELLEMENT posées par Calendly.
+  //
+  // `questions.ts` en masque certaines côté site (`QUESTIONS_MASQUEES`). Leur
+  // absence du formulaire ne prouve donc RIEN sur ce que Calendly demande
+  // encore : elles restent dans LEUR formulaire de repli, celui vers lequel on
+  // bascule quand notre réservation directe échoue. Pour savoir si un réglage
+  // a été fait dans leur interface, il faut le leur demander.
+  titre("LECTURE DE L'EVENT-TYPE — les questions posées par Calendly");
+  const moi = await appel("/users/me");
+  const ets = await appel(
+    `/event_types?user=${encodeURIComponent(moi.corps?.resource?.uri ?? "")}&count=100`,
+  );
+  const et = (ets.corps?.collection ?? []).find(
+    (e) => (e?.scheduling_url ?? "").replace(/\/$/, "") === URL_PUBLIQUE.replace(/\/$/, ""),
+  );
+  if (!et) {
+    console.error("✗ event-type introuvable pour", URL_PUBLIQUE);
+    process.exit(1);
+  }
+  console.log(`event-type : ${et.name} (${et.duration} min) — actif : ${et.active}`);
+  const qs = et.custom_questions ?? [];
+  console.log(`\n${qs.length} question(s) posée(s) par Calendly :`);
+  for (const q of qs) {
+    const etat = q.enabled === false ? "DÉSACTIVÉE" : "activée";
+    const obl = q.required ? "OBLIGATOIRE" : "facultative";
+    console.log(`  [${q.position}] « ${q.name} » — ${q.type}, ${obl}, ${etat}`);
+    if (Array.isArray(q.answer_choices) && q.answer_choices.length > 0) {
+      console.log(`        choix : ${q.answer_choices.join(" | ")}`);
+    }
+  }
+
+  titre("VERDICT");
+  const ville = qs.find((q) => /ville/i.test(q?.name ?? "") && q?.enabled !== false);
+  if (ville) {
+    console.log(`🔴 « ${ville.name} » est TOUJOURS posée par Calendly.`);
+    console.log("   Le site la masque, mais elle reste dans LEUR formulaire de repli");
+    console.log("   et dans leurs e-mails. Le réglage est à faire dans Calendly.");
+  } else {
+    console.log("✅ Aucune question « ville » active — le réglage a bien été fait.");
+  }
+  process.exit(0);
+}
+
+if (EVENT_A_LIRE) {
+  const uri = EVENT_A_LIRE.startsWith("http")
+    ? EVENT_A_LIRE
+    : `${API}/scheduled_events/${EVENT_A_LIRE}`;
+  titre(`LECTURE — ${uri}`);
+  const ev = await appel(uri);
+  console.log(`→ HTTP ${ev.status}`);
+  const r = ev.corps?.resource ?? null;
+  console.log(
+    JSON.stringify(
+      r && {
+        status: r.status,
+        start_time: r.start_time,
+        name: r.name,
+        location: r.location,
+        cancellation: r.cancellation ?? null,
+        // 🔴 LA PREUVE QUE CALENDLY A POUSSÉ (OU NON) VERS UN AGENDA GOOGLE.
+        // Ajouté le 2026-09-03 : un rendez-vous de test n'est apparu ni sur
+        // l'iPhone de Will ni dans son Google Agenda. `calendar_event` dit si
+        // Calendly a créé l'événement côté Google et sous quel identifiant —
+        // c'est ce qui distingue « Calendly n'a rien poussé » de « poussé sur
+        // un agenda que Will n'affiche pas ». Sans ce champ, on ne peut que
+        // supposer.
+        calendar_event: r.calendar_event ?? null,
+        event_memberships: r.event_memberships ?? null,
+        event_guests: r.event_guests ?? null,
+      },
+      null,
+      2,
+    ),
+  );
+
+  const inv = await appel(`${uri}/invitees`);
+  const premier = inv.corps?.collection?.[0] ?? null;
+  console.log("\ninvité :");
+  console.log(
+    JSON.stringify(
+      premier && {
+        name: premier.name,
+        email: premier.email,
+        status: premier.status,
+        text_reminder_number: premier.text_reminder_number ?? null,
+        cancel_url: premier.cancel_url,
+      },
+      null,
+      2,
+    ),
+  );
+
+  titre("VERDICT");
+  if (r?.status === "active") {
+    console.log("🔴 L'ÉVÉNEMENT EST TOUJOURS ACTIF CHEZ CALENDLY.");
+    console.log("   Le créneau reste bloqué pour un vrai prospect.");
+    if (ANNULER) {
+      const a = await appel(`${uri}/cancellation`, { method: "POST", body: "{}" });
+      console.log(
+        a.status === 201
+          ? "\n✓ ANNULÉ à l'instant."
+          : `\n🔴 annulation refusée (HTTP ${a.status}) : ${JSON.stringify(a.corps)}`,
+      );
+      if (a.status !== 201) process.exitCode = 1;
+    } else {
+      console.log("   (relancer avec annuler=true pour le supprimer)");
+    }
+  } else if (r?.status === "canceled") {
+    console.log("✅ Déjà annulé chez Calendly — le créneau est rendu.");
+    console.log(`   annulé par : ${r?.cancellation?.canceler_type ?? "?"}`);
+  } else {
+    console.log(`⚠️ Statut inattendu : ${r?.status ?? "(illisible)"}`);
+  }
+  process.exit(process.exitCode ?? 0);
+}
+
 let eventUri = null;
 
 try {

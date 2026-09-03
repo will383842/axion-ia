@@ -326,18 +326,22 @@ describe("🔴 le téléphone est OBLIGATOIRE, donc il ne se masque JAMAIS", () 
     ).not.toContain("facultatif");
   });
 
-  it("🔴 LE NAVIGATEUR REFUSE D'ENVOYER SANS NUMÉRO — et il désigne CE champ", async () => {
-    // 🔑 LA SEULE GARDE DE CE FICHIER QUI ÉPROUVE LE COMPORTEMENT, PAS UN ATTRIBUT.
+  it("🔴 le champ est le SEUL à manquer quand on remplit tout le reste", async () => {
+    // ⚠️ CE TEST S'EST APPELÉ « LE NAVIGATEUR REFUSE D'ENVOYER », ET C'ÉTAIT FAUX.
     //
-    // Les deux tests voisins lisent des attributs et des classes : ils diraient
-    // encore vrai si le navigateur ignorait tout ce qu'on a écrit. Ici on
-    // interroge l'API de validation de contrainte — la MÊME que celle qui décide
-    // si le formulaire part quand le visiteur clique « Réserver ».
+    // Le `<form>` porte `noValidate` : le navigateur ne valide RIEN, et
+    // `required` n'y bloque aucune soumission. Mesuré dans un vrai Chrome sur la
+    // prod le 2026-09-03 — formulaire envoyé sans numéro, POST parti, refus
+    // rendu par le SERVEUR. `checkValidity()` ignore `noValidate` (il ne
+    // concerne que l'algorithme de soumission), donc jsdom répondait « invalide »
+    // sur un formulaire que le navigateur envoie sans broncher : la garde
+    // mesurait une propriété du BALISAGE en croyant mesurer un comportement.
     //
-    // ⚠️ Ce que ce test ne prouve PAS, et il faut le dire : que la soumission
-    // aboutisse. jsdom n'envoie rien. Il prouve que le formulaire est INVALIDE
-    // sans numéro et VALIDE avec, et que le champ fautif est bien le téléphone —
-    // donc que le message d'erreur natif se posera au bon endroit.
+    // Ce qu'elle prouve réellement, et qui vaut d'être gardé : le `required` est
+    // bien câblé sur le téléphone, et AUCUN autre champ ne manque quand on
+    // remplit le reste — donc le refus du serveur portera sur ce champ-là seul.
+    // Le vrai verrou est dans `formulaire-reservation.ts`, éprouvé par
+    // `rien-de-ce-que-le-visiteur-tape-ne-se-perd.spec.ts`.
     await rendre();
     const form = document.querySelector("form");
     expect(form, "sans <form>, ce test ne mesure rien").not.toBeNull();
@@ -354,7 +358,7 @@ describe("🔴 le téléphone est OBLIGATOIRE, donc il ne se masque JAMAIS", () 
 
     expect(
       form?.checkValidity(),
-      "le navigateur doit REFUSER d'envoyer un formulaire sans numéro",
+      "le balisage doit marquer le formulaire incomplet sans numéro",
     ).toBe(false);
     const tel = champ("telephone") as HTMLInputElement;
     expect(tel.validity.valueMissing, "et c'est le TÉLÉPHONE qui manque").toBe(true);
@@ -364,7 +368,24 @@ describe("🔴 le téléphone est OBLIGATOIRE, donc il ne se masque JAMAIS", () 
     tel.value = "+33 6 11 22 33 44";
     expect(
       form?.checkValidity(),
-      "avec le numéro, le formulaire doit partir : aucun autre champ ne doit bloquer",
+      "avec le numéro, plus rien ne manque : aucun autre champ n'est incomplet",
+    ).toBe(true);
+
+    // 🔴 ET ON ÉPINGLE `noValidate`, parce que tout ce qui précède en dépend.
+    //
+    // Il n'est pas un oubli : il rend le message d'erreur IDENTIQUE avec et sans
+    // JavaScript, en français, au-dessus du champ fautif — au lieu d'une bulle
+    // native traduite par le navigateur et impossible à styler. Le retirer
+    // changerait le parcours de refus sans que rien d'autre ne le signale.
+    //
+    // Corollaire, et c'est lui qui compte : puisque le navigateur ne bloque
+    // rien, tout champ que le serveur exige doit rester VISIBLE — sinon son
+    // message désigne un champ inatteignable. C'est la vraie raison pour
+    // laquelle le masquage conditionnel du téléphone a été retiré.
+    expect(
+      form?.hasAttribute("novalidate"),
+      "le formulaire délègue AU SERVEUR : sans noValidate, les messages ne sont " +
+        "plus les mêmes avec et sans JavaScript",
     ).toBe(true);
   });
 
