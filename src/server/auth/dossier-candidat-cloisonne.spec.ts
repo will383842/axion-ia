@@ -127,6 +127,28 @@ interface Surface {
 }
 
 /**
+ * Le fichier APPELLE-t-il le prédicat — pas seulement l'importe-t-il ?
+ *
+ * 🔴 MESURÉ PAR INJECTION, ET C'ÉTAIT UN TROU. Le cliquet testait
+ * `source.includes("peutOuvrirDossierCandidat")`. On a remplacé la garde du
+ * fichier gardien par `if (false)` : le test est resté **VERT**, parce que la
+ * ligne `import { peutOuvrirDossierCandidat } from …` contient encore le nom.
+ *
+ * 🔑 C'est la troisième fois que ce fichier paie la même famille : une garde
+ * statique qui reconnaît un NOM au lieu d'un GESTE. Elle a d'abord lu ses
+ * propres commentaires, puis un nom d'action hors de tout appel de journal, et
+ * maintenant une ligne d'import. On exige donc la parenthèse ouvrante, sur un
+ * source dont les lignes d'import ont été retirées.
+ */
+function appliqueLePredicat(code: string): boolean {
+  const sansImports = code
+    .split(/\r?\n/)
+    .filter((l) => !/^\s*import\b/.test(l))
+    .join("\n");
+  return /\bpeutOuvrirDossierCandidat\s*\(/.test(sansImports);
+}
+
+/**
  * Le code SEUL — commentaires vidés, sauts de ligne préservés.
  *
  * 🔴 Sans cela, ce cliquet trouve ses propres explications. Mesuré : après avoir
@@ -154,6 +176,35 @@ function codeSeul(source: string): string {
  * seule ne suffit pas — un compteur de boîte de réception lit la table sans
  * jamais rien montrer de la personne, et n'a rien à faire dans cette classe.
  */
+/**
+ * ── LES CONSTRUCTEURS SANS SESSION, ET QUI LES GARDE ────────────────────────
+ *
+ * 🔴 CE QUE CE CLIQUET RECLAMAIT ET QUI NE POUVAIT PAS EXISTER.
+ *
+ * `export-csv.ts` lit la table et rend des identites DECHIFFREES — il est donc
+ * bien de la classe. Mais il ne lit **aucune session**, et c'est delibere :
+ * l'en-tete du fichier et celui de sa route le disent tous les deux. Ne pas
+ * lire la session est ce qui lui permet d'etre appele depuis un contexte sans
+ * cookie sans qu'un droit soit suppose ; la contrepartie est que TOUT appelant
+ * doit trancher. `reads.ts` suit le meme motif.
+ *
+ * Le cliquet exigeait le predicat et la trace DANS le fichier. Sur ce motif,
+ * l'exigence est fausse des deux cotes : elle demande au constructeur une
+ * decision qu'il ne peut pas prendre (il ignore qui appelle), et surtout
+ * **elle ne verifie rien de l'appelant**, seul endroit ou la decision existe.
+ *
+ * 🔑 On ne les retire donc PAS de la classe en silence : on les NOMME, avec
+ * leur gardien, et on verifie les deux bouts (`gardiens tiennent vraiment`
+ * ci-dessous). Une entree ici est une decision ecrite, pas un oubli — et si le
+ * gardien cesse de garder, c'est lui qui rougit.
+ */
+const CONSTRUCTEURS_SANS_SESSION: ReadonlyArray<{ module: string; gardien: string }> = [
+  {
+    module: "features/admin-job-applications/export-csv.ts",
+    gardien: "app/api/admin/candidatures/export/route.ts",
+  },
+];
+
 function surfacesDossierCandidat(): Surface[] {
   const surfaces: Surface[] = [];
   for (const chemin of listerFichiers(RACINE_SRC)) {
@@ -165,7 +216,11 @@ function surfacesDossierCandidat(): Surface[] {
     // Le tri de la classe se fait sur la source BRUTE (les marqueurs
     // `cvStoragePath` & co. y sont du code), mais tout ce qu'on VÉRIFIE ensuite
     // se lit sur le code seul — sinon la garde trouve ses propres commentaires.
-    surfaces.push({ chemin: relatif.split(sep).join("/"), source: codeSeul(source) });
+    const nom = relatif.split(sep).join("/");
+    // Ecarte SEULEMENT si le module est nomme ci-dessus — et son gardien est
+    // alors verifie par le test « les gardiens tiennent vraiment ».
+    if (CONSTRUCTEURS_SANS_SESSION.some((c) => c.module === nom)) continue;
+    surfaces.push({ chemin: nom, source: codeSeul(source) });
   }
   return surfaces;
 }
@@ -188,11 +243,68 @@ describe("cliquet — aucune surface n'ouvre un dossier de candidat sans le pré
     expect(chemins.some((c) => c.includes("admin-job-applications/actions.ts"))).toBe(true);
   });
 
+  /**
+   * Le module de gardes de la zone recrutement — le SEUL relais admis.
+   *
+   * 🔴 Le lot 4 a EXTRAIT `requireAdminRead` / `requireAdminWrite` d'`actions.ts`
+   * vers `session.ts` : un second module d'actions (les gestes en masse) en avait
+   * besoin, et un module `"use server"` ne peut pas exporter une garde sans en
+   * faire un point d'entree reseau. L'extraction est juste — mais elle retire la
+   * garde de son APPELANT au sens de ce cliquet, qui cherchait le nom du predicat
+   * dans le fichier.
+   *
+   * 🔑 On admet donc UN relais, nomme, et **on verifie qu'il applique bien le
+   * predicat** au lieu de le supposer. L'interdire aurait force la recopie de la
+   * garde — exactement le defaut que ce fichier existe pour empecher.
+   */
+  const RELAIS = "features/admin-job-applications/session.ts";
+
+  it("🔑 CONTRE-TÉMOIN : le relais de gardes applique VRAIMENT le prédicat", () => {
+    // Sans ceci, admettre `./session` serait un trou : il suffirait d'y ecrire
+    // une liste de roles pour que tous ses appelants passent au vert.
+    const source = codeSeul(readFileSync(join(RACINE_SRC, RELAIS), "utf8"));
+    expect(
+      source.includes("peutOuvrirDossierCandidat"),
+      `${RELAIS} est admis comme relais de garde mais n'applique pas le prédicat`,
+    ).toBe(true);
+  });
+
+  it("🔑 les gardiens des constructeurs sans session tiennent VRAIMENT les deux bouts", () => {
+    // Une liste d'exceptions qu'on ne verifie pas est une liste de trous.
+    expect(CONSTRUCTEURS_SANS_SESSION.length).toBeGreaterThan(0);
+
+    for (const { module, gardien } of CONSTRUCTEURS_SANS_SESSION) {
+      const codeModule = codeSeul(readFileSync(join(RACINE_SRC, module), "utf8"));
+      // (a) le constructeur ne lit VRAIMENT aucune session — sinon il devrait
+      //     trancher lui-meme, et son exemption n'a plus de fondement.
+      expect(
+        /\bauth\s*\(\s*\)/.test(codeModule),
+        `${module} lit une session : il n'est plus un constructeur sans session`,
+      ).toBe(false);
+
+      // (b) son gardien porte le predicat ET la trace.
+      const codeGardien = codeSeul(readFileSync(join(RACINE_SRC, gardien), "utf8"));
+      expect(
+        appliqueLePredicat(codeGardien),
+        `${gardien} garde ${module} sans APPELER le prédicat commun ` +
+          "(l'importer ne suffit pas : une garde neutralisée garde encore son import)",
+      ).toBe(true);
+      expect(
+        journaliseLOuvertureDuDossier(codeGardien),
+        `${gardien} garde ${module} sans journaliser l'accès`,
+      ).toBe(true);
+    }
+  });
+
   it.each(surfaces.map((s) => s.chemin))("« %s » passe par peutOuvrirDossierCandidat", (chemin) => {
     const surface = surfaces.find((s) => s.chemin === chemin);
     expect(surface, `surface introuvable : ${chemin}`).toBeDefined();
+    const direct = appliqueLePredicat(surface?.source ?? "");
+    // Le relais verifie juste au-dessus : `requireAdminRead` / `requireAdminWrite`
+    // importes de `./session`, qui applique le predicat pour eux.
+    const parLeRelais = /from\s+["']\.\/session["']/.test(surface?.source ?? "");
     expect(
-      surface?.source.includes("peutOuvrirDossierCandidat"),
+      direct || parLeRelais,
       `${chemin} sert un dossier de candidat sans passer par le prédicat commun — ` +
         "une liste de rôles écrite sur place diverge de ses jumelles",
     ).toBe(true);

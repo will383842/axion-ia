@@ -39,17 +39,24 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
   const page = sp.page ? parseInt(sp.page, 10) : 1;
   const onlyAttention = sp.attention === "1";
 
+  // La recherche libre n'existe QUE sur les vues mono-table : elle porte sur
+  // des colonnes chiffrées de `JobApplication`, et la vue fusionnée mélange
+  // deux tables dont une seule sait la faire. Un champ qui ne filtrerait que la
+  // moitié des lignes serait pire que pas de champ.
+  const recherche = sp.q?.trim() || undefined;
+
   let result: {
     items: ReadonlyArray<CandidatureUnifieeItem>;
     total: number;
     page: number;
     totalPages: number;
+    balayageTronque?: boolean;
   };
   // Sous-onglets par canal d'annonce — n'ont de sens que dans la vue
   // apporteurs. Ailleurs le paramètre est ignoré plutôt que rejeté : un lien
   // partagé qui traîne un `?source=` ne doit pas casser une autre vue.
   const source = view === "memo" && sp.source ? sp.source : undefined;
-  if (view === "memo" || (view === "all" && !sp.offerId)) {
+  if (view === "memo" || (view === "all" && !sp.offerId && !recherche)) {
     result = await listCandidaturesUnifieesAction({
       scope: view === "memo" ? "memo" : "toutes",
       ...(source ? { source } : {}),
@@ -62,12 +69,17 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
     const r = await listApplicationsAction({
       offerId: sp.offerId,
       status: sp.status as never,
-      view,
+      // Une recherche depuis l'onglet « Toutes » bascule sur la vue emploi
+      // complète : c'est la seule où elle a un sens, et rendre zéro résultat
+      // aurait laissé croire que le candidat n'existe pas.
+      view: view === "all" && recherche ? "all" : view,
       onlyAttention,
+      ...(recherche ? { search: recherche } : {}),
       page,
     });
     result = {
       ...r,
+      balayageTronque: r.balayageTronque,
       items: r.items.map((a): CandidatureUnifieeItem => ({
         id: a.id,
         source: "emploi",
@@ -93,6 +105,7 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
       total={result.total}
       page={result.page}
       totalPages={result.totalPages}
+      balayageTronque={result.balayageTronque ?? false}
     />
   );
 }

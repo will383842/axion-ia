@@ -117,6 +117,10 @@ export type FormationCronJobType =
   // des offres à republier. AUCUN bump de date automatique (règle Google).
   | "formation-crons.offres-fraicheur"
   | "formation-crons.rappels-entretien"
+  // Lot 4 — les candidatures que plus personne ne fait avancer. Alerte SEULE :
+  // aucun statut n'est changé, aucun e-mail ne part au candidat. Décider de
+  // répondre reste un geste humain.
+  | "formation-crons.candidatures-en-sommeil"
   // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE.
   //
   // ⚠️ Ce passage n'est pas « formation », et il vit pourtant ici. C'est un
@@ -1876,6 +1880,35 @@ async function handleRappelsEntretien(): Promise<void> {
   }
 }
 
+/**
+ * Quotidien — les candidatures oubliées, signalées sur Telegram.
+ *
+ * 🔴 CE CRON N'ÉCRIT RIEN SUR LES DOSSIERS. Il ne change aucun statut, il
+ * n'envoie rien au candidat, il n'archive personne. Un « rattrapage
+ * automatique » écrirait à la place du recruteur des réponses qu'il n'a pas
+ * relues — et le premier refus expédié par une machine coûterait plus cher que
+ * tous les oublis qu'il prétend corriger.
+ *
+ * 🔑 Import PARESSEUX : le module touche `prisma` et le moteur de
+ * notifications, et ce fichier est chargé au démarrage du worker.
+ */
+async function handleCandidaturesEnSommeil(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] candidatures-en-sommeil: stub DB, skip");
+    return;
+  }
+  const { signalerDossiersEnSommeil } = await import("@/server/careers/dossiers-en-sommeil");
+  const bilan = await signalerDossiersEnSommeil(new Date());
+  // On journalise même quand il n'y a rien : un cron dont on ne voit que les
+  // alertes ne se distingue pas d'un cron qui ne tourne plus.
+  const ligne =
+    `[formation-crons] candidatures-en-sommeil: ${bilan.dossiers.length} dossier(s) — ` +
+    `${bilan.parMotif.jamais_repondu} jamais répondu, ${bilan.parMotif.sans_activite} sans activité` +
+    (bilan.plafondAtteint ? " — PLAFOND D'EXAMEN ATTEINT" : "");
+  if (bilan.plafondAtteint) console.error(ligne);
+  else console.log(ligne);
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.positionnement": handlePositionnement,
@@ -1894,6 +1927,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.devis-expiration": handleDevisExpiration,
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
   "formation-crons.rappels-entretien": handleRappelsEntretien,
+  "formation-crons.candidatures-en-sommeil": handleCandidaturesEnSommeil,
   "formation-crons.email-sante": handleEmailSante,
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,

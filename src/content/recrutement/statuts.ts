@@ -115,6 +115,27 @@ export function estUneDecision(statut: JobApplicationStatus): boolean {
 }
 
 /**
+ * Les états d'un dossier OUVERT — reçu, pas encore refermé.
+ *
+ * 🔑 C'est EXACTEMENT l'ensemble ci-dessus, et ce n'est pas un hasard : les
+ * deux notions reposent sur le même fait — le dossier n'est pas refermé. Un
+ * dossier en cours ne peut pas porter de motif de sortie (raison de
+ * `STATUTS_INTERDISANT_UN_MOTIF`) et c'est le seul qui puisse être « oublié »
+ * (raison du lot 4) : archiver un refus n'est pas l'oublier, c'est le ranger.
+ *
+ * Un ALIAS et non une seconde liste, délibérément. Deux listes identiques
+ * tenues à la main sont la mécanique exacte des trois copies que ce fichier
+ * vient de solder. Le jour où les deux notions devraient diverger, c'est ICI
+ * qu'on les sépare — et la séparation sera visible.
+ */
+export const STATUTS_OUVERTS = STATUTS_INTERDISANT_UN_MOTIF;
+
+/** Le dossier attend encore quelque chose de nous. */
+export function estOuvert(statut: JobApplicationStatus): boolean {
+  return interditUnMotif(statut);
+}
+
+/**
  * Les motifs, dans l'ordre où un recruteur les cherche : d'abord ce qui relève
  * du profil, puis ce qui relève du candidat, puis ce qui relève de nous, et en
  * dernier les cas d'hygiène.
@@ -157,3 +178,34 @@ export const LIBELLE_MOTIF_REFUS: Record<JobRejectionReason, string> = {
  * « je ne sais pas », et rien n'aurait été appris.
  */
 export const MOTIFS_REFUS_SAISISSABLES = MOTIFS_REFUS.filter((m) => m !== "non_renseigne");
+
+/**
+ * La règle de décision, DITE EN FRANÇAIS, avant que Postgres ne la dise en
+ * anglais.
+ *
+ * 🔑 La contrainte `job_applications_motif_coherent_check` reste seule juge —
+ * elle tient même si quelqu'un écrit en base par un autre chemin. Ce contrôle
+ * ne la double pas : il évite de faire remonter à un recruteur un message
+ * Postgres qui ne lui apprend rien (« violates check constraint … »), et il
+ * nomme le champ à corriger. Preuve des deux sens :
+ * `prisma/scripts/verifier-contrainte-decision.sql`.
+ *
+ * 🔴 ELLE VIT ICI, ET PLUS DANS `actions.ts`. Le lot 4 ajoute un second module
+ * de Server Actions (les gestes en masse) qui doit appliquer la MÊME règle. La
+ * laisser dans `actions.ts` imposait de la recopier — or un module
+ * `"use server"` ne peut pas exporter une fonction synchrone, donc la copie
+ * aurait été inévitable. Deux écritures d'une règle de cohérence, c'est la
+ * garantie qu'un écran finira par accepter ce que l'autre refuse.
+ */
+export function incoherenceDeLaDecision(
+  statut: JobApplicationStatus,
+  motif: string | undefined,
+): string | null {
+  if (exigeUnMotif(statut) && !motif) {
+    return `Un motif est obligatoire pour « ${LIBELLE_STATUT[statut]} » : un refus sans motif ne s'apprend pas.`;
+  }
+  if (interditUnMotif(statut) && motif) {
+    return `« ${LIBELLE_STATUT[statut]} » est un état en cours : il ne peut pas porter de motif de sortie.`;
+  }
+  return null;
+}

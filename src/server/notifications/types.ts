@@ -191,6 +191,30 @@ export type NotificationEvent =
       };
     }
   | {
+      // Lot 4 recrutement — passage quotidien `formation-crons.candidatures-en-sommeil`.
+      // ALERTE SEULE : rien n'est écrit sur les dossiers, rien ne part au candidat.
+      //
+      // 🔴 AUCUNE IDENTITÉ DANS CE PAYLOAD, ET C'EST DÉLIBÉRÉ. Le message part
+      // sur Telegram, où la durée de conservation ne nous appartient pas. Les
+      // compteurs, l'intitulé de l'offre et l'âge suffisent à décider d'agir ;
+      // le nom se lit dans la console, derrière l'habilitation qui existe pour
+      // ça (`peutOuvrirDossierCandidat`).
+      category: "JOB_APPLICATIONS_STALE";
+      payload: {
+        seuilSansReponseJours: number;
+        seuilSansActiviteJours: number;
+        jamaisRepondu: number;
+        sansActivite: number;
+        /** L'examen a mordu son plafond : des dossiers n'ont pas été vus. */
+        plafondAtteint: boolean;
+        pires: Array<{
+          offre: string;
+          motif: "jamais_repondu" | "sans_activite";
+          jours: number;
+        }>;
+      };
+    }
+  | {
       category: "REVIEW_SUBMITTED";
       payload: {
         reviewId: string;
