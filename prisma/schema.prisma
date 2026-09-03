@@ -8378,6 +8378,31 @@ model JobApplication {
   consentVersion String  @map("consent_version") @db.VarChar(40)
   locale         Locale  @default(fr)
 
+  /// ── LOT 5 — D'OÙ VIENT CETTE CANDIDATURE ────────────────────────────────
+  ///
+  /// 🔴 Sans ces colonnes, on paie une annonce à l'aveugle. Une candidature
+  /// arrivait sans qu'on sache si elle vient de Le Bon Coin, de LinkedIn, d'une
+  /// campagne payée ou d'une recherche Google. Trois semaines plus tard on a
+  /// trente dossiers et aucun moyen de décider où remettre de l'argent — la
+  /// seule question qu'un test de canal doit trancher.
+  ///
+  /// 🔑 Elles portent ce que le LIEN PROUVE, pas ce que le candidat déclare :
+  /// le cookie est posé par le proxy au premier clic, avant tout formulaire.
+  /// L'écran des annonces montre déjà les deux côte à côte pour le tunnel
+  /// commercial, parce qu'ils divergent souvent — on clique une annonce, on
+  /// revient trois jours plus tard par Google, et on coche « site web ».
+  ///
+  /// ⚠️ Ce ne sont PAS des données personnelles au sens du dossier : aucune
+  /// d'elles n'identifie qui que ce soit, et elles ne sont donc ni chiffrées ni
+  /// cloisonnées par `peutOuvrirDossierCandidat`. Elles tombent en revanche avec
+  /// la candidature à l'effacement, comme tout le reste de la ligne.
+  utmSource   String? @map("utm_source") @db.VarChar(120)
+  utmMedium   String? @map("utm_medium") @db.VarChar(120)
+  utmCampaign String? @map("utm_campaign") @db.VarChar(160)
+  /// La page d'ARRIVÉE sur le site, pas celle du formulaire : c'est elle qui
+  /// dit quelle annonce a été cliquée quand aucun UTM n'a été posé.
+  landingPath String? @map("landing_path") @db.VarChar(255)
+
   /// Lot L4 — accord de CONSERVATION EN VIVIER (case optionnelle, décochée par
   /// défaut, textes v2). Il ne se déduit PAS de `consentVersion` : celui-ci
   /// n'atteste que du consentement à l'ÉTUDE de la candidature, qui est
@@ -8462,6 +8487,9 @@ model JobApplication {
   /// écrans du lot 4 balaieraient la table entière à chaque rendu.
   @@index([assignedToId, status])
   @@index([status, lastActivityAt])
+  /// Lot 5 — « quelle annonce rapporte ». L'écran groupe par canal sur une
+  /// fenêtre de dates : sans cet index, il balaie toute la table à chaque rendu.
+  @@index([utmSource, submittedAt])
   /// Lot L4 — l'index qui porte le job J+30 : « les fiches informées, non
   /// opposées, pas encore intégrées ». Sans lui le job scannerait toute la
   /// table à chaque passage quotidien.

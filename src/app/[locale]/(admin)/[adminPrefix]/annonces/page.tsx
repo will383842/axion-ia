@@ -33,6 +33,11 @@ import {
   getAnnoncesStats,
   type AnnonceStatRow,
 } from "@/features/admin-job-applications/annonces-stats";
+import {
+  construireBilanProvenance,
+  type BilanProvenance,
+} from "@/features/admin-job-applications/provenance-stats";
+import { LIBELLE_PROVENANCE_INCONNUE } from "@/lib/careers/provenance";
 import { SCORE_SEUIL_HAUTE, SCORE_SEUIL_MOYENNE } from "@/lib/commercial-application/scoring";
 
 export const dynamic = "force-dynamic";
@@ -126,7 +131,12 @@ export default async function AnnoncesStatsPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const stats = await getAnnoncesStats();
+  // Les deux agrégats sont INDÉPENDANTS (deux tables, deux questions) : lancés
+  // en parallèle, l'écran coûte le plus lent des deux, pas leur somme.
+  const [stats, emploi] = await Promise.all([
+    getAnnoncesStats(),
+    construireBilanProvenance(new Date()),
+  ]);
 
   const prioritaires = stats.parSourceDeclaree.reduce((n, l) => n + l.prioritaires, 0);
 
@@ -218,6 +228,81 @@ export default async function AnnoncesStatsPage({ params }: PageProps) {
         sousTitre="Ce que le lien prouve — cookie posé au premier clic, avant tout formulaire."
         lignes={stats.parUtmSource}
       />
+
+      {/* ── LOT 5 — LES OFFRES D'EMPLOI, jusqu'ici absentes de cet écran ────
+          Les deux tableaux ci-dessus ne parlent que du tunnel COMMERCIAL
+          (table `Submission`). Les candidatures aux offres d'emploi arrivaient
+          sans provenance : on payait Le Bon Coin et LinkedIn sans savoir lequel
+          produisait quoi. */}
+      <TableauEmploi bilan={emploi} />
     </AdminPageShell>
+  );
+}
+
+/**
+ * Les candidatures aux OFFRES D'EMPLOI, par canal.
+ *
+ * 🔑 Colonnes différentes de celles du tunnel commercial, et c'est délibéré :
+ * il n'y a pas de note de tri sur une candidature à une offre. Ce qui compte
+ * ici est l'AVANCEMENT — combien restent à traiter, combien ont été décidées,
+ * et combien ont abouti à un recrutement. Recopier les colonnes de l'autre
+ * tableau pour l'uniformité aurait rendu quatre colonnes vides.
+ */
+function TableauEmploi({ bilan }: { bilan: BilanProvenance }) {
+  return (
+    <AdminCard>
+      <h2 className="admin-h2">Offres d&apos;emploi — par canal</h2>
+      <p className="admin-help mb-[var(--space-admin-3)]">
+        Candidatures aux offres publiées, depuis le {formatDateFr(bilan.depuis)}. La provenance
+        vient du cookie de tunnel : c&apos;est ce que le <strong>lien prouve</strong>. Elle est
+        posée depuis le lot 5 — les candidatures antérieures apparaissent donc en «{" "}
+        {LIBELLE_PROVENANCE_INCONNUE} », et ce chiffre doit <strong>baisser</strong> avec le temps.
+        S&apos;il ne baisse pas, la capture est cassée.
+      </p>
+
+      {bilan.tronque ? (
+        <p className="admin-alert admin-alert-warning" role="status">
+          Examen tronqué au plafond : les canaux ci-dessous sont incomplets.
+        </p>
+      ) : null}
+
+      {bilan.canaux.length === 0 ? (
+        <AdminEmptyState
+          title="Aucune candidature à une offre sur la période"
+          description="L'écran se remplira à la première candidature reçue."
+        />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">Canal</th>
+                <th scope="col">Candidatures</th>
+                <th scope="col">En cours</th>
+                <th scope="col">Décidées</th>
+                <th scope="col">Recrutées</th>
+                <th scope="col">Campagnes</th>
+                <th scope="col">Dernière</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bilan.canaux.map((c) => (
+                <tr key={c.source ?? "__inconnue__"}>
+                  <th scope="row">{c.label}</th>
+                  <td>{c.candidatures}</td>
+                  <td>{c.ouverts}</td>
+                  <td>{c.decides}</td>
+                  <td>{c.recrutes}</td>
+                  {/* Un tiret cadratin, pas une cellule vide : une case vide se
+                      lit comme une donnée perdue. */}
+                  <td>{c.campagnes.length > 0 ? c.campagnes.join(", ") : "—"}</td>
+                  <td>{formatDateFr(c.derniere)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </AdminCard>
   );
 }

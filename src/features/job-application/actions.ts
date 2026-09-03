@@ -6,7 +6,7 @@
 "use server";
 
 import { z } from "zod";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
@@ -17,6 +17,13 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { hashIp } from "@/lib/security/ip-hash";
 import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
+// La provenance est LUE, jamais demandée : le cookie est posé par le proxy au
+// premier clic, avant tout formulaire. Ajouter un champ « comment nous
+// avez-vous connus ? » aurait produit une seconde vérité, divergente et
+// facultative — celle du tunnel commercial diverge déjà de ses UTM, et c'est
+// justement l'écart qu'on veut pouvoir lire plutôt que subir.
+import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
+import { provenanceDepuisLeTunnel } from "@/lib/careers/provenance";
 import { notify } from "@/server/notifications";
 import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
 import { candidateFamilyForOffer } from "@/lib/careers/candidate-family";
@@ -301,6 +308,23 @@ export async function submitJobApplicationAction(
   const hasDriverLicense = triState(formData.get("hasDriverLicense"));
   const hasVehicle = triState(formData.get("hasVehicle"));
 
+  // ── LA PROVENANCE — lue, jamais demandée ──────────────────────────────────
+  //
+  // 🔑 Le cookie est posé par `proxy.ts` au PREMIER clic portant des balises,
+  // donc bien avant ce formulaire : il dit ce que le lien PROUVE. Le champ
+  // caché `landingPath` dit, lui, quelle page a été cliquée quand aucune balise
+  // n'accompagnait le lien — le cas des annonces qui ne savent pas en poser.
+  //
+  // ⚠️ Best-effort intégral : aucune de ces lectures ne peut faire échouer une
+  // candidature. Une provenance perdue coûte une ligne de statistique ; une
+  // candidature perdue coûte un candidat.
+  const provenance = provenanceDepuisLeTunnel(
+    readUtmCookie((await cookies()).get(UTM_COOKIE_NAME)?.value),
+    typeof formData.get("landingPath") === "string"
+      ? (formData.get("landingPath") as string)
+      : null,
+  );
+
   try {
     const app = await prisma.jobApplication.create({
       data: {
@@ -341,6 +365,14 @@ export async function submitJobApplicationAction(
         // et qui se transmet au CRM. `null` = refus, et c'est le défaut.
         ...(consentVivier ? { consentVivierAt: new Date() } : {}),
         locale,
+        // Lot 5 — d'où vient cette candidature. Les quatre champs sont posés
+        // même à `null` : une colonne absente et une colonne nulle se lisent
+        // pareil en base, et écrire explicitement « on ne sait pas » évite de
+        // se demander plus tard si la capture était branchée ce jour-là.
+        utmSource: provenance.utmSource,
+        utmMedium: provenance.utmMedium,
+        utmCampaign: provenance.utmCampaign,
+        landingPath: provenance.landingPath,
         ...(Object.keys(answers).length > 0 ? { answers: answers as Prisma.InputJsonValue } : {}),
       },
     });

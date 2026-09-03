@@ -77,6 +77,16 @@ vi.mock("@/server/careers/cv-storage", () => ({
 }));
 vi.mock("next/headers", () => ({
   headers: async () => new Headers({ "user-agent": "vitest" }),
+  // 🔑 `cookies` est requis depuis le lot 5 : l'action lit le cookie de tunnel
+  // pour en tirer la provenance. Le doublure rend un magasin VIDE — c'est le
+  // cas réel majoritaire (navigation directe, cookie refusé, lien sans balise),
+  // et celui qui doit laisser les quatre colonnes à `null`.
+  //
+  // ⚠️ Ce fichier n'éprouve PAS la provenance : il éprouve la cadence des
+  // compteurs. La doublure doit donc être la plus neutre possible — lui faire
+  // rendre un cookie garni ferait dépendre un test de cadence d'une valeur
+  // d'attribution, et le rendrait faux pour une raison sans rapport.
+  cookies: async () => ({ get: () => undefined }),
 }));
 vi.mock("next/cache", () => ({ revalidatePath: () => undefined }));
 vi.mock("@sentry/nextjs", () => ({ captureException: () => undefined }));
