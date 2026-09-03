@@ -72,6 +72,7 @@ import { cibleAutorisee } from "../volumetrie/garde-cible";
 import type {
   PrismaClient,
   JobCategory,
+  JobRejectionReason,
   JobWorkMode,
   Locale,
   PublishStatus,
@@ -370,6 +371,105 @@ const VILLES = [
 ] as const;
 
 const EXPERIENCES = ["0-2 ans", "3-5 ans", "6-10 ans", "10 ans et plus"] as const;
+
+/**
+ * Les motifs de sortie du jeu de démonstration.
+ *
+ * 🔴 **Ce n'est pas un agrément : c'est une OBLIGATION de la base.** Depuis le
+ * lot 3, `job_applications_motif_coherent_check` refuse une candidature écartée
+ * ou retirée sans motif. Ce seed en écrivait douze sans motif : Gate B ne
+ * pouvait plus semer sa base du tout, et l'échec ressemblait à une panne de la
+ * CI plutôt qu'à un seed devenu faux.
+ *
+ * 🔑 `satisfies readonly JobRejectionReason[]` : le TYPE refuse une valeur qui
+ * n'existe pas dans l'enum. Une liste en chaînes libres aurait laissé passer une
+ * faute de frappe jusqu'à Postgres, où le message n'aurait nommé ni le fichier
+ * ni la ligne.
+ *
+ * `non_renseigne` en est ABSENT, comme il l'est du menu de saisie : il existe
+ * pour dire la vérité sur le stock antérieur au lot 3, pas pour meubler un jeu
+ * de démonstration. Un écran de recette rempli de « non renseigné » ne
+ * montrerait jamais à quoi sert le champ.
+ */
+const MOTIFS_REFUS_DEMO = [
+  "competences_insuffisantes",
+  "pretentions_hors_budget",
+  "hors_zone",
+  "profil_hors_cible",
+  "poste_pourvu",
+  "doublon",
+] as const satisfies readonly JobRejectionReason[];
+
+/**
+ * Les motifs d'un RETRAIT — ceux où la décision vient du candidat.
+ *
+ * Séparés des précédents à dessein : « compétences insuffisantes » sur un
+ * dossier retiré serait un contresens, et c'est exactement le mélange que le
+ * lot 3 cherche à rendre impossible à lire.
+ */
+const MOTIFS_RETRAIT_DEMO = [
+  "candidat_a_decline",
+  "sans_reponse_candidat",
+] as const satisfies readonly JobRejectionReason[];
+
+/** Les états qui referment un dossier — miroir de `estUneDecision` du domaine. */
+const STATUTS_DECIDES = new Set(["rejected", "withdrawn", "hired"]);
+
+/**
+ * Le motif de sortie d'une candidature de démonstration, ou `null`.
+ *
+ * Dérivé de la clé par `tirage`, donc STABLE d'une exécution à l'autre : le
+ * seed est idempotent, et deux passages ne doivent pas réécrire le motif d'un
+ * dossier que quelqu'un est en train de regarder.
+ */
+function motifDeSortie(c: CandidatureDemo): JobRejectionReason | null {
+  if (c.statut === "rejected") {
+    return MOTIFS_REFUS_DEMO[tirage(`${c.cle}:motif`, MOTIFS_REFUS_DEMO.length)]!;
+  }
+  if (c.statut === "withdrawn") {
+    return MOTIFS_RETRAIT_DEMO[tirage(`${c.cle}:motif`, MOTIFS_RETRAIT_DEMO.length)]!;
+  }
+  // `hired` et `archived` sont volontairement HORS des deux sens de la
+  // contrainte : archiver un refus ne doit pas effacer pourquoi il l'a été.
+  return null;
+}
+
+/** Cinq jours après le dépôt, jamais avant — et `null` tant que rien n'est décidé. */
+function dateDeDecision(c: CandidatureDemo): Date | null {
+  if (!STATUTS_DECIDES.has(c.statut)) return null;
+  return ilYA(Math.max(0, c.deposeeIlYaJours - 5));
+}
+
+/**
+ * Quand la première réponse est partie — `null` si aucune ne l'est.
+ *
+ * 🔑 Le partage n'est pas cosmétique, c'est le jeu d'essai de l'écran de
+ * pilotage : `new` = personne n'a répondu (donc « jamais répondu » dès que le
+ * dépôt dépasse une semaine), tout le reste = réponse à J+2.
+ */
+function premiereReponse(c: CandidatureDemo): Date | null {
+  if (c.statut === "new") return null;
+  return ilYA(Math.max(0, c.deposeeIlYaJours - 2));
+}
+
+/**
+ * La dernière activité consignée.
+ *
+ * 🔴 Un dossier sur cinq en cours reste à sa date de PREMIÈRE réponse : ce sont
+ * les « sans activité » de l'écran de pilotage. Sans eux, l'écran serait vide
+ * sur une base fraîchement semée — et un tableau d'alerte qu'on n'a jamais vu
+ * peuplé est un tableau qu'on n'a jamais recetté.
+ *
+ * `?? deposee` n'est jamais atteint pour un dossier décidé, mais il garantit
+ * l'invariant que le domaine suppose : `lastActivityAt >= submittedAt`.
+ */
+function derniereActivite(c: CandidatureDemo, deposee: Date): Date | null {
+  const reponse = premiereReponse(c);
+  if (reponse === null) return null;
+  if (STATUTS_DECIDES.has(c.statut)) return dateDeDecision(c) ?? deposee;
+  // Endormi une fois sur cinq, sinon suivi il y a deux jours.
+  return tirage(`${c.cle}:activite`, 5) === 0 ? reponse : ilYA(Math.min(2, c.deposeeIlYaJours));
+}
 const DISPOS = ["Immédiate", "Sous 1 mois", "Sous 3 mois", "À partir de janvier"] as const;
 /**
  * Combien de candidatures dans chaque statut. La somme fait 60.
@@ -380,10 +480,18 @@ const DISPOS = ["Immédiate", "Sous 1 mois", "Sous 3 mois", "À partir de janvie
  * diverger — et c'est la recopie qu'on lit, jamais celle qui est appliquée.
  */
 const REPARTITION = [
-  ["new", 18],
-  ["reviewing", 14],
-  ["shortlisted", 10],
-  ["rejected", 12],
+  ["new", 14],
+  ["reviewing", 11],
+  ["shortlisted", 8],
+  // Lot 3 — les trois états qui manquaient. Sans eux, la console se recetterait
+  // sur un pipeline amputé de son milieu : « En entretien » et « Proposition
+  // faite » n'apparaîtraient sur aucun écran, et leur pastille ne serait jamais
+  // vue. `withdrawn` est le plus important des trois à semer — c'est le seul
+  // qui prouve qu'un retrait ne se lit pas comme un refus.
+  ["interview", 5],
+  ["offer", 3],
+  ["rejected", 11],
+  ["withdrawn", 2],
   ["hired", 3],
   ["archived", 3],
 ] as const;
@@ -644,6 +752,28 @@ export async function ecrireScenariosRecrutement(prisma: PrismaClient): Promise<
       internalNotes: c.statut === "reviewing" ? "Note interne de démonstration." : null,
       needsAttention: c.statut === "new",
       submittedAt: deposee,
+      // ── Lot 3 — la décision, et ce qui la rend relisible ─────────────────
+      //
+      // 🔴 Le motif n'est pas décoratif : la contrainte
+      // `job_applications_motif_coherent_check` REFUSE une candidature écartée
+      // ou retirée sans lui — et l'interdit sur un dossier en cours. Ce seed
+      // écrivait douze `rejected` nus ; Gate B ne pouvait plus semer sa base.
+      rejectionReason: motifDeSortie(c),
+      // La date de décision, PAS `updatedAt` : ce dernier bouge dès qu'on
+      // ajoute une note, et ne dirait rien de la décision. Cinq jours après le
+      // dépôt — assez pour que l'écart avec `submittedAt` soit visible à
+      // l'écran, ce qu'une même date aurait caché.
+      decidedAt: dateDeDecision(c),
+      hiredAt: c.statut === "hired" ? dateDeDecision(c) : null,
+      // ── Lot 3 — ce que l'écran de pilotage lira ───────────────────────────
+      //
+      // 🔑 Les dossiers `new` restent SANS première réponse, à dessein : ceux
+      // d'entre eux qui datent de plus d'une semaine sont exactement les
+      // « jamais répondu » que le lot 4 doit savoir montrer. Un seed où tout le
+      // monde a été relancé rendrait cet écran vide — et un écran qu'on n'a
+      // jamais vu peuplé n'a jamais été recetté.
+      firstResponseAt: premiereReponse(c),
+      lastActivityAt: derniereActivite(c, deposee),
     };
 
     await prisma.jobApplication.upsert({
@@ -719,6 +849,35 @@ async function main(): Promise<void> {
     }
     console.log(`   Candidatures   ${r.candidatures}`);
     console.log(`   Pièces écrites ${r.fichiers} (les suivantes seront réutilisées)`);
+
+    // ── LES ORPHELINES, ET POURQUOI ON LES DIT PLUTÔT QUE DE LES EFFACER ────
+    //
+    // 🔴 Ce seed est idempotent par identifiant DÉRIVÉ de la clé
+    // `cand-<statut>-<n>`. Changer la répartition change donc les clés, et les
+    // anciennes lignes RESTENT : elles appartiennent toujours à une offre
+    // `rec-demo-*`, mais plus au jeu que ce fichier décrit.
+    //
+    // Constaté en le faisant : le lot 3 a fait passer la base de recette de 60
+    // à 70 candidatures pendant que le compte rendu annonçait 60. Un écart muet
+    // entre ce qu'un seed AFFIRME et ce que la base CONTIENT est exactement ce
+    // qui fait conclure « la pagination est cassée » là où il n'y a qu'un
+    // résidu.
+    //
+    // On ne les efface PAS d'office : `--purge` est un geste explicite, et un
+    // seed qui supprime sans qu'on l'ait demandé est précisément ce que la
+    // doctrine de ce fichier interdit. On le DIT, et on donne la commande.
+    const enBase = await prisma.jobApplication.count({
+      where: { offer: { slug: { startsWith: `${PREFIXE_RECRUTEMENT}-` } } },
+    });
+    if (enBase > r.candidatures) {
+      console.warn(
+        `\n   ⚠️  ${enBase - r.candidatures} candidature(s) ORPHELINE(S) : la base en porte ` +
+          `${enBase} pour ${r.candidatures} écrites.\n` +
+          `      Ce sont des clés d'une répartition antérieure. Elles ne gênent rien, mais\n` +
+          `      elles faussent tout comptage. Pour repartir propre :\n` +
+          `      pnpm recrutement:seed-scenarios --purge && pnpm recrutement:seed-scenarios`,
+      );
+    }
 
     // Compte-rendu DÉRIVÉ du jeu de données réellement construit.
     const inv = inventaire(construireCandidatures());
