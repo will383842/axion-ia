@@ -268,6 +268,41 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   const r = await reserverCreneau(validation.demande);
 
   if (r.ok) {
+    if (!r.numeroTransmis) {
+      // 🔴 LE CHAMP OBLIGATOIRE N'A SERVI À RIEN, ET C'EST LE GENRE DE PANNE
+      // QUI NE SE VOIT PAS.
+      //
+      // Le formulaire exige un numéro dans les deux formats depuis le
+      // 2026-09-03. Pour une visio, il ne voyage que par
+      // `invitee.text_reminder_number` — dont l'acceptation dépend de la
+      // configuration des rappels SMS de l'event-type. Si Calendly le refuse,
+      // `reserverCreneau` rejoue SANS lui : le rendez-vous est pris, le
+      // visiteur est confirmé, et le numéro qu'on vient de lui imposer n'existe
+      // nulle part. Personne ne s'en apercevrait avant un rendez-vous manqué.
+      //
+      // La déduplication de `prevenir` (quinze minutes, même clé) fait qu'une
+      // configuration fautive alerte une fois, pas une fois par visiteur.
+      await prevenir(
+        "numero_non_transmis",
+        "warn",
+        r.eventUri,
+        `Reservation creee, mais le NUMERO n'a pas pu etre transmis a Calendly.
+
+` +
+          `Evenement : ${r.eventUri}
+` +
+          `Format : ${validation.demande.format}
+
+` +
+          `Calendly a refuse invitee.text_reminder_number et la reservation a ete ` +
+          `rejouee sans lui. Le formulaire EXIGE pourtant ce numero : il est saisi, ` +
+          `puis perdu. Le prospect n'est joignable que par e-mail.
+
+` +
+          `A FAIRE : activer les rappels SMS sur l'event-type Calendly (c'est ce ` +
+          `qui autorise ce champ), ou revoir le champ obligatoire cote formulaire.`,
+      );
+    }
     if (!r.lieuVerifie) {
       // Le rendez-vous existe et le visiteur peut être confirmé. Mais nous
       // n'avons pas pu relire le format : si Calendly l'avait enregistré

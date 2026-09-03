@@ -3,88 +3,304 @@
     "2026-09-02 — PREMIÈRE LIGNE DE BASE MOBILE, lue sur 3 déploiements (runs 33542614678, 33557264126, 33566337853, tous du 2026-09-01). Chaque assertion ci-dessous est posée SUR la mesure : ERROR au seuil du contrat là où les 3 runs passaient, ERROR au cliquet (pire valeur observée + marge) là où le contrat est dépassé, jamais un seuil déjà franchi (AGENTS.md : « seuil aligné d'abord, blocage ensuite »).",
     "Le cliquet n'excuse pas la dette : chaque cliquet porte la cible du contrat dans son commentaire. On l'abaisse APRÈS le lot de correction, jamais avant.",
     "INP reste en WARN partout : en navigation Lighthouse ne mesure l'INP que si la page reçoit une interaction (auditRan = 0 sur les 12 passes desktop + 6 passes mobile). La source de vérité INP est le RUM /api/vitals, pas ce gate.",
-    "Passer en ERROR ne bloque rien : ce job est post-deploy. Il rougit le workflow et alerte, c'est tout ce qu'il peut faire — et c'est ce qu'il ne faisait pas."
+    "Passer en ERROR ne bloque rien : ce job est post-deploy. Il rougit le workflow et alerte, c'est tout ce qu'il peut faire — et c'est ce qu'il ne faisait pas.",
+    "🔴 2026-09-03 — CETTE PASSE N'ASSERTAIT RIEN DEPUIS SA MISE EN PLACE. `aggregationMethod` etait declare A COTE de `assertMatrix` dans `ci.assert` : lhci REFUSE cette combinaison et leve « Cannot use assertMatrix with other options » (@lhci/utils/src/assertions.js:464 — le throw vise `assertions`, `preset`, `budgetsFile` et `aggregationMethod`). La passe collectait bien ses 18 rapports, puis mourait AVANT d'asserter, et le job rendait « au moins une assertion a echoue » — message qui dit l'exact contraire de ce qui se passait. Mesure sur le run 33715874962 (atterrissage de #947). Le budget mobile n'etait donc garde par RIEN, pendant que le desktop, lui, tournait normalement (sa config n'a jamais porte que `assertMatrix`). Correction : la mediane descend dans CHAQUE entree de la matrice, ou lhci la propage a chaque assertion (`const options = {aggregationMethod, ...assertionOptions}`, meme fichier ligne 426). Semantique identique, forme legale. ⚠️ La garde `tests/unit/ci/gate-mobile-et-inp.spec.ts` EXIGEAIT la forme cassee (`expect(conf.ci.assert.aggregationMethod).toBe('median')`) : elle a donc epingle la panne au lieu de l'attraper. Elle execute desormais le VRAI moteur d'assertion de lhci sur les deux configs — une garde qui derive du tiers au lieu de recopier sa regle."
   ],
   "ci": {
     "assert": {
-      "aggregationMethod": "median",
       "assertMatrix": [
         {
           "//": "/fr — 3 runs : perf 0.82–0.89, TBT 421–707 ms, LCP/FCP/SI/CLS conformes.",
           "matchingUrlPattern": ".*/fr/?$",
+          "aggregationMethod": "median",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.8 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
-            "speed-index": ["error", { "maxNumericValue": 2500 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 800 }],
-            "interaction-to-next-paint": ["warn", { "maxNumericValue": 100 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.8
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1500
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.05
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 800
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         },
         {
           "//": "/fr/formations — CLS 0.222 déterministe (identique sur 3 runs) : défaut de layout, lot à ouvrir. FCP 1664 et SI 2574 sur 1 run/3 : cliquets larges.",
           "matchingUrlPattern": ".*/fr/formations/?$",
+          "aggregationMethod": "median",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.7 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "speed-index": ["error", { "maxNumericValue": 2800 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.25 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 800 }],
-            "interaction-to-next-paint": ["warn", { "maxNumericValue": 100 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.7
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2800
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.25
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 800
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         },
         {
           "//": "/fr/audit — CLS 0.153 déterministe (le swap de polices déjà documenté côté desktop, amplifié sur mobile). SI 2519–2685 sur 2 runs/3.",
           "matchingUrlPattern": ".*/fr/audit/?$",
+          "aggregationMethod": "median",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.7 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "speed-index": ["error", { "maxNumericValue": 2900 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.2 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 800 }],
-            "interaction-to-next-paint": ["warn", { "maxNumericValue": 100 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.7
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2900
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.2
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 800
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         },
         {
           "//": "/fr/contact — LCP 4169–4489 ms (au-dessus même du « good » Google 2500). Lot LCP à ouvrir. Tout le reste conforme sauf TBT.",
           "matchingUrlPattern": ".*/fr/contact/?$",
+          "aggregationMethod": "median",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.7 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 4800 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
-            "speed-index": ["error", { "maxNumericValue": 2500 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 800 }],
-            "interaction-to-next-paint": ["warn", { "maxNumericValue": 100 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.7
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 4800
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1500
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.05
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 800
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         },
         {
           "//": "/fr/implantations/ile-de-france/paris — CLS 0.194 déterministe (gabarit ville : ~1 776 pages portent le même défaut).",
           "matchingUrlPattern": ".*/fr/implantations/.*$",
+          "aggregationMethod": "median",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.7 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
-            "speed-index": ["error", { "maxNumericValue": 2500 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.22 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 800 }],
-            "interaction-to-next-paint": ["warn", { "maxNumericValue": 100 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.7
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1500
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.22
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 800
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         },
         {
           "//": "/fr/appel — LCP 6751–9690 ms, FCP 2703–5575, SI 3965–6815, perf 0.42–0.60 : la page de conversion est la pire du parc sur mobile. CLS conforme (boîte réservée). Cliquets larges, lot prioritaire.",
           "matchingUrlPattern": ".*/fr/appel/?$",
+          "aggregationMethod": "median",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.4 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 10000 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 6000 }],
-            "speed-index": ["error", { "maxNumericValue": 7000 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 800 }],
-            "interaction-to-next-paint": ["warn", { "maxNumericValue": 150 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.4
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 10000
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 6000
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 7000
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.05
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 800
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 150
+              }
+            ]
           }
         }
       ]

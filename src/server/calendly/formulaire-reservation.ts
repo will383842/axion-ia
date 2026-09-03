@@ -231,24 +231,34 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
   else if (!EMAIL.test(email))
     erreurs[CHAMPS.email] = "Cet e-mail semble incomplet (exemple : prenom@entreprise.fr).";
 
-  // -- Format, et le numéro qu'il rend obligatoire
+  // -- Format
   const formatBrut = lire(fd, CHAMPS.format);
   valeurs[CHAMPS.format] = formatBrut;
   const format: FormatDemande | null =
     formatBrut === "telephone" || formatBrut === "visio" ? formatBrut : null;
   if (!format) erreurs[CHAMPS.format] = "Choisissez comment vous préférez échanger.";
 
+  // -- Téléphone
+  //
+  // 🔴 EXIGÉ DANS LES DEUX FORMATS, ET C'EST UNE DÉCISION DE WILL (2026-09-03).
+  //
+  // Il ne l'était que pour l'appel sortant, où il est la seule chose qu'on
+  // puisse composer. Mais une visio sans numéro laisse un rendez-vous qu'aucun
+  // imprévu ne rattrape : lien qui ne s'ouvre pas, prospect absent à l'heure
+  // dite, report à décider dans les cinq minutes. On n'avait alors qu'une
+  // adresse e-mail, que personne ne relit pendant un rendez-vous manqué.
+  //
+  // ⚠️ La contrepartie est dans `reservation.ts` : pour une visio, Calendly ne
+  // range le numéro NULLE PART tout seul (`location.location` n'existe que pour
+  // `outbound_call`). Il part donc en `invitee.text_reminder_number`, faute de
+  // quoi ce champ obligatoire serait collecté puis jeté — inutile pour Will, et
+  // contraire à la minimisation qu'on doit au visiteur.
   const telephone = lire(fd, CHAMPS.telephone);
   valeurs[CHAMPS.telephone] = telephone;
-  if (format === "telephone") {
-    // 🔴 Sans numéro, un appel sortant n'a rien à composer. Calendly accepterait
-    // la réservation quand même : le rendez-vous existerait, et personne ne
-    // saurait qui appeler avant le jour même.
-    if (telephone === "")
-      erreurs[CHAMPS.telephone] = "Indiquez le numéro à composer, avec l'indicatif pays.";
-    else if (!TELEPHONE.test(telephone))
-      erreurs[CHAMPS.telephone] = "Indicatif pays obligatoire (exemple : +33 6 12 34 56 78).";
-  }
+  if (telephone === "")
+    erreurs[CHAMPS.telephone] = "Indiquez votre numéro de téléphone, avec l'indicatif pays.";
+  else if (!TELEPHONE.test(telephone))
+    erreurs[CHAMPS.telephone] = "Indicatif pays obligatoire (exemple : +33 6 12 34 56 78).";
 
   // -- Fuseau
   const fuseauBrut = lire(fd, CHAMPS.fuseau);
@@ -324,7 +334,8 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
       email,
       fuseau,
       format: format as FormatDemande,
-      ...(format === "telephone" ? { telephone } : {}),
+      // Toujours transmis, visio comprise : voir la note du champ plus haut.
+      telephone,
       ...(reponses.length > 0 ? { reponses } : {}),
       ...(invites.length > 0 ? { invites } : {}),
       utmSource: o.utmSource ?? null,
