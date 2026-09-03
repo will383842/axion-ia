@@ -219,6 +219,35 @@ après).
 
 ---
 
+## 3 bis. Le balayage final, après correctifs
+
+Les **55 routes** de la console Qualiopi rejouées une à une, dans un navigateur
+authentifié : **toutes en 200**, aucune frontière d'erreur, aucun accès refusé, et
+**plus aucune bannière de consentement**. Les deux seules lignes marquées sont
+`/qualiopi/entrees` et `/qualiopi/conformite` — deux redirections voulues, que
+l'instrument ne sait pas lire en vol (elles répondent bien 200 et mènent où il faut).
+
+🔑 **Piège d'instrument payé au passage** : une redirection encore EN VOL interrompt la
+navigation suivante de Playwright, et l'erreur se propage **en cascade**. Le premier
+balayage a rendu trente-trois routes vertes puis vingt-deux « status 0 » qui ne disaient
+rien de l'application — seulement que la mesure s'était cassée. Une mesure qui s'effondre
+en cascade ressemble à un produit qui s'effondre : il faut la faire atterrir avant de
+repartir.
+
+| Écran | Avant | Après |
+|---|---|---|
+| `qualiopi/alertes` | 531 Ko | **41 Ko** |
+| `qualiopi/stagiaires` | 338 Ko | **12 Ko** |
+| `mode-auditeur` (description) | 299 px de large, 5 lignes | **656 px, 2 lignes** |
+| `index.txt` du dossier ZIP | 4 590 lignes | **22 lignes** |
+| Couverture documentaire annoncée | 57 % (13/23) | **43 % (10/23)** — et vraie |
+
+Suite complète : **26 241 tests verts**. (Un unique rouge, sur un témoin de garde MCP,
+était un artefact de MA concurrence — deux `vitest` lancés en parallèle sur le même
+fichier témoin ; le test repasse seul.)
+
+---
+
 ## 4. Ce qui RESTE, et qui n'est pas du code
 
 Ces points sont hors du périmètre « système interne » et ne peuvent pas être corrigés par
