@@ -89,6 +89,15 @@ import {
   documentsNouvelleVersionSubject,
 } from "./documents-nouvelle-version";
 import { FormateurMagicLinkEmail, formateurMagicLinkSubject } from "./formateur-magic-link";
+import {
+  FormateurMissionProposeeEmail,
+  formateurMissionProposeeSubject,
+} from "./formateur-mission-proposee";
+import {
+  FormateurConvocationJ7Email,
+  formateurConvocationJ7Subject,
+} from "./formateur-convocation-j7";
+import { FormateurRappelJ1Email, formateurRappelJ1Subject } from "./formateur-rappel-j1";
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
 import {
@@ -268,6 +277,19 @@ const TEMPLATES: TemplateMap = {
   "formateur-magic-link": {
     subject: formateurMagicLinkSubject,
     component: FormateurMagicLinkEmail,
+  },
+  // Cycle de vie du formateur sur une session (2026-09-03).
+  "formateur-mission-proposee": {
+    subject: formateurMissionProposeeSubject,
+    component: FormateurMissionProposeeEmail,
+  },
+  "formateur-convocation-j7": {
+    subject: formateurConvocationJ7Subject,
+    component: FormateurConvocationJ7Email,
+  },
+  "formateur-rappel-j1": {
+    subject: formateurRappelJ1Subject,
+    component: FormateurRappelJ1Email,
   },
   "ressources-magic-link": {
     subject: ressourcesMagicLinkSubject,

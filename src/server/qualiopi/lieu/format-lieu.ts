@@ -22,6 +22,15 @@ export interface LieuFields {
   lieuVille?: string | null;
   lieuSalle?: string | null;
   lieuVisioUrl?: string | null;
+  /**
+   * Accès pour le formateur (2026-09-03). Portés par `LieuFields` parce qu'ils
+   * se SAISISSENT avec le lieu ; volontairement ignorés par `formatLieu` et
+   * `isLieuRenseigne` : un nom et un téléphone d'accueil n'ont rien à faire sur
+   * une convention ni une convocation stagiaire.
+   */
+  contactSurPlaceNom?: string | null;
+  contactSurPlaceTelephone?: string | null;
+  consignesAcces?: string | null;
 }
 
 const LABELS: Record<LieuTypeValue, string> = {

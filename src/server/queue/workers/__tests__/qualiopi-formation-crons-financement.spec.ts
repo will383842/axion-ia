@@ -68,6 +68,18 @@ vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
   envoyerSuiviJ30: vi.fn().mockResolvedValue(undefined),
 }));
 
+// Cycle de vie du formateur (2026-09-03) : ces deux services importent la
+// file d'e-mails au chargement, comme `notifications-service` — même
+// isolement, sinon ce test rencontre un `bullmq` mocké sans `Queue`.
+vi.mock("@/server/qualiopi/trainers/mission-formateur", () => ({
+  relancerEtExpirerMissions: vi.fn().mockResolvedValue({ relancees: 0, erreurs: 0, expirees: 0 }),
+}));
+vi.mock("@/server/qualiopi/trainers/convocation-formateur", () => ({
+  envoyerConvocationJ7Formateur: vi.fn().mockResolvedValue(true),
+  envoyerRappelJ1Formateur: vi.fn().mockResolvedValue(true),
+  FENETRE_CONVOCATION_J7_JOURS: 7.5,
+  FENETRE_RAPPEL_J1_HEURES: 36,
+}));
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   synchroniserAlertes: vi.fn().mockResolvedValue({ crees: 0, resolues: 0 }),
 }));

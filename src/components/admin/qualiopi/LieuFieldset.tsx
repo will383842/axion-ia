@@ -167,6 +167,60 @@ export function LieuFieldset({
             </div>
           </>
         )}
+
+        {/* ── Accès pour le formateur (2026-09-03) ───────────────────────────
+            Ces trois champs partent dans la convocation J-7 et le rappel J-1
+            du FORMATEUR, et s'affichent dans son espace. Ils ne figurent sur
+            aucun document remis au client. Toujours visibles : en distanciel
+            aussi, il y a quelqu'un à joindre si le lien ne s'ouvre pas. */}
+        <div>
+          <label className={labelCls} htmlFor={`${idPrefix}-contact-nom`}>
+            Contact sur place (nom)
+          </label>
+          <input
+            id={`${idPrefix}-contact-nom`}
+            value={value.contactSurPlaceNom}
+            onChange={(e) => onChange({ contactSurPlaceNom: e.target.value })}
+            disabled={disabled}
+            maxLength={160}
+            placeholder="Ex. : Camille Dupont, accueil"
+            className={inputCls}
+          />
+        </div>
+        <div>
+          <label className={labelCls} htmlFor={`${idPrefix}-contact-tel`}>
+            Contact sur place (téléphone)
+          </label>
+          <input
+            id={`${idPrefix}-contact-tel`}
+            type="tel"
+            inputMode="tel"
+            value={value.contactSurPlaceTelephone}
+            onChange={(e) => onChange({ contactSurPlaceTelephone: e.target.value })}
+            disabled={disabled}
+            maxLength={40}
+            className={inputCls}
+          />
+        </div>
+        <div className="sm:col-span-2">
+          <label className={labelCls} htmlFor={`${idPrefix}-consignes`}>
+            Consignes d&apos;accès pour le formateur
+          </label>
+          <textarea
+            id={`${idPrefix}-consignes`}
+            value={value.consignesAcces}
+            onChange={(e) => onChange({ consignesAcces: e.target.value })}
+            disabled={disabled}
+            maxLength={2000}
+            rows={3}
+            placeholder="Badge à retirer à l'accueil, parking visiteurs, étage, code de la porte, heure d'arrivée conseillée…"
+            className={inputCls}
+          />
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Envoyé au formateur 7 jours avant et la veille, avec l&apos;adresse, la salle et le
+            contact. Jamais imprimé sur les documents du client.
+          </p>
+        </div>
       </div>
     </fieldset>
   );

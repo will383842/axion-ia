@@ -39,12 +39,19 @@ import { EcheancesFormateur } from "@/components/espace-formateur/EcheancesForma
 import { signerLettreMissionFormateurAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireLettresMissionDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { echeancesDuFormateur } from "@/server/formateur/echeances-formateur";
+import { listerMissionsAConfirmer } from "@/server/qualiopi/trainers/mission-formateur";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
 import { CoquilleFormateur } from "./_coquille";
 
 export const dynamic = "force-dynamic";
+
+const dateCourte = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
 export default async function EspaceFormateurAccueilPage(): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
@@ -58,9 +65,13 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
   // Le repli sur liste vide vaut pour les lettres, pas contre elles — la
   // signature est le devoir premier de cette page, elle ne doit pas disparaître
   // parce que le calcul des échéances a échoué.
-  const [lettres, echeances] = await Promise.all([
+  const [lettres, echeances, missions] = await Promise.all([
     lireLettresMissionDuFormateur(trainerId),
     echeancesDuFormateur(trainerId).catch(() => []),
+    // 2026-09-03 — les propositions de mission qui attendent SA réponse. Avant
+    // la lettre : on ne signe pas le contrat d'une mission qu'on n'a pas dit
+    // vouloir prendre.
+    listerMissionsAConfirmer(trainerId),
   ]);
 
   // 🔴 On compte celles où le formateur peut AGIR, pas toutes les lettres :
@@ -75,8 +86,42 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
         {/* La phrase d'accueil compte les DEUX. Annoncer « aucun document ne vous
             attend » au-dessus de quatre échéances dépassées ferait un écran qui
             se contredit lui-même à trois lignes d'intervalle. */}
-        <p className="text-fg-soft mt-2 text-sm">{resume(aSigner, echeances.length)}</p>
+        <p className="text-fg-soft mt-2 text-sm">
+          {missions.length > 0
+            ? `${missions.length} proposition${missions.length > 1 ? "s" : ""} de mission attend${missions.length > 1 ? "ent" : ""} votre réponse. `
+            : ""}
+          {resume(aSigner, echeances.length)}
+        </p>
       </header>
+
+      {missions.length > 0 && (
+        <section className="mb-10 space-y-3">
+          <h2 className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
+            Missions à confirmer
+          </h2>
+          <ul className="space-y-2">
+            {missions.map((m) => (
+              <li key={m.id} className="border-border rounded-lg border p-4">
+                <p className="text-mocha text-sm font-semibold">
+                  {m.session.titreSession}{" "}
+                  <span className="text-fg-muted font-normal">· {m.session.numero}</span>
+                </p>
+                <p className="text-fg-soft mt-1 text-sm">
+                  Du {dateCourte.format(m.session.dateDebut)} au{" "}
+                  {dateCourte.format(m.session.dateFin)}
+                  {" — "}proposée le {dateCourte.format(m.solliciteAt)}.
+                </p>
+                <Link
+                  href={`${FORMATEUR_SESSIONS_PATH}/${m.session.id}`}
+                  className="text-terracotta mt-2 inline-flex min-h-[24px] items-center text-sm hover:underline"
+                >
+                  Accepter ou refuser cette mission
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {echeances.length > 0 && (
         <div className="mb-10">
