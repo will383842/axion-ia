@@ -155,6 +155,56 @@ grep -Rqs "postgres_password" /payload/coolify/ || fail_guard "identifiants de b
 RUNTIME_FILES=$(find /payload/runtime-env -name '*.env' | wc -l)
 [ "${RUNTIME_FILES}" -ge 10 ] || fail_guard "seulement ${RUNTIME_FILES} printenv de conteneurs"
 
+# ─── Garde : les variables MASQUÉES par l'API sont-elles rattrapées ? ────────
+#
+# Mesuré le 2026-09-03. Coolify renvoie une valeur VIDE pour toute variable
+# marquée « shown once » — c.-à-d. précisément les plus sensibles. Sur cette
+# instance : `SMTP_USER` et `SMTP_PASS` du site, et les quatre `BACKUP_R2_*`
+# d'Axion Audit. L'archive paraît complète (la clé est là) alors que la valeur
+# manque : le pire genre de trou, celui qui se compte comme plein.
+#
+# Le `printenv` des conteneurs les rattrape — c'est la raison d'être de cette
+# seconde couche. Mais il ne couvre QUE les conteneurs en marche : une variable
+# masquée d'un service arrêté au moment de la passe serait perdue des deux côtés.
+# Cette garde le dit au lieu de le taire.
+python3 - <<'VERIF' > /payload/VARIABLES-MASQUEES.txt
+import glob, json, os
+
+masquees, rattrapees, perdues = 0, 0, set()
+runtime = ""
+for f in glob.glob("/payload/runtime-env/*.env"):
+    runtime += open(f, encoding="utf-8", errors="replace").read()
+
+for chemin in glob.glob("/payload/coolify/applications-*.json") + glob.glob(
+    "/payload/coolify/services-*.json"
+):
+    for e in json.load(open(chemin, encoding="utf-8")):
+        if e.get("real_value") or e.get("value"):
+            continue
+        cle = e.get("key") or "?"
+        masquees += 1
+        # Rattrapée si un conteneur vivant expose la clé AVEC une valeur.
+        if any(l.startswith(cle + "=") and len(l) > len(cle) + 1 for l in runtime.splitlines()):
+            rattrapees += 1
+        else:
+            perdues.add(f"{os.path.basename(chemin)} :: {cle}")
+
+print(f"vides_cote_api={masquees} rattrapees_par_printenv={rattrapees} absentes={len(perdues)}")
+print("# Une entree ABSENTE est vide cote API ET absente de tout conteneur vivant.")
+print("# Deux causes possibles, que rien ne distingue de l exterieur : la variable")
+print("# n est pas renseignee du tout (sans consequence), ou elle l est ailleurs")
+print("# (variable partagee, service arrete) et n est alors sauvegardee NULLE PART.")
+for p in sorted(perdues):
+    print(f"ABSENTE {p}")
+VERIF
+MASQ=$(head -1 /payload/VARIABLES-MASQUEES.txt)
+echo "ℹ️  ${MASQ}"
+ABSENTES=$(grep -c '^ABSENTE ' /payload/VARIABLES-MASQUEES.txt || true)
+if [ "${ABSENTES:-0}" -gt 0 ]; then
+  echo "⚠️  ${ABSENTES} variable(s) vide(s) côté API ET absente(s) des conteneurs vivants :"
+  grep '^ABSENTE ' /payload/VARIABLES-MASQUEES.txt | head -12
+fi
+
 NAME="axion-ia-secrets-${DATE_TAG}-vps.tar.gz.enc"
 tar -C /payload -cf - . | gzip -9 | encrypt_aes > "/tmp/${NAME}"
 SIZE=$(stat -c%s "/tmp/${NAME}")

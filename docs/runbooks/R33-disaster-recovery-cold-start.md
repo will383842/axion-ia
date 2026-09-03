@@ -14,12 +14,30 @@
 | Hetzner ENTIER perdu (compte, région)                       | Reconstruire depuis R2 sur un hôte neuf (§ Voie B)                      | 1 – 3 h                                        |
 | **Piratage / compromission**                                | Rebuild PROPRE + rotation secrets + restore données pré-hack (§ Voie C) | Heures (NE PAS restaurer le snapshot tel quel) |
 
-## ⚠️ Le seul prérequis vital HORS système
+## ⚠️ Le prérequis vital HORS système — **TROIS** passphrases, pas une
 
-Sans lui, **aucun backup R2 n'est déchiffrable**. À garder accessible hors du VPS
+Sans elles, **aucun backup n'est déchiffrable**. À garder accessible hors du VPS
 (gestionnaire de mots de passe + copie papier) :
 
-- **`BACKUP_ENCRYPTION_PASSPHRASE`** — chiffre TOUS les backups R2 (Postgres, Docuseal, Plausible, secrets, fichiers) en **AES-256** (`openssl enc -aes-256-cbc -salt -pbkdf2 -iter 100000`).
+| #   | Variable                       | Longueur | Ce qu'elle ouvre                                                                                                                              | Où                        |
+| --- | ------------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| 1   | `BACKUP_ENCRYPTION_PASSPHRASE` | 64       | **tout** Axion-IA : Postgres, fichiers, Docuseal, Plausible, secrets — en **AES-256** (`openssl enc -aes-256-cbc -salt -pbkdf2 -iter 100000`) | app `axion-ia`            |
+| 2   | `BACKUP_ENCRYPTION_PASSPHRASE` | 43       | les **données** d'Axion Audit (`minio-*.tar.zst.gpg`) — en **GPG**                                                                            | app `axion-audit-staging` |
+| 3   | `BACKUP_SECRETS_PASSPHRASE`    | 64       | le **coffre de secrets** d'Axion Audit (`secrets-*.coffre.gpg`) — en **GPG**                                                                  | app `axion-audit-staging` |
+
+> 🔴 **Chacune n'ouvre QUE la sienne.** Établi le 2026-09-03 en déchiffrant les quatorze
+> archives d'Axion Audit une par une : les sept archives de données ne cèdent qu'à la n°2,
+> les sept coffres qu'à la n°3. Et **se tromper de phrase rend exactement le même message
+> qu'une phrase perdue** (`bad decrypt`, ou un GPG muet) : en pleine reprise, l'erreur se
+> lit comme « le coffre est faux ». Essayer les trois avant de conclure.
+
+> 🔴 **La n°3 est invisible dans la couche `coolify/` de l'archive.** L'API Coolify la rend
+> **vide** — comme 36 variables de l'instance, dont 22 sont en réalité renseignées. Elle
+> n'existe que sous `runtime-env/`, capturée par le `printenv` des conteneurs. Chercher au
+> mauvais endroit ferait conclure à tort qu'elle n'a jamais été sauvegardée.
+
+Contrôle sans attendre le sinistre — les trois en une seule saisie :
+`bash scripts/verifier-kit-bitwarden.sh`
 
 Autres accès à avoir sous la main : compte **Cloudflare R2** (où vivent les backups), **GitHub** (code + image GHCR), **Cloudflare DNS**, **Hetzner** (snapshots + nouveau serveur), **Coolify** (ou ses creds API dans `.secrets/api-tokens.env`).
 
@@ -131,6 +149,40 @@ pg_restore --clean --if-exists --no-owner --dbname="$DATABASE_URL" <fichier .dum
 1. Cloudflare → pointer `axion-ia.com` vers la nouvelle IP.
 2. `curl https://axion-ia.com/api/healthz` ; `/fr` → 200 ; admin accessible.
 3. Redéposer les wrappers cron `/opt/axion-ia/run-*-backup.sh` + le crontab (cf. `_AUDIT/CRON-VPS-INVENTORY.md`).
+
+---
+
+## Axion Audit — l'autre projet sur le même serveur
+
+Il partage le VPS et rien d'autre : ses propres sauvegardes, son propre service, ses propres
+passphrases (n°2 et n°3 ci-dessus). Un sinistre les touche tous les deux ; une reprise les
+traite séparément. **La voie A les restaure d'un coup** — c'est le serveur entier.
+
+Audité le 2026-09-03 depuis le VPS. Ce qu'il a, et qu'Axion-IA n'a pas :
+
+- un **service de sauvegarde permanent** (pas un cron) : passe quotidienne à 02:30 UTC,
+  chiffrement GPG, vérification par empreinte, alerte Telegram. Il n'y a donc **rien à
+  redéposer dans `/opt/axion-ia/`** pour lui : son service repart avec sa pile ;
+- **pgbackrest** — la restauration à un instant précis, jamais déployée côté Axion-IA
+  (cf. la décision de juillet 2026) : sauvegarde complète + incréments quotidiens, répliqués ;
+- un **bucket séparé** : `axion-audit-backups`, préfixe `staging/`. Rétention 7 quotidiennes
+  - 4 hebdomadaires + 3 mensuelles.
+
+Restaurer une archive de données :
+
+```bash
+gpg --batch --pinentry-mode loopback --passphrase "<passphrase n°2>"   -d minio-<date>.tar.zst.gpg | tar --zstd -xf -
+```
+
+Son coffre de secrets (`*.coffre.gpg`) : même commande avec la **n°3**, et **pas de `tar`**
+derrière — le contenu est compressé en zstd seul, pas archivé.
+
+> ⚠️ **Le point faible commun aux deux projets** : une seule destination hors serveur,
+> Cloudflare R2. Le service d'Axion Audit le signale lui-même dans ses journaux, et sa
+> propre spécification en exige deux — R2 indisponible (compte suspendu, jeton révoqué,
+> panne) ne laisserait que le VPS, c'est-à-dire la machine que ces sauvegardes protègent.
+> Les deux projets ont déjà les variables `*_STORAGEBOX_*` prêtes à recevoir une Storage
+> Box Hetzner ; **aucune n'est configurée au 2026-09-03** (ni identifiants, ni clé d'hôte).
 
 ---
 
