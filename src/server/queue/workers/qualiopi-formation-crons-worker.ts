@@ -1793,7 +1793,7 @@ async function affectationsAConvoquer(
   });
 }
 
-async function envoyerAuxAffectations(
+async function traiterAffectations(
   quoi: "formateur-convocation-j7" | "formateur-rappel-j1",
   affectations: Array<{ id: string }>,
   envoyer: (id: string) => Promise<boolean>,
@@ -1829,7 +1829,7 @@ async function handleFormateurConvocationJ7(): Promise<void> {
     FENETRE_CONVOCATION_J7_JOURS * 24 * 60 * 60 * 1000,
     "convocationJ7EnvoyeeAt",
   );
-  await envoyerAuxAffectations(
+  await traiterAffectations(
     "formateur-convocation-j7",
     affectations,
     envoyerConvocationJ7Formateur,
@@ -1848,7 +1848,7 @@ async function handleFormateurRappelJ1(): Promise<void> {
     FENETRE_RAPPEL_J1_HEURES * 60 * 60 * 1000,
     "rappelJ1EnvoyeAt",
   );
-  await envoyerAuxAffectations("formateur-rappel-j1", affectations, envoyerRappelJ1Formateur);
+  await traiterAffectations("formateur-rappel-j1", affectations, envoyerRappelJ1Formateur);
 }
 
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {

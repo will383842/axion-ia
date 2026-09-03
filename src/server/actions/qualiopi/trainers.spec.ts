@@ -289,7 +289,11 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     });
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
-    expect(r).toEqual({ data: { sessionId: SESSION_ID, avertissements: [] } });
+    // `missionProposee: false` : le mock Prisma ne porte pas `missionFormateur`,
+    // la proposition (fail-soft) ne part donc pas — l'affectation, elle, est faite.
+    expect(r).toEqual({
+      data: { sessionId: SESSION_ID, avertissements: [], missionProposee: false },
+    });
     const arg = mockSessionUpdate.mock.calls[0]?.[0] as { data: { formateurPrincipalId: string } };
     expect(arg.data.formateurPrincipalId).toBe(TRAINER_ID);
   });
@@ -450,7 +454,11 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
-    expect(r).toEqual({ data: { sessionId: SESSION_ID, avertissements: [] } });
+    // `missionProposee: false` : le mock Prisma ne porte pas `missionFormateur`,
+    // la proposition (fail-soft) ne part donc pas — l'affectation, elle, est faite.
+    expect(r).toEqual({
+      data: { sessionId: SESSION_ID, avertissements: [], missionProposee: false },
+    });
     expect(mockTrainerFindUnique).not.toHaveBeenCalled();
   });
 });
