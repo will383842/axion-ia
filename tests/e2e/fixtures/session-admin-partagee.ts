@@ -52,7 +52,7 @@
 // cache est jeté et la connexion complète a lieu — le pire cas est le
 // comportement d'avant ce fichier, jamais un test faussement vert.
 
-import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import type { BrowserContext, Page } from "@playwright/test";
@@ -76,19 +76,6 @@ function cheminDuCache(email: string, prefixe: string): string {
   return join(tmpdir(), "axion-e2e-session", `${cle}.json`);
 }
 
-/** Le verrou est un DOSSIER : `mkdir` est atomique sur tous les systèmes. */
-function cheminDuVerrou(email: string, prefixe: string): string {
-  return `${cheminDuCache(email, prefixe)}.lock`;
-}
-
-/**
- * Âge maximal d'un état rejouable.
- *
- * Une suite complète dure moins de trente minutes ; au-delà, on préfère une
- * connexion neuve à des cookies dont on ne sait plus s'ils valent encore. Ce
- * n'est PAS la garde qui protège des cookies périmés — celle-là est la
- * vérification d'arrivée. C'est une borne de bon sens contre un fichier oublié.
- */
 const AGE_MAX_MS = 20 * 60 * 1000;
 
 export function lireSessionPartagee(email: string, prefixe: string): CookieSession | null {
@@ -127,36 +114,6 @@ export function oublierSessionPartagee(email: string, prefixe: string): void {
   } catch {
     /* rien à faire : le prochain appelant se connectera. */
   }
-}
-
-/**
- * Prend le verrou, ou attend que le gagnant publie son état.
- *
- * ⚠️ **Le verrou ne bloque JAMAIS la suite.** Au bout de `attenteMaxMs`, celui
- * qui attendait se connecte pour son propre compte. Un verrou dont l'expiration
- * fait échouer les tests transforme une optimisation en point de panne unique —
- * ce serait pire que les 28 connexions qu'on cherche à éviter.
- */
-export function prendreLeVerrou(email: string, prefixe: string): boolean {
-  try {
-    mkdirSync(join(tmpdir(), "axion-e2e-session"), { recursive: true });
-    mkdirSync(cheminDuVerrou(email, prefixe));
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function rendreLeVerrou(email: string, prefixe: string): void {
-  try {
-    rmSync(cheminDuVerrou(email, prefixe), { recursive: true, force: true });
-  } catch {
-    /* le prochain `mkdir` échouera, et l'attente dégradera vers une connexion. */
-  }
-}
-
-export function verrouPris(email: string, prefixe: string): boolean {
-  return existsSync(cheminDuVerrou(email, prefixe));
 }
 
 /** Rejoue des cookies dans le contexte de `page`. */

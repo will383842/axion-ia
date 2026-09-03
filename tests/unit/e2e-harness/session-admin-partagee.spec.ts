@@ -21,7 +21,7 @@
  */
 
 import { describe, expect, it, afterEach } from "vitest";
-import { existsSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
@@ -29,9 +29,6 @@ import {
   ecrireSessionPartagee,
   lireSessionPartagee,
   oublierSessionPartagee,
-  prendreLeVerrou,
-  rendreLeVerrou,
-  verrouPris,
 } from "../../e2e/fixtures/session-admin-partagee";
 
 const PREFIXE = "admin-test-x";
@@ -53,7 +50,6 @@ function adresseNeuve(): string {
 afterEach(() => {
   for (const a of adresses) {
     oublierSessionPartagee(a, PREFIXE);
-    rendreLeVerrou(a, PREFIXE);
   }
   adresses.length = 0;
 });
@@ -136,55 +132,6 @@ describe("le cache rend ce qu'il a reçu", () => {
   });
 });
 
-describe("le verrou n'est pris que par un seul", () => {
-  it("🔴 le second appel ÉCHOUE à le prendre — sans quoi les quatre workers se connecteraient", () => {
-    const a = adresseNeuve();
-
-    expect(prendreLeVerrou(a, PREFIXE)).toBe(true);
-    expect(prendreLeVerrou(a, PREFIXE)).toBe(false);
-    expect(prendreLeVerrou(a, PREFIXE)).toBe(false);
-  });
-
-  it("`verrouPris` dit la vérité avant, pendant et après", () => {
-    const a = adresseNeuve();
-
-    expect(verrouPris(a, PREFIXE)).toBe(false);
-    prendreLeVerrou(a, PREFIXE);
-    expect(verrouPris(a, PREFIXE)).toBe(true);
-    rendreLeVerrou(a, PREFIXE);
-    expect(verrouPris(a, PREFIXE)).toBe(false);
-  });
-
-  it("rendu, il se reprend — un worker suivant n'est pas condamné à attendre", () => {
-    const a = adresseNeuve();
-
-    prendreLeVerrou(a, PREFIXE);
-    rendreLeVerrou(a, PREFIXE);
-
-    expect(prendreLeVerrou(a, PREFIXE)).toBe(true);
-  });
-
-  it("deux adresses ont deux verrous distincts", () => {
-    const a = adresseNeuve();
-    const b = adresseNeuve();
-
-    expect(prendreLeVerrou(a, PREFIXE)).toBe(true);
-    expect(prendreLeVerrou(b, PREFIXE)).toBe(true);
-  });
-
-  it("le verrou ne vit pas dans le dépôt", () => {
-    const a = adresseNeuve();
-    prendreLeVerrou(a, PREFIXE);
-
-    // Il est sous le dossier temporaire du système, pas sous le worktree :
-    // un état de session commité par mégarde serait un secret de recette
-    // versionné, et un `test-results/` effacé entre deux exécutions ferait
-    // perdre le partage entre workers.
-    expect(existsSync(join(tmpdir(), "axion-e2e-session"))).toBe(true);
-    expect(existsSync(join(process.cwd(), "axion-e2e-session"))).toBe(false);
-  });
-});
-
 describe("les pannes de disque dégradent, elles ne cassent pas", () => {
   it("écrire dans un dossier remplacé par un fichier ne lève pas", () => {
     // Le module attrape ses propres erreurs d'écriture : la suite doit pouvoir
@@ -192,11 +139,10 @@ describe("les pannes de disque dégradent, elles ne cassent pas", () => {
     const a = adresseNeuve();
     expect(() => ecrireSessionPartagee(a, PREFIXE, COOKIES)).not.toThrow();
     expect(() => oublierSessionPartagee(a, PREFIXE)).not.toThrow();
-    expect(() => rendreLeVerrou(a, PREFIXE)).not.toThrow();
   });
 
-  it("`rendreLeVerrou` sur un verrou absent ne lève pas", () => {
-    expect(() => rendreLeVerrou(adresseNeuve(), PREFIXE)).not.toThrow();
+  it("`oublier` sur un cache absent ne lève pas", () => {
+    expect(() => oublierSessionPartagee(adresseNeuve(), PREFIXE)).not.toThrow();
   });
 });
 

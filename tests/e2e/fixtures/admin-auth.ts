@@ -23,10 +23,7 @@ import {
   ecrireSessionPartagee,
   lireSessionPartagee,
   oublierSessionPartagee,
-  prendreLeVerrou,
   rejouer,
-  rendreLeVerrou,
-  verrouPris,
 } from "./session-admin-partagee";
 
 export const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
@@ -103,10 +100,6 @@ async function rejouerLaSessionPartagee(page: Page, email: string): Promise<bool
   }
 }
 
-/** Combien de temps un worker attend l'état publié par le gagnant du verrou. */
-const ATTENTE_DU_VERROU_MS = 90_000;
-const PAS_D_ATTENTE_MS = 500;
-
 /**
  * Authentifie un admin — depuis la session partagée si elle existe, par le
  * formulaire sinon.
@@ -130,56 +123,43 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   const cacheUtilisable =
     !opts.sansCachePartage && !opts.skipDashboardCheck && email === ADMIN_EMAIL;
 
-  // Vrai seulement si CE processus a pris le verrou : on ne rend jamais celui
-  // d'un autre. Le rendre à tort ne casserait rien, mais ferait se connecter
-  // deux workers pour rien — exactement ce que ce fichier existe pour éviter.
-  let jeTiensLeVerrou = false;
+  // 🔴 AUCUNE ATTENTE ENTRE WORKERS, ET C'EST UNE LECON DE LA CI.
+  //
+  // Une premiere version prenait un verrou : un seul worker se connectait, les
+  // autres attendaient qu'il publie, jusqu'a 90 s. `a11y-admin.spec.ts` se
+  // connecte dans un `beforeAll`, dont le budget Playwright est de **30 s** :
+  // le crochet expirait avant la publication, et les trois tests du fichier
+  // tombaient — remplaçant une panne par une autre.
+  //
+  // 🔑 L'attente n'etait pas mal reglee, elle etait fausse par nature. Ce
+  // fichier documente lui-meme qu'une connexion coute 60 a 180 s en CI sous
+  // quatre workers : un attendeur ne peut JAMAIS tenir dans un budget de
+  // crochet qu'il ne controle pas.
+  //
+  // Ce que le verrou achetait : 4 connexions au lieu d'1. Contre un plafond de
+  // 50 hits, la difference est 8 contre 2 — sans objet. Les tests d'un worker
+  // sont serialises, donc chaque worker se connecte AU PLUS une fois, puis lit
+  // le cache. On garde le cache, on jette le verrou.
+  if (cacheUtilisable && (await rejouerLaSessionPartagee(page, email))) return;
 
+  await connexionParLeFormulaire(page, opts, email, password);
+  // 🔑 ON NE PUBLIE QU'APRÈS AVOIR CONSTATÉ LE TABLEAU DE BORD — c'est-à-dire
+  // seulement quand `connexionParLeFormulaire` est revenue sans lever, et que
+  // `cacheUtilisable` exclut déjà `skipDashboardCheck`. Publier plus tôt
+  // exposerait aux autres workers des cookies dont on ne sait pas encore s'ils
+  // ouvrent quoi que ce soit ; un cache faux coûte plus cher que pas de cache,
+  // puisqu'il rend vertes des specs qui n'ont aucune session.
   if (cacheUtilisable) {
-    if (await rejouerLaSessionPartagee(page, email)) return;
-
-    // Personne n'a encore publié d'état. Un seul worker se connecte ; les
-    // autres attendent qu'il publie. ⚠️ L'attente NE PEUT PAS faire échouer la
-    // suite : à son terme, celui qui attendait se connecte pour son compte.
-    jeTiensLeVerrou = prendreLeVerrou(email, ADMIN_PREFIX);
-    if (!jeTiensLeVerrou) {
-      const limite = Date.now() + ATTENTE_DU_VERROU_MS;
-      while (Date.now() < limite && verrouPris(email, ADMIN_PREFIX)) {
-        await page.waitForTimeout(PAS_D_ATTENTE_MS);
-      }
-      if (await rejouerLaSessionPartagee(page, email)) return;
-    }
-  }
-
-  try {
-    await connexionParLeFormulaire(page, opts, email, password);
-    // 🔑 ON NE PUBLIE QU'APRÈS AVOIR CONSTATÉ LE TABLEAU DE BORD — c'est-à-dire
-    // seulement quand `connexionParLeFormulaire` est revenue sans lever, et que
-    // `cacheUtilisable` exclut déjà `skipDashboardCheck`. Publier plus tôt
-    // exposerait aux autres workers des cookies dont on ne sait pas encore
-    // s'ils ouvrent quoi que ce soit ; un cache faux coûte plus cher que pas de
-    // cache, puisqu'il rend vertes des specs qui n'ont aucune session.
-    //
-    // ⚠️ La publication est DANS le `try` : elle doit précéder la remise du
-    // verrou, sinon les workers en attente se réveillent sur un état absent et
-    // se connectent tous — le contraire du but.
-    if (cacheUtilisable) {
-      ecrireSessionPartagee(email, ADMIN_PREFIX, await page.context().cookies());
-    }
-  } finally {
-    // ⚠️ RENDU MÊME QUAND LA CONNEXION LÈVE. Un verrou abandonné ferait attendre
-    // quatre-vingt-dix secondes à chacun des autres workers avant qu'ils ne se
-    // rabattent sur une connexion propre : une optimisation qui coûterait plus
-    // cher que ce qu'elle économise.
-    if (jeTiensLeVerrou) rendreLeVerrou(email, ADMIN_PREFIX);
+    ecrireSessionPartagee(email, ADMIN_PREFIX, await page.context().cookies());
   }
 }
 
 /**
  * La connexion PAR L'ÉCRAN — le chemin d'origine, inchangé.
  *
- * Séparée de `loginAsAdmin` pour que la prise et la remise du verrou tiennent
- * dans un `try`/`finally` court et lisible, plutôt que d'encadrer cent lignes.
+ * Séparée de `loginAsAdmin` pour que la décision « rejouer ou se connecter »
+ * tienne en trois lignes lisibles au-dessus, plutôt que d'être noyée en tête
+ * des cent lignes de bornes et de sélecteurs que ce chemin a accumulées.
  */
 async function connexionParLeFormulaire(
   page: Page,
