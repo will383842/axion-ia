@@ -1464,6 +1464,7 @@ model AdminUser {
   submissionReplies               SubmissionReply[]
   jobApplicationEvents            JobApplicationEvent[]
   jobApplicationReplies           JobApplicationReply[]
+  jobInterviews                   JobInterview[]
   // Preuve de signature au grain document — provenance et révocation.
   documentSignaturesRecueillies   DocumentSignature[]      @relation("DocumentSignatureRecueillie")
   documentSignaturesRevoquees     DocumentSignature[]      @relation("DocumentSignatureRevoquee")
@@ -4133,43 +4134,43 @@ model AdminInboxRead {
 }
 
 model CalendlyEvent {
-  id                 String              @id @default(cuid())
+  id                    String              @id @default(cuid())
   /// Nom humain de l'event-type (ex "Appel découverte 30 min"). Will peut
   /// l'éditer manuellement après capture.
-  eventTypeName      String              @map("event_type_name") @db.VarChar(255)
+  eventTypeName         String              @map("event_type_name") @db.VarChar(255)
   /// Slug extrait de l'URL Calendly (ex "appel-decouverte"). Sert de
   /// référence stable pour matching.
-  eventTypeSlug      String              @map("event_type_slug") @db.VarChar(100)
-  status             CalendlyEventStatus @default(scheduled)
+  eventTypeSlug         String              @map("event_type_slug") @db.VarChar(100)
+  status                CalendlyEventStatus @default(scheduled)
   /// Embed JS ne fournit pas tjrs précis — best effort, complétable manuel.
-  startTime          DateTime?           @map("start_time")
-  endTime            DateTime?           @map("end_time")
-  timezone           String              @default("Europe/Paris") @db.VarChar(80)
+  startTime             DateTime?           @map("start_time")
+  endTime               DateTime?           @map("end_time")
+  timezone              String              @default("Europe/Paris") @db.VarChar(80)
   /// Extrait du payload Embed JS si dispo, sinon Will complète via admin.
-  inviteeName        String?             @map("invitee_name") @db.VarChar(255)
-  inviteeEmail       String?             @map("invitee_email") @db.Citext
-  inviteePhone       String?             @map("invitee_phone") @db.VarChar(40)
+  inviteeName           String?             @map("invitee_name") @db.VarChar(255)
+  inviteeEmail          String?             @map("invitee_email") @db.Citext
+  inviteePhone          String?             @map("invitee_phone") @db.VarChar(40)
   /// Sprint Notif Infra 2026-05-26 / fix P1-4 audit 2026-05-27 — lieu du
   /// RDV si fourni par Calendly (ex Google Meet URL, adresse physique). Si
   /// absent du payload Embed JS, reste null et Will complète manuellement.
-  location           String?             @db.VarChar(500)
-  source             CalendlyEventSource @default(embed_js)
+  location              String?             @db.VarChar(500)
+  source                CalendlyEventSource @default(embed_js)
   /// URI API du scheduled_event (ex "https://api.calendly.com/scheduled_events/UUID").
   /// C'est — avec `inviteeUri` — la SEULE donnée réelle que l'Embed JS transmet :
   /// le postMessage `calendly.event_scheduled` ne contient QUE ces deux URI, jamais
   /// le nom, l'email ni l'horaire (limitation Calendly documentée). Les stocker
   /// permet l'enrichissement API (cf. `src/server/calendly/api.ts`) — immédiat si
   /// `CALENDLY_API_TOKEN` est posé, rétroactif sinon. Cf. ADR 0036.
-  eventUri           String?             @map("event_uri") @db.VarChar(255)
+  eventUri              String?             @map("event_uri") @db.VarChar(255)
   /// URI API de l'invitee. Unique : c'est l'identité stable d'une réservation,
   /// donc la clé de déduplication fiable (l'ancienne heuristique slug+IP+60 s
   /// laissait passer deux réservations légitimes du même visiteur).
-  inviteeUri         String?             @unique @map("invitee_uri") @db.VarChar(255)
+  inviteeUri            String?             @unique @map("invitee_uri") @db.VarChar(255)
   /// URLs d'annulation / report fournies par l'API Calendly (enrichissement).
-  cancelUrl          String?             @map("cancel_url") @db.VarChar(500)
-  rescheduleUrl      String?             @map("reschedule_url") @db.VarChar(500)
+  cancelUrl             String?             @map("cancel_url") @db.VarChar(500)
+  rescheduleUrl         String?             @map("reschedule_url") @db.VarChar(500)
   /// Horodatage du dernier enrichissement API réussi (null = jamais enrichi).
-  enrichedAt         DateTime?           @map("enriched_at")
+  enrichedAt            DateTime?           @map("enriched_at")
   /// Horodatage d'envoi du rappel H-1 (null = pas encore envoyé).
   ///
   /// 🔑 C'EST LA SEULE CHOSE QUI EMPÊCHE LE RAPPEL DE PARTIR EN BOUCLE. La passe
@@ -4181,37 +4182,50 @@ model CalendlyEvent {
   /// ne lève pas : elle rend `{ enqueued }`. Écrire « envoyé » sur un retour faux
   /// est le défaut `D5-1-C1` — une trace qui affirme un envoi qui n'a pas eu lieu
   /// est pire que pas de trace, parce qu'elle empêche le rattrapage.
-  rappelEnvoyeAt     DateTime?           @map("rappel_envoye_at")
+  rappelEnvoyeAt        DateTime?           @map("rappel_envoye_at")
   /// Marqueur d'idempotence de la CONFIRMATION (2026-08-28). Même contrat que
   /// `rappelEnvoyeAt` : posé UNIQUEMENT si la mise en file a réussi, sinon le
   /// passage suivant réessaie. Une trace qui affirme un envoi qui n'a pas eu
   /// lieu interdit le rattrapage — défaut D5-1-C1 de ce dépôt.
-  confirmationEnvoyeeAt DateTime?         @map("confirmation_envoyee_at")
+  confirmationEnvoyeeAt DateTime?           @map("confirmation_envoyee_at")
   /// Marqueur d'idempotence du rappel J-1. Distinct de `rappelEnvoyeAt` (H-1) :
   /// un seul marqueur pour deux moments ferait taire le second.
-  rappelJ1EnvoyeAt   DateTime?           @map("rappel_j1_envoye_at")
+  rappelJ1EnvoyeAt      DateTime?           @map("rappel_j1_envoye_at")
   /// Payload complet du postMessage event (debug + future re-process).
-  rawPayload         Json                @map("raw_payload")
+  rawPayload            Json                @map("raw_payload")
   /// URL où l'event a été capté (ex "https://axion-ia.com/fr/appel").
-  pageUrl            String?             @map("page_url") @db.VarChar(500)
-  utmSource          String?             @map("utm_source") @db.VarChar(100)
-  utmCampaign        String?             @map("utm_campaign") @db.VarChar(100)
-  utmMedium          String?             @map("utm_medium") @db.VarChar(100)
-  referrer           String?             @db.VarChar(500)
+  pageUrl               String?             @map("page_url") @db.VarChar(500)
+  utmSource             String?             @map("utm_source") @db.VarChar(100)
+  utmCampaign           String?             @map("utm_campaign") @db.VarChar(100)
+  utmMedium             String?             @map("utm_medium") @db.VarChar(100)
+  referrer              String?             @db.VarChar(500)
   /// Match manuel par Will via admin (lien vers une Submission existante).
-  linkedSubmissionId String?             @map("linked_submission_id") @db.Uuid
-  capturedAt         DateTime            @default(now()) @map("captured_at")
-  updatedAt          DateTime            @updatedAt @map("updated_at")
+  linkedSubmissionId    String?             @map("linked_submission_id") @db.Uuid
+  capturedAt            DateTime            @default(now()) @map("captured_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
   /// Notes admin manuelles (debrief post-call, etc.).
-  notes              String?             @db.Text
+  notes                 String?             @db.Text
 
-  linkedSubmission Submission? @relation(fields: [linkedSubmissionId], references: [id], onDelete: SetNull)
+  linkedSubmission       Submission?     @relation(fields: [linkedSubmissionId], references: [id], onDelete: SetNull)
+  /// Lot 2 du chantier recrutement — LE LIEN QUI MANQUAIT.
+  ///
+  /// 🔴 Cette table savait pointer une demande commerciale et rien d'autre. Un
+  /// rendez-vous pris par un candidat ne se rattachait donc à aucun dossier :
+  /// l'appel avait lieu, il portait sa date, son lieu, son lien de visio, son
+  /// état « tenu / annulé / absent » et ses notes de débriefing — et rien de
+  /// tout cela ne rejoignait la candidature. C'est le constat `T2` de l'audit.
+  ///
+  /// `SetNull` et non `Cascade` : effacer une candidature ne doit pas effacer
+  /// le rendez-vous de l'agenda, qui a sa propre vie et sa propre rétention.
+  linkedJobApplicationId String?         @map("linked_job_application_id") @db.Uuid
+  linkedJobApplication   JobApplication? @relation(fields: [linkedJobApplicationId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([startTime])
   @@index([inviteeEmail])
   @@index([capturedAt])
   @@index([linkedSubmissionId])
+  @@index([linkedJobApplicationId])
   @@index([enrichedAt])
   @@map("calendly_events")
 }
@@ -8351,8 +8365,13 @@ model JobApplication {
   /// candidature (droit à l'effacement, ou purge de rétention) doit emporter
   /// tout ce qui la décrit, y compris le corps des e-mails déjà rendus, qui
   /// portent le nom de la personne.
-  events  JobApplicationEvent[]
-  replies JobApplicationReply[]
+  events         JobApplicationEvent[]
+  replies        JobApplicationReply[]
+  /// Lot 2 — les entretiens, et les rendez-vous d'agenda qui leur sont
+  /// rattachés. Les entretiens tombent avec la candidature (ils n'existent que
+  /// par elle) ; les rendez-vous, non — voir `CalendlyEvent`.
+  interviews     JobInterview[]
+  calendlyEvents CalendlyEvent[]
 
   @@index([offerId])
   @@index([status, needsAttention])
@@ -8509,6 +8528,106 @@ model JobApplicationReply {
   @@index([applicationId, repliedAt])
   @@index([deliveryStatus])
   @@map("job_application_replies")
+}
+
+// ============================================================================
+// LOT 2 — LES ENTRETIENS
+//
+// Ce qu'il ferme : sur les 461 modèles de ce schéma, aucun ne décrivait un
+// entretien. La date, le compte rendu, qui l'a mené, l'absence du candidat, le
+// second tour — rien n'était enregistrable. C'est pourtant là que se prend la
+// décision, et c'est le constat `T2` de l'audit.
+//
+// 🛑 ORDRE PERMANENT — AUCUN ENREGISTREMENT. Ni captation audio, ni vidéo, ni
+// transcription, ni résumé automatique. Le compte rendu est SAISI par la
+// personne qui a mené l'entretien. Ce modèle ne porte donc aucun champ de
+// média, et il ne doit jamais en gagner un.
+// ============================================================================
+
+enum JobInterviewMode {
+  telephone
+  visio
+  sur_site
+
+  @@map("job_interview_mode")
+}
+
+enum JobInterviewState {
+  planifie
+  tenu
+  annule
+  /// Le candidat ne s'est pas présenté. Distinct d'`annule`, qui suppose un
+  /// geste : confondre les deux ferait passer un no-show pour une annulation
+  /// convenue, et l'un se rappelle quand l'autre ne se rappelle pas.
+  absent
+
+  @@map("job_interview_state")
+}
+
+enum JobInterviewOutcome {
+  poursuivre
+  second_tour
+  proposition
+  ecarter
+  /// Le candidat s'est retiré à ce stade. L'issue n'est pas la nôtre.
+  sans_suite
+
+  @@map("job_interview_outcome")
+}
+
+/// Un entretien avec un candidat — planifié, tenu, ou pas.
+model JobInterview {
+  id            String         @id @default(uuid()) @db.Uuid
+  applicationId String         @map("application_id") @db.Uuid
+  application   JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  /// Numéro de tour. Un second entretien n'écrase pas le premier : les deux
+  /// comptes rendus valent, et c'est leur écart qui décide.
+  round Int              @default(1)
+  mode  JobInterviewMode
+
+  scheduledAt DateTime @map("scheduled_at")
+  durationMin Int?     @map("duration_min")
+  /// Adresse d'un entretien sur site, ou lien de la visioconférence.
+  location    String?  @db.VarChar(500)
+
+  /// Qui l'a mené — la FK pour naviguer, l'instantané pour survivre à la
+  /// suppression du compte. Même doctrine que `JobApplicationEvent.authorName`.
+  conductedById   String?    @map("conducted_by_id") @db.Uuid
+  conductedBy     AdminUser? @relation(fields: [conductedById], references: [id], onDelete: SetNull)
+  conductedByName String     @map("conducted_by_name") @db.VarChar(255)
+
+  state  JobInterviewState @default(planifie)
+  /// Quand il a EU LIEU. Distinct de `scheduledAt` : un entretien décalé de
+  /// vingt minutes reste le même entretien, et c'est l'heure réelle qui compte
+  /// pour relire un dossier.
+  heldAt DateTime?         @map("held_at")
+
+  /// Compte rendu SAISI. Jamais capté, jamais résumé automatiquement.
+  debrief String?              @db.Text
+  outcome JobInterviewOutcome?
+
+  /// Rendez-vous d'agenda dont cet entretien est issu, s'il y en a un.
+  /// `@unique` : un même rendez-vous ne peut pas fonder deux entretiens — c'est
+  /// ce qui rend le rattachement idempotent quand on clique deux fois.
+  calendlyEventId String? @unique @map("calendly_event_id")
+
+  /// Marqueurs d'idempotence des rappels. Posés UNIQUEMENT si la mise en file a
+  /// réussi : `enqueueEmail` ne lève pas, elle rend `{ enqueued }`, et écrire
+  /// « envoyé » sur un retour faux interdit le rattrapage (défaut `D5-1-C1`).
+  /// Deux marqueurs pour deux moments — un seul ferait taire le second.
+  rappelJ1EnvoyeAt DateTime? @map("rappel_j1_envoye_at")
+  rappelH1EnvoyeAt DateTime? @map("rappel_h1_envoye_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([applicationId, scheduledAt])
+  /// L'index qui porte la passe de rappels : « les entretiens planifiés dont
+  /// l'heure approche ». Sans lui, elle balaierait toute la table toutes les
+  /// cinq minutes.
+  @@index([state, scheduledAt])
+  @@map("job_interviews")
 }
 
 // ============================================================================
