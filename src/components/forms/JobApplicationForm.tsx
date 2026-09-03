@@ -76,7 +76,15 @@ export interface ScreeningQuestion {
 }
 
 interface Props {
-  offerId: string;
+  /**
+   * L'offre visée, ABSENTE pour une candidature spontanée.
+   *
+   * 🔑 Optionnelle plutôt qu'une chaîne vide : le type distingue « pas d'offre »
+   * de « offre inconnue », et le compilateur oblige chaque consommateur à
+   * trancher. Une chaîne vide se serait propagée jusqu'à une requête SQL sur un
+   * UUID vide, qui n'échoue pas — elle ne trouve rien.
+   */
+  offerId?: string;
   requiresDriverLicense: boolean;
   requiresVehicle: boolean;
   screeningQuestions: ScreeningQuestion[];
@@ -132,7 +140,10 @@ export function JobApplicationForm({
     setSubmitting(true);
     try {
       const fd = new FormData(form);
-      fd.set("offerId", offerId);
+      // Spontanée : aucun `offerId` n'est posé du tout. Poser une chaîne vide
+      // ferait échouer le schéma Zod sur « UUID invalide » et rendrait au
+      // candidat « Champs invalides », un message qui n'accuse rien.
+      if (offerId) fd.set("offerId", offerId);
       fd.set("locale", locale);
       fd.set("consent", "true");
       // Lot 5 — la page d'où l'on soumet, pour les annonces qui ne savent pas
@@ -216,7 +227,38 @@ export function JobApplicationForm({
   return (
     <form onSubmit={onSubmit} className="space-y-8" encType="multipart/form-data">
       <HoneypotField />
-      <input type="hidden" name="offerId" value={offerId} />
+      {offerId ? <input type="hidden" name="offerId" value={offerId} /> : null}
+
+      {/* ── LE POSTE VISÉ — seulement quand aucune offre n'est visée ───────────
+          🔑 Ce champ REMPLACE le titre de l'offre : côté base, il alimente
+          `offerTitleSnap`, qui reste renseigné dans tous les cas. C'est ce qui
+          permet à la console, aux e-mails et à l'export de continuer à dire
+          « pour quel poste » sans jamais consulter la table des offres. */}
+      {offerId ? null : (
+        <fieldset className={FIELDSET}>
+          <legend className={SECTION}>{isFr ? "🎯 Le poste visé" : "🎯 Target role"}</legend>
+          <div>
+            <label htmlFor="posteVise" className={LABEL}>
+              {isFr ? "Quel poste vous intéresse ?" : "Which role are you after?"}{" "}
+              <span aria-hidden="true">*</span>
+            </label>
+            <input
+              id="posteVise"
+              name="posteVise"
+              type="text"
+              required
+              maxLength={160}
+              className={FIELD}
+              placeholder={isFr ? "Monteur vidéo, formateur…" : "Video editor, trainer…"}
+            />
+            <p className="text-fg-muted mt-1.5 text-xs">
+              {isFr
+                ? "Aucune offre ouverte ne correspond ? Dites-nous ce que vous cherchez — on garde votre dossier."
+                : "No open role matches? Tell us what you're looking for — we keep your file."}
+            </p>
+          </div>
+        </fieldset>
+      )}
 
       {/* 1. Toi & contact */}
       <fieldset className={FIELDSET}>

@@ -58,7 +58,31 @@ const opt = (max: number) =>
   z.preprocess((v) => (v === "" || v == null ? undefined : v), z.string().max(max).optional());
 
 const appSchema = z.object({
-  offerId: z.string().uuid(),
+  /**
+   * L'offre visée — ABSENTE pour une candidature spontanée.
+   *
+   * 🔑 `.optional()` et non une chaîne vide : `z.string().uuid()` refuserait
+   * `""` avec « Champs invalides », un message qui n'accuse rien et que le
+   * candidat ne peut pas corriger.
+   */
+  offerId: z.preprocess(
+    // 🔴 `formData.get()` rend **`null`**, pas `undefined`, quand le champ est
+    // absent — et `.optional()` n'accepte que `undefined`. Sans ce
+    // prétraitement, toute candidature spontanée était refusée par « Champs
+    // invalides », un message qui n'accuse rien et que le candidat ne peut pas
+    // corriger. Mesuré : le premier test l'a attrapé immédiatement.
+    (v) => (v === "" || v == null ? undefined : v),
+    z.string().uuid().optional(),
+  ),
+  /**
+   * Le poste visé, SAISI, quand aucune offre n'est visée.
+   *
+   * ⚠️ Il alimente `offerTitleSnap`, qui reste NOT NULL : la console, les
+   * e-mails et l'export continuent de dire « pour quel poste » sans jamais
+   * consulter la table des offres. La cohérence des deux cas est vérifiée par
+   * le raffinement ci-dessous — l'un OU l'autre, jamais ni l'un ni l'autre.
+   */
+  posteVise: opt(160),
   civility: opt(20),
   firstName: z.string().min(1).max(100),
   lastName: z.string().min(1).max(100),
@@ -183,6 +207,11 @@ export async function submitJobApplicationAction(
   // 5. Zod
   const parsed = appSchema.safeParse({
     offerId: formData.get("offerId"),
+    // ⚠️ Ajouté au SCHÉMA et oublié ICI dans une première version : le champ
+    // n'arrivait jamais, et la candidature spontanée était refusée sans que
+    // rien ne dise pourquoi. Un schéma et sa source d'entrée sont deux listes
+    // qu'il faut tenir ensemble — c'est le test qui l'a dit, pas la relecture.
+    posteVise: formData.get("posteVise"),
     civility: formData.get("civility"),
     firstName: formData.get("firstName"),
     lastName: formData.get("lastName"),
@@ -204,26 +233,58 @@ export async function submitJobApplicationAction(
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
 
-  // 6. Offre cible
-  const offer = await prisma.jobOffer.findUnique({
-    where: { id: d.offerId },
-    select: {
-      id: true,
-      slug: true,
-      titleFr: true,
-      category: true,
-      status: true,
-      filledAt: true,
-      validThrough: true,
-    },
-  });
-  const expired = offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
-  if (!offer || offer.status !== "published" || offer.filledAt || expired) {
-    return {
-      ok: false,
-      error: "Cette offre n'est plus ouverte aux candidatures.",
-    };
+  // ── 6. L'OFFRE CIBLE, OU LE POSTE VISÉ ────────────────────────────────────
+  //
+  // 🔴 UNE CANDIDATURE SPONTANÉE N'A PAS D'OFFRE, ET N'EN CHERCHE DONC AUCUNE.
+  //
+  // Le contrôle « cette offre est-elle encore ouverte ? » n'a de sens que s'il
+  // y a une offre. L'appliquer à une spontanée l'aurait refusée pour un motif
+  // qui ne la concerne pas — et une requête sur `id: undefined` ne lève pas :
+  // elle ne trouve rien, ce qui aurait produit exactement ce refus.
+  //
+  // ⚠️ Les deux cas doivent être MUTUELLEMENT EXCLUSIFS et EXHAUSTIFS. Sans ce
+  // refus explicite, une soumission sans offre NI poste visé passerait, et
+  // `offerTitleSnap` — qui est NOT NULL — ferait échouer l'insertion tout au
+  // fond de la pile, sur un message Postgres que le candidat verrait comme
+  // « une erreur est survenue ».
+  if (!d.offerId && !d.posteVise) {
+    return { ok: false, error: "Indiquez le poste qui vous intéresse." };
   }
+
+  const offer = d.offerId
+    ? await prisma.jobOffer.findUnique({
+        where: { id: d.offerId },
+        select: {
+          id: true,
+          slug: true,
+          titleFr: true,
+          category: true,
+          status: true,
+          filledAt: true,
+          validThrough: true,
+        },
+      })
+    : null;
+
+  if (d.offerId) {
+    const expired = offer?.validThrough != null && offer.validThrough.getTime() < Date.now();
+    if (!offer || offer.status !== "published" || offer.filledAt || expired) {
+      return {
+        ok: false,
+        error: "Cette offre n'est plus ouverte aux candidatures.",
+      };
+    }
+  }
+
+  /**
+   * Le titre du poste, TOUJOURS connu — c'est l'invariant de tout l'aval.
+   *
+   * 🔑 Une seule expression pour les deux cas : e-mails, notifications, export
+   * et console lisent ce titre sans jamais avoir à savoir s'il y avait une
+   * offre derrière. C'est ce qui rend la candidature spontanée presque gratuite
+   * en aval.
+   */
+  const titrePoste = offer?.titleFr ?? (d.posteVise as string);
 
   // 7. CV (optionnel) — VALIDATION seulement. L'écriture disque est reportée
   // après le compteur d'envois aboutis (§7ter) : un refus ne doit jamais
@@ -328,8 +389,10 @@ export async function submitJobApplicationAction(
   try {
     const app = await prisma.jobApplication.create({
       data: {
-        offerId: offer.id,
-        offerTitleSnap: offer.titleFr,
+        // `null` pour une spontanée : la colonne est nullable depuis la
+        // migration `20260904010000_candidature_sans_offre`.
+        offerId: offer?.id ?? null,
+        offerTitleSnap: titrePoste,
         civility: d.civility ?? null,
         firstName: encryptPii(d.firstName),
         lastName: encryptPii(d.lastName),
@@ -402,7 +465,23 @@ export async function submitJobApplicationAction(
       });
     }
 
-    // 8 bis. Synchro CRM — univers VIVIER (lot L2).
+    // ── 8 bis. Synchro CRM — univers VIVIER (lot L2) ──────────────────────
+    //
+    // 🔴 UNE CANDIDATURE SPONTANÉE NE FRANCHIT PAS LA FRONTIÈRE. Décision
+    // conservatrice, écrite et motivée dans l'ADR 0047 §4 (arbitrage 1,
+    // option C), et voici la mine qu'elle désamorce :
+    //
+    // `candidateFamilyForOffer` produit une valeur qui doit exister dans un
+    // `CHECK` SQL **de l'autre dépôt**. Une famille inconnue là-bas fait
+    // refuser TOUTES les fiches qui la portent — pas seulement les nouvelles.
+    // Émettre une spontanée exigerait donc soit une migration distante
+    // déployée AVANT, soit de la ranger dans `candidat_autre`, ce qui perdrait
+    // l'information à la lecture.
+    //
+    // 🔑 Ne rien émettre est la seule option qui ne dépende d'aucun
+    // déploiement ailleurs, et elle est réversible : le jour où Will tranche,
+    // `reconcile.ts` sait rattraper un stock non émis. Une spontanée qu'on n'a
+    // pas encore lue n'a de toute façon rien à faire dans un vivier long terme.
     //
     // 🔴 DOUBLE VERROU, et le second est le vrai : le drapeau
     // `CRM_SYNC_CANDIDATES_ENABLED` évite d'émettre pour rien, mais c'est le
@@ -411,51 +490,53 @@ export async function submitJobApplicationAction(
     // `careers-v1-2026-06-09`, dont le texte ne couvre QUE l'étude de la
     // candidature en cours : elles ne peuvent pas entrer au vivier tant que le
     // texte v2 n'est pas servi. Le refus est donc attendu, et sain.
-    await syncCandidateToCrm({
-      subjectRef: `site:job_application:${app.id}`,
-      family: candidateFamilyForOffer(offer.slug, offer.category),
-      offerSlug: offer.slug,
-      sourceSlug: "site-candidature-offre",
-      occurredAt: app.submittedAt,
-      person: {
-        email: d.email,
-        firstName: d.firstName,
-        lastName: d.lastName,
-        phone: d.phone ?? null,
-      },
-      consent: {
-        version: CONSENT_VERSION,
-        at: app.submittedAt,
-        textRef: "job-application-form",
-        // Renseigné UNIQUEMENT si la case optionnelle a été cochée. Le CRM lit
-        // `consent.vivier_at` pour savoir s'il a le droit de conserver la fiche
-        // au-delà du recrutement en cours.
-        vivierAt: consentVivier ? app.submittedAt : null,
-      },
-      cvRef: cvStoragePath ? `site:cv:${app.id}` : null,
-      attributes: {
-        ...(d.experienceBand ? { experienceBand: d.experienceBand } : {}),
-        ...(d.availability ? { availability: d.availability } : {}),
-        ...(d.city ? { city: d.city } : {}),
-        hasDriverLicense,
-        hasVehicle,
-      },
-      payload: { offerTitle: offer.titleFr },
-    });
+    if (offer)
+      await syncCandidateToCrm({
+        subjectRef: `site:job_application:${app.id}`,
+        family: candidateFamilyForOffer(offer.slug, offer.category),
+        offerSlug: offer.slug,
+        sourceSlug: "site-candidature-offre",
+        occurredAt: app.submittedAt,
+        person: {
+          email: d.email,
+          firstName: d.firstName,
+          lastName: d.lastName,
+          phone: d.phone ?? null,
+        },
+        consent: {
+          version: CONSENT_VERSION,
+          at: app.submittedAt,
+          textRef: "job-application-form",
+          // Renseigné UNIQUEMENT si la case optionnelle a été cochée. Le CRM lit
+          // `consent.vivier_at` pour savoir s'il a le droit de conserver la fiche
+          // au-delà du recrutement en cours.
+          vivierAt: consentVivier ? app.submittedAt : null,
+        },
+        cvRef: cvStoragePath ? `site:cv:${app.id}` : null,
+        attributes: {
+          ...(d.experienceBand ? { experienceBand: d.experienceBand } : {}),
+          ...(d.availability ? { availability: d.availability } : {}),
+          ...(d.city ? { city: d.city } : {}),
+          hasDriverLicense,
+          hasVehicle,
+        },
+        payload: { offerTitle: titrePoste },
+      });
 
     // 9. Telegram (+ WhatsApp pour l'offre monteur vidéo) — catégorie séparée
     // pour cette offre : salon 🎬 dédié, pas mélangée aux autres candidatures.
     await notify({
-      category: isVideoEditorOffer(offer.slug)
-        ? "VIDEO_EDITOR_APPLICATION_RECEIVED"
-        : "JOB_APPLICATION_RECEIVED",
+      category:
+        offer && isVideoEditorOffer(offer.slug)
+          ? "VIDEO_EDITOR_APPLICATION_RECEIVED"
+          : "JOB_APPLICATION_RECEIVED",
       payload: {
         applicationId: app.id,
         contactName: `${d.firstName} ${d.lastName}`.trim(),
         contactEmail: d.email,
         ...(d.phone ? { contactPhone: d.phone } : {}),
-        offerTitle: offer.titleFr,
-        offerCategory: offer.category,
+        offerTitle: titrePoste,
+        ...(offer ? { offerCategory: offer.category } : {}),
         ...(d.city ? { city: d.city } : {}),
         ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
         ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
@@ -475,7 +556,7 @@ export async function submitJobApplicationAction(
     // engagement tenable.
     await enqueueEmail("candidature-recue", d.email, locale, {
       contactName: `${d.firstName} ${d.lastName}`.trim(),
-      offerTitle: offer.titleFr,
+      offerTitle: titrePoste,
     });
 
     revalidatePath(adminPath("fr", "contacts/candidatures"));
