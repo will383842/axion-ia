@@ -79,6 +79,11 @@ export type EmailJobName =
   | "documents-nouvelle-version"
   // Espace formateur — lien de connexion passwordless (magic-link)
   | "formateur-magic-link"
+  // Cycle de vie du formateur sur une session (2026-09-03) : proposition de
+  // mission à accepter/refuser, convocation pratique J-7, rappel J-1.
+  | "formateur-mission-proposee"
+  | "formateur-convocation-j7"
+  | "formateur-rappel-j1"
   // Espace ressources — lien de connexion passwordless (commercial/formateur)
   | "ressources-magic-link"
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint

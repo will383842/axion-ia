@@ -36,13 +36,16 @@ import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES } from "@/lib/email/templates
 const DOSSIER = join(process.cwd(), "src", "lib", "email", "templates");
 
 /** Les fichiers qui ne sont pas des gabarits : la mise en page et le registre. */
-const NON_GABARITS = new Set(["_layout", "index"]);
+// Les fichiers préfixés `_` sont des fragments partagés (`_layout`,
+// `_infos-pratiques-formateur`), pas des gabarits : la règle est le préfixe,
+// pas une liste à tenir. `index` est le registre.
+const NON_GABARITS = new Set(["index"]);
 
 function gabarits(): ReadonlyArray<{ nom: string; source: string }> {
   return readdirSync(DOSSIER)
     .filter((f) => f.endsWith(".tsx"))
     .map((f) => f.replace(/\.tsx$/, ""))
-    .filter((n) => !NON_GABARITS.has(n) && !n.endsWith(".spec"))
+    .filter((n) => !NON_GABARITS.has(n) && !n.startsWith("_") && !n.endsWith(".spec"))
     .map((nom) => ({ nom, source: readFileSync(join(DOSSIER, `${nom}.tsx`), "utf8") }));
 }
 
@@ -69,12 +72,12 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 44 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 47 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
     expect(tous.length, "aucun gabarit lu : le dossier a changé de nom ?").toBeGreaterThan(0);
-    expect(tous.length).toBe(44);
+    expect(tous.length).toBe(47);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

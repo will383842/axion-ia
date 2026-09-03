@@ -14,6 +14,7 @@ import { GenererListeFormateursButton } from "@/components/admin/qualiopi/Genere
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
+import { statsMissionsFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -43,6 +44,15 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}/qualiopi/formateurs`;
   const trainers = await listTrainers();
+  // Pilotage (2026-09-03) : refus et absences par formateur, sur 24 mois. Un
+  // registre de quelques dizaines de personnes ; une lecture par ligne reste
+  // bon marché, et le chiffre est celui de la fiche — pas un autre calcul.
+  const now = new Date();
+  const missionsParFormateur = new Map(
+    await Promise.all(
+      trainers.map(async (t) => [t.id, await statsMissionsFormateur(t.id, now)] as const),
+    ),
+  );
 
   // « Internes » = salariés + dirigeant-formateur (l'OF anime lui-même).
   const salaries = trainers.filter(
@@ -103,6 +113,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Habilitations</th>
                 <th className={headCls}>Vérifié</th>
+                <th className={headCls}>Refus · absences (24 mois)</th>
                 <th className={headCls}>Actif</th>
                 <th className={headCls}>
                   <span className="sr-only">Actions</span>
@@ -137,6 +148,32 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                     ) : (
                       <span className="text-[color:var(--color-admin-warning)]">○ non</span>
                     )}
+                  </td>
+                  <td className={cellCls}>
+                    {(() => {
+                      const m = missionsParFormateur.get(t.id);
+                      if (m === undefined || (m.proposees === 0 && m.absences === 0)) {
+                        return (
+                          <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
+                        );
+                      }
+                      const alerte = m.refusees + m.absences + m.expirees > 0;
+                      return (
+                        <span
+                          className={alerte ? "text-[color:var(--color-admin-warning)]" : undefined}
+                        >
+                          {m.refusees} refus · {m.absences} absence{m.absences > 1 ? "s" : ""}
+                          {m.sansReponse > 0 ? ` · ${m.sansReponse} sans réponse` : ""}
+                          {m.expirees > 0
+                            ? ` · ${m.expirees} expirée${m.expirees > 1 ? "s" : ""}`
+                            : ""}
+                          <span className="text-[color:var(--color-admin-fg-muted)]">
+                            {" "}
+                            / {m.proposees} proposée{m.proposees > 1 ? "s" : ""}
+                          </span>
+                        </span>
+                      );
+                    })()}
                   </td>
                   <td className={cellCls}>
                     {t.actif ? (

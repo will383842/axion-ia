@@ -646,6 +646,37 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "formateur",
   },
 
+  // ── Cycle de vie du formateur sur une session (2026-09-03) ────────────────
+  // Une session vendue pouvait rester sans formateur CONFIRMÉ sans qu'aucune
+  // alerte ne le dise. Les quatre codes se résolvent d'eux-mêmes : dès qu'un
+  // formateur est (ré)affecté, a répondu, ou que les dates ne se croisent
+  // plus, le balayage suivant les ferme. Guichet : le secrétariat, qui affecte
+  // et convoque — sauf l'habilitation, qui est une conformité (ind.21/22).
+  formateur_mission_refusee: {
+    niveau: "critique",
+    titre: "Mission refusée — session sans formateur",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  formateur_mission_sans_reponse: {
+    niveau: "important",
+    titre: "Formateur sans réponse à la proposition de mission",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  formateur_indisponible_sur_session: {
+    niveau: "critique",
+    titre: "Formateur indisponible sur les dates de la session",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  formateur_non_habilite_assigne: {
+    niveau: "important",
+    titre: "Formateur principal non habilité sur cette formation",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+
   // ── Sous-traitants ────────────────────────────────────────────────────────
   sous_traitant_qualiopi_expire_j60: {
     niveau: "important",

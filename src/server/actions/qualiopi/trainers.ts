@@ -25,6 +25,14 @@ import {
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
 import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
+import {
+  proposerMissionFormateur,
+  retirerMissionsEnAttente,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  detecterIndisponibiliteFormateur,
+  formulerConflit,
+} from "@/server/qualiopi/trainers/conflits-indisponibilite";
 import { getTrainerConflicts } from "@/features/admin-planning/queries";
 import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
@@ -584,7 +592,9 @@ const assignTrainerSchema = z.object({
  */
 export async function assignTrainerToSessionAction(
   input: z.infer<typeof assignTrainerSchema>,
-): Promise<ActionResult<{ sessionId: string; avertissements: string[] }>> {
+): Promise<
+  ActionResult<{ sessionId: string; avertissements: string[]; missionProposee: boolean }>
+> {
   const session = await requireAdminWrite();
   const parsed = assignTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -737,15 +747,47 @@ export async function assignTrainerToSessionAction(
   // règle qui ne vit qu'à l'endroit où on l'a écrite ne protège que cet endroit.
   const avertissements = await avertissementsAffectation(trainerId);
 
+  // 2026-09-03 — cycle de vie du formateur. L'affectation lui est PROPOSÉE :
+  // un e-mail avec un lien pour accepter ou refuser (motif obligatoire). Les
+  // sollicitations encore ouvertes des formateurs écartés sont retirées, sinon
+  // l'un d'eux pourrait « accepter » une session qui n'est plus la sienne.
+  // Fail-soft : l'affectation est faite, la proposition suit.
+  await retirerMissionsEnAttente(sessionId, { saufTrainerId: trainerId, role: "principal" });
+  let missionProposee = false;
+  if (trainerId !== null) {
+    const proposition = await proposerMissionFormateur({ sessionId, trainerId, role: "principal" });
+    missionProposee = proposition.proposee;
+    if (!proposition.proposee && proposition.raison !== "stub") {
+      console.warn(
+        `[trainers] mission non proposée (${sessionId} → ${trainerId}) : ${proposition.raison}`,
+      );
+    }
+    // Les congés du formateur, croisés avec les dates vendues. Non bloquant —
+    // le système informe, Will arbitre — mais dit dès l'affectation.
+    const conflit = await detecterIndisponibiliteFormateur(trainerId, {
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+    });
+    if (conflit !== null) {
+      avertissements.push(
+        `Ce formateur s'est déclaré indisponible sur ${formulerConflit(conflit)}. Vérifiez avec lui avant de maintenir les dates.`,
+      );
+    }
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.session.assign_formateur",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { formateurPrincipalId: trainerId, avertissements: avertissements.length },
+    changes: {
+      formateurPrincipalId: trainerId,
+      avertissements: avertissements.length,
+      missionProposee,
+    },
     session,
   });
 
-  return { data: { sessionId, avertissements } };
+  return { data: { sessionId, avertissements, missionProposee } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -23,6 +23,13 @@
 
 import { Worker } from "bullmq";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { relancerEtExpirerMissions } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  envoyerConvocationJ7Formateur,
+  envoyerRappelJ1Formateur,
+  FENETRE_CONVOCATION_J7_JOURS,
+  FENETRE_RAPPEL_J1_HEURES,
+} from "@/server/qualiopi/trainers/convocation-formateur";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
@@ -116,7 +123,11 @@ export type FormationCronJobType =
   // le moteur d'alertes, et la chaîne d'e-mails est précisément ce qui porte la
   // conformité de la formation. Créer une file dédiée pour un `count()` horaire
   // aurait ajouté une septième file à surveiller pour surveiller.
-  | "formation-crons.email-sante";
+  | "formation-crons.email-sante"
+  // Cycle de vie du formateur sur une session (2026-09-03).
+  | "formation-crons.missions-formateur"
+  | "formation-crons.formateur-convocation-j7"
+  | "formation-crons.formateur-rappel-j1";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -1739,6 +1750,107 @@ async function handleLiensEmargementJ0(): Promise<void> {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Cycle de vie du FORMATEUR sur une session (2026-09-03)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Quotidien 08:10 UTC — relance les propositions de mission sans réponse
+ * depuis trois jours (une fois), puis expire celles dont la session a démarré.
+ * Tout le travail vit dans le service : le cron ne fait que l'appeler et dire
+ * ce qui s'est passé.
+ */
+async function handleMissionsFormateur(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] missions-formateur: stub DB, skip");
+    return;
+  }
+  const bilan = await relancerEtExpirerMissions(new Date());
+  console.log(
+    `[formation-crons] missions-formateur: ${bilan.relancees} relance(s) envoyée(s), ` +
+      `${bilan.expirees} proposition(s) expirée(s), ${bilan.erreurs} erreur(s)`,
+  );
+}
+
+/**
+ * Sélection par ÉTAT, pas par date : les affectations d'une session planifiée
+ * qui démarre dans la fenêtre et dont la trace d'envoi est vide. Une
+ * affectation posée à J-3 reçoit donc sa convocation au passage suivant — au
+ * lieu de la manquer parce que « J-7 est passé ».
+ */
+async function affectationsAConvoquer(
+  now: Date,
+  fenetreMs: number,
+  trace: "convocationJ7EnvoyeeAt" | "rappelJ1EnvoyeAt",
+): Promise<Array<{ id: string }>> {
+  const plafond = new Date(now.getTime() + fenetreMs);
+  return prisma.sessionFormateur.findMany({
+    where: {
+      [trace]: null,
+      session: { statut: "planifiee", dateDebut: { gt: now, lte: plafond } },
+    },
+    select: { id: true },
+  });
+}
+
+async function traiterAffectations(
+  quoi: "formateur-convocation-j7" | "formateur-rappel-j1",
+  affectations: Array<{ id: string }>,
+  envoyer: (id: string) => Promise<boolean>,
+): Promise<void> {
+  let ok = 0;
+  let ko = 0;
+  for (const a of affectations) {
+    try {
+      if (await envoyer(a.id)) ok++;
+      else ko++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] ${quoi}: erreur affectation ${a.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+  console.log(
+    `[formation-crons] ${quoi}: ${ok} envoyé(s), ${ko} erreur(s) (${affectations.length} candidat(s))`,
+  );
+}
+
+/** Quotidien 08:05 UTC — convocation pratique J-7 du formateur. */
+async function handleFormateurConvocationJ7(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] formateur-convocation-j7: stub DB, skip");
+    return;
+  }
+  const now = new Date();
+  const affectations = await affectationsAConvoquer(
+    now,
+    FENETRE_CONVOCATION_J7_JOURS * 24 * 60 * 60 * 1000,
+    "convocationJ7EnvoyeeAt",
+  );
+  await traiterAffectations(
+    "formateur-convocation-j7",
+    affectations,
+    envoyerConvocationJ7Formateur,
+  );
+}
+
+/** Horaire — rappel J-1 du formateur, dans les 36 h précédant le démarrage. */
+async function handleFormateurRappelJ1(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] formateur-rappel-j1: stub DB, skip");
+    return;
+  }
+  const now = new Date();
+  const affectations = await affectationsAConvoquer(
+    now,
+    FENETRE_RAPPEL_J1_HEURES * 60 * 60 * 1000,
+    "rappelJ1EnvoyeAt",
+  );
+  await traiterAffectations("formateur-rappel-j1", affectations, envoyerRappelJ1Formateur);
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.positionnement": handlePositionnement,
@@ -1757,6 +1869,9 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.devis-expiration": handleDevisExpiration,
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
   "formation-crons.email-sante": handleEmailSante,
+  "formation-crons.missions-formateur": handleMissionsFormateur,
+  "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
+  "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
 };
 
 /**

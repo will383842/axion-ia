@@ -47,7 +47,8 @@ describe("lieuPayload", () => {
     const p = lieuPayload({ ...LIEU_VALUES_VIDE, lieuVille: "Saint-Étienne" });
     expect(p["lieuType"]).toBe("");
     expect(p["lieuVille"]).toBe("Saint-Étienne");
-    expect(Object.keys(p)).toHaveLength(7);
+    // 7 clés de lieu + 3 clés d'accès pour le formateur (2026-09-03).
+    expect(Object.keys(p)).toHaveLength(10);
   });
 
   it("aller-retour base → formulaire → charge utile sans perte", () => {

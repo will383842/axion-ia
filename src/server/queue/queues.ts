@@ -1575,6 +1575,26 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "20 * * * *",
         jobId: "formation-crons-email-sante-cron",
       },
+      // Cycle de vie du FORMATEUR sur une session (2026-09-03). Convocation
+      // pratique J-7 à 08:05, juste après le rappel J-7 des stagiaires ;
+      // relances de mission à 08:10 ; rappel J-1 HORAIRE à :40 — la fenêtre
+      // est de 36 h, et une affectation posée la veille ne doit pas attendre
+      // le lendemain matin, quand la session a déjà commencé.
+      {
+        type: "formation-crons.formateur-convocation-j7",
+        pattern: "5 8 * * *",
+        jobId: "formation-crons-formateur-convocation-j7-cron",
+      },
+      {
+        type: "formation-crons.missions-formateur",
+        pattern: "10 8 * * *",
+        jobId: "formation-crons-missions-formateur-cron",
+      },
+      {
+        type: "formation-crons.formateur-rappel-j1",
+        pattern: "40 * * * *",
+        jobId: "formation-crons-formateur-rappel-j1-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

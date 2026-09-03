@@ -69,6 +69,11 @@ export const lieuInputSchema = z.object({
   lieuVille: texte(120).optional(),
   lieuSalle: texte(120).optional(),
   lieuVisioUrl: visioUrlSchema.optional(),
+  // Accès pour le formateur (2026-09-03) — saisis avec le lieu, envoyés au
+  // formateur à J-7 et J-1, jamais imprimés sur les documents du client.
+  contactSurPlaceNom: texte(160).optional(),
+  contactSurPlaceTelephone: texte(40).optional(),
+  consignesAcces: texte(2000).optional(),
 });
 
 export type LieuInput = z.infer<typeof lieuInputSchema>;
@@ -104,6 +109,9 @@ export function normaliserLieu(input: LieuInput): LieuFields {
     ["lieuVille", input.lieuVille],
     ["lieuSalle", input.lieuSalle],
     ["lieuVisioUrl", input.lieuVisioUrl],
+    ["contactSurPlaceNom", input.contactSurPlaceNom],
+    ["contactSurPlaceTelephone", input.contactSurPlaceTelephone],
+    ["consignesAcces", input.consignesAcces],
   ];
   for (const [cle, valeur] of paires) {
     const v = vide(valeur);

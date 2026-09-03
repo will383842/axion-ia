@@ -20,6 +20,11 @@ export interface LieuValues {
   lieuVille: string;
   lieuSalle: string;
   lieuVisioUrl: string;
+  /** Accueil du formateur sur place (2026-09-03) — nom et téléphone. */
+  contactSurPlaceNom: string;
+  contactSurPlaceTelephone: string;
+  /** Badge, accueil, parking, étage, code… ce qu'il faut savoir pour ENTRER. */
+  consignesAcces: string;
 }
 
 /** Formulaire vierge. */
@@ -31,6 +36,9 @@ export const LIEU_VALUES_VIDE: LieuValues = {
   lieuVille: "",
   lieuSalle: "",
   lieuVisioUrl: "",
+  contactSurPlaceNom: "",
+  contactSurPlaceTelephone: "",
+  consignesAcces: "",
 };
 
 /** Ligne de base (colonnes `lieu*` nullables) → valeurs de formulaire. */
@@ -42,6 +50,9 @@ export function lieuValuesDepuisSession(row: {
   lieuVille?: string | null;
   lieuSalle?: string | null;
   lieuVisioUrl?: string | null;
+  contactSurPlaceNom?: string | null;
+  contactSurPlaceTelephone?: string | null;
+  consignesAcces?: string | null;
 }): LieuValues {
   const type = row.lieuType ?? "";
   return {
@@ -53,6 +64,9 @@ export function lieuValuesDepuisSession(row: {
     lieuVille: row.lieuVille ?? "",
     lieuSalle: row.lieuSalle ?? "",
     lieuVisioUrl: row.lieuVisioUrl ?? "",
+    contactSurPlaceNom: row.contactSurPlaceNom ?? "",
+    contactSurPlaceTelephone: row.contactSurPlaceTelephone ?? "",
+    consignesAcces: row.consignesAcces ?? "",
   };
 }
 
@@ -73,5 +87,8 @@ export function lieuPayload(v: LieuValues): Record<string, string> {
     lieuVille: v.lieuVille,
     lieuSalle: v.lieuSalle,
     lieuVisioUrl: v.lieuVisioUrl,
+    contactSurPlaceNom: v.contactSurPlaceNom,
+    contactSurPlaceTelephone: v.contactSurPlaceTelephone,
+    consignesAcces: v.consignesAcces,
   };
 }

@@ -168,7 +168,14 @@ const authPipeline = auth(async (req) => {
     if (m) {
       const sub = m[2] ?? "";
       const isConnexion = sub === "/connexion" || sub.startsWith("/connexion/");
-      if (!isConnexion) {
+      // 2026-09-03 — réponse à une proposition de mission par le lien de
+      // l'e-mail : `/espace-formateur/mission/<jeton>`. Le jeton signé vaut
+      // identité pour ce seul geste (même doctrine que l'émargement par lien) ;
+      // exiger la connexion ici ferait échouer le formateur au premier clic,
+      // depuis son téléphone, sans cookie. La page ne montre rien de plus que
+      // l'e-mail, et le serveur revérifie le jeton avant d'écrire.
+      const isMission = sub.startsWith("/mission/");
+      if (!isConnexion && !isMission) {
         const token = req.cookies.get(FORMATEUR_COOKIE_NAME)?.value;
         const session = token
           ? await verifyFormateurSession(token, "formateur")
