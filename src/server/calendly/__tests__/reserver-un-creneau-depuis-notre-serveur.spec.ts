@@ -102,13 +102,40 @@ describe("le corps de la demande porte les pièges de la phase 0", () => {
   });
 
   it("🔴 un appel met le numéro dans location.location", () => {
-    // Et NON dans `invitee.text_reminder_number`, qui sert aux rappels SMS.
-    // Se tromper de champ donnerait un rendez-vous sans numéro à composer.
+    // C'est LÀ que Calendly range le numéro à composer, et nulle part ailleurs :
+    // se tromper de champ donnerait un rendez-vous sans numéro le jour même.
     const c = corpsDeLaDemande(demande({ format: "telephone", telephone: "+33 6 11 22 33 44" }));
     const lieu = c["location"] as Record<string, unknown>;
     expect(lieu["kind"]).toBe("outbound_call");
     expect(lieu["location"]).toBe("+33 6 11 22 33 44");
-    expect((c["invitee"] as Record<string, unknown>)["text_reminder_number"]).toBeUndefined();
+  });
+
+  it("🔴 une VISIO emporte quand même le numéro, en text_reminder_number", () => {
+    // 🔑 SANS CETTE LIGNE, LE CHAMP OBLIGATOIRE DU FORMULAIRE NE SERT À RIEN.
+    //
+    // `location.location` n'existe que pour `outbound_call`. Le numéro qu'on
+    // exige depuis le 2026-09-03 dans les DEUX formats serait donc saisi, posté,
+    // puis jeté pour toute visio — et n'arriverait jamais dans la console,
+    // puisque `api.ts::extractPhone` ne lit que ce que Calendly rend.
+    const c = corpsDeLaDemande(demande({ format: "visio", telephone: "+33 6 11 22 33 44" }));
+    const lieu = c["location"] as Record<string, unknown>;
+    expect(lieu["kind"]).toBe("google_conference");
+    expect(lieu["location"], "une visio n'a pas de numéro à composer").toBeUndefined();
+    expect((c["invitee"] as Record<string, unknown>)["text_reminder_number"]).toBe(
+      "+33 6 11 22 33 44",
+    );
+  });
+
+  it("🔴 la deuxième tentative le RETIRE — un rendez-vous vaut mieux qu'un numéro", () => {
+    // Le repli de `reserverCreneau` quand Calendly refuse ce champ. Il n'a pas
+    // été mesuré contre l'API de production, contrairement à `location.kind` et
+    // à `tracking` : son acceptation dépend des rappels SMS de l'event-type, que
+    // ce code ne contrôle pas.
+    const c = corpsDeLaDemande(demande({ format: "visio", telephone: "+33 6 11 22 33 44" }), true);
+    const invitee = c["invitee"] as Record<string, unknown>;
+    expect(invitee["text_reminder_number"]).toBeUndefined();
+    // Et le reste de l'invité est intact : on retire UN champ, pas l'identité.
+    expect(invitee["email"]).toBe("camille@exemple.test");
   });
 
   it("🔴 tracking porte ses SIX champs, null compris", () => {
@@ -524,6 +551,157 @@ describe("🔴 la relecture du lieu, qui exige un SECOND appel", () => {
  * qu'il manquait une permission, écrite noir sur blanc dans `required_scopes`.
  * La leçon est inscrite dans `availability.ts` ; elle vaut ici aussi.
  */
+describe("🔴 le repli quand Calendly refuse le numéro de rappel", () => {
+  /**
+   * ## Pourquoi ce repli existe, et pourquoi il est dangereux
+   *
+   * Le formulaire exige un numéro dans les deux formats depuis le 2026-09-03.
+   * Pour une visio, il ne voyage que par `invitee.text_reminder_number` — un
+   * champ qui n'a PAS été mesuré contre l'API de production et dont
+   * l'acceptation dépend des rappels SMS configurés sur l'event-type.
+   *
+   * Rejouer une réservation est l'opération la plus dangereuse de ce module :
+   * un second POST sur un premier qui a abouti donne DEUX rendez-vous. Les
+   * contre-témoins ci-dessous valent donc autant que le cas nominal.
+   */
+  /** Un refus qui NOMME le champ, dans la forme à deux étages de la prod. */
+  const refusDuNumero = () =>
+    new Response(
+      JSON.stringify({
+        title: "Invalid Argument",
+        message: "The supplied parameters are invalid.",
+        details: [
+          {
+            parameter: "invitee.text_reminder_number",
+            message: "Les rappels SMS ne sont pas actives sur ce type d'evenement",
+            code: "invalid",
+          },
+        ],
+      }),
+      { status: 400 },
+    );
+
+  it("🔴 la réservation est rejouée SANS le numéro, et elle aboutit", async () => {
+    let posts = 0;
+    const f = vi.fn((_url: string, init?: RequestInit) => {
+      if ((init?.method ?? "GET") !== "POST") {
+        return Promise.resolve(new Response("nope", { status: 500 }));
+      }
+      posts += 1;
+      if (posts === 1) return Promise.resolve(refusDuNumero());
+      return Promise.resolve(new Response(JSON.stringify(reponseCreee()), { status: 201 }));
+    });
+    vi.stubGlobal("fetch", f);
+
+    const r = await reserverCreneau(demande({ telephone: "+33 6 11 22 33 44" }));
+    expect(r.ok, "un champ optionnel refusé ne doit JAMAIS coûter le rendez-vous").toBe(true);
+    if (!r.ok) return;
+    expect(posts, "exactement deux POST : la tentative et son repli").toBe(2);
+
+    // Le second corps ne porte plus le numéro — sinon le repli rejouerait le
+    // même refus, et le visiteur attendrait deux fois pour rien.
+    const second = JSON.parse(String(f.mock.calls[1]?.[1]?.body)) as Record<string, unknown>;
+    expect((second["invitee"] as Record<string, unknown>)["text_reminder_number"]).toBeUndefined();
+
+    // 🔴 ET ON LE DIT. Le numéro exigé au formulaire n'est nulle part : sans ce
+    // drapeau, le repli réussirait dans le noir et Will l'apprendrait le jour
+    // d'un rendez-vous manqué.
+    expect(r.numeroTransmis).toBe(false);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : sans refus, il n'y a QU'UN SEUL POST et le numéro est transmis", async () => {
+    let posts = 0;
+    const f = vi.fn((_url: string, init?: RequestInit) => {
+      if ((init?.method ?? "GET") === "POST") {
+        posts += 1;
+        return Promise.resolve(new Response(JSON.stringify(reponseCreee()), { status: 201 }));
+      }
+      return Promise.resolve(new Response("nope", { status: 500 }));
+    });
+    vi.stubGlobal("fetch", f);
+
+    const r = await reserverCreneau(demande({ telephone: "+33 6 11 22 33 44" }));
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(posts, "un succès ne se rejoue jamais").toBe(1);
+    expect(r.numeroTransmis).toBe(true);
+  });
+
+  it("🔴 UN SILENCE NE SE REJOUE PAS — c'est la règle qui interdit les doublons", async () => {
+    // Un délai dépassé ne dit pas si la réservation existe. La rejouer, même
+    // « juste sans le numéro », créerait un second rendez-vous.
+    let posts = 0;
+    const f = vi.fn(() => {
+      posts += 1;
+      return Promise.reject(new Error("timeout"));
+    });
+    vi.stubGlobal("fetch", f);
+
+    const r = await reserverCreneau(demande({ telephone: "+33 6 11 22 33 44" }));
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("silence");
+    expect(posts, "un silence ne se rejoue JAMAIS").toBe(1);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : un refus qui ne nomme PAS le numéro ne se rejoue pas non plus", async () => {
+    // Sans cette condition, chaque refus déclencherait un second appel inutile
+    // et doublerait l'attente d'un visiteur déjà en train de partir.
+    let posts = 0;
+    const f = vi.fn(() => {
+      posts += 1;
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            message: "The supplied parameters are invalid.",
+            details: [{ parameter: "invitee.email", message: "invalide", code: "invalid" }],
+          }),
+          { status: 400 },
+        ),
+      );
+    });
+    vi.stubGlobal("fetch", f);
+
+    const r = await reserverCreneau(demande({ telephone: "+33 6 11 22 33 44" }));
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("refus");
+    expect(posts).toBe(1);
+  });
+
+  it("🔴 un créneau pris NE se rejoue pas — même si le numéro traîne dans les details", async () => {
+    // Le refus le plus fréquent est classé AVANT le repli. L'inverse ferait
+    // repartir un POST sur un créneau qu'on sait occupé.
+    let posts = 0;
+    const f = vi.fn(() => {
+      posts += 1;
+      return Promise.resolve(
+        new Response(
+          JSON.stringify({
+            message: "The supplied parameters are invalid.",
+            details: [
+              {
+                parameter: "event.start_time",
+                message: "Cette heure de début est déjà occupée",
+                code: "already_filled",
+              },
+              { parameter: "invitee.text_reminder_number", message: "ignore", code: "invalid" },
+            ],
+          }),
+          { status: 400 },
+        ),
+      );
+    });
+    vi.stubGlobal("fetch", f);
+
+    const r = await reserverCreneau(demande({ telephone: "+33 6 11 22 33 44" }));
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.raison).toBe("creneau_pris");
+    expect(posts).toBe(1);
+  });
+});
+
 describe("🔴 un jeton sans droit d'écrire est nommé, pas confondu avec un refus", () => {
   function repond(status: number, corps: unknown) {
     vi.stubGlobal(

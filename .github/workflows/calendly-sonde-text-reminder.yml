@@ -1,0 +1,65 @@
+name: Calendly · sonde text_reminder_number
+# Workflow utilitaire workflow_dispatch — mesure si `invitee.text_reminder_number`
+# est réellement pris en compte par la Scheduling API de Calendly.
+#
+# ── Pourquoi ce workflow existe ───────────────────────────────────────────────
+# Depuis le 2026-09-03 le formulaire de réservation exige un numéro dans les deux
+# formats. Pour une VISIO il ne voyage que par ce champ : `location.location`
+# n'existe que pour `outbound_call`. Le champ n'a jamais été mesuré, contrairement
+# à `location.kind` et `tracking` (phase 0, deux réservations réelles). Et le
+# dépôt a déjà mesuré que l'API IGNORE EN SILENCE un champ qu'elle ne comprend
+# pas : un 201 ne prouve donc rien, seule la relecture de l'invité créé fait foi.
+#
+# ── Pourquoi en Actions et pas en local ───────────────────────────────────────
+# Le jeton ne doit transiter NI par une conversation avec un agent, NI par un
+# champ de formulaire piloté à distance (jeton Coolify et clé Google révoqués
+# pour cette raison les 2026-08-27 et 2026-08-30). Il vit dans les secrets
+# GitHub, qui les masque dans les journaux, et n'en sort pas.
+#
+# ── 🔴 CE WORKFLOW CRÉE UNE VRAIE RÉSERVATION ─────────────────────────────────
+# Sur l'agenda réel, sur le créneau libre le plus LOINTAIN de la fenêtre (celui
+# qu'un prospect a le moins de chances de vouloir pendant les trente secondes que
+# dure la sonde), avec le webhook de production qui se déclenchera. Elle est
+# annulée dans un `finally`. Si l'annulation échoue, la sonde crie l'URI à
+# annuler à la main et sort en erreur.
+#
+# Sécurité : workflow_dispatch only. Aucune entrée ne porte le secret.
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Adresse de l'invité de sonde (une boîte à nous, jamais celle d'un tiers)"
+        required: true
+        default: "contact@axion-ia.com"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  # Jamais deux sondes à la fois : elles se prendraient le même créneau.
+  group: calendly-sonde
+  cancel-in-progress: false
+
+jobs:
+  sonde:
+    name: Sonder text_reminder_number
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Aucune dépendance : `fetch` est natif depuis Node 18. Pas de `pnpm
+      # install`, donc pas de minutes brûlées ni de lockfile à respecter pour
+      # une sonde qui doit pouvoir tourner depuis n'importe quelle branche.
+      - name: Sonder
+        env:
+          CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
+          CALENDLY_APPEL_URL: ${{ vars.NEXT_PUBLIC_CALENDLY_APPEL_URL || 'https://calendly.com/axion-ia/premier-contact' }}
+          SONDE_EMAIL: ${{ inputs.email }}
+        run: node scripts/calendly-sonde-text-reminder.mjs

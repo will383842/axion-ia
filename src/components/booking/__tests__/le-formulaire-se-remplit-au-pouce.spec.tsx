@@ -307,30 +307,93 @@ describe("🔴 la page ne DOIT PAS avoir l'air longue", () => {
   });
 });
 
-describe("🔴 le téléphone ne disparaît que dans le sens qui ÉCHOUE OUVERT", () => {
-  it("il est masqué QUAND LA VISIO EST COCHÉE, jamais « tant que le téléphone ne l'est pas »", async () => {
-    // Le sens du test CSS décide de ce qui se passe sur un navigateur sans
-    // `:has()` :
-    //   — « masquer tant que le téléphone n'est pas coché » condamnerait ce
-    //     navigateur à ne jamais montrer le champ, donc à refuser la
-    //     réservation de qui choisit l'appel ;
-    //   — « masquer quand la visio est cochée », ci-dessous, retombe sur le
-    //     comportement d'hier : le champ reste affiché. On perd le confort,
-    //     jamais le rendez-vous.
+describe("🔴 le téléphone est OBLIGATOIRE, donc il ne se masque JAMAIS", () => {
+  it("il porte `required` et son étiquette ne dit pas « facultatif »", async () => {
+    // Décision de Will (2026-09-03) : un rendez-vous sans numéro n'est pas
+    // rattrapable en cas d'imprévu, visio comprise. L'étiquette DOIT le dire —
+    // elle affichait « facultatif » alors que le serveur refusait déjà le champ
+    // vide pour un appel : le formulaire mentait à la moitié de ses visiteurs.
     await rendre();
-    const conteneur = champ("telephone").closest("div[class*='group-has-']");
+    const tel = champ("telephone");
     expect(
-      conteneur,
-      "le champ téléphone doit vivre dans un conteneur conditionnel",
+      tel.getAttribute("required"),
+      "le champ doit être requis côté navigateur",
     ).not.toBeNull();
-    const classes = conteneur?.className ?? "";
-    expect(classes, "le masquage doit viser la VISIO cochée").toContain("#format-visio:checked");
-    expect(classes, "et il doit masquer, pas révéler").toContain("hidden");
+    const etiquette = document.querySelector('label[for="telephone"]');
+    expect(
+      etiquette?.textContent ?? "",
+      "aucune étiquette ne doit dire « facultatif »",
+    ).not.toContain("facultatif");
   });
 
-  it("le bouton radio « visio » porte l'identifiant que vise ce sélecteur", async () => {
-    // Sans cet `id`, le sélecteur ci-dessus ne désignerait rien, et la garde
-    // précédente resterait verte en ne mesurant qu'une chaîne de caractères.
+  it("🔴 LE NAVIGATEUR REFUSE D'ENVOYER SANS NUMÉRO — et il désigne CE champ", async () => {
+    // 🔑 LA SEULE GARDE DE CE FICHIER QUI ÉPROUVE LE COMPORTEMENT, PAS UN ATTRIBUT.
+    //
+    // Les deux tests voisins lisent des attributs et des classes : ils diraient
+    // encore vrai si le navigateur ignorait tout ce qu'on a écrit. Ici on
+    // interroge l'API de validation de contrainte — la MÊME que celle qui décide
+    // si le formulaire part quand le visiteur clique « Réserver ».
+    //
+    // ⚠️ Ce que ce test ne prouve PAS, et il faut le dire : que la soumission
+    // aboutisse. jsdom n'envoie rien. Il prouve que le formulaire est INVALIDE
+    // sans numéro et VALIDE avec, et que le champ fautif est bien le téléphone —
+    // donc que le message d'erreur natif se posera au bon endroit.
+    await rendre();
+    const form = document.querySelector("form");
+    expect(form, "sans <form>, ce test ne mesure rien").not.toBeNull();
+
+    // Tout est rempli SAUF le numéro : c'est la seule chose qui doit faire échouer.
+    const remplir = (nom: string, valeur: string) => {
+      (champ(nom) as HTMLInputElement | HTMLTextAreaElement).value = valeur;
+    };
+    remplir("nom", "Camille Prospect");
+    remplir("email", "camille@exemple.fr");
+    remplir("q0", "Un audit de nos processus.");
+    (document.querySelector("#format-visio") as HTMLInputElement).checked = true;
+    (champ("consent") as HTMLInputElement).checked = true;
+
+    expect(
+      form?.checkValidity(),
+      "le navigateur doit REFUSER d'envoyer un formulaire sans numéro",
+    ).toBe(false);
+    const tel = champ("telephone") as HTMLInputElement;
+    expect(tel.validity.valueMissing, "et c'est le TÉLÉPHONE qui manque").toBe(true);
+
+    // Contre-témoin : avec le numéro, plus rien ne bloque. Sans lui, un
+    // formulaire cassé ailleurs rendrait le test vert pour la mauvaise raison.
+    tel.value = "+33 6 11 22 33 44";
+    expect(
+      form?.checkValidity(),
+      "avec le numéro, le formulaire doit partir : aucun autre champ ne doit bloquer",
+    ).toBe(true);
+  });
+
+  it("🔴 AUCUN conteneur ne le masque conditionnellement — un `required` caché BLOQUE l'envoi", async () => {
+    // LA garde de ce lot, et elle vaut d'être lue.
+    //
+    // Ce champ vivait dans `group-has-[#format-visio:checked]:hidden` : masqué
+    // en `display:none` dès que la visio était cochée. Un contrôle `required`
+    // invalide et non affichable empêche la soumission NATIVE, et le navigateur
+    // ne peut afficher son message nulle part (« An invalid form control is not
+    // focusable »). Le visiteur cliquerait « Réserver » et il ne se passerait
+    // RIEN — sans message, sans erreur, sans recours.
+    //
+    // Remettre le masquage « pour gagner une ligne » est exactement la
+    // modification qui semble anodine en relecture. D'où cette garde, qui refuse
+    // tout ancêtre conditionnellement masqué, et pas seulement le sélecteur
+    // d'hier.
+    await rendre();
+    for (let n = champ("telephone").parentElement; n; n = n.parentElement) {
+      const classes = n.className ?? "";
+      if (typeof classes !== "string") continue;
+      expect(
+        /:hidden/.test(classes) || /hidden/.test(classes),
+        `un ancêtre du téléphone le masque (« ${classes} ») : avec required, l'envoi ne partirait plus`,
+      ).toBe(false);
+    }
+  });
+
+  it("le bouton radio « visio » garde son identifiant, qui sert au style de l'état coché", async () => {
     await rendre();
     expect(document.querySelector("#format-visio")).not.toBeNull();
     expect(document.querySelector("#format-visio")?.getAttribute("value")).toBe("visio");
