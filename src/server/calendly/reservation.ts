@@ -20,6 +20,13 @@
  *   choix téléphone / visio EST transmissible. C'était le go/no-go du projet.
  * - Le numéro d'un appel sortant va dans **`location.location`**, et non dans
  *   `invitee.text_reminder_number` qui sert aux rappels SMS.
+ *
+ *   ⚠️ Depuis le 2026-09-03, le numéro part dans les DEUX champs, et cette
+ *   nuance vaut d'être lue : `location.location` reste le seul endroit qui
+ *   décide de ce que Will compose pour un appel sortant — mais une VISIO n'a
+ *   aucune case où ranger un numéro, alors que le formulaire l'exige désormais
+ *   dans les deux formats. `text_reminder_number` est là pour cela, et pour
+ *   rien d'autre. Il n'a PAS été mesuré contre l'API, d'où le repli sans lui.
  * - `questions_and_answers` passe les libellés **exacts**, accents compris.
  * - `tracking` est **tout ou rien** : envoyer deux UTM sur six fait échouer la
  *   requête entière. Les six champs doivent être présents, quitte à valoir
@@ -117,6 +124,17 @@ export type ResultatReservation =
        * format, ce qui vaut un signalement mais pas une alarme.
        */
       readonly lieuVerifie: boolean;
+      /**
+       * Le numéro du visiteur est-il PARTI avec la réservation ?
+       *
+       * 🔴 `false` veut dire : le rendez-vous existe, et le numéro que le
+       * formulaire vient d'exiger n'est nulle part. C'est le seul état qui
+       * rende un champ obligatoire silencieusement inutile — il doit donc
+       * remonter à l'appelant, qui alerte. Sans ce drapeau, le repli sur
+       * `text_reminder_number` réussirait dans le noir, et Will découvrirait
+       * l'absence de numéro le jour d'un rendez-vous manqué.
+       */
+      readonly numeroTransmis: boolean;
     }
   /** Quelqu'un a réservé pendant que le prospect remplissait. Le cas FRÉQUENT. */
   | { readonly ok: false; readonly raison: "creneau_pris" }
@@ -242,16 +260,48 @@ function detailsDeLErreur(
  * Exporté pour être testable seul : c'est lui qui porte les quatre pièges de la
  * phase 0, et le vérifier ne doit pas demander d'appel réseau.
  */
-export function corpsDeLaDemande(d: DemandeReservation): Record<string, unknown> {
+export function corpsDeLaDemande(
+  d: DemandeReservation,
+  /**
+   * Deuxième tentative : on retire le numéro de rappel parce que Calendly
+   * vient de le refuser. Voir `reserverCreneau` — un rendez-vous vaut mieux
+   * qu'un numéro.
+   */
+  sansNumeroDeRappel = false,
+): Record<string, unknown> {
   const lieu: Record<string, unknown> = { kind: KIND_CALENDLY[d.format] };
   // 🔑 Le numéro va dans `location.location`. Vérifié le 2026-09-01 : c'est là
   // que Calendly le range, et l'événement créé le rend à cet endroit.
   if (d.format === "telephone" && d.telephone) lieu["location"] = d.telephone;
 
+  // 🔴 ET AUSSI DANS `invitee.text_reminder_number`, DEPUIS LE 2026-09-03.
+  //
+  // La ligne au-dessus ne s'applique qu'à `outbound_call`. Une visio n'a aucune
+  // case où ranger un numéro : celui que le formulaire exige désormais dans les
+  // DEUX formats serait saisi, posté, puis jeté — et n'arriverait jamais dans
+  // la console, puisque `api.ts::extractPhone` ne lit que ce que Calendly rend.
+  //
+  // `text_reminder_number` est le champ que Calendly documente pour le numéro
+  // de l'invité (rappels SMS). Il est aussi le PREMIER que `extractPhone`
+  // consulte, donc celui qui remonte le plus sûrement.
+  //
+  // ⚠️ Ce champ n'a PAS été mesuré contre l'API de production, contrairement à
+  // `location.kind` et à `tracking`. Son acceptation dépend, selon la
+  // documentation, de la configuration des rappels SMS sur l'event-type — que
+  // nous ne contrôlons pas depuis ici. D'où le repli de `reserverCreneau` :
+  // s'il est refusé, on rejoue SANS lui. On perd le numéro, jamais le
+  // rendez-vous.
+  const numeroDeRappel = !sansNumeroDeRappel && d.telephone ? d.telephone : null;
+
   return {
     event_type: d.eventTypeUri,
     start_time: d.debut.toISOString(),
-    invitee: { name: d.nom, email: d.email, timezone: d.fuseau },
+    invitee: {
+      name: d.nom,
+      email: d.email,
+      timezone: d.fuseau,
+      ...(numeroDeRappel ? { text_reminder_number: numeroDeRappel } : {}),
+    },
     location: lieu,
     ...(d.reponses && d.reponses.length > 0
       ? {
@@ -321,12 +371,55 @@ export async function reserverCreneau(d: DemandeReservation): Promise<ResultatRe
   const token = process.env.CALENDLY_API_TOKEN?.trim();
   if (!token) return { ok: false, raison: "non_configure" };
 
+  const premier = await tenterLaReservation(d, token, false);
+
+  // 🔴 UN SEUL CAS SE REJOUE, ET LA LISTE DES AUTRES EST LA VRAIE GARDE.
+  //
+  // Rejouer une réservation est l'opération la plus dangereuse de ce module :
+  // un second POST sur un premier qui a ABOUTI donne deux rendez-vous. On ne
+  // rejoue donc que sur `refus` — un 4xx, c'est-à-dire le seul cas où Calendly
+  // affirme n'avoir rien créé. Jamais sur `silence` (on ignore si la
+  // réservation existe : c'est exactement le cas que l'en-tête de ce fichier
+  // interdit de rejouer), jamais sur `creneau_pris`, jamais sur un succès.
+  //
+  // Et il faut que le refus NOMME le numéro de rappel : sans cette condition,
+  // n'importe quel refus déclencherait un second appel inutile, qui doublerait
+  // le temps d'attente d'un visiteur déjà en train de partir.
+  if (
+    premier.ok ||
+    premier.raison !== "refus" ||
+    !d.telephone ||
+    !refusDuNumeroDeRappel(premier.detail)
+  ) {
+    return premier;
+  }
+
+  return tenterLaReservation(d, token, true);
+}
+
+/**
+ * Le refus porte-t-il sur `invitee.text_reminder_number` ?
+ *
+ * On lit le NOM du paramètre, présent dans `details[]` et recopié dans le
+ * `detail` — pas le message, qui est localisé (mesuré : « Cette heure de début
+ * est déjà occupée », en français) et donc impossible à reconnaître par un mot.
+ */
+function refusDuNumeroDeRappel(detail: string): boolean {
+  return /text_reminder_number/i.test(detail);
+}
+
+/** Une tentative, une seule. Le repli est décidé par `reserverCreneau`. */
+async function tenterLaReservation(
+  d: DemandeReservation,
+  token: string,
+  sansNumeroDeRappel: boolean,
+): Promise<ResultatReservation> {
   let res: Response;
   try {
     res = await fetch(`${CALENDLY_API_BASE}/invitees`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify(corpsDeLaDemande(d)),
+      body: JSON.stringify(corpsDeLaDemande(d, sansNumeroDeRappel)),
       signal: AbortSignal.timeout(TIMEOUT_MS),
       cache: "no-store",
     });
@@ -448,6 +541,9 @@ export async function reserverCreneau(d: DemandeReservation): Promise<ResultatRe
     cancelUrl,
     rescheduleUrl,
     lieuVerifie: relu.lu,
+    // Un numéro exigé au formulaire mais absent de la requête n'arrivera nulle
+    // part. L'appelant en fait une alerte.
+    numeroTransmis: Boolean(d.telephone) && !sansNumeroDeRappel,
   };
 }
 
