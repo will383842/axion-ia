@@ -96,6 +96,10 @@ export type EmailJobName =
   // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
   | "candidature-commercial-confirmee"
   | "candidature-commercial-recap"
+  // Tunnel Facebook apporteurs d'affaires (2026-09-03) : accusé du premier
+  // contact (formulaire court) + rappels J+2 / J+7 « ton dossier t'attend ».
+  | "lead-apporteur-recu"
+  | "lead-apporteur-relance"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information";

@@ -110,6 +110,12 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   TURNSTILE_SECRET_KEY: { tiers: "Cloudflare" },
   CALENDLY_API_TOKEN: { tiers: "Calendly" },
   CALENDLY_WEBHOOK_SIGNING_KEY: { tiers: "Calendly" },
+  // Tunnel Facebook apporteurs (2026-09-03) : calendrier des appels d'apporteurs,
+  // meme sous-traitant que /appel.
+  NEXT_PUBLIC_CALENDLY_APPORTEUR_URL: { tiers: "Calendly" },
+  // API Conversions Meta : envoi SERVEUR de l'evenement Lead, hache, et
+  // seulement si le visiteur a accepte la banniere (server/meta/conversions-api.ts).
+  META_CAPI_ACCESS_TOKEN: { tiers: "Meta" },
 
   // ── Agenda Google de la console (2026-08-26) ──────────────────────────────
   // Le tiers est Google, et il n'est PAS visible depuis une CSP : ces appels

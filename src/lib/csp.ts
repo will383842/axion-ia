@@ -207,6 +207,7 @@ export function buildCspHeader({
         "https://www.clarity.ms",
         "https://*.clarity.ms",
         "https://snap.licdn.com",
+        "https://connect.facebook.net",
       ].join(" ")
     : [
         "script-src",
@@ -218,6 +219,12 @@ export function buildCspHeader({
         "https://www.clarity.ms",
         "https://*.clarity.ms",
         "https://snap.licdn.com",
+        // Pixel Meta (2026-09-03) — `connect.facebook.net/en_US/fbevents.js`,
+        // injecté par `<MetaPixel />` UNIQUEMENT sur le tunnel Facebook et
+        // UNIQUEMENT après consentement. Le collecteur est `www.facebook.com`
+        // (connect-src plus bas). Même logique que LinkedIn : le domaine reste
+        // autorisé sans l'ID, pour que le diagnostic soit lisible à l'activation.
+        "https://connect.facebook.net",
         "https://assets.calendly.com",
       ].join(" ");
 
@@ -245,7 +252,7 @@ export function buildCspHeader({
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://snap.licdn.com https://px.ads.linkedin.com https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
+    `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://snap.licdn.com https://px.ads.linkedin.com https://www.facebook.com https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
     // `*.r2.cloudflarestorage.com` : upload présigné direct navigateur→R2
     // (import de kit + uploads admin documents-interventions). Sans ça, la CSP
     // bloque le PUT du fichier vers le stockage (fix 2026-06-13).

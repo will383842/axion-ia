@@ -149,6 +149,12 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     why: "bande de réassurance + argument OPCO du gabarit des landings d’annonce (`/leboncoin`, `/indeed`)",
   },
   {
+    // Ajoutée 2026-09-03 avec la landing du tunnel Facebook. Même règle : le
+    // littéral vit DANS la page, à côté de l'appel au drapeau.
+    file: "components/recrutement/FacebookLandingPage.tsx",
+    why: "bande de confiance + argument OPCO de la landing /facebook (tunnel apporteurs)",
+  },
+  {
     file: "app/[locale]/formations/tarifs/page.tsx",
     why: "suffixe « certifié Qualiopi » sur les prix",
   },

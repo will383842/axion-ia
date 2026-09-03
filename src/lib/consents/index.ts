@@ -43,6 +43,8 @@ export const CONSENT_FORM_REFS = {
   jobApplicationVivier: "job-application-vivier",
   commercialApplication: "commercial-tunnel",
   commercialApplicationVivier: "commercial-tunnel-vivier",
+  /** Premier contact d'un apporteur d'affaires depuis la landing Facebook (formulaire court). */
+  leadApporteur: "lead-apporteur-facebook",
   newsletter: "newsletter-double-optin",
   unifiedContact: "unified-contact-form",
   /** Opposition à la conservation en vivier (un clic, sans login). */

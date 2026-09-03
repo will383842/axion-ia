@@ -42,6 +42,7 @@ import * as React from "react";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
+import { isRouteTunnelFacebook } from "@/lib/analytics/tunnel-facebook-routes";
 import { ID_BANNIERE_CONSENTEMENT } from "@/lib/analytics/surface-console";
 import { Link } from "@/i18n/navigation";
 
@@ -335,6 +336,12 @@ export function CookieConsent() {
   // eux, vivent déjà : le script en ligne ci-dessous les a branchés.
   if (consent !== "unknown") return null;
 
+  // Tunnel Facebook (2026-09-03) : le pixel Meta s'y charge après acceptation,
+  // en plus de Clarity. La bannière DOIT le nommer là où il se charge : un
+  // consentement donné à « Clarity » ne couvre pas Meta. Même fonction que
+  // `MetaPixel` : on ne peut pas déplacer le pixel sans déplacer le texte.
+  const avecMeta = isRouteTunnelFacebook(pathname);
+
   return (
     <>
       <div
@@ -373,9 +380,13 @@ export function CookieConsent() {
               id="cookie-consent-body"
               className="text-fg-soft max-w-2xl text-[13px] leading-snug sm:text-sm"
             >
-              {isFr
-                ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus Microsoft Clarity (heatmaps et replay anonymisés, transfert UE → US sous SCC) ? "
-                : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept Microsoft Clarity (anonymized heatmaps and replay, EU → US transfer under SCC)? "}
+              {avecMeta
+                ? isFr
+                  ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus le pixel Meta (mesure de la campagne Facebook et reciblage, cookies _fbp et _fbc, transfert UE vers les USA sous clauses types) et Microsoft Clarity (heatmaps et replay anonymisés) ? "
+                  : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept the Meta pixel (Facebook campaign measurement and retargeting, _fbp and _fbc cookies, EU to US transfer under SCC) and Microsoft Clarity (anonymized heatmaps and replay)? "
+                : isFr
+                  ? "Plausible (anonyme, UE, sans cookie) est toujours actif. Acceptez-vous en plus Microsoft Clarity (heatmaps et replay anonymisés, transfert UE → US sous SCC) ? "
+                  : "Plausible (anonymous, EU, cookie-less) is always active. Do you also accept Microsoft Clarity (anonymized heatmaps and replay, EU → US transfer under SCC)? "}
               <Link
                 href="/cookies"
                 className="text-terracotta-deep hover:text-terracotta underline"

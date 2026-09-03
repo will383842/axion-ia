@@ -108,6 +108,8 @@ import {
   CandidatureCommercialRecapEmail,
   candidatureCommercialRecapSubject,
 } from "./candidature-commercial-recap";
+import { leadApporteurRecuSubject, LeadApporteurRecuEmail } from "./lead-apporteur-recu";
+import { leadApporteurRelanceSubject, LeadApporteurRelanceEmail } from "./lead-apporteur-relance";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
@@ -307,6 +309,15 @@ const TEMPLATES: TemplateMap = {
   "candidature-commercial-recap": {
     subject: candidatureCommercialRecapSubject,
     component: CandidatureCommercialRecapEmail,
+  },
+  // Tunnel Facebook apporteurs d'affaires (2026-09-03)
+  "lead-apporteur-recu": {
+    subject: leadApporteurRecuSubject,
+    component: LeadApporteurRecuEmail,
+  },
+  "lead-apporteur-relance": {
+    subject: leadApporteurRelanceSubject,
+    component: LeadApporteurRelanceEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,

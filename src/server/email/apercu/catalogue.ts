@@ -265,6 +265,18 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "interne",
     source: "features/commercial-application/actions.ts",
   },
+  "lead-apporteur-recu": {
+    categorie: "recrutement",
+    quand: "Premier contact déposé sur la landing Facebook (formulaire court)",
+    destinataire: "le candidat apporteur",
+    source: "features/commercial-application/lead-actions.ts",
+  },
+  "lead-apporteur-relance": {
+    categorie: "recrutement",
+    quand: "J+2 puis J+7 après le premier contact, si le dossier complet n'est pas arrivé",
+    destinataire: "le candidat apporteur",
+    source: "features/commercial-application/relances-lead-apporteur.ts",
+  },
   "vivier-information": {
     categorie: "recrutement",
     quand: "Information envoyée à une personne du vivier",
