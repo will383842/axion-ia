@@ -263,6 +263,38 @@ export async function refuserLesCookies(page: Page): Promise<void> {
         "libellé du bouton a changé (CookieConsent.tsx:286), ou son rôle. " +
         `URL : ${page.url()}`,
     ).toHaveCount(0, { timeout: 5_000 });
+    // 🔴 2026-09-03 — LA BANNIÈRE NE PARAÎT PLUS SUR LA CONSOLE, ET LE REFUS
+    // DISPARAISSAIT AVEC ELLE.
+    //
+    // Depuis l'audit certificateur, la console masque le bandeau de
+    // consentement : elle ne charge aucun script tiers, il n'y a donc rien à
+    // consentir (`lib/analytics/surface-console.ts`). Ce chemin-ci devient donc
+    // le cas NORMAL en admin — et il repartait sans rien inscrire.
+    //
+    // Or c'est le CONTEXTE de navigateur qui porte la décision. Tant que la
+    // console affichait le bandeau, le clic « Refuser » posé ici valait aussi
+    // pour les pages PUBLIQUES ouvertes ensuite dans la même session. Il ne vaut
+    // plus rien : le parcours 6 ouvre le portail stagiaire à 360 px, y retrouve
+    // un bandeau jamais refusé, ancré en bas — exactement là où le portail ancre
+    // sa barre d'onglets — et le clic de navigation était intercepté soixante
+    // secondes durant. Trois tentatives, trois échecs, sur un test qui ne parle
+    // pas de cookies.
+    //
+    // 🔑 Masquer un bandeau ne pose AUCUNE décision. On inscrit donc le refus
+    // explicitement, avec les mêmes clés et le même format que
+    // `writeAnalyticsConsent` (CookieConsent.tsx) — refus, jamais acceptation :
+    // aucun traceur ne doit s'armer pendant les tests.
+    await page
+      .evaluate((cle) => {
+        try {
+          window.localStorage.setItem(cle, "declined");
+          window.localStorage.setItem(`${cle}:ts`, String(Date.now()));
+        } catch {
+          /* mode privé : le cookie ci-dessous suffit */
+        }
+        document.cookie = `${cle}=${encodeURIComponent(`declined|${Date.now()}`)}; path=/; max-age=33696000; SameSite=Lax`;
+      }, CLE_CONSENTEMENT)
+      .catch(() => undefined);
     return;
   }
 

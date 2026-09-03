@@ -65,11 +65,25 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
 
   return (
     <AdminPageShell width="wide">
+      {/*
+        🔴 2026-09-02 (audit certificateur) — LES EXPORTS SORTENT DE L'EN-TÊTE.
+        `AdminPageHeader` met ses actions en `sm:shrink-0 sm:flex-nowrap` : les
+        boutons ne rétrécissent jamais, donc c'est le titre et la description qui
+        s'écrasent. Mesuré à 1 145 px de fenêtre : la colonne de description
+        tombait à 299 px et la phrase se rendait sur CINQ lignes, la moitié
+        droite de l'écran restant vide.
+        Et surtout, `ExportManifesteButton` ne rend pas que deux boutons : il
+        rend AUSSI le verdict d'export, qui énumère les preuves manquantes du
+        dossier remis. Cette liste n'a rien à faire dans une gouttière d'en-tête.
+      */}
       <AdminPageHeader
         title="Conformité & mode auditeur"
         description={`État de couverture des 32 indicateurs du Référentiel National Qualité (${manifeste.json.meta.version}). Vue tableau pour le pilotage, vue manifeste (preuves + documents) pour l'auditrice — exports JSON, Markdown et dossier ZIP.`}
-        actions={<ExportManifesteButton />}
       />
+
+      <div className="mb-[var(--space-admin-6)]">
+        <ExportManifesteButton />
+      </div>
 
       {/*
         Le registre des signatures répond à une question que le manifeste ne
@@ -145,7 +159,11 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
         </Link>
       </nav>
 
-      <MatriceIndicateurs indicateurs={indicateurs} vue={vue} />
+      <MatriceIndicateurs
+        indicateurs={indicateurs}
+        vue={vue}
+        baseHref={`/${locale}/${adminPrefix}`}
+      />
 
       {/* ── Markdown brut (aperçu) ────────────────────────────────────── */}
       {vue === "manifeste" && manifeste.markdown.length > 0 && (

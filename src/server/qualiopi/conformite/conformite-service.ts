@@ -94,6 +94,30 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     return buildEmptyConformite();
   }
 
+  /**
+   * Les pièces qui INFORMENT sur les conditions de déroulement (off.9).
+   *
+   * 🔴 2026-09-02 — cette liste était écrite DEUX FOIS, à trois types, pendant
+   * que `INDICATEUR_DOCUMENT_TYPES[9]` — la correspondance délibérée, commentée,
+   * qui décide des pièces montrées à l'auditrice sur cet indicateur — en compte
+   * QUATRE : elle y ajoute « organisation de l'action », et son commentaire dit
+   * pourquoi (« elle porte le calendrier réel, la modalité, le lieu et
+   * l'encadrement »). Une session dotée de cette seule pièce était donc montrée
+   * comme preuve d'off.9 par le manifeste, et comptée « SANS aucune pièce
+   * d'accueil » par la règle de couverture. Le même écran, deux réponses.
+   *
+   * Écrite une fois ici, et alignée sur la correspondance. Elle n'est pas
+   * IMPORTÉE de `audit-dossier.ts` : ce module-là importe `evaluerConformite`,
+   * l'importer en retour créerait un cycle — c'est la raison qui a déjà fait
+   * sortir `pieceAdmissibleAuDossier` dans son propre module.
+   */
+  const TYPES_PIECE_ACCUEIL = [
+    "convocation",
+    "livret_accueil",
+    "reglement_interieur",
+    "organisation_action",
+  ] as const;
+
   // Seuils de fraîcheur (calculés au runtime — hors contexte workflow, `new Date()` OK).
   //   veille exploitée = récente < 12 mois ; CV formateur à jour < 24 mois (aligné M11/R11).
   const maintenant = new Date();
@@ -165,6 +189,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // ── Audit blanc 2026-08-15, dernier faux positif — off.5 ────────────────
     // Ajouté EN FIN de liste, pour la même raison que les précédents.
     nbFormationsActivesAvecObjectifs,
+    // ── Audit certificateur 2026-09-02 — off.6 / 9 / 10 / 11 / 12 ───────────
+    // Les DÉNOMINATEURS qui manquaient : cinq indicateurs exprimaient leur
+    // couverture en volume (« > 0 ») là où l'auditeur tire un dossier au hasard.
+    // Ajoutés EN FIN de liste, pour la même raison que les précédents.
+    nbSessionsRealiseesAvecAccueil,
+    nbSessionsRealiseesAvecEvaluationFinale,
+    nbSessionsRealiseesAvecPresence,
+    nbFormationsActivesAvecContenu,
+    nbInscritsBesoinAdaptation,
+    nbInscritsBesoinAdaptationServis,
+    nbInscritsSessionsTenues,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -281,10 +316,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       ),
     // off.19 : ressources/supports pédagogiques réellement produits (≠ n'importe quel PDF)
     prisma.supportFormation.count(),
-    // off.9 : documents d'accueil/information (convocation, livret, règlement) — pas tous types confondus
+    // off.9 : pièces qui informent sur les conditions de déroulement — pas tous
+    // types confondus. Liste partagée avec le compte PAR SESSION, ci-dessous.
     prisma.documentGenere.count({
       where: {
-        type: { in: ["convocation", "livret_accueil", "reglement_interieur"] },
+        type: { in: [...TYPES_PIECE_ACCUEIL] },
         // 🔴 Le cas le plus visible du défaut : une convocation émise pour une
         // session ensuite ANNULÉE couvrait l'indicateur 9 devant le certificateur.
         ...pieceAdmissibleAuDossier(),
@@ -548,6 +584,95 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
             return Array.isArray(objectifs) && objectifs.length > 0;
           }).length,
       ),
+
+    // ── Audit certificateur 2026-09-02 — les six dénominateurs manquants ─────
+    //
+    // 🔴 LE MOTIF, ENCORE : la règle « couverture, jamais volumétrie » est
+    // écrite trois fois dans ce fichier (off.4, off.5, off.8, off.19, off.27),
+    // chaque fois avec sa justification — « c'est ce que vérifie un auditeur qui
+    // tire un dossier au hasard ». Elle n'avait pas été appliquée à ses JUMEAUX.
+    //
+    // Mesuré le 2026-09-02 sur la base de recette (423 sessions réalisées,
+    // 3 563 inscriptions sur session tenue) :
+    //
+    //   ind.  statut affiché   ce que l'auditeur mesure vraiment
+    //   ────  ──────────────   ─────────────────────────────────
+    //    6 ⭐  Couvert          23/63 formations actives (37 %)
+    //    9    Couvert          254/423 sessions réalisées (60 %)
+    //   10 ⭐  Couvert           1/3 563 inscriptions (0 %)
+    //   11 ⭐  Couvert           1/423 sessions réalisées (0 %)
+    //   12    Couvert           2/3 563 inscriptions (0 %)
+    //
+    // Trois de ces cinq sont des super-indicateurs : une NC majeure suspend la
+    // délivrance. Un indicateur vert à tort est pire qu'un rouge — il retire à
+    // l'organisme la seule chance de corriger avant la venue de l'auditrice.
+    //
+    // ⚠️ Ces compteurs sont ajoutés EN FIN de liste, comme les précédents : des
+    // tests mockent les compteurs par POSITION.
+
+    // off.9 — sessions réalisées portant au moins une pièce d'accueil /
+    // d'information. Le prédicat d'admissibilité est APPELÉ, jamais réécrit ;
+    // `statut: "realisee"` le renforce (une session réalisée n'est ni annulée
+    // ni reportée), il ne le remplace pas.
+    prisma.trainingSession.count({
+      where: {
+        statut: "realisee",
+        documents: {
+          some: {
+            type: { in: [...TYPES_PIECE_ACCUEIL] },
+            ...pieceAdmissibleAuDossier(),
+          },
+        },
+      },
+    }),
+    // off.11 — sessions réalisées dont au moins un inscrit porte une évaluation
+    // FINALE. C'est la question posée en séance : « tirez une session, montrez
+    // l'évaluation des acquis ».
+    prisma.trainingSession.count({
+      where: {
+        statut: "realisee",
+        enrollments: { some: { evaluations: { some: { type: "finale" } } } },
+      },
+    }),
+    // off.12 — sessions réalisées dont au moins un inscrit porte une présence
+    // constatée. Le seuil n'est PAS « tous les inscrits » : une absence est
+    // légitime et se constate justement sur la feuille. Ce qui ne l'est pas,
+    // c'est une session tenue dont AUCUNE trace de présence n'existe.
+    prisma.trainingSession.count({
+      where: {
+        statut: "realisee",
+        enrollments: { some: { emargementSigneAt: { not: null } } },
+      },
+    }),
+    // off.6 — formations ACTIVES dont le contenu est produit. Le compteur
+    // existant (`nbFormationsAvecContenu`) porte sur TOUT le catalogue, archives
+    // comprises : il ne peut pas servir de numérateur à un taux de couverture du
+    // catalogue actif. Même population que off.5 et off.19, par construction.
+    prisma.formation.count({
+      where: {
+        statut: "actif",
+        statutGeneration: { in: ["contenu_genere", "contenu_valide", "assemble", "publie"] },
+      },
+    }),
+    // off.10 — inscriptions dont le bénéficiaire a DÉCLARÉ un besoin
+    // d'adaptation, sur une session tenue. Dénominateur de la seule question
+    // que l'auditrice pose sur cet indicateur : « des personnes vous ont
+    // déclaré un besoin — montrez ce que vous avez adapté pour elles ».
+    prisma.enrollment.count({
+      where: { trainee: { situationHandicap: true }, ...inscriptionSurSessionTenue() },
+    }),
+    // off.10 — parmi celles-ci, celles qui portent une adaptation tracée.
+    prisma.enrollment.count({
+      where: {
+        trainee: { situationHandicap: true },
+        adaptationsRealisees: { not: null },
+        ...inscriptionSurSessionTenue(),
+      },
+    }),
+    // off.10 / off.12 — dénominateur d'inscriptions sur session tenue. Il sert à
+    // DIRE l'échelle : « 1 adaptation » ne veut rien dire tant qu'on ne sait pas
+    // si l'organisme a inscrit dix personnes ou trois mille.
+    prisma.enrollment.count({ where: { ...inscriptionSurSessionTenue() } }),
   ]);
 
   const typesAction = typesActionResult;
@@ -886,14 +1011,33 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     nbFormationsActives > 0 && nbFormationsActivesAvecObjectifs === nbFormationsActives,
   );
-  // off.6 : contenus et modalités adaptés — durci sur les formations dont le contenu
-  //         a été réellement produit (signal distinct de off.5).
+  // off.6 ⭐ : contenus et modalités adaptés — durci sur les formations dont le
+  //         contenu a été réellement produit (signal distinct de off.5).
+  //
+  // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, plus volumétrie. La règle
+  // « c'est ce que vérifie un auditeur qui tire une formation au hasard » était
+  // déjà écrite pour off.5 et off.19, sur LA MÊME POPULATION (le catalogue
+  // actif). off.6 était resté à `nbFormationsAvecContenu > 0`, et comptait de
+  // surcroît TOUT le catalogue, archives comprises. Mesuré le 2026-09-02 :
+  // l'écran affichait « 6 ⭐ Couvert » et, trois lignes plus haut,
+  // « 5 ⭐ À compléter — 40 formations actives SANS aucun objectif ». Le même
+  // catalogue, deux verdicts opposés, sur la page que lit le certificateur.
+  const tauxContenuProduit =
+    nbFormationsActives > 0
+      ? Math.round((nbFormationsActivesAvecContenu / nbFormationsActives) * 100)
+      : 0;
   set(
     6,
     [
-      `${nbFormationsAvecContenu} formation${nbFormationsAvecContenu > 1 ? "s" : ""} avec contenu et modalités réellement produits`,
+      `${nbFormationsActivesAvecContenu}/${nbFormationsActives} formation${nbFormationsActives > 1 ? "s" : ""} active${nbFormationsActives > 1 ? "s" : ""} dont les contenus et modalités sont produits (${tauxContenuProduit} %)`,
+      `${nbFormationsAvecContenu} formation${nbFormationsAvecContenu > 1 ? "s" : ""} avec contenu produit toutes catégories confondues (archives incluses, ≠ preuve du catalogue actif)`,
+      nbFormationsActives === 0
+        ? "Aucune formation active au catalogue — les contenus ne sont pas encore démontrables"
+        : nbFormationsActivesAvecContenu < nbFormationsActives
+          ? `${nbFormationsActives - nbFormationsActivesAvecContenu} formation(s) active(s) SANS contenu ni modalités produits`
+          : "Chaque formation active porte des contenus et des modalités produits",
     ],
-    nbFormationsAvecContenu > 0,
+    nbFormationsActives > 0 && nbFormationsActivesAvecContenu === nbFormationsActives,
   );
   // off.7 : adéquation contenus / exigences certification — [P1] exige désormais que
   //         les BLOCS DE COMPÉTENCES soient réellement renseignés (non vides), et pas
@@ -930,28 +1074,86 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
 
   // Critère 3
   // off.9 : conditions de déroulement communiquées — docs d'accueil/info réels
-  //         (convocation, livret, règlement), pas n'importe quel document généré.
+  //         (convocation, livret, règlement, organisation de l'action), pas
+  //         n'importe quel document généré — cf. `TYPES_PIECE_ACCUEIL`.
+  //
+  // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, plus volumétrie. Le
+  // verdict tenait à « au moins une pièce d'accueil existe quelque part ».
+  // L'auditrice ne demande pas s'il en existe une : elle tire une session et
+  // demande LA sienne. Mesuré : 254 sessions réalisées sur 423 portaient une
+  // pièce d'accueil, et l'écran affichait « Couvert ».
+  const tauxAccueil =
+    nbSessionsRealisees > 0
+      ? Math.round((nbSessionsRealiseesAvecAccueil / nbSessionsRealisees) * 100)
+      : 0;
   set(
     9,
     [
-      `${nbDocsAccueil} document${nbDocsAccueil > 1 ? "s" : ""} d'accueil/information (convocation, livret, règlement)`,
-      `${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisées`,
+      `${nbSessionsRealiseesAvecAccueil}/${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""} portant au moins une pièce d'accueil/information — convocation, livret, règlement, organisation de l'action (${tauxAccueil} %)`,
+      `${nbDocsAccueil} pièce${nbDocsAccueil > 1 ? "s" : ""} d'accueil/information au registre, toutes sessions confondues`,
+      nbSessionsRealisees === 0
+        ? "Aucune session réalisée — l'information sur les conditions de déroulement n'est pas encore démontrable"
+        : nbSessionsRealiseesAvecAccueil < nbSessionsRealisees
+          ? `${nbSessionsRealisees - nbSessionsRealiseesAvecAccueil} session(s) réalisée(s) SANS aucune pièce d'accueil/information`
+          : "Chaque session réalisée porte au moins une pièce d'accueil/information",
     ],
-    nbDocsAccueil > 0 && nbSessionsRealisees > 0,
+    nbSessionsRealisees > 0 && nbSessionsRealiseesAvecAccueil === nbSessionsRealisees,
   );
+  // off.10 ⭐ : adaptation de la prestation.
+  //
+  // 🔴 2026-09-02 (audit certificateur) — CONDITION AJOUTÉE, jamais retirée.
+  //
+  // Ici, contrairement à off.9/11/12, exiger que TOUTES les inscriptions
+  // portent une adaptation serait FAUX : le RNQ ne demande pas d'adapter pour
+  // tout le monde, il demande d'adapter quand c'est nécessaire. Le taux « 1
+  // adaptation sur 3 563 inscriptions » ne prouve donc rien contre l'organisme.
+  //
+  // Ce qui manquait, c'est la seule question que l'auditrice pose vraiment :
+  // « des personnes vous ont déclaré un besoin — montrez ce que vous avez
+  // adapté pour elles ». La couverture exige donc, EN PLUS de la trace d'une
+  // pratique effective, qu'aucune inscription portant un besoin déclaré ne
+  // reste sans adaptation. Un besoin déclaré et non servi est le contre-exemple
+  // parfait de l'indicateur ; il rendait « Couvert » sans être regardé.
+  //
+  // Et le libellé affiché disait « 1 adaptation réalisées renseignées » —
+  // accord au pluriel figé dans le gabarit, sur la pièce remise au
+  // certificateur.
+  const besoinsAdaptationNonServis = nbInscritsBesoinAdaptation - nbInscritsBesoinAdaptationServis;
   set(
     10,
     [
-      `${nbEnrollmentsAdaptations} adaptation${nbEnrollmentsAdaptations > 1 ? "s" : ""} réalisées renseignées`,
+      `${nbEnrollmentsAdaptations} adaptation${nbEnrollmentsAdaptations > 1 ? "s" : ""} tracée${nbEnrollmentsAdaptations > 1 ? "s" : ""} sur ${nbInscritsSessionsTenues} inscription${nbInscritsSessionsTenues > 1 ? "s" : ""} (une adaptation n'est due que lorsqu'un besoin l'appelle)`,
+      nbInscritsBesoinAdaptation === 0
+        ? "Aucune inscription ne porte de besoin d'adaptation déclaré"
+        : `${nbInscritsBesoinAdaptationServis}/${nbInscritsBesoinAdaptation} inscription${nbInscritsBesoinAdaptation > 1 ? "s" : ""} à besoin déclaré portant une adaptation tracée`,
+      besoinsAdaptationNonServis > 0
+        ? `${besoinsAdaptationNonServis} bénéficiaire(s) ont DÉCLARÉ un besoin sans qu'aucune adaptation soit tracée — c'est le dossier que l'auditeur tire en premier`
+        : "Aucun besoin déclaré laissé sans adaptation tracée",
     ],
-    nbEnrollmentsAdaptations > 0,
+    nbEnrollmentsAdaptations > 0 && besoinsAdaptationNonServis === 0,
   );
+  // off.11 ⭐ : évaluation de l'atteinte des objectifs.
+  //
+  // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, plus volumétrie. Mesuré :
+  // DEUX évaluations finales au registre couvraient 423 sessions réalisées, et
+  // une seule de ces sessions en portait une. Super-indicateur : une NC majeure
+  // suspend la délivrance.
+  const tauxEvaluationFinale =
+    nbSessionsRealisees > 0
+      ? Math.round((nbSessionsRealiseesAvecEvaluationFinale / nbSessionsRealisees) * 100)
+      : 0;
   set(
     11,
     [
-      `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""}`,
+      `${nbSessionsRealiseesAvecEvaluationFinale}/${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""} portant au moins une évaluation finale des acquis (${tauxEvaluationFinale} %)`,
+      `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""} au registre, toutes sessions confondues`,
+      nbSessionsRealisees === 0
+        ? "Aucune session réalisée — l'atteinte des objectifs n'est pas encore démontrable"
+        : nbSessionsRealiseesAvecEvaluationFinale < nbSessionsRealisees
+          ? `${nbSessionsRealisees - nbSessionsRealiseesAvecEvaluationFinale} session(s) réalisée(s) SANS aucune évaluation finale des acquis`
+          : "Chaque session réalisée porte au moins une évaluation finale des acquis",
     ],
-    nbEvaluationsFinales > 0,
+    nbSessionsRealisees > 0 && nbSessionsRealiseesAvecEvaluationFinale === nbSessionsRealisees,
   );
   // off.12 : suivi de l'assiduité — [P1] rattaché au sous-système de présence RÉEL
   //          (Enrollment.emargementSigneAt : émargement présentiel signé / relevé
@@ -959,7 +1161,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     12,
     [
-      `${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""}`,
+      `${nbSessionsRealiseesAvecPresence}/${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""} portant au moins une présence constatée (${nbSessionsRealisees > 0 ? Math.round((nbSessionsRealiseesAvecPresence / nbSessionsRealisees) * 100) : 0} %)`,
       // 🔴 2026-08-20 — libellé RECTIFIÉ. Il disait « émargement réellement
       // signé ». Personne ne signe : `emargementSigneAt` est posé par
       // l'administrateur qui enregistre la feuille, et il l'était jusqu'ici même
@@ -972,10 +1174,24 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       //
       // Le libellé dit désormais ce que la colonne mesure vraiment : une
       // présence constatée sur la feuille. C'est plus modeste, et c'est vrai.
-      `${nbEnrollmentsEmarges} inscription${nbEnrollmentsEmarges > 1 ? "s" : ""} avec présence constatée sur la feuille d'émargement (présentiel/distanciel)`,
+      //
+      // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, plus volumétrie.
+      // Cette liste imprimait déjà sa propre contradiction : « 423 sessions
+      // réalisées » sur une ligne, « 2 inscriptions avec présence constatée »
+      // sur la suivante, et « Couvert » en tête. Le seuil retenu n'est PAS
+      // « tous les inscrits » — une absence est légitime, et c'est justement la
+      // feuille qui la constate. Ce qui ne l'est pas, c'est une session tenue
+      // dont aucune trace de présence n'existe : c'est la session que
+      // l'auditrice tire, et elle n'a alors rien à regarder.
+      `${nbEnrollmentsEmarges} inscription${nbEnrollmentsEmarges > 1 ? "s" : ""} avec présence constatée sur la feuille d'émargement (présentiel/distanciel) sur ${nbInscritsSessionsTenues} au total`,
       `${nbDocsPresence} preuve${nbDocsPresence > 1 ? "s" : ""} documentaire${nbDocsPresence > 1 ? "s" : ""} de présence générée${nbDocsPresence > 1 ? "s" : ""}`,
+      nbSessionsRealisees === 0
+        ? "Aucune session réalisée — le suivi de l'assiduité n'est pas encore démontrable"
+        : nbSessionsRealiseesAvecPresence < nbSessionsRealisees
+          ? `${nbSessionsRealisees - nbSessionsRealiseesAvecPresence} session(s) réalisée(s) SANS aucune présence constatée — la feuille d'émargement y est vide`
+          : "Chaque session réalisée porte au moins une présence constatée",
     ],
-    nbSessionsRealisees > 0 && nbEnrollmentsEmarges > 0,
+    nbSessionsRealisees > 0 && nbSessionsRealiseesAvecPresence === nbSessionsRealisees,
   );
   // off.13/14/15 = indicateurs APPRENTISSAGE/CFA (« Coordination des intervenants
   //   apprentissage », « Exercice de la citoyenneté de l'apprenti », « droits et
@@ -1092,17 +1308,31 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //      (CV source, diplôme ou certification, statut « valide », non périmée).
   //      Une fiche que l'organisme s'écrit à lui-même ne justifie pas une
   //      qualification ; la pièce d'origine, versée puis validée, si.
+  //
+  // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, plus volumétrie. La règle
+  // était `nbTrainersAvecCVRecent > 0 && nbFormateursPieceCompetence > 0` : UN
+  // intervenant en règle suffisait à couvrir l'indicateur pour tous les autres.
+  // Mesuré sur la base de recette : 1 formateur sur 101 portait une fiche. Or
+  // l'auditrice ne demande pas « avez-vous un intervenant qualifié » : elle
+  // désigne celui qui a animé la session qu'elle a tirée, et demande SA preuve.
+  // L'indicateur est à NC majeure.
+  const tauxFicheFormateur =
+    nbTrainers > 0 ? Math.round((nbTrainersAvecCVRecent / nbTrainers) * 100) : 0;
   set(
     21,
     [
-      `${nbTrainersAvecCVRecent} formateur${nbTrainersAvecCVRecent > 1 ? "s" : ""} actif${nbTrainersAvecCVRecent > 1 ? "s" : ""} avec fiche formateur au dossier, datée de moins de 24 mois`,
-      `${nbFormateursPieceCompetence} formateur${nbFormateursPieceCompetence > 1 ? "s" : ""} actif${nbFormateursPieceCompetence > 1 ? "s" : ""} avec au moins une pièce de compétence validée au registre (CV source, diplôme ou certification)`,
+      `${nbTrainersAvecCVRecent}/${nbTrainers} formateur${nbTrainers > 1 ? "s" : ""} actif${nbTrainers > 1 ? "s" : ""} avec une fiche formateur au dossier datée de moins de 24 mois (${tauxFicheFormateur} %)`,
+      `${nbFormateursPieceCompetence}/${nbTrainers} formateur${nbTrainers > 1 ? "s" : ""} actif${nbTrainers > 1 ? "s" : ""} avec au moins une pièce de compétence validée au registre (CV source, diplôme ou certification)`,
       `${nbTrainersAvecCV} formateur${nbTrainersAvecCV > 1 ? "s" : ""} avec fiche au dossier toutes dates confondues / ${nbTrainers} actif${nbTrainers > 1 ? "s" : ""}`,
       nbFormateursPieceCompetence === 0
         ? "Aucune pièce de compétence validée — la fiche formateur peut être celle que l'outil a lui-même générée : elle ne justifie pas la qualification"
-        : "Compétences justifiées par des pièces versées et validées au dossier formateur",
+        : nbFormateursPieceCompetence < nbTrainers
+          ? `${nbTrainers - nbFormateursPieceCompetence} formateur(s) actif(s) SANS pièce de compétence validée — c'est l'intervenant que l'auditeur désigne sur la session qu'il a tirée`
+          : "Compétences justifiées par des pièces versées et validées au dossier formateur",
     ],
-    nbTrainersAvecCVRecent > 0 && nbFormateursPieceCompetence > 0,
+    nbTrainers > 0 &&
+      nbTrainersAvecCVRecent === nbTrainers &&
+      nbFormateursPieceCompetence === nbTrainers,
   );
   // off.22 : [P1] entretien/développement des compétences DANS LE TEMPS — exige une
   //          trace DATÉE et RÉCENTE (< 24 mois) d'action de développement (entretien

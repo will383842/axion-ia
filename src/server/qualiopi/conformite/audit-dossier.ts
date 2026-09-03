@@ -18,6 +18,7 @@ import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-servi
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
+import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 /**
@@ -92,6 +93,25 @@ export interface DossierAuditZipResult {
  * l'énumération est bornée.
  */
 export const MAX_PIECES_LISTEES = 5;
+
+/**
+ * Plafond de formateurs NOMMÉS dans les preuves supplémentaires de l'indicateur
+ * 21, pour la même raison et selon la même règle : la troncature se dit.
+ *
+ * 🔴 2026-09-02 — cette énumération n'avait AUCUN plafond. Mesuré sur la base de
+ * recette : 101 formateurs actifs. Un OF de cette taille recevait cent lignes
+ * d'annuaire au milieu de son manifeste d'audit.
+ */
+export const MAX_FORMATEURS_NOMMES = 5;
+
+/**
+ * Taille d'un lot de récupération R2 pour le dossier ZIP.
+ *
+ * Assez large pour que le réseau ne soit plus le facteur limitant, assez étroit
+ * pour que la mémoire reste bornée par le lot et non par la taille du registre :
+ * un dossier d'audit peut porter plusieurs milliers de PDF.
+ */
+const LOT_RECUPERATION_R2 = 16;
 
 /** Une pièce désignable : son identifiant technique et son numéro au registre. */
 export interface PieceReference {
@@ -170,7 +190,7 @@ export interface ManifesteAuditResult {
  * RNQ : ils restent intégralement joints au ZIP, ils ne sont simplement pas
  * présentés comme preuve de quelque chose qu'ils ne prouvent pas.
  */
-const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
+export const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   // C1 — Information public
   // Le règlement intérieur ne dit rien des prestations, de leurs tarifs ni de
   // leurs délais d'accès : il informe sur les conditions de déroulement, donc
@@ -430,12 +450,37 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     ],
     [
       21,
+      // 🔴 2026-09-02 — TROIS défauts sur la même ligne, tous sur la pièce
+      // remise au certificateur.
+      //
+      //   1. Le libellé disait « CV téléversé ». L'audit blanc du 2026-08-15
+      //      avait établi que c'est FAUX — quand l'outil génère la fiche
+      //      formateur, c'est LUI qui pose `cvUrl`, sur la route de
+      //      téléchargement de la fiche qu'il vient d'écrire — et le moteur
+      //      avait été corrigé (« fiche formateur au dossier »). Le manifeste,
+      //      lui, n'avait pas suivi : il réaffirmait « CV téléversé » deux
+      //      lignes SOUS le libellé corrigé, dans le même bloc. Le jumeau
+      //      oublié, encore.
+      //   2. Chaque ligne commençait par « - », pour se faire passer pour une
+      //      sous-puce Markdown. Le rendu écrivait « - - Sophie Durand », et
+      //      l'écran de la console, qui préfixe déjà d'une puce, affichait
+      //      « • - Sophie Durand ».
+      //   3. La liste n'était PLAFONNÉE PAR RIEN. Sur un OF à cent
+      //      intervenants, l'indicateur 21 rendait cent lignes d'URL brutes
+      //      dans le manifeste ET sur l'écran de l'auditrice.
       trainersAvecCV.length > 0
         ? [
-            `${trainersAvecCV.length} formateur${trainersAvecCV.length > 1 ? "s" : ""} avec CV téléversé`,
-            ...trainersAvecCV.map((t) => `- ${t.prenom ?? ""} ${t.nom} (CV : ${t.cvUrl ?? "—"})`),
+            `${trainersAvecCV.length} formateur${trainersAvecCV.length > 1 ? "s" : ""} actif${trainersAvecCV.length > 1 ? "s" : ""} avec une fiche formateur au dossier`,
+            ...trainersAvecCV
+              .slice(0, MAX_FORMATEURS_NOMMES)
+              .map((t) => `Fiche au dossier : ${`${t.prenom ?? ""} ${t.nom}`.trim()}`),
+            ...(trainersAvecCV.length > MAX_FORMATEURS_NOMMES
+              ? [
+                  `Liste plafonnée : ${trainersAvecCV.length} fiches au registre, ${MAX_FORMATEURS_NOMMES} nommées ici. Le registre des formateurs les porte toutes.`,
+                ]
+              : []),
           ]
-        : ["Aucun formateur avec CV téléversé"],
+        : ["Aucune fiche formateur au dossier"],
     ],
   ]);
 
@@ -666,21 +711,52 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   let nbOmis = 0;
   let nbDocsInclus = 0;
 
-  for (const doc of allDocuments) {
-    // [P1] clé alignée sur l'écriture (documents-service.ts utilise l'année LOCALE
-    //   au moment de la génération) — évite d'omettre des PDF à la bascule d'année.
-    const r2Key = documentPdfKey(doc);
-    const buffer = await getObjectBufferR2(r2Key);
-
-    if (buffer !== null) {
-      // Chemin dans le ZIP : preuves/<type>/<numero>.pdf
-      zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
-      indexLines.push(`[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`);
-      nbInclus++;
-      nbDocsInclus++;
-    } else {
-      indexLines.push(`[OMIS] ${r2Key} — non disponible (R2 absent ou clé introuvable)`);
-      nbOmis++;
+  // 🔴 2026-09-02 (audit certificateur) — DEUX MESURES SUR CETTE BOUCLE.
+  //
+  //   1. Quand R2 n'est PAS configuré, elle demandait quand même chaque pièce,
+  //      une par une, et écrivait une ligne `[OMIS]` par pièce. Mesuré sur la
+  //      base de recette : 4 579 appels dont on connaissait la réponse d'avance
+  //      — `isR2Configured()` est évalué QUATORZE LIGNES PLUS HAUT — et un
+  //      `index.txt` de 4 579 lignes identiques, c'est-à-dire illisible. Un
+  //      index qu'on ne peut pas lire ne dit pas ce qui manque : il le noie.
+  //   2. Quand R2 EST configuré, le `await` dans la boucle sérialise 4 579
+  //      allers-retours réseau. C'est le bouton que le certificateur demande le
+  //      jour de sa venue ; il doit rendre la main.
+  if (!r2Ok) {
+    nbOmis = allDocuments.length;
+    indexLines.push(
+      `[OMIS] ${allDocuments.length} pièce${allDocuments.length > 1 ? "s" : ""} — stockage R2 non configuré, aucun PDF n'est restituable. Le détail par pièce n'est pas listé : la cause est unique et elle est écrite en tête de ce fichier.`,
+    );
+  } else {
+    // Récupération par lots : les requêtes d'un lot partent ensemble, et les
+    // lots s'enchaînent — la mémoire reste bornée par la taille du lot, pas par
+    // celle du registre.
+    for (let i = 0; i < allDocuments.length; i += LOT_RECUPERATION_R2) {
+      const lot = allDocuments.slice(i, i + LOT_RECUPERATION_R2);
+      const buffers = await Promise.all(
+        lot.map(async (doc) => ({
+          doc,
+          // [P1] clé alignée sur l'écriture (documents-service.ts utilise l'année
+          // LOCALE au moment de la génération) — évite d'omettre des PDF à la
+          // bascule d'année.
+          r2Key: documentPdfKey(doc),
+          buffer: await getObjectBufferR2(documentPdfKey(doc)),
+        })),
+      );
+      for (const { doc, r2Key, buffer } of buffers) {
+        if (buffer !== null) {
+          // Chemin dans le ZIP : preuves/<type>/<numero>.pdf
+          zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
+          indexLines.push(
+            `[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`,
+          );
+          nbInclus++;
+          nbDocsInclus++;
+        } else {
+          indexLines.push(`[OMIS] ${r2Key} — non disponible (clé introuvable dans R2)`);
+          nbOmis++;
+        }
+      }
     }
   }
 
@@ -829,8 +905,15 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
           lignes.push("");
           lignes.push("**Documents :**");
           for (const d of ind.documents) {
+            // 🔴 2026-09-02 — le Markdown REMIS AU CERTIFICATEUR nommait ses
+            // pièces par la valeur d'énumération, en `code` : « `emargement` :
+            // 501 documents ». Le nom de la pièce est le premier mot que lit
+            // quelqu'un qui ne connaît pas notre base. Le libellé français
+            // passe devant ; la valeur technique reste, entre parenthèses,
+            // parce que c'est elle qui nomme le dossier `preuves/<type>/` du
+            // ZIP — la retirer romprait le lien entre le manifeste et le ZIP.
             lignes.push(
-              `- \`${d.type}\` : ${d.count} document${d.count > 1 ? "s" : ""}${suffixeNumeros(d)}`,
+              `- **${libelleTypeDocument(d.type)}** (\`${d.type}\`) : ${d.count} document${d.count > 1 ? "s" : ""}${suffixeNumeros(d)}`,
             );
           }
         }

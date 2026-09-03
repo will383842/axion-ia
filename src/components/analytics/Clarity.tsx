@@ -28,6 +28,7 @@ import { env } from "@/env";
 import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useAnalyticsConsent } from "./CookieConsent";
 import { isRouteSansScriptsTiers } from "@/lib/analytics/ad-landing-routes";
+import { estSurfaceConsole } from "@/lib/analytics/surface-console";
 
 export function Clarity() {
   const projectId = env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
@@ -40,6 +41,17 @@ export function Clarity() {
   // `lib/analytics/ad-landing-routes.ts`.
   if (isRouteSansScriptsTiers(pathname)) return null;
   if (consent !== "accepted") return null;
+  // 🔴 2026-09-02 — LA CONSOLE N'EST PAS UN SITE VITRINE. Clarity enregistre
+  // l'URL ET LE DOM, avec transfert hors UE. Un « Accepter » cliqué depuis la
+  // console — et la bannière y était bel et bien affichée — armait le rejeu de
+  // session sur des écrans portant des noms de stagiaires, leurs adresses, le
+  // drapeau « situation de handicap » (donnée de santé, art. 9), les factures
+  // et le registre Qualiopi entier. Le consentement recueilli porte sur la
+  // mesure d'audience d'un site vitrine ; il ne couvre rien de tout cela.
+  //
+  // Même raisonnement que le portail trois lignes plus bas, même remède : on
+  // supprime la CAUSE, on ne masque pas l'effet.
+  if (estSurfaceConsole()) return null;
   // 🔴 Clarity enregistre l'URL ET le DOM, avec transfert hors UE. Sur le
   // portail, cela signifie le jeton d'émargement en clair plus la feuille
   // nominative. Le consentement ne couvre pas ça : le stagiaire consent à la

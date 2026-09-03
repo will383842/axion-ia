@@ -13,6 +13,7 @@
 "use server";
 
 import { z } from "zod";
+import { STATUTS_REVUE } from "@/server/qualiopi/registres/statuts-revue";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   creerRevue,
@@ -42,7 +43,12 @@ type ActionResult<T> = { data: T } | { error: string };
  * couverture (`statut: "validee"`). Une revue « finalisée » ne couvrait rien,
  * et personne n'était prévenu.
  */
-const STATUTS_REVUE = ["brouillon", "validee", "archivee"] as const;
+// 🔴 2026-09-02 — la liste vivait ICI, c'est-à-dire dans un module de Server
+// Actions : ni un seed, ni un test pur, ni un script ne pouvait l'importer (un
+// module « use server » ne peut d'ailleurs exporter que des fonctions async). Le
+// seed de démonstration a donc écrit « valide » pendant que l'action imposait
+// « validee ». La liste vit désormais dans un module PUR, importable par tout
+// écrivain de cette colonne — cf. `server/qualiopi/registres/statuts-revue.ts`.
 const statutRevueSchema = z.enum(STATUTS_REVUE);
 
 const creerRevueDirectionSchema = z.object({

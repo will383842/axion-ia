@@ -1,5 +1,13 @@
 /**
- * Admin — Qualiopi · Registre des partenariats (T12 / off.25).
+ * Admin — Qualiopi · Registre des partenariats (T12 / off.26).
+ *
+ * 🔴 2026-09-02 (audit certificateur) — CE FICHIER ANNONÇAIT off.25, ici et dans
+ * le sous-titre affiché. L'indicateur 25 est la veille sur les innovations
+ * pédagogiques ; le réseau handicap, c'est le 26 — et le 26 est un
+ * SUPER-indicateur (NC majeure). Le fichier le savait déjà : le commentaire de
+ * la colonne « trace de l'échange », cent lignes plus bas, écrit « off.26 est un
+ * super-indicateur ». Seul le sous-titre — la première ligne que lit
+ * l'auditrice — envoyait chercher la preuve au mauvais endroit.
  *
  * Liste les partenariats et expose le formulaire de création.
  * Server Component — auth + lecture DB. Composants clients pour les mutations.
@@ -55,7 +63,7 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Partenariats"
-        description="Réseau de partenaires Qualiopi (off.25 — indicateur 25), dont partenaires réseau handicap. Traçabilité des conventions de partenariat actives."
+        description="Réseau de partenaires Qualiopi, dont le réseau handicap (off.26 — indicateur 26, super-indicateur). Traçabilité des conventions de partenariat actives et des échanges qui les prouvent."
         actions={
           <PdfExportButton
             label="Exporter le registre (PDF)"

@@ -24,6 +24,14 @@
 
 import type { PrismaClient } from "../../generated/client";
 import { hacherToken } from "../../../src/server/qualiopi/tokens/hacher-token";
+import {
+  STATUT_REVUE_COUVRANTE,
+  type StatutRevue,
+} from "../../../src/server/qualiopi/registres/statuts-revue";
+import {
+  TYPE_PARTENARIAT_HANDICAP,
+  type PartenariatType,
+} from "../../../src/server/qualiopi/partenariats/labels";
 import { seedGrilleV2 } from "./grille-v2";
 
 // ─── Types d'identification stables ─────────────────────────────────────────
@@ -270,7 +278,13 @@ export interface VeilleDemo {
 
 export interface PartenariatDemo {
   nom: string;
-  type: string;
+  /**
+   * 🔴 2026-09-02 (audit certificateur) — ce champ était `string`, et le seed y
+   * a écrit une PHRASE là où le moteur attend un identifiant de vocabulaire. Le
+   * TYPE est désormais la garde : un type de partenariat hors vocabulaire ne
+   * compile plus. Cf. `server/qualiopi/partenariats/labels.ts`.
+   */
+  type: PartenariatType;
   objet: string;
   dateDebut: Date;
   actif: boolean;
@@ -296,7 +310,15 @@ export interface RevueDirectionDemo {
   indicateursSnapshot: Record<string, unknown>;
   decisions: Array<{ decision: string; echeance: string }>;
   planActions: Array<{ action: string; responsable: string; echeance: string; statut: string }>;
-  statut: string;
+  /**
+   * 🔴 2026-09-02 (audit certificateur) — ce champ était `string`, et le seed y
+   * écrivait « valide » quand toute l'application lit « validee ». La revue de
+   * démonstration existait donc, complète, et ne couvrait RIEN : l'indicateur
+   * 32 ⭐ restait rouge et l'écran affichait « Validées 0 » au-dessus d'une
+   * ligne « valide ». Le TYPE est désormais la garde — un statut hors liste ne
+   * compile plus. C'est la seule garde qu'on ne peut pas oublier d'écrire.
+   */
+  statut: StatutRevue;
 }
 
 export interface AppreciationDemo {
@@ -890,7 +912,12 @@ export function buildDemoData(): DemoData {
   // --- Partenariat -------------------------------------------------------------
   const partenariat: PartenariatDemo = {
     nom: "[DEMO] Association Numérique Inclusif Île-de-France",
-    type: "réseau handicap / inclusion numérique",
+    // 🔴 2026-09-02 (audit certificateur) — ce champ portait la PHRASE « réseau
+    // handicap / inclusion numérique ». Lisible, plausible, et invisible au
+    // moteur : il compte `type: "reseau_handicap"`. L'indicateur 26 ⭐ restait
+    // donc rouge (« 0 partenariat réseau handicap sur 1 au total ») au-dessus
+    // d'une fiche qui, à l'écran, disait le contraire. La valeur est IMPORTÉE.
+    type: TYPE_PARTENARIAT_HANDICAP,
     objet:
       "[DEMO] Convention de partenariat pour l'orientation et l'accompagnement des stagiaires " +
       "en situation de handicap vers des formations numériques adaptées. " +
@@ -971,7 +998,12 @@ export function buildDemoData(): DemoData {
         statut: "planifiee",
       },
     ],
-    statut: "valide",
+    // 🔴 2026-09-02 (audit certificateur) — ce littéral valait « valide ».
+    // Toute l'application lit « validee » : la revue de démonstration existait,
+    // portait ses trois décisions et ses trois actions, et ne couvrait RIEN.
+    // L'écran affichait « Validées 0 » au-dessus d'une ligne « valide », et
+    // l'indicateur 32 ⭐ restait rouge. La valeur est désormais IMPORTÉE.
+    statut: STATUT_REVUE_COUVRANTE,
   };
 
   // --- Appréciations (off.30 : multi-parties) ----------------------------------

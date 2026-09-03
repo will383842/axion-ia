@@ -181,14 +181,61 @@ const APRES_DEBUT = new Date("2024-03-08T17:00:00.000Z");
 
 /**
  * Nombre d'inscriptions rattachées à une session DÉJÀ DÉMARRÉE — dénominateur
- * commun de la couverture off.4 / off.8. C'est le 3e appel à `enrollment.count`,
- * distingué par son `where.session` (les deux autres portent sur
- * `adaptationsRealisees` et `emargementSigneAt`).
+ * commun de la couverture off.4 / off.8.
+ *
+ * 🔴 2026-09-02 — CE DISCRIMINANT ÉTAIT DEVENU AVEUGLE, et le commentaire qui
+ * le justifiait décrivait un code qui n'existait plus. Il lisait
+ * `where.session !== undefined` en expliquant que « les deux autres requêtes
+ * portent sur `adaptationsRealisees` et `emargementSigneAt` ». C'était vrai le
+ * jour où il a été écrit. Depuis, `inscriptionSurSessionTenue()` a AJOUTÉ un
+ * `session` à CES DEUX requêtes-là : le helper répondait donc `nb` aux trois, et
+ * un test qui réglait le seul dénominateur d'off.4 réglait AUSSI, en silence,
+ * les compteurs d'off.10 et d'off.12.
+ *
+ * 🔑 Un helper de test qui répond à plus de requêtes qu'il n'en vise transforme
+ * l'ABSENCE en présence : l'assertion « a_completer » des tests voisins cessait
+ * de vouloir dire quelque chose. On discrimine désormais sur ce qui distingue
+ * VRAIMENT la requête — les autres portent un champ d'inscription en propre —
+ * et jamais sur un champ que ses voisines pourraient acquérir.
  */
 function setupInscritsSessionsDemarrees(nb: number): void {
-  mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
-    Promise.resolve(args?.where?.["session"] !== undefined ? nb : 0),
-  );
+  mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+    const where = args?.where ?? {};
+    const viseUnChampDInscription =
+      where["adaptationsRealisees"] !== undefined ||
+      where["emargementSigneAt"] !== undefined ||
+      where["trainee"] !== undefined;
+    return Promise.resolve(!viseUnChampDInscription && where["session"] !== undefined ? nb : 0);
+  });
+}
+
+/**
+ * Sessions RÉALISÉES : le total, et combien portent chaque preuve.
+ *
+ * `trainingSession.count` sert désormais quatre requêtes — le total des
+ * réalisées, puis celles qui portent une pièce d'accueil (off.9), une
+ * évaluation finale (off.11), une présence constatée (off.12). On discrimine
+ * sur le `where`, JAMAIS sur l'ordre d'appel : une cascade de
+ * `mockResolvedValueOnce` décalerait la séquence de tous les tests voisins.
+ */
+function setupSessionsRealisees(opts: {
+  total: number;
+  avecAccueil?: number;
+  avecEvaluationFinale?: number;
+  avecPresence?: number;
+}): void {
+  mockP.trainingSession.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+    const where = (args?.where ?? {}) as Record<string, unknown>;
+    if (where["documents"] !== undefined) return Promise.resolve(opts.avecAccueil ?? 0);
+    const enrollments = where["enrollments"] as { some?: Record<string, unknown> } | undefined;
+    if (enrollments?.some?.["evaluations"] !== undefined) {
+      return Promise.resolve(opts.avecEvaluationFinale ?? 0);
+    }
+    if (enrollments?.some?.["emargementSigneAt"] !== undefined) {
+      return Promise.resolve(opts.avecPresence ?? 0);
+    }
+    return Promise.resolve(opts.total);
+  });
 }
 
 /** Ligne de questionnaire de positionnement répondu, telle que la lit off.4. */
@@ -344,12 +391,133 @@ describe("evaluerConformite", () => {
     expect(ind31?.statut).toBe("a_completer");
   });
 
-  it("off.11 couvert si au moins 1 évaluation finale existe", async () => {
-    // évaluationsFinales > 0 : count avec type=finale
+  // ── off.11 ⭐ : COUVERTURE, pas volumétrie (audit certificateur 2026-09-02) ─
+  //
+  // 🔴 Ce test s'appelait « off.11 couvert si au moins 1 évaluation finale
+  // existe », et c'était exactement le défaut : mesuré sur la base de recette,
+  // DEUX évaluations finales au registre déclaraient l'indicateur couvert pour
+  // 423 sessions réalisées, dont UNE SEULE en portait une. L'auditrice ne
+  // demande pas s'il en existe une : elle tire une session et demande la sienne.
+
+  it("off.11 couvert quand CHAQUE session réalisée porte une évaluation finale", async () => {
     mockP.evaluationAcquis.count.mockResolvedValue(3);
+    // trainingSession.count sert plusieurs requêtes : on discrimine sur le
+    // `where`, jamais sur l'ordre d'appel — une cascade décalerait les voisins.
+    setupSessionsRealisees({ total: 3, avecEvaluationFinale: 3 });
     const result = await evaluerConformite();
     const ind11 = result.indicateurs.find((i) => i.numero === 11);
     expect(ind11?.statut).toBe("couvert");
+  });
+
+  it("off.11 À COMPLÉTER si une seule session réalisée sur trois porte une évaluation finale", async () => {
+    mockP.evaluationAcquis.count.mockResolvedValue(3);
+    setupSessionsRealisees({ total: 3, avecEvaluationFinale: 1 });
+    const result = await evaluerConformite();
+    const ind11 = result.indicateurs.find((i) => i.numero === 11);
+    expect(ind11?.statut).toBe("a_completer");
+    expect(ind11?.preuves.join(" ")).toContain("2 session(s) réalisée(s) SANS");
+  });
+
+  // ── Audit certificateur 2026-09-02 — couverture, jamais volumétrie ────────
+  //
+  // La règle « c'est ce que vérifie un auditeur qui tire un dossier au hasard »
+  // était écrite pour off.4, off.5, off.8, off.19 et off.27. Elle n'avait pas été
+  // appliquée à ses jumeaux. Chaque cas ci-dessous porte son test NÉGATIF : sans
+  // lui, la règle serait « vraie sur le vide ».
+
+  it("off.6 couvert seulement si TOUTES les formations actives ont un contenu produit", async () => {
+    mockP.formation.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const actif = where["statut"] === "actif";
+      const avecContenu = where["statutGeneration"] !== undefined;
+      if (actif && avecContenu) return Promise.resolve(2);
+      if (actif) return Promise.resolve(2);
+      return Promise.resolve(2);
+    });
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("couvert");
+  });
+
+  it("off.6 À COMPLÉTER si une formation active sur trois n'a pas de contenu produit", async () => {
+    mockP.formation.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const actif = where["statut"] === "actif";
+      const avecContenu = where["statutGeneration"] !== undefined;
+      if (actif && avecContenu) return Promise.resolve(2);
+      if (actif) return Promise.resolve(3);
+      return Promise.resolve(3);
+    });
+    const result = await evaluerConformite();
+    const ind6 = result.indicateurs.find((i) => i.numero === 6);
+    expect(ind6?.statut).toBe("a_completer");
+    expect(ind6?.preuves.join(" ")).toContain("1 formation(s) active(s) SANS contenu");
+  });
+
+  it("off.9 couvert seulement si CHAQUE session réalisée porte une pièce d'accueil", async () => {
+    mockP.documentGenere.count.mockResolvedValue(5);
+    setupSessionsRealisees({ total: 4, avecAccueil: 4 });
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 9)?.statut).toBe("couvert");
+  });
+
+  it("off.9 À COMPLÉTER quand des pièces d'accueil existent mais pas sur toutes les sessions", async () => {
+    // C'est LE cas mesuré en recette : 987 pièces au registre, et pourtant
+    // 169 sessions réalisées sur 423 n'en portaient aucune.
+    mockP.documentGenere.count.mockResolvedValue(987);
+    setupSessionsRealisees({ total: 4, avecAccueil: 2 });
+    const result = await evaluerConformite();
+    const ind9 = result.indicateurs.find((i) => i.numero === 9);
+    expect(ind9?.statut).toBe("a_completer");
+    expect(ind9?.preuves.join(" ")).toContain("2 session(s) réalisée(s) SANS");
+  });
+
+  it("off.12 couvert seulement si CHAQUE session réalisée porte une présence constatée", async () => {
+    setupSessionsRealisees({ total: 2, avecPresence: 2 });
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 12)?.statut).toBe("couvert");
+  });
+
+  it("off.12 À COMPLÉTER si une session réalisée n'a aucune présence constatée", async () => {
+    setupSessionsRealisees({ total: 2, avecPresence: 1 });
+    const result = await evaluerConformite();
+    const ind12 = result.indicateurs.find((i) => i.numero === 12);
+    expect(ind12?.statut).toBe("a_completer");
+    expect(ind12?.preuves.join(" ")).toContain("la feuille d'émargement y est vide");
+  });
+
+  // off.10 ⭐ — ici la couverture n'est PAS un taux sur toutes les inscriptions :
+  // le RNQ ne demande pas d'adapter pour tout le monde. Ce qui manquait, c'est
+  // la seule question que l'auditrice pose : « des personnes ont déclaré un
+  // besoin — montrez ce que vous avez adapté pour elles ».
+
+  it("off.10 couvert si une adaptation est tracée et qu'aucun besoin déclaré ne reste sans réponse", async () => {
+    mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const besoin = where["trainee"] !== undefined;
+      const adaptee = where["adaptationsRealisees"] !== undefined;
+      if (besoin && adaptee) return Promise.resolve(2);
+      if (besoin) return Promise.resolve(2);
+      if (adaptee) return Promise.resolve(3);
+      return Promise.resolve(10);
+    });
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("couvert");
+  });
+
+  it("off.10 À COMPLÉTER si un besoin déclaré reste sans adaptation tracée", async () => {
+    mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const besoin = where["trainee"] !== undefined;
+      const adaptee = where["adaptationsRealisees"] !== undefined;
+      if (besoin && adaptee) return Promise.resolve(1);
+      if (besoin) return Promise.resolve(3);
+      if (adaptee) return Promise.resolve(3);
+      return Promise.resolve(10);
+    });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("ont DÉCLARÉ un besoin");
   });
 
   it("off.23 couvert si au moins 1 veille legale existe", async () => {
@@ -583,13 +751,27 @@ describe("evaluerConformite", () => {
 
   // ── off.21 : formateurs avec CV réel (T17 — CLUSTER 2) ───────────────────
 
-  it("off.21 couvert si fiche à jour (< 24 mois) ET pièce de compétence validée au dossier", async () => {
-    // trainer.count : 1=actif, 2=actif+cvUrl, 3=actif+cvUrl+cvUploadedAt<24 mois (récent)
-    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+  // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, pas volumétrie.
+  // La règle acceptait UN intervenant en règle pour tous les autres : mesuré sur
+  // la base de recette, 1 formateur sur 101 portait une fiche. L'auditrice
+  // désigne celui qui a animé la session qu'elle a tirée, et demande SA preuve.
+
+  it("off.21 couvert quand CHAQUE formateur actif a une fiche à jour ET une pièce de compétence validée", async () => {
+    // trainer.count : 1=actif, 2=actif+cvUrl, 3=actif+cvUrl+cvUploadedAt<24 mois
+    mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
     mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("couvert");
+  });
+
+  it("off.21 À COMPLÉTER si un seul formateur sur deux porte une fiche à jour", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toContain("1/2 formateurs actifs avec une fiche");
   });
 
   // ── off.21 : la fiche que l'outil génère lui-même ne justifie rien ─────────

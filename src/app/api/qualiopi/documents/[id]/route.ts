@@ -30,6 +30,68 @@ import { dispositionDemandee } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Cette route est OUVERTE DANS UN ONGLET par un être humain.
+ *
+ * 🔴 2026-09-02 (audit certificateur). Depuis la vue manifeste, chaque numéro de
+ * pièce est un lien `target="_blank"` vers cette route — c'est le geste que fait
+ * l'auditrice quand elle dit « montrez-moi celle-là ». Quand le PDF n'est pas
+ * restituable, elle recevait `{"error":"pdf_unavailable"}` en JSON brut, dans un
+ * onglet, en plein audit. Mesuré sur la base de recette : les quatre premiers
+ * liens du manifeste rendaient tous ce JSON.
+ *
+ * Un dossier qui répond par un objet JSON ne fait pas douter d'une pièce : il
+ * fait douter de toutes. La réponse dit désormais, en français, ce qui manque et
+ * où le vérifier — et reste du JSON pour un appelant qui demande du JSON
+ * (`GenererFactureButton` et les tests passent par là).
+ */
+function reponsePieceIndisponible(
+  req: NextRequest,
+  motif: "document_not_found" | "pdf_unavailable",
+  numero: string | null,
+): NextResponse {
+  const veutDuHtml = (req.headers.get("accept") ?? "").includes("text/html");
+  if (!veutDuHtml) {
+    return NextResponse.json({ error: motif }, { status: 404 });
+  }
+  const titre =
+    motif === "document_not_found"
+      ? "Cette pièce n'existe pas au registre"
+      : "Le PDF de cette pièce n'est pas disponible";
+  const explication =
+    motif === "document_not_found"
+      ? "Le lien désigne une pièce que le registre ne connaît pas. Elle a pu être supprimée, ou le lien être périmé."
+      : "La pièce existe bien au registre, mais son fichier PDF n'a pas pu être servi : il est absent du stockage, ou le stockage n'est pas joignable. Le registre, lui, porte toujours la pièce et sa trace.";
+  const corps = [
+    "<!doctype html>",
+    '<html lang="fr"><head><meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1">',
+    '<meta name="robots" content="noindex">',
+    `<title>${titre}</title>`,
+    // Aucune couleur en dur : cette page est servie hors de la feuille de style
+    // de l'application (route handler), donc les jetons admin n'y existent pas.
+    // `color-scheme` laisse le navigateur choisir un couple lisible en clair
+    // comme en sombre, et `Canvas`/`CanvasText` sont les couleurs système
+    // correspondantes — plus juste qu'une palette figée, et conforme au cliquet
+    // anti-hex du dépôt.
+    "<style>:root{color-scheme:light dark}",
+    "body{margin:0;padding:2.5rem 1.5rem;font:16px/1.6 system-ui,sans-serif;",
+    "color:CanvasText;background:Canvas}",
+    "main{max-width:34rem;margin:0 auto}h1{font-size:1.25rem;margin:0 0 .75rem}",
+    "p{margin:0 0 .75rem}code{font-family:ui-monospace,monospace}</style>",
+    "</head><body><main>",
+    `<h1>${titre}</h1>`,
+    `<p>${explication}</p>`,
+    numero === null ? "" : `<p>Pièce concernée : <code>${numero}</code></p>`,
+    "<p>Refermez cet onglet et revenez au registre : la pièce y figure avec sa date, son type et son état.</p>",
+    "</main></body></html>",
+  ].join("");
+  return new NextResponse(corps, {
+    status: 404,
+    headers: { "content-type": "text/html; charset=utf-8" },
+  });
+}
+
 export async function GET(
   // 🔴 La requête SERT désormais : elle porte `?dl=1`, qui distingue
   // « consulter » de « enregistrer ». Elle s'appelait `_req` parce que rien
@@ -71,7 +133,7 @@ export async function GET(
     },
   });
   if (!doc) {
-    return NextResponse.json({ error: "document_not_found" }, { status: 404 });
+    return reponsePieceIndisponible(req, "document_not_found", null);
   }
 
   // ⚠️ Les deux états se CUMULENT et sont indépendants : une copie d'une pièce
@@ -115,5 +177,5 @@ export async function GET(
     return NextResponse.redirect(doc.pdfUrl, 302);
   }
 
-  return NextResponse.json({ error: "pdf_unavailable" }, { status: 404 });
+  return reponsePieceIndisponible(req, "pdf_unavailable", doc.numero);
 }

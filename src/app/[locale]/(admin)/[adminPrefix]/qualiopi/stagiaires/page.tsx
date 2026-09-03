@@ -12,7 +12,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
-import { listTrainees } from "@/server/qualiopi/trainees/trainees";
+import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { Hash, Accessibility, ShieldCheck } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -24,11 +24,29 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/**
+ * Plafond de lignes rendues, et sa raison.
+ *
+ * 🔴 2026-09-02 (audit certificateur). `listTrainees()` était appelé sans
+ * argument — alors que sa signature porte `limit`, `offset` ET `search`. Mesuré
+ * sur la base de recette : **3 003 stagiaires**, rendus d'un bloc. 338 Ko de
+ * texte, ~69 s de chargement, et AUCUN champ de recherche sur la page.
+ *
+ * Or c'est très exactement l'écran où l'auditrice dit « montrez-moi le dossier
+ * de madame X » : sans recherche, il n'y avait pas de réponse à cette
+ * demande-là, seulement un `Ctrl+F` sur une page de trois mille lignes.
+ *
+ * ⚠️ Le plafond se DIT, et l'écran dit par quoi le contourner. Une troncature
+ * muette se lirait « voilà tous nos stagiaires ».
+ */
+const PLAFOND_STAGIAIRES = 100;
+
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ q?: string }>;
 }
 
-export default async function QualiopiStagiairesPage({ params }: PageProps) {
+export default async function QualiopiStagiairesPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
@@ -36,10 +54,21 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
   }
 
   const base = `/${locale}/${adminPrefix}/qualiopi/stagiaires`;
-  const trainees = await listTrainees();
+  const recherche = ((await searchParams).q ?? "").trim();
 
-  const handicap = trainees.filter((t) => t.situationHandicap).length;
-  const consentis = trainees.filter((t) => t.consentementFormation).length;
+  // Les trois tuiles portent sur le REGISTRE ENTIER, jamais sur la page
+  // affichée : elles ne bougent donc pas quand on filtre, et un total qui
+  // dépend de ce qu'on regarde ne serait pas un total.
+  const [totalRegistre, handicap, consentis, trainees] = await Promise.all([
+    countTrainees(),
+    countTrainees({ situationHandicap: true }),
+    countTrainees({ consentementFormation: true }),
+    listTrainees({
+      limit: PLAFOND_STAGIAIRES,
+      ...(recherche !== "" ? { search: recherche } : {}),
+    }),
+  ]);
+  const tronque = recherche === "" && totalRegistre > trainees.length;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -56,10 +85,33 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
         <Link href={`${base}/new`} className="admin-button">
           + Nouveau stagiaire
         </Link>
+        {/* Recherche serveur (GET), aucun JS : c'est le recours que le plafond
+            doit offrir, et la réponse à « montrez-moi le dossier de madame X ». */}
+        <form method="get" action={base} className="flex items-center gap-[var(--space-admin-2)]">
+          <label htmlFor="recherche-stagiaire" className="sr-only">
+            Rechercher un stagiaire par nom, prénom, e-mail ou entreprise
+          </label>
+          <input
+            id="recherche-stagiaire"
+            type="search"
+            name="q"
+            defaultValue={recherche}
+            placeholder="Nom, prénom, e-mail, entreprise…"
+            className="admin-input min-w-[260px]"
+          />
+          <button type="submit" className="admin-button-secondary">
+            Rechercher
+          </button>
+          {recherche !== "" && (
+            <Link href={base} className="admin-button-ghost">
+              Effacer
+            </Link>
+          )}
+        </form>
       </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total" value={trainees.length} icon={Hash} />
+        <AdminStatCard label="Total au registre" value={totalRegistre} icon={Hash} />
         <AdminStatCard label="Situation de handicap" value={handicap} icon={Accessibility} />
         <AdminStatCard
           label="Consentement formation"
@@ -69,16 +121,45 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
         />
       </div>
 
+      {recherche !== "" && (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+          {`${trainees.length} résultat${trainees.length > 1 ? "s" : ""} pour « ${recherche} »${trainees.length >= PLAFOND_STAGIAIRES ? ` (affichage plafonné à ${PLAFOND_STAGIAIRES} — affinez la recherche)` : ""}.`}
+        </p>
+      )}
+
+      {tronque && (
+        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+          {`Liste plafonnée : ${totalRegistre} stagiaires au registre, ${trainees.length} affichés ici par ordre alphabétique. Utilisez la recherche pour retrouver un dossier précis.`}
+        </p>
+      )}
+
       {trainees.length === 0 ? (
-        <AdminEmptyState
-          title="Aucun stagiaire enregistré"
-          description="Les stagiaires s'inscrivent ensuite à une session depuis le dossier de celle-ci."
-          primaryAction={
-            <Link href={`${base}/new`} className="admin-button">
-              + Nouveau stagiaire
-            </Link>
-          }
-        />
+        /* 🔴 Le vide N'A PAS UNE SEULE CAUSE. « Aucun stagiaire enregistré » est
+           vrai quand le registre est vide ; devant une recherche sans résultat,
+           c'est FAUX — et c'est le pire moment pour se tromper, puisque le
+           lecteur vient précisément de demander à voir quelqu'un. Les deux cas
+           se distinguent par le registre, jamais par la page affichée. */
+        recherche !== "" ? (
+          <AdminEmptyState
+            title={`Aucun stagiaire ne correspond à « ${recherche} »`}
+            description={`Le registre en compte ${totalRegistre}. Vérifiez l'orthographe, ou cherchez sur l'e-mail ou l'entreprise.`}
+            primaryAction={
+              <Link href={base} className="admin-button">
+                Effacer la recherche
+              </Link>
+            }
+          />
+        ) : (
+          <AdminEmptyState
+            title="Aucun stagiaire enregistré"
+            description="Les stagiaires s'inscrivent ensuite à une session depuis le dossier de celle-ci."
+            primaryAction={
+              <Link href={`${base}/new`} className="admin-button">
+                + Nouveau stagiaire
+              </Link>
+            }
+          />
+        )
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">

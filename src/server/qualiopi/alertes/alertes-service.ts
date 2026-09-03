@@ -176,6 +176,30 @@ export async function countNonLues(): Promise<number> {
   return prisma.alerteSysteme.count({ where: { lu: false, resolue: false } });
 }
 
+/**
+ * Combien d'alertes ACTIVES au total, éventuellement pour un seul niveau.
+ *
+ * 🔴 2026-09-02 (audit certificateur) — l'écran des alertes calculait son total
+ * en comptant les lignes qu'il venait de rendre. Tant que la liste n'était pas
+ * plafonnée, les deux nombres coïncidaient ; le jour où on la plafonne, ils
+ * divergent, et l'écran annoncerait « 100 alertes actives » là où le registre en
+ * porte 1 589. Le COMPTE vient donc d'un compteur, l'AFFICHAGE d'une liste
+ * bornée — jamais l'un déduit de l'autre.
+ */
+export async function countAlertesActives(
+  niveau?: AlerteNiveau,
+  opts?: { readonly lu?: boolean },
+): Promise<number> {
+  if (isStub()) return 0;
+  return prisma.alerteSysteme.count({
+    where: {
+      resolue: false,
+      ...(niveau !== undefined ? { niveau } : {}),
+      ...(opts?.lu !== undefined ? { lu: opts.lu } : {}),
+    },
+  });
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // synchroniserAlertes
 // ─────────────────────────────────────────────────────────────────────────────

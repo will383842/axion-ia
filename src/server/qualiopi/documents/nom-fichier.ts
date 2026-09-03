@@ -16,48 +16,22 @@
  */
 
 import type { DocumentType } from "../../../../prisma/generated/client";
+import { LIBELLES_TYPE_DOCUMENT } from "./libelles-type-document";
 
 /**
- * Libellés de NOM DE FICHIER — délibérément distincts des libellés d'écran
- * (`DOC_LABELS` de DocumentsSection porte des références d'articles, inutiles
- * dans un nom de fichier). Record exhaustif : un nouveau type ne compile pas
- * tant qu'il n'a pas de libellé de téléchargement.
+ * Libellés de NOM DE FICHIER — DÉRIVÉS du vocabulaire unique
+ * `LIBELLES_TYPE_DOCUMENT`, jamais recopiés.
+ *
+ * 🔴 2026-09-02 (audit certificateur). Cette table était une COPIE mot pour mot
+ * du vocabulaire d'écran. Une copie ne diverge pas le jour où on l'écrit, elle
+ * diverge le jour où quelqu'un corrige l'une des deux — et ce dépôt a payé ce
+ * motif neuf fois sur onze la nuit du 24 août. Elle est donc dérivée.
+ *
+ * ⚠️ Elle reste distincte de `DOC_LABELS` (DocumentsSection), qui porte des
+ * références d'articles du Code du travail : utiles à l'écran, inutiles — et
+ * illisibles — dans un nom de fichier.
  */
-const LIBELLES_FICHIER: Record<DocumentType, string> = {
-  convention: "Convention de formation",
-  convention_tripartite: "Convention tripartite OPCO",
-  contrat: "Contrat de formation",
-  convocation: "Convocation",
-  emargement: "Feuille d'émargement",
-  releve_connexion: "Relevé de connexion",
-  positionnement: "Questionnaire de positionnement",
-  grille_evaluation: "Grille d'évaluation",
-  satisfaction: "Questionnaire de satisfaction",
-  attestation: "Attestation de réalisation",
-  attestation_partielle: "Attestation partielle",
-  certificat_realisation: "Certificat de réalisation",
-  facture: "Facture",
-  devis: "Devis",
-  avoir: "Avoir",
-  kit_opco: "Kit OPCO",
-  kit_cpf: "Kit CPF",
-  kit_france_travail: "Kit France Travail",
-  lettre_mission: "Lettre de mission formateur",
-  reglement_interieur: "Règlement intérieur",
-  livret_accueil: "Livret d'accueil",
-  // Valeur d'enum héritée, plus jamais émise (module AFEST supprimé 2026-08-10,
-  // décision Will) — Record exhaustif sur `DocumentType`, l'entrée doit rester.
-  protocole_afest: "Protocole AFEST",
-  inventaire_moyens: "Inventaire des moyens",
-  contrat_sous_traitance: "Contrat de sous-traitance",
-  procedure_sous_traitance: "Procedure de sous-traitance",
-  cv_formateur: "Fiche formateur",
-  programme: "Programme de l'action",
-  organisation_action: "Organisation de l'action",
-  autorisation_captation: "Autorisation de captation",
-  liste_formateurs: "Liste des formateurs",
-};
-
+const LIBELLES_FICHIER: Record<DocumentType, string> = LIBELLES_TYPE_DOCUMENT;
 /**
  * ASCII sûr pour `Content-Disposition: filename="…"` : accents translittérés
  * (NFD + retrait des diacritiques), caractères réservés remplacés par un

@@ -6,6 +6,10 @@
  */
 
 import type { Metadata } from "next";
+import {
+  STATUT_REVUE_COUVRANTE,
+  libelleStatutRevue,
+} from "@/server/qualiopi/registres/statuts-revue";
 import { FileText, CheckCircle2, CalendarDays } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -29,11 +33,15 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const STATUT_LABELS: Record<string, string> = {
-  brouillon: "Brouillon",
-  validee: "Validée",
-  archivee: "Archivée",
-};
+/*
+ * 🔴 2026-09-02 (audit certificateur) — cette table était une COPIE, et le
+ * repli `?? r.statut` recopiait la valeur brute. Le seed de démonstration écrit
+ * « valide » là où toute l'application lit « validee » : l'écran affichait donc
+ * « Total revues 1 · Validées 0 » au-dessus d'une ligne dont le statut disait
+ * « valide », et l'indicateur 32 ⭐ restait rouge sans que rien ne le dise.
+ * Le vocabulaire est désormais unique, et le repli SIGNALE l'inconnu.
+ * Cf. `server/qualiopi/registres/statuts-revue.ts`.
+ */
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
@@ -47,7 +55,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
   }
 
   const revues = await listRevues();
-  const validees = revues.filter((r) => r.statut === "validee").length;
+  const validees = revues.filter((r) => r.statut === STATUT_REVUE_COUVRANTE).length;
   const brouillons = revues.filter((r) => r.statut === "brouillon").length;
   const anneesCouvertes = revues.map((r) => r.annee);
   const currentYear = new Date().getFullYear();
@@ -181,14 +189,14 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                     <td className={cellCls}>
                       <span
                         className={
-                          r.statut === "validee"
+                          r.statut === STATUT_REVUE_COUVRANTE
                             ? "text-[color:var(--color-admin-success)]"
                             : r.statut === "brouillon"
                               ? "text-[color:var(--color-admin-warning)]"
                               : "text-[color:var(--color-admin-fg-muted)]"
                         }
                       >
-                        {STATUT_LABELS[r.statut] ?? r.statut}
+                        {libelleStatutRevue(r.statut)}
                       </span>
                     </td>
                     <td className={cellCls}>
