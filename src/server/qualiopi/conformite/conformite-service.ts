@@ -94,6 +94,30 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     return buildEmptyConformite();
   }
 
+  /**
+   * Les pièces qui INFORMENT sur les conditions de déroulement (off.9).
+   *
+   * 🔴 2026-09-02 — cette liste était écrite DEUX FOIS, à trois types, pendant
+   * que `INDICATEUR_DOCUMENT_TYPES[9]` — la correspondance délibérée, commentée,
+   * qui décide des pièces montrées à l'auditrice sur cet indicateur — en compte
+   * QUATRE : elle y ajoute « organisation de l'action », et son commentaire dit
+   * pourquoi (« elle porte le calendrier réel, la modalité, le lieu et
+   * l'encadrement »). Une session dotée de cette seule pièce était donc montrée
+   * comme preuve d'off.9 par le manifeste, et comptée « SANS aucune pièce
+   * d'accueil » par la règle de couverture. Le même écran, deux réponses.
+   *
+   * Écrite une fois ici, et alignée sur la correspondance. Elle n'est pas
+   * IMPORTÉE de `audit-dossier.ts` : ce module-là importe `evaluerConformite`,
+   * l'importer en retour créerait un cycle — c'est la raison qui a déjà fait
+   * sortir `pieceAdmissibleAuDossier` dans son propre module.
+   */
+  const TYPES_PIECE_ACCUEIL = [
+    "convocation",
+    "livret_accueil",
+    "reglement_interieur",
+    "organisation_action",
+  ] as const;
+
   // Seuils de fraîcheur (calculés au runtime — hors contexte workflow, `new Date()` OK).
   //   veille exploitée = récente < 12 mois ; CV formateur à jour < 24 mois (aligné M11/R11).
   const maintenant = new Date();
@@ -292,10 +316,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       ),
     // off.19 : ressources/supports pédagogiques réellement produits (≠ n'importe quel PDF)
     prisma.supportFormation.count(),
-    // off.9 : documents d'accueil/information (convocation, livret, règlement) — pas tous types confondus
+    // off.9 : pièces qui informent sur les conditions de déroulement — pas tous
+    // types confondus. Liste partagée avec le compte PAR SESSION, ci-dessous.
     prisma.documentGenere.count({
       where: {
-        type: { in: ["convocation", "livret_accueil", "reglement_interieur"] },
+        type: { in: [...TYPES_PIECE_ACCUEIL] },
         // 🔴 Le cas le plus visible du défaut : une convocation émise pour une
         // session ensuite ANNULÉE couvrait l'indicateur 9 devant le certificateur.
         ...pieceAdmissibleAuDossier(),
@@ -594,7 +619,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         statut: "realisee",
         documents: {
           some: {
-            type: { in: ["convocation", "livret_accueil", "reglement_interieur"] },
+            type: { in: [...TYPES_PIECE_ACCUEIL] },
             ...pieceAdmissibleAuDossier(),
           },
         },
@@ -1049,7 +1074,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
 
   // Critère 3
   // off.9 : conditions de déroulement communiquées — docs d'accueil/info réels
-  //         (convocation, livret, règlement), pas n'importe quel document généré.
+  //         (convocation, livret, règlement, organisation de l'action), pas
+  //         n'importe quel document généré — cf. `TYPES_PIECE_ACCUEIL`.
   //
   // 🔴 2026-09-02 (audit certificateur) — COUVERTURE, plus volumétrie. Le
   // verdict tenait à « au moins une pièce d'accueil existe quelque part ».
@@ -1063,7 +1089,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     9,
     [
-      `${nbSessionsRealiseesAvecAccueil}/${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""} portant au moins une pièce d'accueil/information — convocation, livret, règlement (${tauxAccueil} %)`,
+      `${nbSessionsRealiseesAvecAccueil}/${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""} portant au moins une pièce d'accueil/information — convocation, livret, règlement, organisation de l'action (${tauxAccueil} %)`,
       `${nbDocsAccueil} pièce${nbDocsAccueil > 1 ? "s" : ""} d'accueil/information au registre, toutes sessions confondues`,
       nbSessionsRealisees === 0
         ? "Aucune session réalisée — l'information sur les conditions de déroulement n'est pas encore démontrable"
