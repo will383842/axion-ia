@@ -265,6 +265,18 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "interne",
     source: "features/commercial-application/actions.ts",
   },
+  "lead-apporteur-recu": {
+    categorie: "recrutement",
+    quand: "Premier contact déposé sur la landing Facebook (formulaire court)",
+    destinataire: "le candidat apporteur",
+    source: "features/commercial-application/lead-actions.ts",
+  },
+  "lead-apporteur-relance": {
+    categorie: "recrutement",
+    quand: "J+2 puis J+7 après le premier contact, si le dossier complet n'est pas arrivé",
+    destinataire: "le candidat apporteur",
+    source: "features/commercial-application/relances-lead-apporteur.ts",
+  },
   "vivier-information": {
     categorie: "recrutement",
     quand: "Information envoyée à une personne du vivier",
@@ -304,6 +316,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand: "Réponse écrite À LA MAIN par Will depuis la console — aucun LLM",
     destinataire: "l'auteur du message",
     source: "features/admin-submissions/reply-actions.ts",
+  },
+  "candidature-reponse": {
+    categorie: "divers",
+    quand: "Réponse écrite À LA MAIN depuis la console à un candidat — aucun LLM",
+    destinataire: "le candidat",
+    source: "features/admin-job-applications/reply-actions.ts",
   },
   "avis-recu": {
     categorie: "divers",

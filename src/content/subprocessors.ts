@@ -545,6 +545,32 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     activationStatus: "pending_activation",
     documentationUrl: "https://www.linkedin.com/legal/l/dpa",
   },
+  // ───────────────────────────── Pixel Meta + API Conversions (2026-09-03)
+  // Intégré (`src/components/analytics/MetaPixel.tsx`, `src/server/meta/
+  // conversions-api.ts`) mais INACTIF tant que `NEXT_PUBLIC_META_PIXEL_ID`
+  // n'est pas posé dans Coolify. Chargé UNIQUEMENT sur les pages du tunnel
+  // Facebook apporteurs (`/facebook`, `/facebook/merci`) et UNIQUEMENT après
+  // acceptation de la bannière, qui le nomme sur ces pages. Passera à
+  // `active` le jour où l'identifiant est posé — et pas avant.
+  {
+    name: "Meta Platforms Ireland Limited",
+    location: "Dublin, Irlande",
+    serversLocation: "Irlande (UE) + USA",
+    purposeFr:
+      "Pixel Meta et API Conversions — mesure des candidatures d'apporteurs d'affaires issues des campagnes Facebook / Instagram, optimisation de la diffusion sur l'événement « Lead », et reciblage des visiteurs de la landing /facebook. Ne sert PAS à la mesure d'audience (Plausible) ni à la source de vérité des candidatures (table submissions). Limité aux pages du tunnel Facebook ; gating consentement CMP obligatoire ; le pixel `<noscript>` du snippet officiel est omis. L'API Conversions ne part que si le visiteur a consenti, avec e-mail, téléphone, prénom et ville HACHÉS (SHA-256).",
+    purposeEn:
+      "Meta pixel and Conversions API — measuring business-introducer applications coming from Facebook / Instagram campaigns, optimising delivery on the “Lead” event, and retargeting visitors of the /facebook landing page. NOT used for audience measurement (Plausible) nor as the source of truth for applications (submissions table). Limited to the Facebook funnel pages; mandatory CMP consent gating; the official snippet's `<noscript>` pixel is omitted. The Conversions API only fires if the visitor consented, with email, phone, first name and city HASHED (SHA-256).",
+    dataCategoriesFr:
+      "Cookies `_fbp` (90 jours, identifiant navigateur) et `_fbc` (90 jours, présent si l'arrivée porte un `fbclid`). Adresse IP, user-agent, URL visitées, horodatage. Lors d'une candidature et avec consentement : e-mail, téléphone, prénom et ville hachés SHA-256, pour l'appariement avec un compte Meta.",
+    dataCategoriesEn:
+      "Cookies `_fbp` (90 days, browser identifier) and `_fbc` (90 days, present when the landing URL carries an `fbclid`). IP address, user-agent, URLs visited, timestamps. On application and with consent: SHA-256 hashed email, phone, first name and city, for matching against a Meta account.",
+    legalBasis: "6.1.a_consent",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "analytics_obs",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://www.facebook.com/legal/terms/dataprocessing",
+  },
   // ───────────────────────────── content-gen IA (audit B5 2026-05-15)
   // Code intégré (`src/server/content-gen/providers/*.ts`) — clés API non
   // encore présentes dans Coolify env → `pending_activation` jusqu'à

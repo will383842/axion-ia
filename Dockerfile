@@ -71,12 +71,29 @@ ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
 # depuis la mise en ligne. Les poser au runtime ne sert à RIEN pour un NEXT_PUBLIC_*.
 ARG NEXT_PUBLIC_PLAUSIBLE_DOMAIN
 ARG NEXT_PUBLIC_PLAUSIBLE_API_URL
+# Pixel Meta du tunnel Facebook apporteurs (2026-09-03) — MÊME PIÈGE que les
+# deux blocs ci-dessus, et c'est la raison d'être de cette ligne. `MetaPixel`
+# est un composant « use client » : la valeur est INLINÉE AU BUILD dans le
+# bundle du navigateur. Posée uniquement au runtime dans Coolify, elle serait
+# `undefined` au bake, `<MetaPixel />` rendrait `null`, et la campagne
+# publicitaire optimiserait sur les clics au lieu des candidatures — sans
+# qu'aucune erreur ne le signale. C'est exactement l'incident Plausible du
+# 2026-07-21, rejoué sur un budget publicitaire.
+ARG NEXT_PUBLIC_META_PIXEL_ID
+# Créneau d'appel des apporteurs — lu côté SERVEUR (`/facebook/merci`), donc il
+# fonctionnerait au runtime seul. Il est quand même posé au build parce que la
+# page est prérendue (`revalidate = 600`) : sans lui au bake, le calendrier
+# n'apparaît qu'à la première régénération, jusqu'à 10 minutes après la mise en
+# ligne — sur la page qui suit immédiatement la conversion.
+ARG NEXT_PUBLIC_CALENDLY_APPORTEUR_URL
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_PUBLIC_APP_ENV=${NEXT_PUBLIC_APP_ENV:-production}
 ENV NEXT_PUBLIC_CALENDLY_APPEL_URL=${NEXT_PUBLIC_CALENDLY_APPEL_URL}
 ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
 ENV NEXT_PUBLIC_PLAUSIBLE_DOMAIN=${NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
 ENV NEXT_PUBLIC_PLAUSIBLE_API_URL=${NEXT_PUBLIC_PLAUSIBLE_API_URL}
+ENV NEXT_PUBLIC_META_PIXEL_ID=${NEXT_PUBLIC_META_PIXEL_ID}
+ENV NEXT_PUBLIC_CALENDLY_APPORTEUR_URL=${NEXT_PUBLIC_CALENDLY_APPORTEUR_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Bypass Zod env.ts validation au build (option F.1 recovery 2026-05-16).

@@ -52,6 +52,7 @@ import {
   type CommercialApplicationInput,
 } from "@/lib/commercial-application/model";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
 
 export type CommercialApplicationState =
   { ok: true; submissionId: string } | { ok: false; error: string };
@@ -357,6 +358,18 @@ export async function submitCommercialApplicationAction(
         userAgent,
       },
     });
+
+    // 5 bis (a). Tunnel Facebook (2026-09-03) — le dossier complet est arrivé :
+    // les rappels « ton dossier t'attend » posés par le premier contact n'ont
+    // plus lieu d'être. Best-effort : la file absente ou le job déjà parti ne
+    // remontent rien.
+    try {
+      await annulerRelancesLeadApporteur(d.email);
+    } catch (relErr) {
+      Sentry.captureException(relErr, {
+        tags: { action: "submitCommercialApplicationAction", step: "annuler-relances" },
+      });
+    }
 
     // 5 bis. Synchro CRM — univers VIVIER (lot L2).
     //

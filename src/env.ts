@@ -155,6 +155,17 @@ export const env = createEnv({
     // La clé n'est affichée qu'UNE SEULE FOIS, à la création.
     CALENDLY_WEBHOOK_SIGNING_KEY: z.string().optional(),
 
+    // ── Tunnel Facebook — API Conversions Meta (2026-09-03) ────────────────
+    // Jeton « système » généré dans le Gestionnaire d'événements Meta (Pixel →
+    // Paramètres → API Conversions → Générer un token). SERVEUR UNIQUEMENT.
+    // Absent = l'envoi serveur de l'événement `Lead` est inerte, le pixel
+    // navigateur continue seul. Cf. `src/server/meta/conversions-api.ts`.
+    META_CAPI_ACCESS_TOKEN: z.string().optional(),
+    // Code « Événements de test » du Gestionnaire d'événements : posé, les
+    // envois apparaissent dans l'onglet de test et non en production. Le
+    // temps de vérifier l'installation, puis à RETIRER.
+    META_CAPI_TEST_EVENT_CODE: z.string().optional(),
+
     // ── Agenda Google — console « Agenda » (2026-08-26) ────────────────────
     // Accès en LECTURE ET ÉCRITURE à l'agenda de Will, par compte de service.
     // Les trois vont ensemble : il en manque une, le module est inerte et la
@@ -511,6 +522,22 @@ export const env = createEnv({
      * réservations par les UTM lus dans `/appel`.
      */
     NEXT_PUBLIC_LINKEDIN_PARTNER_ID: z.string().optional(),
+    /**
+     * Pixel Meta (Facebook / Instagram) — identifiant numérique du pixel
+     * (Gestionnaire d'événements → Sources de données). Absent = le composant
+     * `MetaPixel` rend `null` et aucune requête n'est émise. Chargé UNIQUEMENT
+     * sur les pages du tunnel Facebook (`/facebook`, `/facebook/merci`) et
+     * UNIQUEMENT après consentement. Même identifiant côté serveur pour l'API
+     * Conversions (`META_CAPI_ACCESS_TOKEN`).
+     */
+    NEXT_PUBLIC_META_PIXEL_ID: z.string().optional(),
+    /**
+     * Type d'événement Calendly réservé aux APPELS D'APPORTEURS D'AFFAIRES —
+     * distinct de l'appel client de `/appel`. Affiché sur `/facebook/merci`
+     * pour que le candidat choisisse lui-même le moment de l'appel. Absent =
+     * la page dit simplement qu'on l'appelle.
+     */
+    NEXT_PUBLIC_CALENDLY_APPORTEUR_URL: z.string().url().optional(),
     // Kill-switch PUBLIC du widget chatbot (T-08). "true" → la bulle se monte
     // côté client (île idle). Tant que non défini / != "true", le widget ne
     // monte rien et n'émet aucune requête. Pendant client de la garde serveur
@@ -558,6 +585,8 @@ export const env = createEnv({
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
+    META_CAPI_ACCESS_TOKEN: process.env.META_CAPI_ACCESS_TOKEN,
+    META_CAPI_TEST_EVENT_CODE: process.env.META_CAPI_TEST_EVENT_CODE,
     GOOGLE_CALENDAR_CLIENT_EMAIL: process.env.GOOGLE_CALENDAR_CLIENT_EMAIL,
     GOOGLE_CALENDAR_PRIVATE_KEY: process.env.GOOGLE_CALENDAR_PRIVATE_KEY,
     GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
@@ -629,6 +658,8 @@ export const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
     NEXT_PUBLIC_LINKEDIN_PARTNER_ID: process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID,
+    NEXT_PUBLIC_META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID,
+    NEXT_PUBLIC_CALENDLY_APPORTEUR_URL: process.env.NEXT_PUBLIC_CALENDLY_APPORTEUR_URL,
     NEXT_PUBLIC_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_CHATBOT_ENABLED,
     NEXT_PUBLIC_CHATBOT_PAGES: process.env.NEXT_PUBLIC_CHATBOT_PAGES,
   },

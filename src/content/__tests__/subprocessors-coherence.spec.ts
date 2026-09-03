@@ -57,6 +57,8 @@ const CSP_HOST_OWNER: Record<string, string> = {
   "plausible.axion-ia.com": "Plausible",
   "snap.licdn.com": "LinkedIn",
   "px.ads.linkedin.com": "LinkedIn",
+  "connect.facebook.net": "Meta",
+  "www.facebook.com": "Meta",
 };
 
 /**

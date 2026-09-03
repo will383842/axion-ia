@@ -3,7 +3,7 @@
  *
  * ## Ce que ce fichier verrouille
  *
- * `PAYLOAD_EXEMPLE` est un objet unique qui alimente les 42 gabarits. Son
+ * `PAYLOAD_EXEMPLE` est un objet unique qui alimente les 48 gabarits. Son
  * intérêt — un seul endroit à maintenir — est aussi son risque : rien n'oblige
  * un gabarit neuf à y trouver ses champs. Il rendrait alors un aperçu à trous,
  * et **personne ne le verrait**, puisqu'un `undefined` ne casse pas React, il
@@ -72,12 +72,16 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 45 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 48 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
     expect(tous.length, "aucun gabarit lu : le dossier a changé de nom ?").toBeGreaterThan(0);
-    expect(tous.length).toBe(45);
+    // 47 sur `main` (le tunnel Facebook en a apporté deux) + `candidature-reponse`
+    // apporté par ce lot. Le chiffre est relevé de la MESURE, jamais deviné : le
+    // compter à la main aurait raté les gabarits arrivés sur `main` pendant que
+    // cette branche vivait.
+    expect(tous.length).toBe(48);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
@@ -113,7 +117,13 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
    * gabarit écrit lui-même.
    *
    * Aucun test ne les voyait : ils se lisaient à l'œil, dans la console. On
-   * rend donc les 44 aperçus pour de vrai et on refuse les trous.
+   * rend donc TOUS les aperçus du registre pour de vrai, et on refuse les trous.
+   *
+   * ⚠️ « du registre », pas « des fichiers » : `EMAIL_TEMPLATE_NAMES` en compte
+   * DEUX de plus que le dossier n'a de fichiers — deux noms partagent le
+   * composant d'un autre gabarit. Le chiffre était écrit en dur ici, et il
+   * désignait le registre pendant que l'assertion voisine comptait les
+   * fichiers : deux ensembles différents sous le même nombre.
    */
   it("aucun aperçu ne montre de trou (undefined, NaN, [object Object])", async () => {
     const troues: string[] = [];
@@ -128,7 +138,7 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
       "un aperçu de la console affiche un trou : c'est la première chose que " +
         "Will voit du gabarit, et un « NaN » y discrédite tout le reste.",
     ).toEqual([]);
-    // Rendre 44 gabarits dépasse les 5 s par défaut de Vitest.
+    // Rendre tout le registre dépasse les 5 s par défaut de Vitest.
   }, 60_000);
 
   it("n'expose AUCUNE donnée réelle", () => {

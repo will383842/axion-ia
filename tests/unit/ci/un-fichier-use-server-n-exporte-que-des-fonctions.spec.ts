@@ -119,13 +119,16 @@ interface Faute {
  * corrige en le déplaçant dans un module ordinaire ; c'est l'affaire de deux
  * minutes, et cette liste n'existe que pour ce qui préexistait.
  *
- * Pour la vider : déplacer `PHASE_QUOTAS` hors de `expansion-state.ts`, puis
- * retirer sa ligne. La garde exige que la liste reste EXACTE — elle rougit si
- * la dette est réparée sans que sa ligne soit retirée.
+ * ✅ 2026-09-03 — LA LISTE EST VIDE. `PHASE_QUOTAS` a été déplacé dans
+ * `expansion-quotas.ts`, un module ordinaire, et sa ligne retirée d'ici comme
+ * cette consigne le demandait. Le dépôt ne porte donc plus aucune dette de ce
+ * type, et toute faute qui apparaîtra désormais sera NOUVELLE.
+ *
+ * La garde exige que la liste reste EXACTE — elle rougit si une dette est
+ * réparée sans que sa ligne soit retirée, et c'est ce qui a forcé ce nettoyage
+ * plutôt que de le laisser à plus tard.
  */
-const DETTE: ReadonlyArray<readonly [string, string]> = [
-  ["src/server/actions/content-gen/expansion-state.ts", "PHASE_QUOTAS"],
-];
+const DETTE: ReadonlyArray<readonly [string, string]> = [];
 
 function estUneDette(f: Faute): boolean {
   return DETTE.some(([fichier, nom]) => f.fichier === fichier && f.nom === nom);

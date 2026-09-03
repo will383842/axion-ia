@@ -35,6 +35,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
 | 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités **et des rendez-vous** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
 | 20  | Google Ireland Limited (Google Meet) | Rendez-vous de découverte tenus en **visioconférence** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
+| 21  | Meta Platforms Ireland Limited | Pixel Meta + API Conversions — mesure et reciblage de la campagne Facebook apporteurs (pages `/facebook*` uniquement, après consentement) | Irlande (UE) + USA | online | SCC + EU-US DPF | ⚪ non activé (`NEXT_PUBLIC_META_PIXEL_ID` absent) |
 | 21  | Calendly LLC (Notetaker) | **Enregistrement et transcription** automatiques des rendez-vous en visio | États-Unis | accepté (DPA Calendly) | SCC | 🛑 **ÉCARTÉ par décision du 2026-09-01** — aucun enregistrement |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).

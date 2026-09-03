@@ -47,6 +47,7 @@ import {
   cancellationConfirmedByUserSubject,
 } from "./cancellation-confirmed-by-user";
 import { SubmissionReplyEmail, submissionReplySubject } from "./submission-reply";
+import { CandidatureReponseEmail, candidatureReponseSubject } from "./candidature-reponse";
 // T15 — emails auto Qualiopi lifecycle
 import { QualiopiConvocationEmail, qualiopiConvocationSubject } from "./qualiopi-convocation";
 import { QualiopiRappelJ7Email, qualiopiRappelJ7Subject } from "./qualiopi-rappel-j7";
@@ -108,6 +109,8 @@ import {
   CandidatureCommercialRecapEmail,
   candidatureCommercialRecapSubject,
 } from "./candidature-commercial-recap";
+import { leadApporteurRecuSubject, LeadApporteurRecuEmail } from "./lead-apporteur-recu";
+import { leadApporteurRelanceSubject, LeadApporteurRelanceEmail } from "./lead-apporteur-relance";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
@@ -216,6 +219,10 @@ const TEMPLATES: TemplateMap = {
     subject: submissionReplySubject,
     component: SubmissionReplyEmail,
   },
+  "candidature-reponse": {
+    subject: candidatureReponseSubject,
+    component: CandidatureReponseEmail,
+  },
   // T15 — emails auto Qualiopi lifecycle
   "qualiopi-convocation": {
     subject: qualiopiConvocationSubject,
@@ -307,6 +314,15 @@ const TEMPLATES: TemplateMap = {
   "candidature-commercial-recap": {
     subject: candidatureCommercialRecapSubject,
     component: CandidatureCommercialRecapEmail,
+  },
+  // Tunnel Facebook apporteurs d'affaires (2026-09-03)
+  "lead-apporteur-recu": {
+    subject: leadApporteurRecuSubject,
+    component: LeadApporteurRecuEmail,
+  },
+  "lead-apporteur-relance": {
+    subject: leadApporteurRelanceSubject,
+    component: LeadApporteurRelanceEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,

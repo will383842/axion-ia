@@ -55,6 +55,9 @@ export type EmailJobName =
   | "cancellation-confirmed-by-user"
   // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply admin
   | "submission-reply"
+  // Lot 1 du chantier recrutement (2026-09-03) — réponse écrite à la main à un
+  // candidat. Jumeau de `submission-reply`, sur `JobApplicationReply`.
+  | "candidature-reponse"
   // T15 — emails auto Qualiopi lifecycle stagiaires + alertes internes
   | "qualiopi-convocation"
   | "qualiopi-rappel-j7"
@@ -96,6 +99,10 @@ export type EmailJobName =
   // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
   | "candidature-commercial-confirmee"
   | "candidature-commercial-recap"
+  // Tunnel Facebook apporteurs d'affaires (2026-09-03) : accusé du premier
+  // contact (formulaire court) + rappels J+2 / J+7 « ton dossier t'attend ».
+  | "lead-apporteur-recu"
+  | "lead-apporteur-relance"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information";

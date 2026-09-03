@@ -167,6 +167,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/components/formations/FormationDetailPage.tsx",
   "src/components/nav/Footer.tsx",
   "src/components/recrutement/PartenaireLandingPage.tsx",
+  // Landing du tunnel Facebook apporteurs (2026-09-03). MÊME MOTIF que la
+  // ligne au-dessus : la bande de confiance affirme « certifié Qualiopi » et
+  // « finançable OPCO », et ces deux littéraux sont gatés dans le fichier
+  // même, à côté de l'appel au drapeau. Les y écrire sans lire le drapeau
+  // serait illégal avant l'obtention du certificat.
+  "src/components/recrutement/FacebookLandingPage.tsx",
   "src/server/content-gen/generators/blog-article.ts",
   // ── Boîte de réception (2026-08-27) : annote chaque demande entrante du
   //    client CRM au même e-mail, pour qu'on ne convertisse pas deux fois la
