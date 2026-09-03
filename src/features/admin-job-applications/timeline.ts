@@ -113,6 +113,36 @@ export async function lireFrise(
   }));
 }
 
+/**
+ * Les entretiens d'une candidature, du plus ANCIEN au plus récent.
+ *
+ * L'ordre est l'inverse de la frise, et c'est voulu : la frise raconte ce qui
+ * vient de se passer, la liste des entretiens raconte une progression — tour 1,
+ * puis tour 2. La lire à l'envers ferait commencer l'histoire par sa fin.
+ */
+export async function lireEntretiens(
+  applicationId: string,
+  acteur: { role: string | null | undefined },
+) {
+  if (!peutOuvrirDossierCandidat(acteur.role)) return [];
+  return prisma.jobInterview.findMany({
+    where: { applicationId },
+    orderBy: [{ round: "asc" }, { scheduledAt: "asc" }],
+    select: {
+      id: true,
+      round: true,
+      mode: true,
+      state: true,
+      scheduledAt: true,
+      heldAt: true,
+      location: true,
+      conductedByName: true,
+      debrief: true,
+      outcome: true,
+    },
+  });
+}
+
 /** Libellés français des types d'événement — dérivés de l'enum, exhaustifs. */
 export const LIBELLE_EVENEMENT: Record<JobApplicationEventType, string> = {
   statut_change: "Changement de statut",

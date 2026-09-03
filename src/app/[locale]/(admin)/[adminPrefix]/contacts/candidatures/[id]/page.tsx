@@ -13,7 +13,8 @@ import { ApplicationStatusForm } from "./ApplicationStatusForm";
 import { FriseCandidature } from "./FriseCandidature";
 import { ComposerReponse } from "./ComposerReponse";
 import { ConsignerAuJournal } from "./ConsignerAuJournal";
-import { lireFrise } from "@/features/admin-job-applications/timeline";
+import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/timeline";
+import { Entretiens } from "./Entretiens";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
@@ -46,9 +47,11 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // La frise porte le corps des messages envoyés, donc le nom de la personne :
   // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
   // fier à la garde de la page. Deux étages qui ne peuvent pas diverger.
-  const frise = await lireFrise(a.id, {
-    role: (session.user as { role?: string }).role,
-  });
+  const acteur = { role: (session.user as { role?: string }).role };
+  const [frise, entretiens] = await Promise.all([
+    lireFrise(a.id, acteur),
+    lireEntretiens(a.id, acteur),
+  ]);
   const qLabels: Record<string, string> = {};
   if (offer && Array.isArray(offer.screeningQuestions)) {
     for (const q of offer.screeningQuestions as Array<{
@@ -154,6 +157,27 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           Ce qu'on veut savoir en ouvrant un dossier n'est pas « quel est son
           statut » mais « où en est-on avec cette personne ». L'histoire d'abord,
           la décision ensuite. */}
+      {/* Les entretiens AVANT l'historique : c'est ce qui est en cours, et
+          c'est le geste qu'on vient poser. La frise raconte, elle attend. */}
+      <AdminCard>
+        <h3 className="admin-section-title">Entretiens</h3>
+        <Entretiens
+          applicationId={a.id}
+          entretiens={entretiens.map((e) => ({
+            id: e.id,
+            round: e.round,
+            mode: e.mode,
+            state: e.state,
+            scheduledAt: e.scheduledAt.toISOString(),
+            heldAt: e.heldAt?.toISOString() ?? null,
+            location: e.location,
+            conductedByName: e.conductedByName,
+            debrief: e.debrief,
+            outcome: e.outcome,
+          }))}
+        />
+      </AdminCard>
+
       <AdminCard>
         <h3 className="admin-section-title">Historique</h3>
         <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-3)]">
