@@ -17,13 +17,26 @@ import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/mo
 // peut pas exporter (statuts, schéma, déchiffrement tolérant). Une seule
 // écriture : elles ne sont pas dupliquées ici.
 import { STATUSES, safeDecrypt, listApplications } from "./reads";
+import { consignerEvenement, resumeChangementStatut } from "./journal";
+import {
+  LIBELLE_STATUT,
+  LIBELLE_MOTIF_REFUS,
+  MOTIFS_REFUS,
+  exigeUnMotif,
+  interditUnMotif,
+  estUneDecision,
+} from "@/content/recrutement/statuts";
 import type { ListApplicationsInput } from "./reads";
 export type {
   ListApplicationsInput,
   JobApplicationListItem,
   JobApplicationListResult,
 } from "./reads";
-import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
+import type {
+  JobApplicationStatus,
+  JobRejectionReason,
+  Locale,
+} from "../../../prisma/generated/client";
 
 /** Déchiffrement tolérant : un ciphertext corrompu ne casse pas la page entière. */
 
@@ -34,7 +47,12 @@ async function requireAdminWrite() {
   if (role !== "super_admin" && role !== "admin" && role !== "editor") {
     throw new Error("forbidden");
   }
-  return { userId: session.user.id, role };
+  // Le nom est FIGÉ dans la frise au moment du geste : un compte renommé ou
+  // supprimé plus tard ne doit pas effacer qui a décidé. Repli sur l'adresse
+  // puis sur l'identifiant — une ligne sans auteur se lit comme une ligne dont
+  // on a perdu l'auteur.
+  const nom = (session.user as { name?: string }).name ?? session.user.email ?? session.user.id;
+  return { userId: session.user.id, role, nom };
 }
 /**
  * Ouvrir un dossier de candidature — identite comprise.
@@ -313,6 +331,11 @@ export interface JobApplicationDetail {
   photoMimeType: string | null;
   internalNotes: string | null;
   assignedTo: string | null;
+  /** Motif de sortie — jamais nul quand le statut est `rejected` ou `withdrawn`. */
+  rejectionReason: JobRejectionReason | null;
+  /** Quand la décision a été prise. Distinct d'`updatedAt`, que toute note bouge. */
+  decidedAt: Date | null;
+  hiredAt: Date | null;
   needsAttention: boolean;
   locale: Locale;
   submittedAt: Date;
@@ -383,6 +406,11 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     photoMimeType: a.photoMimeType,
     internalNotes: a.internalNotes,
     assignedTo: a.assignedTo,
+    // Sans ce champ, le formulaire rouvrait toujours sur « — Choisir un motif — »
+    // et le premier enregistrement d'une note ÉCRASAIT le motif déjà décidé.
+    rejectionReason: a.rejectionReason,
+    decidedAt: a.decidedAt,
+    hiredAt: a.hiredAt,
     needsAttention: a.needsAttention,
     locale: a.locale,
     submittedAt: a.submittedAt,
@@ -401,9 +429,42 @@ const updateSchema = z.object({
     (v) => (v === "" || v == null ? undefined : v),
     z.string().max(100).optional(),
   ),
+  /**
+   * Le motif de sortie. Facultatif ICI parce que le schéma ne connaît pas le
+   * statut visé au moment où il valide un champ ; la cohérence des deux est
+   * vérifiée juste après, par `verifierLaCoherenceDeLaDecision`.
+   */
+  rejectionReason: z.preprocess(
+    (v) => (v === "" || v == null ? undefined : v),
+    z.enum(MOTIFS_REFUS).optional(),
+  ),
   needsAttention: z.preprocess((v) => v === "true" || v === "on", z.boolean()),
 });
 export type UpdateApplicationState = { ok: true } | { ok: false; error: string };
+
+/**
+ * La règle de décision, DITE EN FRANÇAIS, avant que Postgres ne la dise en
+ * anglais.
+ *
+ * 🔑 La contrainte `job_applications_motif_coherent_check` reste seule juge —
+ * elle tient même si quelqu'un écrit en base par un autre chemin. Ce contrôle
+ * ne la double pas : il évite de faire remonter à un recruteur un message
+ * Postgres qui ne lui apprend rien (« violates check constraint … »), et il
+ * nomme le champ à corriger. Preuve des deux sens :
+ * `prisma/scripts/verifier-contrainte-decision.sql`.
+ */
+function verifierLaCoherenceDeLaDecision(
+  statut: JobApplicationStatus,
+  motif: string | undefined,
+): string | null {
+  if (exigeUnMotif(statut) && !motif) {
+    return `Un motif est obligatoire pour « ${LIBELLE_STATUT[statut]} » : un refus sans motif ne s'apprend pas.`;
+  }
+  if (interditUnMotif(statut) && motif) {
+    return `« ${LIBELLE_STATUT[statut]} » est un état en cours : il ne peut pas porter de motif de sortie.`;
+  }
+  return null;
+}
 
 export async function updateApplicationStatusAction(
   _prev: UpdateApplicationState,
@@ -420,19 +481,90 @@ export async function updateApplicationStatusAction(
     status: formData.get("status"),
     internalNotes: formData.get("internalNotes"),
     assignedTo: formData.get("assignedTo"),
+    rejectionReason: formData.get("rejectionReason"),
     needsAttention: formData.get("needsAttention"),
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
-  await prisma.jobApplication.update({
+  const incoherence = verifierLaCoherenceDeLaDecision(
+    parsed.data.status,
+    parsed.data.rejectionReason,
+  );
+  if (incoherence) return { ok: false, error: incoherence };
+
+  // L'état AVANT, lu pour deux raisons : écrire la transition dans la frise, et
+  // ne dater la décision QUE si elle vient d'être prise.
+  const avant = await prisma.jobApplication.findUnique({
     where: { id: parsed.data.id },
-    data: {
-      status: parsed.data.status,
-      internalNotes: parsed.data.internalNotes ?? null,
-      assignedTo: parsed.data.assignedTo ?? null,
-      needsAttention: parsed.data.needsAttention,
-    },
+    select: { status: true, decidedAt: true, hiredAt: true },
   });
+  if (!avant) return { ok: false, error: "Candidature introuvable." };
+
+  const statutChange = avant.status !== parsed.data.status;
+  const maintenant = new Date();
+
+  // 🔴 LE STATUT ET SA TRACE SONT ÉCRITS DANS LA MÊME TRANSACTION.
+  // Même raison qu'au composeur de réponse : une décision sans trace est
+  // exactement le défaut que ce chantier ferme.
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.jobApplication.update({
+        where: { id: parsed.data.id },
+        data: {
+          status: parsed.data.status,
+          internalNotes: parsed.data.internalNotes ?? null,
+          assignedTo: parsed.data.assignedTo ?? null,
+          // `?? null` et non `?? undefined` : repasser un dossier écarté en
+          // « en revue » doit EFFACER le motif, sinon la contrainte le refuse —
+          // et l'écran afficherait un état en cours portant un motif de sortie.
+          rejectionReason: parsed.data.rejectionReason ?? null,
+          needsAttention: parsed.data.needsAttention,
+          // La date de décision est posée à la PREMIÈRE entrée dans un état
+          // décisif, et n'est pas rafraîchie par un enregistrement ultérieur :
+          // `updatedAt` bouge à chaque note, elle ne dirait rien de la décision.
+          ...(estUneDecision(parsed.data.status) && statutChange
+            ? { decidedAt: maintenant, decidedById: session.userId }
+            : {}),
+          // Sortir d'un état décisif efface la date : un dossier « en revue »
+          // qui garderait une date de décision se lirait comme clos.
+          ...(!estUneDecision(parsed.data.status) && statutChange
+            ? { decidedAt: null, decidedById: null }
+            : {}),
+          ...(parsed.data.status === "hired" && avant.hiredAt === null
+            ? { hiredAt: maintenant }
+            : {}),
+        },
+      });
+
+      if (statutChange) {
+        const motif = parsed.data.rejectionReason;
+        await consignerEvenement(
+          {
+            applicationId: parsed.data.id,
+            // `decision` pour ce qui referme le dossier, `statut_change` pour
+            // une avancée. La frise n'affiche pas les deux de la même façon :
+            // confondre un pas de plus et une fin rendrait l'historique plat.
+            type: estUneDecision(parsed.data.status) ? "decision" : "statut_change",
+            authorId: session.userId,
+            authorName: session.nom,
+            summary: resumeChangementStatut(
+              avant.status,
+              parsed.data.status,
+              (st) => LIBELLE_STATUT[st as JobApplicationStatus] ?? st,
+            ),
+            body: motif ? `Motif : ${LIBELLE_MOTIF_REFUS[motif]}` : null,
+            ...(motif ? { meta: { motif } } : {}),
+          },
+          tx,
+        );
+      }
+    });
+  } catch {
+    // Le message Postgres de la contrainte n'apprend rien à un recruteur ; le
+    // contrôle en amont a déjà nommé le cas prévisible.
+    return { ok: false, error: "Enregistrement refusé — vérifiez le statut et son motif." };
+  }
+
   await prisma.activityLog.create({
     data: {
       adminUserId: session.userId,
@@ -443,6 +575,9 @@ export async function updateApplicationStatusAction(
     },
   });
   revalidatePath(adminPath("fr", "contacts/candidatures"));
+  // La fiche PORTE la frise : sans cette seconde revalidation, la décision
+  // s'enregistre et l'historique continue d'afficher l'état précédent.
+  revalidatePath(adminPath("fr", `contacts/candidatures/${parsed.data.id}`));
   return { ok: true };
 }
 

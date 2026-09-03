@@ -1465,6 +1465,8 @@ model AdminUser {
   jobApplicationEvents            JobApplicationEvent[]
   jobApplicationReplies           JobApplicationReply[]
   jobInterviews                   JobInterview[]
+  candidaturesDecidees            JobApplication[] @relation("CandidatureDecidee")
+  candidaturesAssignees           JobApplication[] @relation("CandidatureAssignee")
   // Preuve de signature au grain document — provenance et révocation.
   documentSignaturesRecueillies   DocumentSignature[]      @relation("DocumentSignatureRecueillie")
   documentSignaturesRevoquees     DocumentSignature[]      @relation("DocumentSignatureRevoquee")
@@ -5580,6 +5582,10 @@ model Trainer {
   createdAt                    DateTime      @default(now()) @map("created_at")
   updatedAt                    DateTime      @updatedAt @map("updated_at")
 
+  /// Lot 3 du chantier recrutement — la candidature d'où vient cette personne,
+  /// quand elle vient d'une candidature. Facultatif : un formateur peut avoir
+  /// été recruté avant l'existence du suivi.
+  candidatures    JobApplication[]
   sessionsAnimees TrainingSession[] @relation("SessionFormateurPrincipal")
 
   // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
@@ -8176,9 +8182,47 @@ enum JobApplicationStatus {
   new
   reviewing
   shortlisted
+  /// Lot 3 — au moins un entretien planifié ou tenu. Sans cet état, une
+  /// candidature en cours d'entretien reste « en revue » et rien ne distingue
+  /// celle qu'on lit de celle qu'on rencontre.
+  interview
+  /// Proposition faite, réponse attendue. C'est l'état le plus court et le plus
+  /// coûteux à confondre : un candidat en attente de notre réponse et un
+  /// candidat dont on attend la sienne n'appellent pas le même geste.
+  offer
   rejected
+  /// Le candidat s'est retiré. DISTINCT de `rejected` : la décision n'est pas
+  /// la nôtre, et le confondre fausserait toute lecture des motifs de refus —
+  /// on lirait comme une sélection ce qui est un renoncement.
+  withdrawn
   hired
   archived
+}
+
+/// Pourquoi une candidature s'est arrêtée là.
+///
+/// 🔑 Un refus sans motif ne s'apprend pas. « Pas le niveau », « prétentions
+/// hors budget », « ne s'est pas présenté », « a décliné notre offre » et
+/// « poste déjà pourvu » s'écrivaient tous `rejected` : on ne pouvait ni
+/// analyser, ni répondre correctement, ni décider six mois plus tard qui valait
+/// la peine d'être rappelé.
+enum JobRejectionReason {
+  competences_insuffisantes
+  pretentions_hors_budget
+  hors_zone
+  profil_hors_cible
+  sans_reponse_candidat
+  absent_entretien
+  candidat_a_decline
+  poste_pourvu
+  doublon
+  hors_sujet
+  /// Reprise du stock antérieur à la décision D3. Ne PAS l'utiliser pour une
+  /// décision nouvelle : elle existe pour dire « on ne sait pas », pas pour
+  /// éviter de choisir.
+  non_renseigne
+
+  @@map("job_rejection_reason")
 }
 
 /// Une offre d'emploi pilotée depuis la console admin (publiée en dynamique).
@@ -8357,6 +8401,44 @@ model JobApplication {
   status         JobApplicationStatus @default(new)
   internalNotes  String?              @map("internal_notes") @db.Text
   assignedTo     String?              @map("assigned_to") @db.VarChar(100)
+
+  /// ── LOT 3 — LA DÉCISION, ET CE QUI LA REND RELISIBLE ────────────────────
+  ///
+  /// Le motif est OBLIGATOIRE dès que la candidature est écartée ou retirée :
+  /// une contrainte SQL le garantit, pas une validation d'écran.
+  rejectionReason JobRejectionReason? @map("rejection_reason")
+
+  /// Quand la décision a été prise, et par qui. `updatedAt` ne dit rien de
+  /// cela : il bouge à chaque enregistrement, y compris pour une note.
+  decidedAt  DateTime?  @map("decided_at")
+  decidedById String?   @map("decided_by_id") @db.Uuid
+  decidedBy   AdminUser? @relation("CandidatureDecidee", fields: [decidedById], references: [id], onDelete: SetNull)
+
+  /// ── LA PERSONNE EST ENTRÉE DANS LA SOCIÉTÉ ──────────────────────────────
+  ///
+  /// `hired` était un mot sans suite : rien ne disait la date d'entrée, rien ne
+  /// reliait la candidature à la personne. Le pont vers `Trainer` est
+  /// FACULTATIF — tout le monde n'est pas formateur — mais quand il existe, il
+  /// rend le parcours lisible de bout en bout.
+  hiredAt   DateTime? @map("hired_at")
+  startDate DateTime? @map("start_date") @db.Date
+  trainerId String?   @map("trainer_id") @db.Uuid
+  trainer   Trainer?  @relation(fields: [trainerId], references: [id], onDelete: SetNull)
+
+  /// Qui suit ce dossier. Remplace `assignedTo`, une chaîne libre où deux
+  /// orthographes faisaient deux recruteurs et où « mes candidatures » n'était
+  /// pas filtrable.
+  assignedToId String?    @map("assigned_to_id") @db.Uuid
+  assignedToUser AdminUser? @relation("CandidatureAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  /// Dernier fait consigné au journal — dénormalisé, alimenté par
+  /// `consignerEvenement` et par lui seul. C'est ce qui permettra de trier les
+  /// dossiers oubliés sans parcourir le journal de chacun.
+  lastActivityAt  DateTime? @map("last_activity_at")
+  /// Première réponse PARTIE au candidat. Sert au décompte des dossiers sans
+  /// réponse — distinct de `lastActivityAt`, qu'une note interne suffit à
+  /// rafraîchir sans que personne n'ait écrit à la personne.
+  firstResponseAt DateTime? @map("first_response_at")
   needsAttention Boolean              @default(true) @map("needs_attention")
   submittedAt    DateTime             @default(now()) @map("submitted_at")
   updatedAt      DateTime             @updatedAt @map("updated_at")
@@ -8376,6 +8458,10 @@ model JobApplication {
   @@index([offerId])
   @@index([status, needsAttention])
   @@index([submittedAt])
+  /// Lot 3 — « qui suit quoi », et « qu'a-t-on oublié ». Sans eux, les deux
+  /// écrans du lot 4 balaieraient la table entière à chaque rendu.
+  @@index([assignedToId, status])
+  @@index([status, lastActivityAt])
   /// Lot L4 — l'index qui porte le job J+30 : « les fiches informées, non
   /// opposées, pas encore intégrées ». Sans lui le job scannerait toute la
   /// table à chaque passage quotidien.

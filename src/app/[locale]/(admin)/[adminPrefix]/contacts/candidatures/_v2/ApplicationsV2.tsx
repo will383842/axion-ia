@@ -24,6 +24,7 @@ import type { CandidatureUnifieeItem } from "@/features/admin-job-applications/a
 import type { SourceCandidatures } from "@/features/admin-job-applications/annonces-stats";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { LIBELLE_STATUT, TON_STATUT } from "@/content/recrutement/statuts";
 
 export type CandidaturesView = "all" | "monteur" | "memo" | "standard";
 
@@ -34,23 +35,15 @@ export type CandidaturesView = "all" | "monteur" | "memo" | "standard";
  */
 const MASQUE = "—";
 
-const STATUS_LABELS: Record<string, string> = {
-  new: "Nouvelle",
-  reviewing: "En revue",
-  shortlisted: "Présélection",
-  rejected: "Refusée",
-  hired: "Recrutée",
-  archived: "Archivée",
-};
-// Track 2 : tonalité du badge dérivée du statut (avant : `.admin-badge` neutre).
-const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
-  hired: "success",
-  new: "warning",
-  reviewing: "warning",
-  shortlisted: "warning",
-  rejected: "neutral",
-  archived: "neutral",
-};
+// 🔴 Ces deux tables étaient tenues À LA MAIN ici, et une troisième copie vivait
+// dans le formulaire de la fiche. Elles ne connaissaient que six statuts ; la
+// base en porte neuf depuis le lot 3. Un dossier « en entretien » se serait
+// affiché « interview » en pastille grise — le libellé brut de l'enum, et le
+// ton du défaut. Elles dérivent désormais de `@/content/recrutement/statuts`,
+// où le type refuse une table incomplète.
+const STATUS_LABELS: Record<string, string> = LIBELLE_STATUT;
+const STATUS_TONE: Record<string, "success" | "warning" | "neutral" | "info" | "destructive"> =
+  TON_STATUT;
 
 // Statuts des candidatures commerciales (enum SubmissionStatus — la table
 // Submission porte aussi les états pipeline de /planning/pipeline).
