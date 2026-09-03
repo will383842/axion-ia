@@ -677,11 +677,19 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Durée de conservation",
-          body: "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum.",
+          body: "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous.",
         },
         {
           title: "Rendez-vous de découverte",
           body: "Le rendez-vous de premier contact réservé depuis la page /appel se tient au choix par téléphone ou en visioconférence. Si vous choisissez la visioconférence, un lien de réunion vous est transmis avec la confirmation ; la réunion se déroule alors sur un service tiers, dont la localisation et le cadre de transfert figurent sur /sous-processeurs. Ces rendez-vous ne sont ni enregistrés ni transcrits : aucune captation audio ou vidéo n'est réalisée, et il n'existe donc aucun enregistrement à conserver ou à demander. Seules les informations que vous saisissez au moment de la réservation — nom, adresse e-mail, téléphone et réponses aux questions du formulaire — sont conservées, dans les conditions décrites ci-dessus.",
+        },
+        {
+          title: "Candidatures et recrutement",
+          body: "Lorsque vous postulez à une offre publiée sur /carrieres, nous collectons ce que vous saisissez : civilité (facultative), nom, prénom, adresse e-mail, téléphone, ville, poste actuel, expérience, disponibilité, profil LinkedIn, un mot de motivation et vos réponses aux questions propres à l'offre. Le CV et la photographie sont facultatifs : leur absence n'empêche pas l'examen de votre candidature. Le permis de conduire et le véhicule ne vous sont demandés que lorsque l'offre l'exige. Nous pouvons vous demander la rémunération que vous souhaitez ; nous ne demandons jamais votre historique de rémunération (directive (UE) 2023/970). Aucune information relative au sexe, à l'âge, à l'origine, à l'état de santé ou à la situation de famille n'est collectée. Base légale : mesures précontractuelles prises à votre demande (RGPD art. 6.1.b) ; seule la conservation en vivier, décrite ci-dessous, repose sur votre consentement (art. 6.1.a). Vos nom, prénom, adresse e-mail et numéro de téléphone sont chiffrés dans notre base ; le CV et la photographie sont stockés hors base et hors du site public. L'accès à un dossier de candidature est réservé aux personnes habilitées, et chaque ouverture d'un dossier nominatif est journalisée. Vos données de candidature ne sont ni vendues, ni transmises à un tiers à des fins de recrutement.",
+        },
+        {
+          title: "Conservation des candidatures",
+          body: "Candidature non retenue : 24 mois à compter de son dépôt, puis suppression automatique — CV et photographie compris. Si vous êtes recruté ou recrutée : votre dossier de candidature devient une pièce de votre dossier du personnel et se conserve pendant la relation de travail ; il n'est plus soumis à la suppression automatique, et son effacement devient un geste explicite. Conservation en vivier : facultative, et distincte de la candidature elle-même. Elle n'a lieu que si vous l'avez expressément acceptée — la case est décochée par défaut — et sert à vous recontacter pour d'autres postes. Vous pouvez vous y opposer à tout moment, en un clic, depuis le lien figurant dans nos messages, sans créer de compte ni justifier votre demande. Sans cet accord, votre candidature n'est utilisée que pour l'offre à laquelle vous avez postulé.",
         },
         {
           title: "Vos droits",
@@ -730,7 +738,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Retention period",
-          body: "Client data: 5 years after end of service (French accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum.",
+          body: "Client data: 5 years after end of service (French accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below.",
+        },
+        {
+          title: "Job applications and recruitment",
+          body: "When you apply to a role published on /carrieres, we collect what you enter: title (optional), first and last name, email address, phone number, city, current role, experience, availability, LinkedIn profile, a short motivation note and your answers to the questions specific to that role. A CV and a photograph are optional: their absence does not prevent your application from being reviewed. Driving licence and vehicle are only asked for when the role requires them. We may ask for the compensation you are seeking; we never ask for your compensation history (EU Directive 2023/970). No information about sex, age, origin, health or family situation is collected. Legal basis: pre-contractual measures taken at your request (GDPR art. 6.1.b); only the talent-pool retention described below rests on your consent (art. 6.1.a). Your name, email address and phone number are encrypted in our database; the CV and photograph are stored outside the database and outside the public site. Access to an application file is restricted to authorised staff, and every opening of a named file is logged. Your application data is neither sold nor passed to any third party for recruitment purposes.",
+        },
+        {
+          title: "Retention of job applications",
+          body: "Application not selected: 24 months from submission, then automatic deletion — CV and photograph included. If you are hired: your application file becomes part of your personnel file and is kept for the duration of the employment relationship; it is no longer subject to automatic deletion, and erasing it becomes an explicit act. Talent-pool retention: optional, and separate from the application itself. It only happens if you have expressly agreed to it — the box is unticked by default — and serves to contact you about other roles. You may object at any time, in one click, from the link in our messages, without creating an account or giving a reason. Without that agreement, your application is used only for the role you applied to.",
         },
         {
           title: "Your rights",
