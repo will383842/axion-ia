@@ -126,6 +126,64 @@ function budgetDeclare(source: string): number | null {
   return t?.[1] ? Number(t[1].replace(/_/g, "")) : null;
 }
 
+/**
+ * Les CROCHETS d'un source, avec leur corps — `beforeAll`, `beforeEach`,
+ * `afterAll`, `afterEach`.
+ *
+ * 🔴 POURQUOI ILS SE MESURENT A PART, ET C'EST TOUT LE POINT DE CET AJOUT.
+ *
+ * `test.describe.configure({ timeout })` ne s'applique qu'aux **TESTS**. Un
+ * crochet garde le defaut de `playwright.config.ts` — 30 s — sauf s'il appelle
+ * `test.setTimeout()` dans son propre corps.
+ *
+ * Le cliquet lisait le budget PAR FICHIER : un fichier declarant 300 s au
+ * `describe` passait au vert meme quand son `beforeAll` appelait une operation
+ * de 180 s avec trente secondes au compteur. Mesure le 2026-09-03 sur
+ * `a11y-admin.spec.ts` : « "beforeAll" hook timeout of 30000ms exceeded », trois
+ * tests tombes — et le message n'accusait pas la connexion.
+ *
+ * ⚠️ Ce piege est devenu INTERMITTENT depuis que `loginAsAdmin` rejoue une
+ * session partagee : le crochet ne se connecte vraiment que s'il est le premier
+ * de son worker. Un rouge qui depend de l'ordre des tests est plus couteux
+ * qu'un rouge franc — raison de plus pour le tenir par une garde.
+ */
+function crochets(source: string): { nom: string; corps: string }[] {
+  const out: { nom: string; corps: string }[] = [];
+  const motif = /test\.(beforeAll|beforeEach|afterAll|afterEach)\s*\(/g;
+  let m = motif.exec(source);
+  while (m !== null) {
+    // 🔴 LA FLÈCHE D'ABORD, L'ACCOLADE ENSUITE. Chercher le premier `{` après
+    // `test.beforeAll(` attrape la DÉSTRUCTURATION des paramètres — dans
+    // `test.beforeAll(async ({ browser }) => {`, c'est `{ browser }` qui est
+    // extrait, pas le corps. Le contrôle mesurait alors une accolade vide,
+    // trouvait zéro délai, et passait au vert sur le cas même qu'il vise.
+    //
+    // 🔑 C'est le contre-témoin ci-dessous qui l'a attrapé, en exigeant que
+    // l'extracteur retrouve un `setTimeout` qu'on sait présent. Sans lui,
+    // j'aurais livré une garde inerte — et elle aurait eu l'air de garder.
+    const flecheRel = source.slice(m.index).indexOf("=>");
+    const ouvrante = flecheRel === -1 ? -1 : source.indexOf("{", m.index + flecheRel);
+    if (ouvrante !== -1) {
+      let profondeur = 0;
+      let fin = source.length;
+      for (let i = ouvrante; i < source.length; i += 1) {
+        const c = source[i];
+        if (c === "{") profondeur += 1;
+        else if (c === "}") {
+          profondeur -= 1;
+          if (profondeur === 0) {
+            fin = i;
+            break;
+          }
+        }
+      }
+      out.push({ nom: m[1] ?? "crochet", corps: source.slice(ouvrante, fin) });
+    }
+    m = motif.exec(source);
+  }
+  return out;
+}
+
 describe("aucun délai déclaré n'est plus long que son budget", () => {
   const defaut = budgetParDefaut();
   const fichiers = specs(RACINE_E2E);
@@ -172,6 +230,70 @@ describe("aucun délai déclaré n'est plus long que son budget", () => {
       "un délai plus long que le budget qui le contient ne peut JAMAIS expirer : " +
         "c'est le budget qui rend le verdict, et son message ne nomme rien",
     ).toEqual([]);
+  });
+
+  it("🔴 aucun CROCHET n'appelle plus long que SON propre budget", () => {
+    // `describe.configure` ne couvre pas les crochets : sans `test.setTimeout()`
+    // dans son corps, un `beforeAll` a 30 s, quoi qu'annonce la suite.
+    const fautes: string[] = [];
+    for (const chemin of fichiers) {
+      const source = readFileSync(chemin, "utf8");
+      for (const { nom, corps } of crochets(source)) {
+        const budget = budgetDeclare(corps) ?? defaut;
+        let interne = delaiMaximal(corps);
+        // Les aides appelees DEPUIS le crochet comptent : c'est par elles que le
+        // depassement est arrive (`loginAsAdmin` attend jusqu'a 180 s).
+        for (const aide of aidesImportees(source)) {
+          const nomAide =
+            aide
+              .replace(/\\/g, "/")
+              .split("/")
+              .pop()
+              ?.replace(/\.tsx?$/, "") ?? "";
+          const appelee = nomAide.length > 0 && corps.includes(nomAide);
+          const parFonction = /loginAsAdmin\s*\(/.test(corps);
+          if (appelee || parFonction) {
+            interne = Math.max(interne, delaiMaximal(readFileSync(aide, "utf8")));
+          }
+        }
+        if (interne >= budget) {
+          fautes.push(
+            `${relative(process.cwd(), chemin).replace(/\\/g, "/")} — ${nom} : ` +
+              `budget ${budget} ms, délai interne ${interne} ms`,
+          );
+        }
+      }
+    }
+    expect(
+      fautes,
+      "`describe.configure` ne s'applique qu'aux TESTS : un crochet garde le budget " +
+        "par défaut de la configuration. Poser `test.setTimeout()` EN PREMIÈRE " +
+        "instruction du crochet, comme `console-editoriale.spec.ts`",
+    ).toEqual([]);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : l'extracteur de crochets en trouve, et lit leur corps", () => {
+    // Sans lui, un motif casse rendrait le test ci-dessus vert en n'examinant
+    // aucun crochet — la panne que ce dépôt a déjà payée cinq fois.
+    // ⚠️ Seuil posé SOUS la mesure, jamais au-dessus. Compté le 2026-09-04 :
+    // `tests/e2e` porte exactement QUATRE crochets, tous en forme `test.xxx(`
+    // (2 `beforeAll`, 1 `beforeEach`, 1 `afterAll`). Un seuil à 5 — celui que
+    // j'avais posé de mémoire — rendait ce contre-témoin rouge sur du code sain,
+    // c'est-à-dire exactement le défaut qu'il prétend empêcher.
+    const total = fichiers.reduce((n, f) => n + crochets(readFileSync(f, "utf8")).length, 0);
+    expect(
+      total,
+      "aucun crochet trouvé sous tests/e2e — le motif est cassé",
+    ).toBeGreaterThanOrEqual(3);
+
+    const temoin = crochets(
+      "test.beforeAll(async ({ browser }) => { test.setTimeout(300_000); await f(); });",
+    );
+    expect(temoin.length).toBe(1);
+    expect(budgetDeclare(temoin[0]?.corps ?? "")).toBe(300000);
+
+    const arme = crochets("test.beforeAll(async () => { await loginAsAdmin(p); });");
+    expect(budgetDeclare(arme[0]?.corps ?? "")).toBeNull();
   });
 
   it("aucune attente réseau n'est laissée sans délai", () => {
