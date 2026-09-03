@@ -130,10 +130,49 @@ En outre, `src/server/exporters/knowledge-rss.ts` + `knowledge-sitemap.ts` font 
 - ✅ Si une nouvelle page SSG fait un appel DB direct au build, vérifier que le stub Proxy couvre la méthode utilisée OU ajouter un `if (process.env.DATABASE_URL?.includes("stub.invalid")) return <fallback>` early-exit dans la page
 - ✅ Tests Vitest tournent avec un PrismaClient mock distinct (pas affecté par le stub Proxy build-time)
 
+### ⚠️ La durée du build a DÉRIVÉ — ~50 min, pas ~25
+
+Ce paragraphe a annoncé « Job `build` (~25 min) » jusqu'au 2026-09-03. **C'est faux d'un
+facteur deux**, et mesuré sur **trois runs**, par **deux sessions indépendantes**, en lisant
+les `startedAt`/`completedAt` de chaque job — pas les bornes du run :
+
+| Run                       | `Build & push image` | `Trigger Coolify deploy` | Total jusqu'à l'atterrissage |
+| ------------------------- | -------------------- | ------------------------ | ---------------------------- |
+| 33715874962 (`199d3978a`) | **48 min 59 s**      | 3 min 42 s               | ~53 min                      |
+| 33683470223 (`4fc249110`) | **55 min 41 s**      | 7 min 44 s               | ~63 min                      |
+| 33677644600 (`095d33ad0`) | **47 min 21 s**      | 4 min 12 s               | ~52 min                      |
+
+**Build 47-56 min, atterrissage 52-63 min. Le plancher n'est jamais sous 47 : ne jamais
+réserver un créneau de fusion à moins d'une heure.**
+
+🔑 **Ce chiffre n'est pas une statistique de confort : c'est celui qu'on lit pour décider si
+le créneau de fusion est libre.** Le workflow porte `concurrency: cancel-in-progress` —
+fusionner pendant un build en vol le TUE, et la prod reste en arrière. Le 2026-09-03, une
+session a réservé le créneau alors qu'un build tournait depuis 48 min : `gh pr list` ne
+montre pas les déploiements en vol.
+
+⚠️ **Deux précisions qui évitent de chercher au mauvais endroit :**
+
+- **le job `deploy` n'est PAS le coupable.** Le « ~30 s à 28 min » annoncé plus bas est
+  bon : mesuré 3 à 8 min sur les trois runs. **La dérive est entièrement dans le build** ;
+- **`Lighthouse CI post-deploy` prend 25-26 min, mais il vient APRÈS l'atterrissage** : il
+  n'entre pas dans le calcul du créneau. L'ajouter « par prudence » ferait attendre une
+  demi-heure pour rien.
+
+**Avant de réserver un créneau, lire l'état RÉEL, jamais ce fichier :**
+
+```bash
+gh run list --branch main --workflow "Build & Deploy · GHCR + Coolify (axion-ia.com)" --limit 1
+curl -sI https://axion-ia.com/fr | grep -i x-axion-build-sha
+```
+
+La cause est structurelle (SSG de 17 629 routes), pas imputable à une PR : #947 était du
+code serveur, 29 fichiers, aucune route nouvelle.
+
 ### Pipeline complet
 
 1. `git push main` → workflow `.github/workflows/deploy-coolify.yml`
-2. **Job `build`** (~25 min) :
+2. **Job `build`** (⚠️ **47-56 min mesurés**, pas ~25 — voir ci-dessus) :
    - Free disk space agressif (~75 GB free)
    - `docker build axionia/Dockerfile` avec build-args stubs
    - `docker push ghcr.io/will383842/axion-ia:{latest,sha-XXXXXXX,main}`

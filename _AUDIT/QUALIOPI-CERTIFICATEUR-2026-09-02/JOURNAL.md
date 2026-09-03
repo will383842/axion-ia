@@ -301,27 +301,80 @@ demande. Le refus n'est simplement plus « pris d'avance » depuis la console.
 
 ## 4. Ce qui RESTE, et qui n'est pas du code
 
-Ces points sont hors du périmètre « système interne » et ne peuvent pas être corrigés par
-une PR. Ils sont listés parce que **le critère 1 du RNQ porte sur l'information du public**,
-donc l'auditrice les regardera.
+🔴 **CETTE SECTION A ÉTÉ ÉCRITE FAUSSE, ET CORRIGÉE LE 2026-09-03.** Elle listait cinq
+points ; **deux étaient périmés**. Je les avais repris de notes de mémoire — dont l'une du
+2026-08-24 — sans les confronter à la PRODUCTION, alors que la doctrine de ce dépôt le dit
+en toutes lettres : *toute affirmation d'un `.md` est une hypothèse à réfuter*, et elle vaut
+aussi pour les livrables qu'on a écrits soi-même. Les deux constats retirés sont conservés
+ci-dessous, barrés, parce qu'effacer une erreur sans la nommer empêche d'apprendre d'elle.
 
-1. ⛔ **Le règlement intérieur PUBLIÉ reste amputé** — il énonce l'exclusion définitive sans
-   l'échelle des sanctions ni les droits de la défense (art. R.6352-3 à -8). Le PDF remis au
-   stagiaire, lui, est complet. Constat de 2026-08-24, toujours ouvert.
-2. ⛔ **La catégorie d'actions certifiée** vient d'un défaut codé en dur, pas d'un
-   certificat. À saisir : `qualiopi_categories_certifiees`, `qualiopi_organisme`,
-   `qualiopi_date_obtention`, `qualiopi_validite`.
-3. ⛔ **La conservation de 5 ans n'est appliquée par aucune purge** — `suppressionPrevueAt`
-   est écrite à trois endroits et lue par rien, alors qu'elle est imprimée sur chaque pièce
-   signée et dans le RI. Arbitrage Will (chiffrage prêt : `pnpm qualiopi:retention-dry-run`).
-4. ⛔ **Une formation porte un code RS/RNCP** alors que les indicateurs 3, 7 ⭐ et 16 ⭐ sont
-   déclarés non applicables. L'écran de l'auditrice **nomme désormais cette contradiction**
-   et ses deux issues, au lieu de l'afficher — mais l'arbitrage reste à faire.
-5. ⛔ **Les sept indicateurs qui n'attendent qu'une vraie formation** (4, 8, 9, 10, 11, 12,
-   30) ne se ferment ni par du code ni par de la saisie : ils attendent une session conduite
-   du début à la fin, dans l'ordre.
+### 4.1 ⛔ Le certificat Qualiopi — quatre champs vides, et ils le resteront
+
+Mesuré en production le 2026-09-03, sur `/qualiopi/config` :
+
+| Champ | Valeur |
+|---|---|
+| Numéro du certificat Qualiopi | **vide** |
+| Organisme certificateur (COFRAC) | **vide** |
+| Date d'obtention du certificat Qualiopi | **vide** |
+| Date de fin de validité du certificat Qualiopi | **vide** |
+| Catégories d'actions certifiées | « Actions de formation » |
+
+⚠️ **Ces quatre champs ne PEUVENT pas être remplis aujourd'hui** : la certification n'est
+pas obtenue, l'audit initial est à venir. L'action n'est donc pas « saisir », elle est
+« saisir le jour où le certificat est délivré » — les quatre valeurs se lisent sur le
+certificat, et nulle part ailleurs.
+
+🔴 En revanche, « Catégories d'actions certifiées » porte **déjà** une valeur, alors que le
+défaut du registre a été délibérément vidé le 2026-08-20 pour qu'aucune mention légale ne
+soit affirmée sans source. Quelqu'un l'a donc saisie. Elle alimente la mention publique de
+la marque Qualiopi. **À confronter au certificat le jour de sa délivrance** — c'est la seule
+vérification qui la rendra vraie. (Non touchée : ordre permanent de Will du 2026-08-23, le
+périmètre de travail est le système interne.)
+
+### 4.2 ⛔ La conservation de 5 ans n'est appliquée par aucune purge
+
+`suppressionPrevueAt` est écrite à trois endroits et lue par **aucune** purge, alors qu'elle
+est imprimée sur chaque pièce signée et dans le règlement intérieur. Chiffrage prêt :
+`pnpm qualiopi:retention-dry-run`.
+
+⚠️ Ce purgeur n'a **délibérément pas** été construit : écrire du code qui supprime
+automatiquement des pièces légales n'est pas un geste à poser sans arbitrage.
+
+### 4.3 ⛔ Sept indicateurs n'attendent qu'une vraie session
+
+Relevés en production le 2026-09-03, ce sont exactement les sept « à compléter » :
+
+**4** analyse du besoin · **8** positionnement à l'entrée · **9** information sur les
+conditions de déroulement · **10 ⭐** adaptation · **11 ⭐** évaluation de l'atteinte des
+objectifs · **12** assiduité · **30** appréciations des parties prenantes.
+
+Tous portent le même motif : « 0 sur 0 », « aucune inscription sur une session démarrée ».
+La base de production ne contient **aucune session réalisée**. Ni code ni saisie ne les
+ferme : il faut une session conduite **dans l'ordre**, du positionnement à l'évaluation.
 
 ---
+
+### Deux constats RETIRÉS, parce que faux
+
+~~**Le règlement intérieur publié est amputé** — il énoncerait l'exclusion définitive sans
+échelle des sanctions ni droits de la défense.~~
+🔴 **FAUX au 2026-09-03.** Mesuré sur `https://axion-ia.com/fr/reglement-interieur` : la
+page publie « **Article 3 bis — Échelle des sanctions** » et « **Article 3 ter — Procédure
+disciplinaire et droits de la défense** », et cite **R.6352-3, -4, -6, -7 et -8**. Le
+constat du 2026-08-24 a été traité depuis ; je l'ai recopié sans le revérifier.
+
+~~**Une formation porte un code RS/RNCP** alors que les indicateurs 3, 7 ⭐ et 16 ⭐ sont
+déclarés non applicables.~~
+🔴 **FAUX EN PRODUCTION.** Cette contradiction existe sur la **fixture volumétrique de
+développement**, pas en ligne : l'avertissement correspondant n'apparaît pas sur l'écran de
+production, aucune formation n'y porte de code RS/RNCP. Le mécanisme qui NOMME la
+contradiction reste utile — il servira le jour où un tel code sera saisi — mais il n'y a
+aujourd'hui **rien à arbitrer**.
+
+🔑 **La leçon, et elle est coûteuse** : j'ai audité la production par l'UI, et j'ai malgré
+tout rempli ma section « reste à faire » depuis des notes, sans rouvrir les pages. Un audit
+qui mesure l'écran et recopie sa conclusion n'a mesuré que la moitié du chemin.
 
 ## 5. Ce que cet audit N'A PAS fait, et pourquoi
 
