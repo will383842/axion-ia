@@ -112,3 +112,16 @@ CREATE INDEX "calendly_events_linked_job_application_id_idx"
 
 COMMENT ON COLUMN "calendly_events"."linked_job_application_id" IS
   'Candidature à laquelle ce rendez-vous se rattache. Miroir de linked_submission_id, qui n''existait que pour les demandes commerciales : un rendez-vous pris par un candidat ne rejoignait aucun dossier.';
+
+-- ── Le type d'événement qui manquait au journal ──────────────────────────────
+--
+-- Annuler un entretien, ou constater que le candidat n'est pas venu, se
+-- consignait faute de mieux sous `entretien_planifie` : la frise aurait affiché
+-- « Entretien planifié » au-dessus d'un résumé disant « Entretien annulé ». Un
+-- libellé qui se contredit se lit deux fois avant qu'on comprenne, et une fois
+-- de trop.
+--
+-- ⚠️ Cette valeur n'est PAS utilisée dans cette migration, et ne peut pas
+-- l'être : Postgres refuse d'employer une valeur ajoutée par ALTER TYPE dans la
+-- transaction qui l'ajoute. Elle est écrite par le code applicatif, après.
+ALTER TYPE "job_application_event_type" ADD VALUE IF NOT EXISTS 'entretien_sans_suite';

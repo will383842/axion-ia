@@ -8408,6 +8408,11 @@ enum JobApplicationEventType {
   note
   entretien_planifie
   entretien_tenu
+  /// Annulé, ou candidat absent. Une valeur DISTINCTE de `entretien_planifie` :
+  /// la frise afficherait sinon « Entretien planifié » au-dessus d'un résumé
+  /// disant « Entretien annulé » — un libellé qui se contredit se lit deux fois
+  /// avant qu'on comprenne, et une fois de trop.
+  entretien_sans_suite
   piece_recue
   vivier_info
   vivier_opposition
