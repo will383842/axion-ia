@@ -29,6 +29,18 @@ import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/r
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
 import { lireKitFormateur } from "@/server/formateur/kit-queries";
 import {
+  lireMissionCourante,
+  LIBELLE_STATUT_MISSION,
+  MOTIF_REFUS_MIN,
+  formulerEffectif,
+} from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  formulerAdresseComplete,
+  formulerContactSurPlace,
+  formulerHoraires,
+} from "@/server/qualiopi/trainers/convocation-formateur";
+import { MissionReponseForm } from "@/components/espace-formateur/MissionReponseForm";
+import {
   FORMATEUR_SESSIONS_PATH,
   MODALITE_LABELS,
   STATUT_SESSION_LABELS,
@@ -69,10 +81,23 @@ export default async function Page({
   const etatReleve = await lireEtatSignatureReleve(id, trainerId);
   // Le kit imprime : null s'il n'est pas encore publie pour cette formation.
   const kit = await lireKitFormateur(id, trainerId);
+  // La sollicitation en cours pour CE formateur sur CETTE session — lue après
+  // la garde de propriété, avec le seul `trainerId` de la session connectée.
+  const mission = await lireMissionCourante(id, trainerId);
 
-  const lieu = [session.lieuVille, session.lieuCodePostal]
-    .filter((v): v is string => Boolean(v))
-    .join(" ");
+  // 2026-09-03 — le formateur ne voyait que ville et code postal. Il a besoin
+  // de TOUT ce qu'il faut pour arriver et entrer : adresse, salle, lien visio,
+  // contact sur place, consignes d'accès, horaires, effectif. Chaque ligne
+  // s'affiche si elle est renseignée — on n'imprime jamais « — ».
+  const adresse = formulerAdresseComplete(session);
+  const contact = formulerContactSurPlace(
+    session.contactSurPlaceNom,
+    session.contactSurPlaceTelephone,
+  );
+  const horaires = formulerHoraires(session.jours);
+  const effectif = formulerEffectif(session.inscrits.length, session.nbParticipantsPrevus);
+  const lieu = [session.lieuIntitule, adresse].filter((v): v is string => Boolean(v)).join(" — ");
+  const sessionAVenir = session.dateDebut.getTime() > new Date().getTime();
 
   return (
     <CoquilleFormateur section="formations">
@@ -106,10 +131,63 @@ export default async function Page({
               {libelle(MODALITE_LABELS, session.modalite)}
             </dd>
           </div>
+          {horaires ? (
+            <div className="sm:col-span-2">
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">
+                Horaires
+              </dt>
+              <dd className="text-mocha mt-1 text-sm">{horaires}</dd>
+            </div>
+          ) : null}
           {lieu ? (
-            <div>
+            <div className="sm:col-span-2">
               <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Lieu</dt>
               <dd className="text-mocha mt-1 text-sm">{lieu}</dd>
+            </div>
+          ) : null}
+          {session.lieuSalle ? (
+            <div>
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Salle</dt>
+              <dd className="text-mocha mt-1 text-sm">{session.lieuSalle}</dd>
+            </div>
+          ) : null}
+          {session.lieuVisioUrl ? (
+            <div className="sm:col-span-2">
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">
+                Visioconférence
+              </dt>
+              <dd className="mt-1 text-sm">
+                <a
+                  href={session.lieuVisioUrl}
+                  className="text-terracotta inline-flex min-h-[24px] items-center break-all hover:underline"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {session.lieuVisioUrl}
+                </a>
+              </dd>
+            </div>
+          ) : null}
+          {contact ? (
+            <div>
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">
+                Contact sur place
+              </dt>
+              <dd className="text-mocha mt-1 text-sm">{contact}</dd>
+            </div>
+          ) : null}
+          <div>
+            <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Effectif</dt>
+            <dd className="text-mocha mt-1 text-sm">{effectif}</dd>
+          </div>
+          {session.consignesAcces ? (
+            <div className="sm:col-span-2">
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">
+                Consignes d&apos;accès
+              </dt>
+              <dd className="text-mocha mt-1 text-sm whitespace-pre-line">
+                {session.consignesAcces}
+              </dd>
             </div>
           ) : null}
           {session.dureeReelleHeures !== null ? (
@@ -131,6 +209,32 @@ export default async function Page({
             </dd>
           </div>
         </dl>
+
+        {/* ── Mission : la réponse du formateur (2026-09-03) ───────────────────
+            Une session proposée se confirme ICI aussi, pas seulement par le lien
+            de l'e-mail. Tant qu'elle attend, le bloc réclame ; ensuite il dit
+            ce qui a été répondu. Rien n'est affiché si aucune sollicitation
+            n'a jamais été faite (affectation antérieure à ce chantier). */}
+        {mission !== null && mission.statut === "en_attente" && sessionAVenir ? (
+          <section className="space-y-3">
+            <h2 className="text-mocha font-serif text-lg font-semibold">
+              Cette mission attend votre réponse
+            </h2>
+            <MissionReponseForm
+              cible={{ missionId: mission.id }}
+              resume={`Proposée le ${dateFmt.format(mission.solliciteAt)} comme ${libelle(ROLE_FORMATEUR_LABELS, mission.role).toLowerCase()}. Acceptez-vous d'animer cette session ? Un refus doit être motivé.`}
+              motifMin={MOTIF_REFUS_MIN}
+            />
+          </section>
+        ) : mission !== null ? (
+          <p className="text-fg-soft text-sm">
+            Mission {LIBELLE_STATUT_MISSION[mission.statut].toLowerCase()}
+            {mission.reponduAt !== null ? ` le ${dateFmt.format(mission.reponduAt)}` : ""}.
+            {session.convocationJ7EnvoyeeAt !== null
+              ? ` Informations pratiques envoyées le ${dateFmt.format(session.convocationJ7EnvoyeeAt)}.`
+              : ""}
+          </p>
+        ) : null}
 
         {/* Kit formateur imprimé — la parade quand l'outil tombe en salle */}
         {kit !== null ? (

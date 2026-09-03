@@ -32,6 +32,7 @@ export type MagicScope =
   | "portal"
   | "formateur_login"
   | "ressources_login"
+  | "formateur_mission"
   | "emargement"
   | "document_signature";
 
@@ -42,6 +43,13 @@ const TTL_MS: Record<MagicScope, number> = {
   portal: 30 * 60 * 1000, // 30 min
   formateur_login: 15 * 60 * 1000, // 15 min (lien de connexion court, sécurité)
   ressources_login: 15 * 60 * 1000, // 15 min — connexion espace ressources (commercial/formateur)
+  // Réponse d'un formateur à une mission proposée (2026-09-03). La vraie
+  // fenêtre est « jusqu'au démarrage de la session », passée en `ttlMs` ;
+  // ce plafond n'existe que pour qu'un appel l'oubliant ne crée pas un lien
+  // éternel. Le jeton désigne UNE sollicitation (`MissionFormateur.id`) : une
+  // proposition retirée ou déjà répondue rend le lien inerte, sans table de
+  // consommation.
+  formateur_mission: 90 * 24 * 60 * 60 * 1000,
   // Émargement (T13) : garde-fou ABSOLU, pas la vraie fenêtre. Celle-ci est
   // « fin de session + 48 h » (décision D13), donc dynamique : elle est portée
   // par `EmargementToken.expiresAt` en base et passée en `ttlMs` à la signature.

@@ -37,6 +37,7 @@ import {
 } from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 import { fiabiliteFormateur } from "@/server/qualiopi/trainers/fiabilite-service";
+import { statsMissionsFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
 import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
@@ -163,6 +164,10 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     trainer.statut === "sous_traitant"
       ? await listIncidents({ trainerId: trainer.id, take: 20 })
       : [];
+  // Missions proposées, acceptées, refusées, restées sans réponse ; absences
+  // consignées. Pour TOUS les statuts : un salarié qui refuse ou ne vient pas
+  // est un fait à piloter, même s'il ne se « reconduit » pas (2026-09-03).
+  const missions = await statsMissionsFormateur(trainer.id, now);
 
   return (
     <AdminPageShell width="wide">
@@ -335,6 +340,38 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           </p>
         </div>
       )}
+
+      {/* Missions — refus et absences (2026-09-03). Des FAITS, datés et motivés. */}
+      <div className="admin-card mb-[var(--space-admin-5)]">
+        <p className="admin-meta">Missions proposées (24 derniers mois)</p>
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          {missions.proposees === 0
+            ? "Aucune mission proposée par l'outil à ce jour."
+            : `${missions.proposees} proposée${missions.proposees > 1 ? "s" : ""} · ` +
+              `${missions.acceptees} acceptée${missions.acceptees > 1 ? "s" : ""} · ` +
+              `${missions.refusees} refusée${missions.refusees > 1 ? "s" : ""} · ` +
+              `${missions.sansReponse} sans réponse · ` +
+              `${missions.expirees} expirée${missions.expirees > 1 ? "s" : ""}.`}{" "}
+          {missions.absences > 0
+            ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`
+            : "Aucune absence consignée."}
+        </p>
+        {missions.derniersRefus.length > 0 && (
+          <ul className="mt-3 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            {missions.derniersRefus.map((r, i) => (
+              <li key={`${r.session.numero}-${i}`}>
+                {r.reponduAt !== null ? `${r.reponduAt.toLocaleDateString("fr-FR")} — ` : ""}
+                refus de {r.session.titreSession} ({r.session.numero})
+                {r.motifRefus !== null ? ` : « ${r.motifRefus} »` : ""}
+              </li>
+            ))}
+          </ul>
+        )}
+        <p className="admin-meta mt-3">
+          Une absence se consigne depuis la fiche de session (« Déclarer une absence ») ou depuis le
+          registre des incidents.
+        </p>
+      </div>
 
       {/*
         Compétences ÉVALUÉES (2026-08-02).

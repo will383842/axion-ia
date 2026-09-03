@@ -13,6 +13,12 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 // deux prédicats qui se ressemblent finissent par diverger, et ce dépôt le paie
 // sans arrêt. Le cron en prend le compte, cette règle en mappe les lignes.
 import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
+import { DELAI_RELANCE_JOURS } from "@/server/qualiopi/trainers/mission-formateur";
+import { listIndisposEntre } from "@/server/qualiopi/trainers/availability-queries";
+import {
+  conflitIndisponibilite,
+  formulerConflit,
+} from "@/server/qualiopi/trainers/conflits-indisponibilite";
 import { sessionsAvecJourneesSansCreneaux } from "@/server/qualiopi/presence/journees-sans-creneaux";
 import {
   porteUneTraceDePresence,
@@ -2509,6 +2515,212 @@ async function regleOffresNonVerifiees(now: Date): Promise<AlerteCandidate[]> {
   });
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Cycle de vie du FORMATEUR sur une session (2026-09-03)
+//
+// Quatre règles pour un même trou : une session vendue pouvait rester sans
+// formateur CONFIRMÉ — refus non lu, proposition sans réponse, formateur en
+// congés sur les dates, formateur non habilité posé par la création de
+// session — sans qu'aucune alerte ne le dise. `joursEnConflit` existait et
+// n'était appelé nulle part.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Le formateur a REFUSÉ et la session n'a toujours pas de principal : à réaffecter. */
+async function regleMissionFormateurRefusee(now: Date): Promise<AlerteCandidate[]> {
+  const missions = await prisma.missionFormateur.findMany({
+    where: {
+      statut: "refusee",
+      role: "principal",
+      session: { statut: "planifiee", dateDebut: { gt: now }, formateurPrincipalId: null },
+    },
+    orderBy: { reponduAt: "desc" },
+    select: {
+      reponduAt: true,
+      motifRefus: true,
+      trainer: { select: { prenom: true, nom: true } },
+      session: {
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          client: { select: { raisonSociale: true } },
+        },
+      },
+    },
+  });
+  // Une alerte par SESSION : c'est elle qu'il faut pourvoir, pas chaque refus.
+  const vues = new Set<string>();
+  const out: AlerteCandidate[] = [];
+  for (const m of missions) {
+    if (vues.has(m.session.id)) continue;
+    vues.add(m.session.id);
+    const dans = Math.ceil((m.session.dateDebut.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+    out.push({
+      code: "formateur_mission_refusee",
+      niveau: "critique",
+      titre: "Mission refusée — session sans formateur",
+      message:
+        `${m.trainer.prenom} ${m.trainer.nom} a refusé d'animer ${designerSession(m.session)}` +
+        ` (démarrage dans ${dans} jour${dans > 1 ? "s" : ""}).` +
+        ` Motif : « ${m.motifRefus ?? "non renseigné"} ». Affectez un autre formateur.`,
+      cibleType: "TrainingSession",
+      cibleId: m.session.id,
+    });
+  }
+  return out;
+}
+
+/** Proposition sans réponse depuis `DELAI_RELANCE_JOURS` jours : relancé, mais toujours muet. */
+async function regleMissionFormateurSansReponse(now: Date): Promise<AlerteCandidate[]> {
+  const missions = await prisma.missionFormateur.findMany({
+    where: {
+      statut: "en_attente",
+      solliciteAt: { lte: daysAgo(DELAI_RELANCE_JOURS, now) },
+      session: { statut: "planifiee", dateDebut: { gt: now } },
+    },
+    select: {
+      solliciteAt: true,
+      relanceAt: true,
+      trainer: { select: { prenom: true, nom: true } },
+      session: {
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          client: { select: { raisonSociale: true } },
+        },
+      },
+    },
+  });
+  return missions.map((m) => {
+    const depuis = Math.floor((now.getTime() - m.solliciteAt.getTime()) / (24 * 60 * 60 * 1000));
+    const dans = Math.ceil((m.session.dateDebut.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+    // Le niveau suit l'URGENCE : à moins de sept jours du démarrage, un
+    // formateur qui n'a pas confirmé est un risque sur une prestation vendue.
+    const niveau: AlerteNiveau = dans <= 7 ? "critique" : "important";
+    return {
+      code: "formateur_mission_sans_reponse",
+      niveau,
+      titre: "Formateur sans réponse à la proposition de mission",
+      message:
+        `${m.trainer.prenom} ${m.trainer.nom} n'a pas répondu à la proposition pour ` +
+        `${designerSession(m.session)} depuis ${depuis} jour${depuis > 1 ? "s" : ""}` +
+        `${m.relanceAt !== null ? " (relancé)" : ""} ; démarrage dans ${dans} jour${dans > 1 ? "s" : ""}.` +
+        " Appelez-le, ou affectez quelqu'un d'autre.",
+      cibleType: "TrainingSession",
+      cibleId: m.session.id,
+    };
+  });
+}
+
+/** Formateur affecté sur des jours où il s'est déclaré indisponible (congés, maladie…). */
+async function regleFormateurIndisponibleSurSession(now: Date): Promise<AlerteCandidate[]> {
+  const horizon = daysFromNow(365, now);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      dateDebut: { gt: now, lte: horizon },
+      sessionFormateurs: { some: {} },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      client: { select: { raisonSociale: true } },
+      jours: { select: { date: true } },
+      sessionFormateurs: {
+        select: { trainerId: true, trainer: { select: { prenom: true, nom: true } } },
+      },
+    },
+  });
+  if (sessions.length === 0) return [];
+  const debut = sessions.reduce(
+    (min, s) => (s.dateDebut < min ? s.dateDebut : min),
+    sessions[0]!.dateDebut,
+  );
+  const fin = sessions.reduce(
+    (max, s) => (s.dateFin > max ? s.dateFin : max),
+    sessions[0]!.dateFin,
+  );
+  const indispos = await listIndisposEntre(debut, fin);
+  if (indispos.length === 0) return [];
+
+  const out: AlerteCandidate[] = [];
+  for (const s of sessions) {
+    const conflits: string[] = [];
+    for (const sf of s.sessionFormateurs) {
+      const c = conflitIndisponibilite(
+        s,
+        indispos.filter((i) => i.trainerId === sf.trainerId),
+      );
+      if (c !== null)
+        conflits.push(`${sf.trainer.prenom} ${sf.trainer.nom} — ${formulerConflit(c)}`);
+    }
+    if (conflits.length === 0) continue;
+    out.push({
+      code: "formateur_indisponible_sur_session",
+      niveau: "critique",
+      titre: "Formateur indisponible sur les dates de la session",
+      message:
+        `${designerSession(s)} est vendue sur des jours où son formateur s'est déclaré indisponible : ` +
+        `${conflits.join(" ; ")}. Déplacez la session, ou changez de formateur.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
+/** Formateur principal sans habilitation ACTIVE sur la formation de la session (ind.21/22). */
+async function regleFormateurNonHabiliteAssigne(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      dateDebut: { gt: now },
+      formateurPrincipalId: { not: null },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      formationId: true,
+      formateurPrincipalId: true,
+      client: { select: { raisonSociale: true } },
+      formateurPrincipal: {
+        select: {
+          prenom: true,
+          nom: true,
+          habilitations: { where: { retireAt: null }, select: { formationId: true } },
+        },
+      },
+    },
+  });
+  const out: AlerteCandidate[] = [];
+  for (const s of sessions) {
+    const f = s.formateurPrincipal;
+    if (f === null) continue;
+    // Même règle que l'affectation (`isTrainerHabilite`) : la ligne
+    // d'habilitation ACTIVE, sans exception de statut — pas même le dirigeant.
+    const habilite = f.habilitations.some((h) => h.formationId === s.formationId);
+    if (habilite) continue;
+    out.push({
+      code: "formateur_non_habilite_assigne",
+      niveau: "important",
+      titre: "Formateur principal non habilité sur cette formation",
+      message:
+        `${f.prenom} ${f.nom} est formateur principal de ${designerSession(s)} sans habilitation active ` +
+        "sur cette formation. Habilitez-le (fiche formateur → Habilitations), ou changez de formateur (ind.21/22).",
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
@@ -2559,6 +2771,11 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // alerte « échéance dépassée » globale les aurait signalées deux fois.
   { nom: "positionnement_sans_reponse", fn: reglePositionnementSansReponse },
   { nom: "suivi_froid_manquant", fn: regleSuiviFroidManquant },
+  // Cycle de vie du formateur sur une session (2026-09-03).
+  { nom: "formateur_mission_refusee", fn: regleMissionFormateurRefusee },
+  { nom: "formateur_mission_sans_reponse", fn: regleMissionFormateurSansReponse },
+  { nom: "formateur_indisponible_sur_session", fn: regleFormateurIndisponibleSurSession },
+  { nom: "formateur_non_habilite_assigne", fn: regleFormateurNonHabiliteAssigne },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

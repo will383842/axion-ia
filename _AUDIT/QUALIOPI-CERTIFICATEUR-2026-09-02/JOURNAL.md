@@ -333,3 +333,77 @@ donc l'auditrice les regardera.
 - **La pagination générale de la console n'a pas été refaite.** Deux registres ont été
   bornés parce qu'ils sont sur le chemin du certificateur ; les autres listes non plafonnées
   (clients, dossiers, cockpit financier) relèvent du cahier D8, qui reste ouvert.
+
+---
+
+## 6. Suite du 2026-09-03 — le cycle de vie du FORMATEUR sur une session
+
+Demande de Will après la recette de l'espace formateur : « il faut prévoir qu'il doit
+valider qu'il prend une formation ou pas […] un pilotage pour les formateurs qui ne
+viennent pas […] des rappels par e-mail […] les informations (adresse, comment rentrer
+dans l'entreprise, le contact sur place) ». Trois lots, livrés ensemble.
+
+### 6.1 Ce qui manquait, mesuré
+
+- Affecter un formateur ne lui envoyait **rien** : ni proposition, ni demande d'accord.
+  Le seul e-mail qu'il recevait était son lien de connexion.
+- Son espace ne montrait que **ville et code postal** — ni la salle, ni l'adresse, ni le
+  lien visio, ni qui l'accueille, ni comment entrer. Les champs « contact sur place » et
+  « consignes d'accès » n'existaient pas au schéma.
+- `joursEnConflit` (congés × dates) existait dans `availability.ts` et n'était **appelé
+  nulle part** : une session vendue sur les congés du formateur ne déclenchait rien.
+- Aucun compteur de refus ni d'absences par formateur ; la fiabilité (art. 7-8) ne
+  comptait que les incidents, et seulement pour les sous-traitants.
+
+### 6.2 Ce qui est livré
+
+**Lot A — accepter / refuser.** Table `missions_formateur` (journal des sollicitations,
+distinct de l'affectation `session_formateurs`). Les DEUX voies d'affectation (action
+d'affectation, création de session) proposent la mission ; e-mail `formateur-mission-proposee`
+avec un lien signé (`formateur_mission`, valable jusqu'au démarrage) vers
+`/espace-formateur/mission/<jeton>` — sans connexion, exempté dans `proxy.ts`. Le même
+geste existe connecté, sur la page de la session, et l'accueil liste les « missions à
+confirmer ». Un refus exige un **motif** (≥ 5 caractères) et retire l'affectation dans la
+même transaction (`formateurPrincipalId` → null, ligne `SessionFormateur` supprimée).
+Relance à J+3 sans réponse (cron `missions-formateur`, 08:10), expiration au démarrage.
+Alertes `formateur_mission_refusee` (critique, secrétariat) et
+`formateur_mission_sans_reponse` (important → critique à moins de 7 jours).
+
+**Lot B — informations pratiques.** Trois champs sur la session, saisis avec le lieu :
+`contactSurPlaceNom`, `contactSurPlaceTelephone`, `consignesAcces` (formulaire de
+création, fiche lieu, report de session — jamais imprimés sur les documents du client).
+E-mails `formateur-convocation-j7` (08:05) et `formateur-rappel-j1` (horaire, fenêtre
+36 h) : adresse complète, salle, lien visio cliquable, contact, consignes, horaires des
+journées, effectif, kit. Traces d'état `convocationJ7EnvoyeeAt` / `rappelJ1EnvoyeAt` sur
+l'affectation. L'espace formateur affiche désormais tout cela.
+
+**Lot C — pilotage.** `statsMissionsFormateur` (proposées, acceptées, refusées, sans
+réponse, expirées, absences, derniers refus motivés) sur la fiche et en colonne de la
+liste des formateurs — pour TOUS les statuts. « Déclarer une absence » sur la fiche de
+session → incident `desistement` / `annulation_tardive` (nourrit la fiabilité).
+Croisement congés × dates : avertissement à l'affectation (non bloquant, doctrine Will)
+et alerte `formateur_indisponible_sur_session` (critique) ; alerte
+`formateur_non_habilite_assigne` (important, qualité) — même règle que l'affectation,
+sans exception de statut.
+
+### 6.3 Gardes, et ce qui a été vu rougir
+
+- `mission-formateur.spec.ts` : le lien de réponse tombe dans le chemin exempté par
+  `proxy.ts` (relu dans le source) — **vu rouge** en déplaçant l'exemption ; les deux
+  voies d'affectation appellent `proposerMissionFormateur` et
+  `detecterIndisponibiliteFormateur` ; les trois crons sont planifiés ET ont un handler.
+- `catalogue.spec.ts` (alertes) : les quatre codes — **vu rouge** en retirant l'un d'eux.
+- `payloads-exemple.spec.ts` : le compte de gabarits passe à 45 ; les fragments `_*`
+  sont exclus par la règle du préfixe, plus par une liste.
+- Gabarits : couverture FR/EN, régime de famille C (budget de 4 liens), pré-en-tête
+  distinct, pas de salutation isolée, objet ≤ 45 — tous verts sur les trois nouveaux.
+- Isolation Qualiopi : deux consommateurs assumés ajoutés nominativement
+  (`MissionReponseForm.tsx`, page `mission/[token]`).
+
+### 6.4 Ce qui reste à Will
+
+- Renseigner, sur chaque session vendue, le **contact sur place** et les **consignes
+  d'accès** (bloc « Lieu de déroulement » de la fiche de session) : sans eux, la
+  convocation J-7 du formateur part avec l'adresse seule.
+- Les affectations **antérieures** à ce déploiement n'ont pas de proposition : la fiche
+  de session l'affiche et offre « Proposer à nouveau ».

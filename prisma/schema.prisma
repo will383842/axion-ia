@@ -5362,6 +5362,11 @@ model TrainingSession {
   lieuSalle                          String?                  @map("lieu_salle") @db.VarChar(120)
   /// URL de visioconférence (lieu de déroulement en distanciel).
   lieuVisioUrl                       String?                  @map("lieu_visio_url") @db.Text
+  /// Contact sur place (accueil du formateur chez le client) — 2026-09-03.
+  contactSurPlaceNom                 String?                  @map("contact_sur_place_nom") @db.VarChar(160)
+  contactSurPlaceTelephone           String?                  @map("contact_sur_place_telephone") @db.VarChar(40)
+  /// Consignes d'accès : badge, accueil, parking, étage, code… Texte libre.
+  consignesAcces                     String?                  @map("consignes_acces") @db.Text
   icalUid                            String?                  @map("ical_uid") @db.VarChar(255)
   clientId                           String?                  @map("client_id") @db.Uuid
   client                             Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -5455,6 +5460,8 @@ model TrainingSession {
   dossiersFinancement        DossierFinancement[]
   /// Jointure normalisée session ↔ formateur (remplace `coFormateurs` Json).
   sessionFormateurs          SessionFormateur[]
+  /// Sollicitations (journal des propositions de mission) — 2026-09-03.
+  missionsFormateur          MissionFormateur[]
   /// Incidents rattachés à la session (registre des incidents — LOT 4).
   incidents                  Incident[]
   /// Contresignatures formateur, au grain (date × demi-journée) — T13.
@@ -5569,6 +5576,7 @@ model Trainer {
   coachingSessions            CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
   sessionFormateurs           SessionFormateur[]
+  missionsFormateur           MissionFormateur[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
   sessionJours                SessionJour[]
   /// Signatures qu'il a recueillies sur son poste (stagiaire sans téléphone).
@@ -5722,6 +5730,17 @@ enum SessionFormateurRole {
   tuteur_afest
 }
 
+/// Réponse d'un formateur à une mission proposée (2026-09-03).
+/// `retiree` : l'organisme a changé de formateur avant la réponse ;
+/// `expiree` : la session a démarré sans réponse.
+enum MissionFormateurStatut {
+  en_attente
+  acceptee
+  refusee
+  retiree
+  expiree
+}
+
 /// Jointure normalisée session ↔ formateur. Remplace le champ Json
 /// `TrainingSession.coFormateurs` (non indexable, non agrégeable) : socle de la
 /// charge par formateur et du commissionnement. Le formateur `principal` reste
@@ -5764,12 +5783,52 @@ model SessionFormateur {
   role          SessionFormateurRole @default(co_formateur)
   heuresAnimees Decimal?             @map("heures_animees") @db.Decimal(6, 2)
   tarifHtCents  Int?                 @map("tarif_ht_cents")
+  /// Convocation pratique J-7 envoyée au formateur (adresse, salle, contact,
+  /// consignes d'accès, horaires, effectif). État, pas balayage par date —
+  /// même patron que `TrainingSession.rappelJ7EnvoyeAt`.
+  convocationJ7EnvoyeeAt DateTime? @map("convocation_j7_envoyee_at")
+  /// Rappel de la veille (J-1) envoyé au formateur.
+  rappelJ1EnvoyeAt       DateTime? @map("rappel_j1_envoye_at")
   createdAt     DateTime             @default(now()) @map("created_at")
   updatedAt     DateTime             @updatedAt @map("updated_at")
 
   @@unique([sessionId, trainerId], map: "session_formateur_unique")
   @@index([trainerId, sessionId])
+  @@index([convocationJ7EnvoyeeAt])
+  @@index([rappelJ1EnvoyeAt])
   @@map("session_formateurs")
+}
+
+/// Sollicitation d'un formateur pour une session — le JOURNAL des propositions
+/// (2026-09-03). Distinct de `SessionFormateur`, qui est l'affectation
+/// COURANTE : un refus retire l'affectation mais doit rester lisible pour le
+/// pilotage (refus et absences par formateur, art. 8 de la procédure de
+/// sous-traitance). Une ligne par proposition ; la dernière fait foi.
+model MissionFormateur {
+  id            String                 @id @default(uuid()) @db.Uuid
+  sessionId     String                 @map("session_id") @db.Uuid
+  session       TrainingSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trainerId     String                 @map("trainer_id") @db.Uuid
+  trainer       Trainer                @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  role          SessionFormateurRole   @default(principal)
+  statut        MissionFormateurStatut @default(en_attente)
+  /// Date de la proposition (l'e-mail part au même instant).
+  solliciteAt   DateTime               @default(now()) @map("sollicite_at")
+  /// E-mail de proposition effectivement mis en file.
+  emailEnvoyeAt DateTime?              @map("email_envoye_at")
+  /// Relance envoyée faute de réponse.
+  relanceAt     DateTime?              @map("relance_at")
+  reponduAt     DateTime?              @map("repondu_at")
+  /// Obligatoire sur un refus : l'organisme doit pouvoir dire POURQUOI il a
+  /// changé de formateur.
+  motifRefus    String?                @map("motif_refus") @db.Text
+  createdAt     DateTime               @default(now()) @map("created_at")
+  updatedAt     DateTime               @updatedAt @map("updated_at")
+
+  @@index([sessionId, trainerId, statut])
+  @@index([trainerId, statut])
+  @@index([statut, solliciteAt])
+  @@map("missions_formateur")
 }
 
 /// Journée RÉELLEMENT animée d'une session (décision D14).

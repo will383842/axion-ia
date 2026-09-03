@@ -23,6 +23,11 @@ import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qua
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
+import { MissionFormateurPanel } from "@/components/admin/qualiopi/MissionFormateurPanel";
+import {
+  lireMissionCourante,
+  LIBELLE_STATUT_MISSION,
+} from "@/server/qualiopi/trainers/mission-formateur";
 import { SessionLieuForm } from "@/components/admin/qualiopi/SessionLieuForm";
 import { SessionDatesForm } from "@/components/admin/qualiopi/SessionDatesForm";
 import { lieuValuesDepuisSession } from "@/components/admin/qualiopi/lieu-values";
@@ -198,6 +203,9 @@ export default async function SessionHubPage({ params }: PageProps) {
       lieuVille: true,
       lieuSalle: true,
       lieuVisioUrl: true,
+      contactSurPlaceNom: true,
+      contactSurPlaceTelephone: true,
+      consignesAcces: true,
       formation: {
         select: {
           id: true,
@@ -251,6 +259,29 @@ export default async function SessionHubPage({ params }: PageProps) {
   // On l'annonce AVANT de générer, avec la liste exacte de ce qui manque.
   const identiteOf = await getOrganismeIdentite();
   const champsManquantsConvention = champsIdentiteManquants(identiteOf, "convention");
+
+  // ── Mission du formateur principal (2026-09-03) ─────────────────────────
+  const missionFormateur =
+    trainingSession.formateurPrincipalId !== null
+      ? await lireMissionCourante(id, trainingSession.formateurPrincipalId)
+      : null;
+  const etatMissionFormateur =
+    missionFormateur === null
+      ? "aucune proposition envoyée (affectation antérieure au 3 septembre 2026, ou e-mail non parti)."
+      : `${LIBELLE_STATUT_MISSION[missionFormateur.statut].toLowerCase()}` +
+        (missionFormateur.statut === "en_attente"
+          ? ` depuis le ${missionFormateur.solliciteAt.toLocaleDateString("fr-FR")}` +
+            (missionFormateur.relanceAt !== null
+              ? `, relancé le ${missionFormateur.relanceAt.toLocaleDateString("fr-FR")}`
+              : "") +
+            (missionFormateur.emailEnvoyeAt === null ? " — e-mail de proposition NON parti" : "")
+          : missionFormateur.reponduAt !== null
+            ? ` le ${missionFormateur.reponduAt.toLocaleDateString("fr-FR")}`
+            : "") +
+        (missionFormateur.statut === "refusee" && missionFormateur.motifRefus !== null
+          ? ` — motif : « ${missionFormateur.motifRefus} »`
+          : "") +
+        ".";
 
   // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
   const allTrainers = await listTrainers({ actifOnly: true });
@@ -776,6 +807,25 @@ export default async function SessionHubPage({ params }: PageProps) {
           currentTrainerId={trainingSession.formateurPrincipalId}
           trainers={formateurOptions}
         />
+        {/* 2026-09-03 — ce que le formateur a RÉPONDU. Une affectation n'est
+            pas une confirmation : tant qu'il n'a pas accepté, la session n'a
+            pas de formateur sûr, et l'écran doit le dire là où on l'affecte. */}
+        {trainingSession.formateurPrincipalId !== null && (
+          <MissionFormateurPanel
+            sessionId={id}
+            trainerId={trainingSession.formateurPrincipalId}
+            trainerNom={
+              formateurOptions.find((f) => f.id === trainingSession.formateurPrincipalId)?.label ??
+              "formateur"
+            }
+            etat={etatMissionFormateur}
+            enAttente={missionFormateur?.statut === "en_attente"}
+            sessionAVenir={
+              trainingSession.statut === "planifiee" && trainingSession.dateDebut > new Date()
+            }
+            absencePossible={trainingSession.dateDebut <= new Date()}
+          />
+        )}
       </section>
 
       {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}

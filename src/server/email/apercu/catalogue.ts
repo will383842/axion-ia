@@ -121,6 +121,26 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le stagiaire",
     source: "server/qualiopi/notifications/notifications-service.ts",
   },
+  "formateur-mission-proposee": {
+    categorie: "formation",
+    quand:
+      "À l'affectation d'un formateur sur une session à venir (et en relance 3 jours plus tard sans réponse)",
+    destinataire: "le formateur",
+    source: "server/qualiopi/trainers/mission-formateur.ts",
+  },
+  "formateur-convocation-j7": {
+    categorie: "formation",
+    quand:
+      "7 jours avant le début de la session — adresse, salle, contact sur place, consignes, horaires, effectif",
+    destinataire: "le formateur",
+    source: "server/qualiopi/trainers/convocation-formateur.ts",
+  },
+  "formateur-rappel-j1": {
+    categorie: "formation",
+    quand: "La veille du début de la session",
+    destinataire: "le formateur",
+    source: "server/qualiopi/trainers/convocation-formateur.ts",
+  },
   "qualiopi-positionnement": {
     categorie: "formation",
     quand: "Questionnaire de positionnement, avant l'entrée en formation",

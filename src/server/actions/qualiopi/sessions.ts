@@ -21,6 +21,11 @@ import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
+import { proposerMissionFormateur } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  detecterIndisponibiliteFormateur,
+  formulerConflit,
+} from "@/server/qualiopi/trainers/conflits-indisponibilite";
 import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type {
   TrainingSessionStatut,
@@ -516,6 +521,26 @@ export async function createSessionAction(
   // travailler finit par être retirée.
   const avertissements = await avertissementsAffectation(v.trainerId ?? null);
 
+  // 2026-09-03 — seconde voie d'affectation : la mission est PROPOSÉE au
+  // formateur ici aussi, sinon une session créée avec son formateur ne lui
+  // demanderait jamais son accord (cf. `assignTrainerToSessionAction`).
+  if (v.trainerId !== undefined) {
+    await proposerMissionFormateur({
+      sessionId: created.id,
+      trainerId: v.trainerId,
+      role: "principal",
+    });
+    const conflit = await detecterIndisponibiliteFormateur(v.trainerId, {
+      dateDebut: v.dateDebut,
+      dateFin: v.dateFin,
+    });
+    if (conflit !== null) {
+      avertissements.push(
+        `Ce formateur s'est déclaré indisponible sur ${formulerConflit(conflit)}. Vérifiez avec lui avant de maintenir les dates.`,
+      );
+    }
+  }
+
   return { data: { id: created.id, numero: created.numero, avertissements } };
 }
 
@@ -560,6 +585,9 @@ export async function setSessionLieuAction(
     lieuVille: true,
     lieuSalle: true,
     lieuVisioUrl: true,
+    contactSurPlaceNom: true,
+    contactSurPlaceTelephone: true,
+    consignesAcces: true,
   } as const;
 
   let avant: Record<string, unknown> | null;

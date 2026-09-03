@@ -369,6 +369,9 @@ export async function reportSessionAction(
     lieuVille: string | null;
     lieuSalle: string | null;
     lieuVisioUrl: string | null;
+    contactSurPlaceNom: string | null;
+    contactSurPlaceTelephone: string | null;
+    consignesAcces: string | null;
     // 🔴 Formateur — cf. bloc du `select`.
     formateurPrincipalId: string | null;
     coFormateurs: unknown;
@@ -426,6 +429,9 @@ export async function reportSessionAction(
         lieuVille: true,
         lieuSalle: true,
         lieuVisioUrl: true,
+        contactSurPlaceNom: true,
+        contactSurPlaceTelephone: true,
+        consignesAcces: true,
         // 🔴 Même vérification — LE REPORT PERDAIT LE FORMATEUR.
         //
         // Sans `formateurPrincipalId`, l'alerte `session_sans_formateur`
@@ -556,6 +562,9 @@ export async function reportSessionAction(
           lieuVille: ancienne!.lieuVille,
           lieuSalle: ancienne!.lieuSalle,
           lieuVisioUrl: ancienne!.lieuVisioUrl,
+          contactSurPlaceNom: ancienne!.contactSurPlaceNom,
+          contactSurPlaceTelephone: ancienne!.contactSurPlaceTelephone,
+          consignesAcces: ancienne!.consignesAcces,
           // Co-animateurs reportés (purgés du principal écarté, cf. plus haut).
           coFormateurs: coFormateursReportes as never,
           // Le principal n'est posé que s'il a REPASSÉ la garde d'habilitation.
