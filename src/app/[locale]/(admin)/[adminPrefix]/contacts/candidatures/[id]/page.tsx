@@ -194,6 +194,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           status={a.status}
           internalNotes={a.internalNotes}
           assignedTo={a.assignedTo}
+          rejectionReason={a.rejectionReason}
           needsAttention={a.needsAttention}
         />
       </AdminCard>

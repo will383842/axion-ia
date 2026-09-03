@@ -76,7 +76,7 @@ export interface EvenementCandidature {
  * réussir pendant que le changement qu'elle décrit échoue : le journal
  * affirmerait un fait qui n'a pas eu lieu, ce qui est pire que pas de journal.
  */
-type ClientPrisma = Pick<typeof prisma, "jobApplicationEvent">;
+type ClientPrisma = Pick<typeof prisma, "jobApplicationEvent" | "jobApplication">;
 
 /**
  * Consigne un événement. **L'unique écriture du journal.**
@@ -97,13 +97,15 @@ export async function consignerEvenement(
     throw new Error("journal: un événement sans résumé ne se relit pas");
   }
 
+  const survenuLe = evenement.occurredAt ?? new Date();
+
   const ligne = await client.jobApplicationEvent.create({
     data: {
       applicationId: evenement.applicationId,
       type: evenement.type,
       authorId: evenement.authorId,
       authorName: evenement.authorName,
-      occurredAt: evenement.occurredAt ?? new Date(),
+      occurredAt: survenuLe,
       // Troncature ICI, au plus près de la contrainte de colonne. Le caractère
       // de continuation dit que le texte est coupé — un résumé coupé net se lit
       // comme un résumé complet.
@@ -114,6 +116,26 @@ export async function consignerEvenement(
       ...(evenement.meta === undefined ? {} : { meta: evenement.meta }),
     },
     select: { id: true },
+  });
+
+  // ── LA DATE DE DERNIÈRE ACTIVITÉ EST DÉNORMALISÉE ICI, ET NULLE PART AILLEURS
+  //
+  // 🔑 C'est la raison d'être de la « porte unique » d'écriture du journal :
+  // parce que tout fait passe par cette fonction, `lastActivityAt` ne peut pas
+  // dériver. Si chaque action la posait elle-même, il suffirait d'un appelant
+  // qui l'oublie pour qu'un dossier vivant apparaisse dans l'écran des dossiers
+  // oubliés — et cet écran, une fois faux, ne serait plus jamais regardé.
+  //
+  // ⚠️ On écrit `occurredAt`, PAS `new Date()` : consigner aujourd'hui un appel
+  // passé la semaine dernière ne rend pas le dossier actif aujourd'hui.
+  // `updateMany` plutôt que `update` : une candidature supprimée entre-temps ne
+  // doit pas faire échouer l'écriture de sa propre trace.
+  await client.jobApplication.updateMany({
+    where: {
+      id: evenement.applicationId,
+      OR: [{ lastActivityAt: null }, { lastActivityAt: { lt: survenuLe } }],
+    },
+    data: { lastActivityAt: survenuLe },
   });
 
   return ligne.id;

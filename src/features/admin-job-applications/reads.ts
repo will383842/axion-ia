@@ -30,15 +30,22 @@ import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { decryptPii } from "@/lib/pii-crypto";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
 import type { JobApplicationStatus } from "../../../prisma/generated/client";
+import { STATUTS_CANDIDATURE } from "@/content/recrutement/statuts";
 
-export const STATUSES = [
-  "new",
-  "reviewing",
-  "shortlisted",
-  "rejected",
-  "hired",
-  "archived",
-] as const;
+/**
+ * Les statuts, RÉEXPORTÉS depuis la table unique.
+ *
+ * 🔴 Cette liste était une TROISIÈME copie tenue à la main, et elle a vécu
+ * exactement le défaut qu'on redoutait : l'enum Postgres portait six valeurs,
+ * cette liste six aussi — mais rien ne les reliait. Le jour où l'enum en a
+ * gagné trois (`interview`, `offer`, `withdrawn`), le filtre de la liste serait
+ * resté aveugle à trois états REÉLLEMENT présents en base, sans qu'aucun test
+ * ne rougisse.
+ *
+ * Le nom anglais est conservé : une trentaine d'appelants l'utilisent, et un
+ * renommage cosmétique noierait ce lot dans un diff sans rapport.
+ */
+export const STATUSES = STATUTS_CANDIDATURE;
 
 /**
  * Déchiffre sans jamais faire tomber la page. Un PII corrompu rend une chaîne
