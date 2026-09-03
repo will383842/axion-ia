@@ -65,6 +65,19 @@ et l'a toujours été :
   La doctrine renvoyait la question à Lighthouse ; Lighthouse n'y a jamais répondu. **Se
   mesure à la main** : `next build --experimental-build-mode compile` (~2 min) puis lecture
   de `.next/static/chunks/app/`.
+
+  🔑 **Mais « à la main » ne vaut que pour les OCTETS, jamais pour le TEMPS** (mesuré le
+  2026-09-03). Un poids de fichier est déterministe : une passe suffit, et un avant/après
+  de deux builds compare bien deux versions du code. Une métrique de TEMPS ne l'est pas —
+  sur le runner GitHub partagé, le TBT mobile des mêmes six pages a bougé de **+13 % à
+  +36 %** entre deux runs du même jour, sans qu'une ligne de leur JavaScript ait changé
+  (runs `33715874962` et `33743164143`). Un avant/après en deux passes ne distingue donc
+  pas un patch de 40 KB d'une minute chargée sur la machine. **Les octets se lisent sur une
+  passe ; le TBT, l'INP et le LCP se bornent sur plusieurs runs et se lisent en médiane** —
+  c'est ce que fait `lighthouserc.postdeploy.mobile.json` (`aggregationMethod: median`,
+  3 runs), et c'est pourquoi ses cliquets se calent sur le maximum observé de **deux** runs
+  et non d'un seul.
+
 - **⚠️ DETTE OUVERTE, CHIFFRÉE : le shell partagé pèse 135,75 kB.** Mesure de la dernière
   CI verte (run `32701301987`, 2026-08-24) : dépassement de **35,75 kB** sur la cible de
   100 KB (framework + main + main-app + webpack + polyfills, brotli). Ce bucket-là est
