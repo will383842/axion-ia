@@ -30,6 +30,14 @@
 //   RETENTION_EMAIL_LOGS_MARKETING_MONTHS=13 (audit e-mail — norme CNIL prospection)
 //   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
+//   RETENTION_CANDIDATURES_MONTHS=24      (`D4` — candidatures NON RETENUES seulement)
+//
+// ⚠️ `RETENTION_CANDIDATURES_MONTHS` ne s'applique PAS à tout le monde. Une
+// candidature en statut `hired` n'est JAMAIS purgée automatiquement : elle est
+// devenue une pièce du dossier du personnel, et son effacement est un geste
+// explicite (décision `D4` du 2026-09-03). Deux régimes, donc, et le registre
+// des traitements doit dire les deux — 24 mois pour les candidatures non
+// retenues, durée de la relation de travail pour les personnes recrutées.
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
 
@@ -137,6 +145,16 @@ export async function executerPurgeRetention(): Promise<void> {
     funnelEvents: 0,
     candidatures: 0,
     candidaturesFichiers: 0,
+    /**
+     * Dossiers de personnes RECRUTÉES qui auraient été effacés sans `D4`.
+     *
+     * 🔑 Sans ce compteur, l'exclusion serait invisible : un journal qui dit
+     * `candidatures=0` ne distingue pas « rien à purger » de « l'exclusion a
+     * disparu ». C'est ce chiffre qui rend la décision observable jour après
+     * jour, et c'est lui qu'on relira le jour où quelqu'un se demandera si la
+     * garde tient encore.
+     */
+    candidaturesRetenuesEpargnees: 0,
     emailLogs: 0,
     emailOutbox: 0,
   };
@@ -312,10 +330,42 @@ export async function executerPurgeRetention(): Promise<void> {
   // eux laisserait les CV et les photos sur le disque indéfiniment — le
   // pire des deux mondes, une base propre et un disque qui ne l'est pas.
   // 24 mois : recommandation CNIL pour un candidat non retenu.
+  //
+  // 🛑 `D4` (2026-09-03) — LE DOSSIER D'UNE PERSONNE RECRUTÉE EST ÉPARGNÉ.
+  //
+  // Le filtre ne portait que sur la date de dépôt. Vingt-quatre mois après
+  // avoir postulé, le dossier d'un salarié TOUJOURS EN POSTE partait avec ceux
+  // des refusés — CV et photo compris, effacés du disque avant la ligne. Et
+  // personne n'aurait été prévenu : une passe quotidienne ne distingue pas ce
+  // qu'elle épargne de ce qu'elle n'a jamais vu.
+  //
+  // Décision du responsable de traitement : la candidature d'une personne
+  // entrée dans la société devient une pièce de son DOSSIER DU PERSONNEL. Elle
+  // se conserve le temps de la relation de travail, et sa suppression est un
+  // geste explicite — `deleteApplicationAction`, réservé au super-administrateur,
+  // qui purge déjà le CV et la photo avant la ligne.
+  //
+  // 🔑 Une EXCLUSION de statut, jamais une durée plus longue. Un second passage
+  // « les recrutés à dix ans » aurait l'air prudent et effacerait le dossier
+  // pendant la carrière de la personne. `les-dossiers-recrutes-ne-sont-jamais-purges.spec.ts`
+  // refuse explicitement cette forme-là.
+  //
+  // ⚠️ Les candidatures non retenues ne bougent pas : 24 mois, norme CNIL.
   const candidaturesMois = readMonths("RETENTION_CANDIDATURES_MONTHS", DEFAULTS.candidatures);
   const candidaturesPerimees = await prisma.jobApplication.findMany({
-    where: { submittedAt: { lt: monthsAgo(candidaturesMois) } },
+    where: {
+      status: { notIn: ["hired"] },
+      submittedAt: { lt: monthsAgo(candidaturesMois) },
+    },
     select: { id: true, cvStoragePath: true, photoStoragePath: true },
+  });
+
+  // OBSERVATION, jamais une purge : combien de dossiers l'exclusion a épargnés
+  // sur cette passe. Un `count`, donc aucune ligne rendue, aucune suppression
+  // possible — la garde `les-dossiers-recrutes-ne-sont-jamais-purges.spec.ts`
+  // n'inspecte que les lectures qui alimentent une suppression.
+  counts.candidaturesRetenuesEpargnees = await prisma.jobApplication.count({
+    where: { status: "hired", submittedAt: { lt: monthsAgo(candidaturesMois) } },
   });
 
   for (const c of candidaturesPerimees) {
@@ -505,7 +555,8 @@ export async function executerPurgeRetention(): Promise<void> {
       `chatConversations=${counts.chatConversations} chatEscalations=${counts.chatEscalations} ` +
       `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency} ` +
       `funnelEvents=${counts.funnelEvents} ` +
-      `candidatures=${counts.candidatures} (${counts.candidaturesFichiers} fichiers)`,
+      `candidatures=${counts.candidatures} (${counts.candidaturesFichiers} fichiers) ` +
+      `recrutesEpargnes=${counts.candidaturesRetenuesEpargnees}`,
   );
 }
 

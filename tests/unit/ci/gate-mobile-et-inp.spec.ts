@@ -265,10 +265,67 @@ describe("GEO-121 — le gate mesure aussi le mobile", () => {
       );
     expect(collecteMobile, "collecte mobile introuvable").not.toBeNull();
     expect(Number(collecteMobile?.[1])).toBeGreaterThan(1);
-    const conf = JSON.parse(lire(CONF_MOBILE)) as {
-      ci: { assert: { aggregationMethod?: string } };
+    // 🔴 LA MÉDIANE SE DÉCLARE DANS CHAQUE ENTRÉE, PAS À CÔTÉ DE LA MATRICE.
+    //
+    // Cette ligne exigeait `conf.ci.assert.aggregationMethod === "median"`,
+    // c'est-à-dire au niveau RACINE, à côté de `assertMatrix`. lhci REFUSE
+    // cette combinaison : la passe mobile n'a donc jamais asserté quoi que ce
+    // soit. La garde n'a pas raté la panne — elle l'ÉPINGLAIT. Voir le test
+    // « lhci ACCEPTE ces deux configs » plus bas, qui mesure au lieu de décrire.
+    for (const entree of JSON.parse(lire(CONF_MOBILE)).ci.assert.assertMatrix ?? []) {
+      expect(
+        entree.aggregationMethod,
+        `${entree.matchingUrlPattern} : la médiane doit être déclarée DANS l'entrée`,
+      ).toBe("median");
+    }
+  });
+
+  it("🔴 lhci ACCEPTE ces deux configs — mesuré par SON moteur, pas décrit par le nôtre", async () => {
+    // 🔑 LA GARDE QUI MANQUAIT, ET QUI A COÛTÉ UN GATE ENTIER.
+    //
+    // Le 2026-09-03, la passe mobile était rouge à chaque déploiement avec
+    // « au moins une assertion a échoué ». Faux : elle mourait AVANT d'asserter,
+    // sur `Cannot use assertMatrix with other options`, parce que
+    // `aggregationMethod` était déclaré à côté de `assertMatrix`. Dix-huit
+    // rapports collectés, zéro assertion, un rouge qui disait le contraire de
+    // ce qui se passait — et le budget mobile gardé par rien.
+    //
+    // Aucune garde de forme n'aurait attrapé ça, puisque la règle appartient à
+    // lhci et à personne d'autre. Celle-ci ne la RECOPIE donc pas : elle appelle
+    // `getAllAssertionResults`, la fonction même qui lève dans la CI. Le jour où
+    // lhci change ses combinaisons interdites, c'est lhci qui nous le dira.
+    //
+    // ⚠️ `@lhci/utils` est une dépendance TRANSITIVE : pnpm ne l'expose pas à la
+    // racine. On la résout depuis `@lhci/cli`, qui est une dépendance directe —
+    // et surtout PAS par un chemin `node_modules/.pnpm/@lhci+utils@0.15.1/…`,
+    // qui casserait à la première montée de version en prétendant garder.
+    const { createRequire } = await import("node:module");
+    const requiert = createRequire(import.meta.url);
+    const depuisCli = createRequire(requiert.resolve("@lhci/cli/package.json"));
+    const { getAllAssertionResults } = depuisCli("@lhci/utils/src/assertions.js") as {
+      getAllAssertionResults: (options: unknown, lhrs: unknown[]) => unknown[];
     };
-    expect(conf.ci.assert.aggregationMethod).toBe("median");
+
+    // Un rapport minimal : la forme suffit, on n'éprouve pas des seuils ici mais
+    // la LÉGALITÉ de la config. Une assertion qui ne trouve pas son audit rend
+    // un résultat, elle ne lève pas.
+    const rapport = {
+      finalUrl: "https://axion-ia.com/fr/formations",
+      finalDisplayedUrl: "https://axion-ia.com/fr/formations",
+      audits: {
+        "cumulative-layout-shift": { id: "cumulative-layout-shift", score: 1, numericValue: 0.01 },
+      },
+      categories: { performance: { id: "performance", score: 0.99 } },
+    };
+
+    for (const chemin of [CONF_DESKTOP, CONF_MOBILE]) {
+      const conf = JSON.parse(lire(chemin));
+      expect(
+        () => getAllAssertionResults(conf.ci.assert, [rapport]),
+        `${chemin} : lhci REFUSE cette config — la passe collecte puis meurt avant d'asserter, ` +
+          `et le job rend « au moins une assertion a échoué » en n'ayant rien asserté`,
+      ).not.toThrow();
+    }
   });
 
   it("🔴 le job imprime TOUTES les valeurs mesurées, pas seulement les dépassements", () => {
