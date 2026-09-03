@@ -154,7 +154,6 @@ const PLUSIEURS_SCRIPTS_ASSUME: Record<string, string> = {
   // qu'un lanceur portait le composant d'un AUTRE script, avec une charge utile
   // différente.
   docuseal: "lanceur `vps/run-docuseal-backup.sh` + implémentation `backup-docuseal.sh`",
-  secrets: "lanceur `vps/run-secrets-backup.sh` + implémentation `backup-secrets.sh`",
 };
 
 describe("🔴 sauvegardes — un composant, un script", () => {

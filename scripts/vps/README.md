@@ -12,16 +12,16 @@ la reprise après sinistre. Voir `docs/adr/0032-backup-dr-extension-pitr-immutab
 
 ## Contenu
 
-| Fichier                   | Rôle                                                                              | Cron (UTC)                    |
-| ------------------------- | --------------------------------------------------------------------------------- | ----------------------------- |
-| `run-pg-hourly-backup.sh` | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                       | `20 * * * *`                  |
-| `run-r2-backup.sh`        | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)       | `0 3` / `0 4 dim` / `0 5 1er` |
-| `run-files-backup.sh`     | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/daily/`     | `15 4 * * *`                  |
-| `run-secrets-backup.sh`   | Archive chiffrée des secrets/env → R2 `secrets/`                                  | `0 2 * * *`                   |
-| `run-docuseal-backup.sh`  | Dump Docuseal → R2 `docuseal/daily/`                                              | `45 2 * * *`                  |
-| `run-plausible-backup.sh` | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/` | `30 3 * * *`                  |
-| `run-backup-digest.sh`    | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant     | `30 6 * * *`                  |
-| `crontab.snapshot.txt`    | Snapshot du crontab `root` (référence)                                            | —                             |
+| Fichier                   | Rôle                                                                                            | Cron (UTC)                                 |
+| ------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `run-pg-hourly-backup.sh` | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                                     | `20 * * * *`                               |
+| `run-r2-backup.sh`        | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)                     | `0 3` / `0 4 dim` / `0 5 1er`              |
+| `run-files-backup.sh`     | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/{daily,weekly,monthly}/`  | `15 4 * * *` · `30 4 * * 0` · `30 5 1 * *` |
+| `run-secrets-backup.sh`   | Archive chiffrée des secrets/env de **toute l'instance** Coolify → R2 `secrets/` (rétention 30) | `0 2 * * *`                                |
+| `run-docuseal-backup.sh`  | Dump Docuseal → R2 `docuseal/{daily,weekly,monthly}/`                                           | `45 2 * * *` · `50 4 * * 0` · `50 5 1 * *` |
+| `run-plausible-backup.sh` | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/`               | `30 3 * * *`                               |
+| `run-backup-digest.sh`    | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant                   | `30 6 * * *`                               |
+| `crontab.snapshot.txt`    | Snapshot du crontab `root` (référence)                                                          | —                                          |
 
 ## Notifications Telegram (2026-07-11)
 
@@ -38,6 +38,27 @@ backup horaire). Réduit à **1 seul message par jour** :
 
 > ⚠️ **Piège prefixes R2 Plausible** : la sauvegarde atterrit dans `plausible/pg/daily/`
 > **et** `plausible/ch/daily/`, jamais `plausible/daily/`. Le digest vérifie les deux.
+
+## Ce qui a changé le 2026-09-03 (reprise à froid)
+
+Trois défauts mesurés en auditant le scénario « Coolify tombe » :
+
+1. **`run-secrets-backup.sh` ne sauvegardait que le site.** Il n'interrogeait que
+   `/applications/$COOLIFY_APP_UUID/envs`. Manquaient le `SECRET_KEY_BASE` de Docuseal —
+   sans lui la base Docuseal restaurée est illisible —, les variables propres au worker,
+   les identifiants des bases et ceux de Plausible. Il énumère désormais les trois familles
+   de ressources Coolify et joint le `printenv` de chaque conteneur vivant. Il **refuse
+   d'envoyer** une archive amputée, et **se relit depuis R2** après chaque envoi : la
+   restauration des secrets est prouvée tous les jours, et remontée comme `RestoreDrill`.
+2. **Aucune profondeur au-delà de 14 jours pour les fichiers.** `files/` n'avait qu'un
+   palier quotidien (14 objets) et `docuseal/` qu'un quotidien (24). Or Hetzner ne conserve
+   que **7** emplacements de snapshot — nombre non réglable. Une suppression repérée après
+   trois semaines n'était donc plus récupérable nulle part, pour des pièces dont la
+   rétention légale est de cinq ans. D'où les paliers hebdo et mensuel ajoutés ci-dessus.
+3. **Le compteur de fails consécutifs vivait dans le conteneur éphémère.** Il repartait de
+   zéro à chaque exécution, donc l'alerte « CASCADING FAIL » ne pouvait jamais se
+   déclencher. `run-secrets-backup.sh` le range maintenant dans `/var/lib/axion-backup`,
+   monté depuis l'hôte. **Les cinq autres wrappers ont toujours le défaut** — à reprendre.
 
 ## Sécurité
 
