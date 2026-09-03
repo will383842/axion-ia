@@ -19,6 +19,12 @@
 import { expect, type Page } from "@playwright/test";
 
 import { ADMIN_DEV_EMAIL, ADMIN_DEV_PASSWORD } from "../../../prisma/seeds/identifiants-admin-dev";
+import {
+  ecrireSessionPartagee,
+  lireSessionPartagee,
+  oublierSessionPartagee,
+  rejouer,
+} from "./session-admin-partagee";
 
 export const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
 // 🔴 Le repli était écrit en dur, et ne correspondait à AUCUN compte semé :
@@ -50,10 +56,59 @@ export interface LoginOptions {
   password?: string;
   /** Skip la vérification dashboard (utile si le test attend une redirection ailleurs). */
   skipDashboardCheck?: boolean;
+  /**
+   * Force une connexion PAR LE FORMULAIRE, sans rejouer ni alimenter le cache.
+   *
+   * Réservé aux specs qui éprouvent l'écran de connexion lui-même : pour elles,
+   * la connexion EST l'objet du test, et la rejouer depuis un cache la viderait
+   * de son sens.
+   */
+  sansCachePartage?: boolean;
 }
 
 /**
- * Authentifie un admin via UI et attend que le dashboard soit chargé.
+ * Rejoue la session partagée si elle existe, et VÉRIFIE qu'elle vaut encore.
+ *
+ * Rend `true` seulement quand on a constaté l'arrivée sur le tableau de bord.
+ * Tout le reste — pas de cache, cookies périmés, base re-semée entre-temps —
+ * rend `false`, jette le cache, et laisse l'appelant se connecter pour de bon.
+ * Le pire cas est donc le comportement d'avant ce cache, jamais un test vert
+ * qui n'aurait pas de session.
+ */
+async function rejouerLaSessionPartagee(page: Page, email: string): Promise<boolean> {
+  const cookies = lireSessionPartagee(email, ADMIN_PREFIX);
+  if (!cookies) return false;
+
+  try {
+    await rejouer(page, cookies);
+    await page.goto(`/fr/${ADMIN_PREFIX}`, {
+      waitUntil: "domcontentloaded",
+      timeout: 120_000,
+    });
+    // 🔑 LA VÉRIFICATION EST UNE ABSENCE DE REDIRECTION, PAS UN SÉLECTEUR.
+    // Le tableau de bord change ; la garde d'authentification, elle, renvoie
+    // toujours vers `/login`. C'est le seul signal stable.
+    if (new URL(page.url()).pathname.includes("/login")) {
+      oublierSessionPartagee(email, ADMIN_PREFIX);
+      return false;
+    }
+    await refuserLesCookies(page);
+    return true;
+  } catch {
+    oublierSessionPartagee(email, ADMIN_PREFIX);
+    return false;
+  }
+}
+
+/**
+ * Authentifie un admin — depuis la session partagée si elle existe, par le
+ * formulaire sinon.
+ *
+ * 🔴 LE NOMBRE DE CONNEXIONS RÉELLES NE DÉPEND PLUS DU NOMBRE D'APPELS.
+ * Voir `session-admin-partagee.ts` pour l'arithmétique du limiteur de débit :
+ * 28 appels valaient 56 hits contre un plafond de 50, et Gate B tombait sur
+ * « Trop de tentatives » — un message qui accuse la connexion alors que rien
+ * n'est cassé dans le produit.
  *
  * Throws si le login échoue (mauvais credentials, 2FA actif, rate-limit, etc.).
  * Le test appelant peut catch pour skip si la DB n'est pas seedée localement.
@@ -62,6 +117,56 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   const email = opts.email ?? ADMIN_EMAIL;
   const password = opts.password ?? ADMIN_PASSWORD;
 
+  // Le cache ne sert QUE le compte par défaut. Une spec qui se connecte sous
+  // une autre adresse doit obtenir CETTE session-là, pas celle de l'admin de
+  // recette : rejouer les cookies du voisin serait un test faussement vert.
+  const cacheUtilisable =
+    !opts.sansCachePartage && !opts.skipDashboardCheck && email === ADMIN_EMAIL;
+
+  // 🔴 AUCUNE ATTENTE ENTRE WORKERS, ET C'EST UNE LECON DE LA CI.
+  //
+  // Une premiere version prenait un verrou : un seul worker se connectait, les
+  // autres attendaient qu'il publie, jusqu'a 90 s. `a11y-admin.spec.ts` se
+  // connecte dans un `beforeAll`, dont le budget Playwright est de **30 s** :
+  // le crochet expirait avant la publication, et les trois tests du fichier
+  // tombaient — remplaçant une panne par une autre.
+  //
+  // 🔑 L'attente n'etait pas mal reglee, elle etait fausse par nature. Ce
+  // fichier documente lui-meme qu'une connexion coute 60 a 180 s en CI sous
+  // quatre workers : un attendeur ne peut JAMAIS tenir dans un budget de
+  // crochet qu'il ne controle pas.
+  //
+  // Ce que le verrou achetait : 4 connexions au lieu d'1. Contre un plafond de
+  // 50 hits, la difference est 8 contre 2 — sans objet. Les tests d'un worker
+  // sont serialises, donc chaque worker se connecte AU PLUS une fois, puis lit
+  // le cache. On garde le cache, on jette le verrou.
+  if (cacheUtilisable && (await rejouerLaSessionPartagee(page, email))) return;
+
+  await connexionParLeFormulaire(page, opts, email, password);
+  // 🔑 ON NE PUBLIE QU'APRÈS AVOIR CONSTATÉ LE TABLEAU DE BORD — c'est-à-dire
+  // seulement quand `connexionParLeFormulaire` est revenue sans lever, et que
+  // `cacheUtilisable` exclut déjà `skipDashboardCheck`. Publier plus tôt
+  // exposerait aux autres workers des cookies dont on ne sait pas encore s'ils
+  // ouvrent quoi que ce soit ; un cache faux coûte plus cher que pas de cache,
+  // puisqu'il rend vertes des specs qui n'ont aucune session.
+  if (cacheUtilisable) {
+    ecrireSessionPartagee(email, ADMIN_PREFIX, await page.context().cookies());
+  }
+}
+
+/**
+ * La connexion PAR L'ÉCRAN — le chemin d'origine, inchangé.
+ *
+ * Séparée de `loginAsAdmin` pour que la décision « rejouer ou se connecter »
+ * tienne en trois lignes lisibles au-dessus, plutôt que d'être noyée en tête
+ * des cent lignes de bornes et de sélecteurs que ce chemin a accumulées.
+ */
+async function connexionParLeFormulaire(
+  page: Page,
+  opts: LoginOptions,
+  email: string,
+  password: string,
+): Promise<void> {
   // 🔴 2026-08-22 — CONSÉQUENCE DIRECTE DU CORRECTIF DE CAUSE RACINE.
   //
   // `playwright.config.ts` borne désormais toute navigation à 30 s
