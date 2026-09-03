@@ -69,30 +69,38 @@ echo "── 1/4 · état du coffre ──────────────�
 ETAT=$("${BW}" status 2>/dev/null | python -c "import json,sys; print(json.load(sys.stdin).get('status','inconnu'))" 2>/dev/null || echo "inconnu")
 echo "   ${ETAT}"
 
-if [ "${ETAT}" = "unauthenticated" ] || [ "${ETAT}" = "inconnu" ]; then
-  cat <<'AIDE'
-
-   Le coffre n'est pas connecté sur ce poste. Une seule fois :
-
-       bw login
-
-   Il demande l'adresse e-mail, puis le mot de passe maître, puis le code à
-   deux facteurs si tu en as un. Ensuite relance ce script.
-AIDE
-  exit 2
-fi
-
-if [ "${ETAT}" = "locked" ]; then
-  echo ""
-  echo "   Le coffre est verrouillé. Saisis ton mot de passe maître (frappe masquée) :"
-  SESSION=$("${BW}" unlock --raw)
-  if [ -z "${SESSION:-}" ]; then echo "❌ Déverrouillage échoué."; exit 1; fi
-else
-  SESSION="${BW_SESSION:-}"
-  if [ -z "${SESSION}" ]; then
-    echo "   Coffre déverrouillé mais BW_SESSION absente — saisis le mot de passe maître :"
+# Connexion et déverrouillage sont faits ICI plutôt que renvoyés à l'opérateur :
+# une étape séparée de plus, c'est une occasion de plus de se tromper, et le
+# `bw login` isolé n'apporte rien qu'on ne puisse enchaîner.
+SESSION=""
+case "${ETAT}" in
+  unauthenticated | inconnu)
+    echo ""
+    echo "   Coffre non connecté sur ce poste. Connexion (une seule fois) :"
+    echo "   adresse e-mail, puis mot de passe maître, puis code à deux facteurs"
+    echo "   si tu en as un. Rien ne s'affiche pendant la frappe du mot de passe."
+    echo ""
+    SESSION=$("${BW}" login --raw)
+    ;;
+  locked)
+    echo ""
+    echo "   Coffre verrouillé. Mot de passe maître (frappe masquée) :"
     SESSION=$("${BW}" unlock --raw)
-  fi
+    ;;
+  unlocked)
+    SESSION="${BW_SESSION:-}"
+    if [ -z "${SESSION}" ]; then
+      echo ""
+      echo "   Coffre déverrouillé mais session absente. Mot de passe maître :"
+      SESSION=$("${BW}" unlock --raw)
+    fi
+    ;;
+esac
+
+if [ -z "${SESSION:-}" ]; then
+  echo ""
+  echo "❌ Coffre non ouvert. Rien n'a été vérifié — relance et réessaie."
+  exit 1
 fi
 export BW_SESSION="${SESSION}"
 
