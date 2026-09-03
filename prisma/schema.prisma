@@ -8467,17 +8467,23 @@ model JobApplicationReply {
   repliedByName   String     @map("replied_by_name") @db.VarChar(255)
   repliedAt       DateTime   @default(now()) @map("replied_at")
 
-  /// 🔴 CHIFFRÉ, et c'est l'écart avec le modèle dont celui-ci est la copie.
+  /// 🔴 CHIFFRÉ (`encryptPii`), et typé `Text` — pas `Citext`.
   ///
-  /// `SubmissionReply.toEmail` est un `citext` EN CLAIR. Le recopier tel quel
-  /// déchiffrerait par la bande l'adresse du candidat, que
-  /// `JobApplication.email` protège justement au repos — on aurait chiffré la
-  /// porte et laissé la fenêtre ouverte, exactement le défaut déjà corrigé sur
-  /// l'ouverture des dossiers.
+  /// ⚠️ RECTIFICATION du 2026-09-03. Une première version de ce commentaire
+  /// affirmait que `SubmissionReply.toEmail` était « en clair ». C'est FAUX :
+  /// l'action y écrit `submission.contactEmail`, déjà chiffré, et le worker le
+  /// déchiffre au seul moment de l'envoi. Les deux colonnes portent donc bien un
+  /// ciphertext. Ce qui diffère est le TYPE, et c'est délibéré ici :
   ///
-  /// Conséquences assumées : le type est `Text` (un ciphertext n'est pas une
-  /// adresse), et aucune égalité SQL n'est possible dessus — la recherche passe
-  /// par `JobApplication.emailHash`, comme partout ailleurs.
+  ///  · `Citext` promet une comparaison insensible à la casse. Sur un
+  ///    ciphertext à IV aléatoire, cette promesse n'a aucun sens — deux
+  ///    chiffrements de la même adresse ne sont jamais égaux, quelle que soit la
+  ///    casse. Le type invite à une requête qui ne correspondra jamais.
+  ///  · `Text` ne promet rien, ce qui est exact.
+  ///
+  /// Conséquence assumée dans les deux cas : aucune égalité SQL n'est possible
+  /// sur cette colonne. Chercher une candidature par son adresse passe par
+  /// `JobApplication.emailHash`, comme partout ailleurs dans ce dépôt.
   toEmail String @map("to_email") @db.Text
 
   subject  String @db.VarChar(500)

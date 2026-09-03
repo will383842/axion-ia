@@ -317,6 +317,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "l'auteur du message",
     source: "features/admin-submissions/reply-actions.ts",
   },
+  "candidature-reponse": {
+    categorie: "divers",
+    quand: "Réponse écrite À LA MAIN depuis la console à un candidat — aucun LLM",
+    destinataire: "le candidat",
+    source: "features/admin-job-applications/reply-actions.ts",
+  },
   "avis-recu": {
     categorie: "divers",
     quand: "Un avis client vient d'être soumis",

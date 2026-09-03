@@ -6,7 +6,7 @@
 -- texte unique, écrasée à chaque enregistrement. Un post-it, pas un journal.
 --
 -- Le mécanisme existait déjà pour les MESSAGES (`submission_replies`). Il est
--- repris ici avec UN ÉCART, sur `to_email` : voir le commentaire de colonne.
+-- repris ici, avec un choix de TYPE différent sur `to_email` : voir plus bas.
 --
 -- Additif : aucune ligne existante n'est touchée, aucune colonne n'est modifiée.
 
@@ -113,18 +113,24 @@ ALTER TABLE "job_application_replies"
   FOREIGN KEY ("replied_by_user_id") REFERENCES "admin_users"("id")
   ON DELETE SET NULL ON UPDATE CASCADE;
 
--- 🔴 L'ÉCART AVEC LE MODÈLE DONT CETTE TABLE EST LA COPIE.
+-- L'adresse est CHIFFRÉE, et la colonne est un TEXT — pas un CITEXT.
 --
--- `submission_replies.to_email` est un CITEXT EN CLAIR. Le recopier tel quel
--- déchiffrerait par la bande l'adresse du candidat, que `job_applications.email`
--- protège justement au repos : on aurait chiffré la porte et laissé la fenêtre
--- ouverte — exactement le défaut déjà corrigé sur l'ouverture des dossiers.
+-- ⚠️ RECTIFICATION : une première rédaction affirmait que
+-- `submission_replies.to_email` était « en clair ». C'est FAUX. L'action y écrit
+-- `submission.contact_email`, déjà chiffré, et le worker le déchiffre au seul
+-- moment de l'envoi. Les deux colonnes portent donc un ciphertext.
 --
--- D'où le type TEXT (un ciphertext n'est pas une adresse) et l'impossibilité
--- assumée de toute égalité SQL dessus : la recherche passe par
+-- Ce qui diffère est le TYPE, et c'est délibéré ici. CITEXT promet une
+-- comparaison insensible à la casse — promesse sans aucun sens sur un
+-- chiffrement à IV aléatoire, où deux chiffrements de la même adresse ne sont
+-- jamais égaux, quelle que soit la casse. Le type invite donc à écrire une
+-- requête qui ne correspondra jamais, sans lever d'erreur. TEXT ne promet rien,
+-- ce qui est exact.
+--
+-- Chercher une candidature par son adresse passe par
 -- `job_applications.email_hash`, comme partout ailleurs dans ce dépôt.
 COMMENT ON COLUMN "job_application_replies"."to_email" IS
-  'CHIFFRÉ (encryptPii), contrairement à submission_replies.to_email qui est en clair. Aucune égalité SQL possible : chercher par adresse passe par job_applications.email_hash.';
+  'CHIFFRÉ (encryptPii). Typé TEXT et non CITEXT : la comparaison insensible à la casse que promet CITEXT n''a aucun sens sur un ciphertext à IV aléatoire. Chercher par adresse passe par job_applications.email_hash.';
 
 COMMENT ON TABLE "job_application_replies" IS
   'Réponses écrites À LA MAIN depuis la console, et leur sort à l''envoi. En cascade sur la candidature : un effacement RGPD doit emporter le corps des e-mails déjà rendus, qui portent le nom de la personne.';

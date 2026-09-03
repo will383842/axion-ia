@@ -55,6 +55,9 @@ export type EmailJobName =
   | "cancellation-confirmed-by-user"
   // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply admin
   | "submission-reply"
+  // Lot 1 du chantier recrutement (2026-09-03) — réponse écrite à la main à un
+  // candidat. Jumeau de `submission-reply`, sur `JobApplicationReply`.
+  | "candidature-reponse"
   // T15 — emails auto Qualiopi lifecycle stagiaires + alertes internes
   | "qualiopi-convocation"
   | "qualiopi-rappel-j7"

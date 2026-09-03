@@ -3,7 +3,7 @@
  *
  * ## Ce que ce fichier verrouille
  *
- * `PAYLOAD_EXEMPLE` est un objet unique qui alimente les 44 gabarits. Son
+ * `PAYLOAD_EXEMPLE` est un objet unique qui alimente les 45 gabarits. Son
  * intérêt — un seul endroit à maintenir — est aussi son risque : rien n'oblige
  * un gabarit neuf à y trouver ses champs. Il rendrait alors un aperçu à trous,
  * et **personne ne le verrait**, puisqu'un `undefined` ne casse pas React, il
