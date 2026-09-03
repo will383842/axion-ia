@@ -58,6 +58,8 @@ export type EmailJobName =
   // Lot 1 du chantier recrutement (2026-09-03) — réponse écrite à la main à un
   // candidat. Jumeau de `submission-reply`, sur `JobApplicationReply`.
   | "candidature-reponse"
+  // Lot 2 — rappel d'entretien au candidat, J-1 puis H-1.
+  | "candidature-entretien-rappel"
   // T15 — emails auto Qualiopi lifecycle stagiaires + alertes internes
   | "qualiopi-convocation"
   | "qualiopi-rappel-j7"

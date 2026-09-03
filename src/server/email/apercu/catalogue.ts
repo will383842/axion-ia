@@ -323,6 +323,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le candidat",
     source: "features/admin-job-applications/reply-actions.ts",
   },
+  "candidature-entretien-rappel": {
+    categorie: "divers",
+    quand: "Rappel d'entretien — la veille, puis une heure avant",
+    destinataire: "le candidat",
+    source: "server/careers/rappels-entretien.ts",
+  },
   "avis-recu": {
     categorie: "divers",
     quand: "Un avis client vient d'être soumis",

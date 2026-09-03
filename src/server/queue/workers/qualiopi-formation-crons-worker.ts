@@ -116,6 +116,7 @@ export type FormationCronJobType =
   // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram hebdo
   // des offres à republier. AUCUN bump de date automatique (règle Google).
   | "formation-crons.offres-fraicheur"
+  | "formation-crons.rappels-entretien"
   // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE.
   //
   // ⚠️ Ce passage n'est pas « formation », et il vit pourtant ici. C'est un
@@ -1851,6 +1852,30 @@ async function handleFormateurRappelJ1(): Promise<void> {
   await traiterAffectations("formateur-rappel-j1", affectations, envoyerRappelJ1Formateur);
 }
 
+/**
+ * Rappels d'entretien — J-1 et H-1, deux passages par tick.
+ *
+ * 🔑 Import PARESSEUX du module de rappels : il touche `prisma` et la file, et
+ * ce fichier est chargé par le worker au démarrage. Le charger en tête ferait
+ * ouvrir une connexion pour un cron qui ne tourne peut-être jamais.
+ */
+async function handleRappelsEntretien(): Promise<void> {
+  const { envoyerRappelsEntretien } = await import("@/server/careers/rappels-entretien");
+  const passages = await envoyerRappelsEntretien();
+  for (const r of passages) {
+    // 🔴 On journalise CHAQUE passage, même vide. Un cron dont on ne voit que
+    // les envois ne se distingue pas d'un cron qui ne tourne plus.
+    const alerte = r.echecs > 0 || r.adressesIllisibles > 0 || r.plafondAtteint;
+    const ligne =
+      `[formation-crons] rappels-entretien ${r.moment}: ` +
+      `${r.candidats} candidat(s), ${r.envoyes} envoyé(s), ${r.echecs} échec(s)` +
+      (r.adressesIllisibles > 0 ? `, ${r.adressesIllisibles} adresse(s) illisible(s)` : "") +
+      (r.plafondAtteint ? " — PLAFOND ATTEINT" : "");
+    if (alerte) console.error(ligne);
+    else console.log(ligne);
+  }
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.positionnement": handlePositionnement,
@@ -1868,6 +1893,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
+  "formation-crons.rappels-entretien": handleRappelsEntretien,
   "formation-crons.email-sante": handleEmailSante,
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
