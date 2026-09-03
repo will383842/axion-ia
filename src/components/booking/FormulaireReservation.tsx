@@ -49,9 +49,13 @@
 //     de Will. Un champ que neuf visiteurs sur dix laissent vide n'a rien à
 //     faire dans la colonne principale. `<details>`/`<summary>` natif : le
 //     dépliage marche sans une ligne de JavaScript.
-//   ④ LE TÉLÉPHONE DISPARAÎT QUAND LA VISIO EST CHOISIE, en CSS pur
-//     (`group-has-[#format-visio:checked]:hidden`). Voir le commentaire du bloc
-//     concerné : le sens du test est choisi pour que l'échec soit OUVERT.
+//   ④ LE TÉLÉPHONE DISPARAISSAIT QUAND LA VISIO ÉTAIT CHOISIE, en CSS pur
+//     (`group-has-[#format-visio:checked]:hidden`). ⚠️ RETIRÉ LE 2026-09-03 :
+//     Will a rendu le numéro OBLIGATOIRE dans les deux formats, et un contrôle
+//     `required` masqué en `display:none` bloque la soumission native sans
+//     afficher le moindre message. Le détail est au bloc concerné ; l'écran
+//     regagne donc une ligne de 48 px pour qui choisit la visio, et c'est le
+//     prix assumé d'un prospect joignable.
 //
 // Et deux gestes qui raccourcissent sans rien retirer : nom et e-mail se
 // rangent côte à côte dès `sm:`, et la zone « votre besoin » passe de quatre
@@ -446,9 +450,11 @@ export function FormulaireReservation({
         </Champ>
       </div>
 
-      {/* FORMAT + TÉLÉPHONE — un seul groupe, et c'est ce qui permet au second
-          de dépendre du premier sans JavaScript. */}
-      <div className="group space-y-5">
+      {/* FORMAT + TÉLÉPHONE — un seul groupe, parce qu'on les lit ensemble :
+          « comment vous joindre » puis « à quel numéro ». Le téléphone ne
+          dépend PLUS du format depuis qu'il est obligatoire dans les deux (voir
+          la note du champ). */}
+      <div className="space-y-5">
         {/* FORMAT — deux blocs entiers cliquables. Le `<label>` enveloppe le
             bouton radio, donc toute la surface répond, pas seulement le rond. */}
         <fieldset>
@@ -483,8 +489,6 @@ export function FormulaireReservation({
                 className="border-border-strong bg-paper hover:border-fg/40 has-[:checked]:border-terracotta has-[:checked]:bg-terracotta-soft has-[:checked]:ring-terracotta has-[:focus-visible]:ring-terracotta flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition has-[:checked]:ring-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-offset-2"
               >
                 <input
-                  // 🔑 L'`id` n'est PAS décoratif : c'est lui que vise le
-                  // sélecteur CSS qui masque le téléphone (voir plus bas).
                   id={`format-${opt.valeur}`}
                   type="radio"
                   name={CHAMPS.format}
@@ -505,40 +509,43 @@ export function FormulaireReservation({
           </div>
         </fieldset>
 
-        {/* TÉLÉPHONE — visible par défaut, MASQUÉ quand la visio est choisie.
+        {/* TÉLÉPHONE — OBLIGATOIRE, ET TOUJOURS VISIBLE (Will, 2026-09-03).
 
-            🔴 LE SENS DU TEST EST CHOISI POUR QUE L'ÉCHEC SOIT OUVERT.
+            🔴 LE MASQUAGE CONDITIONNEL A ÉTÉ RETIRÉ, ET CE N'EST PAS UN CHOIX
+            D'ESTHÉTIQUE : IL EST INCOMPATIBLE AVEC `required`.
 
-            La version précédente l'affichait toujours, avec ce commentaire :
-            « sans JavaScript, on ne peut pas l'afficher au choix du format ». La
-            prémisse était fausse — `:has()` le fait en CSS, et il est disponible
-            partout depuis 2023. Mais le sens compte plus que le mécanisme :
+            Ce champ vivait dans `group-has-[#format-visio:checked]:hidden` —
+            masqué en `display:none` dès que la visio était cochée. Le rendre
+            obligatoire SANS retirer ce masquage produirait la pire panne que ce
+            formulaire puisse avoir : un contrôle invalide et non affichable
+            bloque la soumission NATIVE du navigateur, qui refuse d'envoyer et
+            ne peut afficher son message nulle part (« An invalid form control
+            is not focusable »). Le visiteur cliquerait « Réserver » et il ne se
+            passerait RIEN — sans un mot, sans une erreur, sans recours, et sur
+            la moitié du trafic qui choisit la visio.
 
-            — masquer « tant que le téléphone n'est PAS coché » condamnerait un
-              navigateur sans `:has()` à ne jamais montrer le champ, donc à
-              refuser la réservation de qui choisit l'appel ;
-            — masquer « quand la VISIO est cochée », comme ici, retombe en cas de
-              non-support sur le comportement d'hier : le champ reste affiché.
-              On perd le confort, jamais le rendez-vous.
+            Le champ reste donc affiché dans les deux formats, ce que son
+            étiquette assume : on demande un numéro même pour une visio, et on
+            dit pourquoi juste en dessous.
 
-            ⚠️ Et c'est bien `display:none` (`hidden`), pas une astuce visuelle :
-            un champ retiré de la vue mais laissé dans l'arbre d'accessibilité —
-            ou l'inverse — donnerait deux formulaires différents selon qu'on le
-            lit ou qu'on l'entend. `display:none` retire des deux à la fois.
-
-            La valeur déjà saisie continue d'être postée même masquée ; le
-            validateur ignore le téléphone hors du format « telephone ». */}
-        <div className="group-has-[#format-visio:checked]:hidden">
+            ⚠️ L'ancien commentaire expliquait longuement pourquoi le masquage
+            visait « la visio cochée » plutôt que « le téléphone non coché » —
+            pour échouer ouvert sur un navigateur sans `:has()`. Ce raisonnement
+            reste juste, et c'est pour cela qu'il est consigné ici : il ne
+            s'applique simplement plus, puisqu'il n'y a plus rien à masquer. */}
+        <div>
           <Champ
             nom={CHAMPS.telephone}
             label="Votre téléphone"
-            aide="Le numéro que nous composerons. Indicatif pays compris."
+            requis
+            aide="Pour vous joindre en cas d'imprévu, et c'est le numéro que nous composerons si vous choisissez l'appel. Indicatif pays compris."
             erreur={e(CHAMPS.telephone)}
           >
             <input
               id={CHAMPS.telephone}
               name={CHAMPS.telephone}
               type="tel"
+              required
               // `inputMode="tel"` ouvre le pavé numérique AVEC le « + ». Sans lui,
               // l'indicatif pays qu'on exige est introuvable au pouce.
               inputMode="tel"

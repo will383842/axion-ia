@@ -75,6 +75,11 @@ function saisie(over: Record<string, string> = {}): FormData {
     [CHAMPS.nom]: "Camille Prospect",
     [CHAMPS.email]: "camille@exemple.fr",
     [CHAMPS.format]: "visio",
+    // 🔑 Le numéro fait partie d'une saisie CORRECTE depuis le 2026-09-03 : il
+    // est exigé dans les deux formats. Sans lui ici, chaque test de ce fichier
+    // échouerait sur le téléphone au lieu du point qu'il dégrade — et le fichier
+    // entier mesurerait autre chose que ce qu'il annonce.
+    [CHAMPS.telephone]: "+33 6 11 22 33 44",
     [CHAMPS.fuseau]: "Europe/Paris",
     [CHAMPS.consent]: "on",
     q0: "Un audit de nos processus.",
@@ -202,41 +207,57 @@ describe("🔴 les invités sont refusés, jamais coupés", () => {
   });
 });
 
-describe("🔴 le format décide si le numéro est obligatoire", () => {
+describe("🔴 le numéro est obligatoire dans les DEUX formats", () => {
   it("un appel SANS numéro est refusé", () => {
     // 🔴 Calendly accepterait la réservation : le rendez-vous existerait, et
     // personne ne saurait qui appeler avant le jour même.
-    const r = valider(saisie({ [CHAMPS.format]: "telephone" }));
+    const fd = saisie({ [CHAMPS.format]: "telephone" });
+    fd.delete(CHAMPS.telephone);
+    const r = valider(fd);
     expect(r.ok).toBe(false);
     if (r.ok) return;
     expect(r.erreurs[CHAMPS.telephone]).toBeTruthy();
   });
 
-  it("un appel exige l'indicatif pays, parce que c'est NOUS qui composons", () => {
-    const r = valider(
-      saisie({ [CHAMPS.format]: "telephone", [CHAMPS.telephone]: "06 11 22 33 44" }),
-    );
+  it("🔴 une VISIO sans numéro est refusée AUSSI — décision de Will, 2026-09-03", () => {
+    // Le contre-témoin du test précédent, et l'inverse exact de ce que ce
+    // fichier gardait jusqu'ici (« une visio sans numéro passe — la contrainte
+    // ne déborde pas »). Ce qui a changé n'est pas le code, c'est la règle : un
+    // rendez-vous en visio se rattrape par téléphone quand le lien ne s'ouvre
+    // pas ou que personne ne se connecte, et l'e-mail ne se relit pas pendant
+    // ces cinq minutes-là.
+    const fd = saisie({ [CHAMPS.format]: "visio" });
+    fd.delete(CHAMPS.telephone);
+    const r = valider(fd);
     expect(r.ok).toBe(false);
     if (r.ok) return;
-    expect(r.erreurs[CHAMPS.telephone]).toContain("+33");
+    expect(r.erreurs[CHAMPS.telephone]).toBeTruthy();
   });
 
-  it("un appel AVEC indicatif passe, et le numéro suit dans la demande", () => {
-    const r = valider(
-      saisie({ [CHAMPS.format]: "telephone", [CHAMPS.telephone]: "+33 6 11 22 33 44" }),
-    );
-    expect(r.ok).toBe(true);
-    if (!r.ok) return;
-    expect(r.demande.telephone).toBe("+33 6 11 22 33 44");
+  it("l'indicatif pays est exigé, quel que soit le format", () => {
+    for (const format of ["telephone", "visio"]) {
+      const r = valider(saisie({ [CHAMPS.format]: format, [CHAMPS.telephone]: "06 11 22 33 44" }));
+      expect(r.ok, `« ${format} » sans indicatif ne devrait pas passer`).toBe(false);
+      if (r.ok) return;
+      expect(r.erreurs[CHAMPS.telephone]).toContain("+33");
+    }
   });
 
-  it("🔑 une VISIO sans numéro passe — la contrainte ne déborde pas", () => {
-    // Exiger le numéro dans les deux cas serait la régression facile : elle
-    // bloquerait le format que Will veut mettre en avant, sans message clair.
-    const r = valider(saisie({ [CHAMPS.format]: "visio" }));
-    expect(r.ok).toBe(true);
-    if (!r.ok) return;
-    expect(r.demande.telephone).toBeUndefined();
+  it("🔑 le numéro suit dans la demande pour les DEUX formats", () => {
+    // 🔴 La moitié qui décide si ce champ obligatoire sert à quelque chose.
+    // Il ne partait que pour un appel sortant : une visio l'aurait fait saisir
+    // puis jeté. `reservation.ts` le range désormais aussi dans
+    // `invitee.text_reminder_number`, mais encore faut-il qu'il lui parvienne.
+    for (const format of ["telephone", "visio"]) {
+      const r = valider(
+        saisie({ [CHAMPS.format]: format, [CHAMPS.telephone]: "+33 6 11 22 33 44" }),
+      );
+      expect(r.ok, `« ${format} » devrait passer`).toBe(true);
+      if (!r.ok) return;
+      expect(r.demande.telephone, `le numéro doit suivre en « ${format} »`).toBe(
+        "+33 6 11 22 33 44",
+      );
+    }
   });
 
   it("un format inventé est refusé", () => {

@@ -154,8 +154,21 @@ export function demandeDepuisLaSource(
     return { ok: false, manque: "le format du rendez-vous (ni téléphone ni visio reconnu)" };
   }
 
-  // Le numéro n'est nécessaire que pour un appel — mais alors il l'est
-  // vraiment : sans lui, on aurait un rendez-vous sans personne à appeler.
+  // 🔴 LE NUMÉRO SUIT LE REPORT, VISIO COMPRISE (2026-09-03).
+  //
+  // Il n'était REPRIS que pour un appel sortant, et c'était cohérent tant que le
+  // formulaire ne le demandait qu'à ce format-là. Depuis que le numéro est
+  // obligatoire dans les deux (voir `formulaire-reservation.ts`), ne pas le
+  // reporter le ferait disparaître au PREMIER report d'une visio : Calendly crée
+  // un NOUVEL événement, `extractPhone` ne lit que ce que Calendly rend, et la
+  // nouvelle ligne de la console naîtrait sans numéro. Le champ qu'on impose au
+  // visiteur cesserait d'être vrai dès qu'il déplace son rendez-vous — c'est-à-
+  // dire exactement quand un imprévu est en cours.
+  //
+  // Le refus ci-dessous, lui, ne bouge PAS : il ne vise que l'appel sortant, où
+  // l'absence de numéro donne un rendez-vous sans personne à appeler. Une visio
+  // ancienne, réservée avant cette règle, n'a pas de numéro en base et doit
+  // pouvoir être reportée quand même.
   const telephone = source.inviteePhone ?? extraireTelephone(source.location);
   if (format === "telephone" && !telephone) {
     return { ok: false, manque: "le numéro à composer" };
@@ -172,7 +185,7 @@ export function demandeDepuisLaSource(
       email: source.inviteeEmail,
       fuseau: source.timezone,
       format: format as FormatDemande,
-      ...(format === "telephone" && telephone ? { telephone } : {}),
+      ...(telephone ? { telephone } : {}),
       ...(reponses.length > 0 ? { reponses } : {}),
       utmSource: source.utmSource,
       utmMedium: source.utmMedium,
