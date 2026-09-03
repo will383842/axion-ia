@@ -33,6 +33,27 @@ on:
         required: true
         default: "contact@axion-ia.com"
         type: string
+      event_type:
+        description: "MODE EVENT-TYPE — lister les questions posées par Calendly (ne réserve rien)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      event_uri:
+        description: "MODE LECTURE — URI (ou uuid) d'un événement à INSPECTER. Renseigné, la sonde ne réserve RIEN : elle lit et sort."
+        required: false
+        default: ""
+        type: string
+      annuler:
+        description: "En mode lecture seulement : annuler l'événement s'il est encore actif"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 permissions:
   contents: read
@@ -62,4 +83,7 @@ jobs:
           CALENDLY_API_TOKEN: ${{ secrets.CALENDLY_API_TOKEN }}
           CALENDLY_APPEL_URL: ${{ vars.NEXT_PUBLIC_CALENDLY_APPEL_URL || 'https://calendly.com/axion-ia/premier-contact' }}
           SONDE_EMAIL: ${{ inputs.email }}
+          SONDE_EVENT_URI: ${{ inputs.event_uri }}
+          SONDE_EVENT_TYPE: ${{ inputs.event_type }}
+          SONDE_ANNULER: ${{ inputs.annuler }}
         run: node scripts/calendly-sonde-text-reminder.mjs

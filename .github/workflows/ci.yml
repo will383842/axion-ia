@@ -523,6 +523,22 @@ jobs:
           # facturation qui expiraient dans `admin-nav-clic` relevaient
           # probablement de la même cause — aucune facture à afficher.
           pnpm qualiopi:seed-demo
+          # 🔴 2026-09-03 — LE DOSSIER RECRUTEMENT MANQUAIT, comme le dossier
+          # Qualiopi et le dossier éditorial avant lui, et pour la même raison.
+          #
+          # `db:seed` ne crée AUCUNE candidature. Toute la console des
+          # candidatures se mesurait donc sur une base vide — et l'audit
+          # Qualiopi du 2026-09-02 a chiffré ce que cela coûte : neuf défauts
+          # sur onze y étaient INVISIBLES. Un écran jugé sur zéro ligne ne
+          # prouve ni sa pagination, ni son tri, ni son état vide, ni ce qui
+          # déborde.
+          #
+          # Le seed pose 6 offres (publiée, brouillon, archivée, pourvue,
+          # périmée pour Google, à permis obligatoire) et 60 candidatures avec
+          # leurs cas limites NOMMÉS — dont une candidature RECRUTÉE de plus de
+          # deux ans, témoin vivant de la décision D4 : la purge doit la laisser
+          # intacte.
+          pnpm recrutement:seed-scenarios
       # 🔴 GARDE (2026-08-21) — LE BUILD DE PRODUCTION DOIT SURVIVRE JUSQU'ICI.
       #
       # Playwright (`pnpm start`) et Lighthouse (`next start -H 0.0.0.0`) démarrent

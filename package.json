@@ -77,6 +77,7 @@
     "editorial:import-production": "tsx prisma/seeds/editorial/import-production.ts",
     "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
     "console:seed-scenarios": "tsx prisma/seeds/scenarios-console/index.ts",
+    "recrutement:seed-scenarios": "tsx prisma/seeds/recrutement/index.ts",
     "volumetrie:seed": "tsx prisma/seeds/volumetrie/fixture-volumetrique.ts",
     "volumetrie:mesure": "tsx scripts/volumetrie/mesurer.ts",
     "qualiopi:purge-demo": "tsx prisma/scripts/purge-demo-qualiopi.ts",

@@ -51,11 +51,11 @@
 //     dépliage marche sans une ligne de JavaScript.
 //   ④ LE TÉLÉPHONE DISPARAISSAIT QUAND LA VISIO ÉTAIT CHOISIE, en CSS pur
 //     (`group-has-[#format-visio:checked]:hidden`). ⚠️ RETIRÉ LE 2026-09-03 :
-//     Will a rendu le numéro OBLIGATOIRE dans les deux formats, et un contrôle
-//     `required` masqué en `display:none` bloque la soumission native sans
-//     afficher le moindre message. Le détail est au bloc concerné ; l'écran
-//     regagne donc une ligne de 48 px pour qui choisit la visio, et c'est le
-//     prix assumé d'un prospect joignable.
+//     Will a rendu le numéro OBLIGATOIRE dans les deux formats, et le serveur le
+//     refuse désormais vide quel que soit le format. Un champ masqué rendrait
+//     donc son message d'erreur INATTEIGNABLE — impasse complète pour qui
+//     choisit la visio. L'écran regagne une ligne de 48 px, et c'est le prix
+//     assumé d'un prospect joignable.
 //
 // Et deux gestes qui raccourcissent sans rien retirer : nom et e-mail se
 // rangent côte à côte dès `sm:`, et la zone « votre besoin » passe de quatre
@@ -298,6 +298,20 @@ export function FormulaireReservation({
 
   return (
     <form action={action} noValidate className="relative space-y-5">
+      {/* 🔴 `noValidate` — LE SERVEUR EST LE SEUL JUGE, ET C'EST DÉLIBÉRÉ.
+          Il n'était commenté nulle part, et son absence de commentaire a déjà
+          coûté un raisonnement faux (voir le bloc TÉLÉPHONE). Ce qu'il implique,
+          écrit une fois pour toutes :
+          — les attributs `required` de ce formulaire ne bloquent RIEN dans un
+            navigateur : ils portent la sémantique et l'accessibilité, pas la
+            validation ;
+          — le message d'erreur est donc EXACTEMENT le même avec et sans
+            JavaScript, en français, au-dessus du champ fautif — au lieu d'une
+            bulle native traduite par le navigateur, invisible pour un lecteur
+            d'écran, et impossible à styler ;
+          — corollaire à ne pas perdre : tout champ obligatoire doit être VISIBLE
+            quand le serveur l'exige, sinon son message désigne un champ
+            inatteignable. */}
       {/* Le créneau voyage en champ caché : c'est la seule donnée que le
           visiteur ne peut pas retaper, et il ne doit jamais la perdre. */}
       <input type="hidden" name={CHAMPS.debut} value={debutIso} />
@@ -511,28 +525,37 @@ export function FormulaireReservation({
 
         {/* TÉLÉPHONE — OBLIGATOIRE, ET TOUJOURS VISIBLE (Will, 2026-09-03).
 
-            🔴 LE MASQUAGE CONDITIONNEL A ÉTÉ RETIRÉ, ET CE N'EST PAS UN CHOIX
-            D'ESTHÉTIQUE : IL EST INCOMPATIBLE AVEC `required`.
+            🔴 LE MASQUAGE CONDITIONNEL A ÉTÉ RETIRÉ, ET C'EST OBLIGATOIRE :
+            SANS CE GESTE, UNE VISIO NE SE RÉSERVE PLUS DU TOUT.
 
             Ce champ vivait dans `group-has-[#format-visio:checked]:hidden` —
-            masqué en `display:none` dès que la visio était cochée. Le rendre
-            obligatoire SANS retirer ce masquage produirait la pire panne que ce
-            formulaire puisse avoir : un contrôle invalide et non affichable
-            bloque la soumission NATIVE du navigateur, qui refuse d'envoyer et
-            ne peut afficher son message nulle part (« An invalid form control
-            is not focusable »). Le visiteur cliquerait « Réserver » et il ne se
-            passerait RIEN — sans un mot, sans une erreur, sans recours, et sur
-            la moitié du trafic qui choisit la visio.
+            masqué en `display:none` dès que la visio était cochée. Depuis que le
+            serveur exige un numéro dans les DEUX formats, le garder produirait
+            une impasse complète : le visiteur coche « visioconférence », le
+            champ disparaît, il envoie, le serveur refuse avec « Indiquez votre
+            numéro de téléphone » — et ce message DÉSIGNE UN CHAMP QU'IL NE VOIT
+            PAS. Il ne peut ni le remplir, ni comprendre ce qu'on lui reproche,
+            ni réserver. Sur la moitié du trafic.
+
+            ⚠️ CE COMMENTAIRE A DIT AUTRE CHOSE PENDANT UNE HEURE, ET C'ÉTAIT
+            FAUX. Il annonçait qu'un `required` en `display:none` bloque la
+            soumission NATIVE (« An invalid form control is not focusable »).
+            C'est vrai en général et FAUX ICI : le `<form>` porte `noValidate`
+            (voir plus bas), donc le navigateur ne valide jamais rien et
+            n'aurait rien bloqué du tout. Mesuré dans un vrai Chrome sur la
+            prod le 2026-09-03 : formulaire envoyé sans numéro, POST parti,
+            refus rendu par le SERVEUR. La conclusion — retirer le masquage —
+            était juste ; le mécanisme invoqué ne l'était pas. Une garde de
+            jsdom ne pouvait pas le dire : `checkValidity()` ignore `noValidate`.
 
             Le champ reste donc affiché dans les deux formats, ce que son
             étiquette assume : on demande un numéro même pour une visio, et on
             dit pourquoi juste en dessous.
 
-            ⚠️ L'ancien commentaire expliquait longuement pourquoi le masquage
-            visait « la visio cochée » plutôt que « le téléphone non coché » —
-            pour échouer ouvert sur un navigateur sans `:has()`. Ce raisonnement
-            reste juste, et c'est pour cela qu'il est consigné ici : il ne
-            s'applique simplement plus, puisqu'il n'y a plus rien à masquer. */}
+            L'ancien commentaire expliquait pourquoi le masquage visait « la
+            visio cochée » plutôt que « le téléphone non coché » — pour échouer
+            ouvert sur un navigateur sans `:has()`. Ce raisonnement reste juste,
+            il ne s'applique simplement plus. */}
         <div>
           <Champ
             nom={CHAMPS.telephone}
