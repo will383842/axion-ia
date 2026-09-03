@@ -39,6 +39,17 @@ function enregistrer(modele: string) {
     }),
     findMany: vi.fn(async () => []),
     delete: vi.fn(async () => ({})),
+    // 🔴 2026-09-03 — ce mock ne connaissait que trois méthodes, et le worker en
+    // gagne au fil des lots. `D4` a ajouté un `count` d'observation sur les
+    // candidatures : ce fichier a rougi sur `prisma.jobApplication.count is not
+    // a function`, alors qu'il ne parle ni de candidatures ni de comptage.
+    //
+    // 🔑 Un mock incomplet ne fait pas échouer ce qu'il teste : il fait échouer
+    // le PROCHAIN qui touche au worker, sur un message qui n'a rien à voir avec
+    // son sujet. On complète le harnais plutôt que de contraindre le worker à
+    // n'utiliser que trois verbes. Aucune assertion de ce fichier ne porte sur
+    // `count` — il rend zéro et n'enregistre rien.
+    count: vi.fn(async () => 0),
   };
 }
 

@@ -42,6 +42,25 @@
     "_AUDIT",
     "_AUDIT/**",
     "**/_AUDIT/**",
-    "**/*-tmp.ts"
+    "**/*-tmp.ts",
+    // 🔴 2026-09-03 — `docs/` PORTE DES ARTEFACTS, PAS DU CODE D'APPLICATION.
+    //
+    // Le hook `pre-commit` lance un `tsc --noEmit` sur TOUT le dépôt. Quatre
+    // sessions écrivent en parallèle dans ce worktree : le brouillon TypeScript
+    // de l'une bloque alors les commits de TOUTES les autres, sur un fichier qui
+    // n'est même pas suivi par git. Mesuré le 2026-09-03 — un
+    // `docs/partners/artefacts/scripts/lot/composer.ts` en cours d'écriture a
+    // fait échouer un commit qui ne touchait que deux Markdown.
+    //
+    // Ces fichiers sont des ARTEFACTS livrés avec une documentation : ils ne
+    // sont ni importés, ni construits, ni déployés. `_AUDIT` est exclu ici pour
+    // exactement la même raison, et depuis plus longtemps — c'est son jumeau.
+    //
+    // ⚠️ Corollaire assumé : un script d'artefact n'est plus typé par le
+    // `typecheck` du dépôt. C'est le prix, et il est juste : le typecheck sert à
+    // garder l'APPLICATION, pas à arbitrer les brouillons d'à côté. Le jour où un
+    // script de `docs/` devient du code d'application, il déménage dans `src/`
+    // ou `scripts/` — et retrouve la garde.
+    "docs/**"
   ]
 }
