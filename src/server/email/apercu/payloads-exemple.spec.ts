@@ -3,7 +3,7 @@
  *
  * ## Ce que ce fichier verrouille
  *
- * `PAYLOAD_EXEMPLE` est un objet unique qui alimente les 48 gabarits. Son
+ * `PAYLOAD_EXEMPLE` est un objet unique qui alimente les 49 gabarits. Son
  * intérêt — un seul endroit à maintenir — est aussi son risque : rien n'oblige
  * un gabarit neuf à y trouver ses champs. Il rendrait alors un aperçu à trous,
  * et **personne ne le verrait**, puisqu'un `undefined` ne casse pas React, il
@@ -72,7 +72,7 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 48 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 49 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
@@ -81,7 +81,7 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // apporté par ce lot. Le chiffre est relevé de la MESURE, jamais deviné : le
     // compter à la main aurait raté les gabarits arrivés sur `main` pendant que
     // cette branche vivait.
-    expect(tous.length).toBe(48);
+    expect(tous.length).toBe(49);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

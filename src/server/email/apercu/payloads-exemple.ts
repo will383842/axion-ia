@@ -81,6 +81,10 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   formateurPrenomNom: "Camille Dupont",
   fteRecovered: 0.4,
   headcount: 24,
+  // `format` et `moment` servent aux DEUX familles de rappel (rendez-vous
+  // commercial et entretien de recrutement) : les deux lisent le même
+  // vocabulaire, une seule valeur d'exemple suffit aux deux aperçus.
+  format: "visio",
   heure: "11:00",
   horaires: "lun. 15/09 09:00–17:00 · mar. 16/09 09:00–12:30",
   implType: "Audit IA",
@@ -106,6 +110,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   messageLibre: "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   messagePersonnalise: "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   modalite: "Audit IA",
+  moment: "j1",
   montantDu: "1 450,00 €",
   montantLabel: "1 450,00 €",
   newsletter: 120,

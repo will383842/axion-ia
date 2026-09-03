@@ -1565,6 +1565,20 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "15 8 * * 1",
         jobId: "formation-crons-offres-fraicheur-cron",
       },
+      // Rappels d'entretien — J-1 et H-1, TOUTES LES 5 MINUTES.
+      //
+      // 🔑 Même cadence que les rappels de rendez-vous commerciaux, et pour la
+      // même raison : les fenêtres font 15 minutes, soit TROIS fois la cadence.
+      // Un passage sauté est rattrapé par les deux suivants. Une cadence égale
+      // à la fenêtre perdrait le rappel au premier hoquet, et personne ne le
+      // verrait.
+      //
+      // Zéro appel réseau externe : lecture en base seulement.
+      {
+        type: "formation-crons.rappels-entretien",
+        pattern: "*/5 * * * *",
+        jobId: "formation-crons-rappels-entretien-cron",
+      },
       // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
       // quotidienne comme ses voisines. Une panne d'e-mails découverte le
       // lendemain matin, c'est une journée de convocations et d'attestations
