@@ -18,7 +18,7 @@ import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
 import { requireFormateurAction } from "@/server/formateur/guard";
-import { requireAdminWrite, logQualiopiActivity, type ActionResult } from "./_guards";
+import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 import {
   lireMissionParJeton,
   proposerMissionFormateur,
@@ -28,6 +28,9 @@ import {
   type ReponseMission,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import type { MissionFormateurStatut } from "../../../../prisma/generated/client";
+
+// Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
+type ActionResult<T> = { data: T } | { error: string };
 
 const reponseSchema = z.object({
   reponse: z.enum(REPONSES_MISSION),

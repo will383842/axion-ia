@@ -41,7 +41,7 @@ export interface InfosPratiquesFormateur {
 }
 
 /** Une ligne « Libellé : valeur », omise si la valeur est vide. */
-function Ligne({ libelle, valeur }: { libelle: string; valeur?: string | null }) {
+function Ligne({ libelle, valeur }: { libelle: string; valeur?: string | null | undefined }) {
   if (valeur === undefined || valeur === null || valeur.trim() === "") return null;
   return (
     <Text style={{ ...emailStyles.paragraphStyle, margin: "0 0 6px" }}>
