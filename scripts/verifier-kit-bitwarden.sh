@@ -174,7 +174,11 @@ def priorite(t):
 
 
 lignes.sort(key=priorite)
-with open(sys.argv[2], "w", encoding="utf-8") as f:
+# newline="\n" est obligatoire : en mode texte sous Windows, Python traduit
+# chaque \n en \r\n, et le `read` de bash laisse alors un \r collé à la dernière
+# colonne. Le script conclurait « la valeur ne marche qu'après nettoyage » —
+# en accusant le coffre d'une saleté que l'instrument vient d'ajouter.
+with open(sys.argv[2], "w", encoding="utf-8", newline="\n") as f:
     for e, c, v in lignes:
         f.write("%s\t%s\t%s\n" % (e.replace("\t", " "), c.replace("\t", " "), v))
 print("   %d entrées lues, %d valeurs à essayer" % (len(items), len(lignes)))
