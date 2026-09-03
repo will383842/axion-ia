@@ -267,6 +267,10 @@ describe("cliquet — aucune surface n'ouvre un dossier de candidat sans le pré
       source.includes("peutOuvrirDossierCandidat"),
       `${RELAIS} est admis comme relais de garde mais n'applique pas le prédicat`,
     ).toBe(true);
+    expect(
+      /role\s*(?:===|!==)\s*["'][a-z_]+["']/.test(source),
+      `${RELAIS} compare un rôle littéral — la liste doit vivre au SSOT`,
+    ).toBe(false);
   });
 
   it("🔑 les gardiens des constructeurs sans session tiennent VRAIMENT les deux bouts", () => {

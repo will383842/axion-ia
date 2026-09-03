@@ -33,12 +33,43 @@ export interface SessionEcriture {
   readonly nom: string;
 }
 
-/** Écrire sur un dossier de candidature. Lève `unauthorized` / `forbidden`. */
+/**
+ * Écrire sur un dossier de candidature. Lève `unauthorized` / `forbidden`.
+ *
+ * 🔴 LOT 6 — CETTE GARDE AUTORISAIT UN RÔLE QUI NE PEUT PAS OUVRIR LE DOSSIER.
+ *
+ * Elle testait `super_admin | admin | editor`, une liste écrite en dur. Or
+ * `ROLES_DOSSIER_CANDIDAT` vaut `super_admin | admin | responsable_qualite |
+ * secretaire` : les deux ensembles ne se recouvrent que sur les deux premiers.
+ * Ses deux appelants sont `updateApplicationStatusAction` et
+ * `changerStatutEnMasseAction` — c'est-à-dire **la décision**, à l'unité et en
+ * masse. Il en découlait deux torts symétriques :
+ *
+ * - `editor` pouvait **écarter, embaucher et traiter cinquante dossiers d'un
+ *   coup** sans avoir le droit d'en lire l'identité, le CV ni le journal. Il
+ *   décidait à l'aveugle — et le lot 3 venait de rendre le motif obligatoire,
+ *   donc il motivait aussi à l'aveugle.
+ * - `secretaire` et `responsable_qualite`, les deux rôles que le SSOT désigne
+ *   comme ceux qui **traitent** le dossier, pouvaient consigner au journal,
+ *   répondre au candidat et planifier un entretien, mais **pas enregistrer la
+ *   décision** à laquelle tout cela mène.
+ *
+ * 🔑 La règle était déjà écrite dans ce dépôt, en toutes lettres, dans
+ * `reply-actions.ts` : **« quiconque peut écrire doit pouvoir lire »** — et ce
+ * commentaire renvoyait explicitement l'alignement du reste au lot 6. C'est
+ * fait ici. La garde ne porte plus de liste : elle appelle le prédicat, donc
+ * un rôle ajouté au SSOT n'a plus besoin d'être ajouté ici.
+ *
+ * ⚠️ Ce que ça retire à `editor` n'était pas un droit utilisable : il ne
+ * pouvait déjà ni ouvrir le dossier, ni voir le nom de la personne sur laquelle
+ * il tranchait. Ce que ça donne à `secretaire` est le geste qui manquait au
+ * parcours qu'il mène déjà de bout en bout.
+ */
 export async function requireAdminWrite(): Promise<SessionEcriture> {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  if (!peutOuvrirDossierCandidat(role)) {
     throw new Error("forbidden");
   }
   const nom = (session.user as { name?: string }).name ?? session.user.email ?? session.user.id;

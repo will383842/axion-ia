@@ -352,7 +352,64 @@ export const ROLES_DOSSIER_CANDIDAT: ReadonlyArray<RoleAdmin> = [
  *
  * Refus par défaut sur un rôle inconnu, pour la même raison que `peutEngager`.
  */
-export function peutOuvrirDossierCandidat(role: string | null | undefined): boolean {
+export function peutOuvrirDossierCandidat(
+  role: string | null | undefined,
+): role is (typeof ROLES_DOSSIER_CANDIDAT)[number] {
   if (role == null) return false;
   return (ROLES_DOSSIER_CANDIDAT as ReadonlyArray<string>).includes(role);
+}
+
+/**
+ * ── Les deux derniers ensembles du périmètre RECRUTEMENT ────────────────────
+ *
+ * 🔴 POURQUOI ILS MONTENT ICI ALORS QUE PERSONNE NE CHANGE DE DROIT.
+ *
+ * Ces deux listes existaient, écrites en dur, dans `admin-job-offers/actions.ts`
+ * et `admin-job-applications/actions.ts`. Elles ne divergeaient pas encore — et
+ * c'est justement le moment de les remonter : une liste locale ne diverge pas le
+ * jour où on l'écrit, elle diverge le jour où le SSOT gagne un rôle, et
+ * **personne ne le voit sur aucun écran**.
+ *
+ * Le lot 6 vient d'en payer la démonstration : la garde d'écriture des
+ * candidatures autorisait `super_admin | admin | editor` pendant que
+ * `ROLES_DOSSIER_CANDIDAT` valait `super_admin | admin | responsable_qualite |
+ * secretaire`. Résultat : `editor` écartait des dossiers qu'il ne pouvait pas
+ * ouvrir, et `secretaire` menait le dossier sans pouvoir le conclure.
+ *
+ * ⚠️ **Aucun périmètre effectif ne change ici.** Les deux prédicats rendent
+ * exactement les mêmes réponses que les littéraux qu'ils remplacent. C'est
+ * délibéré : élargir un droit au passage d'un refactor est la façon la plus
+ * discrète d'ouvrir une porte. Si ces ensembles doivent bouger, ce sera une
+ * décision, dans sa propre PR, avec son motif.
+ */
+
+/**
+ * GÉRER une offre d'emploi — créer, modifier, publier, archiver, cloner.
+ *
+ * Distinct de `ROLES_DOSSIER_CANDIDAT` à dessein : une offre est un texte
+ * éditorial destiné à être PUBLIC, pas le dossier d'une personne. `editor` y a
+ * donc sa place, là où il n'a rien à faire dans une candidature ; et
+ * `responsable_qualite` comme `secretaire` n'en publient pas.
+ */
+export const ROLES_GESTION_OFFRE: ReadonlyArray<RoleAdmin> = ["super_admin", "admin", "editor"];
+
+export function peutGererLesOffres(
+  role: string | null | undefined,
+): role is (typeof ROLES_GESTION_OFFRE)[number] {
+  if (role == null) return false;
+  return (ROLES_GESTION_OFFRE as ReadonlyArray<string>).includes(role);
+}
+
+/**
+ * Les gestes IRRÉVERSIBLES du recrutement : supprimer une candidature,
+ * supprimer une offre.
+ *
+ * 🔑 Ce n'est pas un `ActeEngageant` : supprimer n'engage l'organisme envers
+ * personne, ça lui retire au contraire une trace. C'est une frontière de
+ * DESTRUCTION, et elle se tient au rôle le plus étroit — d'autant que la
+ * doctrine du dossier (décision D4 de Will) est qu'on ne supprime jamais un
+ * dossier tout seul.
+ */
+export function estSuperAdmin(role: string | null | undefined): role is "super_admin" {
+  return role === "super_admin";
 }
