@@ -41,19 +41,6 @@ async function requireEcritureEntretien(): Promise<{ userId: string; nom: string
 
 export type EtatEntretien = { ok: true; id: string } | { ok: false; error: string };
 
-/** Codes d'erreur → messages lisibles. Consommé par l'écran. */
-export const LIBELLES_ERREUR_ENTRETIEN: Record<string, string> = {
-  unauthorized: "Session expirée — reconnectez-vous.",
-  forbidden: "Vous n'avez pas accès aux dossiers de candidature.",
-  champs_invalides: "Champs invalides.",
-  candidature_introuvable: "Candidature introuvable.",
-  entretien_introuvable: "Entretien introuvable.",
-  deja_tenu: "Cet entretien est déjà marqué tenu — un compte rendu ne se réécrit pas.",
-  debrief_requis: "Un entretien tenu exige son compte rendu et son issue.",
-  date_passee_pour_planification: "Un entretien se planifie dans le futur.",
-  db_failed: "Échec d'enregistrement.",
-};
-
 const MODES = ["telephone", "visio", "sur_site"] as const;
 const ISSUES = ["poursuivre", "second_tour", "proposition", "ecarter", "sans_suite"] as const;
 

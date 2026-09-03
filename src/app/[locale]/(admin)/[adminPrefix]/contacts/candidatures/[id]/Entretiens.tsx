@@ -26,9 +26,10 @@ import {
   planifierEntretienAction,
   marquerEntretienTenuAction,
   cloreEntretienSansSuiteAction,
-  LIBELLES_ERREUR_ENTRETIEN,
   type EtatEntretien,
 } from "@/features/admin-job-applications/interview-actions";
+// Hors du fichier d'actions : voir `libelles-erreurs.ts`.
+import { LIBELLES_ERREUR_ENTRETIEN } from "@/features/admin-job-applications/libelles-erreurs";
 
 const DEPART: EtatEntretien = { ok: false, error: "" };
 

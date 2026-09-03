@@ -42,13 +42,30 @@ async function ouvrirLaConsole(page: Page): Promise<boolean> {
   }
 }
 
-async function ouvrirUneFiche(page: Page): Promise<void> {
+/**
+ * 🔴 LE CHOIX DE LA FICHE EST UN CHOIX D'ISOLATION.
+ *
+ * Les scénarios qui CRÉENT un entretien prennent la PREMIÈRE fiche ; celui qui
+ * vérifie l'état vide prend la DERNIÈRE. Sans cette séparation, « aucun
+ * entretien » échoue dès qu'un autre scénario en a créé un — y compris lors
+ * d'une exécution PRÉCÉDENTE, puisque la base garde ce qu'on y met.
+ *
+ * Mesuré deux fois aujourd'hui, sur ce fichier et sur celui du journal : le test
+ * passait au premier lancement et échouait au second, produit inchangé. Un test
+ * qui dépend de ce qu'un autre a laissé derrière lui mesure l'ordre
+ * d'exécution, pas le produit.
+ */
+async function ouvrirUneFiche(
+  page: Page,
+  position: "premiere" | "derniere" = "premiere",
+): Promise<void> {
   await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
   const liens = page.getByRole("link", { name: /détail/i });
   // `count()` est instantané et ne voit pas une table streamée — leçon déjà
   // payée deux fois dans ce dépôt.
   await liens.first().waitFor({ state: "visible", timeout: 60_000 });
-  const adresse = await liens.first().getAttribute("href");
+  const cible = position === "premiere" ? liens.first() : liens.last();
+  const adresse = await cible.getAttribute("href");
   expect(adresse, "aucune fiche ouvrable — le socle de recette a-t-il été joué ?").toBeTruthy();
   await page.goto(adresse!, NAVIGATION);
 }
@@ -65,7 +82,8 @@ test.describe("recrutement — les entretiens", () => {
 
   test("la fiche porte un bloc entretiens, vide et qui le dit", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    // La DERNIÈRE fiche : aucun autre scénario n'y crée d'entretien.
+    await ouvrirUneFiche(page, "derniere");
 
     await expect(page.getByRole("heading", { name: /^entretiens$/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /planifier un entretien/i })).toBeVisible();
@@ -80,7 +98,12 @@ test.describe("recrutement — les entretiens", () => {
     await ouvrirUneFiche(page);
 
     await page.getByRole("button", { name: /planifier un entretien/i }).click();
-    await page.getByLabel(/format/i).selectOption("visio");
+    // 🔴 Correspondance EXACTE : `/format/i` attrapait aussi une région masquée
+    // du site public, `aria-label="Formations IA en entreprise"` — « Formations »
+    // contient « format ». Une expression trop permissive ne désigne pas ce
+    // qu'elle croit, et l'erreur ne dit pas « mauvais champ » mais « deux
+    // éléments ».
+    await page.getByLabel("Format", { exact: true }).selectOption("visio");
     await page.getByLabel(/^quand$/i).fill(dansNJours(3));
     await page
       .getByLabel(/lien de visioconférence/i)

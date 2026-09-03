@@ -50,3 +50,29 @@ export const LIBELLES_ERREUR_JOURNAL: Record<string, string> = {
   date_future: "La date d'un fait ne peut pas être dans le futur.",
   db_failed: "Échec d'enregistrement.",
 };
+
+/** Entretiens — `interview-actions.ts`. */
+export const LIBELLES_ERREUR_ENTRETIEN: Record<string, string> = {
+  unauthorized: "Session expirée — reconnectez-vous.",
+  forbidden: "Vous n'avez pas accès aux dossiers de candidature.",
+  champs_invalides: "Champs invalides.",
+  candidature_introuvable: "Candidature introuvable.",
+  entretien_introuvable: "Entretien introuvable.",
+  deja_tenu: "Cet entretien est déjà marqué tenu — un compte rendu ne se réécrit pas.",
+  debrief_requis: "Un entretien tenu exige son compte rendu et son issue.",
+  date_passee_pour_planification: "Un entretien se planifie dans le futur.",
+  db_failed: "Échec d'enregistrement.",
+};
+
+/** Rattachement d'un rendez-vous d'agenda — `rattacher-rendez-vous.ts`. */
+export const LIBELLES_ERREUR_RATTACHEMENT: Record<string, string> = {
+  unauthorized: "Session expirée — reconnectez-vous.",
+  forbidden: "Vous n'avez pas accès aux dossiers de candidature.",
+  champs_invalides: "Champs invalides.",
+  rendez_vous_introuvable: "Rendez-vous introuvable.",
+  candidature_introuvable: "Candidature introuvable.",
+  deja_rattache_ailleurs: "Ce rendez-vous est déjà rattaché à une autre candidature.",
+  sans_horaire:
+    "Ce rendez-vous n'a pas d'horaire connu — complétez-le avant d'en faire un entretien.",
+  db_failed: "Échec d'enregistrement.",
+};

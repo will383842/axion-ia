@@ -31,18 +31,6 @@ async function requireEcriture(): Promise<{ userId: string; nom: string }> {
 export type EtatRattachement =
   { ok: true; interviewId: string | null } | { ok: false; error: string };
 
-export const LIBELLES_ERREUR_RATTACHEMENT: Record<string, string> = {
-  unauthorized: "Session expirée — reconnectez-vous.",
-  forbidden: "Vous n'avez pas accès aux dossiers de candidature.",
-  champs_invalides: "Champs invalides.",
-  rendez_vous_introuvable: "Rendez-vous introuvable.",
-  candidature_introuvable: "Candidature introuvable.",
-  deja_rattache_ailleurs: "Ce rendez-vous est déjà rattaché à une autre candidature.",
-  sans_horaire:
-    "Ce rendez-vous n'a pas d'horaire connu — complétez-le avant d'en faire un entretien.",
-  db_failed: "Échec d'enregistrement.",
-};
-
 const schema = z.object({
   calendlyEventId: z.string().min(1).max(64),
   applicationId: z.string().uuid(),
