@@ -18,6 +18,10 @@
 "use server";
 
 import * as Sentry from "@sentry/nextjs";
+// `PHASE_QUOTAS` a été déplacé dans `expansion-quotas.ts` : un module
+// `"use server"` ne peut exporter que des fonctions asynchrones, et un objet
+// y fait échouer le chargement — donc le rendu de toute page qui l'importe.
+import { PHASE_QUOTAS } from "./expansion-quotas";
 import { z } from "zod";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
@@ -46,45 +50,6 @@ const DEFAULT_STATE: ExpansionState = {
   activatedAt: null,
   previousPhase: null,
   notes: "",
-};
-
-/**
- * Quotas indicatifs par phase (villes × verticales × dailyArticles plafonné).
- * Consommés par admin UI + worker orchestrator (filtre safety net).
- */
-export const PHASE_QUOTAS: Record<
-  ExpansionPhaseSlug,
-  {
-    readonly verticalesCount: number;
-    readonly villesCount: number;
-    readonly maxDailyArticles: number;
-    readonly humanLabel: string;
-  }
-> = {
-  phase_a: {
-    verticalesCount: 1,
-    villesCount: 5,
-    maxDailyArticles: 10,
-    humanLabel: "MVP pilote (mois 0-3)",
-  },
-  phase_b: {
-    verticalesCount: 3,
-    villesCount: 50,
-    maxDailyArticles: 30,
-    humanLabel: "Scale prudent (mois 4-6)",
-  },
-  phase_c: {
-    verticalesCount: 5,
-    villesCount: 500,
-    maxDailyArticles: 100,
-    humanLabel: "Montée vitesse (mois 7-12)",
-  },
-  phase_d: {
-    verticalesCount: 5,
-    villesCount: 2150,
-    maxDailyArticles: 300,
-    humanLabel: "Nationale full (mois 13-24)",
-  },
 };
 
 export async function getCurrentExpansionPhase(): Promise<ExpansionState> {

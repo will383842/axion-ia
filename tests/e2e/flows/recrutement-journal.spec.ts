@@ -32,14 +32,32 @@ async function ouvrirLaConsole(page: Page): Promise<boolean> {
   }
 }
 
-/** Ouvre la première fiche de candidature de la liste. */
-async function ouvrirUneFiche(page: Page): Promise<void> {
+/**
+ * Ouvre une fiche de candidature.
+ *
+ * 🔴 LE CHOIX DE LA FICHE EST UN CHOIX D'ISOLATION, pas de commodité.
+ *
+ * Les scénarios qui ÉCRIVENT (consigner un fait) prennent la PREMIÈRE fiche ;
+ * celui qui vérifie l'état VIDE prend la DERNIÈRE. Sans cette séparation, le
+ * scénario « rien n'a encore été consigné » échoue dès qu'un autre a écrit sur
+ * la même fiche — y compris lors d'une exécution PRÉCÉDENTE, puisque la base
+ * garde ce qu'on y met.
+ *
+ * Mesuré : le test passait au premier lancement et échouait au second, sur un
+ * produit inchangé. Un test qui dépend de ce qu'un autre a laissé derrière lui
+ * ne mesure pas le produit, il mesure l'ordre d'exécution.
+ */
+async function ouvrirUneFiche(
+  page: Page,
+  position: "premiere" | "derniere" = "premiere",
+): Promise<void> {
   await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
   const liens = page.getByRole("link", { name: /détail/i });
   // `count()` est instantané et ne voit pas une table streamée — leçon déjà
   // payée dans `recrutement.spec.ts`.
   await liens.first().waitFor({ state: "visible", timeout: 60_000 });
-  const adresse = await liens.first().getAttribute("href");
+  const cible = position === "premiere" ? liens.first() : liens.last();
+  const adresse = await cible.getAttribute("href");
   expect(adresse, "aucune fiche ouvrable — le socle de recette a-t-il été joué ?").toBeTruthy();
   await page.goto(adresse!, NAVIGATION);
 }
@@ -49,7 +67,8 @@ test.describe("recrutement — le journal du candidat", () => {
 
   test("la fiche porte un historique et les deux gestes qui l'alimentent", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    // La DERNIÈRE fiche : aucun autre scénario n'y écrit. Voir `ouvrirUneFiche`.
+    await ouvrirUneFiche(page, "derniere");
 
     await expect(page.getByRole("heading", { name: /historique/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /répondre au candidat/i })).toBeVisible();
@@ -98,7 +117,15 @@ test.describe("recrutement — le journal du candidat", () => {
 
     // La frise est rendue côté serveur : elle réapparaît après revalidation.
     await expect(page.getByText(marqueur).first()).toBeVisible({ timeout: 60_000 });
-    await expect(page.getByText(/^Appel$/).first()).toBeVisible();
+
+    // 🔴 On vérifie le libellé DANS la ligne de la frise, pas n'importe où sur
+    // la page. Un `getByText(/^Appel$/)` global attrapait l'`<option>` du
+    // formulaire — qui reste ouvert après la soumission, et dont l'option est
+    // masquée. Le test échouait sur « Received: hidden » alors que la frise
+    // affichait bien la bonne ligne : un sélecteur trop large ne mesure pas ce
+    // qu'il croit.
+    const entree = page.locator("li").filter({ hasText: marqueur }).first();
+    await expect(entree).toContainText(/appel/i);
   });
 
   test("une date de fait dans le futur est refusée", async ({ page }) => {
@@ -113,6 +140,11 @@ test.describe("recrutement — le journal du candidat", () => {
     await page.getByLabel(/ce qui s.est passé/i).fill("Fait situé dans le futur");
     await page.getByRole("button", { name: /^consigner$/i }).click();
 
-    await expect(page.getByRole("alert")).toContainText(/futur/i);
+    // Le message exact, pas « une alerte quelconque » : la page en porte deux,
+    // et `getByRole("alert")` seul lève une violation de mode strict. On vise
+    // ce que le produit doit DIRE.
+    await expect(page.getByText(/ne peut pas être dans le futur/i)).toBeVisible({
+      timeout: 30_000,
+    });
   });
 });

@@ -28,8 +28,11 @@ import {
   repondreAuCandidatAction,
   rejouerReponseEchoueeAction,
   etatLivraisonReponseAction,
-  LIBELLES_ERREUR_REPONSE,
 } from "@/features/admin-job-applications/reply-actions";
+// 🔴 Les libellés d'erreur vivent HORS du fichier d'actions : un module
+// `"use server"` ne peut exporter que des fonctions asynchrones, et un objet
+// y fait planter la page entière au chargement.
+import { LIBELLES_ERREUR_REPONSE } from "@/features/admin-job-applications/libelles-erreurs";
 import {
   MODELES_REPONSE,
   remplirModele,

@@ -77,18 +77,6 @@ export type EtatReponse =
    *  elle est alors rejouable, et l'écran doit le proposer. */
   | { ok: false; error: string; replyId?: string };
 
-/** Codes d'erreur → messages lisibles. Consommé par le composeur. */
-export const LIBELLES_ERREUR_REPONSE: Record<string, string> = {
-  unauthorized: "Session expirée — reconnectez-vous.",
-  forbidden: "Vous n'avez pas accès aux dossiers de candidature.",
-  candidature_introuvable: "Candidature introuvable.",
-  invalid_recipient: "Adresse du candidat illisible (clé de chiffrement absente ?).",
-  render_failed: "Erreur de génération de l'e-mail.",
-  db_failed: "Échec d'enregistrement en base.",
-  enqueue_failed: "File d'envoi indisponible — la réponse est enregistrée, réessayez.",
-  champs_invalides: "Champs invalides.",
-};
-
 export async function repondreAuCandidatAction(
   input: z.input<typeof schemaReponse>,
 ): Promise<EtatReponse> {

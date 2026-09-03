@@ -19,6 +19,9 @@ import {
   consignerAuJournalAction,
   type EtatJournal,
 } from "@/features/admin-job-applications/journal-actions";
+// 🔑 Une SEULE table de libellés pour tout le dossier candidature. Celle-ci
+// était recopiée ici, et elle aurait divergé au premier code d'erreur ajouté.
+import { LIBELLES_ERREUR_JOURNAL as LIBELLES_ERREUR } from "@/features/admin-job-applications/libelles-erreurs";
 
 const DEPART: EtatJournal = { ok: false, error: "" };
 
@@ -28,14 +31,6 @@ const TYPES: ReadonlyArray<readonly [string, string, string]> = [
   ["email_recu", "Message reçu", "Une réponse du candidat, rapatriée à la main."],
   ["piece_recue", "Pièce reçue", "Un CV, un portfolio, un document envoyé après coup."],
 ];
-
-const LIBELLES_ERREUR: Record<string, string> = {
-  unauthorized: "Session expirée — reconnectez-vous.",
-  forbidden: "Vous n'avez pas accès aux dossiers de candidature.",
-  champs_invalides: "Il manque le texte, ou il est trop court.",
-  date_future: "La date d'un fait ne peut pas être dans le futur.",
-  db_failed: "Échec d'enregistrement.",
-};
 
 export function ConsignerAuJournal({
   applicationId,
