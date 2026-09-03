@@ -238,6 +238,43 @@ describe("le prospect ne retape rien", () => {
     expect(d.demande.telephone).toBe("+33 6 11 22 33 44");
   });
 
+  it("🔴 le NUMÉRO repart AUSSI pour une visio — sinon il disparaît au premier report", () => {
+    // 🔑 LA GARDE QUE LE LOT « téléphone obligatoire » A RENDUE NÉCESSAIRE.
+    //
+    // Le numéro n'était repris que pour un appel sortant. Cohérent tant que le
+    // formulaire ne le demandait qu'à ce format-là ; faux depuis qu'il est
+    // obligatoire dans les deux. Un report crée un NOUVEL événement Calendly, et
+    // `api.ts::extractPhone` ne lit que ce que Calendly rend : sans cette
+    // reprise, la nouvelle ligne de la console naîtrait SANS numéro. Le champ
+    // qu'on impose au visiteur cesserait d'être vrai au moment précis où il
+    // déplace son rendez-vous — c'est-à-dire pendant un imprévu.
+    const d = demandeDepuisLaSource(
+      source({
+        inviteePhone: "+33 6 11 22 33 44",
+        rawPayload: { event: { location: { type: "google_conference" } } },
+      }),
+      EVENT_TYPE,
+      NOUVEAU_DEBUT,
+    );
+    expect(d.ok).toBe(true);
+    if (!d.ok) return;
+    expect(d.demande.format).toBe("visio");
+    expect(
+      d.demande.telephone,
+      "le numéro doit suivre le report d'une visio, pas seulement celui d'un appel",
+    ).toBe("+33 6 11 22 33 44");
+  });
+
+  it("🔑 CONTRE-TÉMOIN : une visio ANCIENNE, sans numéro en base, se reporte quand même", () => {
+    // Le refus ne vise que l'appel sortant. Étendre l'exigence au report
+    // bloquerait les rendez-vous pris avant cette règle — un mur invisible pour
+    // le prospect, qui n'y peut rien.
+    const d = demandeDepuisLaSource(source({ inviteePhone: null }), EVENT_TYPE, NOUVEAU_DEBUT);
+    expect(d.ok).toBe(true);
+    if (!d.ok) return;
+    expect(d.demande.telephone).toBeUndefined();
+  });
+
   it("🔴 les RÉPONSES aux questions repartent, libellés exacts", () => {
     // Les perdre ferait arriver un rendez-vous sans contexte dans l'agenda, et
     // Will le découvrirait au moment de l'appel sans comprendre pourquoi
