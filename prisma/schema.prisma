@@ -8319,9 +8319,31 @@ model JobOffer {
 /// Une candidature reçue pour une offre (PII chiffrées, CV optionnel sur disque).
 model JobApplication {
   id             String   @id @default(uuid()) @db.Uuid
-  offerId        String   @map("offer_id") @db.Uuid
-  offer          JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
-  offerTitleSnap String   @map("offer_title_snap") @db.VarChar(160)
+  /// ── LOT 6 — L'OFFRE PEUT DISPARAITRE, PAS LE DOSSIER ──────────────────────
+  ///
+  /// 🔴 `onDelete: Cascade` DETRUISAIT DES DOSSIERS QUE WILL A DEMANDE DE GARDER.
+  ///
+  /// La purge automatique epargne les candidatures `hired`
+  /// (`retention-purge-worker.ts`, `status: { notIn: ["hired"] }`, decision D4,
+  /// PR #952), et une garde dediee l'y verrouille. Mais `deleteJobOfferAction`
+  /// supprimait l'offre EN CASCADE sur ses candidatures — CV compris — sans
+  /// rien connaitre de cette protection. Supprimer une offre effacait donc la
+  /// trace des personnes recrutees par elle, et la garde ne balayait que le
+  /// worker de purge : elle ne pouvait pas le voir.
+  ///
+  /// 🔑 `SetNull` rend la suppression d'une offre NON destructrice : la
+  /// candidature survit, et `offerTitleSnap` — figé à la soumission — continue
+  /// de dire pour quel poste elle a ete deposee. C'est tout l'interet d'un
+  /// instantane : il n'a jamais eu besoin de l'offre pour etre lu.
+  ///
+  /// ⚠️ Nullable sert AUSSI la candidature spontanee, qui n'a pas d'offre du
+  /// tout. Les deux besoins tombent sur la meme colonne, mais l'ordre compte :
+  /// c'est la perte de donnees qui justifie la migration, pas la fonctionnalite.
+  offerId        String?   @map("offer_id") @db.Uuid
+  offer          JobOffer? @relation(fields: [offerId], references: [id], onDelete: SetNull)
+  /// L'instantane du poste, TOUJOURS renseigne — meme sans offre. Pour une
+  /// candidature spontanee, c'est le poste vise saisi par la personne.
+  offerTitleSnap String    @map("offer_title_snap") @db.VarChar(160)
 
   // PII — chiffrées at-rest (encryptPii). PAS de sexe/âge (anti-discrimination).
   civility   String? @db.VarChar(20)

@@ -97,7 +97,19 @@ export type ListApplicationsInput = z.infer<typeof listApplicationsSchema>;
 
 export interface JobApplicationListItem {
   id: string;
-  offerId: string;
+  /**
+   * 🔴 `null` QUAND LA CANDIDATURE N'A PLUS — OU N'A JAMAIS EU — D'OFFRE.
+   *
+   * Deux causes, et le type ne les distingue pas volontairement : l'offre a été
+   * supprimée (`ON DELETE SET NULL`, lot 6 — elle n'emporte plus le dossier), ou
+   * la candidature est spontanée. Dans les deux cas il n'y a pas de fiche
+   * d'offre à ouvrir, et c'est la seule chose que l'écran doit savoir.
+   *
+   * ⚠️ `offerTitleSnap` reste renseigné dans les deux cas : c'est l'instantané
+   * du poste, figé à la soumission. On sait donc TOUJOURS pour quel poste la
+   * personne a postulé, même sans offre — c'est tout l'intérêt d'un instantané.
+   */
+  offerId: string | null;
   offerTitleSnap: string;
   /**
    * 🔴 `null` QUAND L'APPELANT N'A PAS LE DROIT D'OUVRIR LE DOSSIER.

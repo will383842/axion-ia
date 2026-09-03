@@ -17,7 +17,6 @@ import { pingIndexNow } from "@/lib/indexnow";
 import { enqueueGoogleIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
 import { isJobOfferIndexable } from "@/lib/careers/job-offers";
 import { normalizeApplicantCountries } from "@/lib/careers/format";
-import { deleteCv } from "@/server/careers/cv-storage";
 import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
   JobCategory,
@@ -656,9 +655,31 @@ export async function cloneJobOfferAction(
 }
 
 /**
- * Suppression DURE (super_admin) — purge d'abord les CV des candidatures sur
- * disque (le cascade SQL supprime les lignes mais PAS les fichiers), puis delete
- * l'offre (cascade → candidatures). Droit à l'effacement RGPD.
+ * Suppression d'une OFFRE (super_admin) — **et d'elle seule**.
+ *
+ * 🔴 CETTE ACTION DETRUISAIT LES DOSSIERS DES PERSONNES RECRUTEES.
+ *
+ * Elle purgeait les CV des candidatures sur disque, puis supprimait l'offre en
+ * laissant le `ON DELETE CASCADE` emporter les lignes. Or la purge automatique
+ * epargne explicitement les candidatures `hired` — decision D4 de Will, livree
+ * par la PR #952, et verrouillee par une garde dediee.
+ *
+ * 🔑 La protection existait donc a un endroit et manquait a son jumeau, et la
+ * garde ne pouvait pas le voir : elle ne balaie que le worker de purge.
+ * Supprimer une offre effacait la trace des personnes recrutees par elle —
+ * silencieusement, et sans qu'aucun rouge ne se leve.
+ *
+ * Depuis la migration `20260904010000_candidature_sans_offre`, la contrainte
+ * est `ON DELETE SET NULL` : la candidature survit a son offre, et
+ * `offerTitleSnap` — fige a la soumission — continue de dire pour quel poste
+ * elle a ete deposee.
+ *
+ * ⚠️ ON NE PURGE DONC PLUS LES CV. Les supprimer laisserait des dossiers
+ * vivants pointant vers des fichiers absents : la pire des deux moities.
+ *
+ * ⚠️ Ce n'est PAS le droit a l'effacement. Effacer la trace d'une PERSONNE se
+ * fait par `candidature-rgpd.ts`, qui sait ce qu'il detruit et le journalise
+ * comme tel. Supprimer une offre est un geste editorial.
  */
 export async function deleteJobOfferAction(
   _prev: JobOfferActionState,
@@ -675,13 +696,14 @@ export async function deleteJobOfferAction(
 
   const offer = await prisma.jobOffer.findUnique({
     where: { id: parsed.data.id },
-    select: { slug: true, applications: { select: { cvStoragePath: true } } },
+    select: { slug: true, _count: { select: { applications: true } } },
   });
   if (!offer) return { ok: false, error: "Offre introuvable." };
 
-  // 1) purge fichiers CV (best-effort) AVANT le cascade DB
-  await Promise.all(offer.applications.map((a) => deleteCv(a.cvStoragePath)));
-  // 2) delete offre (cascade → job_applications)
+  // Les candidatures SURVIVENT (`ON DELETE SET NULL`). On compte ce qui est
+  // detache pour l'ecrire au journal : « l'offre a disparu » et « onze dossiers
+  // ont perdu leur offre » ne se lisent pas pareil six mois plus tard.
+  const detachees = offer._count.applications;
   await prisma.jobOffer.delete({ where: { id: parsed.data.id } });
   await prisma.activityLog.create({
     data: {
@@ -689,6 +711,7 @@ export async function deleteJobOfferAction(
       action: "joboffer.deleted",
       targetType: "job_offer",
       targetId: parsed.data.id,
+      changes: { candidaturesDetachees: detachees },
       ipAddress: await getClientIp(),
     },
   });
