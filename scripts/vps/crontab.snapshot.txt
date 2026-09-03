@@ -1,8 +1,10 @@
 0 3 * * *  /opt/axion-ia/run-r2-backup.sh daily   >> /var/log/r2-backup.log 2>&1
 0 4 * * 0  /opt/axion-ia/run-r2-backup.sh weekly  >> /var/log/r2-backup.log 2>&1
 0 5 1 * *  /opt/axion-ia/run-r2-backup.sh monthly >> /var/log/r2-backup.log 2>&1
+# Docker cleanup — toutes les 6h (images non utilisées + build cache > 5GB)
 0 */6 * * * /usr/bin/docker image prune -af >> /var/log/docker-image-prune.log 2>&1
 0 */6 * * * /usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
+# Alerte disque si > 80% — envoie dans syslog (visible via journalctl)
 */30 * * * * USAGE=$(df / | awk "NR==2 {print \$5}" | tr -d "%"); [ "\$USAGE" -gt 80 ] && logger -t disk-alert "DISQUE VPS \${USAGE}% utilise — docker system prune requis" || true
 0 2 * * *  /opt/axion-ia/run-secrets-backup.sh        >> /var/log/secrets-backup.log 2>&1
 45 2 * * * /opt/axion-ia/run-docuseal-backup.sh daily  >> /var/log/docuseal-backup.log 2>&1
@@ -10,3 +12,7 @@
 20 * * * *   /opt/axion-ia/run-pg-hourly-backup.sh >> /var/log/pg-hourly-backup.log 2>&1
 15 4 * * *   /opt/axion-ia/run-files-backup.sh daily >> /var/log/files-backup.log 2>&1
 30 6 * * *   /opt/axion-ia/run-backup-digest.sh >> /var/log/backup-digest.log 2>&1
+30 4 * * 0   /opt/axion-ia/run-files-backup.sh weekly >> /var/log/files-backup.log 2>&1
+30 5 1 * *   /opt/axion-ia/run-files-backup.sh monthly >> /var/log/files-backup.log 2>&1
+50 4 * * 0   /opt/axion-ia/run-docuseal-backup.sh weekly >> /var/log/docuseal-backup.log 2>&1
+50 5 1 * *   /opt/axion-ia/run-docuseal-backup.sh monthly >> /var/log/docuseal-backup.log 2>&1

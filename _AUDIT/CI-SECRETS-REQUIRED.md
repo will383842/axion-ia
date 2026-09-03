@@ -35,7 +35,7 @@
 
 ## C. Coolify — env vars runtime (scope RUN)
 
-Secrets prod injectés au container. Backup via `backup-secrets.sh` (export API Coolify → archive age → R2 immuable).
+Secrets prod injectés au container. Backup via `scripts/vps/run-secrets-backup.sh` (export API Coolify de toute l'instance → archive AES → R2 `secrets/`).
 
 | Nom | Usage | Set ? |
 |---|---|---|

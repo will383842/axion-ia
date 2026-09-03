@@ -16,9 +16,10 @@
 
 ## ⚠️ Le seul prérequis vital HORS système
 
-Sans lui, **aucun backup R2 n'est déchiffrable**. À garder accessible hors du VPS (coffre 1Password + copie papier) :
+Sans lui, **aucun backup R2 n'est déchiffrable**. À garder accessible hors du VPS
+(gestionnaire de mots de passe + copie papier) :
 
-- **`BACKUP_ENCRYPTION_PASSPHRASE`** — chiffre TOUS les backups R2 (Postgres, Docuseal, Plausible, secrets, fichiers) en **AES-256** (`openssl enc -aes-256-cbc -pbkdf2`).
+- **`BACKUP_ENCRYPTION_PASSPHRASE`** — chiffre TOUS les backups R2 (Postgres, Docuseal, Plausible, secrets, fichiers) en **AES-256** (`openssl enc -aes-256-cbc -salt -pbkdf2 -iter 100000`).
 
 Autres accès à avoir sous la main : compte **Cloudflare R2** (où vivent les backups), **GitHub** (code + image GHCR), **Cloudflare DNS**, **Hetzner** (snapshots + nouveau serveur), **Coolify** (ou ses creds API dans `.secrets/api-tokens.env`).
 
@@ -31,7 +32,10 @@ Autres accès à avoir sous la main : compte **Cloudflare R2** (où vivent les b
 ## Voie A — Restaurer le snapshot Hetzner (le plus rapide)
 
 Le VPS entier (app + Postgres + volumes + config Coolify) est **snapshoté chaque jour** par
-Hetzner (Backups auto activés, fenêtre 10-14 UTC, ~14 images conservées ≈ 2 semaines).
+Hetzner (Backups auto activés, fenêtre 10-14 UTC). ⚠️ **Hetzner Cloud conserve 7
+emplacements, et ce nombre n'est pas réglable** — la voie A ne remonte donc qu'à ~1
+semaine. Au-delà, c'est R2 (voie B) qui porte l'historique : Postgres 7 jours + 4
+semaines + 12 mois, fichiers et Docuseal quotidien + hebdo + mensuel, secrets 30 jours.
 
 1. Console Hetzner Cloud → serveur `axionia-web` (id `130002660`) → onglet **Backups**.
 2. Choisir le dernier snapshot **sain** (antérieur à l'incident si corruption/hack — cf. Voie C).
@@ -65,10 +69,36 @@ pas `postgres:16-alpine`), sinon `pg_restore` échoue. Le drill CI mensuel le v�
 aws --endpoint-url "$R2_ENDPOINT" s3 ls s3://axion-ia-backups/secrets/ | sort | tail -1
 aws --endpoint-url "$R2_ENDPOINT" s3 cp s3://axion-ia-backups/secrets/<archive>.tar.gz.enc .
 # Déchiffrer (AES) + décompresser
-openssl enc -d -aes-256-cbc -pbkdf2 -pass env:BACKUP_ENCRYPTION_PASSPHRASE -in <archive>.tar.gz.enc | tar -xzf -
+openssl enc -d -aes-256-cbc -salt -pbkdf2 -iter 100000 \
+  -pass env:BACKUP_ENCRYPTION_PASSPHRASE -in <archive>.tar.gz.enc | tar -xzf -
 ```
 
-Réinjecter ces variables d'environnement dans Coolify (ou le `.env` de la stack).
+> ⚠️ **`-iter 100000` n'est pas décoratif.** Ce runbook a documenté jusqu'au 2026-09-03 une
+> commande sans cette option. `openssl -pbkdf2` retombe alors sur 10 000 itérations, dérive
+> une autre clé, et le déchiffrement échoue — avec la bonne passphrase. En pleine reprise,
+> ce seul mot manquant se lit comme « le coffre est faux ». La valeur doit rester celle de
+> `encrypt_aes` dans `scripts/backup-lib.sh` ; si l'une bouge, l'autre aussi.
+
+Contenu de l'archive (format du 2026-09-03, cf. son `README.txt`) :
+
+| Chemin                             | Ce qu'on y trouve                                          |
+| ---------------------------------- | ---------------------------------------------------------- |
+| `coolify/applications-<uuid>.json` | variables de chaque application (site, worker, Docuseal)   |
+| `coolify/services-<uuid>.json`     | variables des services (Plausible)                         |
+| `coolify/databases-<uuid>.json`    | objet complet des bases, mot de passe et URL compris       |
+| `coolify-envs.json`                | alias historique = variables du site                       |
+| `runtime-env/<conteneur>.env`      | `printenv` réel de chaque conteneur, la vérité d'exécution |
+| `INVENTAIRE.json`                  | carte uuid → nom                                           |
+
+Réinjecter ces variables d'environnement dans Coolify (ou le `.env` de la stack), en
+prenant `real_value` quand elle diffère de `value`.
+
+> 🔑 **À vérifier AVANT d'en avoir besoin**, depuis n'importe quel poste :
+> `bash scripts/verifier-coffre-secrets.sh` télécharge la dernière archive et demande la
+> passphrase du coffre en frappe masquée. Vert = la reprise à froid est possible. C'est le
+> seul contrôle qui distingue une phrase juste d'une phrase recopiée de travers, et il ne
+> coûte qu'une minute. Le drill mensuel `restore-drill-monthly.yml` fait la même
+> vérification côté CI, et le cron quotidien la refait depuis le VPS après chaque envoi.
 
 ### Étape 2 — Postgres (dump)
 
