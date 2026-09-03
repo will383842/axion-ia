@@ -19,6 +19,15 @@
 import { expect, type Page } from "@playwright/test";
 
 import { ADMIN_DEV_EMAIL, ADMIN_DEV_PASSWORD } from "../../../prisma/seeds/identifiants-admin-dev";
+import {
+  ecrireSessionPartagee,
+  lireSessionPartagee,
+  oublierSessionPartagee,
+  prendreLeVerrou,
+  rejouer,
+  rendreLeVerrou,
+  verrouPris,
+} from "./session-admin-partagee";
 
 export const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
 // 🔴 Le repli était écrit en dur, et ne correspondait à AUCUN compte semé :
@@ -50,10 +59,63 @@ export interface LoginOptions {
   password?: string;
   /** Skip la vérification dashboard (utile si le test attend une redirection ailleurs). */
   skipDashboardCheck?: boolean;
+  /**
+   * Force une connexion PAR LE FORMULAIRE, sans rejouer ni alimenter le cache.
+   *
+   * Réservé aux specs qui éprouvent l'écran de connexion lui-même : pour elles,
+   * la connexion EST l'objet du test, et la rejouer depuis un cache la viderait
+   * de son sens.
+   */
+  sansCachePartage?: boolean;
 }
 
 /**
- * Authentifie un admin via UI et attend que le dashboard soit chargé.
+ * Rejoue la session partagée si elle existe, et VÉRIFIE qu'elle vaut encore.
+ *
+ * Rend `true` seulement quand on a constaté l'arrivée sur le tableau de bord.
+ * Tout le reste — pas de cache, cookies périmés, base re-semée entre-temps —
+ * rend `false`, jette le cache, et laisse l'appelant se connecter pour de bon.
+ * Le pire cas est donc le comportement d'avant ce cache, jamais un test vert
+ * qui n'aurait pas de session.
+ */
+async function rejouerLaSessionPartagee(page: Page, email: string): Promise<boolean> {
+  const cookies = lireSessionPartagee(email, ADMIN_PREFIX);
+  if (!cookies) return false;
+
+  try {
+    await rejouer(page, cookies);
+    await page.goto(`/fr/${ADMIN_PREFIX}`, {
+      waitUntil: "domcontentloaded",
+      timeout: 120_000,
+    });
+    // 🔑 LA VÉRIFICATION EST UNE ABSENCE DE REDIRECTION, PAS UN SÉLECTEUR.
+    // Le tableau de bord change ; la garde d'authentification, elle, renvoie
+    // toujours vers `/login`. C'est le seul signal stable.
+    if (new URL(page.url()).pathname.includes("/login")) {
+      oublierSessionPartagee(email, ADMIN_PREFIX);
+      return false;
+    }
+    await refuserLesCookies(page);
+    return true;
+  } catch {
+    oublierSessionPartagee(email, ADMIN_PREFIX);
+    return false;
+  }
+}
+
+/** Combien de temps un worker attend l'état publié par le gagnant du verrou. */
+const ATTENTE_DU_VERROU_MS = 90_000;
+const PAS_D_ATTENTE_MS = 500;
+
+/**
+ * Authentifie un admin — depuis la session partagée si elle existe, par le
+ * formulaire sinon.
+ *
+ * 🔴 LE NOMBRE DE CONNEXIONS RÉELLES NE DÉPEND PLUS DU NOMBRE D'APPELS.
+ * Voir `session-admin-partagee.ts` pour l'arithmétique du limiteur de débit :
+ * 28 appels valaient 56 hits contre un plafond de 50, et Gate B tombait sur
+ * « Trop de tentatives » — un message qui accuse la connexion alors que rien
+ * n'est cassé dans le produit.
  *
  * Throws si le login échoue (mauvais credentials, 2FA actif, rate-limit, etc.).
  * Le test appelant peut catch pour skip si la DB n'est pas seedée localement.
@@ -62,6 +124,69 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   const email = opts.email ?? ADMIN_EMAIL;
   const password = opts.password ?? ADMIN_PASSWORD;
 
+  // Le cache ne sert QUE le compte par défaut. Une spec qui se connecte sous
+  // une autre adresse doit obtenir CETTE session-là, pas celle de l'admin de
+  // recette : rejouer les cookies du voisin serait un test faussement vert.
+  const cacheUtilisable =
+    !opts.sansCachePartage && !opts.skipDashboardCheck && email === ADMIN_EMAIL;
+
+  // Vrai seulement si CE processus a pris le verrou : on ne rend jamais celui
+  // d'un autre. Le rendre à tort ne casserait rien, mais ferait se connecter
+  // deux workers pour rien — exactement ce que ce fichier existe pour éviter.
+  let jeTiensLeVerrou = false;
+
+  if (cacheUtilisable) {
+    if (await rejouerLaSessionPartagee(page, email)) return;
+
+    // Personne n'a encore publié d'état. Un seul worker se connecte ; les
+    // autres attendent qu'il publie. ⚠️ L'attente NE PEUT PAS faire échouer la
+    // suite : à son terme, celui qui attendait se connecte pour son compte.
+    jeTiensLeVerrou = prendreLeVerrou(email, ADMIN_PREFIX);
+    if (!jeTiensLeVerrou) {
+      const limite = Date.now() + ATTENTE_DU_VERROU_MS;
+      while (Date.now() < limite && verrouPris(email, ADMIN_PREFIX)) {
+        await page.waitForTimeout(PAS_D_ATTENTE_MS);
+      }
+      if (await rejouerLaSessionPartagee(page, email)) return;
+    }
+  }
+
+  try {
+    await connexionParLeFormulaire(page, opts, email, password);
+    // 🔑 ON NE PUBLIE QU'APRÈS AVOIR CONSTATÉ LE TABLEAU DE BORD — c'est-à-dire
+    // seulement quand `connexionParLeFormulaire` est revenue sans lever, et que
+    // `cacheUtilisable` exclut déjà `skipDashboardCheck`. Publier plus tôt
+    // exposerait aux autres workers des cookies dont on ne sait pas encore
+    // s'ils ouvrent quoi que ce soit ; un cache faux coûte plus cher que pas de
+    // cache, puisqu'il rend vertes des specs qui n'ont aucune session.
+    //
+    // ⚠️ La publication est DANS le `try` : elle doit précéder la remise du
+    // verrou, sinon les workers en attente se réveillent sur un état absent et
+    // se connectent tous — le contraire du but.
+    if (cacheUtilisable) {
+      ecrireSessionPartagee(email, ADMIN_PREFIX, await page.context().cookies());
+    }
+  } finally {
+    // ⚠️ RENDU MÊME QUAND LA CONNEXION LÈVE. Un verrou abandonné ferait attendre
+    // quatre-vingt-dix secondes à chacun des autres workers avant qu'ils ne se
+    // rabattent sur une connexion propre : une optimisation qui coûterait plus
+    // cher que ce qu'elle économise.
+    if (jeTiensLeVerrou) rendreLeVerrou(email, ADMIN_PREFIX);
+  }
+}
+
+/**
+ * La connexion PAR L'ÉCRAN — le chemin d'origine, inchangé.
+ *
+ * Séparée de `loginAsAdmin` pour que la prise et la remise du verrou tiennent
+ * dans un `try`/`finally` court et lisible, plutôt que d'encadrer cent lignes.
+ */
+async function connexionParLeFormulaire(
+  page: Page,
+  opts: LoginOptions,
+  email: string,
+  password: string,
+): Promise<void> {
   // 🔴 2026-08-22 — CONSÉQUENCE DIRECTE DU CORRECTIF DE CAUSE RACINE.
   //
   // `playwright.config.ts` borne désormais toute navigation à 30 s
