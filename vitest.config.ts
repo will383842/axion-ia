@@ -47,6 +47,10 @@ export default defineConfig({
       // fichier de test hors `include` est un fichier mort, et personne ne le
       // voit puisqu'il n'échoue pas non plus.
       "prisma/seeds/volumetrie/**/*.spec.ts",
+      // Lot 0 — socle de recette du recrutement. Même raison que la ligne
+      // ci-dessus, et le même piège : la garde qui vérifie que ce seed ne peut
+      // écrire que dans son propre périmètre serait un fichier mort sans elle.
+      "prisma/seeds/recrutement/**/*.spec.ts",
     ],
     exclude: ["node_modules", ".next", "tests/e2e/**", "tests/integration/**"],
     coverage: {

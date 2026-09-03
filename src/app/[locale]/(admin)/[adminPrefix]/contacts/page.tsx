@@ -153,12 +153,32 @@ export default async function InboxPage({
           <span className="flex items-center gap-[var(--space-admin-3)] whitespace-nowrap">
             {/* Pastille « non lu » — s'efface d'elle-même à l'ouverture de la
                 fiche. Doublée du gras : la couleur seule ne suffit pas (WCAG). */}
+            {/* 🔴 `aria-prohibited-attr` (serious) — corrigé le 2026-09-03.
+                Ce `<span>` portait un `aria-label` alors qu'il n'a aucun rôle :
+                un élément générique ne peut pas porter de nom accessible, et
+                axe le refuse. Le lecteur d'écran n'annonçait donc RIEN là où le
+                voyant dit « non lu ».
+
+                🔑 Le défaut est ANCIEN. Il n'apparaissait pas parce que cette
+                pastille ne se rend que s'il existe au moins un élément non lu —
+                et la base de recette n'en portait aucun. C'est le socle du
+                recrutement (60 candidatures, dont 18 à traiter) qui l'a rendu
+                visible, dès son premier passage en CI. C'est exactement ce
+                qu'on attendait de lui.
+
+                Corrigé par un texte pour lecteur d'écran + une pastille
+                décorative, plutôt que par `role="img"` : le dépôt a déjà ce
+                motif partout ailleurs, et un texte réel survit à un moteur
+                d'accessibilité qui changerait d'avis sur les rôles. */}
             {r.unread ? (
-              <span
-                className="inline-block h-2 w-2 shrink-0 rounded-full bg-[color:var(--color-admin-info)]"
-                title="Non lu"
-                aria-label="Non lu"
-              />
+              <>
+                <span className="sr-only">Non lu</span>
+                <span
+                  aria-hidden="true"
+                  title="Non lu"
+                  className="inline-block h-2 w-2 shrink-0 rounded-full bg-[color:var(--color-admin-info)]"
+                />
+              </>
             ) : null}
             <span
               aria-hidden="true"
