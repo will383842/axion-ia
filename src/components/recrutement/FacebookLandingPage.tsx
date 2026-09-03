@@ -4,7 +4,7 @@
 // Là-bas, le visiteur a lu une annonce et vient CANDIDATER : la page l'envoie
 // vers le dossier complet. Ici, il vient d'un post, sur son téléphone, sans
 // rien avoir décidé : la page doit le convaincre en dix secondes et ne lui
-// demander QU'UN geste — laisser cinq champs pour qu'on l'appelle. Le dossier
+// demander QU'UN geste — laisser quatre champs pour qu'on l'appelle. Le dossier
 // complet vient après, par l'e-mail.
 //
 // Ordre des sections, et pourquoi :
@@ -503,7 +503,7 @@ export async function FacebookLandingPage({ params }: Props) {
             <span className="text-terracotta italic">On s&apos;appelle.</span>
           </h2>
           <p className="text-fg-soft mx-auto mt-4 max-w-xl text-lg">
-            Cinq questions, zéro CV, aucun engagement.
+            Quatre champs, zéro CV, aucun engagement.
           </p>
           <div className="mt-7 flex justify-center">
             <CtaFormulaire track="facebook-final-cta" />

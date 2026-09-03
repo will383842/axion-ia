@@ -36,7 +36,7 @@
 export const TUNNEL_FACEBOOK_META = {
   title: "Apporteur d'affaires IA — on t'appelle",
   description:
-    "Tu connais des dirigeants ? Présente-leur Axion-IA, on s'occupe du reste, tu touches une commission sur chaque formation payée. Cinq questions, zéro CV.",
+    "Tu connais des dirigeants ? Présente-leur Axion-IA, on s'occupe du reste, tu touches une commission sur chaque formation payée. Quatre champs, zéro CV.",
 } as const;
 
 export const HERO = {
@@ -46,7 +46,7 @@ export const HERO = {
   chapo:
     "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Tu présentes Axion-IA aux dirigeants que tu connais, on fait tout le reste, tu touches une commission sur chaque formation payée.",
   cta: "Je veux qu'on m'appelle",
-  micro: "30 secondes · 5 questions · zéro CV",
+  micro: "30 secondes · 4 champs · zéro CV",
 } as const;
 
 /** Mentions de confiance INCONDITIONNELLES. Les mentions liées à la
@@ -59,7 +59,7 @@ export const CONFIANCE_BASE: readonly string[] = [
 
 export const FORMULAIRE = {
   titre: "On t'appelle, on t'explique",
-  sousTitre: "Cinq questions. Aucun engagement : tu décides après.",
+  sousTitre: "Quatre champs. Aucun engagement : tu décides après.",
   points: [
     "On t'appelle et on répond à tes questions.",
     "Tu complètes ensuite un dossier de 3 minutes, sans CV.",

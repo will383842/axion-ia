@@ -1,7 +1,15 @@
 "use client";
 // use-client: état du formulaire, validation à la volée, soumission async, brouillon localStorage — intrinsèquement client.
 //
-// Formulaire COURT du tunnel Facebook — cinq questions, une action.
+// Formulaire COURT du tunnel Facebook — quatre champs, une action.
+//
+// ── Pourquoi QUATRE et pas cinq (2026-09-03) ────────────────────────────────
+// Il portait en plus « Ta situation aujourd'hui » : cinq puces, facultatives.
+// Mesuré sur iPhone : 11 éléments interactifs, 957 px de haut. Or le DOSSIER
+// COMPLET pose déjà exactement cette question (`STATUT_OPTIONS`, écran 9 du
+// wizard). On la demandait donc deux fois, la première fois à quelqu'un qui
+// n'a encore rien demandé — et c'était le plus gros bloc du formulaire.
+// Retirée : la donnée n'est pas perdue, elle arrive au dossier.
 //
 // ── Ce qu'il fait au succès, dans l'ordre ───────────────────────────────────
 //  1. pose le BROUILLON du wizard (`saveDraft`) avec prénom, e-mail, téléphone,
@@ -33,19 +41,13 @@ import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import { lireCookieFbp } from "@/lib/analytics/meta-pixel";
 import { readAnalyticsConsent } from "@/components/analytics/CookieConsent";
 import { HoneypotField } from "@/components/forms/HoneypotField";
-import { STATUT_OPTIONS } from "@/lib/commercial-application/model";
 import {
   LEAD_APPORTEUR_SOURCE,
   TUNNEL_FACEBOOK_MERCI_PATH,
   type LeadApporteurInput,
 } from "@/lib/commercial-application/lead-apporteur";
 import { emptyAnswers, saveDraft } from "@/components/forms/commercial-application/wizard-state";
-import {
-  Chip,
-  ChipGroup,
-  PrimaryButton,
-  TextField,
-} from "@/components/forms/commercial-application/ui";
+import { PrimaryButton, TextField } from "@/components/forms/commercial-application/ui";
 import { FORMULAIRE } from "@/content/recrutement/tunnel-facebook";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/routes";
@@ -55,7 +57,6 @@ interface Champs {
   telephone: string;
   email: string;
   ville: string;
-  statut: string;
   consent: boolean;
 }
 
@@ -85,7 +86,6 @@ export function LeadApporteurForm() {
     telephone: "",
     email: "",
     ville: "",
-    statut: "",
     consent: false,
   });
   const [erreurs, setErreurs] = React.useState<Erreurs>({});
@@ -93,7 +93,48 @@ export function LeadApporteurForm() {
   const [erreurServeur, setErreurServeur] = React.useState<string | null>(null);
   const formRef = React.useRef<HTMLFormElement>(null);
 
-  const set = (patch: Partial<Champs>) => setC((prev) => ({ ...prev, ...patch }));
+  /**
+   * Écrit la saisie, et EFFACE l'erreur d'un champ dès qu'elle est réparée.
+   *
+   * Sans cela, le message rouge posé au blur restait sous les yeux pendant toute
+   * la correction : on tape la bonne valeur et on lit encore « ce numéro ne
+   * ressemble pas à un téléphone ». On n'AJOUTE jamais d'erreur ici — corriger
+   * en direct ne doit pas gronder quelqu'un au deuxième caractère.
+   */
+  const set = (patch: Partial<Champs>) => {
+    const suivant = { ...c, ...patch };
+    setC(suivant);
+    setErreurs((e) => {
+      const tous = valider(suivant);
+      let modifie = false;
+      const n = { ...e };
+      for (const cle of Object.keys(patch) as (keyof Champs)[]) {
+        if (n[cle] && !tous[cle]) {
+          delete n[cle];
+          modifie = true;
+        }
+      }
+      return modifie ? n : e;
+    });
+  };
+
+  /**
+   * Validation À LA VOLÉE, au blur d'un champ et de lui seul.
+   *
+   * Tout valider au seul envoi fait découvrir quatre erreurs d'un coup, en bas
+   * de page, après un clic — c'est le moment où l'on abandonne. Ici chaque champ
+   * se signale en le quittant, et rien ne s'affiche sur les champs pas encore
+   * touchés.
+   */
+  const validerAuBlur = (cle: keyof Champs) => {
+    const tous = valider(c);
+    setErreurs((e) => {
+      const n = { ...e };
+      if (tous[cle]) n[cle] = tous[cle];
+      else delete n[cle];
+      return n;
+    });
+  };
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -113,7 +154,6 @@ export function LeadApporteurForm() {
       email: c.email.trim(),
       telephone: c.telephone.trim(),
       ville: c.ville.trim(),
-      ...(c.statut ? { statut: c.statut } : {}),
       consent: true,
       contexte: {
         query: window.location.search.slice(0, 2000),
@@ -141,7 +181,6 @@ export function LeadApporteurForm() {
         email: payload.email,
         telephone: payload.telephone,
         ville: payload.ville,
-        statut: c.statut,
         sourceConnaissance: LEAD_APPORTEUR_SOURCE,
       });
       trackFunnel("Lead Apporteur Submitted", { landing: "facebook" });
@@ -176,6 +215,7 @@ export function LeadApporteurForm() {
           requiredField
           value={c.prenom}
           onChange={(e) => set({ prenom: e.target.value })}
+          onBlur={() => validerAuBlur("prenom")}
           autoComplete="given-name"
           maxLength={60}
           error={erreurs.prenom}
@@ -189,6 +229,7 @@ export function LeadApporteurForm() {
           requiredField
           value={c.telephone}
           onChange={(e) => set({ telephone: e.target.value })}
+          onBlur={() => validerAuBlur("telephone")}
           autoComplete="tel"
           maxLength={40}
           error={erreurs.telephone}
@@ -204,6 +245,7 @@ export function LeadApporteurForm() {
           requiredField
           value={c.email}
           onChange={(e) => set({ email: e.target.value })}
+          onBlur={() => validerAuBlur("email")}
           autoComplete="email"
           maxLength={180}
           error={erreurs.email}
@@ -215,25 +257,16 @@ export function LeadApporteurForm() {
           requiredField
           value={c.ville}
           onChange={(e) => set({ ville: e.target.value })}
+          onBlur={() => validerAuBlur("ville")}
           autoComplete="address-level2"
+          // Dernier champ : ici Entrée ENVOIE vraiment (soumission implicite du
+          // formulaire). Le défaut « next » de `TextField` est calibré pour le
+          // wizard, où Entrée ne soumet rien — l'y laisser promettrait un écran
+          // suivant qui n'existe pas.
+          enterKeyHint="send"
           maxLength={120}
           error={erreurs.ville}
         />
-      </div>
-
-      <div className="mt-5">
-        <ChipGroup legend="Ta situation aujourd'hui" optionalHint>
-          {STATUT_OPTIONS.map((o) => (
-            <Chip
-              key={o.id}
-              name="statut"
-              value={o.id}
-              label={o.label}
-              checked={c.statut === o.id}
-              onToggle={(v) => set({ statut: c.statut === v ? "" : v })}
-            />
-          ))}
-        </ChipGroup>
       </div>
 
       <div className="mt-5">
