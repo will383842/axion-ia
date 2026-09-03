@@ -10,6 +10,10 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
+import { FriseCandidature } from "./FriseCandidature";
+import { ComposerReponse } from "./ComposerReponse";
+import { ConsignerAuJournal } from "./ConsignerAuJournal";
+import { lireFrise } from "@/features/admin-job-applications/timeline";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
@@ -38,6 +42,13 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
 
   // Labels des questions de l'offre → rendu lisible des réponses (pas de JSON brut).
   const offer = await getJobOfferDetailAction(a.offerId);
+
+  // La frise porte le corps des messages envoyés, donc le nom de la personne :
+  // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
+  // fier à la garde de la page. Deux étages qui ne peuvent pas diverger.
+  const frise = await lireFrise(a.id, {
+    role: (session.user as { role?: string }).role,
+  });
   const qLabels: Record<string, string> = {};
   if (offer && Array.isArray(offer.screeningQuestions)) {
     for (const q of offer.screeningQuestions as Array<{
@@ -138,6 +149,19 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           </dl>
         </AdminCard>
       ) : null}
+
+      {/* Lot 1 — LA FRISE, avant le formulaire de suivi.
+          Ce qu'on veut savoir en ouvrant un dossier n'est pas « quel est son
+          statut » mais « où en est-on avec cette personne ». L'histoire d'abord,
+          la décision ensuite. */}
+      <AdminCard>
+        <h3 className="admin-section-title">Historique</h3>
+        <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-3)]">
+          <ComposerReponse applicationId={a.id} prenom={a.firstName} poste={a.offerTitleSnap} />
+          <ConsignerAuJournal applicationId={a.id} />
+        </div>
+        <FriseCandidature entrees={frise} />
+      </AdminCard>
 
       <AdminCard>
         <h3 className="admin-section-title">Suivi</h3>
