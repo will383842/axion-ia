@@ -103,10 +103,74 @@ describe("🛑 la couverture d'accessibilité de la console ne rétrécit pas", 
     // qui le subit. Les huit tests morts n'avaient rien changé. Un coût qui
     // croît avec la liste doit donc être gardé DANS le fichier qui allonge la
     // liste — ici.
+    // 🔴 2026-09-04 — CETTE GARDE MESURAIT UNE DISTANCE DANS LA PROSE.
+    //
+    // Elle cherchait `loginAsAdmin(` dans les 400 caractères suivant
+    // `test.beforeAll(`, sur la source BRUTE. Un commentaire ajouté DANS le
+    // crochet — pour expliquer pourquoi il porte désormais son propre
+    // `test.setTimeout()` — a poussé l'appel au-delà de la fenêtre, et la garde
+    // a rougi sur du code dont l'intention n'avait pas bougé d'un iota.
+    //
+    // 🔑 C'est la famille que ce dépôt paie le plus souvent, et que
+    // `dossier-candidat-cloisonne.spec.ts` documente déjà deux fois : une garde
+    // statique qui lit la PROSE au lieu du CODE. On retire donc les
+    // commentaires avant de mesurer — ce qu'on garde, c'est que la connexion
+    // vive dans un `beforeAll`, pas qu'elle soit peu commentée.
     const src = source();
-    expect(src, "la connexion doit se faire dans un `beforeAll` — une par worker").toMatch(
-      /test\.beforeAll\([\s\S]{0,400}?loginAsAdmin\(/,
-    );
+    const codeSeul = src
+      .replace(/\/\*[\s\S]*?\*\//g, (bloc) => bloc.replace(/[^\n]/g, " "))
+      .split(/\r?\n/)
+      .map((l) => (l.trim().startsWith("//") ? "" : l))
+      .join("\n");
+    // On extrait le CORPS de chaque crochet, et on juge l'APPARTENANCE.
+    //
+    // 🔴 La version precedente cherchait `loginAsAdmin(` dans les 400
+    // caracteres suivant `test.beforeAll(`. Injection faite le 2026-09-04 :
+    // en deplacant la connexion vers un `beforeEach` place juste apres, la
+    // garde restait **VERTE** — le motif trouvait l'appel du crochet VOISIN,
+    // et le comptage restait a 1.
+    //
+    // 🔑 Or un `beforeEach` se rejoue A CHAQUE TEST : c'est precisement le
+    // defaut des dix-huit connexions que cette garde existe pour empecher.
+    // Une proximite textuelle n'est pas une appartenance.
+    const corpsDuCrochet = (nom: string): string | null => {
+      const i = codeSeul.indexOf(`test.${nom}(`);
+      if (i === -1) return null;
+      const fleche = codeSeul.indexOf("=>", i);
+      const ouvrante = fleche === -1 ? -1 : codeSeul.indexOf("{", fleche);
+      if (ouvrante === -1) return null;
+      let profondeur = 0;
+      for (let k = ouvrante; k < codeSeul.length; k += 1) {
+        if (codeSeul[k] === "{") profondeur += 1;
+        else if (codeSeul[k] === "}") {
+          profondeur -= 1;
+          if (profondeur === 0) return codeSeul.slice(ouvrante, k);
+        }
+      }
+      return codeSeul.slice(ouvrante);
+    };
+
+    const avant = corpsDuCrochet("beforeAll");
+    expect(avant, "aucun `test.beforeAll` dans la suite").not.toBeNull();
+    expect(
+      (avant ?? "").includes("loginAsAdmin("),
+      "la connexion doit vivre DANS le `beforeAll` — une par worker",
+    ).toBe(true);
+
+    // ⚠️ Et surtout PAS dans un crochet qui se rejoue a chaque test.
+    expect(
+      (corpsDuCrochet("beforeEach") ?? "").includes("loginAsAdmin("),
+      "une connexion dans un `beforeEach` se rejoue a CHAQUE test : c'est le " +
+        "defaut des dix-huit connexions, deguise en une seule ligne",
+    ).toBe(false);
+
+    // 🔴 LES DEUX ASSERTIONS SONT NÉCESSAIRES, ET J'AI FAILLI N'EN GARDER QU'UNE.
+    //
+    // L'appartenance ci-dessus dit OÙ vit la connexion ; le comptage ci-dessous
+    // dit COMBIEN il y en a. En réécrivant ce test pour corriger la première,
+    // j'ai supprimé le second — et l'injection « deux connexions dans le
+    // `beforeAll` » est repassée au VERT. Une garde qu'on réécrit perd ce qu'on
+    // oublie de recopier, et le vert qui suit ressemble à un succès.
     expect(
       (src.match(/\bawait loginAsAdmin\(/g) ?? []).length,
       "un seul appel à loginAsAdmin dans toute la suite : plusieurs appels " +

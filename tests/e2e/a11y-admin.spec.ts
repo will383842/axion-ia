@@ -170,6 +170,27 @@ test.describe("a11y console admin WCAG 2.2 AA @a11y-admin", () => {
   let pagePartagee: Page;
 
   test.beforeAll(async ({ browser }) => {
+    // 🔴 LE `describe.configure` VINGT LIGNES PLUS HAUT NE COUVRE PAS CE CROCHET.
+    //
+    // Son budget de 300 s s'applique aux TESTS ; un `beforeAll` garde le défaut
+    // de `playwright.config.ts`, soit **30 s**. Or `loginAsAdmin` attend
+    // `baseSemeeAttendue() ? 60_000 : 180_000` : le crochet dispose donc de
+    // trente secondes pour une opération qui en coûte soixante à cent quatre-vingts.
+    //
+    // 🔑 C'est la MÊME famille que celle décrite en tête de cette suite — « un
+    // délai plus long que son budget ne peut jamais expirer » — et elle a été
+    // corrigée ici sur les TESTS en laissant le CROCHET armé. Mesuré le
+    // 2026-09-03 : « "beforeAll" hook timeout of 30000ms exceeded », trois tests
+    // tombés, et le message n'accusait pas la connexion.
+    //
+    // ⚠️ Depuis que `loginAsAdmin` rejoue une session partagée, ce crochet passe
+    // le plus souvent en une seconde — il ne se connecte vraiment que s'il est le
+    // premier de son worker. Le piège n'a donc pas disparu : il est devenu
+    // INTERMITTENT, et dépend de l'ordre des tests. C'est pire qu'un rouge franc.
+    //
+    // `console-editoriale.spec.ts` porte déjà ce remède, et sa raison écrite.
+    test.setTimeout(300_000);
+
     contextePartage = await browser.newContext({ baseURL: urlDeBase() });
     pagePartagee = await contextePartage.newPage();
     await loginAsAdmin(pagePartagee);
