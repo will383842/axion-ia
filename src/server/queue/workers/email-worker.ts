@@ -107,6 +107,15 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         return;
       }
 
+      // Lot 1 du chantier recrutement — même mécanique, autre table. Le payload
+      // ne porte PAS le HTML : il référence `JobApplicationReply.id`, et
+      // l'adresse est relue puis déchiffrée au seul moment de l'envoi. Aucune
+      // donnée personnelle ne transite par la file.
+      if (template === "candidature-reponse") {
+        await handleCandidatureReponse(payload);
+        return;
+      }
+
       const jobId = job.id;
       const attempts = job.attemptsMade + 1;
 
@@ -370,5 +379,79 @@ async function handleSubmissionReply(payload: Record<string, unknown>): Promise<
       },
     });
     throw e; // BullMQ retry avec backoff exponentiel
+  }
+}
+
+// ============================================================
+// candidature-reponse : livraison + synchronisation (lot 1 recrutement)
+// ============================================================
+//
+// Jumeau de `handleSubmissionReply`, sur `JobApplicationReply`. Les trois mêmes
+// règles s'appliquent, pour les trois mêmes raisons :
+//
+//  · le corps est LU en base (figé au moment de la rédaction), jamais re-rendu
+//    ici — sinon deux envois du même message pourraient différer ;
+//  · l'adresse est déchiffrée au dernier moment ;
+//  · une adresse illisible ne consomme PAS les tentatives BullMQ : c'est un
+//    problème de configuration de clé, pas de réseau, et le réessayer cinq fois
+//    ne le résoudra pas. On marque `failed` avec un message distinctif, et on ne
+//    lève pas.
+//
+// 🔑 Ce handler n'écrit RIEN au journal de la candidature. La trace « réponse
+// envoyée » est posée par l'action, dans la même transaction que la réponse :
+// le journal dit ce qu'un humain a FAIT, l'état de livraison dit ce que la
+// chaîne d'envoi en a fait. Les confondre produirait deux lignes pour un geste,
+// et une frise qui se répète.
+
+async function handleCandidatureReponse(payload: Record<string, unknown>): Promise<void> {
+  const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
+  if (!replyId) throw new Error("[email-worker] candidature-reponse: replyId manquant");
+
+  const reponse = await prisma.jobApplicationReply.findUnique({ where: { id: replyId } });
+  if (!reponse) throw new Error(`[email-worker] JobApplicationReply ${replyId} introuvable`);
+
+  const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
+  const to = decryptPii(reponse.toEmail);
+
+  if (!isDecryptedEmailUsable(to)) {
+    await prisma.jobApplicationReply.update({
+      where: { id: reponse.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
+      },
+    });
+    return;
+  }
+
+  try {
+    const resultat = await sendEmail({
+      to,
+      subject: reponse.subject,
+      html: reponse.bodyHtml,
+      text: reponse.bodyText,
+      replyTo,
+    });
+    await prisma.jobApplicationReply.update({
+      where: { id: reponse.id },
+      data: {
+        deliveryStatus: "sent",
+        sentAt: new Date(),
+        providerMessageId: resultat.messageId,
+      },
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    await prisma.jobApplicationReply.update({
+      where: { id: reponse.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: msg.slice(0, 2000),
+        retryCount: { increment: 1 },
+      },
+    });
+    throw e; // BullMQ réessaie avec un délai exponentiel
   }
 }

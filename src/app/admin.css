@@ -2086,6 +2086,27 @@
   padding: 16px;
 }
 /*
+ * Surface EN CREUX à l'intérieur d'une carte — l'aperçu d'un message avant
+ * envoi, sur la fiche candidat.
+ *
+ * 🔴 Cette classe était POSÉE et n'existait PAS. Rien ne cassait : le navigateur
+ * ignore une classe inconnue en silence, et l'aperçu s'affichait simplement
+ * sans sa surface — indiscernable du texte de saisie juste au-dessus, c'est-à-
+ * dire exactement ce que l'aperçu doit distinguer. C'est
+ * `admin-design-tokens.test.ts` qui l'a trouvée, pas l'œil.
+ *
+ * 🔑 Le fond est `--color-admin-bg`, PAS `--color-admin-surface` : ce dernier
+ * vaut `--color-admin-paper`, donc la même valeur que la carte qui contient
+ * l'aperçu — le creux aurait été invisible. Le fond de PAGE, lui, se lit comme
+ * une découpe dans le papier.
+ */
+.admin-card-inset {
+  padding: var(--space-admin-5);
+  background-color: var(--color-admin-bg);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-md);
+}
+/*
  * 🔴 CONSTAT MESURÉ (revue visuelle 2026-08-03, bibliothèque d'images).
  *
  * `.admin-card` pose padding + fond + bordure + ombre mais ne pose JAMAIS

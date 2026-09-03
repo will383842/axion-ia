@@ -47,6 +47,7 @@ import {
   cancellationConfirmedByUserSubject,
 } from "./cancellation-confirmed-by-user";
 import { SubmissionReplyEmail, submissionReplySubject } from "./submission-reply";
+import { CandidatureReponseEmail, candidatureReponseSubject } from "./candidature-reponse";
 // T15 — emails auto Qualiopi lifecycle
 import { QualiopiConvocationEmail, qualiopiConvocationSubject } from "./qualiopi-convocation";
 import { QualiopiRappelJ7Email, qualiopiRappelJ7Subject } from "./qualiopi-rappel-j7";
@@ -217,6 +218,10 @@ const TEMPLATES: TemplateMap = {
   "submission-reply": {
     subject: submissionReplySubject,
     component: SubmissionReplyEmail,
+  },
+  "candidature-reponse": {
+    subject: candidatureReponseSubject,
+    component: CandidatureReponseEmail,
   },
   // T15 — emails auto Qualiopi lifecycle
   "qualiopi-convocation": {
