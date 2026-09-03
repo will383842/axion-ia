@@ -670,6 +670,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "administratif",
   },
+  // 🔴 Recette du 2026-09-03 — le trou que les trois codes ci-dessus laissaient
+  // ouvert, et il s'ouvrait au pire moment. `formateur_mission_sans_reponse`
+  // exige `en_attente` ET `dateDebut > now` ; le cron `missions-formateur`
+  // passe la proposition en `expiree` au moment EXACT où la session démarre.
+  // L'alerte qui disait « Camille n'a pas répondu » disparaissait donc quand
+  // le risque cessait d'être un risque pour devenir un fait. Et
+  // `session_sans_formateur` ne prend pas le relais : elle exige
+  // `formateurPrincipalId: null`, or l'expiration ne retire pas l'affectation.
+  // Vérifié en base sur AXI-SESS-2026-010 : zéro alerte sur le formateur.
+  formateur_mission_expiree: {
+    niveau: "critique",
+    titre: "Session démarrée sans réponse du formateur",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
   formateur_non_habilite_assigne: {
     niveau: "important",
     titre: "Formateur principal non habilité sur cette formation",

@@ -47,6 +47,31 @@ function fmtJourCourt(d: Date): string {
   return d.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "2-digit" });
 }
 
+/** Jour civil `AAAA-MM-JJ` en heure de Paris — le fuseau dans lequel on anime. */
+function jourCivilParis(d: Date): string {
+  return new Intl.DateTimeFormat("fr-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+}
+
+/**
+ * Jours civils (Paris) qui séparent `now` du démarrage. 0 = aujourd'hui,
+ * 1 = demain, négatif = déjà commencé.
+ *
+ * 🔴 En jours CIVILS, pas en heures divisées par 24 : une session qui démarre
+ * demain à 09:00, convoquée ce soir à 20:00, est à 13 h — soit « 0 jour » en
+ * arithmétique brute, alors que la réponse que le formateur attend est
+ * « demain ». On compare donc deux dates de calendrier, jamais deux instants.
+ */
+export function joursCivilsAvant(dateDebut: Date, now: Date): number {
+  const a = Date.parse(`${jourCivilParis(now)}T00:00:00Z`);
+  const b = Date.parse(`${jourCivilParis(dateDebut)}T00:00:00Z`);
+  return Math.round((b - a) / 86_400_000);
+}
+
 /** « lun. 15/09 09:00–17:00 · mar. 16/09 09:00–12:30 » ; `undefined` sans journée saisie. */
 export function formulerHoraires(
   jours: ReadonlyArray<{ date: Date; heureDebut: string; heureFin: string }>,
@@ -80,7 +105,10 @@ interface InfosChargees {
   payload: Record<string, unknown>;
 }
 
-async function chargerInfosPratiques(sessionFormateurId: string): Promise<InfosChargees | null> {
+async function chargerInfosPratiques(
+  sessionFormateurId: string,
+  now: Date,
+): Promise<InfosChargees | null> {
   const sf = await prisma.sessionFormateur.findUnique({
     where: { id: sessionFormateurId },
     select: {
@@ -162,6 +190,10 @@ async function chargerInfosPratiques(sessionFormateurId: string): Promise<InfosC
       lienEspace: `${base}${FORMATEUR_BASE_PATH}/sessions/${s.id}`,
       kitDisponible: kit !== null,
       missionEnAttente: mission?.statut === "en_attente",
+      // Le délai RÉEL. Le gabarit de convocation en dérive son objet et son
+      // titre : le cron sélectionne par état, il convoque donc aussi à J-3 ou
+      // à J-1, et « dans 7 jours » y serait faux.
+      joursAvantDebut: joursCivilsAvant(s.dateDebut, now),
     },
   };
 }
@@ -171,7 +203,7 @@ async function envoyer(
   quoi: "convocation-j7" | "rappel-j1",
 ): Promise<boolean> {
   if (isStub()) return false;
-  const infos = await chargerInfosPratiques(sessionFormateurId);
+  const infos = await chargerInfosPratiques(sessionFormateurId, new Date());
   if (infos === null) return false;
 
   const envoi = await enqueueEmail(

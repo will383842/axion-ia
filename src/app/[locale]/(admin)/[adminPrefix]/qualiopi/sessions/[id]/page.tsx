@@ -796,7 +796,11 @@ export default async function SessionHubPage({ params }: PageProps) {
       {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
       <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
-        <SessionLieuForm sessionId={id} initial={lieuValuesDepuisSession(trainingSession)} />
+        <SessionLieuForm
+          sessionId={id}
+          initial={lieuValuesDepuisSession(trainingSession)}
+          modalite={trainingSession.modalite}
+        />
       </section>
 
       {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}

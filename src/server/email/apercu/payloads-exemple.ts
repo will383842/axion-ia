@@ -85,6 +85,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   interventionLabel: "Audit IA",
   interventionType: "Audit IA",
   invoiceNumber: "F-2026-0142",
+  // Délai réel avant le démarrage : l'objet et le titre de la convocation
+  // formateur en dérivent. Sans lui, l'aperçu retomberait sur le repli neutre.
+  joursAvantDebut: 7,
   joursOpposition: 30,
   joursRetard: 12,
   leaderName: "Camille Dupont",

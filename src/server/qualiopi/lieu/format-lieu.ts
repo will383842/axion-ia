@@ -77,6 +77,14 @@ export function isLieuRenseigne(l: LieuFields): boolean {
  *   « Sur site — 11 Av. Paul Verlaine, 38100 Grenoble · Salle B2 »
  *   « Nos locaux »
  *   « Distanciel — meet.google.com »
+ *   « Sur site — 48 bd des Belges, 69006 Lyon · Salle Curie · visio meet.google.com »
+ *
+ * 🔴 Le dernier cas est celui d'une session HYBRIDE (recette 2026-09-03). Le
+ * lien de visio n'était rendu QUE pour `lieuType === "distanciel"` : une
+ * session tenue en salle et retransmise annonçait une salle et rien d'autre,
+ * et les participants à distance n'avaient aucune manière d'entrer. On l'ajoute
+ * donc dès qu'il est renseigné — par son HÔTE seul, jamais le lien complet, qui
+ * vaut souvent clé d'accès.
  */
 export function formatLieu(l: LieuFields): string | null {
   if (!isLieuRenseigne(l)) return null;
@@ -100,8 +108,14 @@ export function formatLieu(l: LieuFields): string | null {
     .join(" — ");
 
   const salle = clean(l.lieuSalle);
-  const rendu =
+  const avecSalle =
     salle !== null ? (base.length > 0 ? `${base} · Salle ${salle}` : `Salle ${salle}`) : base;
+
+  // Hybride : la salle ET le lien. `visioHost` rend `null` sur une URL illisible,
+  // ce qui laisse la ligne inchangée plutôt que d'y coller une chaîne douteuse.
+  const hostMixte = visioHost(l.lieuVisioUrl);
+  const rendu =
+    hostMixte !== null && avecSalle.length > 0 ? `${avecSalle} · visio ${hostMixte}` : avecSalle;
 
   if (rendu.length === 0) {
     // Ni type, ni intitulé, ni adresse, ni salle : reste l'URL de visio éventuelle.

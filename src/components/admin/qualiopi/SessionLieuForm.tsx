@@ -20,9 +20,18 @@ export interface SessionLieuFormProps {
   sessionId: string;
   /** Valeurs actuelles, lues côté serveur sur la fiche. */
   initial: LieuValues;
+  /**
+   * Modalité de la session — l&apos;hybride a besoin de l&apos;adresse ET du lien
+   * de visio ; `LieuType` seul ne sait pas le dire (cf. `LieuFieldset`).
+   */
+  modalite?: "presentiel" | "distanciel" | "hybride";
 }
 
-export function SessionLieuForm({ sessionId, initial }: SessionLieuFormProps): React.ReactElement {
+export function SessionLieuForm({
+  sessionId,
+  initial,
+  modalite,
+}: SessionLieuFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [lieu, setLieu] = useState<LieuValues>(initial);
@@ -56,6 +65,7 @@ export function SessionLieuForm({ sessionId, initial }: SessionLieuFormProps): R
         onChange={(patch) => setLieu((prev) => ({ ...prev, ...patch }))}
         disabled={isPending}
         idPrefix="fiche-lieu"
+        modalite={modalite}
       />
 
       {error !== null && (

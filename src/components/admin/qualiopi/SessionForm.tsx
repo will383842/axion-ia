@@ -472,6 +472,7 @@ export function SessionForm({
         onChange={(patch) => setLieu((prev) => ({ ...prev, ...patch }))}
         disabled={isPending}
         idPrefix="session-lieu"
+        modalite={modalite}
       />
 
       {/* ── Client ────────────────────────────────────────────────────────── */}

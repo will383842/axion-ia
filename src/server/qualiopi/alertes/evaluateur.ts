@@ -2615,6 +2615,82 @@ async function regleMissionFormateurSansReponse(now: Date): Promise<AlerteCandid
   });
 }
 
+/**
+ * 🔴 LA SESSION A DÉMARRÉ ET LE FORMATEUR N'A JAMAIS RÉPONDU.
+ *
+ * Trou constaté en recette le 2026-09-03, sur AXI-SESS-2026-010 : zéro alerte
+ * sur le formateur, alors que la session avait démarré le matin même avec une
+ * proposition restée muette. Les deux règles qui auraient dû l'attraper
+ * s'excluent l'une l'autre :
+ *
+ *   · `regleMissionFormateurSansReponse` exige `statut = "en_attente"` ET
+ *     `dateDebut > now`. Or `relancerEtExpirerMissions` passe la proposition en
+ *     `expiree` DÈS que la session démarre. L'alerte s'éteint donc à l'instant
+ *     précis où le risque devient un fait ;
+ *   · `regleSessionSansFormateur` exige `formateurPrincipalId: null`. Or
+ *     l'expiration ne retire PAS l'affectation — elle constate un silence, elle
+ *     ne décide pas à la place de l'organisme (doctrine de `mission-formateur.ts`).
+ *
+ * Ce que l'alerte demande n'est donc pas « affectez quelqu'un » — il est trop
+ * tard — mais : la session a-t-elle été animée ? Si oui, l'accord n'a jamais
+ * été tracé ; si non, il y a un incident à consigner et un client à prévenir.
+ *
+ * ⚠️ Une proposition expirée alors qu'un AUTRE formateur a accepté la même
+ * session est un non-événement (co-animation proposée à deux, un seul répond) :
+ * on ne lève que si aucune mission acceptée ne couvre la session.
+ */
+async function regleMissionFormateurExpiree(now: Date): Promise<AlerteCandidate[]> {
+  const missions = await prisma.missionFormateur.findMany({
+    where: {
+      statut: "expiree",
+      // Bornée à un an en arrière, comme `regleSessionSansFormateur` : sans
+      // borne basse, tout l'historique remonterait à chaque balayage.
+      session: {
+        statut: { in: ["planifiee", "en_cours"] },
+        dateDebut: { lte: now, gte: daysAgo(365, now) },
+      },
+    },
+    select: {
+      role: true,
+      solliciteAt: true,
+      trainer: { select: { prenom: true, nom: true } },
+      session: {
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          client: { select: { raisonSociale: true } },
+          missionsFormateur: { where: { statut: "acceptee" }, select: { id: true } },
+        },
+      },
+    },
+  });
+  // Une alerte par SESSION : c'est la session qu'il faut instruire, pas chaque
+  // proposition restée muette.
+  const vues = new Set<string>();
+  const out: AlerteCandidate[] = [];
+  for (const m of missions) {
+    if (m.session.missionsFormateur.length > 0) continue;
+    if (vues.has(m.session.id)) continue;
+    vues.add(m.session.id);
+    const date = m.session.dateDebut.toLocaleDateString("fr-FR");
+    out.push({
+      code: "formateur_mission_expiree",
+      niveau: "critique",
+      titre: "Session démarrée sans réponse du formateur",
+      message:
+        `${m.trainer.prenom} ${m.trainer.nom} n'a jamais répondu à la proposition pour ` +
+        `${designerSession(m.session)}, qui a démarré le ${date}. ` +
+        "L'affectation tient toujours, mais aucun accord n'a été tracé : vérifiez que la " +
+        "session a bien été animée, et consignez un incident si elle ne l'a pas été.",
+      cibleType: "TrainingSession",
+      cibleId: m.session.id,
+    });
+  }
+  return out;
+}
+
 /** Formateur affecté sur des jours où il s'est déclaré indisponible (congés, maladie…). */
 async function regleFormateurIndisponibleSurSession(now: Date): Promise<AlerteCandidate[]> {
   const horizon = daysFromNow(365, now);
@@ -2774,6 +2850,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // Cycle de vie du formateur sur une session (2026-09-03).
   { nom: "formateur_mission_refusee", fn: regleMissionFormateurRefusee },
   { nom: "formateur_mission_sans_reponse", fn: regleMissionFormateurSansReponse },
+  { nom: "formateur_mission_expiree", fn: regleMissionFormateurExpiree },
   { nom: "formateur_indisponible_sur_session", fn: regleFormateurIndisponibleSurSession },
   { nom: "formateur_non_habilite_assigne", fn: regleFormateurNonHabiliteAssigne },
 ];
