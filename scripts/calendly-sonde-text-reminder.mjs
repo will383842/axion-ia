@@ -95,8 +95,53 @@ function titre(t) {
  * Calendar N'ANNULE PAS la réservation chez Calendly. Le créneau resterait
  * bloqué pour un vrai prospect, sans que rien ne le signale.
  */
+const LIRE_EVENT_TYPE = (process.env.SONDE_EVENT_TYPE ?? "").trim() === "true";
 const EVENT_A_LIRE = (process.env.SONDE_EVENT_URI ?? "").trim();
 const ANNULER = (process.env.SONDE_ANNULER ?? "").trim() === "true";
+
+if (LIRE_EVENT_TYPE) {
+  // 🔍 MODE EVENT-TYPE — les questions RÉELLEMENT posées par Calendly.
+  //
+  // `questions.ts` en masque certaines côté site (`QUESTIONS_MASQUEES`). Leur
+  // absence du formulaire ne prouve donc RIEN sur ce que Calendly demande
+  // encore : elles restent dans LEUR formulaire de repli, celui vers lequel on
+  // bascule quand notre réservation directe échoue. Pour savoir si un réglage
+  // a été fait dans leur interface, il faut le leur demander.
+  titre("LECTURE DE L'EVENT-TYPE — les questions posées par Calendly");
+  const moi = await appel("/users/me");
+  const ets = await appel(
+    `/event_types?user=${encodeURIComponent(moi.corps?.resource?.uri ?? "")}&count=100`,
+  );
+  const et = (ets.corps?.collection ?? []).find(
+    (e) => (e?.scheduling_url ?? "").replace(/\/$/, "") === URL_PUBLIQUE.replace(/\/$/, ""),
+  );
+  if (!et) {
+    console.error("✗ event-type introuvable pour", URL_PUBLIQUE);
+    process.exit(1);
+  }
+  console.log(`event-type : ${et.name} (${et.duration} min) — actif : ${et.active}`);
+  const qs = et.custom_questions ?? [];
+  console.log(`\n${qs.length} question(s) posée(s) par Calendly :`);
+  for (const q of qs) {
+    const etat = q.enabled === false ? "DÉSACTIVÉE" : "activée";
+    const obl = q.required ? "OBLIGATOIRE" : "facultative";
+    console.log(`  [${q.position}] « ${q.name} » — ${q.type}, ${obl}, ${etat}`);
+    if (Array.isArray(q.answer_choices) && q.answer_choices.length > 0) {
+      console.log(`        choix : ${q.answer_choices.join(" | ")}`);
+    }
+  }
+
+  titre("VERDICT");
+  const ville = qs.find((q) => /ville/i.test(q?.name ?? "") && q?.enabled !== false);
+  if (ville) {
+    console.log(`🔴 « ${ville.name} » est TOUJOURS posée par Calendly.`);
+    console.log("   Le site la masque, mais elle reste dans LEUR formulaire de repli");
+    console.log("   et dans leurs e-mails. Le réglage est à faire dans Calendly.");
+  } else {
+    console.log("✅ Aucune question « ville » active — le réglage a bien été fait.");
+  }
+  process.exit(0);
+}
 
 if (EVENT_A_LIRE) {
   const uri = EVENT_A_LIRE.startsWith("http")
