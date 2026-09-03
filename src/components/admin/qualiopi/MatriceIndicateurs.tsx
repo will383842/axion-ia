@@ -174,12 +174,29 @@ function OuVerifier({
       <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
         Où vérifier dans la console
       </p>
-      <ul className="flex flex-wrap gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-1)]">
+      {/*
+        🔴 2026-09-03 — `target-size` (WCAG 2.2 AA, impact « serious »). Ces liens
+        étaient rendus en `text-admin-xs` nu : mesurés par axe en CI, **228 px
+        par 15 px**, avec 21,2 px d'espace libre autour — sous le minimum de
+        24 × 24 px. La gate a rougi sur l'écran de l'auditrice, et elle avait
+        raison : un lien de 15 px de haut se rate au doigt.
+
+        🔑 ET MON INSTRUMENT ÉTAIT PLUS FAIBLE QUE LA GATE. J'avais passé axe en
+        local sur `wcag2a, wcag2aa, wcag21a, wcag21aa` et conclu « aucune
+        violation » — `target-size` est une règle **WCAG 2.2**, que je n'avais pas
+        demandée. Le test CI, lui, s'appelle « WCAG 2.2 AA ». Une mesure qui
+        n'interroge pas la même norme que la garde ne dit rien de la garde.
+
+        `min-h` + `inline-flex` donnent la hauteur de cible ; l'espacement
+        vertical passe à `space-admin-2` pour que deux liens qui se suivent ne
+        se touchent pas.
+      */}
+      <ul className="flex flex-wrap gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-2)]">
         {registres.map((r) => (
           <li key={r.chemin + r.libelle}>
             <Link
               href={`${baseHref}${r.chemin}`}
-              className="text-[length:var(--text-admin-xs)] underline"
+              className="inline-flex min-h-[24px] items-center text-[length:var(--text-admin-xs)] underline"
             >
               {r.libelle}
             </Link>

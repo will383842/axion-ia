@@ -248,6 +248,57 @@ fichier témoin ; le test repasse seul.)
 
 ---
 
+## 3 ter. Ce que la CI a trouvé et que je n'avais pas vu
+
+Gate B a rougi sur trois tests. **Les trois venaient de moi**, et le dernier est le plus
+instructif.
+
+### a. `target-size` (WCAG 2.2 AA) — mon instrument était plus faible que la gate
+
+Les liens « Où vérifier dans la console » mesuraient **228 px par 15 px**, avec 21,2 px
+d'espace libre : sous le minimum de 24 × 24 px. J'avais pourtant passé axe en local et
+conclu « aucune violation » — **sur `wcag2a, wcag2aa, wcag21a, wcag21aa`**. `target-size`
+est une règle **WCAG 2.2**, que je n'avais pas demandée ; le test CI, lui, s'appelle
+« WCAG 2.2 AA ».
+
+🔑 **Une mesure qui n'interroge pas la même norme que la garde ne dit rien de la garde.**
+Refait avec les tags exacts de `a11y-admin.spec.ts` : 0 violation, sur les deux vues.
+
+### b. Un libellé qui recopiait un lien déjà présent en haut de la page
+
+Mon renvoi de l'indicateur 12 s'appelait « Registre des signatures d'émargement — la preuve
+de présence, chaîne par chaîne », **mot pour mot** le lien d'en-tête. Deux liens de même nom
+accessible : le parcours 07 a rougi, et il avait raison **avant** d'être un problème de
+test — deux libellés identiques qui mènent au même endroit font douter d'avoir déjà cliqué.
+Garde ajoutée, qui lit les libellés d'en-tête **dans le source de la page**.
+
+### c. 🔑 Masquer un bandeau ne pose AUCUNE décision
+
+Le parcours 6 — le stagiaire sur un téléphone de 360 px — échouait sur un clic intercepté
+par le bandeau de consentement, **sur le portail**, une page que je n'avais pas touchée.
+
+La chaîne, mesurée et non supposée :
+
+1. le harnais refuse les cookies **une fois**, au login admin, et c'est le CONTEXTE de
+   navigateur qui porte ensuite cette décision ;
+2. mon correctif masque le bandeau **sur la console** — donc le helper ne trouve plus rien
+   à refuser, et repart **sans rien inscrire** ;
+3. le portail, lui, affiche légitimement le bandeau, ancré en bas — exactement là où le
+   portail ancre sa barre d'onglets à 360 px ;
+4. le clic de navigation était intercepté soixante secondes durant, sur un test qui ne
+   parle pas de cookies.
+
+Mesuré en local, sans rien supposer : après login console, bandeau **absent** et décision
+**`null`** ; puis, sur une page publique du **même contexte**, bandeau **présent**. Le
+helper inscrit désormais le refus explicitement — vérifié : bandeau absent ensuite.
+
+⚠️ **Fait produit à connaître, et qui n'est pas un défaut** : un administrateur qui
+travaille dans la console puis ouvre le site public verra le bandeau. C'est correct — la
+console ne demande rien parce qu'elle ne charge aucun script tiers ; le site public, lui,
+demande. Le refus n'est simplement plus « pris d'avance » depuis la console.
+
+---
+
 ## 4. Ce qui RESTE, et qui n'est pas du code
 
 Ces points sont hors du périmètre « système interne » et ne peuvent pas être corrigés par

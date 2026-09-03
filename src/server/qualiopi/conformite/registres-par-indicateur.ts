@@ -88,9 +88,15 @@ export const REGISTRES_PAR_INDICATEUR: Record<number, readonly RegistreIndicateu
     { chemin: "/qualiopi/appreciations", libelle: "Appréciations recueillies" },
   ],
   12: [
+    // 🔴 2026-09-03 — ce libellé recopiait MOT POUR MOT le lien déjà posé en tête
+    // de l'écran auditeur. Deux liens de même nom accessible sur la même page :
+    // le parcours E2E 07 a rougi (« strict mode violation … resolved to 2
+    // elements »), et il avait raison AVANT d'être un problème de test — deux
+    // libellés identiques qui mènent au même endroit n'apprennent rien à
+    // l'auditrice, ils lui font douter d'avoir déjà cliqué.
     {
       chemin: "/qualiopi/mode-auditeur/emargement",
-      libelle: "Registre des signatures d'émargement — la preuve de présence, chaîne par chaîne",
+      libelle: "Chaîne des signatures d'émargement, maillon par maillon",
     },
     { chemin: "/qualiopi/sessions", libelle: "Sessions : feuilles d'émargement" },
   ],
