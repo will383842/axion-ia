@@ -35,7 +35,7 @@ Espacer pour ne pas saturer pg_dump/CPU/disque. Charger les env via un fichier s
 | `15 3 * * *` | `backup-image-bank-r2.sh --mode mirror` | Image-bank (sync incrémental) |
 | `0 6 1 * *` | `backup-image-bank-r2.sh --mode archive --type monthly` | Image-bank (archive immuable) |
 | `30 3 * * *` | `backup-plausible.sh` | Plausible (CH + PG) |
-| `0 2 * * *` | `backup-secrets.sh` | Secrets/config (age → R2 immuable) |
+| `0 2 * * *` | `vps/run-secrets-backup.sh` | Secrets/config de toute l'instance Coolify (AES → R2 `secrets/`) |
 | `0 1 * * 0` | `mirror-git-offsite.sh` | Mirror Git hebdo |
 | `0 1 * * *` | `backup-pgbackrest.sh --type diff` | PITR Postgres (diff quotidien) |
 | `0 1 * * 0` | `backup-pgbackrest.sh --type full` | PITR Postgres (full hebdo) |

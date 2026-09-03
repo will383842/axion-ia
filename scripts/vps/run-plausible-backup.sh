@@ -7,6 +7,8 @@ set -e
 TYPE="${1:-daily}"
 APP_CT=$(docker ps --filter "name=mqbmlz1bcwsdwi3t9fxsllqt" --format '{{.Names}}' | head -1)
 docker run --rm \
+  -v /var/lib/axion-backup:/state \
+  -e FAIL_COUNT_DIR=/state \
   -v /var/run/docker.sock:/var/run/docker.sock \
   --network=coolify \
   -e BACKUP_TYPE="$TYPE" \

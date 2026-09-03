@@ -29,7 +29,12 @@ homogénéisé, GFS 7/4/12, double destination R2 + Storage Box) :
 - `backup-docuseal.sh` — SQLite `.backup`/`VACUUM INTO` (cohérent) + tar PDF → chiffré.
 - `backup-redis.sh` — `BGSAVE` + `dump.rdb` chiffré (RPO lâche, confort).
 - `backup-plausible.sh` — ClickHouse (`clickhouse-backup`) + `pg_dump` Plausible.
-- `backup-secrets.sh` — `.secrets/` + export env Coolify → **age** → R2 immuable.
+- ~~`backup-secrets.sh` — `.secrets/` + export env Coolify → **age** → R2 immuable.~~
+  **Jamais déployé, script supprimé le 2026-09-03.** Il exigeait le binaire `age`, une
+  clé `AGE_RECIPIENT` et un bucket Object Lock, dont aucun n'a existé. Ce que le cron
+  exécute réellement est `scripts/vps/run-secrets-backup.sh` : chiffrement **AES-256**
+  avec `BACKUP_ENCRYPTION_PASSPHRASE`, vers le bucket ordinaire. Laisser traîner un
+  script inapplicable, c'est offrir une fausse piste à qui ouvre le dépôt en crise.
 - `mirror-git-offsite.sh` — clone bare dédié → `git push --mirror`.
 
 ### 2. PITR Postgres via pgBackRest (couche additive)
