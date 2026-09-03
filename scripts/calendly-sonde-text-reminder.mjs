@@ -114,6 +114,16 @@ if (EVENT_A_LIRE) {
         name: r.name,
         location: r.location,
         cancellation: r.cancellation ?? null,
+        // 🔴 LA PREUVE QUE CALENDLY A POUSSÉ (OU NON) VERS UN AGENDA GOOGLE.
+        // Ajouté le 2026-09-03 : un rendez-vous de test n'est apparu ni sur
+        // l'iPhone de Will ni dans son Google Agenda. `calendar_event` dit si
+        // Calendly a créé l'événement côté Google et sous quel identifiant —
+        // c'est ce qui distingue « Calendly n'a rien poussé » de « poussé sur
+        // un agenda que Will n'affiche pas ». Sans ce champ, on ne peut que
+        // supposer.
+        calendar_event: r.calendar_event ?? null,
+        event_memberships: r.event_memberships ?? null,
+        event_guests: r.event_guests ?? null,
       },
       null,
       2,
