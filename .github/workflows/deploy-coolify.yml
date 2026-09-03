@@ -265,6 +265,8 @@ jobs:
             NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
             NEXT_PUBLIC_PLAUSIBLE_DOMAIN=${{ vars.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || 'axion-ia.com' }}
             NEXT_PUBLIC_PLAUSIBLE_API_URL=${{ vars.NEXT_PUBLIC_PLAUSIBLE_API_URL || 'https://plausible.axion-ia.com' }}
+            NEXT_PUBLIC_META_PIXEL_ID=${{ vars.NEXT_PUBLIC_META_PIXEL_ID }}
+            NEXT_PUBLIC_CALENDLY_APPORTEUR_URL=${{ vars.NEXT_PUBLIC_CALENDLY_APPORTEUR_URL }}
             BUILD_TIME=${{ steps.build_time.outputs.value }}
             BUILD_SHA=${{ github.sha }}
             SKIP_ENV_VALIDATION=true

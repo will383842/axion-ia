@@ -153,6 +153,14 @@ export const SOURCE_OPTIONS = [
    * intitulé vise un cluster de requêtes distinct.
    */
   { id: "jemepropose", label: "jemepropose.com" },
+  /**
+   * Post ou publicité Facebook / Instagram → landing `/facebook` (tunnel
+   * 2026-09-03). Posé AUTOMATIQUEMENT par le formulaire court de la landing :
+   * le visiteur ne se voit jamais poser la question « comment nous as-tu
+   * connus ? » — la page le sait. Le dossier complet, ouvert depuis l'e-mail,
+   * arrive pré-rempli avec cette même valeur (brouillon local du wizard).
+   */
+  { id: "facebook", label: "Facebook / Instagram" },
   { id: "site-web", label: "Site web Axion-IA.com" },
   { id: "qr-code", label: "QR code" },
   { id: "linkedin", label: "LinkedIn" },

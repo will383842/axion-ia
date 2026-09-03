@@ -37,6 +37,22 @@ on:
           # workflow, soit bien plus que lire. Le moindre privilège est ce jeton-ci.
           # Porté par le secret GitHub GH_READ_TOKEN (voir l'étape « Poser »).
           - GITHUB_READ_TOKEN
+          # ── Tunnel Facebook apporteurs (2026-09-03) ──────────────────────
+          # Jeton système de l'API Conversions Meta, lu UNIQUEMENT côté serveur
+          # (`src/server/meta/conversions-api.ts`). Portée RUN : c'est bien ici
+          # qu'il se pose.
+          #
+          # ⚠️ NE PAS ajouter `NEXT_PUBLIC_META_PIXEL_ID` à cette liste. C'est
+          #    un `NEXT_PUBLIC_*` lu par un composant « use client » : il est
+          #    INLINÉ AU BUILD et le poser au runtime ne servirait à RIEN (même
+          #    piège que Plausible, cf. l'en-tête du Dockerfile). Il passe par
+          #    `vars.NEXT_PUBLIC_META_PIXEL_ID` en build-arg dans
+          #    `deploy-coolify.yml`.
+          - META_CAPI_ACCESS_TOKEN
+          # Code « Événements de test » du Gestionnaire d'événements Meta :
+          # posé, les envois serveur atterrissent dans l'onglet de test au lieu
+          # de la production. À RETIRER une fois l'installation vérifiée.
+          - META_CAPI_TEST_EVENT_CODE
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -108,6 +124,8 @@ jobs:
           #    secret commençant par « GITHUB_ » (422, mesuré le 2026-09-02). La
           #    variable Coolify, elle, garde le nom que le code lit : GITHUB_READ_TOKEN.
           GITHUB_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
+          META_CAPI_ACCESS_TOKEN: ${{ secrets.META_CAPI_ACCESS_TOKEN }}
+          META_CAPI_TEST_EVENT_CODE: ${{ secrets.META_CAPI_TEST_EVENT_CODE }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |

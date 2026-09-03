@@ -64,7 +64,10 @@ export type FunnelEvent =
   // Anonyme : le nom d'écran seulement, jamais de donnée personnelle.
   | "Candidature Started"
   | "Candidature Step"
-  | "Candidature Completed";
+  | "Candidature Completed"
+  // ── Tunnel Facebook apporteurs d'affaires (2026-09-03) ───────────────────
+  // Formulaire court de `/facebook` envoyé (premier contact, avant le dossier).
+  | "Lead Apporteur Submitted";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).
