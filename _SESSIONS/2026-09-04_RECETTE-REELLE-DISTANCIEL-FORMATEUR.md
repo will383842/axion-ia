@@ -311,3 +311,57 @@ qui refuse le retour de l'import. **Vue rouge** en remettant l'import.
 - N5 acompte par défaut 30 % invisible (`acomptePercent ?? 30`).
 - N3 à trancher : les boutons du bloc Documents répondent-ils à la main ?
 - F1→F10, dont F10 (repères « (J-n) » comptés depuis aujourd'hui).
+
+---
+
+## 13. URGENT — état de la convention au 04/09 ~22h45
+
+### ⛔ LE CONTRAT N'EST TOUJOURS PAS ENVOYÉ
+
+Journal des e-mails : **rien à `beeeditions@gmail.com`**. Seuls trois envois
+existent pour cette session (mission formateur 16:30, rappel J-1 16:40,
+convocation stagiaire 17:00).
+
+### Ce qui a été corrigé ce soir
+
+| Correction | Moyen | Vérifié |
+| --- | --- | --- |
+| Montant 1 900 € → **100,00 €** | SQL | ✅ écran |
+| Modalité → **Présentiel**, lieu → **Nos locaux** + intitulé/contact/consignes | SQL | ✅ écran |
+| **SIRET `90143483700018` + adresse `4 rue Dervieux, 42000 Saint-Etienne`** | SQL (⚠️ voir défaut N6) | à revérifier |
+| Conventions fausses `030`, `037`, `038` **annulées au registre** avec motif | SQL | ✅ |
+
+### 🔴 Défauts NOUVEAUX de ce soir
+
+- **N6 — le formulaire client n'a PAS enregistré le SIRET ni l'adresse.**
+  L'écran affichait les valeurs et « Aucune modification » après le clic sur
+  Enregistrer ; la LISTE des clients, elle, montrait toujours « — », et la
+  convention `AXI-DOC-2026-038` a été produite avec `SIRET --` / `Adresse --`.
+  ⚠️ Peut être un artefact de mon automatisation (React ne voit pas les valeurs
+  posées par l'outil). **À TRANCHER À LA MAIN** : saisir le SIRET dans la fiche
+  client et vérifier qu'il apparaît dans la colonne SIRET de la liste.
+- **N4 CONFIRMÉ EN RÉEL** : `AXI-DOC-2026-037`, régénérée par le bouton, est
+  sortie sous le nom `Convention de formation **COPIE** - … .pdf`. Le mécanisme
+  de rectification sans filigrane existe et le bouton convention ne l'appelle
+  pas. **Contournement** : annuler la pièce précédente d'abord — l'heuristique
+  ignore les pièces annulées (`documents-service.ts`, `estUneRegenerationDe`).
+- **N3 TRANCHÉ : ce n'est PAS un défaut du produit.** Le bouton « régénérer »
+  a fonctionné dès que la fenêtre a été élargie à 1920 px — mes clics tombaient
+  à côté d'un bloc qui débordait horizontalement. À l'inverse, la page ne
+  répond au défilement qu'à certaines coordonnées, ce qui a rendu la suite
+  laborieuse. **Le débordement horizontal du bloc Documents reste une friction
+  réelle** (F11).
+
+### ⛔ CE QUI RESTE À FAIRE, À LA MAIN, CE SOIR
+
+1. Fiche client `AXI-CLI-001` → vérifier que **SIRET et adresse** s'affichent
+   dans la LISTE des clients (colonne SIRET). Sinon les ressaisir.
+2. Session → bloc **Documents → SESSION** → **« Convention de formation »**
+   (le bouton est redevenu « Générer », les trois fausses étant annulées).
+   Mettre **Acompte = 0** avant de cliquer si aucun acompte n'a été convenu —
+   sinon le défaut est **30 %** (N5).
+3. Ouvrir la pièce produite et vérifier : **SIRET et adresse du client
+   renseignés**, **100,00 €**, **pas de mention COPIE** dans le nom du fichier.
+4. Bloc **Signature des pièces contractuelles** → **« Envoyer au client »**.
+5. Bloc Questionnaires → ligne Positionnement → **« Envoyer au stagiaire »**
+   (ind. 8 : doit partir avant le démarrage).

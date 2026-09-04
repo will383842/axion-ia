@@ -157,13 +157,17 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                           <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
                         );
                       }
-                      const alerte = m.refusees + m.absences + m.expirees > 0;
+                      // `sansReponse` compte désormais un silence AVÉRÉ (délai
+                      // dépassé, session libérée) et non plus une proposition
+                      // encore ouverte : il entre dans le signal d'alerte.
+                      const alerte = m.refusees + m.absences + m.expirees + m.sansReponse > 0;
                       return (
                         <span
                           className={alerte ? "text-[color:var(--color-admin-warning)]" : undefined}
                         >
                           {m.refusees} refus · {m.absences} absence{m.absences > 1 ? "s" : ""}
                           {m.sansReponse > 0 ? ` · ${m.sansReponse} sans réponse` : ""}
+                          {m.enAttente > 0 ? ` · ${m.enAttente} en attente` : ""}
                           {m.expirees > 0
                             ? ` · ${m.expirees} expirée${m.expirees > 1 ? "s" : ""}`
                             : ""}

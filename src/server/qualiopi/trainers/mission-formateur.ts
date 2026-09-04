@@ -800,6 +800,17 @@ export interface StatsMissionsFormateur {
   proposees: number;
   acceptees: number;
   refusees: number;
+  /** Proposition ENCORE ouverte : le délai court, il peut répondre. */
+  enAttente: number;
+  /**
+   * Délai DÉPASSÉ sans réponse, session libérée.
+   *
+   * 🔴 Ce champ portait auparavant le compte des propositions `en_attente` —
+   * c'est-à-dire qu'il appelait « sans réponse » quelqu'un qui avait encore le
+   * temps de répondre. Sur la fiche d'un sous-traitant, cette ligne sert à
+   * décider d'une reconduction : compter un délai en cours comme un silence
+   * fabrique un grief.
+   */
   sansReponse: number;
   expirees: number;
   /** Incidents `desistement` ou `annulation_tardive` consignés contre lui. */
@@ -816,6 +827,7 @@ const STATS_VIDES: StatsMissionsFormateur = {
   proposees: 0,
   acceptees: 0,
   refusees: 0,
+  enAttente: 0,
   sansReponse: 0,
   expirees: 0,
   absences: 0,
@@ -859,12 +871,17 @@ export async function statsMissionsFormateur(
       parStatut.find((p) => p.statut === s)?._count._all ?? 0;
     // Une proposition RETIRÉE par l'organisme n'est pas un fait du formateur :
     // elle ne compte ni pour lui ni contre lui.
-    const proposees = n("en_attente") + n("acceptee") + n("refusee") + n("expiree");
+    // ⚠️ `sans_reponse` DOIT figurer ici : c'est une sollicitation qui a bien
+    // été faite. L'omettre ferait baisser le dénominateur et gonflerait
+    // mécaniquement le taux d'acceptation de quelqu'un qui ne répond jamais.
+    const proposees =
+      n("en_attente") + n("acceptee") + n("refusee") + n("expiree") + n("sans_reponse");
     return {
       proposees,
       acceptees: n("acceptee"),
       refusees: n("refusee"),
-      sansReponse: n("en_attente"),
+      enAttente: n("en_attente"),
+      sansReponse: n("sans_reponse"),
       expirees: n("expiree"),
       absences,
       derniersRefus,
