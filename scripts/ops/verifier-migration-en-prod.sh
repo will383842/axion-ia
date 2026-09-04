@@ -26,15 +26,25 @@
 #
 # ## Usage
 #
-#   scripts/ops/verifier-migration-en-prod.sh <nom_migration> [table.colonne ...]
+#   scripts/ops/verifier-migration-en-prod.sh <nom_migration> [table | table.colonne | Type:valeur ...]
 #
 #   scripts/ops/verifier-migration-en-prod.sh 20260903120000_qualiopi_mission_formateur \
 #     missions_formateur \
 #     training_sessions.contact_sur_place_nom \
 #     session_formateurs.rappel_j1_envoye_at
 #
-# Un argument sans point est une TABLE dont on exige l'existence ; avec un
-# point, une COLONNE de cette table.
+#   scripts/ops/verifier-migration-en-prod.sh 20260903160000_recrutement_statuts_enum \
+#     JobApplicationStatus:interview JobApplicationStatus:offer JobApplicationStatus:withdrawn
+#
+# Un argument sans separateur est une TABLE dont on exige l'existence ; avec un
+# POINT, une COLONNE de cette table ; avec DEUX-POINTS, une VALEUR d'un type
+# enumere (`Type:valeur`).
+#
+# ⚠️ Les noms se lisent dans le DDL (`prisma/migrations/*/migration.sql`), JAMAIS
+# dans `schema.prisma` : `@@map` fait diverger les deux en silence — l'enum
+# Prisma `JobRejectionReason` cree le type `job_rejection_reason`, et le modele
+# `Interview` cree la table `job_interviews`. Une sonde qui cherche le nom
+# Prisma rend 0 sur une migration parfaitement appliquee.
 #
 # ⚠️ `migrate status` lit `_prisma_migrations`. Sur une base dont le schéma a été
 # posé autrement, il annonce des migrations non appliquées alors que les tables
@@ -50,7 +60,7 @@ SITE_URL="${SITE_URL:-https://axion-ia.com}"
 
 MIGRATION="${1:-}"
 if [ -z "$MIGRATION" ]; then
-  echo "usage: $0 <nom_migration> [table | table.colonne ...]" >&2
+  echo "usage: $0 <nom_migration> [table | table.colonne | Type:valeur ...]" >&2
   exit 2
 fi
 shift
@@ -94,6 +104,28 @@ BEGIN
   IF n = 0 THEN RAISE EXCEPTION 'ECHEC: migration ${MIGRATION} non enregistree comme terminee'; END IF;"
 for cible in "$@"; do
   case "$cible" in
+    *:*)
+      # ── VALEUR D'ENUM — forme `Type:valeur` ────────────────────────────────
+      #
+      # 🔴 Une migration qui n'ajoute QU'UNE VALEUR D'ENUM ne crée ni table ni
+      # colonne : `20260903160000_recrutement_statuts_enum` ne fait que trois
+      # `ALTER TYPE … ADD VALUE IF NOT EXISTS`. Sans cette forme, ce script ne
+      # pouvait rien exiger d'elle — « migration enregistrée » était tout ce
+      # qu'on savait, c'est-à-dire le JOURNAL et pas le SCHÉMA.
+      #
+      # 🔑 LE NOM DU TYPE SE LIT DANS LE DDL, PAS DANS `schema.prisma`.
+      # `@@map` fait diverger les deux **en silence, dans les deux sens** :
+      # l'enum Prisma `JobRejectionReason` crée le type `job_rejection_reason`.
+      # Une sonde qui cherche le nom Prisma rend 0 sur une migration
+      # parfaitement appliquée — elle est vivante, elle vise la bonne base, et
+      # elle pose la mauvaise question. Copier la chaîne du `.sql`.
+      typeenum="${cible%%:*}"
+      valeur="${cible#*:}"
+      SQL="${SQL}
+  SELECT count(*) INTO n FROM pg_enum e JOIN pg_type t ON t.oid = e.enumtypid
+    WHERE t.typname='${typeenum}' AND e.enumlabel='${valeur}';
+  IF n = 0 THEN RAISE EXCEPTION 'ECHEC: valeur ${typeenum}:${valeur} ABSENTE de l enum'; END IF;"
+      ;;
     *.*)
       table="${cible%%.*}"
       colonne="${cible#*.}"
