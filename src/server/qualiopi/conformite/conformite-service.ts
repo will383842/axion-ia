@@ -555,6 +555,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         source: true,
         clientId: true,
         trainee: { select: { email: true } },
+        // 🔴 2026-09-04 — l'auteur d'une qualité `formateur` n'était rattaché
+        // à RIEN : `AppreciationSource` l'accepte depuis l'origine, mais aucune
+        // colonne ne le portait. L'appréciation était saisie, affichée, puis
+        // comptée « auteur non établi ». Le formulaire proposait une qualité
+        // que le moteur ne savait pas lire.
+        trainer: { select: { email: true } },
       },
       take: 2000,
     }),
@@ -810,8 +816,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //     différents, et c'est le cœur du problème.
   //
   // L'auteur se déduit de la QUALITÉ déclarée : une appréciation « entreprise »
-  // est écrite par le contact du client, pas par le stagiaire inscrit. On ne
-  // bascule PAS de l'un à l'autre en repli — ce repli fabriquerait un second
+  // est écrite par le contact du client, pas par le stagiaire inscrit ; une
+  // appréciation « formateur » est écrite par le formateur (`trainerId`, ajouté
+  // le 2026-09-04 — la qualité existait sans que rien ne porte son auteur).
+  // On ne bascule PAS de l'un à l'autre en repli — ce repli fabriquerait un second
   // auteur là où il n'y en a peut-être qu'un, c'est-à-dire exactement la
   // complaisance qu'on corrige. Sans information de rattachement, on ne
   // fabrique rien : l'appréciation est comptée « auteur non établi » et ne
@@ -837,12 +845,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const personnesAppreciations = new Set<string>();
   let nbAppreciationsAuteurNonEtabli = 0;
   for (const a of appreciationsAuteurs) {
+    // L'ordre suit la QUALITÉ déclarée, jamais un repli d'une source sur une
+    // autre : un repli fabriquerait un second auteur là où il n'y en a peut-être
+    // qu'un. Un formateur sans `trainerId` reste « auteur non établi » — on ne
+    // le devine pas depuis la session qu'il anime.
     const emailAuteur =
       a.source === "stagiaire"
         ? (a.trainee?.email ?? null)
-        : a.clientId != null
-          ? (contactParClient.get(a.clientId) ?? null)
-          : null;
+        : a.source === "formateur"
+          ? (a.trainer?.email ?? null)
+          : a.clientId != null
+            ? (contactParClient.get(a.clientId) ?? null)
+            : null;
     const cle = typeof emailAuteur === "string" ? emailAuteur.trim().toLowerCase() : "";
     if (cle === "") {
       nbAppreciationsAuteurNonEtabli += 1;

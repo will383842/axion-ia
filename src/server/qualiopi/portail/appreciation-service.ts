@@ -30,6 +30,14 @@ export interface CreerAppreciationInput {
   traineeId?: string;
   /** Lien au client/entreprise (optionnel). */
   clientId?: string;
+  /**
+   * Auteur d'une appréciation de qualité « formateur » (off.30).
+   *
+   * Sans lui, l'appréciation est enregistrée mais comptée « auteur non établi » :
+   * l'indicateur identifie les personnes par leur e-mail, et il n'existe aucun
+   * autre chemin vers celui du formateur.
+   */
+  trainerId?: string;
   /** Lien à un parcours coaching 1-to-1 (optionnel — off.30). */
   coachingSessionId?: string;
   /** Note /5 (optionnel — entier 1..5). */
@@ -95,6 +103,7 @@ export async function creerAppreciation(input: CreerAppreciationInput): Promise<
       ...(input.enrollmentId !== undefined ? { enrollmentId: input.enrollmentId } : {}),
       ...(input.traineeId !== undefined ? { traineeId: input.traineeId } : {}),
       ...(input.clientId !== undefined ? { clientId: input.clientId } : {}),
+      ...(input.trainerId !== undefined ? { trainerId: input.trainerId } : {}),
       ...(input.coachingSessionId !== undefined
         ? { coachingSessionId: input.coachingSessionId }
         : {}),
