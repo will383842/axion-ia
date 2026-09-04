@@ -1573,6 +1573,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // un écran de traitement — on y décide où remettre de l'argent, on n'y
     // traite aucune candidature.
     { href: `${base}/annonces`, label: "Annonces recrutement", icon: "Megaphone", group: "ops" },
+    // Fabrique de liens de campagne (2026-09-04). Rangée juste après
+    // « Annonces » parce que les deux répondent aux deux moitiés de la même
+    // question : celle-ci FABRIQUE le lien qu'on diffuse, celle-là dit ce qu'il
+    // a rapporté. Séparées, chacune est à moitié inutile.
+    //
+    // 🔑 L'entrée de navigation N'EST PAS un ornement ici : sans elle, l'écran
+    // existe et n'est atteignable par aucun chemin. Un écran qu'on ne peut pas
+    // ouvrir ne vaut pas mieux qu'un écran non écrit.
+    { href: `${base}/annonces/liens`, label: "Liens de campagne", icon: "Link2", group: "ops" },
     // Santé de la synchronisation vers Axion CRM Pro (lot L5, 2026-08-14) :
     // dernier succès, file d'attente, abandons définitifs, écart de
     // réconciliation, lignes en erreur avec rejeu. Rangée en « ops » et non en
