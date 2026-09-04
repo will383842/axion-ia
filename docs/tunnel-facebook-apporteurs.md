@@ -8,18 +8,18 @@
 
 ## 1. La chaîne, telle qu'elle est livrée
 
-| #   | Étape              | Où                                                            | Ce qui se passe                                                                                                                                                                                   |
-| --- | ------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Post / publicité   | Facebook, Instagram                                           | Aucun chiffre, aucune promesse. Le bouton envoie vers `/fr/apporteur-affaires?utm_source=facebook&utm_medium=paid&utm_campaign=<nom>&utm_content=<créa>`.                                                   |
+| #   | Étape              | Où                                                                      | Ce qui se passe                                                                                                                                                                                   |
+| --- | ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Post / publicité   | Facebook, Instagram                                                     | Aucun chiffre, aucune promesse. Le bouton envoie vers `/fr/apporteur-affaires?utm_source=facebook&utm_medium=paid&utm_campaign=<nom>&utm_content=<créa>`.                                         |
 | 2   | Landing            | `/fr/apporteur-affaires` (`noindex`, sans menu ni pied de page du site) | Héro → bande de confiance → **formulaire court** → comment ça marche → combien (formulation indicative) → pour qui → cartes sur table → fondateur → FAQ → dernier appel. Bouton collant mobile.   |
-| 3   | Formulaire court   | `LeadApporteurForm`                                           | Prénom, téléphone, e-mail, ville, situation (facultatif), case de consentement. Honeypot, sans captcha.                                                                                           |
-| 4   | Action serveur     | `submitLeadApporteurAction`                                   | Ligne `Submission` (source `facebook` posée seule, étape `premier-contact`, UTM + `fbclid`), preuve de consentement, Telegram, e-mail candidat, récap interne, relances J+2/J+7, API Conversions. |
+| 3   | Formulaire court   | `LeadApporteurForm`                                                     | Prénom, téléphone, e-mail, ville, situation (facultatif), case de consentement. Honeypot, sans captcha.                                                                                           |
+| 4   | Action serveur     | `submitLeadApporteurAction`                                             | Ligne `Submission` (source `facebook` posée seule, étape `premier-contact`, UTM + `fbclid`), preuve de consentement, Telegram, e-mail candidat, récap interne, relances J+2/J+7, API Conversions. |
 | 5   | Page merci         | `/fr/apporteur-affaires/merci?c=<id>`                                   | « C'est noté » + calendrier d'appel apporteur (si configuré) + bouton « Compléter mon dossier ». Tire l'événement `Lead` du pixel.                                                                |
-| 6   | E-mail automatique | `lead-apporteur-recu`                                         | On t'appelle · choisis ton créneau · complète ton dossier (pré-rempli).                                                                                                                           |
-| 7   | Dossier complet    | `/devenir-commercial-ia/candidature`                          | Le wizard existant, **pré-rempli** par le brouillon local posé à l'étape 3 (coordonnées + source `facebook`). Son arrivée **retire** les relances en attente.                                     |
-| 8   | Relances           | `lead-apporteur-relance` J+2, J+7                             | « Ton dossier t'attend », deux fois, pas plus, et le second le dit.                                                                                                                               |
-| 9   | Console            | Contacts → Commercial                                         | Même file que les dossiers ; `details.etape = "premier-contact"` les distingue ; stats par canal dans « Annonces » (source `facebook`).                                                           |
-| 10  | Suite              | Partners (plan v3, phase 1)                                   | Décision retenu/vivier/refusé, contrat DocuSeal, onboarding J0/J2/J7 — non codé, à la main d'ici là.                                                                                              |
+| 6   | E-mail automatique | `lead-apporteur-recu`                                                   | On t'appelle · choisis ton créneau · complète ton dossier (pré-rempli).                                                                                                                           |
+| 7   | Dossier complet    | `/devenir-commercial-ia/candidature`                                    | Le wizard existant, **pré-rempli** par le brouillon local posé à l'étape 3 (coordonnées + source `facebook`). Son arrivée **retire** les relances en attente.                                     |
+| 8   | Relances           | `lead-apporteur-relance` J+2, J+7                                       | « Ton dossier t'attend », deux fois, pas plus, et le second le dit.                                                                                                                               |
+| 9   | Console            | Contacts → Commercial                                                   | Même file que les dossiers ; `details.etape = "premier-contact"` les distingue ; stats par canal dans « Annonces » (source `facebook`).                                                           |
+| 10  | Suite              | Partners (plan v3, phase 1)                                             | Décision retenu/vivier/refusé, contrat DocuSeal, onboarding J0/J2/J7 — non codé, à la main d'ici là.                                                                                              |
 
 ## 2. Où se posent les quatre valeurs (et pourquoi pas toutes au même endroit)
 
@@ -73,10 +73,10 @@ elles engagent l'identité et le compte publicitaire d'Axion-IA.
 
 Mesuré en local le 2026-09-03, sur iPhone 13 et desktop 1280 px, face à la landing de référence :
 
-| Page              | Mots | Hauteur iPhone | Sections |
-| ----------------- | ---- | -------------- | -------- |
+| Page                        | Mots | Hauteur iPhone | Sections |
+| --------------------------- | ---- | -------------- | -------- |
 | `/apporteur-affaires`       | 644  | 8 065 px       | 10       |
-| `/leboncoin`      | 1136 | 11 558 px      | 11       |
+| `/leboncoin`                | 1136 | 11 558 px      | 11       |
 | `/apporteur-affaires/merci` | 135  | 918 px         | 3        |
 
 Une phrase par idée, jamais deux. Toute section ajoutée ici doit passer ce test : si elle ne
@@ -109,7 +109,7 @@ change pas la décision du visiteur, elle sort. Zéro erreur console sur les tro
 
 | Question                            | Où                                                                                                                    |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Combien de visiteurs, d'où          | Plausible, page `/fr/apporteur-affaires`, filtre `utm_campaign` / `utm_content`                                                 |
+| Combien de visiteurs, d'où          | Plausible, page `/fr/apporteur-affaires`, filtre `utm_campaign` / `utm_content`                                       |
 | Combien remplissent                 | Plausible, objectif « Lead Apporteur Submitted » (`landing = facebook`)                                               |
 | Coût par premier contact, par canal | Console → Annonces (source `facebook`), après avoir saisi la dépense dans `COUTS_ANNONCES` (`partenaire-landings.ts`) |
 | Combien complètent le dossier       | Console : lignes `candidature-commerciale` avec `sourceConnaissance = facebook` **sans** `etape`                      |
