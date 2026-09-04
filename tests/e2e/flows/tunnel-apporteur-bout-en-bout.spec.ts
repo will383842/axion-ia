@@ -67,7 +67,12 @@ test.describe("@tunnel-apporteur parcours public", () => {
     // Ciblés par leur `name` : c'est le contrat que la Server Action lit, donc
     // le seul repère qui casse si le formulaire change vraiment. Un libellé se
     // reformule sans rien casser côté serveur.
-    for (const champ of ["prenom", "email", "telephone", "ville"]) {
+    // 🔑 TROIS champs, pas quatre. On n'affirme rien sur `ville` : elle sort de
+    // la capture dans une PR parallèle (#987), et un test qui l'EXIGERAIT
+    // casserait à la rencontre des deux — chacune étant pourtant verte contre
+    // `main`. Une assertion qui dépend d'une PR sœur est une bombe à retardement
+    // qu'aucune CI ne voit.
+    for (const champ of ["prenom", "email", "telephone"]) {
       await expect(page.locator(`[name="${champ}"]`), `champ ${champ}`).toBeVisible();
     }
     // ⛔ Et la case de consentement : sans elle, la preuve d'opt-in n'existe pas.
@@ -81,7 +86,6 @@ test.describe("@tunnel-apporteur parcours public", () => {
     await page.locator('[name="prenom"]').fill("Recette");
     await page.locator('[name="email"]').fill(email);
     await page.locator('[name="telephone"]').fill("0612345678");
-    await page.locator('[name="ville"]').fill("Grenoble");
     // 🔑 La case de consentement est OBLIGATOIRE. Ma première version du test
     // l'oubliait et la soumission ne partait pas — le formulaire avait raison,
     // c'est le test qui était faux. Sans opt-in, aucune preuve de consentement
