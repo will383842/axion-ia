@@ -122,6 +122,7 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
           stagiaires={options.stagiaires}
           inscriptions={options.inscriptions}
           clients={options.clients}
+          formateurs={options.formateurs}
         />
       </div>
 
