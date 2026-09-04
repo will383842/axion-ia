@@ -197,6 +197,71 @@ code serveur, 29 fichiers, aucune route nouvelle.
 4. **Job `purge`** : Cloudflare `purge_everything`
 5. **Job `lhci`** : Lighthouse CI gate 5 URLs prod live
 
+### 🔴 DEUX conteneurs, DEUX vitesses — le worker atterrit ~50 min AVANT l'app
+
+Mesuré le 2026-09-04, en SSH, par deux sessions indépendamment, **sur le contenu et
+pas seulement sur l'étiquette d'image** :
+
+```
+app    mqbmlz…-093012931326   SOURCE_COMMIT=c2de3f64d   → /app/server.js
+worker oqj5ug…-093013729974   SOURCE_COMMIT=e349b02bd   → tsx src/server/queue/worker.ts
+```
+
+`e349b02bd` avait été fusionnée **trois minutes** plus tôt : son build GHCR démarrait à
+peine. Les marqueurs de cette PR (`FENETRE_CONTACT_SUR_PLACE_JOURS`,
+`DELAI_ANTI_DOUBLON_MS`, `libelleDelaiConvocation`) étaient bien présents dans
+`/app/src/` du worker.
+
+**La cause : les deux conteneurs ne se bâtissent pas de la même façon.**
+
+| Conteneur           | Ce qu'il exécute                 | Comment il est bâti                | Délai après fusion |
+| ------------------- | -------------------------------- | ---------------------------------- | ------------------ |
+| **app** `mqbmlz…`   | `server.js` (Next standalone)    | image GHCR, GitHub Actions         | **47-56 min**      |
+| **worker** `oqj5u…` | `tsx src/server/queue/worker.ts` | Coolify, depuis les SOURCES **TS** | **~3 min**         |
+
+Le worker n'a **pas de build** : il interprète le TypeScript. Coolify le reconstruit
+en quelques minutes depuis le dépôt, sans attendre le SSG des 17 629 routes.
+
+⛔ **LE RISQUE, ET IL N'EST ÉCRIT NULLE PART AILLEURS.** Il existe une fenêtre de
+~50 min après chaque fusion pendant laquelle **le worker exécute du code PLUS RÉCENT
+que l'app**. Tout contrat partagé entre les deux y est dissocié :
+
+- une **valeur d'énumération** ajoutée côté app et lue par le worker (ou l'inverse) ;
+- la **forme d'un payload de job** BullMQ — un job posé par l'ANCIENNE app et consommé
+  par le NOUVEAU worker ;
+- une **colonne fraîchement migrée** : l'entrypoint qui migre est celui de l'**app**,
+  donc le worker peut tourner du code qui attend une colonne que la migration n'a pas
+  encore posée.
+
+✅ **Ce qui n'est PAS concerné** : une PR qui ne touche ni migration, ni énumération,
+ni forme de job. Les trois PR du 2026-09-04 (#978, #980, #981) étaient dans ce cas —
+le risque est réel mais il attend une PR qui change un contrat app↔worker. **Une telle
+PR doit être écrite pour tolérer les deux versions en vol pendant une heure**, pas
+seulement pour être juste une fois l'atterrissage terminé. En pratique : ajouter avant
+de lire, ne jamais retirer une valeur dans la même PR que son dernier usage.
+
+🔑 **Vérifier un atterrissage demande donc DEUX contrôles, et ils ne concordent jamais
+pendant une heure :**
+
+```bash
+# app — l'en-tête est baké au build, donc fidèle au CONTENU
+curl -sI https://axion-ia.com/fr | grep -i x-axion-build-sha
+
+# worker — l'étiquette d'image peut mentir ; lire le CONTENU
+ssh root@178.105.55.15 'docker ps --format "{{.Names}}\t{{.Image}}\t{{.Status}}"'
+ssh root@178.105.55.15 'docker exec <worker> grep -rl "<marqueur de la PR>" /app/src'
+```
+
+⚠️ **Deux pièges de lecture :**
+
+- L'**ancien conteneur d'app reste debout** quelques minutes après la bascule : un
+  `grep <sha>` qui rend UNE ligne peut vouloir dire « à moitié déployé ». Repérer les
+  conteneurs par leur préfixe — `mqbmlz…` porte `docker-entrypoint.sh`, `server.js` et
+  `prisma-cli/` ; `oqj5ug…` porte `src/` et aucun `.next`.
+- L'écart de **90 s** entre les deux bascules, mesuré le matin du 2026-09-04 et repris
+  tel quel par trois sessions, était l'écart entre deux **redémarrages de conteneurs**
+  — **pas** entre deux versions de code. Mesure juste, conclusion fausse.
+
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
 `scripts/docker-entrypoint.sh` lance `prisma migrate deploy` **en best-effort** : la
