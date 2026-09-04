@@ -5598,6 +5598,8 @@ model Trainer {
   coachingSessions            CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
   sessionFormateurs           SessionFormateur[]
+  /// Appreciations dont ce formateur est l'auteur (off.30, qualite `formateur`).
+  appreciations               Appreciation[]
   missionsFormateur           MissionFormateur[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
   sessionJours                SessionJour[]
@@ -7647,6 +7649,17 @@ model Appreciation {
   traineeId         String?            @map("trainee_id") @db.Uuid
   trainee           Trainee?           @relation(fields: [traineeId], references: [id], onDelete: SetNull)
   clientId          String?            @map("client_id") @db.Uuid
+  /// Auteur d'une appreciation de qualite `formateur`.
+  ///
+  /// L'enumeration `AppreciationSource` accepte `formateur` depuis l'origine,
+  /// mais aucun chemin ne rattachait l'auteur : off.30 identifie les personnes
+  /// par leur ADRESSE E-MAIL, resolue depuis `trainee` (qualite `stagiaire`) ou
+  /// depuis le contact du client (`clientId`). Une appreciation de formateur
+  /// n'avait donc ni l'un ni l'autre — elle etait saisie, affichee, puis
+  /// comptee « auteur non etabli » et ignoree par l'indicateur. Le formulaire
+  /// proposait une qualite que le moteur ne savait pas lire.
+  trainerId         String?            @map("trainer_id") @db.Uuid
+  trainer           Trainer?           @relation(fields: [trainerId], references: [id], onDelete: SetNull)
   /// Note /5 (facultative).
   note              Int?
   commentaire       String?            @db.Text
@@ -7657,6 +7670,7 @@ model Appreciation {
   @@index([dateAppreciation])
   @@index([enrollmentId])
   @@index([coachingSessionId])
+  @@index([trainerId])
   @@map("appreciations")
 }
 
@@ -8516,6 +8530,28 @@ model JobApplication {
   /// opposées, pas encore intégrées ». Sans lui le job scannerait toute la
   /// table à chaque passage quotidien.
   @@index([vivierInfoSentAt, vivierOpposedAt, vivierSyncedAt])
+  /// 🔴 2026-09-04 — CET INDEX EXISTAIT EN BASE ET PAS DANS CE FICHIER.
+  ///
+  /// Il est créé depuis le 2026-08-20 par une migration BRUTE
+  /// (`20260820140000_job_application_email_hash`), écrite parce que sans lui
+  /// ni l'export art. 15 ni l'effacement art. 17 ne pouvaient atteindre une
+  /// candidature : `email` est chiffré à IV aléatoire, donc introuvable par
+  /// égalité SQL. Vérifié en production — `Index Scan using
+  /// job_applications_email_hash_idx`.
+  ///
+  /// Mais Prisma tient CE FICHIER pour la vérité. Un index présent en base et
+  /// absent d'ici est vu comme une dérive : la prochaine migration régénérée
+  /// depuis le schéma écrit un `DROP INDEX`, sans que rien ne l'annonce. Ce qui
+  /// tomberait alors, c'est la recherche RGPD par adresse — et la clé de
+  /// rapprochement d'une personne entre `Submission` et `JobApplication`.
+  ///
+  /// 🔑 Le déclarer ne touche PAS la base : le nom que Prisma génère
+  /// (`job_applications_email_hash_idx`) est déjà celui qui existe. C'est le
+  /// même motif `<table>_<colonne>_idx` que les trois autres empreintes du
+  /// dépôt, qui, elles, étaient déjà déclarées ici.
+  ///
+  /// Gardé par `tests/unit/ci/toute-empreinte-email-porte-son-index.spec.ts`.
+  @@index([emailHash])
   @@map("job_applications")
 }
 

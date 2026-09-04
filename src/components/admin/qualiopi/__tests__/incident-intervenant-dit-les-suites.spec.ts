@@ -96,14 +96,58 @@ describe("🔴 la phrase de conséquence se dérive du choix", () => {
     expect((bloc.match(/intervenantChoisi\.libelle/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("🔴 la branche INTERNE ne parle jamais de reconduction", () => {
+  it("🔴 la branche INTERNE n'AFFIRME jamais une reconduction", () => {
     // C'est l'erreur que l'écran commettait : annoncer à un salarié une suite
     // qui n'existe que pour un prestataire.
+    //
+    // 🔴 Cette garde a d'abord interdit le MOT « art. 7 ». C'était trop large, et
+    // je l'ai vérifié plutôt que supposé : en écrivant « ce fait entre à son
+    // dossier RH, et ne relève pas de l'art. 7 et 8 » — une phrase PLUS claire,
+    // pas moins conforme — la garde rougissait. Elle aurait forcé un futur
+    // rédacteur à RETIRER la précision pour passer le contrôle.
+    //
+    // Une garde lexicale ne sait pas lire une négation, or dans un texte
+    // réglementaire c'est souvent la négation qui protège (« aucun objectif,
+    // aucun quota » est la défense, pas la faute). On interdit donc la TOURNURE
+    // qui affirme, et on EXIGE la négation — ce qu'on veut lire, plutôt que ce
+    // qu'on craint.
     const bloc = paragrapheDesSuites();
     const interne = bloc.slice(bloc.lastIndexOf(") : ("));
     expect(interne).toContain("dossier RH");
-    expect(interne).toMatch(/ne joue sur aucune reconduction|aucune reconduction/);
-    expect(interne).not.toMatch(/art\. 7/);
+    // La négation est obligatoire : c'est elle qui dit au lecteur que ce fait
+    // ne suivra pas la personne dans une décision de reconduction.
+    expect(interne).toMatch(
+      /(aucune|pas de|ne rel[èe]ve pas).{0,40}reconduction|reconduction.{0,20}(aucune|pas)/i,
+    );
+    // Et l'AFFIRMATION reste interdite — c'est la formule exacte de la branche
+    // externe, celle qui annoncerait la suite au mauvais destinataire.
+    expect(interne).not.toMatch(/nourrira?.{0,20}reconduction/i);
+  });
+
+  it("🔴 une négation protectrice PASSE — le témoin qui manquait", () => {
+    // Le témoin qui compte sur une garde lexicale n'est pas celui qui montre
+    // qu'une faute est vue : c'est celui qui montre qu'une phrase LÉGITIME
+    // reste verte. Sans lui, on ne sait pas si la garde discrimine ou si elle
+    // interdit le sujet.
+    const affirme = /nourrira?.{0,20}reconduction/i;
+    const nie =
+      /(aucune|pas de|ne rel[èe]ve pas).{0,40}reconduction|reconduction.{0,20}(aucune|pas)/i;
+
+    const negationsLegitimes = [
+      "ce fait entre à son dossier RH, et ne relève pas de l'art. 7 et 8 (reconduction des prestataires)",
+      "ce fait entre à son dossier RH, et ne joue sur aucune reconduction",
+      "aucune reconduction n'est en jeu : la personne est salariée",
+    ];
+    for (const phrase of negationsLegitimes) {
+      expect(affirme.test(phrase), `« ${phrase} » ne doit PAS être vue comme une affirmation`).toBe(
+        false,
+      );
+      expect(nie.test(phrase), `« ${phrase} » doit compter comme une négation`).toBe(true);
+    }
+
+    // Et la faute, elle, reste vue.
+    const faute = "ce fait nourrira la reconduction de Camille Deroy (art. 7 et 8)";
+    expect(affirme.test(faute)).toBe(true);
   });
 
   it("les deux branches redisent d'écrire un FAIT, jamais un jugement", () => {

@@ -52,6 +52,8 @@ const creerAppreciationSchema = z.object({
   enrollmentId: z.string().uuid().optional(),
   traineeId: z.string().uuid().optional(),
   clientId: z.string().uuid().optional(),
+  /** Auteur d'une appréciation de qualité « formateur » (off.30). */
+  trainerId: z.string().uuid().optional(),
   /** Note /5 (entier 1..5, optionnel). */
   note: z.number().int().min(1).max(5).optional(),
   commentaire: z.string().max(5000).optional(),
@@ -76,6 +78,8 @@ export async function creerAppreciationAction(input: {
   enrollmentId?: string;
   traineeId?: string;
   clientId?: string;
+  /** Auteur d'une appréciation de qualité « formateur » (off.30). */
+  trainerId?: string;
   note?: number;
   commentaire?: string;
   dateAppreciation: Date;
@@ -91,6 +95,7 @@ export async function creerAppreciationAction(input: {
     ...(v.enrollmentId !== undefined ? { enrollmentId: v.enrollmentId } : {}),
     ...(v.traineeId !== undefined ? { traineeId: v.traineeId } : {}),
     ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
+    ...(v.trainerId !== undefined ? { trainerId: v.trainerId } : {}),
     ...(v.note !== undefined ? { note: v.note } : {}),
     ...(v.commentaire !== undefined ? { commentaire: v.commentaire } : {}),
     dateAppreciation: v.dateAppreciation,
@@ -103,6 +108,7 @@ export async function creerAppreciationAction(input: {
     changes: {
       source: v.source,
       ...(v.traineeId !== undefined ? { traineeId: v.traineeId } : {}),
+      ...(v.trainerId !== undefined ? { trainerId: v.trainerId } : {}),
       ...(v.enrollmentId !== undefined ? { enrollmentId: v.enrollmentId } : {}),
       ...(v.note !== undefined ? { note: v.note } : {}),
     },
