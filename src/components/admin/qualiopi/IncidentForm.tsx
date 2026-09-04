@@ -296,6 +296,21 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
                 </option>
               ))}
             </select>
+            {/*
+              🔴 Arbitrage Will du 2026-09-04. La liste s'est élargie aux
+              SALARIÉS (recette du 2026-09-03 : « Déclarer une absence » créait
+              déjà des incidents à leur nom, et la fiche formateur renvoyait ici
+              sans qu'on puisse les y désigner). Mais le même fait n'a pas les
+              mêmes suites selon qui il vise, et l'écran ne le disait pas : on
+              lisait « Camille Deroy (salarié) » comme on lit un nom de
+              sous-traitant. Consigner un désistement sur un salarié, c'est
+              écrire dans son dossier — il faut le savoir en le faisant.
+            */}
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Pour un <strong>sous-traitant</strong>, ce fait nourrit la reconduction (art. 7 et 8
+              de la procédure de sous-traitance). Pour un <strong>salarié</strong>, il relève du
+              dossier RH. Dans les deux cas, écrire un fait observable — jamais un jugement.
+            </p>
           </div>
 
           {intervenant !== "" && (
