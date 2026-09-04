@@ -265,7 +265,12 @@ export async function listCandidaturesUnifieesAction(input: {
 // ============================================================ detail
 export interface JobApplicationDetail {
   id: string;
-  offerId: string;
+  /**
+   * `null` quand l'offre a été supprimée (lot 6 : elle n'emporte plus le
+   * dossier) ou quand la candidature est spontanée. `offerTitleSnap` reste
+   * renseigné dans les deux cas.
+   */
+  offerId: string | null;
   offerTitleSnap: string;
   status: JobApplicationStatus;
   civility: string | null;

@@ -42,7 +42,13 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   if (!a) notFound();
 
   // Labels des questions de l'offre → rendu lisible des réponses (pas de JSON brut).
-  const offer = await getJobOfferDetailAction(a.offerId);
+  //
+  // ⚠️ `offerId` peut être `null` depuis le lot 6 : l'offre a été supprimée (elle
+  // n'emporte plus le dossier) ou la candidature est spontanée. On ne cherche
+  // alors AUCUNE offre — et la page reste entière, parce que le poste se lit sur
+  // `offerTitleSnap`, figé à la soumission. Un `??` sur une chaîne vide aurait
+  // déclenché une requête garantie infructueuse à chaque affichage.
+  const offer = a.offerId === null ? null : await getJobOfferDetailAction(a.offerId);
 
   // La frise porte le corps des messages envoyés, donc le nom de la personne :
   // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
