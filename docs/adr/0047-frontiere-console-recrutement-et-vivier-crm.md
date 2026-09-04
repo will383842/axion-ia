@@ -1,6 +1,6 @@
 # ADR 0047 — Recrutement : où s'arrête la console, où commence le CRM Pro
 
-- **Statut** : **ACCEPTÉ pour la ligne de partage (D1, tranchée par Will) — PROPOSÉ pour les trois arbitrages du §4**
+- **Statut** : **ACCEPTÉ — les trois arbitrages du §4 ont été tranchés par Will le 2026-09-04**
 - **Date** : 2026-09-03
 - **Auteur** : Claude, en fermant le lot 6 du chantier « pilotage du recrutement »
 - **Référence** : `src/server/vivier/`, `src/server/crm-sync/`, `prisma/schema.prisma` (`JobApplication`, l. 8320-8470), `src/server/auth/habilitations.ts`, PR #952 / #955 / #959 / #961 / #966 / #968
@@ -89,7 +89,22 @@ Trois corollaires, dont deux sont déjà acquis :
   `careers-v1-2026-06-09` ne franchiront jamais la frontière sans un
   re-consentement explicite. Ce n'est pas un défaut : c'est le RGPD qui le veut.
 
-## 4. ⛔ Les trois arbitrages que la candidature spontanée fait surgir
+## 4. ✅ Les trois arbitrages, TRANCHÉS par Will le 2026-09-04
+
+> **Décisions prises**, après présentation des options et de leurs conséquences :
+>
+> | Arbitrage                            | Décision de Will                                | État du code               |
+> | ------------------------------------ | ----------------------------------------------- | -------------------------- |
+> | 1 · Une spontanée va-t-elle au CRM ? | **NON — elle reste dans la console** (option C) | ✅ déjà en place (PR #975) |
+> | 2 · `sourceSlug` du payload          | **sans objet** tant que 1 vaut C                | —                          |
+> | 3 · Une porte, ou deux ?             | **UNE seule** (option A)                        | ✅ les 4 liens rebranchés  |
+>
+> ⚠️ **Pour revenir sur l'arbitrage 1** : ajouter d'abord la famille dans le
+> `CHECK` SQL du CRM Pro, **puis** activer l'émission. Dans l'autre ordre, le CRM
+> refuse _toutes_ les fiches portant cette famille, pas seulement les nouvelles.
+> `reconcile.ts` sait rattraper le stock non émis.
+
+### Le détail des options, conservé pour la trace
 
 Ils n'ont jamais été posés, parce que la candidature spontanée n'existe pas encore
 comme objet : aujourd'hui elle est une `Submission` du formulaire de contact
