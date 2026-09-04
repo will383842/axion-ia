@@ -239,8 +239,10 @@ export async function submitJobApplicationAction(
   //
   // Le contrôle « cette offre est-elle encore ouverte ? » n'a de sens que s'il
   // y a une offre. L'appliquer à une spontanée l'aurait refusée pour un motif
-  // qui ne la concerne pas — et une requête sur `id: undefined` ne lève pas :
-  // elle ne trouve rien, ce qui aurait produit exactement ce refus.
+  // qui ne la concerne pas. ⚠️ Et le passer quand même ne « ne trouverait
+  // rien » : `findUnique` VALIDE son argument et LÈVE sur `null` — mesuré le
+  // 2026-09-04. Le conditionnel n'est donc pas une optimisation, il évite une
+  // exception au milieu d'une soumission de candidature.
   //
   // ⚠️ Les deux cas doivent être MUTUELLEMENT EXCLUSIFS et EXHAUSTIFS. Sans ce
   // refus explicite, une soumission sans offre NI poste visé passerait, et
