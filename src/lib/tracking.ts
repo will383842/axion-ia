@@ -66,7 +66,7 @@ export type FunnelEvent =
   | "Candidature Step"
   | "Candidature Completed"
   // ── Tunnel Facebook apporteurs d'affaires (2026-09-03) ───────────────────
-  // Formulaire court de `/facebook` envoyé (premier contact, avant le dossier).
+  // Formulaire court de `/apporteur-affaires` envoyé (premier contact, avant le dossier).
   | "Lead Apporteur Submitted";
 
 /**

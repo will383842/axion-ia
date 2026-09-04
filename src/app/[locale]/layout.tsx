@@ -402,7 +402,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               (consentement, route publicitaire, URL portant un secret). */}
           <LinkedInInsight />
           {/* Pixel Meta (2026-09-03) — tunnel Facebook apporteurs UNIQUEMENT.
-              Rend `null` hors `/facebook*`, sans `NEXT_PUBLIC_META_PIXEL_ID`,
+              Rend `null` hors `/apporteur-affaires*`, sans `NEXT_PUBLIC_META_PIXEL_ID`,
               et tant que la bannière n'a pas été acceptée. */}
           <MetaPixel />
           {/* V-04 P3 (Sprint Correctif suite 2026-05-22) — Speculation Rules

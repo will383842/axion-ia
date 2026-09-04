@@ -152,7 +152,7 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     // Ajoutée 2026-09-03 avec la landing du tunnel Facebook. Même règle : le
     // littéral vit DANS la page, à côté de l'appel au drapeau.
     file: "components/recrutement/FacebookLandingPage.tsx",
-    why: "bande de confiance + argument OPCO de la landing /facebook (tunnel apporteurs)",
+    why: "bande de confiance + argument OPCO de la landing /apporteur-affaires (tunnel apporteurs)",
   },
   {
     file: "app/[locale]/formations/tarifs/page.tsx",

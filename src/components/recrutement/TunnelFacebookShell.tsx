@@ -1,4 +1,4 @@
-// Coquille des pages du tunnel Facebook (`/facebook`, `/facebook/merci`) :
+// Coquille des pages du tunnel Facebook (`/apporteur-affaires`, `/apporteur-affaires/merci`) :
 // SANS le menu du site, SANS son pied de page — une barre avec le nom, la
 // page, puis trois liens légaux.
 //

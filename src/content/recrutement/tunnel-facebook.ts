@@ -1,5 +1,5 @@
-// Tunnel Facebook apporteurs d'affaires — CONTENU de la landing `/facebook`
-// et de la page `/facebook/merci` (2026-09-03).
+// Tunnel Facebook apporteurs d'affaires — CONTENU de la landing `/apporteur-affaires`
+// et de la page `/apporteur-affaires/merci` (2026-09-03).
 //
 // ── D'où vient le visiteur, et ce que ça change ─────────────────────────────
 // D'un post ou d'une publicité, sur son téléphone, sans rien avoir demandé.
@@ -24,6 +24,19 @@
 //     montants publics sont des PLAFONDS — « jusqu'à », « exemple de calcul »,
 //     jamais un chiffre nu.
 //
+//     ⚠️ EXCEPTION ASSUMÉE AU HÉRO (décision Will 2026-09-04, prise après que
+//     le risque lui a été présenté explicitement) : le héro affiche « 500 € »
+//     NU, sans « jusqu'à ». Motif invoqué : un visiteur venu d'un post Facebook
+//     s'arrête deux secondes, et « jusqu'à » tue l'accroche.
+//     Ce que ça coûte, pour que personne ne le redécouvre en urgence :
+//       — un contrat dont la grille descend sous 500 €/journée contredit une
+//         page publique. La défense « montant indicatif » ne tient plus au héro ;
+//       — Meta vérifie la page d'arrivée : un montant nu est lisible comme une
+//         promesse de revenus, motif de refus de la publicité.
+//     Le RESTE de la page garde « jusqu'à » (FAQ notamment) : l'exception est
+//     bornée au héro, elle ne s'étend pas.
+//     🛑 NE PAS « corriger » ce chiffre nu en « jusqu'à » sans repasser par Will.
+//
 // 🔴 AUCUN MONTANT EN DUR ICI : ils viennent de `pricing.ts` (SSOT) et sont
 // calculés dans la page. Deux barèmes publics ont déjà divergé de 150 € pour
 // un montant recopié à la main.
@@ -40,13 +53,24 @@ export const TUNNEL_FACEBOOK_META = {
 } as const;
 
 export const HERO = {
-  badge: "Réseau d'apporteurs d'affaires · toute la France",
+  badge: "Réseau d'apporteurs d'affaires · partout en France",
   h1: "Tu connais des dirigeants ?",
   h1Em: "Ton carnet d'adresses vaut une commission.",
+  /** Bloc du montant — LE point d'accroche des deux premières secondes.
+   *  Le chiffre lui-même n'est PAS ici : il est dérivé de
+   *  `COMMISSION_FORMATION_PAR_JOURNEE_EUR` (`pricing.ts`, SSOT) par la page.
+   *  Deux barèmes publics ont déjà divergé de 150 € pour un montant recopié. */
+  montantLegende: "par journée de formation vendue",
+  montantSous: "Versé dès que l'entreprise nous a payés.",
   chapo:
     "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Tu présentes Axion-IA aux dirigeants que tu connais, on fait tout le reste, tu touches une commission sur chaque formation payée.",
   cta: "Je veux qu'on m'appelle",
   micro: "30 secondes · 4 champs · zéro CV",
+  /** Couverture nationale, dite en clair sous le formulaire ET dans le héro :
+   *  la question « est-ce que ça marche chez moi ? » est le premier frein d'un
+   *  visiteur qui n'est ni à Paris ni à Lyon. Aucune restriction géographique
+   *  n'existe côté serveur (`ville` est un champ libre). */
+  france: "Partout en France — ta ville n'a aucune importance.",
 } as const;
 
 /** Mentions de confiance INCONDITIONNELLES. Les mentions liées à la

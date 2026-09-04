@@ -1,4 +1,4 @@
-// Page MERCI du tunnel Facebook — `/facebook/merci?c=<submissionId>`.
+// Page MERCI du tunnel Facebook — `/apporteur-affaires/merci?c=<submissionId>`.
 //
 // C'est la page la plus rentable du tunnel, et la plus souvent négligée :
 // le visiteur vient de donner ses coordonnées, il est au maximum de son

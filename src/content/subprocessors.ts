@@ -549,7 +549,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
   // Intégré (`src/components/analytics/MetaPixel.tsx`, `src/server/meta/
   // conversions-api.ts`) mais INACTIF tant que `NEXT_PUBLIC_META_PIXEL_ID`
   // n'est pas posé dans Coolify. Chargé UNIQUEMENT sur les pages du tunnel
-  // Facebook apporteurs (`/facebook`, `/facebook/merci`) et UNIQUEMENT après
+  // Facebook apporteurs (`/apporteur-affaires`, `/apporteur-affaires/merci`) et UNIQUEMENT après
   // acceptation de la bannière, qui le nomme sur ces pages. Passera à
   // `active` le jour où l'identifiant est posé — et pas avant.
   {
@@ -557,9 +557,9 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Dublin, Irlande",
     serversLocation: "Irlande (UE) + USA",
     purposeFr:
-      "Pixel Meta et API Conversions — mesure des candidatures d'apporteurs d'affaires issues des campagnes Facebook / Instagram, optimisation de la diffusion sur l'événement « Lead », et reciblage des visiteurs de la landing /facebook. Ne sert PAS à la mesure d'audience (Plausible) ni à la source de vérité des candidatures (table submissions). Limité aux pages du tunnel Facebook ; gating consentement CMP obligatoire ; le pixel `<noscript>` du snippet officiel est omis. L'API Conversions ne part que si le visiteur a consenti, avec e-mail, téléphone, prénom et ville HACHÉS (SHA-256).",
+      "Pixel Meta et API Conversions — mesure des candidatures d'apporteurs d'affaires issues des campagnes Facebook / Instagram, optimisation de la diffusion sur l'événement « Lead », et reciblage des visiteurs de la landing /apporteur-affaires. Ne sert PAS à la mesure d'audience (Plausible) ni à la source de vérité des candidatures (table submissions). Limité aux pages du tunnel Facebook ; gating consentement CMP obligatoire ; le pixel `<noscript>` du snippet officiel est omis. L'API Conversions ne part que si le visiteur a consenti, avec e-mail, téléphone, prénom et ville HACHÉS (SHA-256).",
     purposeEn:
-      "Meta pixel and Conversions API — measuring business-introducer applications coming from Facebook / Instagram campaigns, optimising delivery on the “Lead” event, and retargeting visitors of the /facebook landing page. NOT used for audience measurement (Plausible) nor as the source of truth for applications (submissions table). Limited to the Facebook funnel pages; mandatory CMP consent gating; the official snippet's `<noscript>` pixel is omitted. The Conversions API only fires if the visitor consented, with email, phone, first name and city HASHED (SHA-256).",
+      "Meta pixel and Conversions API — measuring business-introducer applications coming from Facebook / Instagram campaigns, optimising delivery on the “Lead” event, and retargeting visitors of the /apporteur-affaires landing page. NOT used for audience measurement (Plausible) nor as the source of truth for applications (submissions table). Limited to the Facebook funnel pages; mandatory CMP consent gating; the official snippet's `<noscript>` pixel is omitted. The Conversions API only fires if the visitor consented, with email, phone, first name and city HASHED (SHA-256).",
     dataCategoriesFr:
       "Cookies `_fbp` (90 jours, identifiant navigateur) et `_fbc` (90 jours, présent si l'arrivée porte un `fbclid`). Adresse IP, user-agent, URL visitées, horodatage. Lors d'une candidature et avec consentement : e-mail, téléphone, prénom et ville hachés SHA-256, pour l'appariement avec un compte Meta.",
     dataCategoriesEn:

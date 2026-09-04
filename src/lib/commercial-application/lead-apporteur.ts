@@ -36,9 +36,22 @@ export const LEAD_APPORTEUR_ETAPE = "premier-contact";
 /** Canal posé automatiquement — doit exister dans `SOURCE_OPTIONS`. */
 export const LEAD_APPORTEUR_SOURCE = "facebook";
 
-/** Chemin de la landing, tel qu'il apparaît dans `details.source`. */
-export const TUNNEL_FACEBOOK_PATH = "/facebook";
-export const TUNNEL_FACEBOOK_MERCI_PATH = "/facebook/merci";
+/** Chemin de la landing, tel qu'il apparaît dans `details.source`.
+ *
+ * ⚠️ Le nom des constantes reste `TUNNEL_FACEBOOK_*` — elles désignent le
+ * CANAL (la campagne Meta), pas le slug. Seule l'URL PUBLIQUE a changé le
+ * 2026-09-04 : `/facebook` → `/apporteur-affaires` (demande Will — le mot
+ * « facebook » dans l'URL ne dit rien au prospect ; « apporteur d'affaires »
+ * annonce le sujet avant même le clic). L'attribution au canal reste portée
+ * par `LEAD_APPORTEUR_SOURCE = "facebook"` ci-dessus, PAS par ce chemin.
+ *
+ * Toute modification ici doit être propagée à `TUNNEL_FACEBOOK_SEGMENTS`
+ * (`lib/analytics/tunnel-facebook-routes.ts`, gating du pixel Meta), au
+ * dossier de route `app/[locale]/apporteur-affaires/` et aux redirections
+ * (`next.config.ts` + `lib/legacy-redirects.ts`). Le test
+ * `tunnel-facebook-routes.spec.ts` verrouille l'ensemble. */
+export const TUNNEL_FACEBOOK_PATH = "/apporteur-affaires";
+export const TUNNEL_FACEBOOK_MERCI_PATH = "/apporteur-affaires/merci";
 
 /** Cible du dossier complet — le wizard existant, pré-rempli par le brouillon. */
 export const DOSSIER_COMPLET_PATH = "/devenir-commercial-ia/candidature";
