@@ -113,14 +113,42 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     dirigeant: "dirigeant-formateur",
     sous_traitant: "sous-traitant",
   };
+  /**
+   * 🔴 La NATURE voyage À CÔTÉ du libellé, jamais dedans.
+   *
+   * Le libellé porte déjà « (salarié) » ou « (sous-traitant) », et l'écran a
+   * besoin de la même information pour dire ce qui va se passer. La tentation
+   * est de la relire dans cette chaîne ; ce serait laisser un texte d'affichage
+   * décider du sens d'un champ, et n'importe quelle retouche de vocabulaire le
+   * casserait en silence. Elle se DÉRIVE donc du `statut` en base, et le type
+   * la rend obligatoire côté composant.
+   *
+   * `dirigeant` est un INTERNE : le dirigeant-formateur n'est pas un
+   * prestataire, sa reconduction ne se pose pas.
+   */
+  const NATURE_PAR_STATUT: Record<string, "interne" | "externe"> = {
+    salarie: "interne",
+    dirigeant: "interne",
+    sous_traitant: "externe",
+  };
   const intervenants = [
     ...formateurs.map((t) => ({
       valeur: `Trainer:${t.id}`,
       libelle:
         `${t.prenom} ${t.nom}`.trim() +
         (LIBELLE_STATUT[t.statut] !== undefined ? ` (${LIBELLE_STATUT[t.statut]})` : ""),
+      // Un statut inconnu retombe sur « externe » : c'est la mention la plus
+      // prudente à afficher, puisqu'annoncer à tort un dossier RH serait une
+      // allégation sur une personne.
+      nature: NATURE_PAR_STATUT[t.statut] ?? ("externe" as const),
     })),
-    ...organismes.map((o) => ({ valeur: `SousTraitant:${o.id}`, libelle: `${o.nom} (organisme)` })),
+    // Un organisme sous-traitant est externe par nature : il n'a pas de statut
+    // à lire, la question ne se pose pas.
+    ...organismes.map((o) => ({
+      valeur: `SousTraitant:${o.id}`,
+      libelle: `${o.nom} (organisme)`,
+      nature: "externe" as const,
+    })),
   ];
 
   const ouverts = incidents.filter((i) => i.statut !== "resolu").length;

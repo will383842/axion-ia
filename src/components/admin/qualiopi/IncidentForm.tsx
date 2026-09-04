@@ -69,11 +69,16 @@ export interface IncidentFormProps {
   /** Sessions récentes proposées pour le rattachement (facultatif). */
   sessions: Array<{ id: string; numero: string; titreSession: string }>;
   /**
-   * Intervenants externes qu'un incident peut mettre en cause (art. 7).
+   * Intervenants qu'un incident peut mettre en cause.
    * Les deux natures dans une seule liste : c'est une seule question posée à
    * Will (« qui ? »), pas deux champs dont un reste toujours vide.
+   *
+   * 🔴 `nature` est OBLIGATOIRE, et c'est le point : les suites d'un même fait
+   * ne sont pas les mêmes selon qui il vise, donc l'écran doit le savoir
+   * autrement qu'en relisant le libellé. Le parent la dérive du `statut` en
+   * base ; ici on ne fait que la lire.
    */
-  intervenants?: Array<{ valeur: string; libelle: string }>;
+  intervenants?: Array<{ valeur: string; libelle: string; nature: "interne" | "externe" }>;
 }
 
 export function IncidentForm({ creerAction, sessions, intervenants = [] }: IncidentFormProps) {
@@ -93,6 +98,9 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
   // Encodé « Trainer:<id> » ou « SousTraitant:<id> » pour tenir les deux natures
   // dans un seul <select>. Chaîne vide = incident ne visant personne.
   const [intervenant, setIntervenant] = useState("");
+  // L'entrée choisie, pas seulement sa valeur : c'est elle qui porte la
+  // `nature` et le libellé que la phrase de conséquence doit nommer.
+  const intervenantChoisi = intervenants.find((i) => i.valeur === intervenant);
   const [faitIntervenant, setFaitIntervenant] = useState<IncidentFait>("annulation_tardive");
 
   function handleSubmit(e: React.FormEvent) {
@@ -297,19 +305,47 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
               ))}
             </select>
             {/*
-              🔴 Arbitrage Will du 2026-09-04. La liste s'est élargie aux
-              SALARIÉS (recette du 2026-09-03 : « Déclarer une absence » créait
-              déjà des incidents à leur nom, et la fiche formateur renvoyait ici
-              sans qu'on puisse les y désigner). Mais le même fait n'a pas les
-              mêmes suites selon qui il vise, et l'écran ne le disait pas : on
-              lisait « Camille Deroy (salarié) » comme on lit un nom de
-              sous-traitant. Consigner un désistement sur un salarié, c'est
-              écrire dans son dossier — il faut le savoir en le faisant.
+              🔴 Arbitrage Will du 2026-09-04, repris le même jour après relecture.
+              La liste s'est élargie aux SALARIÉS (recette du 2026-09-03 :
+              « Déclarer une absence » créait déjà des incidents à leur nom, et la
+              fiche formateur renvoyait ici sans qu'on puisse les y désigner). Mais
+              le même fait n'a pas les mêmes suites selon qui il vise.
+
+              La première correction affichait EN PERMANENCE les deux cas — « pour
+              un sous-traitant… pour un salarié… » — et laissait l'agent faire le
+              tri au moment précis où il ne le fait pas : il a déjà choisi un nom,
+              il regarde le champ suivant. Une phrase qui sert les deux cas ne dit
+              plus rien de celui qu'on a sous les yeux. Elle se DÉRIVE donc du
+              choix, et elle NOMME la personne : consigner un désistement sur un
+              salarié, c'est écrire dans son dossier, et il faut le lire en le
+              faisant.
             */}
-            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Pour un <strong>sous-traitant</strong>, ce fait nourrit la reconduction (art. 7 et 8
-              de la procédure de sous-traitance). Pour un <strong>salarié</strong>, il relève du
-              dossier RH. Dans les deux cas, écrire un fait observable — jamais un jugement.
+            <p
+              className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              // `aria-live` : le texte change sous un `select` déjà quitté au
+              // clavier. Sans annonce, un lecteur d'écran ne saurait jamais que
+              // la conséquence affichée vient de changer.
+              aria-live="polite"
+            >
+              {intervenantChoisi === undefined ? (
+                <>
+                  Les suites diffèrent selon la personne : reconduction pour un prestataire, dossier
+                  RH pour un salarié. Dans les deux cas, écrire un fait observable — jamais un
+                  jugement.
+                </>
+              ) : intervenantChoisi.nature === "externe" ? (
+                <>
+                  Ce fait nourrira la <strong>reconduction</strong> de {intervenantChoisi.libelle}{" "}
+                  (art. 7 et 8 de la procédure de sous-traitance). Écrire un fait observable —
+                  jamais un jugement.
+                </>
+              ) : (
+                <>
+                  {intervenantChoisi.libelle} est <strong>interne</strong> : ce fait entre à son
+                  dossier RH, et ne joue sur aucune reconduction. Écrire un fait observable — jamais
+                  un jugement.
+                </>
+              )}
             </p>
           </div>
 
