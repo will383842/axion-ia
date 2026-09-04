@@ -1,4 +1,27 @@
-import "server-only";
+// ⚠️ PAS de `import "server-only"` ici, et c'est un choix mesuré.
+//
+// Ce module est atteint par DEUX chemins qui n'ont pas le même compilateur :
+//   · les écrans de la console, compilés par Next ;
+//   · le worker BullMQ, qui tourne `tsx src/server/queue/worker.ts` sur le
+//     SOURCE, hors de Next — via un `await import()` dans son handler.
+//
+// `server-only` n'est déclaré dans AUCUN `package.json` : il ne résout QUE
+// dans la compilation Next, qui l'alias en interne. Sous `tsx`, l'import lève
+// `ERR_MODULE_NOT_FOUND` — et comme l'import est dynamique et dans le handler,
+// le worker ne plante pas : il démarre, se déclare `ready`, et échoue
+// SILENCIEUSEMENT à chaque déclenchement du cron.
+//
+// Mesuré en production le 2026-09-04 sur `bcc33883b` :
+//   [formation-crons-worker] failed type=formation-crons.rappels-entretien:
+//   Cannot find package 'server-only' imported from
+//   /app/src/server/careers/rappels-entretien.ts
+// Trois fois en vingt minutes, pendant que `formateur-rappel-j1` passait
+// normalement juste à côté — le cron était mort sans qu'aucune alerte ne le dise.
+//
+// Le modèle dont ce fichier se réclame, `server/calendly/rappels-appel.ts`,
+// n'a jamais eu cet import : c'est un cron, comme celui-ci.
+//
+// Gardé par `tests/unit/ci/aucun-module-du-worker-nimporte-server-only.spec.ts`.
 
 /**
  * LES DOSSIERS QUI DORMENT — la requête, l'écran et l'alerte.
