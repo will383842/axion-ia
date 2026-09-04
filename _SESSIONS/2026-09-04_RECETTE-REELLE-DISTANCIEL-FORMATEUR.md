@@ -365,3 +365,52 @@ convocation stagiaire 17:00).
 4. Bloc **Signature des pièces contractuelles** → **« Envoyer au client »**.
 5. Bloc Questionnaires → ligne Positionnement → **« Envoyer au stagiaire »**
    (ind. 8 : doit partir avant le démarrage).
+
+---
+
+## 14. ✅ DOSSIER DE LA SESSION DU 05/09 — BOUCLÉ le 04/09 à 20h51 UTC
+
+| Heure UTC | Envoi | Destinataire | Statut |
+| --- | --- | --- | --- |
+| 16:30 | `formateur-mission-proposee` | williamsjullin@gmail.com | Envoyé |
+| 16:40 | `formateur-rappel-j1` | williamsjullin@gmail.com | Envoyé |
+| 17:00 | `qualiopi-convocation` | simone.blanc.26@gmail.com | Envoyé |
+| **20:47** | **`convention-envoi`** | **beeeditions@gmail.com** | **Envoyé** |
+| **20:51** | **`qualiopi-positionnement`** | **simone.blanc.26@gmail.com** | **Envoyé** |
+
+**Convention retenue : `AXI-DOC-2026-039`**, vérifiée pièce en main —
+SIRET `90143483700018`, adresse `4 rue Dervieux, 42000 Saint-Etienne`,
+lieu « Nos locaux — Axion IA SAS », **100,00 €**, acompte **0 %**,
+**aucun filigrane COPIE**, aucun SPECIMEN.
+
+`AXI-DOC-2026-030`, `-037` et `-038` sont **annulées au registre**, motif inscrit,
+numéros conservés (série continue, CGI art. 242 nonies A ann. II).
+
+### 🔑 Ce qui débloquait vraiment
+
+Ni un défaut du produit, ni le débordement horizontal : **l'onglet Chrome était
+dans un état dégradé** (renderer figé, molette et clics sans effet, captures en
+timeout). Un onglet NEUF a tout débloqué du premier coup.
+➡️ **Règle : trois gestes sans effet d'affilée sur une page qui répondait avant
+= fermer l'onglet et en ouvrir un neuf, avant de soupçonner le produit.**
+J'ai failli inscrire N3 comme un défaut applicatif sur cette base.
+
+### Garde de validation — découverte utile
+
+« Envoyer au client » ne poste PAS directement : l'e-mail est **préparé** et
+attend une approbation dans **Qualiopi → E-mails à valider**
+(`/qualiopi/emails`), avec une case « J'ai relu ». Trois natures y passent par
+défaut : devis, convention, facture. La chaîne Qualiopi (convocation, rappel,
+questionnaires, attestation) part, elle, **automatiquement** et n'y apparaît pas.
+C'est un bon partage : ce qui engage commercialement se relit, ce qui est
+réglementaire part seul.
+
+### Reste sur ce dossier (demain matin, avant 09h00)
+
+1. **Contresigner** la convention une fois Simone signataire (bloc Signatures →
+   « Signer pour l'organisme ») — acte habilité, jamais automatique.
+2. Vérifier que Simone a **répondu** au positionnement avant le démarrage
+   (ind. 8). Sinon : relancer, pas répondre à sa place.
+3. Le jour J : émargement signé, évaluation finale, puis l'attestation part
+   automatiquement à J+1 09:00 UTC — **à condition que l'évaluation finale
+   existe** (garde `attestations-auto`).
