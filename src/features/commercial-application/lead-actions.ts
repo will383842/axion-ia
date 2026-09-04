@@ -161,6 +161,26 @@ export async function submitLeadApporteurAction(
         companyName: "—",
         contactName: encryptPii(d.prenom),
         contactEmail: encryptPii(d.email),
+        // 🔴 2026-09-04 — CETTE LIGNE MANQUAIT, et son absence ne se voyait pas.
+        //
+        // `contactEmail` est chiffré avec un IV ALÉATOIRE : deux lignes portant
+        // la même adresse ne se ressemblent pas, donc aucune égalité SQL n'y est
+        // possible. `contactEmailHash` est le SEUL moyen de retrouver une
+        // personne — et le schéma raconte ce qui arrive sans lui : « l'export
+        // art. 15 et l'effacement art. 17 renvoyaient VIDE en répondant
+        // “succès” » (`prisma/schema.prisma`, ~l. 515).
+        //
+        // Sans elle, une demande d'effacement d'un candidat apporteur se
+        // déclarait donc réussie sans rien effacer. Ce n'est pas un défaut de
+        // confort : c'est l'article 17 qui ne s'exécute pas.
+        //
+        // 🔑 `emailKey` est DÉJÀ calculé plus haut (compteur anti-martèlement
+        // par adresse). Même valeur, aucun calcul de plus — et c'est aussi la
+        // `person_key` que le CRM utilise (`server/crm-sync/index.ts`), donc la
+        // même clé traverse les deux systèmes.
+        //
+        // ⛔ Gardée par `tests/unit/ci/toute-submission-porte-sa-cle-personne.spec.ts`.
+        contactEmailHash: emailKey,
         contactPhone: encryptPii(d.telephone) ?? null,
         details: {
           // Clé du filtre de la vue console Contacts → Commercial. NE PAS renommer.

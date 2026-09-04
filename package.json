@@ -82,6 +82,7 @@
     "volumetrie:mesure": "tsx scripts/volumetrie/mesurer.ts",
     "qualiopi:purge-demo": "tsx prisma/scripts/purge-demo-qualiopi.ts",
     "backfill:echeance": "tsx scripts/backfill-echeance-factures.ts",
+    "backfill:cle-personne": "tsx scripts/backfill-cle-personne-submissions.ts",
     "calendly:webhook:subscribe": "tsx scripts/calendly-webhook-subscribe.ts",
     "qualiopi:nettoyer-catalogue": "tsx prisma/scripts/nettoyer-catalogue.ts",
     "qualiopi:purge-test": "tsx prisma/scripts/purge-donnees-test-qualiopi.ts",
