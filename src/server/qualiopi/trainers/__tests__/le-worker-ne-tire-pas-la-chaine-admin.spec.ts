@@ -65,9 +65,10 @@ describe("le worker ne tire pas la chaîne admin", () => {
     const worker = lire(CHEMIN_WORKER);
     for (const chemin of MODULES_DU_WORKER) {
       const nom = chemin.replace("src/", "@/").replace(/\.ts$/, "");
-      expect(worker, `${chemin} n'est plus importé par le worker — mettez la liste à jour`).toContain(
-        nom,
-      );
+      expect(
+        worker,
+        `${chemin} n'est plus importé par le worker — mettez la liste à jour`,
+      ).toContain(nom);
     }
   });
 

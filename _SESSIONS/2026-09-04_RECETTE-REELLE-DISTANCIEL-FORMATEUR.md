@@ -13,16 +13,16 @@ formateur envoie des messages incohérents** — plus 10 frictions d'écran.
 
 ## 1. Les objets réels créés en production
 
-| Objet | Identifiant | Notes |
-| --- | --- | --- |
-| Client | `AXI-CLI-001` — SCI Invest Sun | id `eeaa0351-6846-4307-acaa-b7b73239a724` |
-| Contact client | Simone Blanc, Représentante | `beeeditions@gmail.com` |
-| Stagiaire | Simone Blanc | id `068304cd-8948-4e9b-83a6-8e79ca223b09` · `simone.blanc.26@gmail.com` · 2 consentements cochés (autorisation explicite de Will) |
-| Session | `AXI-SESS-2026-001` | id `0d4e0c8b-3aaa-4ec9-a8ff-d830f8a68613` · AXI-FORM-2026-038 « journée complète » · **05/09/2026 09:00 → 17:00** |
-| Formateur | Williams Jullin | id `4f0abec3-a1ee-4640-9eca-ea4f5a116e1c` |
-| Convention | `AXI-DOC-2026-030` | doc id `1c9a1d29-aab6-459f-b475-2867bbbab91e` — **à RÉGÉNÉRER** (voir §2) |
-| Journées | 1 journée, 2 créneaux | horaires confirmés |
-| Lien d'émargement | émis | valable jusqu'au 07/09/2026 17:00 |
+| Objet             | Identifiant                    | Notes                                                                                                                             |
+| ----------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Client            | `AXI-CLI-001` — SCI Invest Sun | id `eeaa0351-6846-4307-acaa-b7b73239a724`                                                                                         |
+| Contact client    | Simone Blanc, Représentante    | `beeeditions@gmail.com`                                                                                                           |
+| Stagiaire         | Simone Blanc                   | id `068304cd-8948-4e9b-83a6-8e79ca223b09` · `simone.blanc.26@gmail.com` · 2 consentements cochés (autorisation explicite de Will) |
+| Session           | `AXI-SESS-2026-001`            | id `0d4e0c8b-3aaa-4ec9-a8ff-d830f8a68613` · AXI-FORM-2026-038 « journée complète » · **05/09/2026 09:00 → 17:00**                 |
+| Formateur         | Williams Jullin                | id `4f0abec3-a1ee-4640-9eca-ea4f5a116e1c`                                                                                         |
+| Convention        | `AXI-DOC-2026-030`             | doc id `1c9a1d29-aab6-459f-b475-2867bbbab91e` — **à RÉGÉNÉRER** (voir §2)                                                         |
+| Journées          | 1 journée, 2 créneaux          | horaires confirmés                                                                                                                |
+| Lien d'émargement | émis                           | valable jusqu'au 07/09/2026 17:00                                                                                                 |
 
 ## 2. Données à corriger — consignes de Will du 2026-09-04 au soir
 
@@ -35,11 +35,11 @@ formateur envoie des messages incohérents** — plus 10 frictions d'écran.
 
 ## 3. Ce qui est PARTI pour de vrai (journal « E-mails envoyés »)
 
-| Heure UTC | Gabarit | Destinataire | Statut |
-| --- | --- | --- | --- |
-| 16:30 | `formateur-mission-proposee` | williamsjullin@gmail.com | Envoyé |
-| 16:40 | `formateur-rappel-j1` | williamsjullin@gmail.com | Envoyé |
-| 17:00 | `qualiopi-convocation` | simone.blanc.26@gmail.com | Envoyé |
+| Heure UTC | Gabarit                      | Destinataire              | Statut |
+| --------- | ---------------------------- | ------------------------- | ------ |
+| 16:30     | `formateur-mission-proposee` | williamsjullin@gmail.com  | Envoyé |
+| 16:40     | `formateur-rappel-j1`        | williamsjullin@gmail.com  | Envoyé |
+| 17:00     | `qualiopi-convocation`       | simone.blanc.26@gmail.com | Envoyé |
 
 **Rien n'est parti à `beeeditions@gmail.com`** — normal, la convention n'a pas
 été envoyée (Will devait valider le montant d'abord). L'adresse est saine :
@@ -54,13 +54,13 @@ de réception** : faire vérifier les spams de `simone.blanc.26@gmail.com`.
 
 `grep -rn "visio" src/app/[locale]/portail/ src/server/qualiopi/portail/` → **0 résultat.**
 
-| Destination | Reçoit | Fichier |
-| --- | --- | --- |
-| Espace formateur | l'URL complète | `espace-formateur/sessions/[id]/page.tsx:154` |
-| Convocation J-7 / rappel J-1 formateur | l'URL complète | `_infos-pratiques-formateur.tsx:62` |
-| Documents | l'HÔTE seul (délibéré, juste) | `format-lieu.ts:92` |
-| **Convocation stagiaire** | **« Distanciel »**, rien d'autre | `notifications-service.ts:218` |
-| **Espace stagiaire** | titre, statut, dates. **Rien d'autre** | `portail/mon-espace/formations/page.tsx` |
+| Destination                            | Reçoit                                 | Fichier                                       |
+| -------------------------------------- | -------------------------------------- | --------------------------------------------- |
+| Espace formateur                       | l'URL complète                         | `espace-formateur/sessions/[id]/page.tsx:154` |
+| Convocation J-7 / rappel J-1 formateur | l'URL complète                         | `_infos-pratiques-formateur.tsx:62`           |
+| Documents                              | l'HÔTE seul (délibéré, juste)          | `format-lieu.ts:92`                           |
+| **Convocation stagiaire**              | **« Distanciel »**, rien d'autre       | `notifications-service.ts:218`                |
+| **Espace stagiaire**                   | titre, statut, dates. **Rien d'autre** | `portail/mon-espace/formations/page.tsx`      |
 
 Et la convocation PROMET « les modalités pratiques (accès, matériel, règlement
 intérieur) sont disponibles dans votre espace stagiaire ». Elles n'y sont pas.
@@ -84,6 +84,7 @@ de liste ; `nbParticipantsPrevus` jamais opposé aux inscriptions.
 6. L'accept/refus lui-même **fonctionne** (jeton HMAC, motif obligatoire, expiration, page dédiée).
 
 **Décision de conception (arbitrée avec Will)** :
+
 - salarié / dirigeant → **aucune demande d'accord**, lettre de mission seule ;
 - sous-traitant → délai **proportionnel** `min(48 h, jusqu'à J-3)`, relance à mi-délai ;
 - silence à l'échéance → statut **`sans_reponse`**, JAMAIS `refusee` (un refus
@@ -129,11 +130,11 @@ ne crée pas les créneaux · F9 liens d'émargement perdus à la navigation ·
 
 ### Appliqué en production
 
-| Quoi | Comment | Vérifié |
-| --- | --- | --- |
-| SIRET `90143483700018` + adresse `4 rue Dervieux, 42000 Saint-Étienne` sur `AXI-CLI-001` | **par l'UI** | ✅ relu à l'écran |
-| Montant **1 900 € → 100 € HT** | **SQL direct** (aucune action d'écriture n'existe) | ✅ « MONTANT HT 100,00 € » |
-| Modalité **distanciel → présentiel**, lieu **nos_locaux**, intitulé = adresse de l'OF, contact = Williams Jullin + tél, consignes d'accès | **SQL direct** | ✅ relu à l'écran |
+| Quoi                                                                                                                                      | Comment                                            | Vérifié                    |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------------- |
+| SIRET `90143483700018` + adresse `4 rue Dervieux, 42000 Saint-Étienne` sur `AXI-CLI-001`                                                  | **par l'UI**                                       | ✅ relu à l'écran          |
+| Montant **1 900 € → 100 € HT**                                                                                                            | **SQL direct** (aucune action d'écriture n'existe) | ✅ « MONTANT HT 100,00 € » |
+| Modalité **distanciel → présentiel**, lieu **nos_locaux**, intitulé = adresse de l'OF, contact = Williams Jullin + tél, consignes d'accès | **SQL direct**                                     | ✅ relu à l'écran          |
 
 Décision Will : « pour demain fais au plus simple, c'est juste pour le
 certificateur » → **présentiel dans nos locaux**, ce qui supprime le besoin de
@@ -235,6 +236,7 @@ bénéficiaire, pas seulement une trace technique de connexion.
 Branche `qualiopi/formateur-cycle-vie` (depuis `7fed255f8`).
 
 Fait :
+
 - `prisma/schema.prisma` : `MissionFormateurStatut += sans_reponse`,
   `MissionFormateur.echeanceReponseAt` (nullable, pas de backfill).
 - `prisma/migrations/20260904190000_mission_formateur_sans_reponse/`.
@@ -250,6 +252,7 @@ Fait :
   (bascule + libération de la session), refus de réponse après échéance.
 
 Reste au lot 1 :
+
 - `formateur-mission-proposee.tsx` : consommer `delaiReponse` + `infosPratiques`.
 - `affectationsAConvoquer` (worker) : ne PAS envoyer le rappel J-1 à un
   sous-traitant qui n'a pas accepté.
@@ -283,6 +286,7 @@ qui refuse le retour de l'import. **Vue rouge** en remettant l'import.
 ### Reste à faire (lots 2 et 3)
 
 **Lot 2 — distanciel de bout en bout, adaptateur Zoom**
+
 - Adaptateur Zoom via API `registrants` : une salle par session, **un lien par
   personne**, prénom/nom préremplis, rapport de présence récupéré.
 - Couche agnostique `/portail/rejoindre/<jeton>` : jeton lié à l'empreinte de
@@ -303,6 +307,7 @@ qui refuse le retour de l'import. **Vue rouge** en remettant l'import.
   preuve d'engagement, pas une trace de connexion). Divergence → alerte.
 
 **Lot 3 — N1/N2/N4/N5 + les 10 frictions**
+
 - N1 `setSessionMontantAction` (le prix n'est écrit qu'à la création).
 - N2 modalité modifiable (aujourd'hui figée, d'où `distanciel` + `nos_locaux`
   incohérents possibles).
@@ -324,12 +329,12 @@ convocation stagiaire 17:00).
 
 ### Ce qui a été corrigé ce soir
 
-| Correction | Moyen | Vérifié |
-| --- | --- | --- |
-| Montant 1 900 € → **100,00 €** | SQL | ✅ écran |
-| Modalité → **Présentiel**, lieu → **Nos locaux** + intitulé/contact/consignes | SQL | ✅ écran |
-| **SIRET `90143483700018` + adresse `4 rue Dervieux, 42000 Saint-Etienne`** | SQL (⚠️ voir défaut N6) | à revérifier |
-| Conventions fausses `030`, `037`, `038` **annulées au registre** avec motif | SQL | ✅ |
+| Correction                                                                    | Moyen                   | Vérifié      |
+| ----------------------------------------------------------------------------- | ----------------------- | ------------ |
+| Montant 1 900 € → **100,00 €**                                                | SQL                     | ✅ écran     |
+| Modalité → **Présentiel**, lieu → **Nos locaux** + intitulé/contact/consignes | SQL                     | ✅ écran     |
+| **SIRET `90143483700018` + adresse `4 rue Dervieux, 42000 Saint-Etienne`**    | SQL (⚠️ voir défaut N6) | à revérifier |
+| Conventions fausses `030`, `037`, `038` **annulées au registre** avec motif   | SQL                     | ✅           |
 
 ### 🔴 Défauts NOUVEAUX de ce soir
 
@@ -370,12 +375,12 @@ convocation stagiaire 17:00).
 
 ## 14. ✅ DOSSIER DE LA SESSION DU 05/09 — BOUCLÉ le 04/09 à 20h51 UTC
 
-| Heure UTC | Envoi | Destinataire | Statut |
-| --- | --- | --- | --- |
-| 16:30 | `formateur-mission-proposee` | williamsjullin@gmail.com | Envoyé |
-| 16:40 | `formateur-rappel-j1` | williamsjullin@gmail.com | Envoyé |
-| 17:00 | `qualiopi-convocation` | simone.blanc.26@gmail.com | Envoyé |
-| **20:47** | **`convention-envoi`** | **beeeditions@gmail.com** | **Envoyé** |
+| Heure UTC | Envoi                         | Destinataire                  | Statut     |
+| --------- | ----------------------------- | ----------------------------- | ---------- |
+| 16:30     | `formateur-mission-proposee`  | williamsjullin@gmail.com      | Envoyé     |
+| 16:40     | `formateur-rappel-j1`         | williamsjullin@gmail.com      | Envoyé     |
+| 17:00     | `qualiopi-convocation`        | simone.blanc.26@gmail.com     | Envoyé     |
+| **20:47** | **`convention-envoi`**        | **beeeditions@gmail.com**     | **Envoyé** |
 | **20:51** | **`qualiopi-positionnement`** | **simone.blanc.26@gmail.com** | **Envoyé** |
 
 **Convention retenue : `AXI-DOC-2026-039`**, vérifiée pièce en main —
