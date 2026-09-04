@@ -85,6 +85,12 @@ describe("délai réel avant le démarrage", () => {
     expect(libelleDelaiConvocation(7, "fr")).toEqual({
       prefixeObjet: "Dans 7 jours —",
       titre: "Votre session démarre dans une semaine",
+      // `quand` (2026-09-04) : le même délai, mais utilisable DANS une phrase
+      // (« démarre {quand}, le 15/09 »). Ajouté pour que le rappel J-1 cesse
+      // d'écrire « demain » en dur alors que sa fenêtre est de 36 h.
+      // L'attente reste STRICTE : un champ ajouté sans être relu ici passerait
+      // sinon inaperçu, et c'est un texte qui part au formateur.
+      quand: "dans une semaine",
     });
     expect(libelleDelaiConvocation(3, "fr").titre).toBe("Votre session démarre dans 3 jours");
     expect(libelleDelaiConvocation(1, "fr").titre).toBe("Votre session démarre demain");
@@ -101,6 +107,10 @@ describe("délai réel avant le démarrage", () => {
       expect(l.titre).toBe("Vos informations pratiques");
       expect(l.titre).not.toMatch(/semaine|jours|demain/);
       expect(l.prefixeObjet).not.toMatch(/7/);
+      // Le troisième champ suit la même règle : « prochainement » est vrai quel
+      // que soit le jour, là où « demain » serait une promesse inventée.
+      expect(l.quand).toBe("prochainement");
+      expect(l.quand).not.toMatch(/semaine|jours|demain|aujourd/);
     }
   });
 });

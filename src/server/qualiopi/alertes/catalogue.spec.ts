@@ -152,6 +152,8 @@ const CODES_ATTENDUS: string[] = [
   // Recette du 2026-09-03 : la proposition EXPIRÉE ne levait rien du tout.
   "formateur_mission_expiree",
   "formateur_indisponible_sur_session",
+  // Recette du 2026-09-04 : la convocation partait muette sur la manière d'entrer.
+  "session_contact_sur_place_absent",
   "formateur_non_habilite_assigne",
 ];
 

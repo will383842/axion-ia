@@ -487,6 +487,22 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "formateur",
   },
+  // 🔴 Recette du 2026-09-03/04 — la convocation du formateur transporte
+  // fidèlement le contact sur place et les consignes d'accès… quand ils sont
+  // saisis. Vides, l'e-mail ne les affiche simplement pas : le formateur reçoit
+  // une adresse et une salle, personne à demander à l'accueil, et aucune idée
+  // de la manière d'entrer. Le message a l'air complet et il est inutilisable
+  // à la porte. Rien ne le signalait — la seule façon de s'en apercevoir était
+  // que le formateur appelle depuis le trottoir.
+  //
+  // Guichet ADMINISTRATIF : c'est lui qui vend la session et qui appelle le
+  // client pour obtenir le nom de l'hôte, pas le formateur ni la qualité.
+  session_contact_sur_place_absent: {
+    niveau: "important",
+    titre: "Session sans contact sur place ni consignes d'accès",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
 
   // ── Satisfaction ──────────────────────────────────────────────────────────
   /**

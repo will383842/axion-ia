@@ -82,6 +82,17 @@ function daysFromNow(n: number, now = new Date()): Date {
   return new Date(now.getTime() + n * 24 * 60 * 60 * 1000);
 }
 
+/**
+ * Fenêtre de l'alerte « session sans contact sur place ».
+ *
+ * 🔴 Elle DOIT rester strictement supérieure à
+ * {@link FENETRE_CONVOCATION_J7_JOURS} : l'alerte n'a de valeur que si elle se
+ * lève AVANT que la convocation du formateur ne parte. Quatorze jours laissent
+ * une semaine pleine pour obtenir le contact du client, et un second appel s'il
+ * n'a pas répondu au premier. Verrouillé par `alerte-avant-la-convocation.spec.ts`.
+ */
+export const FENETRE_CONTACT_SUR_PLACE_JOURS = 14;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Règles individuelles — chacune retourne AlerteCandidate[]
 // ─────────────────────────────────────────────────────────────────────────────
@@ -890,6 +901,144 @@ async function regleDiaporamaManquant(now: Date): Promise<AlerteCandidate[]> {
         cibleId: s.id,
       };
     });
+}
+
+/**
+ * 🔴 LA CONVOCATION VA PARTIR MUETTE.
+ *
+ * Trouvé en recette le 2026-09-03/04. `convocation-formateur.ts` transporte
+ * fidèlement le contact sur place et les consignes d'accès jusqu'au formateur —
+ * quand ils sont saisis. Vides, `optionnel()` les omet, et l'e-mail rend une
+ * adresse et une salle sans personne à demander ni manière d'entrer. Il a l'air
+ * complet ; il est inutilisable à la porte. Aucune alerte ne le disait.
+ *
+ * ## Pourquoi J-14 et pas J-7
+ *
+ * 🔴 Le délai est le cœur de cette règle, pas un réglage. La convocation part
+ * dans la fenêtre {@link FENETRE_CONVOCATION_J7_JOURS} (7,5 j) : une alerte
+ * levée à J-7 arriverait **le jour même où l'e-mail muet s'envole**, et ne
+ * servirait à rien. Il faut le temps d'appeler le client, et de le rappeler
+ * s'il ne répond pas du premier coup — d'où deux fois la fenêtre de convocation.
+ * `alerte-avant-la-convocation.spec.ts` verrouille cette relation : si l'une des
+ * deux constantes bouge sans l'autre, il rougit.
+ *
+ * ## Périmètre (arbitrage Will, 2026-09-04)
+ *
+ * - `sur_site` : sans contact NI consignes, le formateur reste devant la porte.
+ *   Manquer l'un des deux suffit à lever, en `important` ;
+ * - `distanciel` : pas de porte à franchir, mais quelqu'un à joindre si le lien
+ *   ne s'ouvre pas. Seul le contact compte, et en `info` — c'est gênant, pas
+ *   bloquant ;
+ * - `nos_locaux` : jamais. L'hôte, c'est l'organisme lui-même ;
+ * - `lieuType` non renseigné : jamais non plus. Une session sans lieu du tout
+ *   est un autre défaut, et le signaler ici le noierait dans celui-ci.
+ *
+ * ## Ce qu'elle DIT change une fois l'e-mail parti
+ *
+ * Tant que `convocationJ7EnvoyeeAt` est vide, il est encore temps : le message
+ * demande de renseigner. Une fois la trace posée, le mal est fait et l'action
+ * n'est plus la même — il faut rappeler le formateur. Une alerte qui continue à
+ * dire « renseignez avant l'envoi » après l'envoi se fait ignorer.
+ */
+async function regleContactSurPlaceAbsent(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      // Bornée au FUTUR : une fois la session commencée, le formateur est
+      // arrivé — ou pas — et il n'y a plus rien à saisir. Ce qui suit relève de
+      // l'émargement et du registre des incidents, pas de cette alerte.
+      dateDebut: { gt: now, lte: daysFromNow(FENETRE_CONTACT_SUR_PLACE_JOURS, now) },
+      lieuType: { in: ["sur_site", "distanciel"] },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      lieuType: true,
+      contactSurPlaceNom: true,
+      contactSurPlaceTelephone: true,
+      consignesAcces: true,
+      client: { select: { raisonSociale: true } },
+      sessionFormateurs: { select: { convocationJ7EnvoyeeAt: true } },
+    },
+  });
+
+  const rempli = (v: string | null): boolean => (v ?? "").trim().length > 0;
+
+  return sessions.flatMap((s) => {
+    // Garde applicative doublant le `where` — les mocks de test ignorent le SQL.
+    if (s.lieuType !== "sur_site" && s.lieuType !== "distanciel") return [];
+
+    const contactManquant = !rempli(s.contactSurPlaceNom) && !rempli(s.contactSurPlaceTelephone);
+    const consignesManquantes = !rempli(s.consignesAcces);
+    const surSite = s.lieuType === "sur_site";
+    if (!contactManquant && !(surSite && consignesManquantes)) return [];
+
+    // Nommer CE QUI manque, jamais « informations incomplètes » : le lecteur
+    // doit savoir quoi demander au client sans rouvrir la fiche.
+    const manques = [
+      // 🔴 Le nom du champ (`contactSurPlaceNom`) n'est pas le mot de
+      // l'écran. « Sur place » suppose un lieu où se présenter ; en visio il n'y
+      // en a pas, et l'agent qui lit ça ne sait pas ce qu'il doit demander au
+      // client. Ce qu'on cherche est le même champ, mais ce qu'il SERT n'est
+      // pas la même chose : entrer d'un côté, joindre de l'autre.
+      contactManquant
+        ? surSite
+          ? "aucun contact sur place (ni nom ni téléphone)"
+          : "aucun contact à joindre (ni nom ni téléphone)"
+        : null,
+      surSite && consignesManquantes ? "aucune consigne d'accès" : null,
+    ].filter((m): m is string => m !== null);
+
+    const dejaConvoque = s.sessionFormateurs.some((sf) => sf.convocationJ7EnvoyeeAt !== null);
+    const date = s.dateDebut.toLocaleDateString("fr-FR");
+    const quoi = manques.join(" et ");
+
+    // 🔴 Vu à l'écran le 2026-09-04, pas dans les tests : la première version
+    // servait UNE seule phrase aux deux modalités, et le distanciel héritait des
+    // mots de la porte — « muette sur la manière d'entrer », « personne à
+    // demander en arrivant ». Il n'y a pas de porte dans une visio, et l'agent
+    // qui lit ça ne sait plus ce qu'il doit demander au client. Ce qui manque
+    // n'est pas le même manque : sur site on ne peut pas ENTRER, en distanciel
+    // on n'a personne à JOINDRE si le lien ne s'ouvre pas.
+    const consequence = surSite
+      ? "il aura l'adresse et la salle, personne à demander à l'accueil et aucune manière d'entrer"
+      : "il n'aura personne à joindre si le lien ne s'ouvre pas";
+    const resteADemander = surSite ? "Demandez-les au client" : "Demandez-le au client";
+
+    // 🔴 Vu à l'écran le 2026-09-04, APRÈS la correction du message : le TITRE,
+    // lui, était resté commun aux deux modalités. Une session en visio s'affichait
+    // donc en gras « Session sans contact sur place ni consignes d'accès », juste
+    // au-dessus d'un message qui ne parle jamais de consignes — puisque la règle
+    // ne les regarde pas en distanciel. Le titre CONTREDISAIT son propre
+    // paragraphe, et il annonçait un manque là où il n'y en a pas. C'est la ligne
+    // qu'on lit en premier : sur /qualiopi/a-traiter, seul le titre est en gras.
+    //
+    // Sur site non plus il ne peut pas être fixe : la règle lève dès qu'UN des deux
+    // manque. Annoncer les deux quand seules les consignes manquent envoie
+    // l'agent redemander au client un contact qu'il a déjà donné.
+    const titre = surSite
+      ? contactManquant && consignesManquantes
+        ? "Session sur site sans contact ni consignes d'accès"
+        : contactManquant
+          ? "Session sur site sans contact sur place"
+          : "Session sur site sans consignes d'accès"
+      : "Session à distance sans personne à joindre";
+
+    return [
+      {
+        code: "session_contact_sur_place_absent",
+        niveau: (surSite ? "important" : "info") as AlerteNiveau,
+        titre,
+        message: dejaConvoque
+          ? `La convocation du formateur pour ${designerSession(s)} (${date}) est DÉJÀ PARTIE avec ${quoi} : ${consequence}. Appelez-le, et complétez la fiche pour le rappel de la veille.`
+          : `${designerSession(s)} démarre le ${date} avec ${quoi}. La convocation du formateur part sept jours avant : sans ces champs, ${consequence}. ${resteADemander}, puis complétez la fiche de session.`,
+        cibleType: "TrainingSession",
+        cibleId: s.id,
+      },
+    ];
+  });
 }
 
 /** R04 — Satisfaction manquante : session realisee > 7 jours + questionnaire non rempli. */
@@ -2851,6 +3000,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "formateur_mission_refusee", fn: regleMissionFormateurRefusee },
   { nom: "formateur_mission_sans_reponse", fn: regleMissionFormateurSansReponse },
   { nom: "formateur_mission_expiree", fn: regleMissionFormateurExpiree },
+  { nom: "session_contact_sur_place_absent", fn: regleContactSurPlaceAbsent },
   { nom: "formateur_indisponible_sur_session", fn: regleFormateurIndisponibleSurSession },
   { nom: "formateur_non_habilite_assigne", fn: regleFormateurNonHabiliteAssigne },
 ];

@@ -12,11 +12,21 @@ import {
   InfosPratiquesFormateurBloc,
   type InfosPratiquesFormateur,
 } from "./_infos-pratiques-formateur";
+import { libelleDelaiConvocation } from "./formateur-convocation-j7";
 import type { Locale } from "../../../../prisma/generated/client";
 
 type Payload = InfosPratiquesFormateur & {
   /** « 09:00 » — l'heure du premier créneau, si les journées sont saisies. */
   heureDebutJ1?: string;
+  /**
+   * 🔴 Le délai RÉEL en jours civils, déjà porté par le payload commun aux deux
+   * messages. Ce gabarit disait « demain » EN DUR : or son cron sélectionne
+   * dans une fenêtre de 36 h, il part donc aussi l'avant-veille au soir, et
+   * « demain » y est faux d'un jour. Même défaut que celui fermé sur la
+   * convocation le 2026-09-03 — et fermé ici de la même façon, avec la même
+   * fonction, pour que les deux messages ne puissent plus diverger.
+   */
+  joursAvantDebut?: number;
 };
 
 export const formateurRappelJ1Subject = (
@@ -24,8 +34,11 @@ export const formateurRappelJ1Subject = (
   payload: Record<string, unknown>,
 ): string => {
   const p = payload as unknown as Payload;
-  if (locale === "fr") return objetCompose("C'est demain —", p.titreFormation ?? "Formation");
-  return objetCompose("Tomorrow —", p.titreFormation ?? "Training");
+  const { prefixeObjet } = libelleDelaiConvocation(p.joursAvantDebut, locale);
+  return objetCompose(
+    prefixeObjet,
+    p.titreFormation ?? (locale === "fr" ? "Formation" : "Training"),
+  );
 };
 
 export function FormateurRappelJ1Email({
@@ -36,16 +49,19 @@ export function FormateurRappelJ1Email({
   payload: Record<string, unknown>;
 }) {
   const p = payload as unknown as Payload;
+  // Le même délai que l'objet — un titre qui contredirait la ligne d'objet
+  // ferait douter du reste du message.
+  const { titre, quand } = libelleDelaiConvocation(p.joursAvantDebut, locale);
   return (
     <EmailLayout
       famille="C"
       preview="Lieu, heure d'arrivée et personne à contacter sur place — relisez avant de partir."
-      title="À demain"
+      title={titre}
       cta={{ label: "Ouvrir la session dans mon espace", href: p.lienEspace }}
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>
-        <strong>{p.titreFormation}</strong> démarre demain, le <strong>{p.dateDebut}</strong>
+        <strong>{p.titreFormation}</strong> démarre {quand}, le <strong>{p.dateDebut}</strong>
         {p.heureDebutJ1 ? (
           <>
             {" "}
@@ -55,8 +71,8 @@ export function FormateurRappelJ1Email({
         — {p.lieu}.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Bonjour {p.formateurPrenomNom} — voici, une dernière fois, tout ce qu&apos;il faut pour
-        arriver au bon endroit et entrer.
+        Bonjour {p.formateurPrenomNom} — voici tout ce qu&apos;il faut pour arriver au bon endroit
+        et entrer.
       </Text>
       <InfosPratiquesFormateurBloc p={p} />
       <Text style={{ ...emailStyles.paragraphStyle, marginTop: 12 }}>

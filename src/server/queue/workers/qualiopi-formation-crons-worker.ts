@@ -1783,15 +1783,65 @@ async function handleMissionsFormateur(): Promise<void> {
  * affectation posée à J-3 reçoit donc sa convocation au passage suivant — au
  * lieu de la manquer parce que « J-7 est passé ».
  */
+/**
+ * 🔴 Deux messages d'infos pratiques le MÊME JOUR ne renseignent qu'une fois.
+ *
+ * Les deux crons sélectionnent indépendamment, sur deux champs distincts et
+ * dans deux fenêtres qui se CHEVAUCHENT (7,5 j et 36 h). Une affectation posée
+ * à J-1 tombe donc dans les deux : le formateur reçoit la convocation le matin,
+ * puis le rappel quelques heures plus tard — et les deux gabarits partagent le
+ * même `InfosPratiquesFormateurBloc`, donc c'est deux fois le même contenu.
+ *
+ * Ce n'est pas une perte d'information (rien ne manque jamais au formateur,
+ * quel que soit celui des deux qui part), c'est une perte de crédit : un
+ * expéditeur qui écrit deux fois la même chose dans la journée se fait filtrer,
+ * et le message de la veille au soir — le seul qu'on veut vraiment voir lu —
+ * arrive derrière un doublon.
+ */
+const DELAI_ANTI_DOUBLON_MS = 24 * 60 * 60 * 1000;
+
 async function affectationsAConvoquer(
   now: Date,
   fenetreMs: number,
   trace: "convocationJ7EnvoyeeAt" | "rappelJ1EnvoyeAt",
 ): Promise<Array<{ id: string }>> {
   const plafond = new Date(now.getTime() + fenetreMs);
+
+  /**
+   * La condition est ASYMÉTRIQUE, et c'est voulu.
+   *
+   * - Le RAPPEL se tait si la convocation est partie il y a moins de 24 h. Au
+   *   delà, il reprend son rôle : une convocation vieille de cinq jours ne
+   *   dispense pas de rappeler la veille.
+   * - La CONVOCATION se tait dès que le rappel est parti, sans condition de
+   *   délai. Le rappel ne part qu'à moins de 36 h du début ; une convocation
+   *   qui suivrait arriverait forcément APRÈS lui, pour annoncer un événement
+   *   déjà annoncé. Il n'existe aucun délai qui la rende de nouveau utile.
+   *
+   * On filtre à la SÉLECTION plutôt que de poser la trace de l'autre message :
+   * écrire `rappelJ1EnvoyeAt` sans avoir envoyé de rappel ferait mentir la
+   * seule colonne où l'on relit ce que le formateur a reçu — et cette colonne
+   * est lue ailleurs, notamment par l'alerte `session_contact_sur_place_absent`
+   * pour savoir si l'e-mail muet est déjà parti.
+   */
+  const pasDeDoublon =
+    trace === "rappelJ1EnvoyeAt"
+      ? {
+          OR: [
+            { convocationJ7EnvoyeeAt: null },
+            {
+              convocationJ7EnvoyeeAt: {
+                lt: new Date(now.getTime() - DELAI_ANTI_DOUBLON_MS),
+              },
+            },
+          ],
+        }
+      : { rappelJ1EnvoyeAt: null };
+
   return prisma.sessionFormateur.findMany({
     where: {
       [trace]: null,
+      ...pasDeDoublon,
       session: { statut: "planifiee", dateDebut: { gt: now, lte: plafond } },
     },
     select: { id: true },
