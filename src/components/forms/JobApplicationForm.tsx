@@ -135,6 +135,18 @@ export function JobApplicationForm({
       fd.set("offerId", offerId);
       fd.set("locale", locale);
       fd.set("consent", "true");
+      // Lot 5 — la page d'où l'on soumet, pour les annonces qui ne savent pas
+      // poser de balise UTM. Posé ICI et non dans un champ caché du HTML : un
+      // `<input type="hidden">` rempli au rendu serveur porterait la page
+      // pré-rendue, pas celle réellement ouverte, et les pages de carrières sont
+      // servies en statique.
+      //
+      // ⚠️ `pathname` SEUL, jamais `href` : la requête peut porter un
+      // identifiant de campagne publicitaire, c'est-à-dire un quasi-identifiant
+      // qu'on n'a aucune raison de conserver deux ans dans un dossier de
+      // candidature. Le serveur re-coupe de toute façon — une garde côté client
+      // seul ne garde rien.
+      fd.set("landingPath", window.location.pathname);
       // Les cases n'ont pas d'attribut `name` (motif existant du formulaire) :
       // les valeurs sont posées explicitement ici.
       fd.set("consentVivier", consentVivier ? "true" : "false");
