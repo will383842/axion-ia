@@ -1,4 +1,4 @@
--- ── PREUVE DURE : les 4 migrations de recrutement sont-elles EN PRODUCTION ? ──
+-- ── PREUVE DURE : les migrations de recrutement sont-elles EN PRODUCTION ? ──
 --
 -- Lecture seule. On interroge le SCHÉMA, jamais le seul journal.
 --
@@ -79,7 +79,20 @@ UNION ALL SELECT '3 contrainte:job_applications_motif_coherent_check',
          WHERE conname='job_applications_motif_coherent_check')
 
 -- ── Le journal, et surtout les ÉCHECS ────────────────────────────────────────
-UNION ALL SELECT '4 journal:migrations recrutement finies (doit valoir 4)',
+-- 🔴 2026-09-04 — cette ligne annonçait « doit valoir 4 » et rendait 5. Ce
+-- n'était PAS le schéma : l'attente avait été écrite avant que le lot 5
+-- (`recrutement_provenance`, capture UTM) n'ajoute la cinquième migration.
+-- Une assertion dont le nombre attendu retarde sur la réalité n'alerte pas,
+-- elle apprend au lecteur à ignorer la ligne. Le compte est donc désormais
+-- ADOSSÉ AUX NOMS, dérivés de `ls prisma/migrations | grep recrutement` :
+--   20260903120000_recrutement_journal
+--   20260903140000_recrutement_entretiens
+--   20260903160000_recrutement_statuts_enum
+--   20260903163000_recrutement_decision
+--   20260903200000_recrutement_provenance
+-- Ajouter une 6e migration `*recrutement*` fera rendre 6 à cette ligne alors
+-- qu'elle en annonce 5 : l'écart se voit, et il se corrige ici même.
+UNION ALL SELECT '4 journal:migrations recrutement finies (doit valoir 5)',
        (SELECT count(*) FROM _prisma_migrations
          WHERE migration_name LIKE '%recrutement%' AND finished_at IS NOT NULL)
 -- ⚠️ « absente » et « enregistrée mais cassée en cours de route » sont deux
