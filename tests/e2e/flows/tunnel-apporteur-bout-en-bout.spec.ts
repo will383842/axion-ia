@@ -86,6 +86,15 @@ test.describe("@tunnel-apporteur parcours public", () => {
     await page.locator('[name="prenom"]').fill("Recette");
     await page.locator('[name="email"]').fill(email);
     await page.locator('[name="telephone"]').fill("0612345678");
+    // 🔑 `ville` est OBLIGATOIRE aujourd'hui et DISPARAÎT de la capture avec la
+    // PR sœur #987. Ce test-ci ne porte pas sur l'inventaire des champs : son
+    // sujet est la clé de personne écrite en base. Il remplit donc la ville
+    // quand elle est là, et se tait quand elle ne l'est plus — sinon il rougit
+    // sur l'ORDRE DE FUSION et pas sur une régression (120 s de vide en CI, le
+    // 2026-09-04). L'absence du champ est gardée, elle, par le test dédié
+    // `capture-sans-ville.spec.ts` qui arrive avec #987.
+    const ville = page.locator('[name="ville"]');
+    if ((await ville.count()) > 0) await ville.fill("Lyon");
     // 🔑 La case de consentement est OBLIGATOIRE. Ma première version du test
     // l'oubliait et la soumission ne partait pas — le formulaire avait raison,
     // c'est le test qui était faux. Sans opt-in, aucune preuve de consentement
