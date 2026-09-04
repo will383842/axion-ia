@@ -13,7 +13,7 @@ import {
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 163 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception)", () => {
+  it("returns 164 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception) ; +1 Pilotage du recrutement 2026-09-04 (vue de Candidatures livrée par #968, jusque-là sans entrée de menu)", () => {
     const items = buildAdminNav("admin-test-prefix");
     // Base 131 − 14 module Prospection retiré 2026-07-08 (#278) = 117.
     // Refonte messagerie 2026-07-09 : 3 groupes distincts sortis de « main » /
@@ -138,7 +138,12 @@ describe("buildAdminNav SSOT", () => {
     //
     // 🔴 −1 le 2026-08-27 : « Entrées récentes » retirée (quatrième porte pour
     // lire une demande, cf. UNE-SEULE-PORTE.md). = 162.
-    expect(items.length).toBe(163);
+    // +1 (2026-09-04, « Pilotage du recrutement », indenté sous Candidatures) :
+    // l'écran existait depuis la PR #968 et n'était atteignable QUE par un
+    // bouton à l'intérieur de l'écran Candidatures — donc introuvable pour qui
+    // ne l'ouvrait pas d'abord. Ce compteur ne l'aurait jamais signalé : il
+    // compte les entrées de menu, pas les routes sans entrée. = 164.
+    expect(items.length).toBe(164);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -306,7 +311,18 @@ describe("buildAdminNav SSOT", () => {
       ]);
     });
 
-    it("les 8 catégories de Messages sont indentées sous lui", () => {
+    // 🔴 2026-09-04 — cette assertion s'appelait « les 8 catégories de Messages »
+    // et lisait `navLevel === 2`. Les deux ne sont pas la même chose : `navLevel`
+    // dit « indenté », jamais « indenté SOUS QUI ». Tant que Messages était le
+    // seul canal à avoir des enfants, la confusion ne coûtait rien ; « Pilotage
+    // du recrutement » (enfant de Candidatures) la rend fausse.
+    //
+    // La correction ne se contente pas d'allonger la liste : elle BORNE chaque
+    // enfant entre son canal et le canal suivant. L'ancienne version ne
+    // vérifiait qu'une borne basse (« après Messages ») — une catégorie de
+    // Messages glissée sous Candidatures serait passée au vert alors qu'elle
+    // paraîtrait appartenir aux candidatures.
+    it("chaque entrée indentée est rendue sous LE canal auquel elle appartient", () => {
       const enfants = visible.filter((it) => it.navLevel === 2);
       expect(enfants.map((it) => it.label)).toEqual([
         "Clients",
@@ -317,14 +333,23 @@ describe("buildAdminNav SSOT", () => {
         "Recrutement",
         "Podcast",
         "Autres",
+        "Pilotage du recrutement",
       ]);
-      // Rendues APRÈS « Messages » : la sidebar est une liste à plat que seule
-      // l'indentation hiérarchise — un enfant placé ailleurs paraîtrait
-      // appartenir au canal qui le précède.
-      const iMessages = visible.findIndex((it) => it.href === "/fr/p/contacts/messages");
-      for (const enfant of enfants) {
-        expect(visible.indexOf(enfant), enfant.label).toBeGreaterThan(iMessages);
+
+      // La sidebar est une liste à plat que seule l'indentation hiérarchise :
+      // un enfant paraît appartenir au dernier canal racine qui le précède.
+      const racines = visible
+        .map((it, index) => ({ it, index }))
+        .filter(({ it }) => it.navLevel == null);
+      const canalDe = (enfant: (typeof visible)[number]) =>
+        racines.filter(({ index }) => index < visible.indexOf(enfant)).at(-1)?.it.href;
+
+      for (const enfant of enfants.filter((it) => it.label !== "Pilotage du recrutement")) {
+        expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/messages");
       }
+      expect(canalDe(enfants.at(-1)!), "Pilotage du recrutement").toBe(
+        "/fr/p/contacts/candidatures",
+      );
     });
 
     // Le cœur du problème d'origine : trois entrées pour la même table

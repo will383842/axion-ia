@@ -543,6 +543,28 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "UserPlus",
       group: "contacts",
     },
+    // 🔴 2026-09-04 — CET ÉCRAN EXISTAIT ET PERSONNE NE POUVAIT LE TROUVER.
+    //
+    // Le pilotage du recrutement (dossiers jamais répondus, sans activité, délai
+    // médian de 1re réponse) est livré depuis la PR #968. Il n'était atteignable
+    // que par un bouton À L'INTÉRIEUR de l'écran Candidatures — donc invisible
+    // pour qui ne l'ouvrait pas d'abord. Will l'a cherché dans le menu et ne l'a
+    // pas trouvé : c'est le signal, pas une préférence.
+    //
+    // 🔑 Un écran qui n'est pas dans la navigation n'existe pas. La garde
+    // `admin-nav:routes-check` ne pouvait pas l'attraper : elle vérifie que
+    // chaque entrée de menu pointe vers une route existante — jamais l'inverse.
+    // La classe « une page sans entrée de menu » n'est gardée par rien.
+    //
+    // `navLevel: 2` : c'est une vue DE la liste des candidatures, pas une
+    // catégorie sœur — l'indentation le dit sans qu'on ait à l'écrire.
+    {
+      href: `${base}/contacts/candidatures/pilotage`,
+      label: "Pilotage du recrutement",
+      icon: "Gauge",
+      group: "contacts",
+      navLevel: 2,
+    },
     // ── Tunnels d'acquisition (2026-08-12) ────────────────────────────
     // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre
     // les gens qui ONT écrit, celui-ci montre ceux qu'on a PERDUS en route.
