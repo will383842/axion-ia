@@ -256,3 +256,58 @@ Reste au lot 1 :
 - `evaluateur.ts` : alerte adossée à `echeanceReponseAt`, pas à J-3 fixe.
 - Page `espace-formateur/mission/[token]` : écran « trop tard » + message.
 - Catalogue d'alertes : code du message reçu après délai.
+
+---
+
+## 12. Lot 1 LIVRÉ — PR #991
+
+`75f4e0f6e` sur `qualiopi/formateur-cycle-vie` → **PR #991 ouverte**, gates en cours.
+
+Contenu : les 6 défauts formateur, le module pur `delai-reponse-mission.ts`, le
+statut `sans_reponse`, l'écran « trop tard » + message, et une garde
+d'isolation worker.
+
+### 🔑 Leçon du lot, à ne pas perdre
+
+**Un import de plus dans `mission-formateur.ts` fait entrer `next-auth` dans le
+graphe du WORKER.** `alertes-service` → `evaluateur` → chaîne admin →
+`next-auth`. Trois suites sont devenues INCOLLECTABLES (pas rouges :
+incollectables). En production, le worker se déclarerait `ready` puis planterait
+à chaque déclenchement — exactement la famille `server-only` qui a tué deux
+crons de recrutement le même jour.
+
+Parade posée : `message-apres-delai.ts` extrait, et
+`src/server/qualiopi/trainers/__tests__/le-worker-ne-tire-pas-la-chaine-admin.spec.ts`
+qui refuse le retour de l'import. **Vue rouge** en remettant l'import.
+
+### Reste à faire (lots 2 et 3)
+
+**Lot 2 — distanciel de bout en bout, adaptateur Zoom**
+- Adaptateur Zoom via API `registrants` : une salle par session, **un lien par
+  personne**, prénom/nom préremplis, rapport de présence récupéré.
+- Couche agnostique `/portail/rejoindre/<jeton>` : jeton lié à l'empreinte de
+  l'adresse, fenêtre H-30 min → fin + 2 h, révocable, tracé. L'URL réelle ne
+  quitte jamais le serveur. Changer de fournisseur = changer une URL.
+- Espace stagiaire : afficher lieu, horaires, formateur, bouton « Rejoindre »
+  (aujourd'hui la page ne montre que titre/statut/dates, alors que la
+  convocation promet « les modalités pratiques y sont »).
+- Rappels stagiaire J-1 et H-1.
+- **Contrôle avant vol bloquant** : une session distancielle ne se crée pas si
+  Zoom n'est pas relié, ou si aucune licence d'hôte n'est libre sur le créneau.
+  ⚠️ Décision Will : les licences sont à l'ORGANISME, jamais au formateur.
+- `releve_connexion` : le type de document EXISTE déjà, documenté comme
+  alimenté par « un import CSV plateforme distancielle », **sans producteur**.
+  C'est la place du rapport Zoom, déjà creusée.
+- Émargement : le rapport Zoom **pré-remplit** et **recoupe**, il ne remplace
+  pas la signature (l'OPCO exige des émargements signés ; ind. 13 attend une
+  preuve d'engagement, pas une trace de connexion). Divergence → alerte.
+
+**Lot 3 — N1/N2/N4/N5 + les 10 frictions**
+- N1 `setSessionMontantAction` (le prix n'est écrit qu'à la création).
+- N2 modalité modifiable (aujourd'hui figée, d'où `distanciel` + `nos_locaux`
+  incohérents possibles).
+- N4 `ConventionButton` ne passe jamais `rectificationMotif` → régénération
+  filigranée « COPIE ».
+- N5 acompte par défaut 30 % invisible (`acomptePercent ?? 30`).
+- N3 à trancher : les boutons du bloc Documents répondent-ils à la main ?
+- F1→F10, dont F10 (repères « (J-n) » comptés depuis aujourd'hui).
