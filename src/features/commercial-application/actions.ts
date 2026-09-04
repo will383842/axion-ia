@@ -295,6 +295,18 @@ export async function submitCommercialApplicationAction(
         companyName: "—",
         contactName: encryptPii(`${d.prenom} ${d.nom}`),
         contactEmail: encryptPii(d.email),
+        // 🔴 2026-09-04 — manquait ici comme dans `lead-actions.ts`. Voir le
+        // commentaire long là-bas : sans cette empreinte, la ligne est
+        // INTROUVABLE par son adresse (IV aléatoire), donc ni exportable
+        // (art. 15) ni effaçable (art. 17), et les deux répondaient « succès ».
+        //
+        // 🔑 Conséquence propre à CE fichier : c'est aussi la clé qui relie ce
+        // dossier au premier contact laissé sur le tunnel apporteurs. Sans
+        // elle, la même personne occupe deux lignes que rien ne rapproche.
+        //
+        // `emailKey` est déjà calculé plus haut (compteur par adresse).
+        // ⛔ Gardée par `tests/unit/ci/toute-submission-porte-sa-cle-personne.spec.ts`.
+        contactEmailHash: emailKey,
         contactPhone: encryptPii(d.telephone) ?? null,
         details: {
           // `unifiedType: "recrutement"` = clé du filtre de la vue console
