@@ -27,6 +27,9 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // Rappel hebdo « offres à republier » (cron offres-fraicheur) — maintenance
   // SEO, pas un lead : Telegram seul, jamais WhatsApp.
   JOB_OFFERS_STALE: { channels: ["telegram"], severity: "warn" },
+  // Rappel quotidien « candidatures oubliées » — même nature que celui des
+  // offres à republier : de la maintenance, pas un lead. Telegram seul.
+  JOB_APPLICATIONS_STALE: { channels: ["telegram"], severity: "warn" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   VIDEO_EDITOR_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   COMMERCIAL_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
@@ -162,6 +165,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   RECRUITMENT_RECEIVED: "candidatures",
   // Le rappel « offres à republier » vit avec les offres qu'il concerne.
   JOB_OFFERS_STALE: "candidatures",
+  // Le rappel des dossiers oubliés vit avec les candidatures qu'il concerne.
+  JOB_APPLICATIONS_STALE: "candidatures",
 
   // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
   // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce

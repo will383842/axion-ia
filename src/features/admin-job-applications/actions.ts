@@ -10,7 +10,6 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
-import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 // La lecture SANS session, et les trois valeurs qu'un module `"use server"` ne
@@ -22,10 +21,14 @@ import {
   LIBELLE_STATUT,
   LIBELLE_MOTIF_REFUS,
   MOTIFS_REFUS,
-  exigeUnMotif,
-  interditUnMotif,
   estUneDecision,
+  incoherenceDeLaDecision,
 } from "@/content/recrutement/statuts";
+// Les deux gardes de session vivent hors de ce fichier : un module
+// `"use server"` ne peut pas les exporter sans en faire des points d'entrée
+// réseau, et le module des gestes en masse doit les partager plutôt que les
+// recopier.
+import { requireAdminWrite, requireAdminRead } from "./session";
 import type { ListApplicationsInput } from "./reads";
 export type {
   ListApplicationsInput,
@@ -38,46 +41,6 @@ import type {
   Locale,
 } from "../../../prisma/generated/client";
 
-/** Déchiffrement tolérant : un ciphertext corrompu ne casse pas la page entière. */
-
-async function requireAdminWrite() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("unauthorized");
-  const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
-    throw new Error("forbidden");
-  }
-  // Le nom est FIGÉ dans la frise au moment du geste : un compte renommé ou
-  // supprimé plus tard ne doit pas effacer qui a décidé. Repli sur l'adresse
-  // puis sur l'identifiant — une ligne sans auteur se lit comme une ligne dont
-  // on a perdu l'auteur.
-  const nom = (session.user as { name?: string }).name ?? session.user.email ?? session.user.id;
-  return { userId: session.user.id, role, nom };
-}
-/**
- * Ouvrir un dossier de candidature — identite comprise.
- *
- * 🔴 Cette garde ne testait AUCUN role : elle verifiait la seule presence d'une
- * session. Or les trois actions qui l'appellent rendent les PII DECHIFFREES
- * (nom, e-mail, telephone) via `decryptPii`. Un compte `reader` — le role de
- * consultation, explicitement exclu de l'ecriture — lisait donc l'identite
- * complete de chaque candidat.
- *
- * Le CV, lui, etait garde. La piece jointe etait mieux protegee que l'identite
- * a laquelle elle appartient : proteger la porte en laissant la fenetre ouverte
- * n'est pas de la prudence.
- *
- * La liste des roles vit au SSOT (`auth/habilitations.ts`), avec le CV et la
- * photo qui la partagent. Une liste recopiee ici divergerait — le depot vient
- * d'en solder vingt-neuf copies du predicat d'ecriture.
- */
-async function requireAdminRead(): Promise<{ userId: string; email: string; role: string }> {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("unauthorized");
-  const role = (session.user as { role?: string }).role ?? "reader";
-  if (!peutOuvrirDossierCandidat(role)) throw new Error("forbidden");
-  return { userId: session.user.id, email: session.user.email ?? "", role };
-}
 async function requireSuperAdmin() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
@@ -442,30 +405,6 @@ const updateSchema = z.object({
 });
 export type UpdateApplicationState = { ok: true } | { ok: false; error: string };
 
-/**
- * La règle de décision, DITE EN FRANÇAIS, avant que Postgres ne la dise en
- * anglais.
- *
- * 🔑 La contrainte `job_applications_motif_coherent_check` reste seule juge —
- * elle tient même si quelqu'un écrit en base par un autre chemin. Ce contrôle
- * ne la double pas : il évite de faire remonter à un recruteur un message
- * Postgres qui ne lui apprend rien (« violates check constraint … »), et il
- * nomme le champ à corriger. Preuve des deux sens :
- * `prisma/scripts/verifier-contrainte-decision.sql`.
- */
-function verifierLaCoherenceDeLaDecision(
-  statut: JobApplicationStatus,
-  motif: string | undefined,
-): string | null {
-  if (exigeUnMotif(statut) && !motif) {
-    return `Un motif est obligatoire pour « ${LIBELLE_STATUT[statut]} » : un refus sans motif ne s'apprend pas.`;
-  }
-  if (interditUnMotif(statut) && motif) {
-    return `« ${LIBELLE_STATUT[statut]} » est un état en cours : il ne peut pas porter de motif de sortie.`;
-  }
-  return null;
-}
-
 export async function updateApplicationStatusAction(
   _prev: UpdateApplicationState,
   formData: FormData,
@@ -486,10 +425,7 @@ export async function updateApplicationStatusAction(
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
-  const incoherence = verifierLaCoherenceDeLaDecision(
-    parsed.data.status,
-    parsed.data.rejectionReason,
-  );
+  const incoherence = incoherenceDeLaDecision(parsed.data.status, parsed.data.rejectionReason);
   if (incoherence) return { ok: false, error: incoherence };
 
   // L'état AVANT, lu pour deux raisons : écrire la transition dans la frise, et

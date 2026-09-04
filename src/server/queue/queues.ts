@@ -1579,6 +1579,20 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "*/5 * * * *",
         jobId: "formation-crons-rappels-entretien-cron",
       },
+      // Candidatures en sommeil — QUOTIDIEN, 08:20 UTC.
+      //
+      // 🔑 Quotidien et non horaire : les seuils se comptent en JOURS (7 et 21).
+      // Un passage horaire enverrait vingt-quatre fois la même alerte pour le
+      // même dossier — la déduplication par jour la couperait, ce qui rendrait
+      // vingt-trois passages parfaitement inutiles. La cadence suit l'unité de
+      // la règle, pas l'envie de réactivité.
+      //
+      // 08:20 : après les crons du matin, avant que la journée commence.
+      {
+        type: "formation-crons.candidatures-en-sommeil",
+        pattern: "20 8 * * *",
+        jobId: "formation-crons-candidatures-en-sommeil-cron",
+      },
       // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
       // quotidienne comme ses voisines. Une panne d'e-mails découverte le
       // lendemain matin, c'est une journée de convocations et d'attestations

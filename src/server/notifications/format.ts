@@ -66,6 +66,7 @@ const TITLES: Record<NotificationCategory, string> = {
   VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
   COMMERCIAL_APPLICATION_RECEIVED: "Candidature commercial",
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
+  JOB_APPLICATIONS_STALE: "Candidatures oubliées",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
   RGPD_REQUEST_SUBMITTED: "⚖️ Demande RGPD — délai 1 mois",
@@ -298,6 +299,37 @@ function formatBody(event: NotificationEvent): string {
         formatKV(
           "Règle",
           "republier UNIQUEMENT si l'offre est toujours ouverte (bouton Republier) — les pages statiques passent par une modif de code",
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "JOB_APPLICATIONS_STALE": {
+      const p = event.payload;
+      return [
+        formatKV(
+          "Jamais répondu",
+          `${p.jamaisRepondu} dossier(s) — plus de ${p.seuilSansReponseJours} j depuis le dépôt`,
+        ),
+        formatKV(
+          "Sans activité",
+          `${p.sansActivite} dossier(s) — plus de ${p.seuilSansActiviteJours} j sans une ligne`,
+        ),
+        ...p.pires.map((d) =>
+          formatKV(
+            d.motif === "jamais_repondu" ? "Sans réponse" : "Endormi",
+            `${d.offre} — ${d.jours} j`,
+          ),
+        ),
+        // Une troncature ne doit jamais être muette, y compris sur Telegram :
+        // sans cette ligne, le compteur se lirait comme un total.
+        p.plafondAtteint
+          ? formatKV("⚠️ Examen tronqué", "le plafond a été atteint, d'autres dossiers attendent")
+          : null,
+        formatKV("Ouvrir", `${SITE_URL}${adminPath("fr", "contacts/candidatures/pilotage")}`),
+        formatKV(
+          "Règle",
+          "aucun statut n'a été changé et aucun message n'est parti — répondre reste un geste humain",
         ),
       ]
         .filter((v): v is string => v !== null)
