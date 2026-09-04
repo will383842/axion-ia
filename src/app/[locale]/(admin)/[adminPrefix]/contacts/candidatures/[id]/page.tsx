@@ -43,11 +43,21 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
 
   // Labels des questions de l'offre → rendu lisible des réponses (pas de JSON brut).
   //
-  // ⚠️ `offerId` peut être `null` depuis le lot 6 : l'offre a été supprimée (elle
-  // n'emporte plus le dossier) ou la candidature est spontanée. On ne cherche
-  // alors AUCUNE offre — et la page reste entière, parce que le poste se lit sur
-  // `offerTitleSnap`, figé à la soumission. Un `??` sur une chaîne vide aurait
-  // déclenché une requête garantie infructueuse à chaque affichage.
+  // 🔴 SANS CE GARDE, LA FICHE CANDIDAT REND UNE 500. Mesuré le 2026-09-04 sur
+  // la base de recette, avec un vrai dossier sans offre :
+  //
+  //     prisma.jobOffer.findUnique({ where: { id: null } })
+  //     -> Invalid `prisma.jobOffer.findUnique()` invocation
+  //
+  // ⚠️ J'avais d'abord écrit ici qu'« une requête sur `id: undefined` ne lève
+  // pas : elle ne trouve rien ». C'est FAUX pour `findUnique`, qui valide son
+  // argument et LÈVE. Le garde n'évite donc pas un affichage incomplet — il
+  // évite un plantage de la page entière.
+  //
+  // `offerId` est `null` dans deux cas depuis le lot 6 : l'offre a été supprimée
+  // (elle n'emporte plus le dossier) ou la candidature est spontanée. Dans les
+  // deux cas la page reste entière, parce que le poste se lit sur
+  // `offerTitleSnap`, figé à la soumission.
   const offer = a.offerId === null ? null : await getJobOfferDetailAction(a.offerId);
 
   // La frise porte le corps des messages envoyés, donc le nom de la personne :

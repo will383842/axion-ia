@@ -163,7 +163,17 @@ export default async function CarrieresHubPage({
             <Cta href="#offres" track="careers-hero-see-offers">
               {isFr ? "Voir les offres" : "See open roles"}
             </Cta>
-            <Cta href="/contact" variant="outline" track="careers-hero-spontaneous">
+            {/* 🔴 Pointait vers `/contact` jusqu'au 2026-09-04. Le geste produisait
+                alors une `Submission` du formulaire de contact : sans CV, sans
+                journal, sans entretien, sans décision — et INVISIBLE dans les
+                écrans de recrutement. Le message Telegram annonçait pourtant
+                « Candidature spontanée », pour un dossier qui n'existait nulle
+                part dans la console. */}
+            <Cta
+              href="/carrieres/candidature-spontanee"
+              variant="outline"
+              track="careers-hero-spontaneous"
+            >
               {isFr ? "Candidature spontanée" : "Spontaneous application"}
             </Cta>
           </>
@@ -363,7 +373,8 @@ export default async function CarrieresHubPage({
                   : "No open position right now — but we're growing fast."}
               </p>
               <div className="mt-6">
-                <Cta href="/contact" track="careers-empty-contact">
+                {/* Même bascule que le bandeau : une seule porte, un seul objet. */}
+                <Cta href="/carrieres/candidature-spontanee" track="careers-empty-contact">
                   {isFr ? "Candidature spontanée" : "Spontaneous application"}
                 </Cta>
               </div>
@@ -509,7 +520,7 @@ export default async function CarrieresHubPage({
                     {
                       question: "Puis-je envoyer une candidature spontanée ?",
                       answer:
-                        "Oui : si aucune offre ne correspond, écris-nous via la page contact en précisant le type de poste qui t'intéresse.",
+                        "Oui : si aucune offre ne correspond, utilise la page « Candidature spontanée » en précisant le poste qui t'intéresse. Ton dossier est suivi comme une candidature à une offre — CV, entretien, réponse.",
                     },
                   ]
                 : [
@@ -536,7 +547,7 @@ export default async function CarrieresHubPage({
                     {
                       question: "Can I send a spontaneous application?",
                       answer:
-                        "Yes: if no offer fits, reach out via the contact page stating the kind of role you're interested in.",
+                        "Yes: if no offer fits, use the « Candidature spontanée » page and state the role you're after. Your file is tracked like any application — CV, interview, reply.",
                     },
                   ]
               ).map((it, i) => ({ id: `faq-${i + 1}`, ...it }))}
