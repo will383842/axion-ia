@@ -154,6 +154,12 @@ const CODES_ATTENDUS: string[] = [
   "formateur_indisponible_sur_session",
   // Recette du 2026-09-04 : la convocation partait muette sur la manière d'entrer.
   "session_contact_sur_place_absent",
+  // Recette du 2026-09-04 : le délai de réponse du formateur n'existait pas.
+  // `sans_reponse` prévient qu'on attend ; `sans_reponse_delai` constate qu'on
+  // n'attend plus et que la session est libre. Le geste diffère : appeler d'un
+  // côté, réaffecter de l'autre.
+  "formateur_mission_sans_reponse_delai",
+  "formateur_message_apres_delai",
   "formateur_non_habilite_assigne",
 ];
 

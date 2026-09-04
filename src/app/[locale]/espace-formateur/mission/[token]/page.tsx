@@ -22,6 +22,8 @@ import {
   MOTIF_REFUS_MIN,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { MissionReponseForm } from "@/components/espace-formateur/MissionReponseForm";
+import { MissionMessageApresDelai } from "@/components/espace-formateur/MissionMessageApresDelai";
+import { ecrireApresDelaiAction } from "@/server/actions/qualiopi/mission-formateur";
 import { SUITE_APRES_REPONSE } from "@/components/espace-formateur/mission-copy";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
@@ -115,7 +117,16 @@ export default async function Page({
           </dl>
 
           <div className="mt-6">
-            {mission.statut === "en_attente" ? (
+            {/*
+              🔴 L'ÉCHÉANCE, et pas seulement le statut. Le cron qui bascule en
+              `sans_reponse` passe à intervalle : entre l'échéance et son
+              passage, la mission est encore `en_attente` en base alors que le
+              délai est écoulé. Rendre le formulaire d'acceptation dans cette
+              fenêtre laisserait quelqu'un accepter une session que l'organisme
+              considère déjà comme libre — et `repondreMission` le refuserait
+              ensuite avec un message que rien n'annonçait.
+            */}
+            {mission.statut === "en_attente" && !mission.delaiDepasse ? (
               <MissionReponseForm
                 cible={{ token }}
                 resume="Acceptez-vous d'animer cette session ? Un refus doit être motivé : il nous aide à réaffecter la session rapidement."
@@ -129,26 +140,41 @@ export default async function Page({
                 rendu, et sa confirmation avec. On répond donc aux deux, en
                 réutilisant les phrases du formulaire plutôt qu'en les recopiant.
               */
-              <div role="status" className="border-border rounded-lg border p-4">
-                <p className="text-mocha text-sm font-semibold">
-                  {mission.statut === "acceptee" || mission.statut === "refusee"
-                    ? SUITE_APRES_REPONSE[mission.statut].titre
-                    : `Cette proposition n'attend plus de réponse : ${LIBELLE_STATUT_MISSION[
-                        mission.statut
-                      ].toLowerCase()}.`}
-                </p>
-                <p className="text-fg-soft mt-1 text-sm">
-                  {mission.statut === "acceptee" || mission.statut === "refusee"
-                    ? SUITE_APRES_REPONSE[mission.statut].suite
-                    : "Pour revoir vos missions, connectez-vous à votre espace."}
-                </p>
-                <Link
-                  href={FORMATEUR_CONNEXION_PATH}
-                  className="text-terracotta mt-3 inline-block text-sm hover:underline"
-                >
-                  Me connecter à mon espace
-                </Link>
-              </div>
+              <>
+                <div role="status" className="border-border rounded-lg border p-4">
+                  <p className="text-mocha text-sm font-semibold">
+                    {mission.statut === "acceptee" || mission.statut === "refusee"
+                      ? SUITE_APRES_REPONSE[mission.statut].titre
+                      : mission.delaiDepasse
+                        ? "Le délai de réponse est dépassé."
+                        : `Cette proposition n'attend plus de réponse : ${LIBELLE_STATUT_MISSION[
+                            mission.statut
+                          ].toLowerCase()}.`}
+                  </p>
+                  <p className="text-fg-soft mt-1 text-sm">
+                    {mission.statut === "acceptee" || mission.statut === "refusee"
+                      ? SUITE_APRES_REPONSE[mission.statut].suite
+                      : mission.delaiDepasse
+                        ? "La session a été libérée pour être confiée à quelqu'un d'autre. Nous ne l'avons peut-être pas encore fait."
+                        : "Pour revoir vos missions, connectez-vous à votre espace."}
+                  </p>
+                  <Link
+                    href={FORMATEUR_CONNEXION_PATH}
+                    className="text-terracotta mt-3 inline-block text-sm hover:underline"
+                  >
+                    Me connecter à mon espace
+                  </Link>
+                </div>
+                {/*
+                  Le canal de rattrapage. Offert dès que la proposition ne peut
+                  plus être acceptée par ce lien — jamais quand elle le peut
+                  encore : un message libre ne doit pas devenir une porte
+                  dérobée pour un accord qui doit rester au registre.
+                */}
+                {mission.statut !== "acceptee" && mission.statut !== "refusee" ? (
+                  <MissionMessageApresDelai token={token} action={ecrireApresDelaiAction} />
+                ) : null}
+              </>
             )}
           </div>
         </>

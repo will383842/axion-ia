@@ -27,8 +27,12 @@ interface Payload {
   roleLibelle: string;
   /** Lien SECRET vers la page de réponse (jeton de sollicitation). */
   lienReponse: string;
-  /** Date de démarrage, au-delà de laquelle le lien ne vaut plus. */
+  /** Date d'ÉCHÉANCE de la réponse — plus le démarrage, cf. `delaiReponse`. */
   dateLimiteReponse: string;
+  /** « sous 5 heures », « sous 2 jours » — dérivé, jamais écrit en dur. */
+  delaiReponse?: string;
+  /** Quand les informations pratiques arriveront RÉELLEMENT. */
+  infosPratiques?: string;
   relance?: boolean;
 }
 
@@ -75,17 +79,38 @@ export function FormateurMissionProposeeEmail({
       <Text style={emailStyles.paragraphStyle}>
         Bonjour {p.formateurPrenomNom} — voici l&apos;essentiel : {p.modalite} · {p.lieu} ·{" "}
         {p.effectif}. Les informations pratiques complètes (adresse, salle, contact sur place,
-        consignes d&apos;accès, horaires) vous seront envoyées une semaine avant le démarrage et
-        restent consultables dans votre espace formateur.
+        consignes d&apos;accès, horaires){" "}
+        {/*
+          🔴 C'était « vous seront envoyées une semaine avant le démarrage », EN
+          DUR. Pour une session le lendemain, c'est une promesse impossible — et
+          le formateur a reçu, dix minutes après ce message, le rappel « votre
+          session de demain ». Deux messages du même expéditeur qui se
+          contredisent dans le même quart d'heure.
+
+          Même famille que le « demain » du rappel J-1 corrigé le 2026-09-04 :
+          ce qui dépend du délai se DÉRIVE du délai. La valeur de repli garde
+          l'ancienne phrase, qui reste juste pour une session lointaine.
+        */}
+        {p.infosPratiques ?? "vous seront envoyées une semaine avant le démarrage"} et restent
+        consultables dans votre espace formateur.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        <strong>Merci de répondre par le bouton ci-dessous</strong> : acceptez, ou refusez en
-        indiquant le motif. Un refus libère la session pour qu&apos;un autre formateur puisse la
+        <strong>Merci de répondre {p.delaiReponse ?? "au plus vite"}</strong> : acceptez, ou refusez
+        en indiquant le motif. Un refus libère la session pour qu&apos;un autre formateur puisse la
         prendre — plus il arrive tôt, mieux c&apos;est.
       </Text>
+      {/*
+        🔴 Le paragraphe disait « il cesse de fonctionner … au démarrage de la
+        session ». Exact pour le JETON, faux pour la RÉPONSE : passé l'échéance,
+        la session est libérée et réaffectée. Un formateur qui lisait « j'ai
+        jusqu'au démarrage » pouvait accepter à H-1 une session déjà confiée à
+        quelqu'un d'autre — deux personnes convaincues d'animer la même journée.
+      */}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        Ce lien est personnel et ne vaut que pour cette proposition ; il cesse de fonctionner le{" "}
-        {p.dateLimiteReponse}, au démarrage de la session. Référence : {p.numeroSession}.
+        Ce lien est personnel et ne vaut que pour cette proposition. Sans réponse d&apos;ici au{" "}
+        {p.dateLimiteReponse}, nous confierons la session à quelqu&apos;un d&apos;autre — le lien
+        vous permettra encore de nous écrire, mais plus d&apos;accepter. Référence :{" "}
+        {p.numeroSession}.
       </Text>
     </EmailLayout>
   );

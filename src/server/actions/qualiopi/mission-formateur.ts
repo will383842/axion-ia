@@ -27,6 +27,7 @@ import {
   FAITS_ABSENCE,
   type ReponseMission,
 } from "@/server/qualiopi/trainers/mission-formateur";
+import { ecrireApresDelai } from "@/server/qualiopi/trainers/message-apres-delai";
 import type { MissionFormateurStatut } from "../../../../prisma/generated/client";
 
 // Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
@@ -68,6 +69,27 @@ export async function repondreMissionParJetonAction(input: {
   });
   if (!r.ok) return { error: r.erreur };
   return { data: { statut: r.statut, sessionId: r.sessionId } };
+}
+
+/**
+ * Message libre du formateur APRÈS l'échéance, depuis son lien devenu inerte.
+ *
+ * Pas de garde admin : le jeton signé désigne la sollicitation, donc la
+ * personne — exactement comme la réponse ci-dessus. C'est le seul geste qui
+ * reste au formateur quand le délai est passé, et le lui refuser ferait perdre
+ * la seule information encore utile : est-il disponible malgré tout ?
+ */
+export async function ecrireApresDelaiAction(input: {
+  token: string;
+  message: string;
+}): Promise<ActionResult<{ envoye: true }>> {
+  if (typeof input.token !== "string" || input.token.length < 10) {
+    return { error: "Lien invalide." };
+  }
+  if (typeof input.message !== "string") return { error: "Données invalides" };
+  const r = await ecrireApresDelai({ token: input.token, message: input.message });
+  if (!r.ok) return { error: r.erreur };
+  return { data: { envoye: true } };
 }
 
 /** Réponse depuis l'espace formateur CONNECTÉ. */
