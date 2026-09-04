@@ -19,6 +19,7 @@ import {
   repondreMissionParJetonAction,
   repondreMissionFormateurAction,
 } from "@/server/actions/qualiopi/mission-formateur";
+import { SUITE_APRES_REPONSE } from "@/components/espace-formateur/mission-copy";
 
 export type MissionReponseCible = { token: string } | { missionId: string };
 
@@ -68,16 +69,11 @@ export function MissionReponseForm({
     "inline-flex min-h-[44px] items-center justify-center rounded-md border border-border px-5 py-2 text-sm font-semibold text-mocha hover:bg-sand disabled:opacity-50";
 
   if (etat.phase === "fait") {
+    const dit = SUITE_APRES_REPONSE[etat.statut];
     return (
       <div role="status" className="border-border rounded-lg border p-4">
-        <p className="text-mocha text-sm font-semibold">
-          {etat.statut === "acceptee" ? "Mission acceptée." : "Refus enregistré."}
-        </p>
-        <p className="text-fg-soft mt-1 text-sm">
-          {etat.statut === "acceptee"
-            ? "Merci. Les informations pratiques (adresse, salle, contact sur place, consignes d'accès) vous parviendront une semaine avant le démarrage, et restent consultables dans votre espace."
-            : "L'organisme est prévenu et va confier la session à un autre intervenant. Merci d'avoir répondu vite."}
-        </p>
+        <p className="text-mocha text-sm font-semibold">{dit.titre}</p>
+        <p className="text-fg-soft mt-1 text-sm">Merci. {dit.suite}</p>
       </div>
     );
   }

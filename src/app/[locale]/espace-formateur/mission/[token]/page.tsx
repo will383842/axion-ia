@@ -22,6 +22,7 @@ import {
   MOTIF_REFUS_MIN,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { MissionReponseForm } from "@/components/espace-formateur/MissionReponseForm";
+import { SUITE_APRES_REPONSE } from "@/components/espace-formateur/mission-copy";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 
@@ -121,13 +122,25 @@ export default async function Page({
                 motifMin={MOTIF_REFUS_MIN}
               />
             ) : (
+              /*
+                🔴 Recette du 2026-09-03 — ce bloc était écrit pour quelqu'un qui
+                ROUVRE un vieux lien. Mais `router.refresh()` amène ici, en une
+                seconde, celui qui vient de CLIQUER : le formulaire cesse d'être
+                rendu, et sa confirmation avec. On répond donc aux deux, en
+                réutilisant les phrases du formulaire plutôt qu'en les recopiant.
+              */
               <div role="status" className="border-border rounded-lg border p-4">
                 <p className="text-mocha text-sm font-semibold">
-                  Cette proposition n&apos;attend plus de réponse :{" "}
-                  {LIBELLE_STATUT_MISSION[mission.statut].toLowerCase()}.
+                  {mission.statut === "acceptee" || mission.statut === "refusee"
+                    ? SUITE_APRES_REPONSE[mission.statut].titre
+                    : `Cette proposition n'attend plus de réponse : ${LIBELLE_STATUT_MISSION[
+                        mission.statut
+                      ].toLowerCase()}.`}
                 </p>
                 <p className="text-fg-soft mt-1 text-sm">
-                  Pour revoir vos missions, connectez-vous à votre espace.
+                  {mission.statut === "acceptee" || mission.statut === "refusee"
+                    ? SUITE_APRES_REPONSE[mission.statut].suite
+                    : "Pour revoir vos missions, connectez-vous à votre espace."}
                 </p>
                 <Link
                   href={FORMATEUR_CONNEXION_PATH}

@@ -12,9 +12,11 @@ import {
   formulerAdresseComplete,
   formulerContactSurPlace,
   formulerHoraires,
+  joursCivilsAvant,
   FENETRE_CONVOCATION_J7_JOURS,
   FENETRE_RAPPEL_J1_HEURES,
 } from "./convocation-formateur";
+import { libelleDelaiConvocation } from "@/lib/email/templates/formateur-convocation-j7";
 
 describe("formulations", () => {
   it("horaires : une ligne par journée, rien sans journée", () => {
@@ -52,6 +54,54 @@ describe("formulations", () => {
     expect(
       formulerAdresseComplete({ lieuAdresse: null, lieuCodePostal: null, lieuVille: "Lyon" }),
     ).toBe("Lyon");
+  });
+});
+
+// ── Le délai annoncé (recette 2026-09-03) ───────────────────────────────────
+// Le cron convoque par ÉTAT, donc aussi à J-3 ou à J-1. Le gabarit affirmait
+// « dans 7 jours » quoi qu'il arrive.
+describe("délai réel avant le démarrage", () => {
+  it("compte des jours CIVILS de Paris, pas des tranches de 24 h", () => {
+    // 20:00 heure de Paris la veille d'une session de 09:00 : 13 h d'écart,
+    // et pourtant la réponse attendue est « demain ».
+    const veilleAuSoir = new Date("2026-09-03T18:00:00Z");
+    const demainMatin = new Date("2026-09-04T07:00:00Z");
+    expect(joursCivilsAvant(demainMatin, veilleAuSoir)).toBe(1);
+  });
+
+  it("0 le jour même, négatif une fois commencée", () => {
+    const midi = new Date("2026-09-10T10:00:00Z");
+    expect(joursCivilsAvant(new Date("2026-09-10T07:00:00Z"), midi)).toBe(0);
+    expect(joursCivilsAvant(new Date("2026-09-08T07:00:00Z"), midi)).toBe(-2);
+  });
+
+  it("7 jours pleins entre deux dates de calendrier", () => {
+    expect(
+      joursCivilsAvant(new Date("2026-09-10T07:00:00Z"), new Date("2026-09-03T18:00:00Z")),
+    ).toBe(7);
+  });
+
+  it("l'objet et le titre DISENT le délai qu'on a mesuré", () => {
+    expect(libelleDelaiConvocation(7, "fr")).toEqual({
+      prefixeObjet: "Dans 7 jours —",
+      titre: "Votre session démarre dans une semaine",
+    });
+    expect(libelleDelaiConvocation(3, "fr").titre).toBe("Votre session démarre dans 3 jours");
+    expect(libelleDelaiConvocation(1, "fr").titre).toBe("Votre session démarre demain");
+    expect(libelleDelaiConvocation(0, "fr").titre).toBe("Votre session démarre aujourd'hui");
+    expect(libelleDelaiConvocation(-1, "fr").titre).toBe("Votre session démarre aujourd'hui");
+  });
+
+  it("🔴 un délai absent ne fabrique AUCUNE promesse de date", () => {
+    // Le défaut d'origine, en une ligne : un repli à 7 le referait à l'identique.
+    for (const l of [
+      libelleDelaiConvocation(undefined, "fr"),
+      libelleDelaiConvocation(Number.NaN, "fr"),
+    ]) {
+      expect(l.titre).toBe("Vos informations pratiques");
+      expect(l.titre).not.toMatch(/semaine|jours|demain/);
+      expect(l.prefixeObjet).not.toMatch(/7/);
+    }
   });
 });
 

@@ -36,6 +36,7 @@ import {
   listFormationOptions,
 } from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
+import { whereSessionsDuFormateur } from "@/server/formateur/collectif-queries";
 import { fiabiliteFormateur } from "@/server/qualiopi/trainers/fiabilite-service";
 import { statsMissionsFormateur } from "@/server/qualiopi/trainers/mission-formateur";
 import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
@@ -72,14 +73,43 @@ async function listFormationsLite(): Promise<Array<{ id: string; titre: string }
 
 // « Nombre de formations faites » — calculé automatiquement (Will 2026-06-10) :
 // sessions Qualiopi animées. Stub-safe (build sans DB → 0).
-async function getTrainerActivityCounts(trainerId: string): Promise<{ sessionsCount: number }> {
+//
+// 🔴 Recette 2026-09-03. Ce compteur disait « 5 sessions Qualiopi animées »
+// pour une formatrice qui n'en avait animé AUCUNE : il comptait toutes les
+// `TrainingSession` la portant comme formateur principal, quel que soit leur
+// statut. Trois faussetés dans un seul chiffre, et il part à l'auditeur —
+// c'est la fiche versée au dossier (ind. 21) :
+//
+//   1. il comptait des sessions PLANIFIÉES, qui n'ont pas eu lieu ;
+//   2. il comptait la session dont la formatrice s'est DÉSISTÉE le matin même ;
+//   3. il ne lisait que `formateurPrincipalId` — un cache dénormalisé qui ne
+//      porte QUE le principal. Toute co-animation restait invisible, le piège
+//      que `fiabilite-service.ts` documente déjà pour son dénominateur.
+//
+// On compte donc les sessions RÉALISÉES, par l'invariant nommé du dépôt
+// (`whereSessionsDuFormateur` : principal OU co-animateur), et on rend à part
+// celles qui restent À VENIR — l'information que le chiffre gonflé prétendait
+// donner, cette fois sous son vrai nom.
+async function getTrainerActivityCounts(
+  trainerId: string,
+  now: Date,
+): Promise<{ sessionsAnimees: number; sessionsAVenir: number }> {
   try {
-    const sessionsCount = await prisma.trainingSession.count({
-      where: { formateurPrincipalId: trainerId },
-    });
-    return { sessionsCount };
+    const [sessionsAnimees, sessionsAVenir] = await Promise.all([
+      prisma.trainingSession.count({
+        where: { statut: "realisee", ...whereSessionsDuFormateur(trainerId) },
+      }),
+      prisma.trainingSession.count({
+        where: {
+          statut: "planifiee",
+          dateDebut: { gt: now },
+          ...whereSessionsDuFormateur(trainerId),
+        },
+      }),
+    ]);
+    return { sessionsAnimees, sessionsAVenir };
   } catch {
-    return { sessionsCount: 0 };
+    return { sessionsAnimees: 0, sessionsAVenir: 0 };
   }
 }
 
@@ -105,7 +135,10 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     // surface qui couvre les lettres-cadre sans session (coaching/audit).
     lireLettresMissionConsoleDuFormateur(trainer.id, role),
   ]);
-  const { sessionsCount } = await getTrainerActivityCounts(trainer.id);
+  // Un seul instant pour toute la page — conformité, missions et activité —,
+  // sinon deux compteurs voisins peuvent se contredire d'une milliseconde.
+  const now = new Date();
+  const { sessionsAnimees, sessionsAVenir } = await getTrainerActivityCounts(trainer.id, now);
 
   // Domaines de compétences au format d'ÉDITION (input date = `YYYY-MM-DD`).
   // Le stockage historique accepte aussi des chaînes nues (« IA générative »)
@@ -150,7 +183,6 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   // Conformité documentaire (URSSAF, NDA, RC pro…). Les manquements « bloquant »
   // empêchent d'envoyer le formateur chez un client ; les « alerte » signalent
   // une règle non tranchée (seuil URSSAF) ou une pièce à rafraîchir.
-  const now = new Date();
   const conformite = await getTrainerConformite(trainer.id, now.getUTCFullYear(), now);
   const bloquants = conformite?.manquements.filter((m) => m.gravite === "bloquant") ?? [];
   const alertes = conformite?.manquements.filter((m) => m.gravite === "alerte") ?? [];
@@ -198,8 +230,15 @@ export default async function FicheFormateurPage({ params }: PageProps) {
       <div className="admin-card mb-[var(--space-admin-5)]">
         <p className="admin-meta">Activité (calculée automatiquement)</p>
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-          <strong>{sessionsCount}</strong> session{sessionsCount > 1 ? "s" : ""} Qualiopi animée
-          {sessionsCount > 1 ? "s" : ""}.
+          <strong>{sessionsAnimees}</strong> session{sessionsAnimees > 1 ? "s" : ""} Qualiopi animée
+          {sessionsAnimees > 1 ? "s" : ""}
+          {sessionsAVenir > 0 ? (
+            <>
+              {" "}
+              · <strong>{sessionsAVenir}</strong> à venir
+            </>
+          ) : null}
+          .
         </p>
       </div>
 

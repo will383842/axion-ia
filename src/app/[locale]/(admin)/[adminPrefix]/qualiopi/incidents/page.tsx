@@ -63,7 +63,7 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  const [incidents, sessionsRecentes, formateursSousTraitants, organismes] = await Promise.all([
+  const [incidents, sessionsRecentes, formateurs, organismes] = await Promise.all([
     listIncidents({ take: 500 }),
     // Sessions récentes proposées pour rattacher un incident (12 mois glissants).
     prisma.trainingSession.findMany({
@@ -76,12 +76,26 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
       orderBy: { dateDebut: "desc" },
       take: 100,
     }),
-    // Intervenants externes actifs, pour la mise en cause (art. 7). Les deux
-    // natures sont chargées séparément puis fusionnées en une seule liste :
-    // Will se demande « qui ? », pas « personne physique ou organisme ? ».
+    // Intervenants actifs, pour la mise en cause. Les deux natures sont chargées
+    // séparément puis fusionnées en une seule liste : Will se demande « qui ? »,
+    // pas « personne physique ou organisme ? ».
+    //
+    // 🔴 Recette du 2026-09-03 — ce `findMany` filtrait `statut: "sous_traitant"`,
+    // et la liste ne proposait donc QUE Yann. Deux choses le contredisaient déjà
+    // dans le produit :
+    //   · « Déclarer une absence », sur la fiche de session, ouvre un incident
+    //     avec `trainerId` pour N'IMPORTE QUEL formateur — l'incident de Camille
+    //     Deroy, salariée, est en base, mais le registre ne sait pas la nommer ;
+    //   · la fiche formateur affiche « 1 absence consignée » pour tous les
+    //     statuts (décision du 2026-09-03 : « un salarié qui ne vient pas est un
+    //     fait à piloter »), et elle renvoie explicitement vers ce registre.
+    // Un incident constaté HORS session — un désistement appris après coup —
+    // était donc inattribuable à une salariée, et n'atteignait jamais sa fiche.
+    // Le champ reste facultatif, et l'art. 7 ne concerne toujours que les
+    // externes : c'est la LISTE qui était trop étroite, pas la règle.
     prisma.trainer.findMany({
-      where: { actif: true, statut: "sous_traitant" },
-      select: { id: true, nom: true, prenom: true },
+      where: { actif: true },
+      select: { id: true, nom: true, prenom: true, statut: true },
       orderBy: [{ nom: "asc" }, { prenom: "asc" }],
     }),
     prisma.sousTraitant.findMany({
@@ -91,12 +105,22 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     }),
   ]);
 
+  // Le statut est RENDU dans le libellé : « qui ? » se répond mieux quand on
+  // voit d'un coup d'œil qu'on met en cause un salarié plutôt qu'un externe —
+  // les suites ne sont pas les mêmes (art. 8 pour l'un, RH pour l'autre).
+  const LIBELLE_STATUT: Record<string, string> = {
+    salarie: "salarié",
+    dirigeant: "dirigeant-formateur",
+    sous_traitant: "sous-traitant",
+  };
   const intervenants = [
-    ...formateursSousTraitants.map((t) => ({
+    ...formateurs.map((t) => ({
       valeur: `Trainer:${t.id}`,
-      libelle: `${t.prenom} ${t.nom}`.trim(),
+      libelle:
+        `${t.prenom} ${t.nom}`.trim() +
+        (LIBELLE_STATUT[t.statut] !== undefined ? ` (${LIBELLE_STATUT[t.statut]})` : ""),
     })),
-    ...organismes.map((o) => ({ valeur: `SousTraitant:${o.id}`, libelle: o.nom })),
+    ...organismes.map((o) => ({ valeur: `SousTraitant:${o.id}`, libelle: `${o.nom} (organisme)` })),
   ];
 
   const ouverts = incidents.filter((i) => i.statut !== "resolu").length;

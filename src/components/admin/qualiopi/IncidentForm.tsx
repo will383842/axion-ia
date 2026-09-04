@@ -44,9 +44,10 @@ type IncidentFait =
   | "autre";
 
 /**
- * Faits reprochables à un intervenant externe (art. 7 de la procédure de
- * sous-traitance). Des FAITS observables, jamais un jugement de valeur : c'est
- * ce qui rend le registre opposable lors de la reconduction (art. 8).
+ * Faits reprochables à un intervenant (art. 7 de la procédure de
+ * sous-traitance pour les externes ; pilotage des absences pour les salariés).
+ * Des FAITS observables, jamais un jugement de valeur : c'est ce qui rend le
+ * registre opposable lors de la reconduction (art. 8).
  */
 const FAIT_LABELS: Record<IncidentFait, string> = {
   annulation_tardive: "Annulation tardive",
@@ -268,16 +269,18 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
       </div>
 
       {/*
-        Mise en cause d'un intervenant externe — art. 7 de la procédure de
-        sous-traitance. Rendu SEULEMENT s'il existe des intervenants : sans
-        sous-traitant référencé, un champ vide se lirait comme une donnée
-        manquante alors qu'il n'y a rien à saisir.
+        Mise en cause d'un intervenant — art. 7 de la procédure de sous-traitance
+        pour les EXTERNES ; pour un salarié, le même fait alimente la fiche
+        formateur (« absences consignées »), pas la reconduction. Rendu
+        SEULEMENT s'il existe des intervenants : sans personne référencée, un
+        champ vide se lirait comme une donnée manquante alors qu'il n'y a rien
+        à saisir.
       */}
       {intervenants.length > 0 && (
         <div className="mt-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
           <div className={fieldCls}>
             <label htmlFor="incidentform-intervenant" className={labelCls}>
-              Intervenant externe mis en cause (facultatif)
+              Intervenant mis en cause (facultatif)
             </label>
             <select
               id="incidentform-intervenant"

@@ -98,4 +98,37 @@ describe("formatLieu", () => {
       "Sur site — Grenoble",
     );
   });
+
+  // ── Hybride (recette 2026-09-03) ─────────────────────────────────────────
+  // Une session tenue EN SALLE et retransmise. Le lien était perdu : le lieu
+  // n'annonçait que la salle, et les participants à distance n'avaient aucune
+  // manière d'entrer.
+  it("hybride : rend l'adresse ET l'hôte de visio", () => {
+    expect(
+      formatLieu({
+        lieuType: "sur_site",
+        lieuAdresse: "48 boulevard des Belges",
+        lieuCodePostal: "69006",
+        lieuVille: "Lyon",
+        lieuSalle: "Curie",
+        lieuVisioUrl: "https://meet.google.com/rec-ette-008",
+      }),
+    ).toBe("Sur site — 48 boulevard des Belges, 69006 Lyon · Salle Curie · visio meet.google.com");
+  });
+
+  it("hybride sans salle : l'hôte s'ajoute quand même", () => {
+    expect(
+      formatLieu({
+        lieuType: "nos_locaux",
+        lieuVille: "Grenoble",
+        lieuVisioUrl: "https://zoom.us/j/123",
+      }),
+    ).toBe("Nos locaux — Grenoble · visio zoom.us");
+  });
+
+  it("hybride : une URL de visio illisible laisse la ligne intacte", () => {
+    expect(
+      formatLieu({ lieuType: "sur_site", lieuVille: "Lyon", lieuVisioUrl: "lien à venir" }),
+    ).toBe("Sur site — Lyon");
+  });
 });

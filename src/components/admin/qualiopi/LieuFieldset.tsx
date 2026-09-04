@@ -20,6 +20,12 @@ export interface LieuFieldsetProps {
   disabled?: boolean;
   /** Préfixe des `id` HTML — deux instances peuvent coexister sur une page. */
   idPrefix?: string;
+  /**
+   * Modalité de la session. Nécessaire parce que `LieuType` ne porte PAS
+   * l&apos;hybride : une session hybride se déroule dans une salle ET en visio,
+   * et son lieu ne se décrit donc pas par un seul des deux blocs.
+   */
+  modalite?: "presentiel" | "distanciel" | "hybride" | undefined;
 }
 
 const TYPE_OPTIONS = [
@@ -34,6 +40,7 @@ export function LieuFieldset({
   onChange,
   disabled = false,
   idPrefix = "lieu",
+  modalite,
 }: LieuFieldsetProps): React.ReactElement {
   const labelCls =
     "block text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
@@ -43,7 +50,19 @@ export function LieuFieldset({
   // Le distanciel n'a pas d'adresse postale, le présentiel n'a pas d'URL de
   // visio. Afficher les deux inviterait à remplir les deux, et la convention
   // annoncerait un lieu qui se contredit lui-même.
+  //
+  // 🔴 L'HYBRIDE est l'exception, et elle manquait (recette 2026-09-03) : une
+  // session hybride se tient dans une salle ET en visio. Comme `LieuType` ne
+  // porte que trois valeurs — aucune ne dit « les deux » — le fieldset la
+  // rendait indescriptible : « Sur site » masquait le lien de visio, et les
+  // participants à distance n'avaient aucune manière d'entrer ; « Distanciel »
+  // masquait l'adresse, et ceux sur place non plus. On affiche donc les deux
+  // blocs quand la modalité est hybride — le seul cas où ils ne se
+  // contredisent pas.
   const estDistanciel = value.lieuType === "distanciel";
+  const estHybride = modalite === "hybride";
+  const afficherAdresse = !estDistanciel;
+  const afficherVisio = estDistanciel || estHybride;
 
   return (
     <fieldset className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
@@ -90,28 +109,7 @@ export function LieuFieldset({
           />
         </div>
 
-        {estDistanciel ? (
-          <div className="sm:col-span-2">
-            <label className={labelCls} htmlFor={`${idPrefix}-visio`}>
-              Lien de visioconférence
-            </label>
-            <input
-              id={`${idPrefix}-visio`}
-              type="url"
-              inputMode="url"
-              value={value.lieuVisioUrl}
-              onChange={(e) => onChange({ lieuVisioUrl: e.target.value })}
-              disabled={disabled}
-              maxLength={2000}
-              placeholder="https://meet.google.com/…"
-              className={inputCls}
-            />
-            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Seul l&apos;hôte (ex. « meet.google.com ») apparaît sur les documents — jamais le lien
-              complet, qui vaut souvent clé d&apos;accès.
-            </p>
-          </div>
-        ) : (
+        {afficherAdresse && (
           <>
             <div className="sm:col-span-2">
               <label className={labelCls} htmlFor={`${idPrefix}-adresse`}>
@@ -162,10 +160,40 @@ export function LieuFieldset({
                 onChange={(e) => onChange({ lieuSalle: e.target.value })}
                 disabled={disabled}
                 maxLength={120}
+                // Les documents PRÉFIXENT « Salle » (cf. `formatLieu`). Sans
+                // exemple, on saisit « Salle Vercors » et la convention imprime
+                // « Salle Salle Vercors ». Vu en recette le 2026-09-03.
+                placeholder="Ex. : Vercors, 2e étage"
                 className={inputCls}
               />
             </div>
           </>
+        )}
+
+        {afficherVisio && (
+          <div className="sm:col-span-2">
+            <label className={labelCls} htmlFor={`${idPrefix}-visio`}>
+              Lien de visioconférence
+            </label>
+            <input
+              id={`${idPrefix}-visio`}
+              type="url"
+              inputMode="url"
+              value={value.lieuVisioUrl}
+              onChange={(e) => onChange({ lieuVisioUrl: e.target.value })}
+              disabled={disabled}
+              maxLength={2000}
+              placeholder="https://meet.google.com/…"
+              className={inputCls}
+            />
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Seul l&apos;hôte (ex. « meet.google.com ») apparaît sur les documents — jamais le lien
+              complet, qui vaut souvent clé d&apos;accès.
+              {estHybride
+                ? " Session hybride : les participants sur place ont l'adresse ci-dessus, ceux à distance ce lien."
+                : ""}
+            </p>
+          </div>
         )}
 
         {/* ── Accès pour le formateur (2026-09-03) ───────────────────────────
