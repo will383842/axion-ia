@@ -8530,6 +8530,28 @@ model JobApplication {
   /// opposées, pas encore intégrées ». Sans lui le job scannerait toute la
   /// table à chaque passage quotidien.
   @@index([vivierInfoSentAt, vivierOpposedAt, vivierSyncedAt])
+  /// 🔴 2026-09-04 — CET INDEX EXISTAIT EN BASE ET PAS DANS CE FICHIER.
+  ///
+  /// Il est créé depuis le 2026-08-20 par une migration BRUTE
+  /// (`20260820140000_job_application_email_hash`), écrite parce que sans lui
+  /// ni l'export art. 15 ni l'effacement art. 17 ne pouvaient atteindre une
+  /// candidature : `email` est chiffré à IV aléatoire, donc introuvable par
+  /// égalité SQL. Vérifié en production — `Index Scan using
+  /// job_applications_email_hash_idx`.
+  ///
+  /// Mais Prisma tient CE FICHIER pour la vérité. Un index présent en base et
+  /// absent d'ici est vu comme une dérive : la prochaine migration régénérée
+  /// depuis le schéma écrit un `DROP INDEX`, sans que rien ne l'annonce. Ce qui
+  /// tomberait alors, c'est la recherche RGPD par adresse — et la clé de
+  /// rapprochement d'une personne entre `Submission` et `JobApplication`.
+  ///
+  /// 🔑 Le déclarer ne touche PAS la base : le nom que Prisma génère
+  /// (`job_applications_email_hash_idx`) est déjà celui qui existe. C'est le
+  /// même motif `<table>_<colonne>_idx` que les trois autres empreintes du
+  /// dépôt, qui, elles, étaient déjà déclarées ici.
+  ///
+  /// Gardé par `tests/unit/ci/toute-empreinte-email-porte-son-index.spec.ts`.
+  @@index([emailHash])
   @@map("job_applications")
 }
 
