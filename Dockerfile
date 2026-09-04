@@ -80,7 +80,7 @@ ARG NEXT_PUBLIC_PLAUSIBLE_API_URL
 # qu'aucune erreur ne le signale. C'est exactement l'incident Plausible du
 # 2026-07-21, rejoué sur un budget publicitaire.
 ARG NEXT_PUBLIC_META_PIXEL_ID
-# Créneau d'appel des apporteurs — lu côté SERVEUR (`/facebook/merci`), donc il
+# Créneau d'appel des apporteurs — lu côté SERVEUR (`/apporteur-affaires/merci`), donc il
 # fonctionnerait au runtime seul. Il est quand même posé au build parce que la
 # page est prérendue (`revalidate = 600`) : sans lui au bake, le calendrier
 # n'apparaît qu'à la première régénération, jusqu'à 10 minutes après la mise en
