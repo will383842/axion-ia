@@ -4,23 +4,44 @@
 > reprendre sans relire quoi que ce soit d'autre. Il est mis à jour **à chaque étape
 > franchie**, pas en fin de journée.
 >
-> **Dernière mise à jour : 2026-09-04, 07 h 10** (heure locale) — voir la section 0.
+> **Dernière mise à jour : 2026-09-04, 08 h 30** (heure locale) — voir la section 0.
 > **Worktree : `C:\Users\willi\Documents\Projets\Axion-IA\wt-recrutement`.**
 
 ---
 
-## 0. ÉTAT AU 2026-09-04, 07 h 10 (le plus récent — lire ceci d'abord)
+## 0. ÉTAT AU 2026-09-04, 08 h 30 (le plus récent — lire ceci d'abord)
 
-**Les six lots sont FUSIONNÉS.** Il ne reste que la PR **#977**
-(`feat/une-seule-porte-spontanee`), qui porte l'arbitrage 3 de l'ADR 0047 et,
-depuis ce matin, la correction de découvrabilité.
+**LE CHANTIER EST LIVRÉ. Les six lots ET #977 sont fusionnés.**
 
-| Repère                                                 | Valeur                                                        |
-| ------------------------------------------------------ | ------------------------------------------------------------- |
-| Prod (`x-axion-build-sha`)                             | **`df1c28d13`** — le build de 03 h 20Z a bien atterri         |
-| Tête de #977                                           | **`848f2a48a`**                                               |
-| Gates de #977                                          | relancées à 07 h 05Z sur la nouvelle tête (A/B/C/D `pending`) |
-| Verdict des gates sur la tête PRÉCÉDENTE (`67399d27f`) | **A, B, C, D : les quatre vertes**                            |
+| Repère                           | Valeur                                                                       |
+| -------------------------------- | ---------------------------------------------------------------------------- |
+| **#977**                         | ✅ **FUSIONNÉE le 2026-09-04 à 05 h 45Z** — commit de fusion **`bcc33883b`** |
+| Gates de #977 (tête `848f2a48a`) | **les quatre vertes** — Gate C a mis 38 min                                  |
+| État lu juste avant la fusion    | `mergeStateStatus` = **CLEAN**, lu et fusionné dans le MÊME appel            |
+| Créneau                          | réservé auprès des 3 sessions actives, les 3 ont confirmé                    |
+| Prod au moment de la fusion      | `df1c28d13` — aucun build en vol, la fenêtre était libre                     |
+
+⚠️ **#977 ne portait AUCUNE migration** (docs, `page.tsx`, `actions.ts`,
+`admin-nav*`). Les cinq migrations de recrutement étaient déjà en production avec
+les lots précédents — la sonde du § 2 quater était donc **déjà verte avant**
+l'atterrissage de #977. La rejouer après est une non-régression, pas la preuve.
+
+**Vérification faite le 2026-09-04 sur `df1c28d13` — trois chemins indépendants
+concordent**, et c'est là tout l'intérêt :
+
+| Chemin                                                   | Résultat                                                   |
+| -------------------------------------------------------- | ---------------------------------------------------------- |
+| Sonde SQL sur le schéma                                  | 219 migrations finies, **0 en échec**, lignes 1→4 non-zéro |
+| `prisma migrate status` (autre binaire, autre conteneur) | `219 migrations found` · `Database schema is up to date!`  |
+| Logs entrypoint                                          | `Migrations applied successfully`, **aucun WARNING**       |
+
+🔑 **Et un piège de conteneur, qui a fait diverger deux documents.** Il y a DEUX
+conteneurs applicatifs. L'**app** (`mqbmlz…`) porte `docker-entrypoint.sh`,
+`server.js` et `prisma-cli/` ; le **worker** (`oqj5ug…`) n'en a aucun. Le chemin
+`/app/prisma-cli/node_modules/.bin/prisma` existe donc dans l'un et pas dans
+l'autre — d'où deux « corrections » successives qui se contredisaient en
+décrivant chacune un conteneur différent. **Prendre `/app/node_modules/.bin/prisma`,
+seul présent dans les deux**, et choisir le conteneur par `ls /app`.
 
 ### Ce que la recette UI a donné
 
@@ -65,14 +86,30 @@ son canal et le suivant**, et **prouvée rouge par deux injections** :
   UTM n'existe que depuis cette nuit (lot 5). Le stock antérieur n'a pas de
   provenance, et lui en inventer une serait pire.
 
-### Ce qui reste
+### Ce qui reste — RIEN DANS LE CODE
 
-1. Attendre les quatre gates de #977 (Gate C ≈ 45 min).
-2. **Réserver le créneau** (`gh pr list`, mot sur le canal) **avant**
-   l'`update-branch`, lire `mergeStateStatus` et fusionner dans le **même** appel.
-3. Après l'atterrissage : rejouer `_verif-schema-prod.sql` (§2 quater) — les
-   lignes 1 à 4 doivent passer non-zéro, la 5 rester à 0, les témoins POSITIFS
-   rester à 1/213. L'entrypoint **avale** un `migrate deploy` en échec.
+Les trois points qui figuraient ici (attendre les gates, réserver le créneau et
+fusionner, rejouer la sonde) sont **tous faits**. Le chantier n'a plus de tâche
+technique ouverte.
+
+**Il reste DEUX arbitrages de Will, et aucun ne se devine :**
+
+1. **Le sort de `/console-editoriale` (11 écrans) et `/agenda`** — les mettre au
+   menu, ou les déclarer volontairement hors menu. C'est le préalable à la garde
+   réciproque du § 0 bis : tant que ce n'est pas tranché, une liste d'exceptions
+   **figerait le défaut** au lieu de le signaler.
+2. **L'adresse du VPS dans le dépôt public.** Ce journal contient l'IP, `root@`
+   et des IDs de conteneurs, et il est versé **sans caviardage** — délibérément :
+   l'adresse figure déjà dans **67 fichiers suivis**, dont 34 sous la forme
+   `root@178…` et 16 workflows. Masquer ce seul fichier n'aurait rien protégé et
+   aurait donné le sentiment inverse. L'exposition est préexistante et bien plus
+   large ; la seule défense de cette adresse est aujourd'hui la clé SSH.
+
+**Et une donnée de production à ne pas confondre avec un défaut** : **78
+candidats sur 86 n'ont jamais reçu de réponse** depuis leur dépôt, certains
+depuis **47 jours**. L'écran remis au menu est précisément celui qui le montre.
+Les **86 « Provenance inconnue »** sont normales — la capture UTM date du lot 5,
+le stock antérieur n'a pas de provenance et lui en inventer une serait pire.
 
 ---
 
