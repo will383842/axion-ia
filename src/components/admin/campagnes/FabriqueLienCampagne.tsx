@@ -130,7 +130,7 @@ export function FabriqueLienCampagne({ origine }: { origine: string }) {
             autoComplete="off"
           />
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Une valeur par création. C'est ce qui permet de comparer deux publicités.
+            Une valeur par création. C&apos;est ce qui permet de comparer deux publicités.
           </p>
         </div>
       </div>
