@@ -26,12 +26,12 @@ import {
   type DestinationCampagne,
 } from "@/lib/campagnes/lien-campagne";
 
-const CHAMP =
-  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 " +
-  "focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 " +
-  "dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100";
-const LABEL =
-  "block text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400";
+// 🔴 Classes du SYSTÈME de la console, pas des couleurs choisies à la main.
+// La garde `admin-design-tokens` refuse la palette Tailwind par défaut : deux
+// écrans qui choisissent chacun leur gris cessent de se ressembler, et le
+// thème sombre ne tient plus.
+const CHAMP = "admin-input";
+const LABEL = "admin-label";
 
 export function FabriqueLienCampagne({ origine }: { origine: string }) {
   const [destination, setDestination] = useState<DestinationCampagne>("apporteur-affaires");
@@ -78,7 +78,7 @@ export function FabriqueLienCampagne({ origine }: { origine: string }) {
               </option>
             ))}
           </select>
-          <p className="text-xs text-slate-500 dark:text-slate-400">{aide}</p>
+          <p className="admin-help">{aide}</p>
         </div>
 
         <div className="flex flex-col gap-1.5">
@@ -97,7 +97,7 @@ export function FabriqueLienCampagne({ origine }: { origine: string }) {
               </option>
             ))}
           </select>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="admin-help">
             Le type de canal est déduit, jamais saisi — deux orthographes du même canal produiraient
             deux lignes de statistiques.
           </p>
@@ -129,15 +129,15 @@ export function FabriqueLienCampagne({ origine }: { origine: string }) {
             placeholder="Vidéo A"
             autoComplete="off"
           />
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="admin-help">
             Une valeur par création. C&apos;est ce qui permet de comparer deux publicités.
           </p>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/50">
+      <div className="flex flex-col gap-2 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg-subtle)] p-4">
         <span className={LABEL}>Le lien à coller dans le gestionnaire de publicités</span>
-        <code className="block font-mono text-sm break-all text-slate-900 dark:text-slate-100">
+        <code className="block font-mono text-sm break-all text-[color:var(--color-admin-fg)]">
           {lien.url}
         </code>
         <div className="flex items-center gap-3 pt-1">
@@ -159,7 +159,7 @@ export function FabriqueLienCampagne({ origine }: { origine: string }) {
       </div>
 
       {lien.avertissements.length > 0 ? (
-        <ul className="flex flex-col gap-1 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-700/60 dark:bg-amber-950/30 dark:text-amber-200">
+        <ul className="admin-alert admin-alert-warning flex flex-col gap-1 text-sm">
           {lien.avertissements.map((a) => (
             <li key={a}>{a}</li>
           ))}

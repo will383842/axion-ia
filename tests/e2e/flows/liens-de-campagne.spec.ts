@@ -16,13 +16,25 @@ import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
 const CHEMIN = `/fr/${ADMIN_PREFIX}/annonces/liens`;
 
 test.describe("@campagnes fabrique de liens de campagne", () => {
+  // 🔴 BUDGET DÉCLARÉ, forme exigée par le cliquet
+  // `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts` : toute suite qui
+  // ouvre une session admin l'annonce, et au moins 90 s.
+  //
+  // `test.setTimeout()` ne compte PAS — le cliquet lit `describe.configure`, et
+  // il a raison : un budget posé test par test se perd au premier test ajouté
+  // sans lui.
+  //
+  // Pourquoi si haut : la vérification du mot de passe est délibérément coûteuse
+  // (Argon2id), et sous `next dev` la PREMIÈRE navigation vers chaque route la
+  // COMPILE — 15 s à 3 min sur un poste chargé.
+  test.describe.configure({ timeout: 240_000 });
+
   // 🔑 Sous `next dev`, chaque route se compile AU PREMIER APPEL : le tableau de
   // bord admin a mis 15 à 18 s sur ce poste, et l'écran des liens n'était pas
   // encore compilé. Avec le délai par défaut de 30 s, l'échec accusait la
   // connexion — qui avait pourtant réussi (`POST … 303`, puis dashboard en 200).
   // On nomme donc la cause ici plutôt que de relever la borne globale, ce qui
   // rendrait tous les autres tests complaisants.
-  test.setTimeout(240_000);
 
   test("l'écran s'ouvre, fabrique un lien juste, et le recompose à la frappe", async ({ page }) => {
     await loginAsAdmin(page);
