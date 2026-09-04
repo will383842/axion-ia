@@ -8,14 +8,14 @@
 // qui cliquent, pas des gens qui remplissent le formulaire. Avec l'événement
 // `Lead`, elle cherche des gens qui ressemblent à ceux qui ont candidaté —
 // c'est ce qui divise le coût par candidature. Il permet aussi le reciblage
-// des visiteurs de `/facebook` qui n'ont pas rempli le formulaire.
+// des visiteurs de `/apporteur-affaires` qui n'ont pas rempli le formulaire.
 //
 // Il ne mesure PAS l'audience (Plausible) et n'est PAS la source de vérité des
 // candidatures (la table `submissions`, écrite par l'action serveur).
 //
 // ── GATES, DANS L'ORDRE ───────────────────────────────────────────────────
 //  1. Pas de `NEXT_PUBLIC_META_PIXEL_ID` → null. Zéro requête, zéro cookie.
-//  2. Hors du tunnel Facebook (`/facebook`, `/facebook/merci`) → null. Le
+//  2. Hors du tunnel Facebook (`/apporteur-affaires`, `/apporteur-affaires/merci`) → null. Le
 //     consentement recueilli porte sur la mesure d'une campagne, pas sur le
 //     reste du site (cf. `lib/analytics/tunnel-facebook-routes.ts`).
 //  3. Consentement != "accepted" → null. Le pixel dépose `_fbp` (90 jours) et
@@ -28,7 +28,7 @@
 // pixel SANS JavaScript, donc sans passer par la porte du consentement. Il est
 // omis, comme pour LinkedIn : il rendrait le gate décoratif.
 //
-// L'événement `Lead` n'est PAS tiré ici : il l'est sur `/facebook/merci` par
+// L'événement `Lead` n'est PAS tiré ici : il l'est sur `/apporteur-affaires/merci` par
 // `MerciLeadMeta`, avec l'identifiant de la Submission en `eventID`, pour être
 // dédoublonné avec l'envoi serveur (`server/meta/conversions-api.ts`).
 //

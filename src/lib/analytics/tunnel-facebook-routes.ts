@@ -17,8 +17,14 @@
 // `MetaPixel`, `CookieConsent` (texte de la bannière) et `MerciLeadMeta`
 // lisent tous cette fonction : on ne peut pas en changer un sans voir les autres.
 
-/** Segments concernés, sans préfixe de langue. `/facebook` couvre `/facebook/merci`. */
-const TUNNEL_FACEBOOK_SEGMENTS = ["/facebook"] as const;
+/** Segments concernés, sans préfixe de langue. `/apporteur-affaires` couvre
+ *  `/apporteur-affaires/merci`.
+ *
+ *  ⚠️ 2026-09-04 : l'URL publique est passée de `/facebook` à
+ *  `/apporteur-affaires`. `/facebook` n'est PLUS servi (301 vers la nouvelle
+ *  URL, `next.config.ts` + `legacy-redirects.ts`) et n'a donc plus à figurer
+ *  ici : une redirection ne rend aucune page, il n'y a rien à y charger. */
+const TUNNEL_FACEBOOK_SEGMENTS = ["/apporteur-affaires"] as const;
 
 /** True si le chemin appartient au tunnel Facebook (landing ou page merci). */
 export function isRouteTunnelFacebook(pathname: string | null | undefined): boolean {

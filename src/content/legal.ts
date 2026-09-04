@@ -795,7 +795,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Pixel publicitaire Meta (Facebook / Instagram), avec consentement",
-          body: "Sur les seules pages du tunnel de candidature des apporteurs d'affaires venus de Facebook (/facebook et /facebook/merci), le pixel Meta est proposé pour mesurer les candidatures issues de la campagne, optimiser sa diffusion et recibler les visiteurs de cette page. Il dépose 2 cookies : `_fbp` (90 jours, identifiant navigateur) et `_fbc` (90 jours, présent si vous êtes arrivé par un lien Facebook). Il n'est chargé nulle part ailleurs sur le site, et jamais sans votre consentement explicite via le bandeau, qui le nomme sur ces pages. Lorsque vous envoyez le formulaire de cette page et que vous avez accepté le bandeau, notre serveur transmet aussi à Meta votre e-mail, votre téléphone, votre prénom et votre ville sous forme HACHÉE (SHA-256, irréversible), pour que la conversion soit comptée une seule fois. Le transfert UE → USA est encadré par les Clauses Contractuelles Types. Vous pouvez refuser ou retirer votre consentement à tout moment depuis /preferences-cookies.",
+          body: "Sur les seules pages du tunnel de candidature des apporteurs d'affaires venus de Facebook (/apporteur-affaires et /apporteur-affaires/merci), le pixel Meta est proposé pour mesurer les candidatures issues de la campagne, optimiser sa diffusion et recibler les visiteurs de cette page. Il dépose 2 cookies : `_fbp` (90 jours, identifiant navigateur) et `_fbc` (90 jours, présent si vous êtes arrivé par un lien Facebook). Il n'est chargé nulle part ailleurs sur le site, et jamais sans votre consentement explicite via le bandeau, qui le nomme sur ces pages. Lorsque vous envoyez le formulaire de cette page et que vous avez accepté le bandeau, notre serveur transmet aussi à Meta votre e-mail, votre téléphone, votre prénom et votre ville sous forme HACHÉE (SHA-256, irréversible), pour que la conversion soit comptée une seule fois. Le transfert UE → USA est encadré par les Clauses Contractuelles Types. Vous pouvez refuser ou retirer votre consentement à tout moment depuis /preferences-cookies.",
         },
         {
           title: "Calendrier de réservation (Calendly)",
@@ -803,7 +803,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Cookies tiers",
-          body: "Aucun cookie de tracking cross-site sur le site. Deux tiers seulement peuvent déposer un cookie, et uniquement après acceptation du bandeau : Microsoft Clarity, et le pixel Meta sur les seules pages /facebook et /facebook/merci. Sur la page /appel, Calendly n'en dépose que dans le mode de secours décrit ci-dessus, et seulement après votre clic sur « Afficher le calendrier » — en fonctionnement normal, votre navigateur ne contacte jamais Calendly.",
+          body: "Aucun cookie de tracking cross-site sur le site. Deux tiers seulement peuvent déposer un cookie, et uniquement après acceptation du bandeau : Microsoft Clarity, et le pixel Meta sur les seules pages /apporteur-affaires et /apporteur-affaires/merci. Sur la page /appel, Calendly n'en dépose que dans le mode de secours décrit ci-dessus, et seulement après votre clic sur « Afficher le calendrier » — en fonctionnement normal, votre navigateur ne contacte jamais Calendly.",
         },
         {
           title: "Gérer vos cookies",
@@ -835,7 +835,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Meta advertising pixel (Facebook / Instagram), with consent",
-          body: "On the application funnel pages for business introducers coming from Facebook only (/facebook and /facebook/merci), the Meta pixel is offered to measure applications coming from the campaign, optimise its delivery and retarget visitors of that page. It sets 2 cookies: `_fbp` (90 days, browser identifier) and `_fbc` (90 days, present if you arrived through a Facebook link). It is loaded nowhere else on the site, and never without your explicit consent via the banner, which names it on those pages. When you submit that page's form and have accepted the banner, our server also sends Meta your email, phone, first name and city in HASHED form (SHA-256, irreversible), so the conversion is counted once. The EU → US transfer is covered by Standard Contractual Clauses. You may decline or withdraw your consent at any time from /cookie-preferences.",
+          body: "On the application funnel pages for business introducers coming from Facebook only (/apporteur-affaires and /apporteur-affaires/merci), the Meta pixel is offered to measure applications coming from the campaign, optimise its delivery and retarget visitors of that page. It sets 2 cookies: `_fbp` (90 days, browser identifier) and `_fbc` (90 days, present if you arrived through a Facebook link). It is loaded nowhere else on the site, and never without your explicit consent via the banner, which names it on those pages. When you submit that page's form and have accepted the banner, our server also sends Meta your email, phone, first name and city in HASHED form (SHA-256, irreversible), so the conversion is counted once. The EU → US transfer is covered by Standard Contractual Clauses. You may decline or withdraw your consent at any time from /cookie-preferences.",
         },
         {
           title: "Booking calendar (Calendly)",
@@ -843,7 +843,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Third-party cookies",
-          body: "No cross-site tracking cookies on the site. Only two third parties may set a cookie, and only after the banner is accepted: Microsoft Clarity, and the Meta pixel on the /facebook and /facebook/merci pages only. On the /appel page, Calendly only sets cookies in the fallback mode described above, and only after you click “Show the calendar” — in normal operation your browser never contacts Calendly.",
+          body: "No cross-site tracking cookies on the site. Only two third parties may set a cookie, and only after the banner is accepted: Microsoft Clarity, and the Meta pixel on the /apporteur-affaires and /apporteur-affaires/merci pages only. On the /appel page, Calendly only sets cookies in the fallback mode described above, and only after you click “Show the calendar” — in normal operation your browser never contacts Calendly.",
         },
         {
           title: "Manage your cookies",

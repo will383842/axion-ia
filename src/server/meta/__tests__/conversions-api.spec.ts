@@ -41,7 +41,7 @@ const input: LeadMetaInput = {
   userAgent: "vitest",
   fbp: "fb.1.1725000000000.123456",
   fbclid: "IwAR0abcdefghijklmnop",
-  sourceUrl: "https://axion-ia.com/fr/facebook",
+  sourceUrl: "https://axion-ia.com/fr/apporteur-affaires",
   at: new Date("2026-09-03T10:00:00Z"),
 };
 

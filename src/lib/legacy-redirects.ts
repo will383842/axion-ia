@@ -29,6 +29,12 @@ const STATIC_LEGACY_REDIRECTS: ReadonlyMap<string, string> = new Map([
   // Audit — anciens slugs.
   ["/audit/flash", "/audit/tpe-1-jour"],
   ["/audit/process", "/audit/cible"],
+  // Tunnel apporteurs — `/facebook` renommé `/apporteur-affaires` (2026-09-04).
+  // Forme NON préfixée : c'est celle qui circulait dans les publicités Meta
+  // (`axion-ia.com/facebook`). Sans cette entrée, elle ferait 2 sauts
+  // (`/facebook` → `/fr/facebook` → `/fr/apporteur-affaires`).
+  ["/facebook", "/apporteur-affaires"],
+  ["/facebook/merci", "/apporteur-affaires/merci"],
   // Fusion codage-developpement → sites-web-augmentes.
   ["/codage-developpement/web-digital", "/sites-web-augmentes"],
   ["/codage-developpement", "/sites-web-augmentes"],

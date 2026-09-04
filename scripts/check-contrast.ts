@@ -121,9 +121,17 @@ const pairs: Pair[] = [
 
   // Encre — page d'atterrissage publicitaire (`.bg-vsl`). Surface la plus
   // sombre de la charte : ces trois paires sont TOUT ce qui s'y affiche.
-  { fg: palette.mochaFg, bg: palette.ink, label: "mocha-fg on ink (VSL)" },
-  { fg: palette.mochaFgMuted, bg: palette.ink, label: "mocha-fg-muted on ink (VSL)" },
-  { fg: palette.terracottaOnMocha, bg: palette.ink, label: "terracotta-on-mocha on ink (VSL)" },
+  { fg: palette.mochaFg, bg: palette.ink, label: "mocha-fg on ink (VSL + héro tunnel apporteurs)" },
+  {
+    fg: palette.mochaFgMuted,
+    bg: palette.ink,
+    label: "mocha-fg-muted on ink (VSL + héro tunnel apporteurs)",
+  },
+  {
+    fg: palette.terracottaOnMocha,
+    bg: palette.ink,
+    label: "terracotta-on-mocha on ink (VSL + héro tunnel apporteurs)",
+  },
   {
     fg: blend(palette.mochaFg, palette.mocha, 0.85),
     bg: palette.mocha,

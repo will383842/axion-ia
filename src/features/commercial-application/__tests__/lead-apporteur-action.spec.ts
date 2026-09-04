@@ -122,8 +122,14 @@ describe("submitLeadApporteurAction", () => {
     expect(d.unifiedType).toBe("recrutement");
     expect(d.subType).toBe("candidature-commerciale");
     expect(d.etape).toBe("premier-contact");
-    expect(d.source).toBe("/facebook");
+    // Le CHEMIN de la landing (renommé le 2026-09-04). Valeur littérale et non
+    // `TUNNEL_FACEBOOK_PATH` : recopier la constante ne testerait rien, alors
+    // que ce littéral verrouille ce qui part réellement en base.
+    expect(d.source).toBe("/apporteur-affaires");
     const candidature = d.candidature as Record<string, unknown>;
+    // Le CANAL, lui, reste `facebook` : c'est de là que vient la personne.
+    // Renommer l'URL ne doit PAS casser l'attribution de la campagne — c'est
+    // l'invariant que ces deux lignes gardent ensemble.
     expect(candidature.sourceConnaissance).toBe("facebook");
     expect(candidature.experiences).toEqual([]);
     expect(candidature.statut).toBe("salarie");

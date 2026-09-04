@@ -19,7 +19,7 @@
 //     Aucune donnée personnelle ne transite dans une URL.
 //  2. envoie l'événement Plausible « Lead Apporteur Submitted » (sans cookie,
 //     sans consentement) ;
-//  3. navigue vers `/facebook/merci?c=<id>` — la page qui tire l'événement
+//  3. navigue vers `/apporteur-affaires/merci?c=<id>` — la page qui tire l'événement
 //     `Lead` du pixel Meta avec cet identifiant, dédoublonné avec l'envoi
 //     serveur fait par l'action.
 //

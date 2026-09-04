@@ -1,5 +1,5 @@
 // Premier contact d'un apporteur d'affaires — Server Action du formulaire
-// COURT de la landing Facebook (`/facebook`, 2026-09-03).
+// COURT de la landing Facebook (`/apporteur-affaires`, 2026-09-03).
 //
 // Calquée sur `submitCommercialApplicationAction` (le dossier complet), avec
 // la même doctrine :

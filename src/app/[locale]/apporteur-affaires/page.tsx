@@ -1,5 +1,5 @@
 // Landing du tunnel Facebook apporteurs d'affaires — servie à la RACINE
-// (`/facebook`), de la même forme que `/leboncoin` et `/memo-isere`.
+// (`/apporteur-affaires`), de la même forme que `/leboncoin` et `/memo-isere`.
 //
 // Une route par canal, jamais un `[slug]` racine (il avalerait toutes les URL
 // inconnues du site). Tout le contenu vit dans le gabarit ; ce fichier ne fait

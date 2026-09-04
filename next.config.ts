@@ -298,6 +298,23 @@ const nextConfig: NextConfig = {
         destination: "/fr/appel",
         permanent: true,
       },
+      // Tunnel apporteurs : `/facebook` → `/apporteur-affaires` (Will 2026-09-04).
+      // L'URL partait dans les publicités Meta ; le mot « facebook » n'y disait
+      // rien au prospect et ne qualifiait pas le sujet. La redirection est
+      // PERMANENTE et couvre `/facebook/merci` (`:rest*`) : des liens ont pu
+      // circuler entre la mise en ligne du 2026-09-03 et ce renommage.
+      // ⚠️ Le canal d'attribution reste `facebook` (`LEAD_APPORTEUR_SOURCE`) —
+      // seul le slug public change.
+      {
+        source: "/:locale(fr|en)/facebook/:rest*",
+        destination: "/:locale/apporteur-affaires/:rest*",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/facebook",
+        destination: "/:locale/apporteur-affaires",
+        permanent: true,
+      },
       // Slug EN legacy de l'ancien /reserver (`/book`) → /appel EN (`/book-a-call`).
       // Pendant que EN est désactivé, proxy.ts (mapEnToFr) 301 déjà /en/book →
       // /fr/appel ; cette règle couvre le cas EN réactivé.

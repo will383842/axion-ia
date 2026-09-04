@@ -1,4 +1,4 @@
-// Landing du tunnel Facebook apporteurs d'affaires — `/facebook` (2026-09-03).
+// Landing du tunnel Facebook apporteurs d'affaires — `/apporteur-affaires` (2026-09-03).
 //
 // ── Ce qui la distingue des landings d'annonce (`/leboncoin`, `/indeed`) ────
 // Là-bas, le visiteur a lu une annonce et vient CANDIDATER : la page l'envoie
@@ -27,8 +27,11 @@
 // littéraux. Inscrite au registre `ASSERTION_SURFACES` du test
 // `assertion-flag-surfaces.spec.ts`.
 //
-// 🔴 Aucun montant en dur : tout vient de `pricing.ts`, et s'écrit « jusqu'à »
-// (W12 : la grille publiée est un plafond).
+// 🔴 Aucun montant en dur : tout vient de `pricing.ts`. Le reste de la page
+// l'écrit « jusqu'à » (W12 : la grille publiée est un plafond) — SAUF le bloc
+// du héro, qui affiche le montant NU depuis le 2026-09-04. Exception assumée
+// par Will, motivée et chiffrée en tête de `content/recrutement/tunnel-facebook.ts`.
+// 🛑 Ne pas l'uniformiser dans un sens ou dans l'autre sans repasser par lui.
 //
 // Vocabulaire : « apporteur d'affaires », jamais « commercial » / « poste » /
 // « recrute ». Décision Will 2026-09-03.
@@ -195,6 +198,12 @@ export async function FacebookLandingPage({ params }: Props) {
   const auditTpe = getTierById(AUDIT_TIERS, "audit-flash").priceFlat ?? 0;
   const commissionAuditTpe = Math.round((auditTpe * pctAudit) / 100);
 
+  // Montant du héro. Même dérivation que la FAQ (`commission(1)`), donc les
+  // deux ne peuvent pas diverger — c'est précisément l'écart de 150 € qui avait
+  // fait passer les barèmes en SSOT. Seule la FORMULATION diffère : le héro
+  // l'affiche nu (décision Will 2026-09-04), la FAQ garde « Jusqu'à ».
+  const montantJournee = commission(1);
+
   const faq = [
     {
       id: "quoi",
@@ -243,19 +252,49 @@ export async function FacebookLandingPage({ params }: Props) {
 
             <h1 className="display-editorial text-fg text-balance">
               {HERO.h1}{" "}
-              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+              <span
+                className="text-terracotta-deep italic"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
                 {HERO.h1Em}
               </span>
             </h1>
 
-            <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
+            {/* Bloc du montant — l'accroche des deux premières secondes.
+                Panneau `bg-ink` DÉLIBÉRÉ : le visiteur arrive d'un fil Facebook
+                saturé de blocs clairs ; une surface sombre est ce qui arrête le
+                pouce. Contraste AAA vérifié par `pnpm contrast:check`
+                (mocha-fg 17,1:1 · mocha-fg-muted 8,3:1 · terracotta-on-mocha 7,3:1).
+                ⚠️ Aucune opacité sur le texte : le vérificateur ne sait pas
+                calculer une opacité (cf. globals.css). Jetons pleins seulement.
+                Le chiffre vient de `pricing.ts`, jamais écrit à la main.
+                🛑 « 500 € » NU, sans « jusqu'à » — exception assumée par Will
+                le 2026-09-04, motivée en tête de `tunnel-facebook.ts`. */}
+            <div className="bg-ink mt-6 rounded-2xl px-5 py-5 sm:px-7 sm:py-6">
+              <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="text-mocha-fg text-[clamp(2.75rem,11vw,4rem)] leading-none font-bold tracking-tight tabular-nums">
+                  {montantJournee}
+                </span>
+                <span className="text-terracotta-on-mocha text-lg font-semibold sm:text-xl">
+                  {HERO.montantLegende}
+                </span>
+              </p>
+              <p className="text-mocha-fg-muted mt-3 text-sm sm:text-base">{HERO.montantSous}</p>
+            </div>
+
+            <p data-speakable className="text-fg mt-6 max-w-xl text-lg leading-relaxed">
               {HERO.chapo}
             </p>
 
             <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
               <CtaFormulaire track="facebook-hero-cta" />
-              <p className="text-fg-muted text-sm">{HERO.micro}</p>
+              <p className="text-fg-soft text-sm font-medium">{HERO.micro}</p>
             </div>
+
+            <p className="text-fg-soft mt-4 inline-flex items-center gap-2 text-sm font-medium">
+              <Check aria-hidden="true" className="text-sage h-4 w-4 shrink-0" />
+              {HERO.france}
+            </p>
           </div>
 
           <Photo

@@ -154,7 +154,7 @@ export const SOURCE_OPTIONS = [
    */
   { id: "jemepropose", label: "jemepropose.com" },
   /**
-   * Post ou publicité Facebook / Instagram → landing `/facebook` (tunnel
+   * Post ou publicité Facebook / Instagram → landing `/apporteur-affaires` (tunnel
    * 2026-09-03). Posé AUTOMATIQUEMENT par le formulaire court de la landing :
    * le visiteur ne se voit jamais poser la question « comment nous as-tu
    * connus ? » — la page le sait. Le dossier complet, ouvert depuis l'e-mail,

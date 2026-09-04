@@ -35,7 +35,7 @@ const ALLOWLIST: Record<string, Protection> = {
   "app/[locale]/mes-donnees/export/GdprExportClient.tsx": "dynamic-noindex",
   "components/admin/site-explorer/SiteExplorerFilters.tsx": "admin",
   // Page merci du tunnel Facebook : l'ile lit `?c=` pour l'evenement Lead du
-  // pixel ; montee sous <Suspense> dans app/[locale]/facebook/merci/page.tsx.
+  // pixel ; montee sous <Suspense> dans app/[locale]/apporteur-affaires/merci/page.tsx.
   "components/recrutement/MerciLeadMeta.tsx": "suspense",
 };
 

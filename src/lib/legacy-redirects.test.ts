@@ -10,6 +10,16 @@ describe("resolveLegacyRedirect — aplatissement des chaînes (audit indexation
     expect(resolveLegacyRedirect("/codage-developpement/web-digital")).toBe("/sites-web-augmentes");
     expect(resolveLegacyRedirect("/audit/flash")).toBe("/audit/tpe-1-jour");
     expect(resolveLegacyRedirect("/audit/process")).toBe("/audit/cible");
+    // Tunnel apporteurs renommé le 2026-09-04. C'est la forme NON préfixée
+    // (`axion-ia.com/facebook`) qui a pu circuler dans les publicités Meta :
+    // sans cette entrée elle ferait 2 sauts au lieu d'un.
+    expect(resolveLegacyRedirect("/facebook")).toBe("/apporteur-affaires");
+    expect(resolveLegacyRedirect("/facebook/merci")).toBe("/apporteur-affaires/merci");
+    // La page SEO voisine partage le PRÉFIXE du nouveau slug : elle ne doit
+    // surtout pas être happée par la redirection.
+    expect(
+      resolveLegacyRedirect("/apporteur-affaires-independant-formation-ia-entreprise"),
+    ).toBeNull();
     expect(resolveLegacyRedirect("/faq/definition")).toBe("/faq/definition-axion-ia");
     expect(resolveLegacyRedirect("/interventions/dirigeant-productivite")).toBe(
       "/interventions/dirigeants",

@@ -526,14 +526,14 @@ export const env = createEnv({
      * Pixel Meta (Facebook / Instagram) — identifiant numérique du pixel
      * (Gestionnaire d'événements → Sources de données). Absent = le composant
      * `MetaPixel` rend `null` et aucune requête n'est émise. Chargé UNIQUEMENT
-     * sur les pages du tunnel Facebook (`/facebook`, `/facebook/merci`) et
+     * sur les pages du tunnel Facebook (`/apporteur-affaires`, `/apporteur-affaires/merci`) et
      * UNIQUEMENT après consentement. Même identifiant côté serveur pour l'API
      * Conversions (`META_CAPI_ACCESS_TOKEN`).
      */
     NEXT_PUBLIC_META_PIXEL_ID: z.string().optional(),
     /**
      * Type d'événement Calendly réservé aux APPELS D'APPORTEURS D'AFFAIRES —
-     * distinct de l'appel client de `/appel`. Affiché sur `/facebook/merci`
+     * distinct de l'appel client de `/appel`. Affiché sur `/apporteur-affaires/merci`
      * pour que le candidat choisisse lui-même le moment de l'appel. Absent =
      * la page dit simplement qu'on l'appelle.
      */
