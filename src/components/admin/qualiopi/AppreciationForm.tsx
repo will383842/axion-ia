@@ -38,11 +38,21 @@ interface AppreciationFormProps {
   stagiaires: ReadonlyArray<OptionRattachement>;
   inscriptions: ReadonlyArray<OptionRattachement>;
   clients: ReadonlyArray<OptionRattachement>;
+  /**
+   * 🔴 Les formateurs manquaient à cette liste, et avec eux le seul moyen de
+   * rattacher l'auteur d'une appréciation de qualité « Formateur ».
+   * `AppreciationSource` la proposait pourtant depuis l'origine : on pouvait
+   * choisir « Formateur » dans le sélecteur du haut sans jamais dire LEQUEL.
+   * off.30 identifie les personnes par leur e-mail — sans rattachement,
+   * l'appréciation était comptée « auteur non établi » et ignorée.
+   */
+  formateurs: ReadonlyArray<OptionRattachement>;
   creerAction: (input: {
     source: AppreciationSource;
     enrollmentId?: string;
     traineeId?: string;
     clientId?: string;
+    trainerId?: string;
     note?: number;
     commentaire?: string;
     dateAppreciation: Date;
@@ -54,6 +64,7 @@ export function AppreciationForm({
   stagiaires,
   inscriptions,
   clients,
+  formateurs,
 }: AppreciationFormProps): React.ReactElement {
   const [source, setSource] = useState<AppreciationSource>("stagiaire");
   const [note, setNote] = useState<string>("");
@@ -64,6 +75,7 @@ export function AppreciationForm({
   const [traineeId, setTraineeId] = useState("");
   const [enrollmentId, setEnrollmentId] = useState("");
   const [clientId, setClientId] = useState("");
+  const [trainerId, setTrainerId] = useState("");
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -100,6 +112,7 @@ export function AppreciationForm({
         ...(traineeId.trim() ? { traineeId: traineeId.trim() } : {}),
         ...(enrollmentId.trim() ? { enrollmentId: enrollmentId.trim() } : {}),
         ...(clientId.trim() ? { clientId: clientId.trim() } : {}),
+        ...(trainerId.trim() ? { trainerId: trainerId.trim() } : {}),
       });
 
       if ("error" in result) {
@@ -247,6 +260,47 @@ export function AppreciationForm({
               ))}
             </select>
           </div>
+
+          {/*
+            🔴 Le champ qui manquait. « Formateur » figurait dans le sélecteur de
+            qualité, mais rien ne permettait de dire LEQUEL — et off.30 identifie
+            les personnes par leur e-mail. L'appréciation partait donc sans
+            auteur, était comptée « auteur non établi », et ne participait ni aux
+            qualités ni aux personnes distinctes.
+
+            Rendu SEULEMENT sur la qualité « Formateur » : ailleurs, un champ
+            vide se lirait comme une donnée manquante alors qu'il n'y a rien à
+            saisir — et rattacher un formateur à une appréciation de stagiaire
+            fabriquerait un auteur qui n'a pas parlé.
+          */}
+          {source === "formateur" && (
+            <div>
+              <label className={labelCls} htmlFor="app-trainer-id">
+                Formateur auteur de l&apos;appréciation
+              </label>
+              <select
+                id="app-trainer-id"
+                value={trainerId}
+                onChange={(e) => setTrainerId(e.target.value)}
+                disabled={isPending || formateurs.length === 0}
+                className={inputCls}
+              >
+                <option value="">
+                  {formateurs.length === 0 ? "— aucun formateur enregistré —" : "— aucun —"}
+                </option>
+                {formateurs.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.libelle}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                Sans ce rattachement, l&apos;appréciation est enregistrée mais ne compte pas comme
+                une voix distincte pour l&apos;indicateur 30 (recueil des appréciations des parties
+                prenantes).
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Commentaire (pleine largeur) */}
