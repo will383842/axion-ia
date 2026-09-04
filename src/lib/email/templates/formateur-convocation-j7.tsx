@@ -45,32 +45,60 @@ type Payload = InfosPratiquesFormateur & {
 export function libelleDelaiConvocation(
   jours: number | undefined,
   locale: Locale,
-): { prefixeObjet: string; titre: string } {
+): { prefixeObjet: string; titre: string; quand: string } {
   const fr = locale === "fr";
   if (typeof jours !== "number" || !Number.isFinite(jours)) {
     return fr
-      ? { prefixeObjet: "Infos pratiques —", titre: "Vos informations pratiques" }
-      : { prefixeObjet: "Practical details —", titre: "Your practical details" };
+      ? {
+          prefixeObjet: "Infos pratiques —",
+          titre: "Vos informations pratiques",
+          quand: "prochainement",
+        }
+      : {
+          prefixeObjet: "Practical details —",
+          titre: "Your practical details",
+          quand: "shortly",
+        };
   }
   const n = Math.round(jours);
   if (n <= 0) {
     return fr
-      ? { prefixeObjet: "Aujourd'hui —", titre: "Votre session démarre aujourd'hui" }
-      : { prefixeObjet: "Today —", titre: "Your session starts today" };
+      ? {
+          prefixeObjet: "Aujourd'hui —",
+          titre: "Votre session démarre aujourd'hui",
+          quand: "aujourd'hui",
+        }
+      : { prefixeObjet: "Today —", titre: "Your session starts today", quand: "today" };
   }
   if (n === 1) {
     return fr
-      ? { prefixeObjet: "Demain —", titre: "Votre session démarre demain" }
-      : { prefixeObjet: "Tomorrow —", titre: "Your session starts tomorrow" };
+      ? { prefixeObjet: "Demain —", titre: "Votre session démarre demain", quand: "demain" }
+      : { prefixeObjet: "Tomorrow —", titre: "Your session starts tomorrow", quand: "tomorrow" };
   }
   if (n === 7) {
     return fr
-      ? { prefixeObjet: "Dans 7 jours —", titre: "Votre session démarre dans une semaine" }
-      : { prefixeObjet: "In 7 days —", titre: "Your session starts in a week" };
+      ? {
+          prefixeObjet: "Dans 7 jours —",
+          titre: "Votre session démarre dans une semaine",
+          quand: "dans une semaine",
+        }
+      : {
+          prefixeObjet: "In 7 days —",
+          titre: "Your session starts in a week",
+          quand: "in a week",
+        };
   }
   return fr
-    ? { prefixeObjet: `Dans ${n} jours —`, titre: `Votre session démarre dans ${n} jours` }
-    : { prefixeObjet: `In ${n} days —`, titre: `Your session starts in ${n} days` };
+    ? {
+        prefixeObjet: `Dans ${n} jours —`,
+        titre: `Votre session démarre dans ${n} jours`,
+        quand: `dans ${n} jours`,
+      }
+    : {
+        prefixeObjet: `In ${n} days —`,
+        titre: `Your session starts in ${n} days`,
+        quand: `in ${n} days`,
+      };
 }
 
 export const formateurConvocationJ7Subject = (
