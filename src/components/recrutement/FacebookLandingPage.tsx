@@ -224,9 +224,30 @@ export async function FacebookLandingPage({ params }: Props) {
     },
     {
       id: "statut",
+      // 🔴 2026-09-04 — « agent commercial » RETIRÉ de cette réponse.
+      //
+      // Ce n'était pas un mot maladroit : c'est un STATUT JURIDIQUE (art. L.134
+      // du code de commerce) défini par l'existence d'un MANDAT de négocier au
+      // nom du mandant. Or l'article 1.2 du contrat d'apporteur repose sur
+      // l'exact inverse — « L'Apporteur n'est investi d'AUCUN mandat » — et
+      // l'article 8.2 lui interdit de se présenter comme « mandataire, agent ou
+      // représentant ».
+      //
+      // Le registre des risques du contrat lui-même le dit sans détour, à
+      // propos de la seule mention de ce statut : « aveu que la qualification
+      // d'agent commercial était envisagée : elle DÉTRUIRAIT la portée des
+      // articles 1 et 2 » (`docs/partners/CONTRAT-APPORTEUR-V1.md`).
+      //
+      // Autrement dit, la page publique invitait les candidats à s'immatriculer
+      // sous le statut que tout le contrat existe pour écarter — et le statut
+      // d'agent commercial ouvre en outre un droit à indemnité de fin de
+      // contrat (L.134-12) auquel on ne peut pas renoncer (L.134-16).
+      //
+      // ⛔ NE PAS le remettre, même « pour être complet » : la complétude n'a
+      // aucun intérêt ici, et deux statuts suffisent à facturer.
       question: "Il faut un statut ?",
       answer:
-        "Pour facturer ta commission, oui : micro-entreprise, agent commercial ou société. La création en ligne est gratuite et prend un quart d'heure. Salarié : vérifie qu'aucune clause d'exclusivité ne te l'interdit.",
+        "Pour facturer ta commission, oui : micro-entreprise ou société. La création en ligne est gratuite et prend un quart d'heure. Salarié : vérifie qu'aucune clause d'exclusivité ne te l'interdit.",
     },
     {
       id: "paiement",
