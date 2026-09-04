@@ -8,6 +8,7 @@
 import { z } from "zod";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { auth } from "@/auth";
+import { peutConsulter, peutGererLesOffres, estSuperAdmin } from "@/server/auth/habilitations";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
@@ -59,21 +60,45 @@ async function requireAdminWrite() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  // Lot 6 — le prédicat du SSOT (`ROLES_GESTION_OFFRE`), même périmètre qu'avant.
+  if (!peutGererLesOffres(role)) {
     throw new Error("forbidden");
   }
   return { userId: session.user.id, role };
 }
+/**
+ * CONSULTER une offre d'emploi.
+ *
+ * 🔴 LOT 6 — CETTE GARDE NE TESTAIT AUCUN RÔLE, et c'est mot pour mot le défaut
+ * que le SSOT déclare fermé pour les candidatures (`habilitations.ts`, la note
+ * de `ROLES_DOSSIER_CANDIDAT` : « son `requireAdminRead()` ne testait AUCUN
+ * rôle… »). Il avait survécu dans le module jumeau, sur les offres.
+ *
+ * ⚠️ Le périmètre effectif ne change PAS : `peutConsulter` vaut
+ * `ROLES_CONSULTATION`, c'est-à-dire les six rôles — consulter une offre reste
+ * ouvert à toute la console, et ce n'est pas un secret : une offre publiée est
+ * publique. Ce que ce changement corrige n'est pas QUI passe, c'est le SENS de
+ * la garde : une vérification absente **échoue ouvert**, y compris sur un rôle
+ * inconnu, `null`, ou une session forgée sans rôle. `peutConsulter` refuse par
+ * défaut. On remplace une permission accidentelle par une permission décidée.
+ *
+ * 🔑 Ça compte parce que ces actions sont des `"use server"` : chaque export
+ * est un point d'entrée réseau, et `getJobOfferDetailAction` rend les
+ * `screeningQuestions`, qui ne sont pas publiées avec l'offre.
+ */
 async function requireAdminRead() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
+  const role = (session.user as { role?: string }).role;
+  if (!peutConsulter(role)) throw new Error("forbidden");
   return session.user.id;
 }
 async function requireSuperAdmin() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin") throw new Error("forbidden");
+  // Lot 6 — geste irréversible : le prédicat du SSOT, même périmètre qu'avant.
+  if (!estSuperAdmin(role)) throw new Error("forbidden");
   return { userId: session.user.id, role };
 }
 

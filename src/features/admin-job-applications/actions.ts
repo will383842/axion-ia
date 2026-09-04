@@ -10,6 +10,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { estSuperAdmin } from "@/server/auth/habilitations";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 // La lecture SANS session, et les trois valeurs qu'un module `"use server"` ne
@@ -44,7 +45,8 @@ import type {
 async function requireSuperAdmin() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
-  if ((session.user as { role?: string }).role !== "super_admin") throw new Error("forbidden");
+  // Lot 6 — geste irréversible : le prédicat du SSOT, même périmètre qu'avant.
+  if (!estSuperAdmin((session.user as { role?: string }).role)) throw new Error("forbidden");
   return { userId: session.user.id };
 }
 
