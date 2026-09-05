@@ -6,7 +6,12 @@
 
 ---
 
-## 0bis. REPRISE du 2026-09-05 ~07:30 UTC — ce qui a changé depuis
+## 0bis. REPRISE du 2026-09-05, 07:30 **heure locale** — ce qui a changé depuis
+
+⚠️ *Correction : la première rédaction de ce titre disait « 07:30 UTC ». Faux —
+l'horloge de ce poste est en **UTC+2**. 07:30 local = 05:30 UTC. C'est le piège
+déjà consigné en mémoire : un horodatage GitHub est en UTC, l'horloge de la
+machine ne l'est pas, et les deux ne se comparent pas sans conversion.*
 
 - ✅ **Les deux contrôles bloquants du §4 sont PASSÉS**, bannières lues :
   - `pnpm typecheck` → `> tsc --noEmit`, exit 0, sur l'arbre complet
@@ -25,7 +30,7 @@
   et gabarits d'e-mail (lot C couche A).
 
 ⚠️ **File de fusion RÉSERVÉE par la session `axion-ia-20`** (capture apporteurs)
-depuis ~07:35 UTC, pour #987 puis #993. Elle a mesuré le build de #991 à
+depuis ~07:35 **heure locale** (05:35 UTC), pour #987 puis #993. Elle a mesuré le build de #991 à
 **1 h 16**, pas 50 min. Ne rien fusionner avant qu'elle rende la file.
 
 ---
@@ -113,7 +118,7 @@ Identifiants : client `AXI-CLI-001` SCI Invest Sun
 
 ### ⛔ CE QUI RESTE À VÉRIFIER
 
-1. ✅ **FAIT le 2026-09-05 à 07:37 UTC** — gardes de dépôt `tests/unit/ci/` :
+1. ✅ **FAIT le 2026-09-05 à 07:37 heure locale** — gardes de dépôt `tests/unit/ci/` :
    **31 fichiers, 151 témoins, 271 s, exit 0.** (Le « ~17 min » annoncé était
    large : 4 min 31 s en réalité.)
 2. La **suite complète** `pnpm test` — pas encore lancée. À faire avant la PR,

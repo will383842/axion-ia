@@ -1,3 +1,32 @@
+> ⚠️ **MIS À JOUR le 2026-09-05 à 08:20 (heure locale, UTC+2).**
+>
+> **Une tâche planifiée Windows relance ce chantier aujourd'hui à 10:40.**
+> Nom : « Axion-IA relance Qualiopi 10h40 » · script :
+> `_RELANCE/relancer-qualiopi.cmd` · prompt : `_RELANCE/PROMPT-RELANCE-QUALIOPI.txt`
+> · journal des déclenchements : `_RELANCE/journal-relance.txt`.
+> Posée à la demande de Will (« si ça s'arrête parce que j'ai consommé tout mon
+> forfait, relance automatiquement à 10h40 »). Vérifiée : `StartBoundary
+> 2026-09-05T10:40:00+02:00`, `NextRunTime 10:40:40`, activée, et le script
+> éprouvé à blanc (il trouve `wt-app30` et écrit son journal).
+>
+> 🔑 **Pourquoi une tâche WINDOWS et pas un rappel interne** : les tâches
+> `CronCreate` de Claude Code vivent DANS la session et meurent avec elle. Or le
+> cas à couvrir est précisément la mort de la session. Un rappel qui disparaît
+> quand survient l'événement qu'il devait couvrir n'est pas un filet.
+>
+> ⛔ **Si le chantier est terminé avant 10:40, SUPPRIMER la tâche** :
+> `Unregister-ScheduledTask -TaskName "Axion-IA relance Qualiopi 10h40" -Confirm:$false`
+> sinon elle ouvrira une seconde session Claude dans un arbre déjà occupé.
+>
+> **État réel à 08:20** : branche `qualiopi/session-editable-et-conventions`,
+> **8 commits**, poussée, partie de `main` = `f62368221`. Les 2 derniers commits
+> sont `01a42897c` (câblage UI du lot 3) et `76f631940` (ADR 0048, distanciel
+> tranché). ⚠️ **CINQ agents écrivaient en parallèle dans cet arbre** au moment
+> de cette écriture, leur travail N'ÉTAIT PAS commité : lire `git status` et le
+> diff AVANT de commiter, et ne JAMAIS `git checkout`/`stash`/`clean`/`reset`.
+
+---
+
 3 · Qualiopi — AUTOPILOT — REPRISE du 2026-09-05, depuis C:\Users\willi\Documents\Projets\Axion-IA
 
 Travaille dans C:\Users\willi\Documents\Projets\Axion-IA\wt-app30
