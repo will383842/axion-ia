@@ -15,3 +15,22 @@ _AUDIT
 # Trames de kit 1-to-1 (gabarits manuscrits à blancs ASCII : prettier ne peut
 # pas stabiliser les séquences d'astérisques/underscores → non idempotent).
 docs/kits
+
+# ── Canal Axion Partners : DEUX artefacts que prettier ne doit JAMAIS toucher ──
+#
+# 🔴 Défaut RÉEL, attrapé le 2026-09-05 par le test de transcription, APRÈS que le hook
+# pre-commit eut déjà réécrit le fichier : prettier a reformaté `contracts.v1.json` et
+# l'a fait passer de 7 519 à 7 379 octets. Or ce fichier est une COPIE OCTET POUR OCTET
+# du JSON Schema publié par Axion Partners, et son empreinte `contracts.sha256` est la
+# preuve que les deux dépôts parlent du même contrat (REQ-QA-007). Reformater la copie
+# casse l'empreinte : la garde rougit sans qu'aucun contrat n'ait bougé, et le réflexe
+# suivant est de « mettre à jour le hash » — ce qui détruit définitivement le seul
+# mécanisme qui détecte une divergence entre les deux dépôts.
+#
+# `fixtures.v1.json` est GÉNÉRÉE (`pnpm partners:fixtures`) et vérifiée à l'octet par
+# `--verifier`. Un formateur qui la réécrit met la garde en rouge permanent.
+#
+# Règle générale : un fichier dont le CONTENU EXACT est la preuve ne se formate pas.
+src/server/partners/contrat/contracts.v1.json
+src/server/partners/contrat/contracts.sha256
+src/server/partners/contrat/fixtures.v1.json

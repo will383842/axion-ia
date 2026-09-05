@@ -16,6 +16,7 @@ import { useLocale } from "next-intl";
 import { ArrowLeft, ArrowRight, Check, Plus } from "lucide-react";
 import { submitCommercialApplicationAction } from "@/features/commercial-application/actions";
 import { trackFunnel } from "@/lib/tracking";
+import { capturerContactDossierAction } from "@/features/commercial-application/capture-actions";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import { cn } from "@/lib/utils";
 import { HoneypotField } from "@/components/forms/HoneypotField";
@@ -88,6 +89,12 @@ export function CommercialApplicationWizard(): React.ReactNode {
   // Confirmation inline avant de quitter l'étape expériences (retour Will
   // 2026-08-13) — jamais de window.confirm.
   const [confirmParcours, setConfirmParcours] = React.useState(false);
+  /**
+   * Capture déjà tentée dans CE parcours. Garde de CONFORT seulement : elle ne
+   * survit ni au rechargement, ni au retour arrière, ni à un second appareil.
+   * La garde qui compte est côté serveur (recherche par empreinte d'e-mail).
+   */
+  const capture = React.useRef(false);
 
   const formRef = React.useRef<HTMLFormElement>(null);
   const topRef = React.useRef<HTMLDivElement>(null);
@@ -226,12 +233,40 @@ export function CommercialApplicationWizard(): React.ReactNode {
       return;
     }
     setConfirmParcours(false);
+
+    // 🔑 CAPTURE À LA SORTIE DE L'ÉCRAN 1 — le cœur du changement.
+    //
+    // À cet instant on a prénom, nom, e-mail, téléphone et l'accord : de quoi
+    // rappeler. Avant, quelqu'un qui s'arrêtait à l'écran 5 ne laissait RIEN —
+    // le brouillon vit dans SON navigateur, jamais chez nous.
+    //
+    // ⛔ « fire and forget » DÉLIBÉRÉ : on n'attend pas la réponse et on
+    // n'affiche aucune erreur. Un échec de capture ne doit pas empêcher
+    // quelqu'un de candidater — ce serait remplacer une perte partielle par une
+    // perte totale, l'inverse exact du but. Le serveur, lui, journalise.
+    if (screen === 1 && !capture.current) {
+      capture.current = true;
+      void capturerContactDossierAction(
+        {
+          prenom: answers.prenom.trim(),
+          nom: answers.nom.trim(),
+          email: answers.email.trim(),
+          telephone: answers.telephone.trim(),
+          consent: true as const,
+          ...(answers.sourceConnaissance ? { sourceConnaissance: answers.sourceConnaissance } : {}),
+        },
+        locale,
+      ).catch(() => {
+        // Silencieux par conception — voir ci-dessus.
+      });
+    }
+
     if (screen < TOTAL_STEPS) {
       setScreen(screen + 1);
       return;
     }
     void submitToServer();
-  }, [screen, answers, confirmParcours, submitToServer]);
+  }, [screen, answers, confirmParcours, submitToServer, locale]);
 
   const onFormSubmit = React.useCallback(
     (e: React.FormEvent) => {

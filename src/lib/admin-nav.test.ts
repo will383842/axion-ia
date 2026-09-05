@@ -13,7 +13,7 @@ import {
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 164 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception) ; +1 Pilotage du recrutement 2026-09-04 (vue de Candidatures livrée par #968, jusque-là sans entrée de menu) ; +1 Liens de campagne 2026-09-04 (fabrique le lien UTM à diffuser — « Annonces » dit ce qu'il a rapporté, celle-ci le construit)", () => {
+  it("returns 164 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception) ; +1 Pilotage du recrutement 2026-09-04 (vue de Candidatures livrée par #968, jusque-là sans entrée de menu) ; +1 Liens de campagne 2026-09-04 (fabrique le lien UTM à diffuser — « Annonces » dit ce qu'il a rapporté, celle-ci le construit); +1 Nouveau contact apporteur 2026-09-04 (première porte de création qui parte de la CONSOLE — les six autres étaient publiques)", () => {
     const items = buildAdminNav("admin-test-prefix");
     // Base 131 − 14 module Prospection retiré 2026-07-08 (#278) = 117.
     // Refonte messagerie 2026-07-09 : 3 groupes distincts sortis de « main » /
@@ -143,7 +143,10 @@ describe("buildAdminNav SSOT", () => {
     // bouton à l'intérieur de l'écran Candidatures — donc introuvable pour qui
     // ne l'ouvrait pas d'abord. Ce compteur ne l'aurait jamais signalé : il
     // compte les entrées de menu, pas les routes sans entrée. = 165.
-    expect(items.length).toBe(165);
+    // +1 (2026-09-04, « Nouveau contact apporteur », indenté sous Commercial) :
+    // six portes créaient un contact, toutes publiques ; celle-ci est la
+    // première qui parte de la console. = 166.
+    expect(items.length).toBe(166);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -331,6 +334,10 @@ describe("buildAdminNav SSOT", () => {
         "Investisseurs",
         "Conférences",
         "Recrutement",
+        // Action posée sous « Recrutement » (`/contacts/commercial`), pas un
+        // canal d'entrée : on y CRÉE une personne. Une première version la
+        // plaçait en racine ; la garde des canaux racine a rougi, à raison.
+        "Nouveau contact apporteur",
         "Podcast",
         "Autres",
         "Pilotage du recrutement",

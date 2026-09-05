@@ -18,6 +18,8 @@ import { useActionState } from "react";
 import { changerStatutEnMasseAction } from "@/features/admin-job-applications/actions-en-masse";
 import type { EtatEnMasse } from "@/features/admin-job-applications/en-masse";
 
+import { ComposeurEnMasse, type ModeleProposable } from "./ComposeurEnMasse";
+
 /**
  * Une option de menu, reduite a ce qu'un `<option>` a besoin de savoir.
  *
@@ -62,6 +64,13 @@ interface Props {
   motifs: readonly OptionDeMenu[];
   /** Plafond de dossiers par geste, affiche a l'ecran. */
   plafond: number;
+  /**
+   * Les modeles de reponse proposables, deja reduits par le parent.
+   *
+   * Meme raison que `statuts` et `motifs` juste au-dessus : le module de
+   * vocabulaire ne traverse pas la frontiere client.
+   */
+  modeles: readonly ModeleProposable[];
 }
 
 export function FormulaireEnMasse({
@@ -69,6 +78,7 @@ export function FormulaireEnMasse({
   statuts,
   motifs,
   plafond,
+  modeles,
 }: Props): React.ReactElement {
   const [etat, action, enCours] = useActionState(changerStatutEnMasseAction, INITIAL);
 
@@ -136,6 +146,12 @@ export function FormulaireEnMasse({
           {etat.inchangees > 0 ? ` · ${etat.inchangees} déjà dans cet état` : ""}.
         </p>
       ) : null}
+
+      {/* 🔑 DANS LE MÊME `<form>`, et c'est tout le point : le composeur voit
+          les cases cochées de la table sans que celle-ci soit rendue deux fois.
+          Son bouton porte `formAction`, qui impose une autre action que celle
+          du formulaire. */}
+      <ComposeurEnMasse modeles={modeles} plafond={plafond} />
     </form>
   );
 }

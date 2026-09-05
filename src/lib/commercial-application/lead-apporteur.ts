@@ -143,3 +143,28 @@ export function extraireFbclid(query: string | undefined): string | null {
     return null;
   }
 }
+
+/**
+ * Ce que l'écran 1 du DOSSIER envoie pour être capturé.
+ *
+ * 🔑 Volontairement PLUS PETIT que `leadApporteurSchema` : on ne demande à la
+ * capture que ce sans quoi on ne peut ni rappeler ni écrire. Tout le reste du
+ * dossier arrive à la soumission complète — et s'il n'arrive jamais, on a
+ * quand même quelqu'un à appeler.
+ *
+ * `consent` est un `literal(true)` : une capture sans accord n'existe pas.
+ * L'accord PRÉCÈDE l'écriture, c'est pour ça que la case a été remontée à
+ * l'écran 1 (cf. `wizard-state.ts`).
+ */
+export const captureDossierSchema = z
+  .object({
+    prenom: z.string().trim().min(1).max(60),
+    nom: z.string().trim().min(1).max(60),
+    email: z.string().trim().email().max(180),
+    telephone: z.string().trim().min(6).max(40),
+    consent: z.literal(true),
+    sourceConnaissance: z.string().trim().max(60).optional(),
+  })
+  .strict();
+
+export type CaptureDossierInput = z.infer<typeof captureDossierSchema>;

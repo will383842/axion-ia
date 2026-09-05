@@ -15,13 +15,11 @@ import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
-import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
-import { consignerEvenement } from "./journal";
+import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { MODELES_REPONSE_IDS } from "@/content/recrutement/modeles-reponse";
 
 /**
@@ -105,122 +103,30 @@ export async function repondreAuCandidatAction(
   });
   if (!candidature) return { ok: false, error: "candidature_introuvable" };
 
-  // Pré-vol : déchiffrer et valider l'adresse DANS le processus web, qui a la
-  // clé. Une adresse illisible (clé absente → substitut) doit échouer AVANT
-  // qu'on crée une réponse orpheline que personne ne pourra envoyer.
-  if (!isDecryptedEmailUsable(decryptPii(candidature.email))) {
-    return { ok: false, error: "invalid_recipient" };
-  }
+  // 🔑 L'ÉCRITURE PASSE PAR `ecrireEtEnfilerReponse`, ET C'EST LE MÊME CHEMIN
+  // QUE L'ENVOI GROUPÉ. Ces cent lignes vivaient ici ; les recopier dans le
+  // geste groupé les aurait fait dériver, et ce qui se perd dans une copie, ce
+  // sont exactement les gestes qui ne se voient pas à l'écran : la transaction
+  // qui tient ensemble la réponse et sa trace, le `new` qui passe à
+  // `reviewing`, et le `failed` posé quand la file d'envoi refuse.
+  const issue = await ecrireEtEnfilerReponse(candidature, acteur, {
+    subject: data.subject,
+    bodyMarkdown: data.bodyMarkdown,
+    modele: data.modele,
+    internalNote: data.internalNote,
+  });
 
-  let rendu: { subject: string; html: string; text: string };
-  try {
-    rendu = await renderEmailTemplate("candidature-reponse", candidature.locale, {
-      subject: data.subject,
-      bodyMarkdown: data.bodyMarkdown,
-      offerTitle: candidature.offerTitleSnap,
-    });
-  } catch (e) {
-    Sentry.captureException(e);
-    return { ok: false, error: "render_failed" };
-  }
-
-  // 🔑 LA RÉPONSE ET SA TRACE SONT ÉCRITES DANS LA MÊME TRANSACTION.
-  //
-  // C'est l'écart le plus important avec le modèle copié. Si le journal était
-  // écrit après coup, un échec entre les deux laisserait une réponse partie
-  // sans trace — c'est-à-dire exactement le défaut que ce lot ferme, réintroduit
-  // par la porte de service. `consignerEvenement` accepte le client de
-  // transaction pour cette raison précise.
-  const replyId = await prisma
-    .$transaction(async (tx) => {
-      const reponse = await tx.jobApplicationReply.create({
-        data: {
-          applicationId: candidature.id,
-          repliedByUserId: acteur.userId,
-          repliedByName: acteur.nom,
-          // L'adresse CHIFFRÉE est recopiée telle quelle : on ne remet jamais
-          // une adresse en clair dans une colonne, même le temps d'un envoi.
-          toEmail: candidature.email,
-          subject: data.subject,
-          bodyHtml: rendu.html,
-          bodyText: rendu.text,
-          deliveryStatus: "pending",
-          modeleUtilise: data.modele,
-          ...(data.internalNote ? { internalNote: data.internalNote } : {}),
-        },
-        select: { id: true },
-      });
-
-      await tx.jobApplication.update({
-        where: { id: candidature.id },
-        data: {
-          needsAttention: false,
-          // Une candidature à laquelle on vient de répondre n'est plus
-          // « nouvelle ». Les autres statuts sont des décisions : on n'y touche
-          // pas.
-          ...(candidature.status === "new" ? { status: "reviewing" as const } : {}),
-        },
-      });
-
-      await consignerEvenement(
-        {
-          applicationId: candidature.id,
-          type: "email_envoye",
-          authorId: acteur.userId,
-          authorName: acteur.nom,
-          summary: `Réponse envoyée — ${data.subject}`,
-          body: data.bodyMarkdown,
-          replyId: reponse.id,
-          meta: { modele: data.modele },
-        },
-        tx,
-      );
-
-      return reponse.id;
-    })
-    .catch((e: unknown) => {
-      Sentry.captureException(e);
-      return null;
-    });
-
-  if (!replyId) return { ok: false, error: "db_failed" };
-
-  // Le worker relit l'adresse depuis la base et la déchiffre au moment de
-  // l'envoi : AUCUNE donnée personnelle ne transite par la file.
-  let misEnFile = false;
-  try {
-    const r = await enqueueEmail("candidature-reponse", "", candidature.locale, {
-      replyId,
-      subject: data.subject,
-      applicationId: candidature.id,
-    });
-    misEnFile = r.enqueued;
-  } catch (e) {
-    Sentry.captureException(e);
-  }
+  if (!issue.ecrit) return { ok: false, error: issue.error };
 
   revalidatePath(adminPath("fr", "contacts/candidatures"));
   revalidatePath(adminPath("fr", `contacts/candidatures/${candidature.id}`));
   updateTag(INBOX_COUNTS_TAG);
 
-  if (!misEnFile) {
-    // 🔴 `enqueueEmail` ne lève pas : elle rend `{ enqueued }`. Marquer
-    // « envoyé » sur un retour faux est le défaut `D5-1-C1` de ce dépôt — une
-    // trace qui affirme un envoi qui n'a pas eu lieu interdit le rattrapage.
-    await prisma.jobApplicationReply
-      .update({
-        where: { id: replyId },
-        data: {
-          deliveryStatus: "failed",
-          failedAt: new Date(),
-          errorMsg: "enqueue_failed (file d'envoi indisponible)",
-        },
-      })
-      .catch((e: unknown) => Sentry.captureException(e));
-    return { ok: false, error: "enqueue_failed", replyId };
-  }
+  // 🔴 La réponse EXISTE, marquée `failed`. On rend son identifiant pour que
+  // l'écran propose de la rejouer — un échec de file n'est pas un message perdu.
+  if (!issue.enfile) return { ok: false, error: issue.error, replyId: issue.replyId };
 
-  return { ok: true, replyId };
+  return { ok: true, replyId: issue.replyId };
 }
 
 /** Remet en file une réponse dont l'envoi a échoué. */

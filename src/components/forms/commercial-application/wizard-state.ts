@@ -142,6 +142,22 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
   const e: FieldErrors = {};
   switch (step) {
     case 1: {
+      // 🔴 2026-09-04 — LE CONSENTEMENT REMONTE ICI, depuis le dernier écran.
+      //
+      // Il ne s'agit pas d'un déplacement de confort. À partir de cette version,
+      // le dossier ENREGISTRE le contact dès la validation de cet écran, pour
+      // qu'un abandon à l'écran 5 laisse une personne rappelable au lieu de rien.
+      // Prendre des coordonnées ici et demander l'accord huit écrans plus loin
+      // serait un traitement sans base — l'accord doit précéder l'écriture, pas
+      // la suivre.
+      //
+      // C'est aussi meilleur pour la personne : on lui dit ce qu'on fait de ses
+      // réponses au moment où elle les donne, pas après huit écrans de travail.
+      // Le mini formulaire du tunnel procède déjà ainsi.
+      //
+      // ⛔ Ne pas le redescendre. Verrouillé par
+      // `le-consentement-precede-l-ecriture.spec.ts`.
+      if (!a.consent) e.consent = "Ton accord est nécessaire pour traiter ta candidature.";
       if (!a.prenom.trim()) e.prenom = "Ton prénom est nécessaire.";
       if (!a.nom.trim()) e.nom = "Ton nom est nécessaire.";
       if (!a.email.trim()) e.email = "Ton email est nécessaire.";
@@ -249,7 +265,6 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
         !/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(a.linkedin.trim())
       )
         e.linkedin = "Ce lien ne semble pas valide.";
-      if (!a.consent) e.consent = "Ton accord est nécessaire pour traiter ta candidature.";
       return e;
     }
     default:
