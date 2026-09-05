@@ -14,6 +14,11 @@
 // les cases cochées. Le bouton porte `formAction` : un formulaire n'a qu'une
 // action, un bouton peut en imposer une autre. Les deux gestes partagent donc
 // la sélection sans que la table soit rendue deux fois.
+//
+// ✅ VÉRIFIÉ PAR L'INTERFACE, et pas seulement lu dans la documentation : voir
+// `tests/e2e/flows/reponse-en-masse.spec.ts`. Le témoin qui tranche est un
+// dossier ÉCARTÉ dont le statut n'est pas `new` — s'il bascule, c'est que le
+// geste de statut a tourné en plus. Il ne bascule pas.
 
 import { useActionState, useState } from "react";
 
@@ -149,27 +154,35 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
           <label htmlFor="masse-objet" className="admin-label">
             Objet
           </label>
-          {/* 🔴 ENTRÉE NE SOUMET PAS, ET CE N'EST PAS UN CONFORT.
+          {/* ⚠️ ENTRÉE NE SOUMET PAS — ET VOICI CE QUI EST ÉTABLI, ET CE QUI
+              NE L'EST PAS. Je préfère écrire les deux plutôt que de laisser un
+              commentaire affirmer un défaut que je n'ai pas su reproduire.
 
-              Ce champ est le PREMIER champ texte d'une ligne de ce `<form>` —
-              qui ne contenait jusque-là que des cases à cocher et deux `select`.
-              Il réveille donc la SOUMISSION IMPLICITE de HTML, qui active le
-              premier bouton `submit` du formulaire **en ordre de document**.
+              CE QUI EST VRAI, par lecture : ce champ est le premier champ texte
+              d'une ligne de ce `<form>` — qui ne contenait jusque-là que des
+              cases à cocher et deux `select`. Il réveille donc la SOUMISSION
+              IMPLICITE de HTML, qui active le premier bouton `submit` du
+              formulaire en ordre de document. Ce bouton n'est pas le nôtre :
+              c'est « Appliquer à la sélection », rendu plus haut par
+              `FormulaireEnMasse`.
 
-              Ce bouton n'est pas le nôtre : c'est « Appliquer à la sélection »,
-              rendu plus haut par `FormulaireEnMasse`. Une touche Entrée frappée
-              ici — le geste réflexe de qui vient de taper un objet — basculait
-              donc jusqu'à cinquante dossiers au statut par défaut `reviewing` et
-              EFFAÇAIT leurs motifs de refus, sans qu'aucun écran ne le demande.
+              🔴 CE QUI N'EST PAS ÉTABLI : que l'effet NUISIBLE se produise. La
+              recette `reponse-en-masse.spec.ts` a été rejouée en RETIRANT cette
+              ligne, et son test « Entrée ne rebascule pas la sélection » est
+              resté VERT : aucun dossier n'a changé de statut. Cette garde ne
+              rougit donc pas — elle ne prouve rien.
 
-              🔑 Le geste voisin n'a pas ce danger parce qu'il est idempotent :
-              le réappliquer ne change rien, et il compte les dossiers « déjà
-              dans cet état ». Celui-ci ne se rattrape pas.
+              🔑 Pourquoi je la garde quand même. Elle coûte une ligne, elle
+              n'enlève aucun geste utile — le corps du message est un
+              `<textarea>` où Entrée reste un retour à la ligne, et les `select`
+              du geste de statut gardent leur soumission au clavier — et elle
+              ferme une mécanique HTML réelle dont je ne sais pas dire POURQUOI
+              elle reste inoffensive ici. Ne pas savoir pourquoi quelque chose
+              ne casse pas est une mauvaise raison de compter dessus.
 
-              On bloque donc Entrée SUR CE CHAMP plutôt que de désarmer le
-              formulaire entier : le corps du message est un `<textarea>`, où
-              Entrée doit continuer à faire un retour à la ligne, et les `select`
-              du geste de statut gardent leur soumission au clavier. */}
+              ⚠️ Ce que ce commentaire ne doit PAS devenir : « on a corrigé un
+              défaut ». Non. On a fermé une porte dont on n'a pas prouvé qu'elle
+              menait quelque part. */}
           <input
             id="masse-objet"
             name="subject"
@@ -204,10 +217,34 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
         </div>
 
         <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+          {/* 🔑 `formAction` — ET IL FONCTIONNE, VÉRIFIÉ PAR L'INTERFACE.
+
+              Un formulaire n'a qu'une action ; un bouton peut en imposer une
+              autre. C'est ce qui permet au composeur de partager la sélection
+              cochée avec le geste de statut sans que la table soit rendue deux
+              fois.
+
+              ⚠️ NE PAS remplacer par `type="button"` + un appel manuel à
+              l'action. Je l'ai fait, en croyant que `formAction` ne remplaçait
+              pas l'action du formulaire mais s'y ajoutait — et la mesure a dit
+              l'inverse : c'est la version manuelle qui déclenche LES DEUX. Le
+              témoin qui tranche est un dossier ÉCARTÉ dont le statut n'est pas
+              `new` : avec `formAction` il ne bouge pas ; avec l'appel manuel il
+              bascule à `reviewing` sans qu'aucune réponse ne lui soit écrite.
+              La recette `reponse-en-masse.spec.ts` garde ce témoin.
+
+              🔴 `admin-button` — la classe PRIMAIRE du système, et pas
+              `admin-button-primary` que j'avais écrite : elle n'existe pas. Le
+              système nomme `.admin-button`, `-secondary`, `-ghost`, `-danger`,
+              `-cta`. Une classe inconnue ne casse RIEN à l'exécution — elle ne
+              style simplement rien, et le bouton le plus dangereux de l'écran
+              serait parti sans habillage. C'est la garde `admin-design-tokens`
+              qui l'a vue, et elle ne l'a vue qu'au deuxième run : le premier
+              s'arrêtait sur Prettier, quinze étapes plus tôt. */}
           <button
             type="submit"
             formAction={action}
-            className="admin-button-primary"
+            className="admin-button"
             disabled={enCours || dejaEnvoye}
             onClick={() => setRetouche(false)}
           >
