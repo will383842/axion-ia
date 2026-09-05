@@ -13,6 +13,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getSessionEmargement } from "@/server/qualiopi/presence/queries";
@@ -135,6 +136,26 @@ export default async function EmargementPage({ params }: PageProps) {
 
   return (
     <AdminPageShell width="wide">
+      {/* 🔴 2026-09-05 — cette page ne ramenait NULLE PART. Aucun lien de retour,
+          ni vers la fiche parente ni vers la liste : une fois dedans, la seule
+          sortie était le bouton « précédent » du navigateur. C'est le pire cas
+          relevé par l'audit de navigation, et c'est l'écran où l'on passe le
+          plus de temps sur une session en cours. */}
+      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}`}
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          ← Retour à la session
+        </Link>
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/sessions`}
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          Sessions
+        </Link>
+      </div>
+
       <AdminPageHeader
         title={`Émargement — ${session.titreSession ?? session.numero}`}
         description={`Session ${session.numero} · ${MODALITE_LABELS[session.modalite] ?? session.modalite} · ${formatDateFR(session.dateDebut)} → ${formatDateFR(session.dateFin)}`}

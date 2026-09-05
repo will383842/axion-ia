@@ -220,7 +220,19 @@ export default async function FinancementSessionPage({ params }: PageProps) {
 
   return (
     <AdminPageShell width="wide">
+      {/* 🔴 2026-09-05 — le retour vers la FICHE PARENTE manquait. Cette
+          sous-page ne ramenait qu'à la LISTE des sessions : on arrivait depuis
+          une session précise, et on en ressortait à la racine, à charge de la
+          retrouver. L'audit de navigation a relevé 4 sous-pages sur 8 dans ce
+          cas. Le retour au parent vient EN PREMIER : c'est le geste le plus
+          probable après avoir corrigé un financement. */}
       <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}`}
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          ← Retour à la session
+        </Link>
         <Link
           href={`/${locale}/${adminPrefix}/qualiopi/sessions`}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
