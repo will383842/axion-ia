@@ -197,6 +197,60 @@ describe("🔴 le claim couvre le lot, et se relâche si l'envoi échoue", () =>
     };
     expect(liberation.data.notifiedAt).toBeNull();
   });
+
+  // ── 🔴 Le cas que le témoin ci-dessus NE couvrait pas ───────────────────────
+  //
+  // Il fait LEVER l'enqueue (`mockRejectedValueOnce`), et le `catch` s'arme.
+  // Mais `enqueueEmail` ne lève sur AUCUN de ses chemins d'échec réels : elle
+  // RETOURNE `{ enqueued: false }` — file absente, adresse sur liste de
+  // suppression, corbeille indisponible. Le `catch` restait donc muet, le claim
+  // gardé, et l'alerte n'était JAMAIS retentée (la sélection exige
+  // `notifiedAt: null`). Le témoin existant mesurait le seul cas qui marchait.
+
+  it("🔴 relâche AUSSI le claim quand l'enqueue RETOURNE false sans lever", async () => {
+    poserCandidates([ligne("a", "session_sans_dispositif_emargement")]);
+    enqueue.mockResolvedValue({ enqueued: false });
+
+    const r = await notifierAlertesGroupees(MAINTENANT);
+
+    expect(r.messages).toBe(0);
+    // Et surtout : le compteur d'alertes ne doit RIEN annoncer. Un « N alertes
+    // routées » sur zéro envoi est ce qui fait croire que le moteur tourne.
+    expect(r.alertes).toBe(0);
+    const liberation = alerteUpdateMany.mock.calls.at(-1)![0] as {
+      data: { notifiedAt: null };
+    };
+    expect(liberation.data.notifiedAt).toBeNull();
+  });
+
+  it("un message GARÉ en corbeille de validation compte comme parti — pas de relâche", async () => {
+    // Contre-témoin. Une garde qui relâcherait aussi sur `garePourValidation`
+    // renverrait le lot à chaque tour sur une alerte volontairement retenue par
+    // un humain : ce n'est pas une perte, c'est une décision.
+    poserCandidates([ligne("a", "session_sans_dispositif_emargement")]);
+    enqueue.mockResolvedValue({ enqueued: false, garePourValidation: true });
+
+    const r = await notifierAlertesGroupees(MAINTENANT);
+
+    expect(r.alertes).toBe(1);
+    const dernier = alerteUpdateMany.mock.calls.at(-1)![0] as { data: { notifiedAt: unknown } };
+    expect(dernier.data.notifiedAt).not.toBeNull();
+  });
+
+  it("envoi PARTIEL : le claim est GARDÉ, parce qu'un humain a bien été prévenu", async () => {
+    // Relâcher ici renverrait le lot à ceux qui l'ont déjà reçu. On garde, et
+    // on le dit dans le journal — l'échec d'une adresse sur trois ne doit pas
+    // être parfaitement muet, mais il ne doit pas non plus tout rejouer.
+    poserCandidates([ligne("a", "session_sans_dispositif_emargement")]);
+    enqueue.mockResolvedValueOnce({ enqueued: true }).mockResolvedValue({ enqueued: false });
+
+    const r = await notifierAlertesGroupees(MAINTENANT);
+
+    expect(r.messages).toBeGreaterThanOrEqual(1);
+    expect(r.alertes).toBe(1);
+    const dernier = alerteUpdateMany.mock.calls.at(-1)![0] as { data: { notifiedAt: unknown } };
+    expect(dernier.data.notifiedAt).not.toBeNull();
+  });
 });
 
 describe("🔴 un repli de destinataire s'écrit dans le message", () => {
