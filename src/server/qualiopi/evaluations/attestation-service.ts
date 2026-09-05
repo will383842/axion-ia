@@ -22,6 +22,11 @@
 import React from "react";
 import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { prisma } from "@/lib/prisma";
+import {
+  MESSAGE_REFUS_TAUX_NON_MESURE,
+  MOTIF_PREUVES_MIN,
+  messageRefusPreuvesManquantes,
+} from "./refus-attestation";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -154,7 +159,10 @@ export function preuvesManquantesAttestation(p: PreuvesAttestation): string[] {
 }
 
 /** Longueur minimale du motif — alignée sur `MOTIF_RECTIFICATION_MIN` de la console. */
-export const MOTIF_PREUVES_MIN = 10;
+// `MOTIF_PREUVES_MIN` vit desormais dans `refus-attestation.ts`, avec les deux
+// messages de refus : le service et la CONSOLE doivent s'accorder dessus, et
+// la console ne peut pas importer ce fichier-ci (il ouvre la base).
+export { MOTIF_PREUVES_MIN } from "./refus-attestation";
 
 /**
  * Refus d'émettre faute de preuves, et faute de motif écrit pour s'en passer.
@@ -167,14 +175,7 @@ export class AttestationPreuvesManquantesError extends Error {
   readonly manquantes: ReadonlyArray<string>;
 
   constructor(manquantes: ReadonlyArray<string>) {
-    super(
-      "Attestation refusée — " +
-        manquantes.join(" ; ") +
-        ". L'attestation de fin de formation est due au stagiaire (L.6353-1) : " +
-        "elle peut être émise malgré ces manques, mais seulement en écrivant " +
-        `pourquoi (${MOTIF_PREUVES_MIN} caractères minimum). Ce motif est porté au ` +
-        "registre et lu par l'auditeur.",
-    );
+    super(messageRefusPreuvesManquantes(manquantes));
     this.name = "AttestationPreuvesManquantesError";
     this.manquantes = manquantes;
   }
@@ -194,13 +195,7 @@ export class AttestationPreuvesManquantesError extends Error {
  */
 export class AttestationTauxNonMesureError extends Error {
   constructor() {
-    super(
-      "Attestation refusée : le taux de présence n'a pas été calculé. Un taux " +
-        "inconnu n'est pas un taux de 0 % — sans aucune mesure d'assiduité, il n'y " +
-        "a rien à attester, et aucun motif ne peut y suppléer. Renseignez la " +
-        "présence (grille d'émargement, ou import du relevé de connexion pour une " +
-        "session à distance), puis relancez la génération.",
-    );
+    super(MESSAGE_REFUS_TAUX_NON_MESURE);
     this.name = "AttestationTauxNonMesureError";
   }
 }

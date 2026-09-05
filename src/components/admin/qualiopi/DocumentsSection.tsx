@@ -52,6 +52,11 @@ import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { LIBELLES_TYPE_DOCUMENT } from "@/server/qualiopi/documents/libelles-type-document";
+import {
+  MOTIF_PREUVES_MIN,
+  refusEstRattrapableParMotif,
+} from "@/server/qualiopi/evaluations/refus-attestation";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import {
   motifRepli,
@@ -173,8 +178,14 @@ const DOC_LABELS: Record<DocumentType, string> = {
   positionnement: "Questionnaire de positionnement",
   grille_evaluation: "Grille d'évaluation",
   satisfaction: "Questionnaire de satisfaction",
-  attestation: "Attestation de réalisation",
-  attestation_partielle: "Attestation partielle",
+  // 🔴 DÉRIVÉS, jamais recopiés (2026-09-05). Ces deux libellés disaient
+  // « Attestation de réalisation » — le vocabulaire du CERTIFICAT, qui est dû
+  // au FINANCEUR — pendant que le PDF imprimait « Attestation de fin de
+  // formation ». L'écran et la pièce ne nommaient pas le même document, et un
+  // auditeur confondait les deux. Recopier la nouvelle chaîne ici reproduirait
+  // exactement le défaut : la prochaine divergence ne se verrait pas davantage.
+  attestation: LIBELLES_TYPE_DOCUMENT.attestation,
+  attestation_partielle: LIBELLES_TYPE_DOCUMENT.attestation_partielle,
   certificat_realisation: "Certificat de réalisation (R.6313-3)",
   facture: "Facture",
   devis: "Devis",
@@ -928,7 +939,15 @@ function ConventionDocButton({
 
 interface EnrollmentDocButtonProps {
   label: string;
-  action: (input: { enrollmentId: string; rectificationMotif?: string }) => Promise<
+  action: (input: {
+    enrollmentId: string;
+    rectificationMotif?: string;
+    /**
+     * 🔴 La SOUPAPE de la garde des preuves de l'attestation. Inerte pour les
+     * autres pièces : leur refus ne porte jamais le marqueur qui l'ouvre.
+     */
+    motifPreuvesManquantes?: string;
+  }) => Promise<
     // `avertissement` : le document EST produit, mais il lui manque une mention
     // que le logiciel ne peut pas fabriquer seul (cf. médiation de la
     // consommation sur le contrat individuel). Distinct d'une erreur — le
@@ -956,6 +975,12 @@ function EnrollmentDocButton({
   const [success, setSuccess] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const rect = useMotifRectification(dejaGenereLe);
+  // 🔴 La soupape des PREUVES — distincte du motif de RECTIFICATION, et il ne
+  // faut surtout pas les confondre : « je refais une pièce » n'est pas
+  // « j'assume l'absence de preuves ». Les fusionner ferait sortir une pièce
+  // sans preuve à chaque simple régénération.
+  const [motifPreuvesOuvert, setMotifPreuvesOuvert] = useState(false);
+  const [motifPreuves, setMotifPreuves] = useState("");
 
   function handleClick() {
     // Cf. SessionDocButton : régénérer, c'est rectifier — donc dire pourquoi.
@@ -967,9 +992,23 @@ function EnrollmentDocButton({
     setSuccess(null);
     setWarning(null);
     startTransition(async () => {
-      const result = await action({ enrollmentId, ...rect.argument });
+      const result = await action({
+        enrollmentId,
+        ...rect.argument,
+        ...(motifPreuves.trim().length >= MOTIF_PREUVES_MIN
+          ? { motifPreuvesManquantes: motifPreuves.trim() }
+          : {}),
+      });
       if ("error" in result) {
         setError(result.error);
+        // 🔴 Le refus des PREUVES se lève en écrivant pourquoi ; on révèle donc
+        // le champ. Le prédicat vit à côté du message qu'il reconnaît
+        // (`refus-attestation.ts`) : tester le texte ici le ferait diverger en
+        // silence, et le champ cesserait un jour d'apparaître.
+        //
+        // ⚠️ Le refus DUR (taux non mesuré) ne l'ouvre PAS — un motif qu'on
+        // saisit sans effet fait croire qu'on a agi.
+        if (refusEstRattrapableParMotif(result.error)) setMotifPreuvesOuvert(true);
         return;
       }
       let msg: string;
@@ -1022,6 +1061,24 @@ function EnrollmentDocButton({
               : label}
       </button>
       {rect.champ(label)}
+      {motifPreuvesOuvert && (
+        <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+          <span className="text-[color:var(--color-admin-fg-muted)]">
+            Pourquoi attester malgré ces manques ? Le motif est porté au registre et lu par
+            l&apos;auditeur.
+          </span>
+          <textarea
+            value={motifPreuves}
+            onChange={(e) => setMotifPreuves(e.target.value)}
+            rows={2}
+            required
+            minLength={MOTIF_PREUVES_MIN}
+            aria-label={`Motif d'attestation sans preuves pour ${label}`}
+            placeholder="Émargement papier de 2024 archivé hors logiciel, retrouvé au dossier client."
+            className="admin-input"
+          />
+        </label>
+      )}
       {rect.ouvert && (
         <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
           Annuler
