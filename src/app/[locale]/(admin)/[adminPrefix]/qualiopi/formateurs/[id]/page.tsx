@@ -389,7 +389,8 @@ export default async function FicheFormateurPage({ params }: PageProps) {
             : `${missions.proposees} proposée${missions.proposees > 1 ? "s" : ""} · ` +
               `${missions.acceptees} acceptée${missions.acceptees > 1 ? "s" : ""} · ` +
               `${missions.refusees} refusée${missions.refusees > 1 ? "s" : ""} · ` +
-              `${missions.sansReponse} sans réponse · ` +
+              `${missions.enAttente} en attente de réponse · ` +
+              `${missions.sansReponse} sans réponse dans le délai · ` +
               `${missions.expirees} expirée${missions.expirees > 1 ? "s" : ""}.`}{" "}
           {missions.absences > 0
             ? `${missions.absences} absence${missions.absences > 1 ? "s" : ""} consignée${missions.absences > 1 ? "s" : ""} (désistement ou annulation tardive).`

@@ -701,6 +701,33 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "administratif",
   },
+  // 🔴 2026-09-04 — le silence tranché AVANT le démarrage.
+  //
+  // `formateur_mission_sans_reponse` prévient qu'on attend ; celle-ci constate
+  // qu'on n'attend plus : l'échéance est passée, l'affectation est retirée, la
+  // session n'a PLUS de formateur. C'est une bascule d'état, pas une relance —
+  // et le geste attendu n'est pas le même : appeler devient réaffecter.
+  formateur_mission_sans_reponse_delai: {
+    niveau: "critique",
+    titre: "Délai dépassé — session libérée, formateur à réaffecter",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  // Le formateur écrit APRÈS l'échéance, depuis son lien devenu inerte. Sans ce
+  // code, son message n'aurait nulle part où atterrir : il tomberait dans une
+  // boîte que personne ne relie à la session. Ne se résout pas seule — quelqu'un
+  // doit l'avoir lue.
+  formateur_message_apres_delai: {
+    niveau: "important",
+    titre: "Message d'un formateur après l'échéance de réponse",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Un message adressé à l'organisme n'a pas de « cause » qui disparaîtrait : " +
+      "il a été écrit, il reste à lire. Une résolution automatique le ferait sortir " +
+      "de la liste sans que personne ne l'ait ouvert — c'est-à-dire perdre la seule " +
+      "chose que le formateur pouvait encore nous dire une fois son lien inerte.",
+    guichet: "administratif",
+  },
   formateur_non_habilite_assigne: {
     niveau: "important",
     titre: "Formateur principal non habilité sur cette formation",
