@@ -518,6 +518,34 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "contacts",
       navLevel: 2,
     },
+    // Saisie manuelle d'un contact apporteur (2026-09-04). Posée JUSTE APRÈS
+    // « Commercial », et INDENTÉE comme elle : ce n'est pas un canal d'entrée
+    // mais une action sur ce canal.
+    //
+    // 🔴 Première tentative : entrée racine du pôle « contacts ». La garde
+    // « expose 5 canaux racine, un par type d'entrée réel » a rougi, et elle
+    // avait raison — une racine annonce un TYPE D'ENTRÉE (appels, messages,
+    // candidatures), pas un geste. Poser un bouton au rang d'un canal aurait
+    // laissé croire qu'une nouvelle source de contacts existait.
+    //
+    // 🔑 Sans entrée de menu, l'écran existe et n'est atteignable par aucun
+    // chemin. Six portes créaient un contact, toutes publiques ; celle-ci est
+    // la première qui parte de la console.
+    {
+      href: `${base}/contacts/commercial/nouveau`,
+      label: "Nouveau contact apporteur",
+      // 🔴 `UserPlus` était le choix évident — et « Candidatures » le portait
+      // déjà dans le MÊME groupe. La garde `admin-nav-icons` l'a refusé, à
+      // raison : deux entrées voisines partageant une icône deviennent
+      // indiscernables du coin de l'œil, ce qui est précisément la façon dont
+      // on lit une barre latérale.
+      //
+      // `PenLine` dit le bon geste : ici on ÉCRIT une fiche, on ne reçoit pas
+      // une candidature.
+      icon: "PenLine",
+      group: "contacts",
+      navLevel: 2,
+    },
     // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
     // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
     // layout Contacts impose son propre AdminPageShell), d'où le `navLevel`
