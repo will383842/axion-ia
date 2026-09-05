@@ -1,7 +1,7 @@
-> ⚠️ **MIS À JOUR le 2026-09-05 à 18:15 (heure locale, UTC+2).**
+> ⚠️ **MIS À JOUR le 2026-09-05 à 20:15 (heure locale, UTC+2).**
 >
 > **Filet de relance : tâche Windows « Axion-IA relance Qualiopi 10h40 »,
-> prochaine exécution vérifiée `2026-09-05 20:30:30`.**
+> prochaine exécution vérifiée `2026-09-05 22:30:30`.**
 > Script `_RELANCE/relancer-qualiopi.cmd` · prompt `_RELANCE/PROMPT-RELANCE-QUALIOPI.txt`
 > · journal `_RELANCE/journal-relance.txt` · sorties `_RELANCE/relance-<date>.log`.
 >
