@@ -32,6 +32,7 @@ import {
   TON_STATUT,
 } from "@/content/recrutement/statuts";
 import { PLAFOND_EN_MASSE } from "@/features/admin-job-applications/en-masse";
+import { MODELES_REPONSE } from "@/content/recrutement/modeles-reponse";
 import { FormulaireEnMasse } from "./FormulaireEnMasse";
 
 /**
@@ -49,6 +50,16 @@ import { FormulaireEnMasse } from "./FormulaireEnMasse";
  * venait justement de solder.
  */
 const OPTIONS_STATUT = STATUTS_CANDIDATURE.map((s) => ({ value: s, label: LIBELLE_STATUT[s] }));
+
+// Reduits ICI, dans un composant serveur : le module de modeles ne doit pas
+// traverser la frontiere client. Meme raison que `OPTIONS_STATUT`.
+const OPTIONS_MODELE = MODELES_REPONSE.map((m) => ({
+  value: m.id,
+  label: m.libelle,
+  quand: m.quand,
+  objet: m.objet,
+  corps: m.corps,
+}));
 const OPTIONS_MOTIF = MOTIFS_REFUS_SAISISSABLES.map((m) => ({
   value: m,
   label: LIBELLE_MOTIF_REFUS[m],
@@ -371,6 +382,7 @@ export function ApplicationsV2({
           statuts={OPTIONS_STATUT}
           motifs={OPTIONS_MOTIF}
           plafond={PLAFOND_EN_MASSE}
+          modeles={OPTIONS_MODELE}
         >
           <AdminTable
             columns={columns}
