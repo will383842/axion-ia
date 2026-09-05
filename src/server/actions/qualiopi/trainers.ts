@@ -760,7 +760,24 @@ export async function assignTrainerToSessionAction(
   // `desaffectation` quand l'organisme retire sans désigner personne : ce ne
   // sont pas les mêmes faits, et un auditeur ne lit pas le second comme le
   // premier.
-  // MUTATION
+  //
+  // 🔴 CET APPEL AVAIT DISPARU. Un agent l'a remplacé par le marqueur
+  // `// MUTATION` pour éprouver sa garde, puis est mort avant de le restaurer —
+  // tué par le plafond de session à 10:20. Le code compilait, les tests
+  // passaient, et l'archive n'était simplement JAMAIS écrite : la fonction
+  // restait importée, jamais appelée. Un import inutilisé est le seul indice
+  // qu'une mutation a survécu à son auteur.
+  //
+  // ⚠️ Fail-soft assumé : `archiverAffectationsRetirees` avale ses erreurs et
+  // rend 0. Le remplacement a DÉJÀ eu lieu et il est juste ; refuser
+  // l'affectation parce que le journal n'a pas pu s'écrire punirait
+  // l'utilisateur pour une panne d'archive. C'est aussi ce qui rend cet appel
+  // sûr pendant la fenêtre où le worker tourne du code plus récent que la
+  // migration appliquée par l'app.
+  await archiverAffectationsRetirees(ecartes, {
+    motif: trainerId !== null ? "remplacement" : "desaffectation",
+    retireById: session.userId,
+  });
 
   // ── Conformité documentaire : AVERTISSEMENT, jamais blocage ──────────────────
   // L'habilitation (ci-dessus) est un refus dur : un formateur non habilité sur
