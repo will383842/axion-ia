@@ -28,6 +28,19 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { FormulaireContactManuel } from "@/components/admin/campagnes/FormulaireContactManuel";
 import { adminPath } from "@/lib/admin-path";
+import { ORIGINES_SAISIE } from "@/lib/commercial-application/saisie-manuelle";
+
+// 🔴 RÉDUIT ICI, dans un composant SERVEUR. `saisie-manuelle.ts` porte le schéma
+// Zod de l'écran : l'importer depuis le composant client créait une arête de
+// module vers zod pour six libellés. Le parent réduit, l'île cliente reçoit une
+// valeur déjà sérialisée — même motif que `FormulaireEnMasse` avec
+// `STATUTS_CANDIDATURE`.
+//
+// ⚠️ Ce n'est PAS établi comme la cause du dépassement de `bundle:check`
+// (700,49 Ko contre 700) : zod entre déjà dans le paquet du navigateur par les
+// formulaires publics. Cf. le commentaire détaillé en tête de
+// `FormulaireContactManuel.tsx`.
+const ORIGINES_PROPOSABLES = ORIGINES_SAISIE.map((o) => ({ id: o.id, libelle: o.libelle }));
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +71,10 @@ export default async function NouveauContactPage({ params }: PageProps) {
           Le prénom et l&apos;e-mail suffisent. L&apos;adresse est ce qui reliera cette personne à
           ses autres traces sur le site — c&apos;est le seul champ qui compte vraiment.
         </p>
-        <FormulaireContactManuel lienFiche={adminPath("fr", "contacts/commercial")} />
+        <FormulaireContactManuel
+          lienFiche={adminPath("fr", "contacts/commercial")}
+          origines={ORIGINES_PROPOSABLES}
+        />
       </AdminCard>
 
       <AdminCard>

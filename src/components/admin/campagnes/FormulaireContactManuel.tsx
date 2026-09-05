@@ -16,11 +16,35 @@ import { AlertTriangle, Check } from "lucide-react";
 
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { creerContactManuelAction } from "@/features/commercial-application/saisie-manuelle-actions";
-// 🔴 Le vocabulaire et les types viennent d'un module SANS `"use server"`.
-// Importés de l'action, ils arriveraient ici sous forme de références
-// distantes, et `ORIGINES_SAISIE.map(...)` lèverait « map is not a function »
-// au rendu — ce qui s'est produit, et que seule la recette par l'interface a vu.
-import { ORIGINES_SAISIE, type TraceExistante } from "@/lib/commercial-application/saisie-manuelle";
+// 🔴 IMPORT DE TYPE SEULEMENT, et le vocabulaire arrive par les props.
+//
+// `@/lib/commercial-application/saisie-manuelle` porte le schéma Zod de l'écran.
+// Importer `ORIGINES_SAISIE` — six libellés — depuis un composant CLIENT créait
+// donc une arête de module vers zod, pour une dépendance dont cet écran
+// n'utilise rien. On la retire, comme `FormulaireEnMasse` retire l'import du
+// vocabulaire des statuts : le parent, qui est un composant serveur, réduit et
+// passe en props.
+//
+// `import type` est effacé à la compilation : il ne crée aucune arête de module,
+// donc `TraceExistante` reste gratuit.
+//
+// ⚠️ CE QUE CE CHANGEMENT NE PROUVE PAS. Le cliquet `bundle:check` refuse cette
+// PR à 700,49 Ko contre 700 autorisés (494 octets de trop). J'ai d'abord cru que
+// cet import en était la cause — c'est FAUX, et je l'ai vérifié : zod entre déjà
+// délibérément dans le paquet du navigateur par les formulaires publics
+// (`src/lib/schemas/forms.ts`, `src/lib/analytics/funnel-beacon.ts`). Cette
+// arête-ci n'est donc peut-être pas payante. Le retrait reste juste — c'est le
+// motif du dépôt, et une arête en moins vers un module serveur est une bonne
+// chose — mais le verdict sur les 494 octets appartient à la MESURE de la CI,
+// pas à ce commentaire.
+//
+// ⚠️ Le vocabulaire ne peut PAS venir de `saisie-manuelle-actions.ts` : ce module
+// porte `"use server"`, ses exports non-fonction arrivent ici sous forme de
+// références distantes, et `ORIGINES_SAISIE.map(...)` lèverait « map is not a
+// function » AU RENDU — ce qui s'est produit, et que seule la recette par
+// l'interface a vu. Une prop passée par un composant serveur, elle, est une
+// vraie valeur sérialisée.
+import type { TraceExistante } from "@/lib/commercial-application/saisie-manuelle";
 
 // Classes du SYSTEME de la console, pas des couleurs choisies a la main : la
 // garde `admin-design-tokens` refuse la palette Tailwind par defaut. Deux
@@ -49,7 +73,24 @@ const VIDE: Champs = {
   note: "",
 };
 
-export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
+/** Une origine de saisie, réduite à ce qu'un `<option>` a besoin de savoir. */
+export interface OrigineProposable {
+  readonly id: string;
+  readonly libelle: string;
+}
+
+export function FormulaireContactManuel({
+  lienFiche,
+  origines,
+}: {
+  lienFiche: string;
+  /**
+   * Le vocabulaire des origines, calculé PAR LE PARENT, qui est un composant
+   * serveur. Cf. le commentaire de l'import en tête de fichier : le lire ici
+   * ferait entrer zod dans le paquet du navigateur.
+   */
+  origines: readonly OrigineProposable[];
+}) {
   const [c, setC] = useState<Champs>(VIDE);
   const [envoi, setEnvoi] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -202,7 +243,7 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
             value={c.origine}
             onChange={(e) => set({ origine: e.target.value })}
           >
-            {ORIGINES_SAISIE.map((o) => (
+            {origines.map((o) => (
               <option key={o.id} value={o.id}>
                 {o.libelle}
               </option>
