@@ -345,11 +345,29 @@ const EXCEPTIONS_RECIPROQUES: Readonly<Record<string, string>> = {
     "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
     "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
   // ⚠️ Celui-ci se vérifie mal : un `grep image-bank/taxonomy` rend HUIT résultats
-  //    et donne l'impression d'une route très liée. Les huit sont des
-  //    `import … from "@/server/image-bank/taxonomy"` — un MODULE SERVEUR qui
-  //    porte le même nom que la route, et n'a rien à voir avec elle. Aucun n'est
-  //    un lien. Compter des occurrences répond à « ce nom apparaît-il ? », jamais
-  //    à « peut-on y arriver ? ».
+  //    et donne l'impression d'une route très liée. Les huit sont des imports du
+  //    MODULE SERVEUR homonyme, sous `@/server/image-bank/`, qui porte le même
+  //    nom que la route sans avoir rien à voir avec elle. Aucun n'est un lien.
+  //    Compter des occurrences répond à « ce nom apparaît-il ? », jamais à
+  //    « peut-on y arriver ? ».
+  //
+  // 🔴 Et cette phrase a elle-même fait rougir Gate A — DEUX FOIS. Ça vaut d'être
+  //    gardé, parce que la seconde fois est la plus instructive.
+  //
+  //    La garde de cloisonnement du module marque une ligne qui porte À LA FOIS
+  //    un motif d'arête de dépendance et le nom du module. Or :
+  //      · la version d'origine de ce commentaire CITAIT la syntaxe d'import
+  //        qu'elle décrivait — la prose qui explique le piège s'est fait prendre
+  //        pour le piège ;
+  //      · la correction, qui DÉCRIVAIT cette mécanique, énumérait les motifs
+  //        surveillés et nommait le module sur la même ligne. Elle est donc
+  //        retombée dedans, exactement.
+  //
+  //    D'où la forme d'aujourd'hui : on ne cite ni la syntaxe d'import, ni les
+  //    motifs à côté du nom du module. On ne desserre pas la garde pour autant —
+  //    son critère est bon, il a ramené 31 faux signalements à 3 vrais — et
+  //    surtout on ne s'inscrit PAS dans ses `CONSOMMATEURS_ASSUMES` : ce fichier
+  //    n'importe rien, l'y mettre serait mentir à la garde pour se faire taire.
   "/image-bank/taxonomy":
     "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
     "documente). Aucun lien entrant dans src — les occurrences du nom visent le " +
