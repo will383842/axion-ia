@@ -144,6 +144,39 @@ candidature spontanée ouverte ?
 
 **Recommandation : A.**
 
+## 4 bis. 🛑 ORDRE PERMANENT — `VIVIER_STOCK_ENABLED` reste FERMÉ
+
+**Décision de Will, 2026-09-04 : rien ne part au CRM sans sa validation
+explicite.** Le drapeau `VIVIER_STOCK_ENABLED` n'est posé nulle part en
+production et ne doit pas l'être — ni pour une recette, ni « pour voir passer un
+e-mail ».
+
+**État mesuré le 2026-09-05**, sur les deux conteneurs de production (app et
+worker) :
+
+| Drapeau                       | Valeur en production | Effet                                             |
+| ----------------------------- | -------------------- | ------------------------------------------------- |
+| `VIVIER_STOCK_ENABLED`        | **non définie**      | 🛑 la campagne d'information REFUSE de s'exécuter |
+| `CRM_SYNC_CANDIDATES_ENABLED` | `true`               | ouvert — sans effet tant que le premier est fermé |
+| `CRM_SYNC_ENABLED`            | `true`               | ouvert — sans effet tant que le premier est fermé |
+
+⚠️ **Le piège de lecture est là, et il est exactement à l'envers de l'intuition.**
+Les deux drapeaux `CRM_SYNC_*` sont **ouverts**. Qui les lit d'abord conclut que
+le canal l'est aussi — c'est faux : c'est `VIVIER_STOCK_ENABLED` qui déclenche
+l'envoi, et lui seul. Le risque symétrique est pire : poser ce drapeau « puisque
+les deux autres sont déjà ouverts » ouvre le canal pour de bon.
+
+🔑 **Et l'ouverture ne se referme pas comme elle s'ouvre.** Le § 5 ci-dessous
+décrit une fermeture propre et une réouverture coûteuse. Il manque le sens qui
+compte ici : une fois le drapeau POSÉ et la campagne partie, le refermer arrête
+les envois suivants mais ne rappelle aucun e-mail et ne remet à zéro aucun
+`vivierInfoSentAt` — donc il ne rejoue pas la fenêtre d'opposition de 30 jours
+qui vient de démarrer pour ces candidats. « On rouvrira si ça ne va pas » n'est
+pas une sortie.
+
+L'ordre est également écrit **à côté du drapeau lui-même**, dans
+`src/server/vivier/config.ts` — un journal que personne ne relit ne protège rien.
+
 ## 5. Comment revenir sur cette décision
 
 La frontière est portée par deux drapeaux d'environnement. La fermer se fait sans

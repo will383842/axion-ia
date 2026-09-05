@@ -14,7 +14,7 @@
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
-import { buildAdminNav } from "../src/lib/admin-nav";
+import { ADMIN_ROUTES_EPINGLEES, buildAdminNav } from "../src/lib/admin-nav";
 
 const ADMIN_ROOT = resolve(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix]");
 const PREFIX = "test-prefix";
@@ -190,4 +190,205 @@ console.log(
     `${externes.length} lien(s) externe(s) valides · ` +
     `${fichiersMcp.length} fichier(s) d'adaptateur MCP lu(s), ` +
     `${INTERDITS_DANS_MCP.length} motif(s) interdit(s) confronté(s).`,
+);
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  TROISIÈME PASSE — LA RÉCIPROQUE : UNE ROUTE ADMIN SANS ENTRÉE DE MENU
+//                    N'EST GARDÉE PAR RIEN
+// ═════════════════════════════════════════════════════════════════════════════
+//
+// Les deux passes ci-dessus ne vérifient qu'UN SENS : chaque entrée de menu mène
+// quelque part. L'autre sens n'était gardé par rien — une route admin livrée
+// sans entrée de menu existe, répond, expose des données, et personne ne la
+// voit. C'est un écran qu'on paye à maintenir sans jamais l'ouvrir, ou pire : un
+// écran qu'on croit retiré et qui répond encore.
+//
+// 🔴 CE QU'UN AUDIT NAÏF RENVOIE, ET POURQUOI C'EST FAUX. Comparer bêtement
+//    « routes sur le disque » à « entrées de menu » rend 157 orphelines sur 308.
+//    Presque toutes sont légitimes, et pour QUATRE raisons distinctes qui se
+//    reconnaissent mécaniquement. Une garde qui ne les distingue pas rend une
+//    liste que personne ne peut lire, donc que personne ne lira — et le seul
+//    vrai défaut s'y noie. Les quatre familles sont donc nommées, comptées et
+//    affichées à chaque exécution : c'est ce qui rend le résidu exploitable.
+//
+// 🔑 ET LA LISTE D'EXCEPTIONS EST MINUSCULE, PAR CONSTRUCTION. Chaque fois qu'on
+//    est tenté d'y ajouter une ligne, la bonne question est « quelle famille
+//    ai-je oubliée ? ». La réponse a été « les liens épinglés » le 2026-09-05 :
+//    douze écrans vivants passaient pour orphelins parce que leur lien était
+//    écrit en dur dans `AdminSidebarNav.tsx`, hors du SSOT. Le correctif n'a pas
+//    été douze exceptions, mais `ADMIN_LIENS_EPINGLES`.
+
+/** Une route admin telle qu'elle existe sur le disque, et son dossier. */
+interface RouteDisque {
+  readonly route: string;
+  readonly dossier: string;
+}
+
+function routesDuDisque(dir: string, segments: string[] = []): RouteDisque[] {
+  const out: RouteDisque[] = [];
+  if (existsSync(join(dir, "page.tsx"))) {
+    out.push({ route: "/" + segments.join("/"), dossier: dir });
+  }
+  for (const nom of readdirSync(dir)) {
+    const full = join(dir, nom);
+    if (!statSync(full).isDirectory()) continue;
+    // `_x` (dossier privé Next), `__tests__`, `components` : jamais des routes.
+    if (nom.startsWith("_") || nom === "__tests__" || nom === "components") continue;
+    // Groupe `(x)` : transparent dans l'URL, on descend sans consommer de segment.
+    if (nom.startsWith("(") && nom.endsWith(")")) {
+      out.push(...routesDuDisque(full, segments));
+      continue;
+    }
+    // Slot parallèle `@x` : rendu par un layout, ce n'est pas une adresse.
+    if (nom.startsWith("@")) continue;
+    out.push(...routesDuDisque(full, [...segments, nom]));
+  }
+  return out;
+}
+
+// ⚠️ CHAQUE EXCEPTION PORTE SON MOTIF. Une liste de chemins nus deviendrait un
+//    dépotoir : on y ajoute une ligne pour faire passer la garde, et six mois
+//    plus tard personne ne sait si la route est vivante ou oubliée.
+const EXCEPTIONS_RECIPROQUES: Readonly<Record<string, string>> = {
+  "/login":
+    "L'écran de connexion. Il ne PEUT pas figurer au menu : on l'atteint " +
+    "précisément quand on n'a pas de session, donc quand aucun menu ne " +
+    "s'affiche. Toutes les autres routes y renvoient par redirection.",
+};
+
+const routesAdmin = routesDuDisque(ADMIN_ROOT).filter((r) => r.route !== "/");
+
+// Les destinations DÉCLARÉES : le menu construit, PLUS les liens épinglés en
+// pied de barre latérale. Les deux sources, pas une seule — c'est le défaut
+// trouvé le 2026-09-05.
+const destinations = new Set<string>([
+  ...items.filter((it) => it.external !== true).map((it) => "/" + navSegments(it.href).join("/")),
+  ...ADMIN_ROUTES_EPINGLEES,
+]);
+
+const famDeclaree: string[] = [];
+const famDynamique: string[] = [];
+const famSousEcran: string[] = [];
+const famRedirection: string[] = [];
+const famException: string[] = [];
+const sansJustification: string[] = [];
+
+for (const { route, dossier } of routesAdmin) {
+  // A — une entrée de menu (ou un lien épinglé) pointe exactement dessus.
+  if (destinations.has(route)) {
+    famDeclaree.push(route);
+    continue;
+  }
+
+  // B — la route porte un segment dynamique : c'est un écran de DÉTAIL, ouvert
+  //     depuis une liste. Aucun menu ne peut pointer sur `/x/[id]`.
+  if (/\[[^\]]+\]/.test(route)) {
+    famDynamique.push(route);
+    continue;
+  }
+
+  // C — un ANCÊTRE de la route est une destination : sous-écran d'une section
+  //     déjà au menu (`/blog/new` sous `/blog`).
+  const segs = route.split("/").filter(Boolean);
+  let ancetre = false;
+  for (let i = segs.length - 1; i >= 1; i--) {
+    if (destinations.has("/" + segs.slice(0, i).join("/"))) {
+      ancetre = true;
+      break;
+    }
+  }
+  if (ancetre) {
+    famSousEcran.push(route);
+    continue;
+  }
+
+  // D — la page ne fait QUE rediriger : adresse héritée gardée en vie pour les
+  //     favoris et les liens déjà écrits ailleurs, délibérément hors du menu.
+  //
+  // 🔴 Le marqueur de JSX est la balise FERMANTE (`</` ou `/>`). Une première
+  //    version disqualifiait toute page contenant `<[A-Za-z]` : `Promise<never>`
+  //    matchait, la famille rendait ZÉRO, et ses 17 routes tombaient au résidu.
+  //    Un critère trop large ne rend pas une garde plus stricte — il la rend
+  //    aveugle à la famille même qu'il devait reconnaître.
+  const brut = readFileSync(join(dossier, "page.tsx"), "utf8");
+  const corps = brut.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  const rendDuJsx = /<\//.test(corps) || /\/>/.test(corps);
+  const redirige = /(?:permanentRedirect|redirect)\s*\(/.test(corps);
+  if (!rendDuJsx && redirige) {
+    famRedirection.push(route);
+    continue;
+  }
+
+  // E — exception écrite et motivée.
+  if (EXCEPTIONS_RECIPROQUES[route] != null) {
+    famException.push(route);
+    continue;
+  }
+
+  sansJustification.push(route);
+}
+
+// ⚠️ CONTRE-TÉMOINS. Chaque famille peut, en s'élargissant, avaler tout le
+//    résidu et rendre cette passe verte en n'ayant rien vérifié. On mesure donc
+//    les familles elles-mêmes, avant de conclure sur le résidu.
+const alertesDeFamille: string[] = [];
+
+if (routesAdmin.length < 100) {
+  alertesDeFamille.push(
+    `seulement ${routesAdmin.length} route(s) admin trouvée(s) sur le disque : ` +
+      `l'arborescence a bougé, ou ADMIN_ROOT ne pointe plus au bon endroit — ` +
+      `cette passe ne vérifie plus rien.`,
+  );
+}
+if (famDeclaree.length === 0 || famDynamique.length === 0 || famRedirection.length === 0) {
+  alertesDeFamille.push(
+    `une famille est VIDE (déclarées ${famDeclaree.length}, dynamiques ` +
+      `${famDynamique.length}, redirections ${famRedirection.length}) : chacune ` +
+      `avait des membres au 2026-09-05, un zéro dit qu'elle a cessé de mesurer.`,
+  );
+}
+if (famRedirection.length > routesAdmin.length / 3) {
+  alertesDeFamille.push(
+    `${famRedirection.length} routes classées « simple redirection » sur ` +
+      `${routesAdmin.length} : le critère est devenu trop large et absorbe de ` +
+      `vrais écrans.`,
+  );
+}
+if (Object.keys(EXCEPTIONS_RECIPROQUES).length > 5) {
+  alertesDeFamille.push(
+    `${Object.keys(EXCEPTIONS_RECIPROQUES).length} exceptions réciproques : ` +
+      `au-delà de cinq, c'est une famille qui manque, pas des cas particuliers.`,
+  );
+}
+
+if (alertesDeFamille.length > 0) {
+  console.error(`❌ [admin-nav:reciproque] la garde ne mesure plus ce qu'elle croit :`);
+  for (const a of alertesDeFamille) console.error(`  - ${a}`);
+  process.exit(1);
+}
+
+if (sansJustification.length > 0) {
+  console.error(
+    `❌ [admin-nav:reciproque] ${sansJustification.length} route(s) admin sans ` +
+      `aucune entrée de menu :`,
+  );
+  for (const r of sansJustification) console.error(`  - ${r}`);
+  console.error(
+    `\n  Une route livrée sans entrée de menu n'est ouverte par personne. Trois ` +
+      `sorties, dans cet ordre :\n` +
+      `    1. poser une entrée dans buildAdminNav() — le cas normal ;\n` +
+      `    2. si l'écran est mort, supprimer la route, ou la remplacer par une\n` +
+      `       redirection vers l'écran qui l'a remplacée (famille D) ;\n` +
+      `    3. en dernier recours seulement, une ligne MOTIVÉE dans\n` +
+      `       EXCEPTIONS_RECIPROQUES, en haut de cette passe.`,
+  );
+  process.exit(1);
+}
+
+console.log(
+  `✅ [admin-nav:reciproque] OK — ${routesAdmin.length} routes admin, toutes ` +
+    `justifiées : ${famDeclaree.length} au menu (dont ` +
+    `${ADMIN_ROUTES_EPINGLEES.length} épinglées), ${famDynamique.length} écrans ` +
+    `de détail, ${famSousEcran.length} sous-écrans, ${famRedirection.length} ` +
+    `redirections héritées, ${famException.length} exception(s) motivée(s).`,
 );

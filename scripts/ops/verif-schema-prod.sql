@@ -122,6 +122,27 @@ UNION ALL SELECT '6 journal:candidature_sans_offre finie (doit valoir 1)',
 -- ⚠️ TÉMOIN DE NON-DESTRUCTION : la migration ne devait toucher AUCUNE ligne.
 -- 86 candidatures avant. Un nombre différent voudrait dire qu'elle a détruit
 -- ou dupliqué — ce qu'aucune vérification de schéma ne verrait.
-UNION ALL SELECT '6 TEMOIN candidatures conservees (86 avant migration)',
+--
+-- 🔴 2026-09-05 — la première version comptait `count(*)` sur la table VIVANTE et
+-- annonçait 86. Elle a rendu 89 : trois candidatures étaient arrivées depuis. Ce
+-- n'était ni une destruction ni une duplication, mais le lecteur ne pouvait pas
+-- le savoir — et c'est le défaut que le § 4 ci-dessus dénonce déjà : une attente
+-- adossée à un nombre qui BOUGE n'alerte pas, elle apprend à ignorer la ligne.
+-- Le témoin porte désormais sur la COHORTE GELÉE — les candidatures soumises
+-- avant l'instant où la migration s'est terminée. Ce sous-ensemble ne peut plus
+-- grandir : 86 est vrai pour toujours, et tout écart désigne une vraie perte.
+UNION ALL SELECT '6 TEMOIN cohorte d''avant 6b conservee (doit valoir 86)',
+       (SELECT count(*) FROM job_applications
+         WHERE submitted_at < (SELECT finished_at FROM _prisma_migrations
+                                WHERE migration_name='20260904010000_candidature_sans_offre'))
+-- Contre-mesure de la ligne précédente : si la sous-requête rendait NULL (migration
+-- absente du journal), le compte vaudrait 0 et se lirait comme une destruction
+-- totale. Cette ligne sépare les deux : 1 = le point d'ancrage existe.
+UNION ALL SELECT '6 TEMOIN+ ancre de la cohorte existe (doit valoir 1)',
+       (SELECT count(*) FROM _prisma_migrations
+         WHERE migration_name='20260904010000_candidature_sans_offre'
+           AND finished_at IS NOT NULL)
+-- Informatif, sans attente figée : le total vivant, qui lui a le droit de croître.
+UNION ALL SELECT '6 INFO candidatures au total (croissant, sans attente)',
        (SELECT count(*) FROM job_applications)
 ORDER BY 1;
