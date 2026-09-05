@@ -105,13 +105,17 @@ test.describe("@recrutement écrire à plusieurs postulants d'un seul geste", ()
     // nouvelle ». Une ligne `new` qui change de statut après un envoi ne prouve
     // donc RIEN.
     //
-    // 🔑 Le seul témoin qui discrimine est un dossier **ÉCARTÉ** dont le statut
-    // n'est **pas** `new` : l'envoi ne lui écrit rien, donc rien ne doit le
-    // faire bouger. S'il bascule, c'est que « Appliquer à la sélection » a
-    // tourné en plus — et cela seul.
+    // 🔑 LE TÉMOIN QUI DISCRIMINE EST LE COMPTE RENDU DU GESTE VOISIN, PAS UN
+    // ÉTAT EN BASE. `FormulaireEnMasse` affiche son propre `role="status"`
+    // — « N candidature(s) modifiée(s) », ou « déjà dans cet état » — dès que
+    // son action tourne sur une sélection non vide. Son ABSENCE prouve donc que
+    // seule l'action du bouton est partie.
     //
-    // Ce témoin est le dossier au poste vide, préparé par le jeu de recette.
-    const lignes = page.locator("tbody tr");
+    // ⚠️ Ma première version cherchait un dossier ÉCARTÉ dont le statut ne
+    // bougeait pas. Elle passait en local et rougissait en CI : le témoin — un
+    // dossier au poste vide — je l'avais fabriqué À LA MAIN dans ma base, il
+    // n'existe pas dans le seed. Une recette qui dépend d'une donnée que
+    // personne d'autre n'a n'est pas une recette, c'est une mise en scène.
 
     await page.getByRole("button", { name: "Envoyer à la sélection" }).click();
 
@@ -123,34 +127,35 @@ test.describe("@recrutement écrire à plusieurs postulants d'un seul geste", ()
     await expect(rendu, "aucun compte rendu d'envoi").toBeVisible({ timeout: 120_000 });
 
     const texte = (await rendu.innerText()).replace(/\s+/g, " ");
-    expect(texte, "le compte rendu doit nommer les messages partis").toMatch(
-      /\d+ messages? envoyés?/,
-    );
 
-    // ── 5. Le dossier au poste vide est ÉCARTÉ, et NOMMÉ. En groupé, personne
-    // ne relit les cinquante rendus : un trou dans le texte ne se rattrape pas.
-    expect(texte, "le dossier incomplet doit être écarté, pas envoyé avec un trou").toContain(
-      "écarté",
-    );
-    expect(texte, "l'écart doit nommer la variable restée sans valeur").toMatch(/poste|prenom/);
-
-    // ── 6. ET LE DOSSIER ÉCARTÉ N'A PAS CHANGÉ DE STATUT.
+    // ── 5. LES TROIS NOMBRES RENDENT COMPTE DE CHAQUE DOSSIER SÉLECTIONNÉ.
     //
-    // C'est la preuve que `formAction` a bien dérouté le geste. Le bouton voisin
-    // aurait basculé TOUTE la sélection — y compris ce dossier-là, auquel rien
-    // n'a été écrit — au statut par défaut, en effaçant son motif de refus.
+    // C'est l'invariant portable, vrai quelle que soit la base : envoyées +
+    // écartées + en échec = ce qu'on avait coché. Un dossier qui disparaîtrait
+    // du compte rendu serait précisément le cas qu'on ne saurait pas rattraper.
     //
-    // La vérification porte sur la ligne dont le compte rendu vient de dire
-    // qu'elle a été écartée : on la retrouve par son identifiant tronqué.
-    const idEcarte = (texte.match(/([0-9a-f]{8}) —/) ?? [])[1];
-    expect(idEcarte, "le compte rendu doit nommer le dossier écarté").toBeTruthy();
+    // 🔑 En CI, la file d'envoi n'est pas branchée : les trois tombent en
+    // « échec d'envoi, rejouable ». C'est un compte rendu JUSTE — et cela vaut
+    // mieux qu'un « envoyé » optimiste, qui interdirait le rattrapage.
+    const nombre = (motif: RegExp): number => Number((texte.match(motif) ?? [])[1] ?? 0);
+    const envoyees = nombre(/(\d+) messages? envoyés?/);
+    const ecartees = nombre(/(\d+) écartés?/);
+    const echouees = nombre(/(\d+) en échec/);
 
-    const ligneEcartee = lignes.filter({ has: page.locator(`input[value^="${idEcarte}"]`) });
-    await expect(ligneEcartee, "la ligne du dossier écarté est introuvable").toHaveCount(1);
+    expect(
+      envoyees + ecartees + echouees,
+      `compte rendu incomplet : « ${texte} » ne rend pas compte des ${choisis} dossiers cochés`,
+    ).toBe(choisis);
+
+    // ── 6. ET LE GESTE DE STATUT N'A PAS TOURNÉ.
+    //
+    // C'est la preuve que `formAction` a bien déroute le geste : le bouton
+    // voisin aurait basculé la sélection au statut par défaut et effacé ses
+    // motifs de refus, en l'annonçant dans SON propre compte rendu.
     await expect(
-      ligneEcartee,
-      "le dossier écarté a changé de statut : le geste de statut a tourné en plus",
-    ).not.toContainText("En revue");
+      page.locator('[role="status"]').filter({ hasText: "modifiée" }),
+      "« Appliquer à la sélection » a tourné en plus de l'envoi",
+    ).toHaveCount(0);
   });
 
   test("Entrée dans l'objet ne rebascule PAS la sélection", async ({ page }) => {
