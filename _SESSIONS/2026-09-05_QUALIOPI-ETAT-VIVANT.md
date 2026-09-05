@@ -3,6 +3,12 @@
 > Tenu **au fil de l'eau**. Si Claude Code se referme, **c'est ce fichier qu'on
 > relit en premier**. Le transcript, jamais.
 > Dernière écriture : 2026-09-05 ~05:00 UTC (07:00 heure de Paris).
+>
+> ⛔ **PÉRIMÉ SUR TROIS POINTS depuis le 2026-09-06** — lire d'abord
+> `2026-09-06_QUALIOPI-REPRISE.md`, qui rectifie le §0, le §5 et le §9 avec les
+> mesures. Ce fichier reste juste sur tout le reste : les cartes du terrain
+> (§7 distanciel, §8 facture/attestation), les pièges (§10) et ce qui revient à
+> Will (§11) n'ont pas bougé.
 
 ---
 
