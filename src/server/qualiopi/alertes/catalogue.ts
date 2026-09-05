@@ -460,7 +460,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // jetons vivent jusqu'à 48 h après la fin, une signature reste recevable.
   emargement_aucune_signature: {
     niveau: "critique",
-    titre: "Liens d'émargement partis, aucune signature",
+    // 🔴 2026-09-05 — le titre disait « Liens d'émargement PARTIS ». La règle ne
+    // sait rien d'un envoi : sa condition est « un jeton vivant existe », c'est-
+    // à-dire FABRIQUÉ. Fabriquer un lien et l'envoyer sont deux actes distincts,
+    // et `emettreLiensSessionAction` ne contient aucun `enqueueEmail`.
+    // Signalé par une session voisine après un cas RÉEL : l'alerte a orienté
+    // vers « relancer la stagiaire » alors que l'hypothèse vivante était qu'elle
+    // n'avait jamais rien reçu. Une alerte qui nomme une cause fausse est pire
+    // qu'une alerte absente — elle déplace l'attention.
+    titre: "Lien d'émargement émis, aucune signature",
     resolutionAuto: true,
     guichet: "administratif",
   },

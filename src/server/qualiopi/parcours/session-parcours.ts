@@ -480,7 +480,14 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
     etape({
       cle: "liens_signature_emis",
       ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
-      libelle: "Liens d'émargement émis",
+      // 🔴 2026-09-05 — ce libellé disait « émis », mot qui se lit « envoyés ».
+      // Le voyant ne mesure QUE la fabrication : `liensEmargementActifs` compte
+      // des jetons vivants, et `emettreLiensSessionAction` ne contient aucun
+      // `enqueueEmail`. Le voyant passait donc au vert sans qu'aucun e-mail ne
+      // parte — un état lu en base présenté comme la preuve d'une livraison.
+      // C'est la même famille que le défaut documenté en tête de
+      // `transmission-exemplaire.ts`.
+      libelle: "Liens d'émargement fabriqués",
       fait: input.liensEmargementActifs > 0,
       faitLe: null,
       echeance: avant(debut, 1),
@@ -491,6 +498,9 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       // 🔴 Une réémission RÉVOQUE la précédente (index unique partiel) : le QR
       // déjà imprimé ou déjà distribué devient mort.
       avertissement:
+        "Fabriquer un lien ne l'ENVOIE pas : « Émettre les liens » crée les jetons et affiche " +
+        "les QR à l'écran, sans expédier le moindre message. Utilisez « Envoyer les liens » " +
+        "pour qu'ils partent, ou distribuez les QR en séance. " +
         "Réémettre révoque les liens en circulation — un QR déjà imprimé cesse de fonctionner.",
     }),
   );

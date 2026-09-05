@@ -564,10 +564,16 @@ async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidat
   return sessions.map((s) => ({
     code: "emargement_aucune_signature" as const,
     niveau: "critique" as const,
-    titre: "Liens d'émargement partis, aucune signature",
+    titre: "Lien d'émargement émis, aucune signature",
+    // 🔴 Ce message affirmait « les liens sont EN CIRCULATION ». La condition
+    // au-dessus ne lit qu'un JETON vivant : elle sait qu'un lien a été
+    // FABRIQUÉ, pas qu'il a été envoyé. La première chose à vérifier est donc
+    // que l'envoi a eu lieu — pas de relancer quelqu'un qui n'a rien reçu.
     message:
-      `Session ${s.numero}${s.titreSession ? ` — ${s.titreSession}` : ""} : les liens sont ` +
-      `en circulation depuis le ${s.dateDebut.toLocaleDateString("fr-FR")} et PERSONNE n'a signé. ` +
+      `Session ${s.numero}${s.titreSession ? ` — ${s.titreSession}` : ""} : un lien de signature ` +
+      `existe depuis le ${s.dateDebut.toLocaleDateString("fr-FR")} et PERSONNE n'a signé. ` +
+      `⚠️ Vérifiez D'ABORD que le lien a bien été ENVOYÉ : le fabriquer et l'envoyer sont deux ` +
+      `gestes distincts, et cette alerte ne sait pas si l'envoi a eu lieu. ` +
       `Les jetons expirent 48 h après le ${s.dateFin.toLocaleDateString("fr-FR")} : après, ` +
       `l'émargement ne sera plus rattrapable et l'écart devra être consigné (ind. 12).`,
     cibleType: "TrainingSession" as const,
@@ -3395,24 +3401,26 @@ async function regleConvocationStagiaireManquante(now: Date): Promise<AlerteCand
     },
     take: 200,
   });
-  return enrollments
-    // Garde applicative doublant le `where` : les mocks ignorent le SQL, et
-    // accuser d'un manque une convocation DÉJÀ partie serait le pire des
-    // messages — celui qu'on ne peut pas fermer.
-    .filter((e) => e.convocationEnvoyeeAt === null)
-    .map((e) => ({
-      code: "convocation_stagiaire_manquante",
-      niveau: "critique" as AlerteNiveau,
-      titre: "Stagiaire non convoqué à moins de 2 jours du début",
-      message:
-        `${e.trainee.prenom} ${e.trainee.nom} n'a reçu aucune convocation pour la session ` +
-        `${e.session.numero}, qui démarre le ${e.session.dateDebut.toLocaleDateString("fr-FR")}. ` +
-        `L'information du bénéficiaire avant l'entrée en formation est due (indicateur 9), et ` +
-        `sans convocation il ne saura ni où ni quand se présenter. Envoyez-la depuis la fiche ` +
-        `de session.`,
-      cibleType: "Enrollment",
-      cibleId: e.id,
-    }));
+  return (
+    enrollments
+      // Garde applicative doublant le `where` : les mocks ignorent le SQL, et
+      // accuser d'un manque une convocation DÉJÀ partie serait le pire des
+      // messages — celui qu'on ne peut pas fermer.
+      .filter((e) => e.convocationEnvoyeeAt === null)
+      .map((e) => ({
+        code: "convocation_stagiaire_manquante",
+        niveau: "critique" as AlerteNiveau,
+        titre: "Stagiaire non convoqué à moins de 2 jours du début",
+        message:
+          `${e.trainee.prenom} ${e.trainee.nom} n'a reçu aucune convocation pour la session ` +
+          `${e.session.numero}, qui démarre le ${e.session.dateDebut.toLocaleDateString("fr-FR")}. ` +
+          `L'information du bénéficiaire avant l'entrée en formation est due (indicateur 9), et ` +
+          `sans convocation il ne saura ni où ni quand se présenter. Envoyez-la depuis la fiche ` +
+          `de session.`,
+        cibleType: "Enrollment",
+        cibleId: e.id,
+      }))
+  );
 }
 
 /**
@@ -3457,27 +3465,29 @@ async function regleSessionDistancielSansLien(now: Date): Promise<AlerteCandidat
     take: 100,
   });
 
-  return sessions
-    // Gardes applicatives doublant le `where` — les mocks ignorent le SQL, et
-    // annoncer « session à distance » sur une session en salle enverrait
-    // chercher un lien qui n'a pas lieu d'être.
-    .filter((s) => s.lieuType === "distanciel" && (s.lieuVisioUrl ?? "").trim().length === 0)
-    .map((s) => {
-      const demarree = s.dateDebut.getTime() <= now.getTime();
-      const date = s.dateDebut.toLocaleDateString("fr-FR");
-      return {
-        code: "session_distanciel_sans_lien",
-        niveau: "critique" as AlerteNiveau,
-        titre: demarree
-          ? "Session à distance démarrée sans lien de connexion"
-          : "Session à distance sans lien de connexion",
-        message: demarree
-          ? `${designerSession(s)} est à distance, a démarré le ${date}, et aucun lien de connexion n'est enregistré. Personne ne peut se connecter : posez le lien et renvoyez-le immédiatement aux inscrits et au formateur.`
-          : `${designerSession(s)} est à distance et démarre le ${date} sans lien de connexion enregistré. Le lien part avec les convocations : sans lui, ni les stagiaires ni le formateur ne sauront où se rendre, et le lieu de déroulement manque à la convention.`,
-        cibleType: "TrainingSession",
-        cibleId: s.id,
-      };
-    });
+  return (
+    sessions
+      // Gardes applicatives doublant le `where` — les mocks ignorent le SQL, et
+      // annoncer « session à distance » sur une session en salle enverrait
+      // chercher un lien qui n'a pas lieu d'être.
+      .filter((s) => s.lieuType === "distanciel" && (s.lieuVisioUrl ?? "").trim().length === 0)
+      .map((s) => {
+        const demarree = s.dateDebut.getTime() <= now.getTime();
+        const date = s.dateDebut.toLocaleDateString("fr-FR");
+        return {
+          code: "session_distanciel_sans_lien",
+          niveau: "critique" as AlerteNiveau,
+          titre: demarree
+            ? "Session à distance démarrée sans lien de connexion"
+            : "Session à distance sans lien de connexion",
+          message: demarree
+            ? `${designerSession(s)} est à distance, a démarré le ${date}, et aucun lien de connexion n'est enregistré. Personne ne peut se connecter : posez le lien et renvoyez-le immédiatement aux inscrits et au formateur.`
+            : `${designerSession(s)} est à distance et démarre le ${date} sans lien de connexion enregistré. Le lien part avec les convocations : sans lui, ni les stagiaires ni le formateur ne sauront où se rendre, et le lieu de déroulement manque à la convention.`,
+          cibleType: "TrainingSession",
+          cibleId: s.id,
+        };
+      })
+  );
 }
 
 /**
