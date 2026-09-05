@@ -52,6 +52,7 @@ import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import {
   motifRepli,
   pieceMiseEnAvant,
@@ -763,13 +764,33 @@ function LettreMissionButtons({
 
 /**
  * La convention porte une CLAUSE que les autres documents n'ont pas : l'acompte.
- * Le gabarit l'acceptait depuis le 2026-07-27 mais aucun écran ne le
- * transmettait — toute convention sortait à 30 %, y compris régularisée après
- * la tenue de l'action, où « acompte à la signature » n'a plus d'objet.
+ * C'est pour ce seul champ qu'elle a son propre composant plutôt que le
+ * `SessionDocButton` générique.
  *
- * Champ vide = 30 % (usage commercial, comportement historique). `0` = payable
- * en totalité à réception de facture. Pas de plafond B2B (cf. gabarit) — le
- * plafond L.6353-6 ne concerne que le contrat B2C, qui a son propre calcul.
+ * 🔴 2026-09-05 — et c'est ainsi qu'elle avait échappé à DEUX correctifs.
+ *
+ * ## N4 — le filigrane « COPIE » était FORCÉ, sans aucun moyen d'y échapper
+ *
+ * Ce bouton était le SEUL de la section à ne pas appeler `useMotifRectification`.
+ * Conséquence, vérifiée : régénérer une convention produisait TOUJOURS une pièce
+ * filigranée « COPIE » — y compris quand on la refaisait précisément parce que
+ * l'original était faux. Il ne restait qu'à choisir devant l'auditeur entre un
+ * original erroné et une copie exacte, sur la pièce contractuelle la plus
+ * importante du dossier. Le correctif du 2026-08-04 avait traité les deux
+ * boutons GÉNÉRIQUES ; celui-ci vivait à côté du patron et n'a rien reçu.
+ *
+ * Gardé désormais par `aucun-bouton-ne-force-le-filigrane-copie.spec.ts`, qui
+ * vise la RÈGLE — « qui dessine l'affordance régénérer porte le motif » — et
+ * non ce bouton-ci : le prochain document à réglage particulier repartirait
+ * sinon d'un composant neuf et referait exactement la même chose.
+ *
+ * ## F7 — le champ était SOUS le bouton qui le consomme
+ *
+ * On ne lit pas un réglage après avoir cliqué. L'acompte est désormais AU-DESSUS,
+ * et son défaut ne réclame plus rien (`ACOMPTE_DEFAUT_PERCENT` = 0 : « payable en
+ * totalité à réception de facture »). Champ vide = ce défaut. Pas de plafond B2B
+ * (cf. gabarit) — le plafond L.6353-6 ne concerne que le contrat B2C, qui a son
+ * propre calcul.
  */
 function ConventionDocButton({
   sessionId,
@@ -786,8 +807,18 @@ function ConventionDocButton({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [acompte, setAcompte] = useState("");
+  // 🔴 N4 — le patron que ce composant n'avait jamais reçu. Sans lui, toute
+  // régénération sortait filigranée « COPIE », sans recours depuis l'écran.
+  const rect = useMotifRectification(dejaGenereLe);
 
   function handleClick() {
+    // Première frappe sur une convention DÉJÀ produite : on ouvre le motif au
+    // lieu de régénérer. Exactement `SessionDocButton`, et c'est voulu — la
+    // divergence entre les deux est ce qui a produit le défaut.
+    if (rect.requis && !rect.ouvert) {
+      rect.ouvrir();
+      return;
+    }
     setError(null);
     setSuccess(null);
     // Validation locale AVANT l'action : « 150 » renverrait un « Données
@@ -796,7 +827,7 @@ function ConventionDocButton({
     if (acompte.trim() !== "") {
       const n = Number(acompte);
       if (!Number.isInteger(n) || n < 0 || n > 100) {
-        setError("Acompte : entier entre 0 et 100 (vide = 30 %).");
+        setError(`Acompte : entier entre 0 et 100 (vide = ${ACOMPTE_DEFAUT_PERCENT} %).`);
         return;
       }
       acomptePercent = n;
@@ -805,6 +836,7 @@ function ConventionDocButton({
       const result = await genererConventionAction({
         sessionId,
         ...(acomptePercent !== undefined ? { acomptePercent } : {}),
+        ...rect.argument,
       });
       if ("error" in result) {
         setError(result.error);
@@ -816,6 +848,7 @@ function ConventionDocButton({
           numero: result.data.numero,
           documentId: result.data.documentId,
         });
+        rect.fermer();
         router.refresh();
       }
     });
@@ -823,25 +856,12 @@ function ConventionDocButton({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-1)]">
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={isPending}
-        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
-        aria-label={
-          dejaGenereLe
-            ? `Régénérer : Convention de formation (dernière génération le ${dejaGenereLe})`
-            : "Générer : Convention de formation"
-        }
-      >
-        {isPending
-          ? "Génération…"
-          : dejaGenereLe
-            ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
-            : "Convention de formation"}
-      </button>
+      {/* 🔴 F7 — l'acompte est AU-DESSUS du bouton depuis le 2026-09-05.
+          Il était en dessous, en petit : on ne lit pas un réglage après avoir
+          cliqué. C'est une CLAUSE de la pièce que le client signe, pas une
+          option d'affichage. */}
       <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        <span>Acompte (%)</span>
+        <span>Acompte à la signature (%)</span>
         <input
           type="number"
           inputMode="numeric"
@@ -851,12 +871,37 @@ function ConventionDocButton({
           value={acompte}
           onChange={(e) => setAcompte(e.target.value)}
           disabled={isPending}
-          placeholder="30"
-          aria-label="Acompte à la signature en pourcentage (vide = 30, 0 = payable en totalité)"
+          placeholder={String(ACOMPTE_DEFAUT_PERCENT)}
+          aria-label={`Acompte à la signature en pourcentage (vide = ${ACOMPTE_DEFAUT_PERCENT}, 0 = payable en totalité à réception de facture)`}
           className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)] focus:ring-1 focus:ring-[color:var(--color-admin-accent)] focus:outline-none"
         />
-        <span>0 = totalité à réception de facture</span>
+        <span>vide ou 0 = totalité à réception de facture</span>
       </label>
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={isPending || (rect.ouvert && !rect.valide)}
+        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
+        aria-label={
+          dejaGenereLe
+            ? `Régénérer : Convention de formation (dernière génération le ${dejaGenereLe})`
+            : "Générer : Convention de formation"
+        }
+      >
+        {isPending
+          ? "Génération…"
+          : rect.ouvert
+            ? "Rectifier : Convention de formation"
+            : dejaGenereLe
+              ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
+              : "Convention de formation"}
+      </button>
+      {rect.champ("Convention de formation")}
+      {rect.ouvert && (
+        <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
+          Annuler
+        </button>
+      )}
       {error && (
         <p
           role="alert"

@@ -17,6 +17,7 @@ import {
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -164,10 +165,13 @@ export function ConventionPdf({
   // parfaitement licite entre professionnels, et brouiller la raison d'être du
   // plafond là où il compte vraiment.
   //
-  // Le pourcentage par défaut de 30 % est un usage commercial, pas une règle de
-  // droit — sa coïncidence avec le plafond B2C est fortuite, et c'est
-  // précisément ce qui rend les deux documents faciles à confondre.
-  const acomptePercent = data.acomptePercent ?? 30;
+  // 🔴 2026-09-05 — le défaut était 30 %, et c'était un usage commercial, pas
+  // une règle de droit. Toute convention générée sans avoir remarqué le champ
+  // (qui se trouvait SOUS le bouton) réclamait donc au client 30 % à la
+  // signature, clause qu'aucune des deux parties n'avait négociée — une fausse
+  // mention dans la pièce qu'il signe, et rien à l'écran ne la signalait.
+  // Le défaut ne réclame plus rien : cf. `acompte-defaut.ts` pour l'arbitrage.
+  const acomptePercent = data.acomptePercent ?? ACOMPTE_DEFAUT_PERCENT;
   const acompte = (data.prixHt * acomptePercent) / 100;
   const solde = data.prixHt - acompte;
 

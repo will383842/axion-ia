@@ -19,6 +19,7 @@ import { notFound } from "next/navigation";
 import { AcompteFormationPanel } from "@/components/admin/qualiopi/AcompteFormationPanel";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { SessionMontantForm } from "@/components/admin/qualiopi/SessionMontantForm";
 import { SetFinancementForm } from "@/components/admin/qualiopi/SetFinancementForm";
 import { PriseEnChargeForm } from "@/components/admin/qualiopi/PriseEnChargeForm";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
@@ -166,6 +167,23 @@ export default async function FinancementSessionPage({ params }: PageProps) {
     ad !== null
       ? `${ad.getUTCFullYear()}-${String(ad.getUTCMonth() + 1).padStart(2, "0")}-${String(ad.getUTCDate()).padStart(2, "0")}`
       : "";
+
+  /**
+   * Pièces financières VIVANTES qui annoncent déjà le montant actuel.
+   *
+   * ⚠️ Le `where` est le MÊME que celui de `setSessionMontantAction` — s'ils
+   * divergeaient, l'écran promettrait « aucune pièce à réémettre » et le
+   * serveur refuserait ensuite faute de motif, sans que personne comprenne
+   * pourquoi. Compté au rendu, et pas seulement au refus : c'est AVANT de
+   * corriger qu'il faut savoir qu'il faudra réémettre.
+   */
+  const piecesFinancieres = await prisma.documentGenere.count({
+    where: {
+      sessionId: trainingSession.id,
+      type: { in: ["convention", "convention_tripartite", "facture", "devis"] },
+      annuleeAt: null,
+    },
+  });
 
   // Source unique de vérité : couvre OPCO, CPF/EDOF, CPF éligibilité, POEI 3 preuves.
   const financementValidations = await getFinancementValidations(trainingSession.id);
@@ -368,6 +386,21 @@ export default async function FinancementSessionPage({ params }: PageProps) {
             </div>
           )}
         </div>
+      </section>
+
+      {/* ── Montant HT ───────────────────────────────────────────────────
+          🔴 Ce bloc n'existait pas : le montant était affiché en lecture seule
+          au récapitulatif ci-dessus et n'était modifiable NULLE PART après la
+          création. Il faut une écriture SQL en production pour le corriger —
+          c'est ce qui a été fait sur AXI-SESS-2026-001. */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Montant HT de la prestation</h2>
+        <SessionMontantForm
+          sessionId={id}
+          initialMontantHtCents={trainingSession.montantHtCents}
+          piecesFinancieres={piecesFinancieres}
+          hrefDocuments={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}#documents`}
+        />
       </section>
 
       {/* ── Formulaire de modification du financement ────────────────────── */}

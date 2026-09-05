@@ -199,7 +199,18 @@ export function ContratFormationPdf({
   // Un contrat n'a pas à recalculer un plafond : il imprime ce qui a été
   // CONVENU. Si le montant est fourni, on l'imprime tel quel ; sinon on retombe
   // sur le calcul historique, en le plafonnant toujours.
-  const acomptePercent = Math.min(data.acomptePercent ?? 30, 30);
+  // ⚠️ Le défaut du B2C reste le PLAFOND, et ne suit délibérément pas
+  // `ACOMPTE_DEFAUT_PERCENT` (passé à 0 pour la convention B2B le 2026-09-05).
+  // Deux raisons, et la seconde est la vraie : ce gabarit n'a AUCUNE branche
+  // « payable en totalité » — à 0 %, il imprimerait « Acompte à l'expiration du
+  // délai de rétractation (0 % maximum) : 0,00 € » sur la pièce que le
+  // PARTICULIER signe, ligne qui se lit comme une erreur de génération. La
+  // convention B2B, elle, a cette branche et peut donc valoir 0 sans mentir.
+  // Ne pas « harmoniser » les deux défauts sans écrire d'abord cette branche.
+  const acomptePercent = Math.min(
+    data.acomptePercent ?? PLAFOND_ACOMPTE_PARTICULIER_PCT,
+    PLAFOND_ACOMPTE_PARTICULIER_PCT,
+  );
   const acompte =
     data.acompteEuros !== undefined
       ? Math.min(data.acompteEuros, (data.prixNet * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100)

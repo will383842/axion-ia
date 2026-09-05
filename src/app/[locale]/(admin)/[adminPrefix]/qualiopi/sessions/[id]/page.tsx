@@ -793,9 +793,12 @@ export default async function SessionHubPage({ params }: PageProps) {
         />
       </section>
 
-      {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
+      {/* ── Modalité et lieu (convention L.6353-1 · Qualiopi off.9) ────────
+          Les deux dans la MÊME section, depuis le 2026-09-05 : ils décident
+          ensemble de ce que la convention imprime, et les séparer garantissait
+          qu'on corrige l'un en oubliant l'autre. Cf. `SessionLieuForm`. */}
       <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
+        <h2 className={sectionHeadCls}>Modalité et lieu de déroulement</h2>
         <SessionLieuForm
           sessionId={id}
           initial={lieuValuesDepuisSession(trainingSession)}
