@@ -14,10 +14,21 @@
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
-import { ADMIN_ROUTES_EPINGLEES, buildAdminNav } from "../src/lib/admin-nav";
+import { ADMIN_LIENS_EPINGLES, ADMIN_ROUTES_EPINGLEES, buildAdminNav } from "../src/lib/admin-nav";
 
 const ADMIN_ROOT = resolve(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix]");
 const PREFIX = "test-prefix";
+
+/** Le composant qui rend la barre latérale — SECONDE source de destinations. */
+const FICHIER_BARRE_LATERALE = resolve(
+  process.cwd(),
+  "src/components/admin/ui/AdminSidebarNav.tsx",
+);
+
+/** Segments concrets d'un chemin épinglé (`/console-editoriale` → ["console-editoriale"]). */
+function segmentsEpingles(chemin: string): string[] {
+  return chemin.split("/").filter(Boolean);
+}
 
 /** Segments concrets d'une route de nav (`/fr/p/a/b` → ["a","b"]). */
 function navSegments(href: string): string[] {
@@ -85,6 +96,53 @@ for (const item of externes) {
   if (!item.href.startsWith("https://")) {
     externesInvalides.push(`${item.label} → ${item.href} (doit être une URL absolue https)`);
   }
+}
+
+// 🔴 2026-09-05 — LES LIENS ÉPINGLÉS PASSENT PAR LA MÊME EXIGENCE.
+//
+// La passe réciproque, plus bas, les accepte comme DESTINATIONS : elles blanchissent
+// `/console-editoriale`, ses dix écrans et `/agenda`. Mais elle ne peut pas dire si
+// la destination existe — une route absente n'y produit aucune erreur, elle n'est
+// simplement jamais appariée. Autrement dit : renommer le dossier `agenda/` ferait
+// pointer le lien du pied de barre sur un 404, et TOUT serait resté vert.
+//
+// C'est le défaut EXACT que cette première passe existe pour fermer, et il rentrait
+// par la porte que la troisième venait d'ouvrir. Une destination n'est pas moins une
+// destination parce qu'elle est écrite dans un composant plutôt que dans le menu.
+for (const chemin of ADMIN_ROUTES_EPINGLEES) {
+  if (!routeExists(ADMIN_ROOT, segmentsEpingles(chemin))) {
+    missing.push(`(épinglé en pied de barre latérale) → ${chemin}`);
+  }
+}
+
+// 🔴 2026-09-05 — ET DANS L'AUTRE SENS : le composant doit RENDRE ce que la
+//    constante déclare.
+//
+// `ADMIN_LIENS_EPINGLES` est un couplage manuel entre `admin-nav.ts` et
+// `AdminSidebarNav.tsx`. Le test de garde prouve qu'en VIDANT la constante on
+// rougit. L'inverse n'était gardé par rien : retirer les deux `<Link>` du composant
+// en laissant la constante intacte, et la passe réciproque continue de classer les
+// douze écrans « au menu » — douze écrans redevenus inaccessibles, garde verte.
+//
+// Une garde qui ne surveille qu'un sens d'un couplage à deux sens ne surveille pas
+// le couplage : elle surveille une de ses moitiés.
+const sourceBarre = readFileSync(FICHIER_BARRE_LATERALE, "utf8");
+const epingleesNonRendues = Object.keys(ADMIN_LIENS_EPINGLES).filter(
+  (cle) => !sourceBarre.includes(`ADMIN_LIENS_EPINGLES.${cle}`),
+);
+if (epingleesNonRendues.length > 0) {
+  console.error(
+    `❌ [admin-nav:routes] ${epingleesNonRendues.length} lien(s) épinglé(s) déclaré(s) dans ` +
+      `ADMIN_LIENS_EPINGLES mais plus rendu(s) par ${relative(process.cwd(), FICHIER_BARRE_LATERALE)} :`,
+  );
+  for (const cle of epingleesNonRendues) {
+    console.error(
+      `  - ${cle} → ${ADMIN_LIENS_EPINGLES[cle as keyof typeof ADMIN_LIENS_EPINGLES]} ` +
+        `(la passe réciproque le compte comme une destination : les écrans qu'il ` +
+        `justifie seraient devenus inatteignables sans que rien ne rougisse)`,
+    );
+  }
+  process.exit(1);
 }
 
 // Contre-témoin : si `external` était posé en masse par erreur, la boucle
@@ -254,6 +312,48 @@ const EXCEPTIONS_RECIPROQUES: Readonly<Record<string, string>> = {
     "L'écran de connexion. Il ne PEUT pas figurer au menu : on l'atteint " +
     "précisément quand on n'a pas de session, donc quand aucun menu ne " +
     "s'affiche. Toutes les autres routes y renvoient par redirection.",
+
+  // 🔴 2026-09-05 — LES QUATRE STUBS QUE LA FAMILLE C ABSOLVAIT EN SILENCE.
+  //
+  // La famille C blanchit une route dès qu'un ANCÊTRE est une destination. Elle
+  // ne vérifie aucun lien entrant : c'est un test de préfixe de chemin. Comme
+  // `/image-bank` est au menu, ces quatre écrans passaient pour des « sous-écrans
+  // d'une section au menu » — alors qu'ils sont exactement ce que cette garde a
+  // été écrite pour trouver, et que le dépôt le DISAIT déjà, en toutes lettres,
+  // dans le fichier même que ce lot modifie :
+  //
+  //   admin-nav.ts — « NB : 4 autres stubs (licensing, seo-audit, sitemap-status,
+  //   taxonomy) n'ont jamais eu d'entrée de nav — routes accessibles par URL
+  //   seulement. »
+  //
+  // Un balayage de tous les `.ts/.tsx` de `src` ne trouve aucun lien entrant vers
+  // eux. Les déclarer ici ne les rend pas atteignables : ça rend VISIBLE ce qui
+  // était absous sans qu'on le sache, et ça force un motif écrit. Le résidu réel
+  // de cette passe n'était donc pas 1, mais 5.
+  //
+  // ⛔ CE N'EST PAS UN CLASSEMENT DÉFINITIF — c'est un arbitrage qui revient à Will :
+  //    soit ces quatre écrans reçoivent une entrée de menu, soit ils sont retirés.
+  //    Tant qu'ils vivent sans lien entrant, ils coûtent une route à maintenir que
+  //    personne ne peut ouvrir autrement qu'en tapant son URL.
+  "/image-bank/licensing":
+    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
+    "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
+  "/image-bank/seo-audit":
+    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
+    "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
+  "/image-bank/sitemap-status":
+    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
+    "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
+  // ⚠️ Celui-ci se vérifie mal : un `grep image-bank/taxonomy` rend HUIT résultats
+  //    et donne l'impression d'une route très liée. Les huit sont des
+  //    `import … from "@/server/image-bank/taxonomy"` — un MODULE SERVEUR qui
+  //    porte le même nom que la route, et n'a rien à voir avec elle. Aucun n'est
+  //    un lien. Compter des occurrences répond à « ce nom apparaît-il ? », jamais
+  //    à « peut-on y arriver ? ».
+  "/image-bank/taxonomy":
+    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
+    "documente). Aucun lien entrant dans src — les occurrences du nom visent le " +
+    "module `@/server/image-bank/taxonomy`, homonyme. À arbitrer : menu ou retrait.",
 };
 
 const routesAdmin = routesDuDisque(ADMIN_ROOT).filter((r) => r.route !== "/");
@@ -274,6 +374,24 @@ const famException: string[] = [];
 const sansJustification: string[] = [];
 
 for (const { route, dossier } of routesAdmin) {
+  // E — exception écrite et motivée. TESTÉE EN PREMIER, et c'est délibéré.
+  //
+  // 🔴 2026-09-05 — elle était testée en DERNIER, donc une famille automatique
+  //    pouvait l'absoudre avant qu'on la lise. Les quatre stubs d'`image-bank`
+  //    tombaient ainsi en famille C — « sous-écran d'une section au menu » — par
+  //    le seul fait que `/image-bank` est au menu, et le rapport les comptait
+  //    parmi les 69 sous-écrans légitimes. Une exception qu'une automatique
+  //    recouvre n'est pas une exception : c'est un motif écrit que personne ne
+  //    lira jamais, sur une route que la garde a cessé de surveiller.
+  //
+  //    Placée ici, la liste est un REGISTRE : ce qui y figure est compté comme
+  //    exception, se voit dans le rapport, et reste sous les contre-témoins de
+  //    famille qui plafonnent son nombre.
+  if (EXCEPTIONS_RECIPROQUES[route] != null) {
+    famException.push(route);
+    continue;
+  }
+
   // A — une entrée de menu (ou un lien épinglé) pointe exactement dessus.
   if (destinations.has(route)) {
     famDeclaree.push(route);
@@ -319,12 +437,6 @@ for (const { route, dossier } of routesAdmin) {
     continue;
   }
 
-  // E — exception écrite et motivée.
-  if (EXCEPTIONS_RECIPROQUES[route] != null) {
-    famException.push(route);
-    continue;
-  }
-
   sansJustification.push(route);
 }
 
@@ -352,6 +464,21 @@ if (famRedirection.length > routesAdmin.length / 3) {
     `${famRedirection.length} routes classées « simple redirection » sur ` +
       `${routesAdmin.length} : le critère est devenu trop large et absorbe de ` +
       `vrais écrans.`,
+  );
+}
+// 🔴 2026-09-05 — LA FAMILLE C N'ÉTAIT PLAFONNÉE PAR RIEN, et c'est la seule dont
+//    le critère soit purement lexical : « un ancêtre est une destination ». Elle
+//    absout 69 routes, 22 % du total, sans jamais vérifier qu'un lien y mène. D,
+//    qui lit le CONTENU des pages, était plafonnée ; C, qui ne lit qu'un chemin,
+//    ne l'était pas — le contre-témoin manquait exactement là où le critère est
+//    le plus faible. Une seule section ajoutée au menu peut blanchir toute une
+//    arborescence morte sous elle.
+if (famSousEcran.length > routesAdmin.length / 3) {
+  alertesDeFamille.push(
+    `${famSousEcran.length} routes classées « sous-écran d'une section au menu » sur ` +
+      `${routesAdmin.length} : cette famille absout par simple préfixe de chemin, sans ` +
+      `vérifier aucun lien entrant. Au-delà du tiers, elle blanchit des arborescences ` +
+      `entières et cette passe ne mesure plus grand-chose.`,
   );
 }
 if (Object.keys(EXCEPTIONS_RECIPROQUES).length > 5) {
@@ -385,10 +512,18 @@ if (sansJustification.length > 0) {
   process.exit(1);
 }
 
+// 🔴 2026-09-05 — CE COMPTEUR ANNONÇAIT `ADMIN_ROUTES_EPINGLEES.length`, c'est-à-dire
+//    la longueur de la CONSTANTE. Il aurait dit « dont 2 épinglées » même si les deux
+//    écrans avaient disparu du disque : un compteur qui lit sa propre déclaration ne
+//    mesure rien, et rassure exactement là où il faudrait alerter. On compte désormais
+//    les appariements RÉELS — les chemins épinglés qui ont vraiment justifié une route.
+const epingleesAppariees = ADMIN_ROUTES_EPINGLEES.filter((chemin) => famDeclaree.includes(chemin));
+
 console.log(
   `✅ [admin-nav:reciproque] OK — ${routesAdmin.length} routes admin, toutes ` +
     `justifiées : ${famDeclaree.length} au menu (dont ` +
-    `${ADMIN_ROUTES_EPINGLEES.length} épinglées), ${famDynamique.length} écrans ` +
+    `${epingleesAppariees.length} épinglée(s) appariée(s) sur ` +
+    `${ADMIN_ROUTES_EPINGLEES.length} déclarée(s)), ${famDynamique.length} écrans ` +
     `de détail, ${famSousEcran.length} sous-écrans, ${famRedirection.length} ` +
     `redirections héritées, ${famException.length} exception(s) motivée(s).`,
 );

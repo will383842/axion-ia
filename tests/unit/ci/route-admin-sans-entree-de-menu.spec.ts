@@ -47,6 +47,7 @@ const ADMIN_ROOT = join(RACINE, "src/app/[locale]/(admin)/[adminPrefix]");
 const DOSSIER_TEMOIN = join(ADMIN_ROOT, "temoin-de-garde-reciproque");
 const PAGE_TEMOIN = join(DOSSIER_TEMOIN, "page.tsx");
 const FICHIER_NAV = join(RACINE, "src/lib/admin-nav.ts");
+const FICHIER_BARRE = join(RACINE, "src/components/admin/ui/AdminSidebarNav.tsx");
 
 /** Un écran ordinaire : du JSX, et aucune entrée de menu. */
 const ECRAN_ORDINAIRE = `export default function TemoinDeGarde() {
@@ -129,7 +130,20 @@ describe("admin-nav:routes-check refuse une route admin sans entrée de menu", (
 
     expect(sortie).toMatch(/écrans de détail/);
     expect(sortie).toMatch(/redirections héritées/);
-    expect(sortie).toMatch(/épinglées/);
+
+    // ⚠️ ON EXIGE LE COMPTE APPARIÉ, PAS LE MOT « épinglées ».
+    //    Ce témoin cherchait `/épinglées/`, et le message annonçait alors
+    //    `ADMIN_ROUTES_EPINGLEES.length` — la longueur de la CONSTANTE. Les deux
+    //    ensemble formaient un contrôle creux : le test aurait été vert avec les
+    //    deux écrans supprimés du disque, puisque ni le message ni l'assertion
+    //    n'allaient regarder le disque. On lit désormais les APPARIEMENTS, et on
+    //    exige qu'il y en ait.
+    const epinglees = /(\d+) épinglée\(s\) appariée\(s\) sur (\d+) déclarée\(s\)/.exec(sortie);
+    expect(epinglees, `le compte des liens épinglés n'est pas annoncé.\n${sortie}`).not.toBeNull();
+    expect(Number(epinglees?.[1] ?? 0), "aucun lien épinglé n'a été apparié").toBeGreaterThan(0);
+    expect(Number(epinglees?.[1] ?? 0), "des liens épinglés déclarés ne sont pas appariés").toBe(
+      Number(epinglees?.[2] ?? -1),
+    );
   });
 
   it("ROUGIT sur un vrai écran livré sans entrée de menu", () => {
@@ -193,6 +207,80 @@ describe("admin-nav:routes-check refuse une route admin sans entrée de menu", (
     }
 
     expect(readFileSync(FICHIER_NAV, "utf8"), "l'arbre doit être restauré à l'octet près").toBe(
+      intact,
+    );
+    expect(lancerLaGarde().code, "et la garde doit être redevenue verte").toBe(0);
+  });
+
+  it("ROUGIT quand un lien épinglé pointe sur une route absente du disque", () => {
+    // 🔴 LE TROU QUE LA TROISIÈME PASSE AVAIT OUVERT. Elle accepte les liens
+    //    épinglés comme DESTINATIONS — ils blanchissent `/console-editoriale`,
+    //    ses dix écrans et `/agenda`. Mais elle ne sait pas dire si la
+    //    destination existe : une route absente n'y produit aucune erreur, elle
+    //    n'est simplement jamais appariée. Renommer le dossier `agenda/` faisait
+    //    donc pointer le lien du pied de barre sur un 404, TOUT restant vert —
+    //    c'est-à-dire le défaut même que la PREMIÈRE passe existe pour fermer.
+    //
+    // 🔑 On mute la VALEUR, jamais la clé : le composant continue d'écrire
+    //    `ADMIN_LIENS_EPINGLES.agenda`, donc le contrôle de rendu (test suivant)
+    //    reste satisfait et ce test-ci isole bien la résolution sur le disque.
+    const intact = readFileSync(FICHIER_NAV, "utf8");
+    const casse = intact.replace('agenda: "/agenda"', 'agenda: "/agenda-absent-du-disque"');
+    expect(casse, "le lien épinglé `agenda` est introuvable dans la constante").not.toBe(intact);
+
+    try {
+      ecrireAtomiquement(FICHIER_NAV, casse);
+
+      const { code, sortie } = lancerLaGarde();
+
+      expect(
+        code,
+        `un lien épinglé sans route sur le disque devait faire ÉCHOUER la garde.\n${sortie}`,
+      ).toBe(1);
+      expect(sortie).toMatch(/épinglé en pied de barre latérale/);
+      expect(sortie).toContain("/agenda-absent-du-disque");
+    } finally {
+      ecrireAtomiquement(FICHIER_NAV, intact);
+    }
+
+    expect(readFileSync(FICHIER_NAV, "utf8"), "l'arbre doit être restauré à l'octet près").toBe(
+      intact,
+    );
+    expect(lancerLaGarde().code, "et la garde doit être redevenue verte").toBe(0);
+  });
+
+  it("ROUGIT quand la barre latérale cesse de rendre un lien épinglé déclaré", () => {
+    // 🔴 LE COUPLAGE A DEUX SENS, ET UN SEUL ÉTAIT GARDÉ. Le test plus haut
+    //    prouve que VIDER la constante rougit. L'inverse ne l'était par rien :
+    //    retirer les `<Link>` du composant en laissant la constante intacte, et
+    //    la passe réciproque continue de classer les douze écrans « au menu » —
+    //    douze écrans redevenus inatteignables, garde verte.
+    //
+    //    Une garde qui ne surveille qu'un sens d'un couplage à deux sens ne
+    //    surveille pas le couplage : elle surveille une de ses moitiés.
+    //
+    // 🔑 La mutation est celle qu'on verrait vraiment : quelqu'un « simplifie »
+    //    en remettant le littéral que la constante avait remplacé.
+    const intact = readFileSync(FICHIER_BARRE, "utf8");
+    const casse = intact.replace("${ADMIN_LIENS_EPINGLES.agenda}", "/agenda");
+    expect(casse, "le lien épinglé `agenda` n'est plus rendu par la barre").not.toBe(intact);
+
+    try {
+      ecrireAtomiquement(FICHIER_BARRE, casse);
+
+      const { code, sortie } = lancerLaGarde();
+
+      expect(
+        code,
+        `un lien épinglé déclaré mais plus rendu devait faire ÉCHOUER la garde.\n${sortie}`,
+      ).toBe(1);
+      expect(sortie).toMatch(/mais plus rendu\(s\) par/);
+      expect(sortie).toContain("agenda");
+    } finally {
+      ecrireAtomiquement(FICHIER_BARRE, intact);
+    }
+
+    expect(readFileSync(FICHIER_BARRE, "utf8"), "l'arbre doit être restauré à l'octet près").toBe(
       intact,
     );
     expect(lancerLaGarde().code, "et la garde doit être redevenue verte").toBe(0);

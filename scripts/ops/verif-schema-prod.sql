@@ -2,6 +2,24 @@
 --
 -- Lecture seule. On interroge le SCHÉMA, jamais le seul journal.
 --
+-- ⚠️ SONDE MANUELLE, ET C'EST ASSUMÉ. Aucun workflow, aucun cron, aucune entrée de
+--    `package.json` ne la joue : elle ne vaut que lancée à la main, après un
+--    atterrissage qui porte une migration. Elle n'ASSERTE rien non plus — les
+--    « doit valoir N » sont des libellés, la comparaison est faite par un humain
+--    qui lit la colonne de droite.
+--
+-- 🔑 LA COMMANDE DE REJEU EST ICI, dans le fichier, et nulle part ailleurs. Elle a
+--    vécu jusqu'au 2026-09-05 dans un document de session — `_SESSIONS/…-pilotage.md`
+--    pointait d'ailleurs encore vers l'ancien emplacement `scratchpad/`, périmé par
+--    le déplacement sous `scripts/ops/`. Un fichier exécutable qui dépend d'un
+--    journal pour être exécutable n'est pas exécutable.
+--
+--    tr -d '\r' < scripts/ops/verif-schema-prod.sql \
+--      | ssh -o BatchMode=yes root@178.105.55.15 \
+--          'docker exec -i <conteneur-app> psql -U axionia -d axionia -X -P pager=off'
+--
+--    (le conteneur se lit avec `docker ps` : celui qui porte `server.js`, pas le worker)
+--
 -- 🔴 TROIS FAMILLES DE TÉMOINS, ET IL FAUT LES TROIS.
 --
 -- 1. NÉGATIF (objet inexistant → 0) : prouve que la sonde ne fabrique pas de
@@ -130,11 +148,45 @@ UNION ALL SELECT '6 journal:candidature_sans_offre finie (doit valoir 1)',
 -- adossée à un nombre qui BOUGE n'alerte pas, elle apprend à ignorer la ligne.
 -- Le témoin porte désormais sur la COHORTE GELÉE — les candidatures soumises
 -- avant l'instant où la migration s'est terminée. Ce sous-ensemble ne peut plus
--- grandir : 86 est vrai pour toujours, et tout écart désigne une vraie perte.
-UNION ALL SELECT '6 TEMOIN cohorte d''avant 6b conservee (doit valoir 86)',
+-- GRANDIR.
+--
+-- 🔴 2026-09-05, second correctif — « 86 est vrai pour toujours » était FAUX, et
+-- c'était le même défaut une fois de plus, retourné. `retention-purge-worker.ts`
+-- supprime chaque jour les candidatures non-`hired` de plus de 24 mois (norme
+-- CNIL). La cohorte gelée va donc RÉTRÉCIR toute seule, et « doit valoir 86 »
+-- aurait crié à la destruction sur une purge parfaitement conforme. On avait
+-- troqué un faux positif « duplication » contre un faux positif « destruction ».
+--
+-- L'attente juste n'est pas un nombre, c'est un SENS : la cohorte ne peut que
+-- décroître, et le seul déficit légitime est celui qu'explique la purge. Les deux
+-- lignes ci-dessous se lisent ENSEMBLE :
+--   · > 86            → duplication : la seule vraie alerte de cette famille ;
+--   · = 86            → intacte ;
+--   · < 86, et l'écart est couvert par la ligne 6c → purge RGPD, rien à signaler ;
+--   · < 86 sans que 6c l'explique → destruction. C'est là qu'il faut s'arrêter.
+--
+-- 🔑 `max(finished_at)` et pas `finished_at` : une migration re-jouée après un
+--    `migrate resolve --rolled-back` laisse DEUX lignes du même nom, et une
+--    sous-requête scalaire non bornée fait alors avorter la sonde ENTIÈRE avec
+--    « more than one row returned by a subquery » — précisément dans le scénario
+--    d'incident pour lequel on l'ouvre.
+UNION ALL SELECT '6 TEMOIN cohorte d''avant 6b, survivante (<= 86 ; > 86 = duplication)',
        (SELECT count(*) FROM job_applications
-         WHERE submitted_at < (SELECT finished_at FROM _prisma_migrations
+         WHERE submitted_at < (SELECT max(finished_at) FROM _prisma_migrations
                                 WHERE migration_name='20260904010000_candidature_sans_offre'))
+-- 6c — le déficit LÉGITIME. Ce que la purge RGPD a déjà le droit d'avoir retiré de
+-- la cohorte : non-`hired`, soumises il y a plus de 24 mois. Tant que
+-- (86 − ligne 6) <= ligne 6c, la décroissance est expliquée et conforme.
+UNION ALL SELECT '6c INFO cohorte deja eligible a la purge 24 mois (borne le deficit)',
+       (SELECT count(*) FROM job_applications
+         WHERE submitted_at < (SELECT max(finished_at) FROM _prisma_migrations
+                                WHERE migration_name='20260904010000_candidature_sans_offre')
+           AND submitted_at < now() - interval '24 months'
+           -- `::text` et pas une comparaison d'enum : si la valeur `hired` était
+           -- un jour renommée, un littéral non castable ferait avorter la sonde
+           -- ENTIÈRE. Une sonde de diagnostic doit rendre un chiffre discutable
+           -- plutôt que rien du tout.
+           AND status::text <> 'hired')
 -- Contre-mesure de la ligne précédente : si la sous-requête rendait NULL (migration
 -- absente du journal), le compte vaudrait 0 et se lirait comme une destruction
 -- totale. Cette ligne sépare les deux : 1 = le point d'ancrage existe.
