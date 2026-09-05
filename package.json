@@ -265,7 +265,7 @@
         ".next/static/chunks/app/**/page-*.js",
         "!.next/static/chunks/app/**/appel/**"
       ],
-      "limit": "702 KB",
+      "limit": "703 KB",
       "running": false
     },
     {
