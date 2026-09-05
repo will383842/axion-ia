@@ -6,6 +6,30 @@
 
 ---
 
+## 0bis. REPRISE du 2026-09-05 ~07:30 UTC — ce qui a changé depuis
+
+- ✅ **Les deux contrôles bloquants du §4 sont PASSÉS**, bannières lues :
+  - `pnpm typecheck` → `> tsc --noEmit`, exit 0, sur l'arbre complet
+  - gardes de dépôt `tests/unit/ci/` → **31 fichiers, 151 témoins, 271 s, exit 0**
+    (jamais lancées jusqu'ici cette session)
+- ✅ **Lot B — le câblage UI est LIVRÉ et poussé** : commit `01a42897c`.
+  N1 (montant), N2 + F4 (modalité et libellés dérivés), N4 (filigrane COPIE),
+  N5 + F7 (acompte), F10 (repères J-n). Détail au §5, qui est à jour.
+- ✅ **ADR 0048 écrit** — l'arbitrage du distanciel est TRANCHÉ :
+  `docs/adr/0048-formation-a-distance-ce-qui-se-construit-et-ce-qui-s-achete.md`.
+- 🔄 **Cinq agents travaillent en parallèle** dans CE MÊME arbre, sur des zones
+  de fichiers disjointes, avec interdiction absolue de toute commande git
+  mutante. Le lead seul commite. Zones : alertes (lot D) · documents et
+  attestations (lot E) · composants et pages admin (reste du lot B) · audit
+  formateur/commissions en lecture seule (lot F) · émargement, notifications
+  et gabarits d'e-mail (lot C couche A).
+
+⚠️ **File de fusion RÉSERVÉE par la session `axion-ia-20`** (capture apporteurs)
+depuis ~07:35 UTC, pour #987 puis #993. Elle a mesuré le build de #991 à
+**1 h 16**, pas 50 min. Ne rien fusionner avant qu'elle rende la file.
+
+---
+
 ## 0. Où on en est en une phrase
 
 **#991 fusionnée et ATTERRIE en production.** Le défaut le plus grave — *rien ne
@@ -87,15 +111,13 @@ Identifiants : client `AXI-CLI-001` SCI Invest Sun
 | `pnpm lint` | ✅ **0 erreur**, 73 warnings tous préexistants (fichiers de test) |
 | `pnpm qualiopi:isolation-check` | ✅ **bannière lue** — `11649 fichiers scannés, 0 violation, 63 consommateurs assumés` |
 
-### ⛔ CE QUI RESTE À VÉRIFIER À LA REPRISE
+### ⛔ CE QUI RESTE À VÉRIFIER
 
-Les quatre contrôles ci-dessus sont **verts sur l'arbre complet**. Il manque :
-
-1. Les **gardes de dépôt** `tests/unit/ci/` — ~17 min, elles balaient toute
-   l'arborescence et **n'apparaissent pas** si l'on cible un sous-ensemble.
-   Jamais lancées cette session.
-2. La **suite complète** `pnpm test` (les 4 fichiers ciblés sont verts, pas le
-   reste).
+1. ✅ **FAIT le 2026-09-05 à 07:37 UTC** — gardes de dépôt `tests/unit/ci/` :
+   **31 fichiers, 151 témoins, 271 s, exit 0.** (Le « ~17 min » annoncé était
+   large : 4 min 31 s en réalité.)
+2. La **suite complète** `pnpm test` — pas encore lancée. À faire avant la PR,
+   une fois les cinq agents rendus.
 3. La **recette PAR L'ÉCRAN** de la remise d'exemplaire : aucune convention n'a
    été signée depuis le correctif, donc la boucle n'a **jamais été vue se
    refermer en vrai**. C'est une correction PROUVÉE PAR TÉMOINS, pas VÉCUE.
@@ -116,9 +138,25 @@ Les quatre contrôles ci-dessus sont **verts sur l'arbre complet**. Il manque :
 | F | Formateur défaillant · commissions | ⏳ audit à REFAIRE (sortie vide) |
 | G | Vérification de bout en bout | ⏳ |
 
-### Lot B — ce qu'il reste EXACTEMENT à faire
+### Lot B — ✅ LES 5 PREMIERS POINTS SONT LIVRÉS (`01a42897c`)
 
-Le serveur est prêt ; aucun écran ne l'appelle. Reste :
+**Faits, gardés, vus rougir** : N1 · N2 + F4 · N4 · N5 + F7 · F10.
+Ce qui suit est conservé pour la trace de CE qui a été corrigé et POURQUOI.
+Le reste (F1, F2, F5, F8, F9, N6, débordement) est confié à un agent.
+
+⚠️ Deux découvertes en cours de route, qui ne figuraient dans aucun audit :
+
+- **le contrat B2C garde délibérément 30 %** d'acompte (= son plafond
+  L.6353-6). Son gabarit n'a AUCUNE branche « payable en totalité » : à 0 %, il
+  imprimerait « Acompte à l'expiration du délai de rétractation (0 % maximum) :
+  0,00 € » sur la pièce que le PARTICULIER signe. Écrit dans le code — ne pas
+  « harmoniser » les deux défauts sans écrire d'abord cette branche.
+- **F10 cachait un SECOND défaut** dans la même fonction : `Math.ceil` sur des
+  millisecondes fait dire « demain » pour une échéance due AUJOURD'HUI à 17 h
+  lue à 9 h. « Aujourd'hui » n'était atteignable qu'une fois l'échéance
+  DÉPASSÉE. Trouvé en écrivant le témoin du premier, pas en relisant le code.
+
+Le détail de ce qui a été corrigé :
 
 1. **N1 UI** — un `SessionMontantForm` (copier `SessionDatesForm.tsx`), monté
    dans `qualiopi/sessions/[id]/financement/page.tsx`. Doit AFFICHER le retour
@@ -212,7 +250,32 @@ l'enum `PlateformeDistanciel { zoom teams meet autre }` (`schema.prisma:6549`).
   et parsing SERVEUR (`ImportReleveForm.tsx`, archivage R2 + SHA-256 +
   `unmatched Json`). **Le second est le bon pour un import de stagiaires.**
 
-**Arbitrage Zoom vs Teams : PAS ENCORE TRANCHÉ.** L'ADR reste à écrire.
+**✅ ARBITRAGE TRANCHÉ le 2026-09-05 — ADR 0048.**
+`docs/adr/0048-formation-a-distance-ce-qui-se-construit-et-ce-qui-s-achete.md`
+
+En une phrase : **Zoom**, mais **rien à acheter maintenant**.
+
+L'énoncé « Zoom ou Teams » posait la question comme un ACHAT. Le défaut
+bloquant, lui, ne coûte rien : le stagiaire ne reçoit jamais le lien parce que
+`formatLieu` réduit l'URL à son nom d'hôte (`format-lieu.ts:54`) et que la
+convocation passe par lui (`notifications-service.ts:218`). Une session à
+distance est donc décrivable, facturable, conventionnable — et **personne ne
+peut s'y connecter**. L'ADR sépare donc :
+
+- **couche A** — la porte d'entrée : coût **nul**, faite maintenant ;
+- **couche B** — le relevé d'assiduité par API : c'est elle seule qui justifie
+  un abonnement, et les 3 analyseurs CSV la rendent différable sans blocage.
+
+🔑 **Google Meet est ÉCARTÉ pour un motif dur**, alors que tout le reste de la
+pile est Google : son relevé de présence passe par les API d'administration
+**Workspace**, et le compte utilisé (`williamsjullin@gmail.com`) est un compte
+**personnel**, sans domaine ni console d'administration. Le candidat qui
+paraissait gratuit se paie en MIGRATION. Teams est écarté pour son locataire
+Azure AD et son consentement administrateur — une infrastructure d'entreprise
+pour un organisme d'une personne.
+
+⚠️ `PlateformeDistanciel` reste inchangée et `autre` reste un chemin de plein
+droit : **Zoom est le chemin OUTILLÉ, jamais le chemin OBLIGATOIRE.**
 
 ---
 
