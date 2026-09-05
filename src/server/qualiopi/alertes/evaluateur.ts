@@ -2249,6 +2249,105 @@ async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /**
+ * Pièce INTÉGRALEMENT SIGNÉE dont l'exemplaire n'est jamais parti.
+ *
+ * 🔴 Le défaut vécu le 2026-09-04, et le seul du domaine que rien ne pouvait
+ * voir. La convention `AXI-DOC-2026-039` a été signée par la cliente à 20:47
+ * UTC, contresignée par l'organisme à 21:33 — et la cliente n'a jamais reçu son
+ * exemplaire. Un contrat de formation n'existe qu'une fois remis aux deux
+ * parties (L.6353-1 s.) ; l'organisme détenait seul la preuve d'un engagement
+ * réciproque, et l'écran de retour du portail promettait pourtant l'envoi.
+ *
+ * ⚠️ Pourquoi cette règle ne pouvait PAS être écrite avant.
+ *
+ * Les quatre surfaces de rattrapage du domaine — `pieces-en-attente`, la
+ * pastille de navigation, l'écran « À traiter », `regleSignatureEnAttente`
+ * ci-dessus — filtrent toutes sur `enAttente()`, c'est-à-dire
+ * `statutSignature IN (en_attente, partielle)`. Une pièce COMPLÈTE en sort par
+ * construction. Et `partieARelancer()` rend `null` dès qu'elle est `signee`,
+ * avec ce commentaire : « `signee` n'a personne à relancer ». Le succès de la
+ * signature éteignait donc le seul signal capable de dire qu'il restait
+ * quelque chose à faire — et il ne restait aucune colonne où l'écrire. C'est
+ * `exemplaireSigneEnvoyeAt` qui rend le manque OBSERVABLE ; cette règle ne fait
+ * que le lire.
+ *
+ * ⚠️ Pas de borne basse (pas de « depuis N jours ») : la remise est
+ * automatique et immédiate à la contresignature. Un exemplaire non transmis
+ * n'est pas un retard, c'est une panne — d'e-mail, de R2, ou de code. Attendre
+ * sept jours pour la dire ne la rendrait pas plus vraie.
+ *
+ * ⚠️ Une borne HAUTE, en revanche : `DELAI_GRACE_TRANSMISSION_MINUTES`. La
+ * remise est enfilée dans la même requête que la signature, mais le worker
+ * BullMQ peut avoir une minute de retard, et l'évaluateur ne doit pas crier sur
+ * une pièce signée pendant qu'il tournait.
+ */
+const DELAI_GRACE_TRANSMISSION_MINUTES = 30;
+
+async function regleExemplaireSigneNonTransmis(now: Date): Promise<AlerteCandidate[]> {
+  const limite = new Date(now.getTime() - DELAI_GRACE_TRANSMISSION_MINUTES * 60_000);
+  const pieces = await prisma.documentGenere.findMany({
+    where: {
+      statutSignature: "signee",
+      exemplaireSigneEnvoyeAt: null,
+      // Une pièce annulée au registre ne fait plus foi : il n'y a rien à
+      // remettre, et la réclamer enverrait rouvrir un dossier clos.
+      annuleeAt: null,
+      updatedAt: { lte: limite },
+    },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      updatedAt: true,
+      // Relus pour la garde applicative ci-dessous, pas pour l'affichage.
+      exemplaireSigneEnvoyeAt: true,
+      annuleeAt: true,
+      signatures: {
+        where: { revokedAt: null },
+        select: { partie: true, signataireEmail: true },
+      },
+    },
+  });
+
+  const candidates: AlerteCandidate[] = [];
+  for (const p of pieces) {
+    // Garde applicative doublant le `where` — les mocks de test ignorent le SQL,
+    // et c'est précisément une alerte critique posée sur une pièce annulée qui
+    // a appris à l'administrateur à ignorer les critiques (constat `D3-4-06`).
+    if (p.exemplaireSigneEnvoyeAt !== null) continue;
+    if (p.annuleeAt !== null) continue;
+
+    // Une pièce dont AUCUNE partie n'a laissé d'adresse ne peut pas être
+    // remise par e-mail. La signaler chaque nuit sans qu'aucun geste ne la
+    // ferme serait du bruit permanent — et le bruit apprend à ignorer les
+    // critiques, c'est-à-dire l'unique fonction du dispositif.
+    const joignables = p.signatures.filter(
+      (s) => s.partie !== "axionia" && (s.signataireEmail ?? "").trim().length > 0,
+    );
+    if (joignables.length === 0) continue;
+
+    const depuis = p.updatedAt.toLocaleDateString("fr-FR");
+    candidates.push({
+      code: "exemplaire_signe_non_transmis",
+      niveau: "critique" as const,
+      titre: `Exemplaire signé jamais remis — ${p.numero}`,
+      // Nommer le DESTINATAIRE et pas seulement la pièce : celui qui lit doit
+      // savoir QUI attend, sans rouvrir le dossier.
+      message:
+        `La pièce ${p.numero} (${p.type}) est intégralement signée depuis le ${depuis}, ` +
+        `mais son exemplaire signé n'est jamais parti à ${joignables
+          .map((s) => s.signataireEmail)
+          .join(", ")}. Le contrat n'est donc remis qu'à une seule des parties, ` +
+        `alors que l'écran de signature promet l'envoi. Rouvrez la pièce et ` +
+        `relancez la remise.`,
+      cibleType: "DocumentGenere",
+      cibleId: p.id,
+    });
+  }
+  return candidates;
+}
+
+/**
  * Sélection Prisma partagée pour résoudre un libellé humain de dossier de
  * financement (voir `libelleDossier` ci-dessous) — factorisée pour ne pas
  * dupliquer les 4 relations entre les deux requêtes de `regleDossiersFinancement`.
@@ -3067,6 +3166,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "devis_signe_convention", fn: regleDevisSigneConvention },
   { nom: "moteur_assemble_a_publier", fn: regleMoteurAssembleAPublier },
   { nom: "signatures_en_attente", fn: regleSignatureEnAttente },
+  { nom: "exemplaire_signe_non_transmis", fn: regleExemplaireSigneNonTransmis },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },

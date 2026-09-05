@@ -309,6 +309,38 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "direction",
   },
   /**
+   * 🔴 LE FILET DU DÉFAUT LE PLUS SILENCIEUX DU DOMAINE (2026-09-05).
+   *
+   * Vécu en production : la convention `AXI-DOC-2026-039` a été signée par la
+   * cliente le 2026-09-04 à 20:47 UTC, contresignée par l'organisme à 21:33, et
+   * la cliente n'a **jamais reçu son exemplaire**. Un contrat de formation
+   * n'existe qu'une fois remis aux deux parties : l'organisme détenait seul la
+   * preuve d'un engagement réciproque.
+   *
+   * Ce que ce code répare et qu'aucune autre alerte ne pouvait voir : les trois
+   * surfaces de rattrapage — `pieces-en-attente`, la pastille de navigation,
+   * l'écran « À traiter » — filtrent toutes sur
+   * `statutSignature IN (en_attente, partielle)`. Une pièce COMPLÈTE en sort.
+   * `partieARelancer()` rend `null` dès qu'elle est `signee` (« signee n'a
+   * personne à relancer »). Autrement dit, **le succès de la signature éteignait
+   * le seul signal qui aurait pu dire qu'il restait quelque chose à faire.**
+   * Le défaut se cachait dans son propre succès.
+   *
+   * `resolutionAuto: true` : l'envoi pose `exemplaireSigneEnvoyeAt`, la
+   * condition tombe d'elle-même au tour suivant. Rien à cliquer.
+   *
+   * `critique` et non `important` : ce n'est pas un retard de courtoisie. La
+   * pièce est due, elle est promise en toutes lettres au signataire par l'écran
+   * de retour du portail, et son absence se voit lors d'un contrôle de
+   * financeur — du côté du CLIENT, qui ne peut pas la produire.
+   */
+  exemplaire_signe_non_transmis: {
+    niveau: "critique",
+    titre: "Pièce intégralement signée jamais remise au signataire",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
    * SPEC_PART5 §D.10 — échéance de validité des devis. Le statut `expire` est
    * posé par le cron `formation-crons.devis-expiration` (06:45), les alertes
    * sont levées par l'évaluateur (07:00). `devis_expire_j7` = dernière fenêtre

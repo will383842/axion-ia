@@ -57,6 +57,12 @@ const CODES_ATTENDUS: string[] = [
   "devis_sans_reponse",
   "signature_en_attente",
   "signature_contreseing_du",
+  // 🔴 2026-09-05 — le filet du défaut le plus silencieux du domaine : une
+  // pièce intégralement signée dont l'exemplaire n'est jamais parti. Les
+  // quatre surfaces de rattrapage filtrent sur `en_attente|partielle` ; une
+  // pièce COMPLÈTE en sort, et le succès de la signature éteignait le seul
+  // signal qui restait.
+  "exemplaire_signe_non_transmis",
   "devis_expire_j7",
   "devis_expire",
   // Déblocages du parcours vente (2026-08-05) : l'étape suivante attend
