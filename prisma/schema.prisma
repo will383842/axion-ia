@@ -5480,6 +5480,8 @@ model TrainingSession {
   sessionFormateurs          SessionFormateur[]
   /// Sollicitations (journal des propositions de mission) — 2026-09-03.
   missionsFormateur          MissionFormateur[]
+  /// Affectations RETIRÉES — l'archive de ce que la suppression détruisait (D6).
+  affectationsRetirees       SessionFormateurRetire[]
   /// Incidents rattachés à la session (registre des incidents — LOT 4).
   incidents                  Incident[]
   /// Contresignatures formateur, au grain (date × demi-journée) — T13.
@@ -5601,6 +5603,8 @@ model Trainer {
   /// Appreciations dont ce formateur est l'auteur (off.30, qualite `formateur`).
   appreciations               Appreciation[]
   missionsFormateur           MissionFormateur[]
+  /// Affectations RETIRÉES — « il a un jour été le formateur de cette session » (D6).
+  affectationsRetirees        SessionFormateurRetire[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
   sessionJours                SessionJour[]
   /// Signatures qu'il a recueillies sur son poste (stagiaire sans téléphone).
@@ -5832,6 +5836,90 @@ model SessionFormateur {
   @@index([convocationJ7EnvoyeeAt])
   @@index([rappelJ1EnvoyeAt])
   @@map("session_formateurs")
+}
+
+/// Pourquoi une affectation a été retirée. Dérivé du CHEMIN qui la retire, pas
+/// saisi : les quatre chemins sont les quatre seules écritures du dépôt, et un
+/// motif libre laisserait la question « pourquoi ? » sans réponse dès qu'on
+/// oublie de le remplir.
+enum SessionFormateurRetraitMotif {
+  /// L'organisme a affecté quelqu'un d'autre à sa place.
+  remplacement
+  /// L'organisme a retiré le formateur sans en désigner un autre.
+  desaffectation
+  /// Le formateur a refusé la mission (motif de refus au journal).
+  refus_formateur
+  /// Échéance de réponse dépassée, session libérée par le cron.
+  sans_reponse_delai
+}
+
+/// 🔴 CE QUE LE REMPLACEMENT D'UN FORMATEUR DÉTRUISAIT (défaut D6, 2026-09-05).
+///
+/// ## Le défaut
+///
+/// Trois chemins supprimaient purement et simplement la ligne
+/// `SessionFormateur` : le remplacement (`assignTrainerToSessionAction`), le
+/// refus et le passage en `sans_reponse` (`mission-formateur.ts`). Avec elle
+/// partaient `heuresAnimees`, `tarifHtCents` (le tarif SNAPSHOTÉ à SON
+/// affectation, celui que la lettre de mission a repris), `convocationJ7EnvoyeeAt`
+/// et `rappelJ1EnvoyeAt`. Après un remplacement, **plus rien dans
+/// `session_formateurs` ne disait qu'une personne avait un jour été le formateur
+/// de cette session** — ni à quel tarif, ni ce qu'on lui avait déjà envoyé. Sur
+/// un dossier qui doit se raconter devant un auditeur, c'est une preuve perdue.
+///
+/// ## Pourquoi une table d'ARCHIVE et pas un `retireAt` sur `SessionFormateur`
+///
+/// Le patron du dépôt est « retirer par une DATE, ne pas supprimer la ligne »
+/// (`TrainerHabilitation`, 2026-08-17, cf. son commentaire). Il n'est **pas
+/// transplantable ici**, et c'est vérifié, pas supposé : `SessionFormateur`
+/// signifie « qui est sur cette session MAINTENANT », et une vingtaine de
+/// lectures réparties sur six modules s'en servent telle quelle — sans filtre à
+/// ajouter, une ligne retirée mais conservée ferait
+///
+///   · partir la convocation J-7 et le rappel J-1 au formateur REMPLACÉ
+///     (`queue/workers/qualiopi-formation-crons-worker.ts`) ;
+///   · lui rouvrir l'émargement et la signature du relevé
+///     (`actions/qualiopi/emargement-formateur.ts`, `releve-signature.ts`) ;
+///   · le PAYER (`remuneration/statements.ts` lit `sessionFormateurs`) et le
+///     compter deux fois au cockpit de marge ;
+///   · crier une alerte d'indisponibilité sur quelqu'un qui n'anime plus
+///     (`alertes/evaluateur.ts`, `regleFormateurIndisponibleSurSession`).
+///
+/// Autrement dit, le `retireAt` en place exige de filtrer les ~20 lecteurs dans
+/// le MÊME mouvement, sinon il échange une preuve perdue contre quatre défauts
+/// actifs. C'est le travail d'une PR dédiée, avec chaque lecteur vu rougir. La
+/// table d'archive, elle, préserve la preuve SANS toucher au sens de la table
+/// vivante : `session_formateurs` = qui anime, `session_formateurs_retires` =
+/// qui a été écarté, quand, pourquoi, et avec quoi en poche.
+model SessionFormateurRetire {
+  id                     String                       @id @default(uuid()) @db.Uuid
+  sessionId              String                       @map("session_id") @db.Uuid
+  session                TrainingSession              @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trainerId              String                       @map("trainer_id") @db.Uuid
+  trainer                Trainer                      @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+  role                   SessionFormateurRole
+  /// ── Snapshot de la ligne au moment du retrait ──
+  heuresAnimees          Decimal?                     @map("heures_animees") @db.Decimal(6, 2)
+  /// Le tarif figé À SON affectation — celui que la lettre de mission a repris.
+  tarifHtCents           Int?                         @map("tarif_ht_cents")
+  /// Ce qui lui avait DÉJÀ été envoyé : un formateur écarté après sa convocation
+  /// a reçu une convocation qu'il faut savoir démentir.
+  convocationJ7EnvoyeeAt DateTime?                    @map("convocation_j7_envoyee_at")
+  rappelJ1EnvoyeAt       DateTime?                    @map("rappel_j1_envoye_at")
+  /// Quand il avait été affecté (`SessionFormateur.createdAt` d'origine).
+  affecteAt              DateTime                     @map("affecte_at")
+  retireAt               DateTime                     @default(now()) @map("retire_at")
+  motifRetrait           SessionFormateurRetraitMotif @map("motif_retrait")
+  /// Qui a retiré, quand c'est un humain. Null sur le chemin du cron.
+  retireById             String?                      @map("retire_by_id") @db.Uuid
+  createdAt              DateTime                     @default(now()) @map("created_at")
+
+  /// Pas d'unicité `(sessionId, trainerId)` : un formateur peut être affecté,
+  /// écarté, ré-affecté puis ré-écarté. Chaque retrait est un FAIT daté, et
+  /// écraser le précédent reproduirait exactement le défaut qu'on ferme.
+  @@index([sessionId, retireAt])
+  @@index([trainerId, retireAt])
+  @@map("session_formateurs_retires")
 }
 
 /// Sollicitation d'un formateur pour une session — le JOURNAL des propositions

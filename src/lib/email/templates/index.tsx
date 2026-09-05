@@ -55,6 +55,7 @@ import {
 // T15 — emails auto Qualiopi lifecycle
 import { QualiopiConvocationEmail, qualiopiConvocationSubject } from "./qualiopi-convocation";
 import { QualiopiRappelJ7Email, qualiopiRappelJ7Subject } from "./qualiopi-rappel-j7";
+import { QualiopiRappelJ1Email, qualiopiRappelJ1Subject } from "./qualiopi-rappel-j1";
 import {
   QualiopiSatisfactionJ1Email,
   qualiopiSatisfactionJ1Subject,
@@ -117,10 +118,7 @@ import { leadApporteurRecuSubject, LeadApporteurRecuEmail } from "./lead-apporte
 import { leadApporteurRelanceSubject, LeadApporteurRelanceEmail } from "./lead-apporteur-relance";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
-import {
-  PieceExemplaireSigneEmail,
-  pieceExemplaireSigneSubject,
-} from "./piece-exemplaire-signe";
+import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
 type TemplateMap = {
@@ -243,6 +241,10 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-rappel-j7": {
     subject: qualiopiRappelJ7Subject,
     component: QualiopiRappelJ7Email,
+  },
+  "qualiopi-rappel-j1": {
+    subject: qualiopiRappelJ1Subject,
+    component: QualiopiRappelJ1Email,
   },
   "qualiopi-satisfaction-j1": {
     subject: qualiopiSatisfactionJ1Subject,

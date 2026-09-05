@@ -121,6 +121,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le stagiaire",
     source: "server/qualiopi/notifications/notifications-service.ts",
   },
+  "qualiopi-rappel-j1": {
+    categorie: "formation",
+    quand: "La veille de la session — porte le lien de connexion en entier",
+    destinataire: "le stagiaire",
+    source: "server/qualiopi/notifications/notifications-service.ts",
+  },
   "formateur-mission-proposee": {
     categorie: "formation",
     quand:

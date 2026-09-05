@@ -1135,6 +1135,28 @@ export function DocumentsSection({
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
+  //
+  // 🔴 DÉBORDEMENT HORIZONTAL DU BLOC DOCUMENTS (constaté le 2026-09-04, cause
+  // trouvée le 2026-09-05).
+  //
+  // Ce n'est PAS le tableau du registre — il est dans un `overflow-x-auto`
+  // depuis toujours. Ce sont les GRILLES DE BOUTONS. `.admin-button` et
+  // `.admin-button-ghost` portent `white-space: nowrap` (admin.css), et
+  // l'étiquette d'une pièce déjà générée fait une ligne insécable de la forme
+  // « Questionnaire de positionnement · génération du 05/09/2026 — régénérer ».
+  // Les pistes valent `minmax(0, 1fr)`, donc elles ne s'élargissent pas ; c'est
+  // le BOUTON qui déborde de sa piste, puis de la carte, puis de la page — et
+  // rien ne le retenait : la PAGE ENTIÈRE se mettait à défiler latéralement.
+  //
+  // Le remède respecte la contrainte du dépôt : « tout contenu large défile
+  // DANS son propre conteneur, jamais la page ». D'où `overflow-x-auto` sur
+  // chacune des quatre grilles.
+  //
+  // ⚠️ Ne PAS « corriger » en posant `whitespace-normal` ou `min-w-0` sur les
+  // boutons : `.admin-button*` vit HORS COUCHE CSS, donc l'utilitaire Tailwind
+  // serait INERTE — et `admin-design-tokens.test.ts` rougirait, à raison. Le
+  // retour à la ligne se règlerait dans `admin.css`, hors du périmètre de ce
+  // fichier.
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-6)]">
@@ -1328,7 +1350,7 @@ export function DocumentsSection({
 
           return (
             <>
-              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                 {attendues.map((b) => b.el)}
               </div>
 
@@ -1342,7 +1364,7 @@ export function DocumentsSection({
                   <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                     Autres pièces ({autres.length}) — hors du cas de ce dossier
                   </summary>
-                  <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                     {autres.map((b) => (
                       <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
                         {b.el}
@@ -1519,7 +1541,7 @@ export function DocumentsSection({
                 );
                 return (
                   <>
-                    <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                       {attenduesStagiaire.map((b) => b.el)}
                       {/* Export d'état (pas un document officiel numéroté) :
                           fiche d'adaptation individuelle (A16/A9), toujours
@@ -1535,7 +1557,7 @@ export function DocumentsSection({
                         <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                           Autres pièces ({autresStagiaire.length}) — hors du cas de ce dossier
                         </summary>
-                        <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                           {autresStagiaire.map((b) => (
                             <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
                               {b.el}

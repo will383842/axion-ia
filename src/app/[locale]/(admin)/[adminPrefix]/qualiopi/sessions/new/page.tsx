@@ -15,6 +15,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionForm } from "@/components/admin/qualiopi/SessionForm";
 import { prisma } from "@/lib/prisma";
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
+import { listOffres } from "@/server/qualiopi/offres/offres";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 
@@ -36,13 +37,46 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
   }
 
   // Charger les formations publiées et actives
-  let formations: Array<{ id: string; titre: string; numero: string }> = [];
+  //
+  // 🔴 F5 — le tarif catalogue voyage AVEC la formation.
+  //
+  // « MONTANT HT (€) * » démarrait à 0 et bloquait la création, alors que la
+  // formation choisie porte une offre et que cette offre porte un prix. Il
+  // fallait ouvrir un second onglet sur `/qualiopi/offres`, lire le prix,
+  // revenir — et rien sur l'écran ne disait que le prix était là-bas. Le risque
+  // n'est pas la lenteur, c'est le chiffre inventé : il part ensuite sur la
+  // convention et sur la facture.
+  //
+  // Le montant est résolu ICI, en centimes, par `listOffres` → `prixHtEur`.
+  // Importer `pricing-resolver` dans le composant client tirerait tout
+  // `pricing.ts` dans le bundle admin (cf. le même avertissement dans
+  // `devis/new/page.tsx`), et le gate de poids est bloquant depuis le
+  // 2026-08-24. `null` quand l'offre n'a pas de prix FERME — c'est ce qui
+  // empêche d'afficher « Sur devis » tout en pré-remplissant un montant.
+  let formations: Array<{
+    id: string;
+    titre: string;
+    numero: string;
+    tarifCatalogueHtCents: number | null;
+  }> = [];
   try {
-    formations = await prisma.formation.findMany({
-      where: { statut: "actif", statutGeneration: "publie" },
-      select: { id: true, titre: true, numero: true },
-      orderBy: { titre: "asc" },
-    });
+    const [lignes, offres] = await Promise.all([
+      prisma.formation.findMany({
+        where: { statut: "actif", statutGeneration: "publie" },
+        select: { id: true, titre: true, numero: true, offreSiteId: true },
+        orderBy: { titre: "asc" },
+      }),
+      listOffres(),
+    ]);
+    const prixParOffre = new Map(
+      offres.map((o) => [o.offre.id, o.prixHtEur === null ? null : Math.round(o.prixHtEur * 100)]),
+    );
+    formations = lignes.map((f) => ({
+      id: f.id,
+      titre: f.titre,
+      numero: f.numero,
+      tarifCatalogueHtCents: prixParOffre.get(f.offreSiteId) ?? null,
+    }));
   } catch {
     formations = [];
   }

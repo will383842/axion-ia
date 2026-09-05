@@ -60,8 +60,25 @@ export const LIBELLES_TYPE_DOCUMENT: Record<DocumentType, string> = {
   positionnement: "Questionnaire de positionnement",
   grille_evaluation: "Grille d'évaluation",
   satisfaction: "Questionnaire de satisfaction",
-  attestation: "Attestation de réalisation",
-  attestation_partielle: "Attestation partielle",
+  // 🔴 2026-09-05 — DEUX PIÈCES DIFFÉRENTES PORTAIENT PRESQUE LE MÊME NOM.
+  //
+  // `attestation` s'appelait ici « Attestation de RÉALISATION » : le mot du
+  // CERTIFICAT, qui est une autre pièce, due à un autre destinataire, sur un
+  // autre fondement. L'attestation de fin de formation est due au STAGIAIRE
+  // (L.6353-1) et dit ce qu'il a suivi et acquis ; le certificat de réalisation
+  // est dû au FINANCEUR (R.6313-3) et dit les heures réellement effectuées.
+  // Un auditeur qui lit deux lignes voisines nommées « Attestation de
+  // réalisation » et « Certificat de réalisation » ne peut pas les distinguer —
+  // et il n'a aucune raison de deviner que la première n'est pas un doublon
+  // fautif de la seconde.
+  //
+  // 🔑 Le bon libellé était DÉJÀ imprimé sur la pièce : le gabarit porte
+  // `docTitle="Attestation de fin de formation"` (templates/attestation.tsx).
+  // C'est le vocabulaire d'écran et de nom de fichier qui avait divergé du
+  // papier. On aligne sur ce qui s'imprime, jamais l'inverse — et
+  // `libelles-vs-titres-pdf.spec.ts` refuse désormais que les deux se séparent.
+  attestation: "Attestation de fin de formation",
+  attestation_partielle: "Attestation partielle de formation",
   certificat_realisation: "Certificat de réalisation",
   facture: "Facture",
   devis: "Devis",

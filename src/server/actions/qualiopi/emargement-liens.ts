@@ -86,7 +86,10 @@ export async function emettreLiensSessionAction(input: {
       dateFin: true,
       enrollments: {
         where: { ...inscriptionsActives(), trainee: { deletedAt: null } },
-        select: { id: true, trainee: { select: { nom: true, prenom: true } } },
+        // `email` ajouté le 2026-09-05 (ADR 0048 §4.1) : le jeton collectif est
+        // désormais LIÉ à l'empreinte de l'adresse du destinataire, comme
+        // l'était déjà le jeton AFEST. Il n'est pas affiché — seulement haché.
+        select: { id: true, trainee: { select: { nom: true, prenom: true, email: true } } },
         orderBy: { trainee: { nom: "asc" } },
       },
     },
@@ -107,6 +110,7 @@ export async function emettreLiensSessionAction(input: {
       const { token, expiresAt } = await creerTokenInscription({
         enrollmentId: inscription.id,
         dateFinSession: formation.dateFin,
+        destinataireEmail: inscription.trainee.email,
       });
       const url = `${base}/fr/portail/emarger/${token}`;
       liens.push({

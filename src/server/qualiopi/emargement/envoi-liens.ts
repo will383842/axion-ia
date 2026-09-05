@@ -90,6 +90,9 @@ export async function envoyerLiensPourSession(input: {
       const { token } = await creerTokenInscription({
         enrollmentId: inscription.id,
         dateFinSession: formation.dateFin,
+        // Le lien est LIÉ à l'adresse qui le reçoit (ADR 0048 §4.1) : c'est la
+        // même adresse deux lignes plus bas, jamais une autre.
+        destinataireEmail: inscription.trainee.email,
       });
       const envoi = await enqueueEmail(
         "qualiopi-emargement-lien",

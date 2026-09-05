@@ -92,6 +92,16 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
   // contresignature.
   "piece-exemplaire-signe",
+  // 🔴 Le rappel de la VEILLE part SEUL, et c'est le cas le plus net de toute
+  // cette liste (2026-09-05, ADR 0048 §4.3).
+  //
+  // Un message dont l'objet est « c'est demain » et qui attend une relecture
+  // humaine n'est pas un message retardé : c'est un message annulé. Et il porte
+  // le lien de connexion — retenir la seule chose qui dise à un participant à
+  // distance COMMENT entrer, c'est fabriquer l'absence qu'il existe pour
+  // éviter. Même raisonnement que la convocation et le rappel J-7, en plus
+  // court : ici la fenêtre utile fait vingt-quatre heures.
+  "qualiopi-rappel-j1",
 ] as const;
 
 /**
@@ -109,6 +119,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "facture-envoi": "Envoi d'une facture",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
+  "qualiopi-rappel-j1": "Rappel de la veille (avec le lien de connexion)",
   "qualiopi-satisfaction-j1": "Questionnaire de satisfaction (J+1)",
   "qualiopi-suivi-j30": "Suivi à J+30",
   "qualiopi-positionnement": "Questionnaire de positionnement (avant la formation)",

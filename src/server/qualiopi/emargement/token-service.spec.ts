@@ -14,8 +14,8 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: vi.fn(),
       create: vi.fn(),
     },
-    sessionJour: {
-      findMany: vi.fn(),
+    trainingSession: {
+      findFirst: vi.fn(),
     },
     $transaction: vi.fn(),
   },
@@ -45,7 +45,7 @@ const mockPrisma = prisma as unknown as {
     updateMany: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
   };
-  sessionJour: { findMany: ReturnType<typeof vi.fn> };
+  trainingSession: { findFirst: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
 const mockSign = signMagicToken as ReturnType<typeof vi.fn>;
@@ -59,17 +59,29 @@ beforeEach(() => {
   // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : sans ce
   // repositionnement, la lecture renverrait `undefined` et les deux garde-fous
   // passeraient par accident au lieu de passer par choix.
-  // Deux journées déclarées ET confirmées : le cas nominal.
-  mockPrisma.sessionJour.findMany.mockResolvedValue([
-    { horairesConfirmes: true },
-    { horairesConfirmes: true },
-  ]);
+  // Deux journées déclarées ET confirmées, en PRÉSENTIEL : le cas nominal.
+  mockPrisma.trainingSession.findFirst.mockResolvedValue({
+    lieuType: "nos_locaux",
+    lieuVisioUrl: null,
+    jours: [{ horairesConfirmes: true }, { horairesConfirmes: true }],
+  });
   mockPrisma.emargementToken.create.mockResolvedValue({ id: "tok-1" });
   // `$transaction(cb)` → exécute le callback avec le client mocké.
   mockPrisma.$transaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
     cb(mockPrisma),
   );
 });
+
+/** Adresse du stagiaire du chemin COLLECTIF — le lien lui est lié. */
+const STAGIAIRE = "stagiaire@exemple.invalid";
+
+/** SHA-256 hex, calculé indépendamment du service — sinon le test s'auto-valide. */
+async function sha256Independant(s: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
 
 describe("calculerExpiration", () => {
   const MAINTENANT = new Date("2026-06-10T08:00:00.000Z");
@@ -108,12 +120,17 @@ describe("creerTokenInscription", () => {
     // journées déclarées, le service de signature n'aurait d'autre issue que
     // d'inventer un « 09h00–17h00 ». Le refus tombe devant l'ADMIN, qui peut
     // corriger, et non en salle devant le stagiaire, qui ne le peut pas.
-    mockPrisma.sessionJour.findMany.mockResolvedValue([]);
+    mockPrisma.trainingSession.findFirst.mockResolvedValue({
+      lieuType: "nos_locaux",
+      lieuVisioUrl: null,
+      jours: [],
+    });
 
     await expect(
       creerTokenInscription({
         enrollmentId: "enr-1",
         dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: STAGIAIRE,
       }),
     ).rejects.toMatchObject({ motif: "journees_non_declarees" });
 
@@ -123,9 +140,17 @@ describe("creerTokenInscription", () => {
   });
 
   it("expose une erreur typée, pas une erreur Prisma brute", async () => {
-    mockPrisma.sessionJour.findMany.mockResolvedValue([]);
+    mockPrisma.trainingSession.findFirst.mockResolvedValue({
+      lieuType: "nos_locaux",
+      lieuVisioUrl: null,
+      jours: [],
+    });
     await expect(
-      creerTokenInscription({ enrollmentId: "enr-1", dateFinSession: new Date() }),
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date(),
+        destinataireEmail: STAGIAIRE,
+      }),
     ).rejects.toBeInstanceOf(TokenEmargementError);
   });
 
@@ -135,13 +160,18 @@ describe("creerTokenInscription", () => {
     // tirer la feuille sur le « 09h00–17h00 » PROPOSÉ par défaut — précisément
     // ce que ce chantier existe pour supprimer, cette fois scellé dans un tuple
     // haché que plus personne ne pourra corriger.
-    mockPrisma.sessionJour.findMany.mockResolvedValue([
-      { horairesConfirmes: true },
-      { horairesConfirmes: false },
-    ]);
+    mockPrisma.trainingSession.findFirst.mockResolvedValue({
+      lieuType: "nos_locaux",
+      lieuVisioUrl: null,
+      jours: [{ horairesConfirmes: true }, { horairesConfirmes: false }],
+    });
 
     await expect(
-      creerTokenInscription({ enrollmentId: "enr-1", dateFinSession: new Date() }),
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date(),
+        destinataireEmail: STAGIAIRE,
+      }),
     ).rejects.toMatchObject({ motif: "horaires_non_confirmes" });
 
     // Rien n'a été écrit : le refus arrive AVANT toute mutation.
@@ -153,6 +183,7 @@ describe("creerTokenInscription", () => {
     const res = await creerTokenInscription({
       enrollmentId: "enr-1",
       dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: STAGIAIRE,
     });
     expect(res.token).toBeTruthy();
     expect(mockPrisma.emargementToken.create).toHaveBeenCalled();
@@ -162,6 +193,7 @@ describe("creerTokenInscription", () => {
     await creerTokenInscription({
       enrollmentId: "enr-1",
       dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: STAGIAIRE,
       maintenant: new Date("2026-06-10T08:00:00.000Z"),
     });
 
@@ -180,6 +212,7 @@ describe("creerTokenInscription", () => {
     const { token } = await creerTokenInscription({
       enrollmentId: "enr-1",
       dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: STAGIAIRE,
     });
 
     const data = (
@@ -197,8 +230,192 @@ describe("creerTokenInscription", () => {
     await creerTokenInscription({
       enrollmentId: "enr-1",
       dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: STAGIAIRE,
     });
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 ADR 0048 §4.1 — LE BINDING E-MAIL MANQUAIT SUR LE CHEMIN COLLECTIF.
+//
+// L'empreinte du destinataire n'était écrite que par `creerTokenCoaching`. La
+// protection existait donc là où il y a UN participant, et manquait là où il y
+// en a douze.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("creerTokenInscription — liage au destinataire", () => {
+  it("🔴 stocke le HASH de l'adresse du stagiaire, et JAMAIS son adresse", async () => {
+    await creerTokenInscription({
+      enrollmentId: "enr-1",
+      dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: "  Stagiaire@Exemple.INVALID ",
+    });
+
+    const data = mockPrisma.emargementToken.create.mock.calls[0]?.[0]?.data as Record<
+      string,
+      unknown
+    >;
+    // Normalisé (casse + espaces) puis haché, exactement comme le chemin AFEST.
+    // Le hash est recalculé ICI, indépendamment du service : le comparer à
+    // `sha256Hex` du module ferait s'auto-valider le test.
+    expect(data["destinataireEmailSha256"]).toBe(
+      await sha256Independant("stagiaire@exemple.invalid"),
+    );
+    // La ligne survit cinq ans : l'adresse en clair ne doit figurer nulle part.
+    expect(JSON.stringify(data)).not.toContain("Exemple.INVALID");
+    expect(JSON.stringify(data)).not.toContain("stagiaire@exemple.invalid");
+  });
+
+  it("REFUSE un destinataire vide — le même refus que sur le chemin AFEST", async () => {
+    await expect(
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: "   ",
+      }),
+    ).rejects.toMatchObject({ motif: "destinataire_absent" });
+    // Le refus est PUR : il tombe avant même de lire la session.
+    expect(mockPrisma.trainingSession.findFirst).not.toHaveBeenCalled();
+    expect(mockPrisma.emargementToken.create).not.toHaveBeenCalled();
+  });
+
+  it("REFUSE une adresse sans « @ »", async () => {
+    await expect(
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: "pas-une-adresse",
+      }),
+    ).rejects.toMatchObject({ motif: "destinataire_absent" });
+  });
+
+  it("⚠️ ne met PAS l'adresse en clair dans le jeton, contrairement au chemin AFEST", async () => {
+    // Le binding réel est la colonne (`verifyMagicToken` ne lit pas ce champ).
+    // L'y ajouter écrirait une adresse en clair dans une URL que la console
+    // affiche en QR code sur un écran de salle.
+    await creerTokenInscription({
+      enrollmentId: "enr-1",
+      dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: STAGIAIRE,
+    });
+    const arg = mockSign.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(arg["email"]).toBeUndefined();
+    expect(arg["scope"]).toBe("emargement");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 ADR 0048 §4.2 — UNE SESSION À DISTANCE SANS LIEN DE CONNEXION.
+//
+// Même doctrine que `journees_non_declarees` : le refus se produit devant
+// l'ADMIN, qui peut corriger, et non devant le participant à l'heure de la
+// séance — qui, à distance, ne manque à personne jusqu'à ce qu'elle soit finie.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("creerTokenInscription — contrôle avant vol du distanciel", () => {
+  /** Session distancielle dont le lien vaut ce qu'on lui passe. */
+  function distanciel(lieuVisioUrl: string | null) {
+    mockPrisma.trainingSession.findFirst.mockResolvedValue({
+      lieuType: "distanciel",
+      lieuVisioUrl,
+      jours: [{ horairesConfirmes: true }],
+    });
+  }
+
+  it("🔴 REFUSE une session à DISTANCE dont le lien de connexion est vide", async () => {
+    distanciel(null);
+    await expect(
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: STAGIAIRE,
+      }),
+    ).rejects.toMatchObject({ motif: "distanciel_sans_lien" });
+    // Rien n'a été écrit : le refus arrive AVANT toute mutation.
+    expect(mockPrisma.emargementToken.create).not.toHaveBeenCalled();
+    expect(mockPrisma.emargementToken.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("REFUSE aussi une chaîne qui n'est pas une URL — « à venir » n'est pas un lien", async () => {
+    // Le champ est une chaîne libre : un admin y écrit ce qu'il veut. Une valeur
+    // sur laquelle on ne peut pas cliquer ne vaut pas mieux qu'un champ vide,
+    // et la convocation n'en afficherait rien non plus (`visioHost` rend null).
+    distanciel("lien Teams à venir");
+    await expect(
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: STAGIAIRE,
+      }),
+    ).rejects.toMatchObject({ motif: "distanciel_sans_lien" });
+  });
+
+  it("le message dit QUOI corriger — un refus muet ne vaut rien devant l'admin", async () => {
+    distanciel(null);
+    await expect(
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: STAGIAIRE,
+      }),
+    ).rejects.toThrow(/Lien de visioconférence/);
+  });
+
+  it("ACCEPTE une session à distance dont le lien est renseigné", async () => {
+    distanciel("https://meet.google.com/abc-defg-hij");
+    const res = await creerTokenInscription({
+      enrollmentId: "enr-1",
+      dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+      destinataireEmail: STAGIAIRE,
+    });
+    expect(res.token).toBeTruthy();
+    expect(mockPrisma.emargementToken.create).toHaveBeenCalled();
+  });
+
+  it("⚠️ N'IMPOSE AUCUNE PLATEFORME — Zoom est le chemin outillé, pas obligatoire", async () => {
+    // ADR 0048 §2 : un client qui impose son propre Teams doit continuer à
+    // fonctionner. Refuser une session parce que son lien n'est pas un lien Zoom
+    // remplacerait un manque par une impasse.
+    for (const url of [
+      "https://teams.microsoft.com/l/meetup-join/xyz",
+      "https://zoom.us/j/123456789",
+      "https://visio.entreprise-cliente.invalid/salle/42",
+    ]) {
+      vi.clearAllMocks();
+      mockSign.mockResolvedValue("tok.en");
+      mockPrisma.emargementToken.create.mockResolvedValue({ id: "tok-1" });
+      mockPrisma.emargementToken.updateMany.mockResolvedValue({ count: 0 });
+      mockPrisma.$transaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
+        cb(mockPrisma),
+      );
+      distanciel(url);
+      await expect(
+        creerTokenInscription({
+          enrollmentId: "enr-1",
+          dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+          destinataireEmail: STAGIAIRE,
+        }),
+        `plateforme refusée à tort : ${url}`,
+      ).resolves.toBeTruthy();
+    }
+  });
+
+  it("⚠️ NE BLOQUE PAS une session HYBRIDE sans lien — elle a une porte physique", async () => {
+    // `sur_site` + pas de visio : c'est le présentiel ordinaire. Étendre le
+    // refus à tous les `lieuType` bloquerait toutes les sessions en salle.
+    mockPrisma.trainingSession.findFirst.mockResolvedValue({
+      lieuType: "sur_site",
+      lieuVisioUrl: null,
+      jours: [{ horairesConfirmes: true }],
+    });
+    await expect(
+      creerTokenInscription({
+        enrollmentId: "enr-1",
+        dateFinSession: new Date("2026-06-11T17:00:00.000Z"),
+        destinataireEmail: STAGIAIRE,
+      }),
+    ).resolves.toBeTruthy();
   });
 });
 

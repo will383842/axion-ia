@@ -8,6 +8,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { TraineeForm } from "@/components/admin/qualiopi/TraineeForm";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { listClients } from "@/server/qualiopi/crm/clients";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -29,13 +30,26 @@ export default async function NouveauStagiairePage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}/qualiopi/stagiaires`;
 
+  // 🔴 F1 — les clients existants alimentent le champ « Entreprise ».
+  //
+  // Sans cette liste, l'entreprise est une SECONDE saisie libre du fait déjà
+  // saisi sur la fiche client, et les deux divergent — « SCI Invest Sun » /
+  // « SCI INVEST SUN » sont alors deux entreprises pour un lecteur. Chargée
+  // ici, côté serveur : le formulaire est un composant client et n'a aucun
+  // accès à la base.
+  const clients = (await listClients()).map((c) => ({
+    id: c.id,
+    numero: c.numero,
+    raisonSociale: c.raisonSociale,
+  }));
+
   return (
     <AdminPageShell width="narrow">
       <AdminPageHeader
         title="Nouveau stagiaire"
         description="PII protégées. Le détail handicap est chiffré côté serveur (jamais en clair)."
       />
-      <TraineeForm mode="create" baseHref={base} />
+      <TraineeForm mode="create" baseHref={base} clients={clients} />
     </AdminPageShell>
   );
 }

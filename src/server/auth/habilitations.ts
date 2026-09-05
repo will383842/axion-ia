@@ -59,6 +59,27 @@ export type ActeEngageant =
   | "conclure_devis"
   /** Émettre une facture, un avoir, ou encaisser. */
   | "facturer"
+  /**
+   * Engager l'argent qui SORT vers un formateur : poser ou clore son barème,
+   * lancer le run mensuel, faire avancer un relevé — jusqu'à « payé ».
+   *
+   * 🔴 `D3` (2026-09-05). Le code protégeait l'argent qui ENTRE et pas celui
+   * qui SORT, et l'asymétrie était nette : `facturer` est réservé à la
+   * direction, tandis que les quatre actions monétaires du module de
+   * rémunération (`runRemunerationMensuelleAction`,
+   * `transitionStatementAction`, `createCompensationRuleAction`,
+   * `closeCompensationRuleAction`) se contentaient de `requireAdminWrite` —
+   * qui autorise `editor`. **Un compte éditorial pouvait donc créer le barème
+   * d'un formateur et marquer son relevé « payé »**, alors qu'il ne pouvait ni
+   * émettre une facture ni contresigner quoi que ce soit.
+   *
+   * Réservé à la DIRECTION, au même niveau que `facturer` : décider ce qu'on
+   * doit à un tiers et déclarer qu'on l'a payé engage l'organisme
+   * comptablement, exactement comme décider ce qu'on lui réclame. Le
+   * responsable qualité en est absent pour la même raison qui l'écarte de
+   * `facturer` — il porte le domaine QUALITÉ, jamais le financier.
+   */
+  | "remunerer_formateur"
   /** Habiliter un formateur sur une formation, ou lever la réserve d'un sous-traitant. */
   | "habiliter_formateur"
   /** Déposer une demande de prise en charge auprès d'un financeur, au nom du client (mandat). */
@@ -242,6 +263,9 @@ export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdm
   attester: ["super_admin", "admin", "responsable_qualite"],
   conclure_devis: ["super_admin", "admin"],
   facturer: ["super_admin", "admin"],
+  // Même niveau que `facturer` : l'argent qui sort engage autant que celui qui
+  // entre. Cf. le commentaire de l'acte, plus haut.
+  remunerer_formateur: ["super_admin", "admin"],
   habiliter_formateur: ["super_admin", "admin", "responsable_qualite"],
   deposer_demande_financeur: ["super_admin", "admin"],
   revoquer_signature: ["super_admin", "admin"],
@@ -262,6 +286,9 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
   conclure_devis:
     "Conclure un devis engage l'organisme contractuellement : acte réservé à la direction.",
   facturer: "Émettre une facture engage l'organisme comptablement : acte réservé à la direction.",
+  remunerer_formateur:
+    "Fixer le barème d'un formateur, lancer le calcul mensuel ou déclarer un relevé payé engage " +
+    "l'organisme comptablement, au même titre qu'une facture : acte réservé à la direction.",
   habiliter_formateur:
     "Habiliter un formateur engage la qualité de l'action (ind. 21/22) : acte réservé à la direction ou au responsable qualité.",
   deposer_demande_financeur:

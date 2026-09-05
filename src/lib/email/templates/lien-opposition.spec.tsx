@@ -54,12 +54,21 @@ describe("lien d'opposition — 44 gabarits rendus avec un destinataire", () => 
     });
   }
 
+  // ⚠️ TIMEOUT EXPLICITE, et ce n'est pas un contournement.
+  //
+  // Ce témoin-ci rend TOUS les gabarits dans UN seul `it`, là où le bloc
+  // ci-dessus en fait un `it` par gabarit. Il consomme donc à lui seul le
+  // budget de 5 s par défaut de Vitest, et ce budget se consomme à mesure que
+  // le parc grandit : il a expiré au 51ᵉ gabarit (rappel de la veille,
+  // 2026-09-05), après avoir tenu de justesse au 50ᵉ. Le seuil n'exprimait
+  // aucune exigence — personne n'a jamais décidé que rendre le parc entier
+  // devait tenir en cinq secondes — et l'assertion, elle, est inchangée.
   it("sans destinataire, aucun lien d'opposition n'est rendu — sur aucun gabarit", async () => {
     for (const name of EMAIL_TEMPLATE_NAMES) {
       const { html } = await renderEmailTemplate(name, "fr", PAYLOAD_EXEMPLE);
       expect(lienOpposition(html), `${name} : lien fantôme sans destinataire`).toBeNull();
     }
-  });
+  }, 30_000);
 
   it("le libellé dit la portée : les sollicitations COMMERCIALES", async () => {
     const { html } = await renderEmailTemplate("roi-report", "fr", PAYLOAD_EXEMPLE, {

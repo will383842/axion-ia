@@ -28,7 +28,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { requireHabilitation, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { runRemunerationMensuelle } from "@/server/qualiopi/remuneration/statements";
 import { transitionAutorisee, type StatementStatut } from "@/server/qualiopi/remuneration/run";
 
@@ -63,7 +63,15 @@ export async function runRemunerationMensuelleAction(
     dryRun: boolean;
   }>
 > {
-  const session = await requireAdminWrite();
+  // 🔴 `D3` (2026-09-05) — ACTE ENGAGEANT, plus `requireAdminWrite`.
+  //
+  // Les quatre actions monétaires de ce module se contentaient de
+  // `requireAdminWrite`, qui autorise `editor` : un compte éditorial pouvait
+  // créer le barème d'un formateur et marquer son relevé « payé ». Le même
+  // compte ne pouvait ni émettre une facture ni contresigner — le code
+  // protégeait l'argent qui ENTRE et pas celui qui SORT. Cf.
+  // `ActeEngageant.remunerer_formateur` dans `server/auth/habilitations.ts`.
+  const session = await requireHabilitation("remunerer_formateur");
   const parsed = runSchema.safeParse(input);
   if (!parsed.success) return { error: "Période invalide" };
   const { year, month, dryRun } = parsed.data;
@@ -158,7 +166,9 @@ const transitionSchema = z.object({
 export async function transitionStatementAction(
   input: z.input<typeof transitionSchema>,
 ): Promise<ActionResult<{ id: string; statut: StatementStatut }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT (`D3`) : « payé » est une déclaration comptable. Cf.
+  // `runRemunerationMensuelleAction` pour le raisonnement complet.
+  const session = await requireHabilitation("remunerer_formateur");
   const parsed = transitionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
@@ -323,7 +333,9 @@ const ruleSchema = z
 export async function createCompensationRuleAction(
   input: z.input<typeof ruleSchema>,
 ): Promise<ActionResult<{ id: string; cloturees: number }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT (`D3`) : poser un barème décide de ce que l'organisme
+  // devra. Cf. `runRemunerationMensuelleAction` pour le raisonnement complet.
+  const session = await requireHabilitation("remunerer_formateur");
   const parsed = ruleSchema.safeParse(input);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   const v = parsed.data;
@@ -395,7 +407,9 @@ const closeSchema = z.object({
 export async function closeCompensationRuleAction(
   input: z.input<typeof closeSchema>,
 ): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT (`D3`) : poser un barème décide de ce que l'organisme
+  // devra. Cf. `runRemunerationMensuelleAction` pour le raisonnement complet.
+  const session = await requireHabilitation("remunerer_formateur");
   const parsed = closeSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;

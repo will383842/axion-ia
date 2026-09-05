@@ -13,13 +13,28 @@
  *    quoi un stagiaire pourrait signer une session qui n'a pas eu lieu, et la
  *    signature serait cryptographiquement valide, ce qui est pire qu'inutile.
  *
- * ⚠️ Les liens ne sont PAS persistés en clair : la base n'en garde que le
- * SHA-256. Fermer cette page les perd définitivement. En réémettre révoque les
- * précédents — deux liens vivants rendraient la révocation illusoire.
+ * ⚠️ Les liens ne sont PAS persistés en clair EN BASE : elle n'en garde que le
+ * SHA-256. En réémettre révoque les précédents — deux liens vivants rendraient
+ * la révocation illusoire.
+ *
+ * 🔴 F9 (2026-09-05) — ils vivaient dans un `useState`, donc dans la mémoire
+ * d'un composant démonté à la PREMIÈRE navigation. Le chemin naturel — émettre,
+ * aller chercher l'adresse d'un stagiaire, revenir — les détruisait, et il
+ * fallait réémettre, ce qui invalide ceux déjà distribués. Ils sont désormais
+ * conservés dans le `sessionStorage` de l'ONGLET (`liens-emargement-memoire.ts`),
+ * jamais envoyés nulle part : le serveur ne stocke toujours que l'empreinte, et
+ * fermer l'onglet les perd toujours. C'est la navigation interne qui cesse de
+ * détruire.
  */
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import {
+  clefMemoireLiens,
+  lireLiensMemorises,
+  serialiserLiens,
+  type LienMemorise,
+} from "@/components/admin/qualiopi/liens-emargement-memoire";
 
 export interface LienAffiche {
   enrollmentId: string;
@@ -77,7 +92,57 @@ export function LiensEmargement({
   envoyerAction,
 }: LiensEmargementProps): React.ReactElement {
   const router = useRouter();
+  // 🔴 F9 — les liens survivent à une navigation DANS la console.
+  //
+  // Ils restent hors de la base (le serveur n'a que le SHA-256) et hors de tout
+  // envoi : `sessionStorage` est propre à l'onglet et meurt avec lui. Le
+  // premier rendu part vide et la relecture se fait dans un `useEffect` :
+  // toucher `sessionStorage` pendant le rendu ferait diverger le HTML du
+  // serveur de celui du client, et React 19 ne recolle pas une divergence
+  // (« This won't be patched up »).
   const [liens, setLiens] = useState<LienAffiche[] | null>(null);
+  const clef = clefMemoireLiens(sessionId);
+
+  function memoriser(valeur: readonly LienMemorise[] | null) {
+    // Un `sessionStorage` peut LEVER, pas seulement rendre null (navigation
+    // privée, stockage désactivé, quota). Perdre la mémoire du lien est
+    // acceptable ; faire tomber l'écran d'émargement le jour de la session ne
+    // l'est pas.
+    try {
+      if (valeur === null) window.sessionStorage.removeItem(clef);
+      else window.sessionStorage.setItem(clef, serialiserLiens(valeur));
+    } catch {
+      /* mémoire indisponible : l'écran reste utilisable, sans persistance. */
+    }
+  }
+
+  useEffect(() => {
+    let brut: string | null = null;
+    try {
+      brut = window.sessionStorage.getItem(clef);
+    } catch {
+      brut = null;
+    }
+    const repris = lireLiensMemorises(brut, new Date());
+    if (repris === null) {
+      // Purge une entrée entièrement expirée : garder un QR mort est pire qu'un
+      // écran vide — on le projette en salle et personne ne peut signer.
+      if (brut !== null) memoriser(null);
+      return;
+    }
+    setLiens(
+      repris.map((l) => ({
+        enrollmentId: l.enrollmentId,
+        stagiaireNom: l.stagiaireNom,
+        url: l.url,
+        qr: l.qr,
+        expiresAt: new Date(l.expiresAtIso).toLocaleString("fr-FR"),
+      })),
+    );
+    // `clef` dérive de `sessionId` : la relecture doit rejouer si l'écran passe
+    // d'une session à une autre sans démontage.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clef]);
   const [agrandi, setAgrandi] = useState<string | null>(null);
   const [copie, setCopie] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -99,6 +164,15 @@ export function LiensEmargement({
           expiresAt: new Date(l.expiresAt).toLocaleString("fr-FR"),
         })),
       );
+      memoriser(
+        r.data.liens.map((l) => ({
+          enrollmentId: l.enrollmentId,
+          stagiaireNom: l.stagiaireNom,
+          url: l.url,
+          qr: l.qr,
+          expiresAtIso: new Date(l.expiresAt).toISOString(),
+        })),
+      );
       router.refresh();
     });
   }
@@ -113,6 +187,9 @@ export function LiensEmargement({
         return;
       }
       setLiens(null);
+      // Un lien révoqué ne signe plus : le garder en mémoire ferait rouvrir
+      // l'écran sur des QR morts, exactement ce que la révocation veut éviter.
+      memoriser(null);
       setMessage(
         `${r.data.revoques} lien${r.data.revoques > 1 ? "s" : ""} révoqué${r.data.revoques > 1 ? "s" : ""}. Les anciens liens ne signent plus.`,
       );
@@ -149,6 +226,7 @@ export function LiensEmargement({
       );
       // L'envoi a émis de nouveaux jetons : les liens affichés sont périmés.
       setLiens(null);
+      memoriser(null);
       router.refresh();
     });
   }
@@ -242,8 +320,11 @@ export function LiensEmargement({
             role="status"
             className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
           >
-            Ces liens ne sont affichés qu&apos;ici et ne sont pas conservés en clair. Si vous fermez
-            cette page, il faudra en réémettre — ce qui invalidera ceux déjà distribués.
+            Ces liens ne sont pas conservés en clair côté serveur : la base n&apos;en garde que
+            l&apos;empreinte. Ils restent affichés ici tant que <strong>cet onglet</strong> est
+            ouvert — vous pouvez donc aller consulter une fiche et revenir sans les perdre. Fermer
+            l&apos;onglet les perd définitivement, et il faut alors en réémettre — ce qui invalide
+            ceux déjà distribués.
           </p>
 
           <ul className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-3)]">

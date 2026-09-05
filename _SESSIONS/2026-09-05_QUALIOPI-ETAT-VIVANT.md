@@ -6,6 +6,64 @@
 
 ---
 
+## 0ter. 🔴 LE PLAFOND DE SESSION A TUÉ CINQ AGENTS D'UN COUP (10:20)
+
+`HTTP 429 — You've hit your session limit · resets 10:20am`. Les cinq agents
+encore vivants sont morts **en même temps**, en pleine écriture, laissant
+**58 fichiers non commités** dans l'arbre. C'est exactement le scénario que Will
+avait anticipé en demandant un filet de relance.
+
+⚠️ **Le filet a été REPOUSSÉ de 10:40 à 12:30** (vérifié : `NextRunTime
+09/05/2026 12:30:30`). Motif : cette session a survécu, et ouvrir une seconde
+session Claude dans un arbre portant 58 fichiers à moitié écrits aurait été plus
+dangereux que l'absence de filet.
+
+### Ce que la récupération a appris — trois pièges, tous payés ici
+
+**1. 🔴 `pnpm typecheck 2>&1 | tail -40` rend l'exit code de `tail`, pas de `tsc`.**
+La sortie affichait `[exited with code 0]` **sur un typecheck portant 5 erreurs** —
+le corps disait `ELIFECYCLE Command failed with exit code 2`. La règle était déjà
+en mémoire et c'est elle qui a sauvé : **lire la bannière ET LE CORPS**, jamais le
+code de sortie d'une chaîne de tubes. Le contrôle juste est
+`npx tsc --noEmit; echo ${PIPESTATUS[0]}` — ou pas de tube du tout.
+
+**2. 🔴 `git checkout -- <fichier>` pour annuler une mutation de test EMPORTE le
+travail non commité du même fichier.** Je l'avais interdit aux agents, je l'ai
+fait moi-même, et j'ai perdu les quatre modifications de `DocumentsSection.tsx`
+qu'il fallait refaire. **Une mutation de test se restaure par RÉ-ÉDITION**, ou
+depuis une copie faite hors du dépôt — jamais par git.
+
+**3. 🔴 Une garde peut être ROUGE DÈS SA NAISSANCE si l'on n'a lancé que des
+tests ciblés.** `outbox-policy.spec.ts` était rouge **depuis le commit `f12917ced`**
+(lot A, la veille) : il inscrivait `piece-exemplaire-signe` parmi les envois
+automatiques sans l'ajouter à `TEMPLATES_REELS`, une liste **recopiée à la main**
+dans le témoin. Personne ne l'a vu parce que seuls quatre fichiers ciblés avaient
+été lancés. Corrigé en faisant DÉRIVER la liste de `EMAIL_TEMPLATE_NAMES`
+(`Object.keys(TEMPLATES)`, 53 entrées) — la divergence devient impossible, et la
+définition obtenue est plus forte : un envoi déclaré automatique sans composant
+échouerait au rendu, et le témoin l'attrape désormais.
+
+### Le défaut trouvé DANS un correctif du jour
+
+La soupape de l'attestation (« j'assume l'absence de preuves ») était **inerte
+dans son cas principal, et fabriquait le gel qu'elle devait éviter** : on passait
+la garde, on posait le claim atomique, puis `tauxPresencePct ?? 0` classait à
+« aucune » — l'inscription sortait **sans pièce**, `attestationGenereeAt` posé, et
+le cron (qui filtre sur `null`) ne la reprenait **plus jamais**.
+
+🔑 **Un taux INCONNU n'est pas un taux de 0 %.** Le taux quitte donc la soupape :
+il lève un refus DUR (`AttestationTauxNonMesureError`) qui dit quoi faire. On peut
+assumer par écrit l'absence d'une trace ou d'une évaluation ; on ne peut pas
+attester une assiduité dont on n'a aucune mesure — il n'y aurait rien à attester.
+
+⛔ **Reste ouvert** : les lignes DÉJÀ gelées en base ne sont pas rattrapées.
+Aucun script de reprise n'a été écrit (l'agent est mort avant). Les repérer :
+`attestationGenereeAt` non nul + `attestationDocumentId` nul +
+`attestationResultat = "aucune"` **alors qu'une trace d'assiduité existe**.
+L'attestation leur est due par la loi.
+
+---
+
 ## 0bis. REPRISE du 2026-09-05, 07:30 **heure locale** — ce qui a changé depuis
 
 ⚠️ *Correction : la première rédaction de ce titre disait « 07:30 UTC ». Faux —

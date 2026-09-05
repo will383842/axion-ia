@@ -91,6 +91,9 @@ describe("matrice d'habilitation — invariants de structure", () => {
   });
 
   it("les huit actes engageants attendus sont présents — un retrait doit rougir", () => {
+    // ⚠️ Le titre disait « huit » alors que la liste en portait sept, depuis
+    // l'ajout de `revoquer_signature`. Il en porte huit pour de bon depuis
+    // l'ajout de `remunerer_formateur` (`D3`, 2026-09-05).
     // Verrou d'exhaustivité : retirer un acte de la matrice retire une garde du
     // serveur. Ce test rend ce retrait visible en revue, au lieu de le laisser
     // passer dans un diff de 40 fichiers.
@@ -105,9 +108,40 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "deposer_demande_financeur",
       "facturer",
       "habiliter_formateur",
+      "remunerer_formateur",
       "revoquer_signature",
     ];
     expect([...ACTES_ENGAGEANTS].sort()).toEqual(attendus.sort());
+  });
+
+  /**
+   * 🔴 `D3` — L'ARGENT QUI SORT EST GARDÉ COMME CELUI QUI ENTRE.
+   *
+   * Audit du 2026-09-05 : les quatre actions monétaires du module de
+   * rémunération n'utilisaient que `requireAdminWrite`, qui autorise `editor`.
+   * **Un compte éditorial pouvait créer le barème d'un formateur et marquer son
+   * relevé « payé »** — alors que le même compte ne pouvait ni émettre une
+   * facture ni contresigner, parce que ces deux-là passent par
+   * `requireHabilitation`. Le code protégeait une seule direction du flux.
+   *
+   * 🔑 Écrit en NÉGATIF sur les rôles exclus, comme `revoquer_signature` :
+   * ajouter un rôle à la matrice doit rougir ici, alors qu'une assertion
+   * « contient super_admin et admin » resterait verte.
+   */
+  it("🔴 rémunérer un formateur est réservé à la DIRECTION, comme facturer", () => {
+    for (const role of ["responsable_qualite", "secretaire", "editor", "reader"] as const) {
+      expect(
+        peutEngager(role, "remunerer_formateur"),
+        `« ${role} » ne doit pas pouvoir poser un barème ni déclarer un relevé payé`,
+      ).toBe(false);
+    }
+    expect(peutEngager("super_admin", "remunerer_formateur")).toBe(true);
+    expect(peutEngager("admin", "remunerer_formateur")).toBe(true);
+    // Et l'ALIGNEMENT lui-même : l'argent qui sort se garde exactement comme
+    // celui qui entre. Deux listes qui divergeraient rouvriraient l'asymétrie.
+    expect([...HABILITATIONS.remunerer_formateur].sort()).toEqual(
+      [...HABILITATIONS.facturer].sort(),
+    );
   });
 
   it("🔴 révoquer une signature est réservé à la DIRECTION seule", () => {

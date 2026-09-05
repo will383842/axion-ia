@@ -980,6 +980,70 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     expect(where?.session).toEqual({ statut: "realisee" });
   });
 
+  // 🔴 2026-09-05 — L'ASYMÉTRIE FERMÉE.
+  //
+  // L'attestation est due au STAGIAIRE (L.6353-1) ; le certificat de réalisation
+  // est dû au FINANCEUR (R.6313-3). Le second exigeait un taux MESURÉ et une
+  // trace vérifiable ; le premier n'exigeait qu'une évaluation, et seulement
+  // dans ce cron — le clic admin, lui, n'exigeait RIEN. La pièce due à la
+  // personne était donc la moins gardée des deux.
+  //
+  // Le service refuse désormais sans ces preuves. Le cron pré-filtre sur les
+  // MÊMES faits, pour ne pas transformer des dossiers incomplets en erreurs
+  // dans le journal du matin.
+  it("n'émet pas sans taux de présence MESURÉ — un taux inconnu n'est pas un taux de 0 %", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-09-05T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.tauxPresencePct).toEqual({ not: null });
+  });
+
+  it("n'émet pas sans trace d'assiduité : signature au registre OU relevé importé", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-09-05T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.OR).toEqual([
+      { emargementSignatures: { some: { revokedAt: null } } },
+      {
+        presences: {
+          some: {
+            source: { in: ["import_zoom", "import_teams", "import_meet"] },
+            importId: { not: null },
+          },
+        },
+      },
+    ]);
+  });
+
+  it("DIT combien de dossiers évalués il a écartés faute de preuve, au lieu de les taire", async () => {
+    // Témoin POSITIF non nul : dix zéros ne distinguent pas « rien à signaler »
+    // d'un compteur qui ne mesure rien. 4 évalués, 1 retenu ⇒ 3 écartés.
+    mockPrisma.enrollment.findMany.mockResolvedValue([
+      { id: "enroll-complet", session: { id: "s1" } },
+    ]);
+    mockPrisma.enrollment.count
+      .mockResolvedValueOnce(2) // en attente d'évaluation
+      .mockResolvedValueOnce(4); // évalués (dont le seul retenu)
+    const journal = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-09-05T09:00:00Z",
+    });
+
+    const ligne = journal.mock.calls.map((c) => String(c[0])).find((l) => l.includes("générées"));
+    journal.mockRestore();
+
+    expect(ligne).toContain("2 en attente d'évaluation finale");
+    expect(ligne).toContain("3 évaluées mais sans taux mesuré ni trace d'assiduité");
+  });
+
   it("compte séparément les inscrits en attente d'évaluation, au lieu de les taire", async () => {
     await formationCronsHandler({
       type: "formation-crons.attestations-auto",

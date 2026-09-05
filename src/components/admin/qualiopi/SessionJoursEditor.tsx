@@ -68,6 +68,39 @@ const HEURE_FIN_DEFAUT = "17:00";
  *   d'émettre le moindre lien (`horaires_non_confirmes`) : plus aucune
  *   signature possible sur la session.
  */
+/**
+ * 🔴 F8 — ce que « Confirmer ces journées » fait, et ce qu'il NE FAIT PAS.
+ *
+ * Constaté le 2026-09-04 : le suivi de dossier n'a qu'une étape, « Journées de
+ * présence confirmées ». L'écran, lui, en a DEUX, séparées par un bloc entier :
+ * « Confirmer ces journées » (→ « 1 journée enregistrée ») puis, plus bas,
+ * « Générer les créneaux » (→ « 2 créneau(x) créés »). Le message de succès du
+ * premier bouton s'arrêtait à son propre geste et laissait croire le travail
+ * fini — alors que sans créneaux, les liens de signature partent et le
+ * stagiaire arrive sur « Aucune demi-journée à signer ».
+ *
+ * On ne CHAÎNE pas les deux gestes : l'écran affirme explicitement, quelques
+ * lignes plus bas, que modifier les journées ne recalcule PAS les créneaux
+ * existants — « un créneau peut porter une signature, et rien ne distingue en
+ * base une absence émargée d'un créneau vierge ». Générer d'office trahirait
+ * cette décision. Le bouton dit donc ce qu'il a fait, et ce qu'il reste à
+ * faire.
+ *
+ * Extrait du composant pour être testable sans monter React : c'est une phrase
+ * qui décide si quelqu'un ira au bout de la chaîne probante.
+ */
+export function messageJoursEnregistrees(etat: { nbJours: number; hasCreneaux: boolean }): string {
+  if (etat.nbJours === 0) {
+    return "Aucune journée déclarée : la session retombe sur sa plage de dates.";
+  }
+  const pluriel = etat.nbJours > 1 ? "s" : "";
+  const base = `${etat.nbJours} journée${pluriel} enregistrée${pluriel}.`;
+  if (etat.hasCreneaux) {
+    return `${base} Les créneaux de présence existent déjà et ne sont PAS recalculés : vérifiez plus bas, dans « Créneaux de présence », qu'ils correspondent à ces journées.`;
+  }
+  return `${base} Aucun créneau de présence n'existe encore — cet enregistrement n'en crée aucun. Tant qu'ils manquent, un lien de signature envoyé mène à « Aucune demi-journée à signer ». Prochain geste : « Générer les créneaux », dans la section « Créneaux de présence » ci-dessous.`;
+}
+
 export function peutEnregistrerJours(etat: {
   isPending: boolean;
   modifie: boolean;
@@ -146,11 +179,9 @@ export function SessionJoursEditor({
         setError(r.error);
         return;
       }
-      setSucces(
-        r.data.nbJours === 0
-          ? "Aucune journée déclarée : la session retombe sur sa plage de dates."
-          : `${r.data.nbJours} journée${r.data.nbJours > 1 ? "s" : ""} enregistrée${r.data.nbJours > 1 ? "s" : ""}.`,
-      );
+      // F8 — le message ne s'arrête plus au geste accompli : il dit aussi ce
+      // qu'il RESTE à faire, sans quoi on croit la chaîne probante bouclée.
+      setSucces(messageJoursEnregistrees({ nbJours: r.data.nbJours, hasCreneaux }));
       router.refresh();
     });
   }
@@ -172,6 +203,19 @@ export function SessionJoursEditor({
         suivent pas, et fausse alors le taux de présence. Les horaires figureront sur la feuille
         d&apos;émargement.
       </p>
+
+      {/* 🔴 F8 — dire les DEUX gestes AVANT le clic, pas seulement après.
+          Ce bouton enregistre des journées ; il ne crée aucun créneau. La
+          deuxième moitié du travail vit sous un autre bloc, et le suivi de
+          dossier n'a qu'UNE étape (« Journées de présence confirmées ») : il
+          affichait donc « Fait » avec zéro créneau. */}
+      {!hasCreneaux && (
+        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          <strong>Deux gestes, pas un.</strong> Enregistrer les journées ne crée aucun créneau de
+          présence : il faut ensuite « Générer les créneaux », plus bas. Sans créneaux, un lien de
+          signature envoyé mène le stagiaire à « Aucune demi-journée à signer ».
+        </p>
+      )}
 
       {aDesHorairesNonConfirmes && (
         <p

@@ -32,6 +32,18 @@ vi.mock("@/lib/prisma", () => ({
     activityLog: {
       create: vi.fn(),
     },
+    // 🔴 2026-09-05 — les PREUVES. L'attestation, due au stagiaire, était moins
+    // gardée que le certificat, dû au financeur : elle exige désormais les mêmes
+    // faits (taux mesuré, trace d'assiduité, évaluation finale).
+    emargementSignature: {
+      count: vi.fn(),
+    },
+    presenceCreneau: {
+      count: vi.fn(),
+    },
+    evaluationAcquis: {
+      count: vi.fn(),
+    },
   },
 }));
 
@@ -91,7 +103,10 @@ import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getFinaleResultats } from "./evaluations-service";
 import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
-import { genererAttestationPourEnrollment } from "./attestation-service";
+import {
+  genererAttestationPourEnrollment,
+  preuvesManquantesAttestation,
+} from "./attestation-service";
 
 const mockPrisma = prisma as unknown as {
   enrollment: {
@@ -106,6 +121,9 @@ const mockPrisma = prisma as unknown as {
   activityLog: {
     create: ReturnType<typeof vi.fn>;
   };
+  emargementSignature: { count: ReturnType<typeof vi.fn> };
+  presenceCreneau: { count: ReturnType<typeof vi.fn> };
+  evaluationAcquis: { count: ReturnType<typeof vi.fn> };
 };
 
 const mockClassifier = classifierPresence as ReturnType<typeof vi.fn>;
@@ -186,6 +204,13 @@ describe("genererAttestationPourEnrollment", () => {
     });
     mockGetFinale.mockResolvedValue(null);
     mockEnvoyerAttestation.mockResolvedValue(undefined);
+    // Défaut du dossier SAIN : une signature d'émargement au registre et une
+    // évaluation finale. Les tests de la garde des preuves les retirent
+    // explicitement — sans ce défaut, tous les autres tests mesureraient le
+    // refus au lieu de ce qu'ils prétendent mesurer.
+    mockPrisma.emargementSignature.count.mockResolvedValue(1);
+    mockPrisma.presenceCreneau.count.mockResolvedValue(0);
+    mockPrisma.evaluationAcquis.count.mockResolvedValue(1);
   });
 
   // ── Stub-aware ──────────────────────────────────────────────────────────��───
@@ -619,5 +644,275 @@ describe("genererAttestationPourEnrollment", () => {
 
     expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
     expect(mockGenDoc).toHaveBeenCalledOnce();
+  });
+
+  // ── PREUVES — l'asymétrie fermée le 2026-09-05 ────────────────────────────
+
+  describe("preuves : la pièce du stagiaire est gardée comme celle du financeur", () => {
+    it("TÉMOIN POSITIF — dossier complet : l'attestation sort, aucun refus", async () => {
+      // Sans ce cas, les refus ci-dessous ne distingueraient pas « la garde
+      // fonctionne » de « plus rien ne sort jamais ».
+      const result = await genererAttestationPourEnrollment("enroll-sain");
+
+      expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
+      expect(mockGenDoc).toHaveBeenCalledOnce();
+    });
+
+    it("refuse quand le taux de présence n'a pas été calculé", async () => {
+      mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: null }));
+
+      await expect(genererAttestationPourEnrollment("enroll-sans-taux")).rejects.toThrow(
+        /taux de présence n'a pas été calculé/,
+      );
+      expect(mockGenDoc).not.toHaveBeenCalled();
+    });
+
+    it("refuse quand aucune trace d'assiduité n'existe", async () => {
+      mockPrisma.emargementSignature.count.mockResolvedValue(0);
+      mockPrisma.presenceCreneau.count.mockResolvedValue(0);
+
+      await expect(genererAttestationPourEnrollment("enroll-sans-trace")).rejects.toThrow(
+        /aucune trace d'assiduité vérifiable/,
+      );
+      expect(mockGenDoc).not.toHaveBeenCalled();
+    });
+
+    it("un relevé de connexion importé VAUT trace (session distancielle)", async () => {
+      // Le certificat de réalisation a payé ce cas le 2026-08-20 : il était
+      // structurellement impossible en 100 % distanciel. L'attestation ne
+      // refait pas la faute.
+      mockPrisma.emargementSignature.count.mockResolvedValue(0);
+      mockPrisma.presenceCreneau.count.mockResolvedValue(3);
+
+      const result = await genererAttestationPourEnrollment("enroll-distanciel");
+
+      expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
+    });
+
+    it("refuse quand aucune évaluation finale n'existe — le clic admin ne contourne plus le cron", async () => {
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+      await expect(genererAttestationPourEnrollment("enroll-sans-eval")).rejects.toThrow(
+        /aucune évaluation finale des acquis/,
+      );
+      expect(mockGenDoc).not.toHaveBeenCalled();
+    });
+
+    it("le refus NE consomme PAS le claim : le cron pourra reprendre le dossier", async () => {
+      // Un refus levé après le claim laisserait `attestationGenereeAt` posé sans
+      // pièce, et le cron (qui filtre sur `null`) ne reviendrait jamais.
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+      await expect(genererAttestationPourEnrollment("enroll-sans-eval")).rejects.toThrow();
+
+      expect(mockPrisma.enrollment.updateMany).not.toHaveBeenCalled();
+      expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+    });
+
+    it("le refus nomme TOUT ce qui manque, pas seulement le premier manque", async () => {
+      // ⚠️ Le taux est MESURÉ ici, délibérément : sans lui, le refus DUR
+      // (`AttestationTauxNonMesureError`) partirait d'abord et ce témoin
+      // mesurerait le mauvais refus. C'est ce qui l'a fait rougir au moment où
+      // le taux a quitté la soupape.
+      mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: 100 }));
+      mockPrisma.emargementSignature.count.mockResolvedValue(0);
+      mockPrisma.presenceCreneau.count.mockResolvedValue(0);
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+      await expect(genererAttestationPourEnrollment("enroll-vide")).rejects.toThrow(
+        /trace d'assiduité[\s\S]*évaluation finale/,
+      );
+    });
+
+    it("🔴 un taux NON MESURÉ lève un refus DUR qu'aucun motif ne lève", async () => {
+      // Le défaut que ce témoin ferme : avec la soupape, on passait la garde,
+      // on posait le claim atomique, puis `tauxPresencePct ?? 0` classait à
+      // « aucune » — la pièce ne sortait PAS et `attestationGenereeAt` restait
+      // posé, gelant le dossier pour toujours (le cron filtre sur `null`).
+      // La soupape était donc inerte dans son cas principal, et fabriquait le
+      // gel qu'elle devait éviter. Un taux INCONNU n'est pas un taux de 0 %.
+      mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: null }));
+      mockPrisma.emargementSignature.count.mockResolvedValue(3);
+      mockPrisma.presenceCreneau.count.mockResolvedValue(0);
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(1);
+
+      await expect(
+        genererAttestationPourEnrollment("enroll-sans-taux", {
+          motifPreuvesManquantes:
+            "Le client affirme que la formation a bien eu lieu, je passe outre.",
+        }),
+      ).rejects.toThrow(/taux de présence n'a pas été calculé/);
+
+      // ⚠️ La partie qui compte VRAIMENT : rien n'a été écrit. Un refus levé
+      // après le claim aurait marqué l'inscription « attestée » sans pièce.
+      expect(mockPrisma.enrollment.updateMany).not.toHaveBeenCalled();
+      expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+    });
+
+    it("un MOTIF ÉCRIT ouvre la sortie — la pièce est due au stagiaire (L.6353-1)", async () => {
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+      const result = await genererAttestationPourEnrollment("enroll-motive", {
+        motifPreuvesManquantes:
+          "Émargement papier de 2024 archivé hors logiciel, retrouvé au dossier client.",
+      });
+
+      expect(result).toEqual({ resultat: "complete", documentId: "doc-uuid-1" });
+    });
+
+    it("le motif part au REGISTRE avec la liste des manques", async () => {
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+      await genererAttestationPourEnrollment("enroll-motive", {
+        motifPreuvesManquantes:
+          "Émargement papier de 2024 archivé hors logiciel, retrouvé au dossier client.",
+      });
+
+      const appel = mockPrisma.activityLog.create.mock.calls.find(
+        (c: unknown[]) =>
+          (c[0] as { data: { action: string } }).data.action ===
+          "qualiopi.attestation.preuves_manquantes_assumees",
+      );
+      expect(appel, "aucune entrée au registre : l'auditeur ne verrait rien").toBeDefined();
+      const data = (appel?.[0] as { data: { changes: { manquantes: string[]; motif: string } } })
+        .data;
+      expect(data.changes.motif).toContain("Émargement papier");
+      expect(data.changes.manquantes).toHaveLength(1);
+    });
+
+    it("🔴 taux INCONNU : la soupape ne doit PAS geler la ligne sans rien produire", async () => {
+      // Défaut signalé par le lead le 2026-09-05, et il avait raison.
+      //
+      // La soupape laissait passer un taux non mesuré. Trois pas plus loin,
+      // `?? 0` transformait cet INCONNU en présence de 0 %, `classifierPresence`
+      // rendait « aucune », et la branche « aucune » écrivait
+      // `attestationGenereeAt` en sortant SANS produire de pièce. Le cron filtre
+      // sur `attestationGenereeAt: null` : la ligne était gelée pour toujours.
+      //
+      // La soupape existe pour DÉLIVRER une pièce due au stagiaire ; dans son cas
+      // principal elle fabriquait exactement le gel qu'elle devait éviter.
+      //
+      // 🔑 `classifierPresence` est ici l'implémentation RÉELLE, importée du
+      // producteur. Avec le mock par défaut (« complete » quoi qu'il arrive), ce
+      // test serait vert sur le code fautif : il mesurerait le mock, pas la règle.
+      const { classifierPresence: reel } = await vi.importActual<
+        typeof import("@/server/qualiopi/presence/taux")
+      >("@/server/qualiopi/presence/taux");
+      mockClassifier.mockImplementation(reel);
+      mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: null }));
+
+      await expect(
+        genererAttestationPourEnrollment("enroll-taux-inconnu", {
+          motifPreuvesManquantes: "Feuille d'émargement papier retrouvée au dossier client.",
+        }),
+      ).rejects.toThrow(/taux de présence/);
+
+      expect(mockGenDoc, "aucune pièce n'est produite").not.toHaveBeenCalled();
+      expect(
+        mockPrisma.enrollment.updateMany,
+        "le claim est posé : la ligne est gelée et le cron ne la reprendra jamais",
+      ).not.toHaveBeenCalled();
+      expect(
+        mockPrisma.enrollment.update,
+        "`attestationGenereeAt` est écrit sans pièce : c'est le gel",
+      ).not.toHaveBeenCalled();
+    });
+
+    it("un motif TROP COURT ne vaut pas motif", async () => {
+      mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+      await expect(
+        genererAttestationPourEnrollment("enroll-motif-court", {
+          motifPreuvesManquantes: "  ok  ",
+        }),
+      ).rejects.toThrow(/Attestation refusée/);
+      expect(mockGenDoc).not.toHaveBeenCalled();
+    });
+
+    it("la garde vaut AUSSI en régénération forcée — une révocation n'appelle pas un nouveau tirage", async () => {
+      mockPrisma.emargementSignature.count.mockResolvedValue(0);
+      mockPrisma.presenceCreneau.count.mockResolvedValue(0);
+
+      await expect(
+        genererAttestationPourEnrollment("enroll-force", { force: true }),
+      ).rejects.toThrow(/aucune trace d'assiduité vérifiable/);
+      expect(mockGenDoc).not.toHaveBeenCalled();
+    });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// La règle elle-même, sans base
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("preuvesManquantesAttestation", () => {
+  const complet = {
+    tauxPresenceMesure: true,
+    signaturesNonRevoquees: 1,
+    creneauxImportes: 0,
+    evaluationsFinales: 1,
+  };
+
+  it("TÉMOIN POSITIF — ne signale rien sur un dossier complet", () => {
+    expect(preuvesManquantesAttestation(complet)).toEqual([]);
+  });
+
+  it("une signature révoquée ne compte pas : c'est la colonne qui est comptée, pas la ligne", () => {
+    // `signaturesNonRevoquees` porte déjà le filtre `revokedAt: null` côté
+    // requête. Ce que ce test verrouille, c'est qu'un ZÉRO ici suffit à refuser
+    // — sans quoi révoquer toutes les signatures n'empêcherait rien.
+    expect(preuvesManquantesAttestation({ ...complet, signaturesNonRevoquees: 0 })).toHaveLength(1);
+  });
+
+  it("le relevé importé remplace la signature, jamais l'évaluation", () => {
+    expect(
+      preuvesManquantesAttestation({
+        ...complet,
+        signaturesNonRevoquees: 0,
+        creneauxImportes: 2,
+      }),
+    ).toEqual([]);
+    expect(
+      preuvesManquantesAttestation({
+        ...complet,
+        signaturesNonRevoquees: 0,
+        creneauxImportes: 2,
+        evaluationsFinales: 0,
+      }),
+    ).toHaveLength(1);
+  });
+
+  it("ne compte QUE les manques rattrapables — le taux n'en est pas", () => {
+    // 🔴 Ce témoin exigeait 3 manques, taux compris. Le taux a QUITTÉ la
+    // soupape le 2026-09-05 : on peut assumer par écrit l'absence d'une trace
+    // ou d'une évaluation, on ne peut pas attester une assiduité dont on n'a
+    // AUCUNE mesure. Il lève un refus DUR, il ne se liste pas ici.
+    expect(
+      preuvesManquantesAttestation({
+        tauxPresenceMesure: false,
+        signaturesNonRevoquees: 0,
+        creneauxImportes: 0,
+        evaluationsFinales: 0,
+      }),
+    ).toHaveLength(2);
+  });
+
+  it("le taux ne change RIEN à cette liste — mesuré ou non, mêmes manques", () => {
+    // Contre-témoin : si le taux revenait subrepticement dans la liste, ce
+    // témoin le verrait. Sans lui, le précédent passerait aussi avec un taux
+    // qui compte pour un manque et une trace qui n'en compte plus.
+    const sansTaux = preuvesManquantesAttestation({
+      tauxPresenceMesure: false,
+      signaturesNonRevoquees: 0,
+      creneauxImportes: 0,
+      evaluationsFinales: 0,
+    });
+    const avecTaux = preuvesManquantesAttestation({
+      tauxPresenceMesure: true,
+      signaturesNonRevoquees: 0,
+      creneauxImportes: 0,
+      evaluationsFinales: 0,
+    });
+    expect(sansTaux).toEqual(avecTaux);
   });
 });

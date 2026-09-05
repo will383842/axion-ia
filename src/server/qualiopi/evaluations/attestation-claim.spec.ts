@@ -26,6 +26,12 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { findUnique: vi.fn() },
     trainer: { findUnique: vi.fn() },
     activityLog: { create: vi.fn() },
+    // 🔴 2026-09-05 — la garde des PREUVES précède le claim. Ces trois compteurs
+    // ne sont pas du décor : sans eux le service lève avant d'atteindre le
+    // claim, et TOUS les tests de ce fichier mesureraient le mauvais refus.
+    emargementSignature: { count: vi.fn() },
+    presenceCreneau: { count: vi.fn() },
+    evaluationAcquis: { count: vi.fn() },
   },
 }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
@@ -70,6 +76,9 @@ const mockPrisma = prisma as unknown as {
     updateMany: ReturnType<typeof vi.fn>;
   };
   activityLog: { create: ReturnType<typeof vi.fn> };
+  emargementSignature: { count: ReturnType<typeof vi.fn> };
+  presenceCreneau: { count: ReturnType<typeof vi.fn> };
+  evaluationAcquis: { count: ReturnType<typeof vi.fn> };
 };
 const mockGenerate = generateDocument as unknown as ReturnType<typeof vi.fn>;
 
@@ -111,6 +120,10 @@ describe("attestation — claim atomique (J3)", () => {
     mockPrisma.enrollment.update.mockResolvedValue({});
     mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 1 });
     mockPrisma.activityLog.create.mockResolvedValue({});
+    // Dossier probant : ces tests portent sur le CLAIM, pas sur les preuves.
+    mockPrisma.emargementSignature.count.mockResolvedValue(1);
+    mockPrisma.presenceCreneau.count.mockResolvedValue(0);
+    mockPrisma.evaluationAcquis.count.mockResolvedValue(1);
     mockGenerate.mockResolvedValue({
       id: "doc-1",
       numero: "AXI-ATT-2026-001",

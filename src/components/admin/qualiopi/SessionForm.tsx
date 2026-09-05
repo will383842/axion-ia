@@ -22,6 +22,7 @@ import {
   lieuPayload,
   type LieuValues,
 } from "@/components/admin/qualiopi/lieu-values";
+import { montantApresChoixFormation } from "@/components/admin/qualiopi/tarif-catalogue";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -31,6 +32,17 @@ export interface FormationOption {
   id: string;
   titre: string;
   numero: string;
+  /**
+   * 🔴 F5 — tarif catalogue de l'offre rattachée, en CENTIMES, ou `null` quand
+   * l'offre n'a pas de prix ferme (sur devis, fourchette, paliers).
+   *
+   * Résolu côté SERVEUR par `resolveOffrePriceEur` : importer
+   * `pricing-resolver` ici tirerait tout `pricing.ts` dans le bundle admin, et
+   * le gate de poids est bloquant depuis le 2026-08-24. Le `null` n'est pas un
+   * détail : c'est lui qui empêche un écran d'annoncer « Sur devis » tout en
+   * pré-remplissant un montant.
+   */
+  tarifCatalogueHtCents?: number | null;
 }
 
 export interface ClientOption {
@@ -151,7 +163,14 @@ export function SessionForm({
   const [dateFin, setDateFin] = useState("");
   const [modalite, setModalite] = useState<"presentiel" | "distanciel" | "hybride">("presentiel");
   const [nbParticipants, setNbParticipants] = useState("1");
+  // 🔴 F5 — le montant partait de « 0 » et n'était JAMAIS dérivé du tarif de
+  // l'offre. On retapait un prix qui existe déjà en base, donc on le retapait
+  // faux — et le chiffre faux part ensuite sur la convention et la facture.
+  // `montantVientDuCatalogue` distingue « 1 900 que personne n'a regardé » de
+  // « 1 900 que quelqu'un a tapé » : sans lui on ne peut ni écraser sans
+  // risque, ni s'interdire d'écraser. La règle vit dans `tarif-catalogue.ts`.
   const [montantHt, setMontantHt] = useState("0");
+  const [montantVientDuCatalogue, setMontantVientDuCatalogue] = useState(false);
   const [clientId, setClientId] = useState("");
   const [devisId, setDevisId] = useState("");
 
@@ -188,6 +207,15 @@ export function SessionForm({
   if (formationId !== formationDejaArbitree) {
     setFormationDejaArbitree(formationId);
     setTrainerId(formateursHabilites.length === 1 ? (formateursHabilites[0]?.id ?? "") : "");
+    // F5 — même rendez-vous que le formateur : le montant se rejoue au
+    // CHANGEMENT de formation, jamais à chaque rendu (sinon on écraserait une
+    // saisie manuelle en boucle).
+    const suite = montantApresChoixFormation(
+      { montant: montantHt, vientDuCatalogue: montantVientDuCatalogue },
+      formations.find((f) => f.id === formationId)?.tarifCatalogueHtCents ?? null,
+    );
+    setMontantHt(suite.montant);
+    setMontantVientDuCatalogue(suite.vientDuCatalogue);
   }
   const [financementType, setFinancementType] = useState("");
   const [lieu, setLieu] = useState<LieuValues>(LIEU_VALUES_VIDE);
@@ -608,11 +636,28 @@ export function SessionForm({
             min={0}
             step="0.01"
             value={montantHt}
-            onChange={(e) => setMontantHt(e.target.value)}
+            onChange={(e) => {
+              setMontantHt(e.target.value);
+              // Dès la première frappe, la valeur cesse d'appartenir au
+              // catalogue : un changement de formation ne l'écrasera plus.
+              setMontantVientDuCatalogue(false);
+            }}
             disabled={isPending}
             className={inputCls}
             required
           />
+          {/* 🔴 F5 — d'où vient le chiffre. Sans cette ligne, un montant
+              pré-rempli est indiscernable d'un montant saisi, et on signe une
+              convention sur un prix que personne n'a regardé. */}
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {montantVientDuCatalogue
+              ? "Tarif catalogue de l'offre rattachée à cette formation — modifiable."
+              : formationId !== "" &&
+                  (formations.find((f) => f.id === formationId)?.tarifCatalogueHtCents ?? null) ===
+                    null
+                ? "L'offre de cette formation n'a pas de prix ferme (sur devis, fourchette ou paliers) : le montant se saisit ici."
+                : "Montant saisi à la main — il ne sera plus remplacé par le tarif catalogue."}
+          </p>
           <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             TVA appliquée selon le régime configuré (Qualiopi → Configuration → Régime de TVA).
           </p>

@@ -98,8 +98,14 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   joursOpposition: 30,
   joursRetard: 12,
   leaderName: "Camille Dupont",
+  // Ajouté le 2026-09-05 : `piece-exemplaire-signe` (lot A) déclarait ce champ
+  // requis sans valeur d'exemple, et son aperçu s'affichait troué en silence.
+  libellePiece: "la convention de formation",
   libelleQuestionnaire: "Questionnaire de positionnement",
   lienEmargement: "https://exemple.invalid/lien-de-demonstration",
+  // Lien de connexion COMPLET — ADR 0048 §4.1. Le seul e-mail qui le porte est
+  // le rappel de la veille : la convocation, elle, n'en montre que l'hôte.
+  lienVisio: "https://exemple.invalid/lien-de-demonstration",
   lienEnquete: "https://exemple.invalid/lien-de-demonstration",
   lienEspace: "https://exemple.invalid/lien-de-demonstration",
   lienFacture: "https://exemple.invalid/lien-de-demonstration",

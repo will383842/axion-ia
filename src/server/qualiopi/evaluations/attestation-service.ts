@@ -45,6 +45,204 @@ export interface AttestationResult {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// PREUVES — la pièce due au STAGIAIRE n'est plus moins gardée que celle du
+//           FINANCEUR
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 2026-09-05 — L'ASYMÉTRIE QUE CE BLOC FERME.
+ *
+ * Deux pièces attestent la même réalité, et elles n'étaient pas gardées pareil :
+ *
+ * | Pièce                   | Due à           | Ce qu'on exigeait avant ce jour |
+ * |-------------------------|-----------------|---------------------------------|
+ * | `certificat_realisation`| au FINANCEUR    | taux MESURÉ + trace vérifiable  |
+ * | `attestation`           | au STAGIAIRE    | **rien**, par le bouton admin   |
+ *
+ * `genererCertificatRealisationAction` refuse tant que `tauxPresencePct` est
+ * `null` ET tant qu'aucune `EmargementSignature` non révoquée (ou créneau
+ * importé rattaché à son fichier) n'existe. `genererAttestationAction`, elle,
+ * n'exigeait NI l'un NI l'autre : seul le CRON `attestations-auto` posait une
+ * condition, et une seule — l'évaluation finale. Un clic suffisait donc à
+ * émettre, au nom de l'organisme, une pièce qui certifie que la personne « a
+ * suivi la formation et en a satisfait les exigences » sans qu'une heure ait
+ * été constatée ni une compétence notée.
+ *
+ * C'est l'inverse de la hiérarchie attendue : l'attestation de fin de formation
+ * est DUE au stagiaire par l'article L.6353-1, elle lui sert de preuve auprès
+ * d'un employeur, et c'est elle qui documente l'indicateur 11. La garder moins
+ * que la pièce du payeur revient à dire qu'on se protège mieux d'un contrôle
+ * que d'une fausse déclaration faite à la personne formée.
+ *
+ * ## Pourquoi un MOTIF ÉCRIT, et pas un refus sec
+ *
+ * Un refus sec sur une pièce que la loi DOIT au stagiaire créerait un défaut
+ * pire que celui qu'on ferme : une session dont l'émargement a été perdu, ou
+ * reconstitué hors du logiciel, n'obtiendrait plus jamais son attestation, et
+ * l'organisme se retrouverait en manquement pour avoir voulu bien faire.
+ *
+ * On copie donc le patron déjà employé ici pour les régénérations
+ * (`useMotifRectification`) et pour le montant de session : la pièce sort, mais
+ * seulement si un humain ÉCRIT pourquoi il atteste sans les preuves — et cette
+ * phrase part au registre, où l'auditeur la lira.
+ *
+ * ⚠️ Le cas « émargement papier scanné » n'a PAS besoin de ce motif : la
+ * méthode `papier_scanne` écrit bien une `EmargementSignature`
+ * (`EmargementMethode`, schema.prisma). La garde ne le voit pas passer.
+ */
+export interface PreuvesAttestation {
+  /**
+   * Le taux de présence a-t-il été CALCULÉ ? (`tauxPresencePct !== null`)
+   *
+   * ⚠️ Séparé des trois compteurs ci-dessous, et ce n'est pas cosmétique : ce
+   * fait-ci ne passe PAS par la soupape. On peut assumer par écrit l'absence
+   * d'une trace ou d'une évaluation ; on ne peut pas attester une assiduité
+   * dont on n'a aucune mesure — il n'y aurait rien à attester, et la pièce
+   * serait fausse.
+   *
+   * Il ne figure donc pas dans `preuvesManquantesAttestation`, qui ne liste que
+   * les manques RATTRAPABLES par un motif. Le taux, lui, lève
+   * `AttestationTauxNonMesureError`.
+   */
+  readonly tauxPresenceMesure: boolean;
+  /** Signatures d'émargement encore au registre (révoquées exclues). */
+  readonly signaturesNonRevoquees: number;
+  /** Créneaux issus d'un import de plateforme, rattachés à leur fichier archivé. */
+  readonly creneauxImportes: number;
+  /** Évaluations de type `finale` rattachées à l'inscription. */
+  readonly evaluationsFinales: number;
+}
+
+/**
+ * Les preuves qui MANQUENT et qu'un MOTIF ÉCRIT peut couvrir — vide si
+ * l'attestation peut sortir sans rien assumer.
+ *
+ * 🔴 2026-09-05, second passage — LE TAUX N'EST PAS ICI, ET C'EST LE POINT.
+ *
+ * Il y figurait au premier jet, et la soupape le couvrait comme les deux autres.
+ * Le témoin `taux INCONNU : la soupape ne doit PAS geler la ligne` a montré ce
+ * que ça produisait vraiment : la soupape passait, le claim était posé, puis
+ * `?? 0` transformait l'inconnu en présence de 0 %, `classifierPresence` rendait
+ * « aucune », et la branche « aucune » écrivait `attestationGenereeAt` en sortant
+ * SANS PIÈCE. Message observé : `promise resolved "{ resultat: 'aucune',
+ * documentId: null }"`. La ligne était gelée pour toujours — le cron filtre sur
+ * `attestationGenereeAt: null`. La soupape fabriquait, dans son cas principal,
+ * exactement le gel qu'elle devait éviter.
+ *
+ * La racine n'est pas la soupape, c'est la RÈGLE : on peut assumer par écrit
+ * l'absence d'une TRACE ou d'une ÉVALUATION — il reste alors quelque chose à
+ * attester, et la pièce est due au stagiaire. On ne peut pas assumer l'absence
+ * de toute MESURE d'assiduité : il n'y a alors rien à attester, et la pièce
+ * serait fausse. Le taux est donc sorti d'ici et traité en refus DUR, avant le
+ * claim, avec un message qui dit quoi faire.
+ */
+export function preuvesManquantesAttestation(p: PreuvesAttestation): string[] {
+  const manquantes: string[] = [];
+  if (p.signaturesNonRevoquees === 0 && p.creneauxImportes === 0) {
+    manquantes.push(
+      "aucune trace d'assiduité vérifiable : ni signature d'émargement au registre, " +
+        "ni créneau issu d'un relevé de connexion importé",
+    );
+  }
+  if (p.evaluationsFinales === 0) {
+    manquantes.push(
+      "aucune évaluation finale des acquis (la pièce certifierait « en a satisfait " +
+        "les exigences » en affichant « évaluation non réalisée »)",
+    );
+  }
+  return manquantes;
+}
+
+/** Longueur minimale du motif — alignée sur `MOTIF_RECTIFICATION_MIN` de la console. */
+export const MOTIF_PREUVES_MIN = 10;
+
+/**
+ * Refus d'émettre faute de preuves, et faute de motif écrit pour s'en passer.
+ *
+ * Classe dédiée (et non `Error` nu) pour que l'appelant puisse distinguer ce
+ * refus MÉTIER d'une panne — le message, lui, est écrit pour être lu tel quel
+ * par l'admin dans la console : il nomme ce qui manque ET la sortie.
+ */
+export class AttestationPreuvesManquantesError extends Error {
+  readonly manquantes: ReadonlyArray<string>;
+
+  constructor(manquantes: ReadonlyArray<string>) {
+    super(
+      "Attestation refusée — " +
+        manquantes.join(" ; ") +
+        ". L'attestation de fin de formation est due au stagiaire (L.6353-1) : " +
+        "elle peut être émise malgré ces manques, mais seulement en écrivant " +
+        `pourquoi (${MOTIF_PREUVES_MIN} caractères minimum). Ce motif est porté au ` +
+        "registre et lu par l'auditeur.",
+    );
+    this.name = "AttestationPreuvesManquantesError";
+    this.manquantes = manquantes;
+  }
+}
+
+/**
+ * Refus DUR : aucune mesure d'assiduité, donc rien à attester.
+ *
+ * Classe distincte de la précédente, et c'est délibéré — les deux refus n'ont
+ * pas la même issue. L'un se lève avec un motif écrit ; celui-ci ne se lève
+ * qu'en RENSEIGNANT la présence. Une seule classe pour les deux aurait poussé la
+ * console à proposer un champ de motif là où il ne servirait à rien, et un motif
+ * qu'on saisit sans effet est pire qu'un refus : il fait croire qu'on a agi.
+ *
+ * ⚠️ Le message dit quoi faire. Un refus qui ne dit pas comment continuer est un
+ * cul-de-sac, et l'admin finit par chercher un contournement.
+ */
+export class AttestationTauxNonMesureError extends Error {
+  constructor() {
+    super(
+      "Attestation refusée : le taux de présence n'a pas été calculé. Un taux " +
+        "inconnu n'est pas un taux de 0 % — sans aucune mesure d'assiduité, il n'y " +
+        "a rien à attester, et aucun motif ne peut y suppléer. Renseignez la " +
+        "présence (grille d'émargement, ou import du relevé de connexion pour une " +
+        "session à distance), puis relancez la génération.",
+    );
+    this.name = "AttestationTauxNonMesureError";
+  }
+}
+
+/**
+ * Lit les preuves en base. Mêmes requêtes que la garde du certificat de
+ * réalisation (`actions/qualiopi/documents.ts`) — délibérément, pour que les
+ * deux pièces se refusent sur les mêmes faits.
+ */
+async function lirePreuvesAttestation(
+  enrollmentId: string,
+  tauxPresencePct: number | null,
+): Promise<PreuvesAttestation> {
+  const signaturesNonRevoquees = await prisma.emargementSignature.count({
+    where: { enrollmentId, revokedAt: null },
+  });
+  // Comme pour le certificat : le relevé de connexion importé vaut trace, à la
+  // condition d'être rattaché au fichier archivé (`importId`). `source: manuel`
+  // reste exclu — une présence tapée à la main est une déclaration, pas une
+  // preuve. Non interrogé si une signature suffit déjà.
+  const creneauxImportes =
+    signaturesNonRevoquees > 0
+      ? 0
+      : await prisma.presenceCreneau.count({
+          where: {
+            enrollmentId,
+            source: { in: ["import_zoom", "import_teams", "import_meet"] },
+            importId: { not: null },
+          },
+        });
+  const evaluationsFinales = await prisma.evaluationAcquis.count({
+    where: { enrollmentId, type: "finale" },
+  });
+  return {
+    tauxPresenceMesure: tauxPresencePct !== null,
+    signaturesNonRevoquees,
+    creneauxImportes,
+    evaluationsFinales,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // genererAttestationPourEnrollment
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -75,6 +273,20 @@ export async function genererAttestationPourEnrollment(
      * s'est réellement passé. Absent → repli sur la formule d'origine.
      */
     rectificationMotif?: string;
+    /**
+     * Motif ÉCRIT d'émettre l'attestation alors que les preuves manquent.
+     *
+     * 🔴 C'est la soupape de la garde ci-dessus, et la seule. Sans lui, une
+     * inscription sans taux mesuré, sans émargement ou sans évaluation finale
+     * fait lever `AttestationPreuvesManquantesError`. Avec lui, la pièce sort et
+     * la phrase part au registre : l'auditeur voit ce que l'organisme a assumé,
+     * et pourquoi.
+     *
+     * ⚠️ Le cron ne le passe JAMAIS — il pré-filtre sur les mêmes preuves. Un
+     * motif écrit est un acte humain ; un motif que le logiciel se donnerait à
+     * lui-même ne serait qu'un contournement avec un nom rassurant.
+     */
+    motifPreuvesManquantes?: string;
   },
 ): Promise<AttestationResult> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
@@ -160,6 +372,60 @@ export async function genererAttestationPourEnrollment(
       // best-effort
     }
     return { resultat: "aucune", documentId: null };
+  }
+
+  // 2b-bis. 🔴 PREUVES — voir le bloc `PreuvesAttestation` en tête de fichier.
+  //
+  // Placée AVANT le claim de 2c, et ce n'est pas un détail : le claim écrit
+  // `attestationGenereeAt`, et seul `genererOuLiberer` (6bis) sait le relâcher.
+  // Un refus levé après le claim marquerait donc l'inscription « attestée » sans
+  // pièce, et le cron — qui filtre sur `attestationGenereeAt: null` — ne la
+  // reprendrait plus jamais. Refuser AVANT ne laisse aucune trace à nettoyer.
+  //
+  // Elle vaut aussi pour `force` : régénérer une attestation dont l'émargement a
+  // été révoqué entre-temps, ce n'est pas la rectifier, c'est la répéter à faux.
+  // Une révocation se solde par une annulation au registre, pas par un nouveau
+  // tirage.
+  const preuves = await lirePreuvesAttestation(enrollmentId, enrollment.tauxPresencePct);
+
+  // 🔴 Le TAUX d'abord, et par un refus DUR que la soupape ne lève pas.
+  //
+  // Sans lui, la soupape était inerte dans son cas principal — et pire, elle
+  // fabriquait le gel qu'elle devait éviter : on passait la garde, on posait le
+  // claim, puis `tauxPresencePct ?? 0` classait à « aucune », l'inscription
+  // sortait sans pièce avec `attestationGenereeAt` posé, et le cron — qui filtre
+  // sur `null` — ne la reprenait plus jamais. Un taux INCONNU n'est pas un taux
+  // de 0 %, et c'est exactement le défaut de fond que cette garde ferme.
+  //
+  // Placé AVANT le bloc suivant : rien ne sert de demander un motif pour des
+  // manques rattrapables si la mesure elle-même est absente.
+  if (!preuves.tauxPresenceMesure) {
+    throw new AttestationTauxNonMesureError();
+  }
+
+  const manquantes = preuvesManquantesAttestation(preuves);
+  if (manquantes.length > 0) {
+    const motif = opts?.motifPreuvesManquantes?.trim() ?? "";
+    if (motif.length < MOTIF_PREUVES_MIN) {
+      throw new AttestationPreuvesManquantesError(manquantes);
+    }
+    // La sortie est ouverte, mais elle est ÉCRITE. Best-effort comme les autres
+    // journalisations de ce service (pas de `next/headers` : appelable du worker).
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: null,
+          action: "qualiopi.attestation.preuves_manquantes_assumees",
+          targetType: "Enrollment",
+          targetId: enrollmentId,
+          changes: { manquantes, motif, preuves } as never,
+          ipAddress: null,
+          userAgent: null,
+        },
+      });
+    } catch {
+      // best-effort
+    }
   }
 
   // 2c. 🔴 CLAIM ATOMIQUE — la vraie garde d'unicité.

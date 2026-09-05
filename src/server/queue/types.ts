@@ -63,6 +63,11 @@ export type EmailJobName =
   // T15 — emails auto Qualiopi lifecycle stagiaires + alertes internes
   | "qualiopi-convocation"
   | "qualiopi-rappel-j7"
+  // 🔴 Le rappel de la VEILLE au stagiaire (2026-09-05, ADR 0048 §4.3). Il
+  // n'existait pas : `formateur-rappel-j1` et `qualiopi-rappel-j7` oui, celui-ci
+  // non. C'est le SEUL envoi qui porte le lien de visioconférence ENTIER — la
+  // convocation n'en montre que l'hôte, parce qu'elle est archivée.
+  | "qualiopi-rappel-j1"
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
   // Positionnement (ind. 8) — AVANT la formation. Distinct de l'accès portail :

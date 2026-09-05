@@ -57,6 +57,36 @@ function visioHost(url: string | null | undefined): string | null {
   }
 }
 
+/**
+ * Le lien de visioconférence tel qu'on le REMET à un participant — entier,
+ * cliquable. `null` s'il n'y a rien d'utilisable.
+ *
+ * 🔴 ADR 0048 §4.1 (2026-09-05). C'est la fonction JUMELLE de `formatLieu`, et
+ * leur opposition EST la décision : `formatLieu` réduit délibérément l'URL à son
+ * hôte parce qu'il sert des pièces ARCHIVÉES (convention, convocation), souvent
+ * réexpédiées et versées au dossier de contrôle — un lien qui vaut clé d'accès
+ * n'y a pas sa place. Cette réduction reste, elle est juste.
+ *
+ * Le défaut n'était pas la réduction : c'est qu'elle s'appliquait au SEUL canal
+ * qui devait faire exception. Résultat mesuré avant ce correctif — le stagiaire
+ * d'une session à distance recevait la chaîne « meet.google.com » et n'avait
+ * aucune manière d'entrer.
+ *
+ * 🔑 Les deux fonctions partagent `visioHost`, et ce n'est pas une économie :
+ * c'est l'invariant. Une session dont la convocation affiche « meet.google.com »
+ * doit TOUJOURS avoir un lien remettable, et réciproquement. Deux prédicats
+ * séparés divergeraient au premier changement — le motif que ce dépôt paie sans
+ * arrêt.
+ */
+export function lienVisioRemis(l: LieuFields): string | null {
+  const u = clean(l.lieuVisioUrl);
+  if (u === null) return null;
+  // `visioHost` rend `null` sur une chaîne qui n'est pas une URL absolue (« à
+  // venir », « lien Teams à suivre », un hôte sans schéma). Une telle valeur
+  // n'est PAS un lien de connexion : la remettre ferait cliquer dans le vide.
+  return visioHost(u) !== null ? u : null;
+}
+
 /** Vrai dès qu'au moins un champ de lieu est renseigné (pilote le score de complétude). */
 export function isLieuRenseigne(l: LieuFields): boolean {
   return (
