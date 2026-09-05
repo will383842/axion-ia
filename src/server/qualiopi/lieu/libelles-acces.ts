@@ -142,7 +142,12 @@ export function incoherenceModaliteLieu(
     // contredire : n'importe quel `lieuType` est recevable.
     return null;
   }
-  if (modalite === "distanciel" && lieuType !== "distanciel" && lieuType !== "" && lieuType != null) {
+  if (
+    modalite === "distanciel" &&
+    lieuType !== "distanciel" &&
+    lieuType !== "" &&
+    lieuType != null
+  ) {
     return (
       "La session est déclarée « à distance » mais son lieu est renseigné comme un lieu physique. " +
       "La convention imprimerait une adresse pour une formation qui se tient en visio. " +

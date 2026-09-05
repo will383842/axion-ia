@@ -35,10 +35,10 @@ Cet ADR sépare donc deux questions qu'on confondait, et n'en tranche qu'une par
 
 ## 1. Les deux couches, et pourquoi elles ne se paient pas au même moment
 
-| Couche | Ce qu'elle résout | Ce qu'elle coûte | Quand |
-| --- | --- | --- | --- |
-| **A — la porte d'entrée** | le participant reçoit de quoi entrer, en sécurité, et l'organisateur sait avant la séance qu'il manque quelque chose | **rien** | maintenant |
-| **B — la preuve d'assiduité** | le relevé de connexion horodaté, par personne, récupéré automatiquement | un abonnement | au premier client à distance |
+| Couche                        | Ce qu'elle résout                                                                                                    | Ce qu'elle coûte | Quand                        |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------- | ---------------------------- |
+| **A — la porte d'entrée**     | le participant reçoit de quoi entrer, en sécurité, et l'organisateur sait avant la séance qu'il manque quelque chose | **rien**         | maintenant                   |
+| **B — la preuve d'assiduité** | le relevé de connexion horodaté, par personne, récupéré automatiquement                                              | un abonnement    | au premier client à distance |
 
 La couche A ne dépend d'aucun tiers : elle ne fait que **cesser de retenir** une
 information qu'on possède déjà, et la remettre par le bon canal. Elle est donc
@@ -71,7 +71,7 @@ Il est pourtant **écarté, et pour un motif dur** : le relevé de présence de 
 par les API d'administration de **Google Workspace**. Le compte utilisé est
 `williamsjullin@gmail.com` — un compte Google **personnel**, sans domaine Workspace et
 sans console d'administration. La couche B est donc inatteignable sans acheter
-Workspace *en plus*, c'est-à-dire sans changer d'adresse de travail. Le candidat qui
+Workspace _en plus_, c'est-à-dire sans changer d'adresse de travail. Le candidat qui
 paraissait gratuit est en fait le plus coûteux : il se paie en migration.
 
 ### Pourquoi pas Microsoft Teams

@@ -100,7 +100,7 @@ describe("convention_tripartite_manquante — la subrogation perdue continue de 
   it("🔴 la forme d'avant correctif ne doit pas revenir", () => {
     expect(
       corps(),
-      "`statut: \"planifiee\"` seul rendrait à nouveau l'alerte muette au démarrage.",
+      '`statut: "planifiee"` seul rendrait à nouveau l\'alerte muette au démarrage.',
     ).not.toContain('statut: "planifiee",');
   });
 

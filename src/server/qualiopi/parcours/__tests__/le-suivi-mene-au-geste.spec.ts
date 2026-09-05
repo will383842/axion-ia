@@ -33,8 +33,7 @@ import { resolve } from "node:path";
 const RACINE = resolve(__dirname, "../../../../..");
 
 const CHEMIN_PARCOURS = "src/server/qualiopi/parcours/session-parcours.ts";
-const CHEMIN_PAGE =
-  "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/sessions/[id]/page.tsx";
+const CHEMIN_PAGE = "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/sessions/[id]/page.tsx";
 
 function lire(chemin: string): string {
   return readFileSync(resolve(RACINE, chemin), "utf8");

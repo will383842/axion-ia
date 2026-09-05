@@ -224,9 +224,7 @@ export async function transmettreExemplaireSigne(
           .map((s) => s.signataireNom),
       },
       {
-        attachments: [
-          { filename: rendu.nomFichier, r2Key, contentType: "application/pdf" },
-        ],
+        attachments: [{ filename: rendu.nomFichier, r2Key, contentType: "application/pdf" }],
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,

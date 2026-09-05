@@ -13,16 +13,16 @@ formateur envoie des messages incohérents** — plus 10 frictions d'écran.
 
 ## 1. Les objets réels créés en production
 
-| Objet             | Identifiant                    | Notes                                                                                                                             |
-| ----------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| Client            | `AXI-CLI-001` — SCI Invest Sun | id `eeaa0351-6846-4307-acaa-b7b73239a724`                                                                                         |
-| Contact client    | Simone Blanc, Représentante    | `la boîte personnelle de la cliente (masquée — dépôt PUBLIC)`                                                                                                           |
+| Objet             | Identifiant                    | Notes                                                                                                                                                                 |
+| ----------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Client            | `AXI-CLI-001` — SCI Invest Sun | id `eeaa0351-6846-4307-acaa-b7b73239a724`                                                                                                                             |
+| Contact client    | Simone Blanc, Représentante    | `la boîte personnelle de la cliente (masquée — dépôt PUBLIC)`                                                                                                         |
 | Stagiaire         | Simone Blanc                   | id `068304cd-8948-4e9b-83a6-8e79ca223b09` · `la boîte personnelle de la stagiaire (masquée — dépôt PUBLIC)` · 2 consentements cochés (autorisation explicite de Will) |
-| Session           | `AXI-SESS-2026-001`            | id `0d4e0c8b-3aaa-4ec9-a8ff-d830f8a68613` · AXI-FORM-2026-038 « journée complète » · **05/09/2026 09:00 → 17:00**                 |
-| Formateur         | Williams Jullin                | id `4f0abec3-a1ee-4640-9eca-ea4f5a116e1c`                                                                                         |
-| Convention        | `AXI-DOC-2026-030`             | doc id `1c9a1d29-aab6-459f-b475-2867bbbab91e` — **à RÉGÉNÉRER** (voir §2)                                                         |
-| Journées          | 1 journée, 2 créneaux          | horaires confirmés                                                                                                                |
-| Lien d'émargement | émis                           | valable jusqu'au 07/09/2026 17:00                                                                                                 |
+| Session           | `AXI-SESS-2026-001`            | id `0d4e0c8b-3aaa-4ec9-a8ff-d830f8a68613` · AXI-FORM-2026-038 « journée complète » · **05/09/2026 09:00 → 17:00**                                                     |
+| Formateur         | Williams Jullin                | id `4f0abec3-a1ee-4640-9eca-ea4f5a116e1c`                                                                                                                             |
+| Convention        | `AXI-DOC-2026-030`             | doc id `1c9a1d29-aab6-459f-b475-2867bbbab91e` — **à RÉGÉNÉRER** (voir §2)                                                                                             |
+| Journées          | 1 journée, 2 créneaux          | horaires confirmés                                                                                                                                                    |
+| Lien d'émargement | émis                           | valable jusqu'au 07/09/2026 17:00                                                                                                                                     |
 
 ## 2. Données à corriger — consignes de Will du 2026-09-04 au soir
 
@@ -35,10 +35,10 @@ formateur envoie des messages incohérents** — plus 10 frictions d'écran.
 
 ## 3. Ce qui est PARTI pour de vrai (journal « E-mails envoyés »)
 
-| Heure UTC | Gabarit                      | Destinataire              | Statut |
-| --------- | ---------------------------- | ------------------------- | ------ |
-| 16:30     | `formateur-mission-proposee` | williamsjullin@gmail.com  | Envoyé |
-| 16:40     | `formateur-rappel-j1`        | williamsjullin@gmail.com  | Envoyé |
+| Heure UTC | Gabarit                      | Destinataire                                                  | Statut |
+| --------- | ---------------------------- | ------------------------------------------------------------- | ------ |
+| 16:30     | `formateur-mission-proposee` | williamsjullin@gmail.com                                      | Envoyé |
+| 16:40     | `formateur-rappel-j1`        | williamsjullin@gmail.com                                      | Envoyé |
 | 17:00     | `qualiopi-convocation`       | la boîte personnelle de la stagiaire (masquée — dépôt PUBLIC) | Envoyé |
 
 **Rien n'est parti à `la boîte personnelle de la cliente (masquée — dépôt PUBLIC)`** — normal, la convention n'a pas
@@ -375,12 +375,12 @@ convocation stagiaire 17:00).
 
 ## 14. ✅ DOSSIER DE LA SESSION DU 05/09 — BOUCLÉ le 04/09 à 20h51 UTC
 
-| Heure UTC | Envoi                         | Destinataire                  | Statut     |
-| --------- | ----------------------------- | ----------------------------- | ---------- |
-| 16:30     | `formateur-mission-proposee`  | williamsjullin@gmail.com      | Envoyé     |
-| 16:40     | `formateur-rappel-j1`         | williamsjullin@gmail.com      | Envoyé     |
+| Heure UTC | Envoi                         | Destinataire                                                      | Statut     |
+| --------- | ----------------------------- | ----------------------------------------------------------------- | ---------- |
+| 16:30     | `formateur-mission-proposee`  | williamsjullin@gmail.com                                          | Envoyé     |
+| 16:40     | `formateur-rappel-j1`         | williamsjullin@gmail.com                                          | Envoyé     |
 | 17:00     | `qualiopi-convocation`        | la boîte personnelle de la stagiaire (masquée — dépôt PUBLIC)     | Envoyé     |
-| **20:47** | **`convention-envoi`**        | **la boîte personnelle de la cliente (masquée — dépôt PUBLIC)**     | **Envoyé** |
+| **20:47** | **`convention-envoi`**        | **la boîte personnelle de la cliente (masquée — dépôt PUBLIC)**   | **Envoyé** |
 | **20:51** | **`qualiopi-positionnement`** | **la boîte personnelle de la stagiaire (masquée — dépôt PUBLIC)** | **Envoyé** |
 
 **Convention retenue : `AXI-DOC-2026-039`**, vérifiée pièce en main —

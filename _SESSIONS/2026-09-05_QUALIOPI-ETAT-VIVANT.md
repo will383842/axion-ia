@@ -66,10 +66,10 @@ L'attestation leur est due par la loi.
 
 ## 0bis. REPRISE du 2026-09-05, 07:30 **heure locale** — ce qui a changé depuis
 
-⚠️ *Correction : la première rédaction de ce titre disait « 07:30 UTC ». Faux —
+⚠️ _Correction : la première rédaction de ce titre disait « 07:30 UTC ». Faux —
 l'horloge de ce poste est en **UTC+2**. 07:30 local = 05:30 UTC. C'est le piège
 déjà consigné en mémoire : un horodatage GitHub est en UTC, l'horloge de la
-machine ne l'est pas, et les deux ne se comparent pas sans conversion.*
+machine ne l'est pas, et les deux ne se comparent pas sans conversion._
 
 - ✅ **Les deux contrôles bloquants du §4 sont PASSÉS**, bannières lues :
   - `pnpm typecheck` → `> tsc --noEmit`, exit 0, sur l'arbre complet
@@ -89,12 +89,12 @@ machine ne l'est pas, et les deux ne se comparent pas sans conversion.*
 
 ### Mesures prises à 08:35 heure locale (06:35 UTC)
 
-| | |
-|---|---|
-| `origin/main` | **`0452729b5`** — a bougé, ma base était `f62368221` |
-| **Prod sert** | `0452729b5` ✅ vérifié : `curl -sI https://axion-ia.com/fr` |
-| Écart de ma branche | **2 commits de retard, 11 d'avance**, **15 fichiers** — **aucun dans la zone Qualiopi**. La fusion sera propre. |
-| Build mesuré (run `33947545789`) | `Build & push` **50 min 09 s** · `Trigger Coolify deploy` **3 min 40 s** · total **53 min 49 s** |
+|                                  |                                                                                                                 |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `origin/main`                    | **`0452729b5`** — a bougé, ma base était `f62368221`                                                            |
+| **Prod sert**                    | `0452729b5` ✅ vérifié : `curl -sI https://axion-ia.com/fr`                                                     |
+| Écart de ma branche              | **2 commits de retard, 11 d'avance**, **15 fichiers** — **aucun dans la zone Qualiopi**. La fusion sera propre. |
+| Build mesuré (run `33947545789`) | `Build & push` **50 min 09 s** · `Trigger Coolify deploy` **3 min 40 s** · total **53 min 49 s**                |
 
 🔑 **Le run affichait encore `in_progress` alors que la prod servait déjà le
 nouveau SHA.** Il restait `Warm edge cache` et `Lighthouse CI post-deploy`, tous
@@ -116,8 +116,8 @@ depuis ~07:35 **heure locale** (05:35 UTC), pour #987 puis #993. Elle a mesuré 
 
 ## 0. Où on en est en une phrase
 
-**#991 fusionnée et ATTERRIE en production.** Le défaut le plus grave — *rien ne
-part après la contresignature* — est **corrigé, gardé et commité**. Le socle du
+**#991 fusionnée et ATTERRIE en production.** Le défaut le plus grave — _rien ne
+part après la contresignature_ — est **corrigé, gardé et commité**. Le socle du
 lot 3 est posé côté serveur. Il reste le **câblage UI** du lot 3, puis le
 **distanciel** (lot 2), les **alertes**, la **facturation** et les **commissions**.
 
@@ -125,14 +125,14 @@ lot 3 est posé côté serveur. Il reste le **câblage UI** du lot 3, puis le
 
 ## 1. L'état mesuré, pas déduit
 
-| | |
-|---|---|
-| `origin/main` | **`f62368221`** — #991 fusionnée le 2026-09-05 à 03:57:28 UTC |
-| **Production sert** | `f62368221` ✅ **vérifié par moi** : `curl -sI https://axion-ia.com/fr \| grep x-axion-build-sha` |
-| Jobs du run 33943260861 | `Build & push` ✅ · `Trigger Coolify deploy` ✅ · `IndexNow` ✅ · `Telegram` ✅ · `lhci` ⏳ · `Warm edge cache` ⏳ |
-| **File de fusion** | **LIBRE pour le build.** Fusionner maintenant tuerait seulement le job `lhci` post-deploy (25-26 min), pas le déploiement. |
-| Ma branche | `qualiopi/session-editable-et-conventions` — **poussée sur `origin`**, 5 commits, arbre PROPRE |
-| Autre session | `axion-ia-84` (recrutement, arbre `wt-recrutement`). Ne réserve rien, ne fusionne rien. Prévenue. |
+|                         |                                                                                                                            |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `origin/main`           | **`f62368221`** — #991 fusionnée le 2026-09-05 à 03:57:28 UTC                                                              |
+| **Production sert**     | `f62368221` ✅ **vérifié par moi** : `curl -sI https://axion-ia.com/fr \| grep x-axion-build-sha`                          |
+| Jobs du run 33943260861 | `Build & push` ✅ · `Trigger Coolify deploy` ✅ · `IndexNow` ✅ · `Telegram` ✅ · `lhci` ⏳ · `Warm edge cache` ⏳         |
+| **File de fusion**      | **LIBRE pour le build.** Fusionner maintenant tuerait seulement le job `lhci` post-deploy (25-26 min), pas le déploiement. |
+| Ma branche              | `qualiopi/session-editable-et-conventions` — **poussée sur `origin`**, 5 commits, arbre PROPRE                             |
+| Autre session           | `axion-ia-84` (recrutement, arbre `wt-recrutement`). Ne réserve rien, ne fusionne rien. Prévenue.                          |
 
 ⚠️ `lhci` est **post-atterrissage** : ne pas l'attendre pour reprendre la main.
 C'est écrit dans `AGENTS.md`, § durée du build.
@@ -160,13 +160,13 @@ Identifiants : client `AXI-CLI-001` SCI Invest Sun
 
 ## 3. Les 5 commits déjà écrits (branche poussée)
 
-| SHA | Objet | État |
-|---|---|---|
-| `e4d01fd5b` | `docs` — sauver du temporaire les 2 audits que la coupure a failli emporter | ✅ |
-| `ced63a85b` | `fix` — le suivi de dossier menait à un bloc qui n'existe pas (ancres) | ✅ vu rougir |
-| `f12917ced` | 🔴 `fix` — **la boucle contractuelle se referme** (lot A) | ✅ vu rougir ×3 |
-| `43713542e` | `feat` — le filet `exemplaire_signe_non_transmis` | ✅ garde a rougi seule |
-| `34bf4840b` | `feat` — socle lot 3 : montant, modalité, mots dérivés | ⚠️ **serveur seul, UI non câblée** |
+| SHA         | Objet                                                                       | État                               |
+| ----------- | --------------------------------------------------------------------------- | ---------------------------------- |
+| `e4d01fd5b` | `docs` — sauver du temporaire les 2 audits que la coupure a failli emporter | ✅                                 |
+| `ced63a85b` | `fix` — le suivi de dossier menait à un bloc qui n'existe pas (ancres)      | ✅ vu rougir                       |
+| `f12917ced` | 🔴 `fix` — **la boucle contractuelle se referme** (lot A)                   | ✅ vu rougir ×3                    |
+| `43713542e` | `feat` — le filet `exemplaire_signe_non_transmis`                           | ✅ garde a rougi seule             |
+| `34bf4840b` | `feat` — socle lot 3 : montant, modalité, mots dérivés                      | ⚠️ **serveur seul, UI non câblée** |
 
 ### Ce que `f12917ced` a réellement fait
 
@@ -185,15 +185,15 @@ Identifiants : client `AXI-CLI-001` SCI Invest Sun
 
 ## 4. Vérifications faites, et leur verdict EXACT
 
-| Contrôle | Verdict |
-|---|---|
-| `le-suivi-mene-au-geste.spec.ts` | 4/4 · **vu rougir** (ancre `formateur-inexistant` → 1 failed) |
-| `libelles-acces.spec.ts` | 18/18 · a rougi d'elle-même sur « salle d'attente » (garde trop large, corrigée) |
+| Contrôle                          | Verdict                                                                                                  |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `le-suivi-mene-au-geste.spec.ts`  | 4/4 · **vu rougir** (ancre `formateur-inexistant` → 1 failed)                                            |
+| `libelles-acces.spec.ts`          | 18/18 · a rougi d'elle-même sur « salle d'attente » (garde trop large, corrigée)                         |
 | `transmission-exemplaire.spec.ts` | 19/19 · **vu rougir ×3** (organisme non exclu · revendication non conditionnelle · `relacher()` retirés) |
-| `catalogue.spec.ts` | 30/30 · **a rougi seule** à l'ajout du code (liste explicite) |
-| `pnpm typecheck` | ✅ **bannière lue**, exit 0, **sur l'arbre complet des 6 commits** |
-| `pnpm lint` | ✅ **0 erreur**, 73 warnings tous préexistants (fichiers de test) |
-| `pnpm qualiopi:isolation-check` | ✅ **bannière lue** — `11649 fichiers scannés, 0 violation, 63 consommateurs assumés` |
+| `catalogue.spec.ts`               | 30/30 · **a rougi seule** à l'ajout du code (liste explicite)                                            |
+| `pnpm typecheck`                  | ✅ **bannière lue**, exit 0, **sur l'arbre complet des 6 commits**                                       |
+| `pnpm lint`                       | ✅ **0 erreur**, 73 warnings tous préexistants (fichiers de test)                                        |
+| `pnpm qualiopi:isolation-check`   | ✅ **bannière lue** — `11649 fichiers scannés, 0 violation, 63 consommateurs assumés`                    |
 
 ### ⛔ CE QUI RESTE À VÉRIFIER
 
@@ -211,16 +211,16 @@ Identifiants : client `AXI-CLI-001` SCI Invest Sun
 
 ## 5. LE PLAN — ce qui reste, dans l'ordre
 
-| Lot | Objet | État |
-|---|---|---|
-| 0 | Fusionner #991 + vérifier l'atterrissage | ✅ **FAIT ET VÉRIFIÉ** |
-| A | 🔴 Rien ne part après la contresignature | ✅ **FAIT** |
-| B | Lot 3 — session éditable | 🟡 **socle fait, UI à câbler** |
-| C | Lot 2 — distanciel de bout en bout | ⏳ carte du terrain FAITE (§7) |
-| D | Moteur d'alertes — 11 trous restants | ⏳ 1/12 fait |
-| E | Attestation · certificat · facture · échéancier | ⏳ carte du terrain FAITE (§8) |
-| F | Formateur défaillant · commissions | ⏳ audit à REFAIRE (sortie vide) |
-| G | Vérification de bout en bout | ⏳ |
+| Lot | Objet                                           | État                             |
+| --- | ----------------------------------------------- | -------------------------------- |
+| 0   | Fusionner #991 + vérifier l'atterrissage        | ✅ **FAIT ET VÉRIFIÉ**           |
+| A   | 🔴 Rien ne part après la contresignature        | ✅ **FAIT**                      |
+| B   | Lot 3 — session éditable                        | 🟡 **socle fait, UI à câbler**   |
+| C   | Lot 2 — distanciel de bout en bout              | ⏳ carte du terrain FAITE (§7)   |
+| D   | Moteur d'alertes — 11 trous restants            | ⏳ 1/12 fait                     |
+| E   | Attestation · certificat · facture · échéancier | ⏳ carte du terrain FAITE (§8)   |
+| F   | Formateur défaillant · commissions              | ⏳ audit à REFAIRE (sortie vide) |
+| G   | Vérification de bout en bout                    | ⏳                               |
 
 ### Lot B — ✅ LES 5 PREMIERS POINTS SONT LIVRÉS (`01a42897c`)
 
@@ -274,14 +274,14 @@ Le détail de ce qui a été corrigé :
 
 ## 6. Sources déjà payées — NE PAS repayer
 
-| Source | Où | Contenu |
-|---|---|---|
-| Audit **moteur d'alertes** | `_AUDIT/AUDIT-MOTEUR-ALERTES-2026-09-04.md` | **COMPLET** — 80 codes, 54 règles, **12 trous**, 3 codes émis hors catalogue |
-| Frictions UI + distanciel | `_AUDIT/FRICTIONS-UI-ET-DISTANCIEL-2026-09-04.md` | F1→F10, D1→D5 |
-| Recette réelle | `_SESSIONS/2026-09-04_RECETTE-REELLE-DISTANCIEL-FORMATEUR.md` | sur `main` |
-| Carte **distanciel** | §7 ci-dessous | rendue par agent, 2026-09-05 |
-| Carte **facture/attestation** | §8 ci-dessous | rendue par agent, 2026-09-05 |
-| Audit **pilotage formateur** | ❌ **sortie de 0 octet** | l'agent est mort avant d'écrire — **à refaire** |
+| Source                        | Où                                                            | Contenu                                                                      |
+| ----------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Audit **moteur d'alertes**    | `_AUDIT/AUDIT-MOTEUR-ALERTES-2026-09-04.md`                   | **COMPLET** — 80 codes, 54 règles, **12 trous**, 3 codes émis hors catalogue |
+| Frictions UI + distanciel     | `_AUDIT/FRICTIONS-UI-ET-DISTANCIEL-2026-09-04.md`             | F1→F10, D1→D5                                                                |
+| Recette réelle                | `_SESSIONS/2026-09-04_RECETTE-REELLE-DISTANCIEL-FORMATEUR.md` | sur `main`                                                                   |
+| Carte **distanciel**          | §7 ci-dessous                                                 | rendue par agent, 2026-09-05                                                 |
+| Carte **facture/attestation** | §8 ci-dessous                                                 | rendue par agent, 2026-09-05                                                 |
+| Audit **pilotage formateur**  | ❌ **sortie de 0 octet**                                      | l'agent est mort avant d'écrire — **à refaire**                              |
 
 ---
 
@@ -292,16 +292,16 @@ src/lib/zoom*` → rien. Aucun `ZOOM_*` ni `GRAPH_*`. Ce qui existe : le **parsi
 CSV a posteriori** (`src/server/qualiopi/presence/parse-{zoom,teams,meet}.ts`) et
 l'enum `PlateformeDistanciel { zoom teams meet autre }` (`schema.prisma:6549`).
 
-| Fait | Preuve |
-|---|---|
-| `lieuVisioUrl` = **URL nue**, `@db.Text`, sans expiration ni révocation | `schema.prisma:5382` |
-| Le stagiaire ne reçoit **JAMAIS** l'URL — seulement l'hôte | `notifications-service.ts:218` et `:391` via `formatLieu` |
-| Le formateur, LUI, la reçoit en clair et cliquable | `_infos-pratiques-formateur.tsx:62-64` |
-| Le portail stagiaire montre **titre, état, dates. Rien d'autre** | `portail/mon-espace/formations/page.tsx:64-89` |
-| **Aucun rappel J-1 stagiaire** (il n'existe que côté formateur) | `queues.ts:1622-1624` |
-| L'inscription est **1 action = 1 stagiaire**, aucun `createMany` | `enrollments.ts:71-116` |
-| `prisma.trainee.findMany` **sans `take`** charge TOUTE la table | `sessions/[id]/page.tsx:387` |
-| `nbParticipantsPrevus` n'est **opposé à rien** | aucune règle ne le lit |
+| Fait                                                                    | Preuve                                                    |
+| ----------------------------------------------------------------------- | --------------------------------------------------------- |
+| `lieuVisioUrl` = **URL nue**, `@db.Text`, sans expiration ni révocation | `schema.prisma:5382`                                      |
+| Le stagiaire ne reçoit **JAMAIS** l'URL — seulement l'hôte              | `notifications-service.ts:218` et `:391` via `formatLieu` |
+| Le formateur, LUI, la reçoit en clair et cliquable                      | `_infos-pratiques-formateur.tsx:62-64`                    |
+| Le portail stagiaire montre **titre, état, dates. Rien d'autre**        | `portail/mon-espace/formations/page.tsx:64-89`            |
+| **Aucun rappel J-1 stagiaire** (il n'existe que côté formateur)         | `queues.ts:1622-1624`                                     |
+| L'inscription est **1 action = 1 stagiaire**, aucun `createMany`        | `enrollments.ts:71-116`                                   |
+| `prisma.trainee.findMany` **sans `take`** charge TOUTE la table         | `sessions/[id]/page.tsx:387`                              |
+| `nbParticipantsPrevus` n'est **opposé à rien**                          | aucune règle ne le lit                                    |
 
 **Les briques à réutiliser, elles existent déjà :**
 
@@ -321,8 +321,8 @@ l'enum `PlateformeDistanciel { zoom teams meet autre }` (`schema.prisma:6549`).
   échec (jamais `return false` : le correctif du 2026-08-24 avait constaté que le
   premier échec privait les 9 autres).
 - **Patron d'intégration tierce** : `src/lib/docuseal.ts` (711 l.) — le seul
-  module qui traite complètement *client HTTP / secret / mode dégradé / webhook
-  signé*. `isDocusealConfigured()` `:41`, `AbortSignal.timeout(15_000)` `:227`,
+  module qui traite complètement _client HTTP / secret / mode dégradé / webhook
+  signé_. `isDocusealConfigured()` `:41`, `AbortSignal.timeout(15_000)` `:227`,
   classe d'erreur avec `statusCode` `:240`.
 - **Variable d'env OPTIONNELLE** : `z.string().optional()` dans `src/env.ts`,
   remappée dans `runtimeEnv` (`:552+`), et **le refus dur vit dans le MODULE**,
@@ -377,7 +377,7 @@ droit : **Zoom est le chemin OUTILLÉ, jamais le chemin OBLIGATOIRE.**
   `genererAttestationAction` n'exige **ni évaluation finale ni émargement** ;
   seul le CRON exige `evaluations: { some: { type: "finale" } }`
   (`crons-worker.ts:427-429`). Le certificat, lui, exige `tauxPresencePct !==
-  null` **et** une `EmargementSignature` non révoquée (`documents.ts:653-658`,
+null` **et** une `EmargementSignature` non révoquée (`documents.ts:653-658`,
   `:686+`).
 - Libellé de `attestation` = « Attestation **de réalisation** »
   (`libelles-type-document.ts:63`) — c'est le vocabulaire du certificat.
@@ -462,6 +462,7 @@ Par priorité, tels que l'audit les a rendus :
    tâches), soit les montants quittent les pages publiques en attendant.
    ⚠️ Le constat est **borné à ce dépôt** : `axion-partners` n'a pas été ouvert
    par l'auditeur.
+
 5. **Payer un formateur sur une session que le client n'a pas réglée** (audit D2).
    ⚠️ Volontairement NON bloqué, et c'est un arbitrage à connaître : ce qui est dû
    à un sous-traitant l'est au titre de SON contrat, pas de la trésorerie de

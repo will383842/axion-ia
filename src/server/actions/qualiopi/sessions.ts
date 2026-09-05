@@ -676,9 +676,7 @@ export async function setSessionLieuAction(
  */
 export async function setSessionMontantAction(
   input: z.infer<typeof setSessionMontantSchema>,
-): Promise<
-  ActionResult<{ id: string; piecesFinancieres: number; motifRequis: boolean }>
-> {
+): Promise<ActionResult<{ id: string; piecesFinancieres: number; motifRequis: boolean }>> {
   const session = await requireAdminWrite();
   const parsed = setSessionMontantSchema.safeParse(input);
   if (!parsed.success) {
