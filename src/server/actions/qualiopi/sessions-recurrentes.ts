@@ -702,6 +702,15 @@ export async function reportSessionAction(
               attestationResultat: null,
               attestationDocumentId: null,
               attestationGenereeAt: null,
+              // Ajoutée le 2026-09-05 avec la colonne elle-même. La garde
+              // `un-report-ne-transporte-pas-le-deroule.spec.ts` l'a exigée
+              // AVANT que quiconque y pense : elle découvre les colonnes de
+              // déroulé toute seule, au lieu d'en tenir une liste. Sans cette
+              // ligne, la nouvelle session aurait cru le stagiaire déjà prévenu
+              // d'une attestation qui appartenait à l'ANCIENNE — et l'alerte
+              // « Attestation non parvenue » se serait tue sur le seul dossier
+              // qui la mérite.
+              attestationNotifieeAt: null,
             },
           });
         } catch (enrollErr) {

@@ -188,6 +188,13 @@ describe("reportSessionAction — 1/4 stagiaires", () => {
       attestationResultat: null,
       attestationDocumentId: null,
       attestationGenereeAt: null,
+      // Ajoutée le 2026-09-05 avec la colonne. ⚠️ Cette liste est ÉCRITE À LA
+      // MAIN et périme donc à chaque colonne de déroulé nouvelle — c'est
+      // exactement ce qui vient d'arriver. Elle reste utile (elle vérifie la
+      // FORME exacte de l'appel), mais ce n'est PAS elle qui garde la règle :
+      // `un-report-ne-transporte-pas-le-deroule.spec.ts` découvre les colonnes
+      // tout seul et a exigé celle-ci avant que quiconque y pense.
+      attestationNotifieeAt: null,
     };
 
     const r = await reportSessionAction(INPUT);
