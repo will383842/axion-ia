@@ -22,10 +22,8 @@
 
 import { test, expect, type Page } from "@playwright/test";
 
-import { loginAsAdmin, baseSemeeAttendue, ADMIN_PREFIX } from "../fixtures/admin-auth";
-
-/** Borne de navigation : sous `next dev`, un écran admin se COMPILE au premier appel. */
-const NAVIGATION = { waitUntil: "domcontentloaded", timeout: 120_000 } as const;
+import { loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
+import { ouvrirUneFicheCandidature } from "../fixtures/fiche-candidature";
 
 async function ouvrirLaConsole(page: Page): Promise<boolean> {
   try {
@@ -42,34 +40,6 @@ async function ouvrirLaConsole(page: Page): Promise<boolean> {
   }
 }
 
-/**
- * 🔴 LE CHOIX DE LA FICHE EST UN CHOIX D'ISOLATION.
- *
- * Les scénarios qui CRÉENT un entretien prennent la PREMIÈRE fiche ; celui qui
- * vérifie l'état vide prend la DERNIÈRE. Sans cette séparation, « aucun
- * entretien » échoue dès qu'un autre scénario en a créé un — y compris lors
- * d'une exécution PRÉCÉDENTE, puisque la base garde ce qu'on y met.
- *
- * Mesuré deux fois aujourd'hui, sur ce fichier et sur celui du journal : le test
- * passait au premier lancement et échouait au second, produit inchangé. Un test
- * qui dépend de ce qu'un autre a laissé derrière lui mesure l'ordre
- * d'exécution, pas le produit.
- */
-async function ouvrirUneFiche(
-  page: Page,
-  position: "premiere" | "derniere" = "premiere",
-): Promise<void> {
-  await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
-  const liens = page.getByRole("link", { name: /détail/i });
-  // `count()` est instantané et ne voit pas une table streamée — leçon déjà
-  // payée deux fois dans ce dépôt.
-  await liens.first().waitFor({ state: "visible", timeout: 60_000 });
-  const cible = position === "premiere" ? liens.first() : liens.last();
-  const adresse = await cible.getAttribute("href");
-  expect(adresse, "aucune fiche ouvrable — le socle de recette a-t-il été joué ?").toBeTruthy();
-  await page.goto(adresse!, NAVIGATION);
-}
-
 /** Date locale au format attendu par `datetime-local`, décalée de `jours`. */
 function dansNJours(jours: number): string {
   const d = new Date(Date.now() + jours * 86_400_000);
@@ -83,7 +53,7 @@ test.describe("recrutement — les entretiens", () => {
   test("la fiche porte un bloc entretiens, vide et qui le dit", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
     // La DERNIÈRE fiche : aucun autre scénario n'y crée d'entretien.
-    await ouvrirUneFiche(page, "derniere");
+    await ouvrirUneFicheCandidature(page, "derniere");
 
     await expect(page.getByRole("heading", { name: /^entretiens$/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /planifier un entretien/i })).toBeVisible();
@@ -95,7 +65,7 @@ test.describe("recrutement — les entretiens", () => {
 
   test("planifier un entretien le fait apparaître", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     await page.getByRole("button", { name: /planifier un entretien/i }).click();
     // 🔴 Correspondance EXACTE : `/format/i` attrapait aussi une région masquée
@@ -120,7 +90,7 @@ test.describe("recrutement — les entretiens", () => {
 
   test("🔴 le débriefing refuse de partir sans compte rendu ni issue", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     // On planifie d'abord, pour avoir un entretien à débriefer.
     await page.getByRole("button", { name: /planifier un entretien/i }).click();
@@ -154,7 +124,7 @@ test.describe("recrutement — les entretiens", () => {
 
   test("l’écran annonce qu’un compte rendu ne se modifie plus", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     await page.getByRole("button", { name: /planifier un entretien/i }).click();
     await page.getByLabel(/^quand$/i).fill(dansNJours(5));
@@ -174,7 +144,7 @@ test.describe("recrutement — les entretiens", () => {
 
   test("annuler et « ne s’est pas présenté » sont DEUX gestes distincts", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     await page.getByRole("button", { name: /planifier un entretien/i }).click();
     await page.getByLabel(/^quand$/i).fill(dansNJours(6));

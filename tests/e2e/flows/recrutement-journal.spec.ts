@@ -12,10 +12,8 @@
 
 import { test, expect, type Page } from "@playwright/test";
 
-import { loginAsAdmin, baseSemeeAttendue, ADMIN_PREFIX } from "../fixtures/admin-auth";
-
-/** Même borne et même raison que `recrutement.spec.ts` : compilation à la demande. */
-const NAVIGATION = { waitUntil: "domcontentloaded", timeout: 120_000 } as const;
+import { loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
+import { ouvrirUneFicheCandidature } from "../fixtures/fiche-candidature";
 
 async function ouvrirLaConsole(page: Page): Promise<boolean> {
   try {
@@ -32,43 +30,13 @@ async function ouvrirLaConsole(page: Page): Promise<boolean> {
   }
 }
 
-/**
- * Ouvre une fiche de candidature.
- *
- * 🔴 LE CHOIX DE LA FICHE EST UN CHOIX D'ISOLATION, pas de commodité.
- *
- * Les scénarios qui ÉCRIVENT (consigner un fait) prennent la PREMIÈRE fiche ;
- * celui qui vérifie l'état VIDE prend la DERNIÈRE. Sans cette séparation, le
- * scénario « rien n'a encore été consigné » échoue dès qu'un autre a écrit sur
- * la même fiche — y compris lors d'une exécution PRÉCÉDENTE, puisque la base
- * garde ce qu'on y met.
- *
- * Mesuré : le test passait au premier lancement et échouait au second, sur un
- * produit inchangé. Un test qui dépend de ce qu'un autre a laissé derrière lui
- * ne mesure pas le produit, il mesure l'ordre d'exécution.
- */
-async function ouvrirUneFiche(
-  page: Page,
-  position: "premiere" | "derniere" = "premiere",
-): Promise<void> {
-  await page.goto(`/fr/${ADMIN_PREFIX}/contacts/candidatures`, NAVIGATION);
-  const liens = page.getByRole("link", { name: /détail/i });
-  // `count()` est instantané et ne voit pas une table streamée — leçon déjà
-  // payée dans `recrutement.spec.ts`.
-  await liens.first().waitFor({ state: "visible", timeout: 60_000 });
-  const cible = position === "premiere" ? liens.first() : liens.last();
-  const adresse = await cible.getAttribute("href");
-  expect(adresse, "aucune fiche ouvrable — le socle de recette a-t-il été joué ?").toBeTruthy();
-  await page.goto(adresse!, NAVIGATION);
-}
-
 test.describe("recrutement — le journal du candidat", () => {
   test.describe.configure({ timeout: 600_000 });
 
   test("la fiche porte un historique et les deux gestes qui l'alimentent", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
     // La DERNIÈRE fiche : aucun autre scénario n'y écrit. Voir `ouvrirUneFiche`.
-    await ouvrirUneFiche(page, "derniere");
+    await ouvrirUneFicheCandidature(page, "derniere");
 
     await expect(page.getByRole("heading", { name: /historique/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /répondre au candidat/i })).toBeVisible();
@@ -81,12 +49,18 @@ test.describe("recrutement — le journal du candidat", () => {
 
   test("choisir un modèle pré-remplit l'objet ET le message", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     await page.getByRole("button", { name: /répondre au candidat/i }).click();
 
-    const objet = page.getByLabel("Objet");
-    const message = page.getByLabel("Message");
+    // 🔴 Le CHAMP, pas n'importe quel porteur du mot. `getByLabel("Message")`
+    // attrapait aussi le badge de la navigation admin — un `<span>` dont
+    // l'`aria-label` vaut « 19 messages sans réponse ». L'échec ne disait pas
+    // « mauvais sélecteur » mais « strict mode violation », et il ne se produit
+    // que sur une base où des messages attendent une réponse : invisible en CI,
+    // visible en recette locale. On désigne le rôle et le nom EXACT.
+    const objet = page.getByRole("textbox", { name: "Objet", exact: true });
+    const message = page.getByRole("textbox", { name: "Message", exact: true });
     await expect(objet).toHaveValue("");
 
     await page.getByLabel(/modèle de départ/i).selectOption("refus");
@@ -107,7 +81,7 @@ test.describe("recrutement — le journal du candidat", () => {
 
   test("un fait consigné apparaît dans l'historique", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     const marqueur = `Appel de recette ${Date.now()}`;
     await page.getByRole("button", { name: /consigner un fait/i }).click();
@@ -130,7 +104,7 @@ test.describe("recrutement — le journal du candidat", () => {
 
   test("une date de fait dans le futur est refusée", async ({ page }) => {
     if (!(await ouvrirLaConsole(page))) return;
-    await ouvrirUneFiche(page);
+    await ouvrirUneFicheCandidature(page);
 
     // 🔑 Le cas qui distingue un journal d'un agenda. Sans cette borne, la frise
     // se trierait sur des faits qui n'ont pas eu lieu.

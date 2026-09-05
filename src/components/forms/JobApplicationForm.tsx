@@ -1,5 +1,19 @@
 "use client";
 // use-client: formulaire interactif (état React multi-champs, upload CV, Turnstile, honeypot, soumission async).
+// 🔴 2026-09-04 — `autoComplete` et `inputMode` AJOUTÉS sur les champs
+// d'identité. Ils manquaient sur les DIX-HUIT champs de ce formulaire, alors
+// que le formulaire du tunnel apporteurs les porte tous.
+//
+// Sans eux, un candidat sur téléphone tape son prénom, son nom, sa ville et
+// son numéro à la main, avec le clavier alphabétique par défaut y compris pour
+// le numéro. C'est une perte SILENCIEUSE : rien ne casse, rien ne s'affiche,
+// et l'abandon ne laisse aucune trace à compter.
+//
+// `autoComplete` laisse le téléphone REMPLIR ; `inputMode` change le CLAVIER
+// (pavé numérique, arobase visible). Le second sert même quand le premier n'a
+// rien à proposer : les deux sont nécessaires, pas interchangeables.
+//
+// ⛔ Gardé par `src/components/forms/__tests__/champs-identite-remplissables.spec.ts`.
 // Candidature à une offre d'emploi — mono-page segmenté (PAS de wizard, cf. plan D8) :
 // meilleur pour l'upload CV, le budget INP et le sans-JS. Soumet via
 // submitJobApplicationAction (multipart) → JobApplication + Telegram + email + RGPD.
@@ -290,6 +304,7 @@ export function JobApplicationForm({
             <input
               id="firstName"
               name="firstName"
+              autoComplete="given-name"
               required
               maxLength={100}
               className={FIELD}
@@ -303,6 +318,7 @@ export function JobApplicationForm({
             <input
               id="lastName"
               name="lastName"
+              autoComplete="family-name"
               required
               maxLength={100}
               className={FIELD}
@@ -318,6 +334,8 @@ export function JobApplicationForm({
             <input
               id="email"
               name="email"
+              autoComplete="email"
+              inputMode="email"
               type="email"
               required
               maxLength={180}
@@ -332,6 +350,8 @@ export function JobApplicationForm({
             <input
               id="phone"
               name="phone"
+              autoComplete="tel"
+              inputMode="tel"
               type="tel"
               required
               maxLength={40}
@@ -346,6 +366,7 @@ export function JobApplicationForm({
             <input
               id="city"
               name="city"
+              autoComplete="address-level2"
               required
               maxLength={120}
               className={FIELD}
@@ -404,6 +425,7 @@ export function JobApplicationForm({
             <input
               id="currentRole"
               name="currentRole"
+              autoComplete="organization-title"
               maxLength={200}
               className={FIELD}
               disabled={submitting}
@@ -446,6 +468,8 @@ export function JobApplicationForm({
             <input
               id="linkedinUrl"
               name="linkedinUrl"
+              autoComplete="url"
+              inputMode="url"
               type="url"
               maxLength={255}
               className={FIELD}

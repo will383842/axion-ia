@@ -188,7 +188,7 @@ export async function submitLeadApporteurAction(
           subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
           // Distingue le premier contact du dossier complet dans la même file.
           etape: LEAD_APPORTEUR_ETAPE,
-          ville: d.ville,
+          ville: d.ville ?? "",
           message:
             "Premier contact depuis la landing Facebook — à rappeler. Le dossier complet arrive par le lien de l'e-mail.",
           source: TUNNEL_FACEBOOK_PATH,
@@ -200,7 +200,7 @@ export async function submitLeadApporteurAction(
           candidature: {
             version: 2,
             etape: LEAD_APPORTEUR_ETAPE,
-            ville: d.ville,
+            ville: d.ville ?? "",
             experiences: [],
             ...(d.statut ? { statut: d.statut } : {}),
             sourceConnaissance: LEAD_APPORTEUR_SOURCE,
@@ -235,7 +235,7 @@ export async function submitLeadApporteurAction(
           contactName: d.prenom,
           contactEmail: d.email,
           contactPhone: d.telephone,
-          ville: d.ville,
+          ville: d.ville ?? "",
           zone: "—",
           b2bYears: "à qualifier (premier contact Facebook)",
           availability: d.statut ? optionLabel(STATUT_OPTIONS, d.statut) : "—",
@@ -271,13 +271,19 @@ export async function submitLeadApporteurAction(
       await enqueueEmail("candidature-commercial-recap", destinataireCandidatures(), "fr", {
         prenom: d.prenom,
         nom: "",
-        ville: d.ville,
+        ville: d.ville ?? "",
         rows: [
           { label: "Étape", value: "Premier contact — landing Facebook (dossier complet à venir)" },
           { label: "Prénom", value: d.prenom },
           { label: "Email", value: d.email },
           { label: "Téléphone", value: d.telephone },
-          { label: "Ville", value: d.ville },
+          // 🔴 Non demandée à la capture depuis le 2026-09-04 : la page promet
+          // « ta ville n'a aucune importance », et chaque champ de l'étape de
+          // capture se paie en abandons. Elle est demandée au DOSSIER, et sur
+          // l'appel. Dire « à demander » plutôt que d'afficher un vide : un
+          // récapitulatif qui laisse une ligne blanche se lit comme une donnée
+          // perdue, pas comme une donnée non demandée.
+          { label: "Ville", value: d.ville ?? "— à demander lors de l'appel" },
           ...(d.statut
             ? [{ label: "Statut actuel", value: optionLabel(STATUT_OPTIONS, d.statut) }]
             : []),
@@ -327,7 +333,7 @@ export async function submitLeadApporteurAction(
         email: d.email,
         telephone: d.telephone,
         prenom: d.prenom,
-        ville: d.ville,
+        ville: d.ville ?? "",
         ip,
         userAgent,
         fbp: d.contexte?.fbp ?? null,
