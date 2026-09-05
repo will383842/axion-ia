@@ -189,6 +189,33 @@ export function StepIdentite({ a, set, errors }: StepProps) {
           error={errors.nationalite}
         />
       </div>
+
+      {/* 🔴 2026-09-04 — LE CONSENTEMENT VIT ICI, plus au dernier écran.
+          À partir de cette version, le dossier ENREGISTRE le contact dès la
+          validation de cet écran : un abandon à l'écran 5 laisse une personne
+          rappelable au lieu de rien. L'accord doit donc PRÉCÉDER l'écriture.
+          C'est aussi plus honnête — on dit ce qu'on fait des réponses au moment
+          où on les demande, pas après huit écrans de travail. */}
+      <div className="mt-7">
+        <label className="flex cursor-pointer items-start gap-3">
+          <input
+            type="checkbox"
+            name="consent"
+            checked={a.consent}
+            onChange={(e) => set({ consent: e.target.checked })}
+            className="accent-terracotta mt-0.5 h-5 w-5 shrink-0"
+            aria-describedby={errors.consent ? "ca-consent-error" : undefined}
+          />
+          <span className="text-fg-soft text-sm leading-relaxed">
+            J’accepte que mes informations soient utilisées pour l’étude de ma candidature.
+          </span>
+        </label>
+        {errors.consent ? (
+          <p id="ca-consent-error" className="text-terracotta-deep mt-1.5 text-sm" role="alert">
+            {errors.consent}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }

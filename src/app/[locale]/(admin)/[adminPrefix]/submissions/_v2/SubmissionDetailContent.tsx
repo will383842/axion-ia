@@ -13,6 +13,8 @@ import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
 import { findClientByEmail } from "@/server/qualiopi/crm/entrees";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { lireFichePersonne } from "@/features/personne/fiche-personne";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
@@ -45,6 +47,19 @@ export async function SubmissionDetailContent({
   // e-mail, insensible à la casse), la conversion ferait un doublon et le devis
   // exigeait de repartir de zéro dans qualiopi/devis/new (relevé P1-09,
   // audit réservation 2026-08-26). Même appariement que qualiopi/entrees.
+  // ── LIEN VERS LA FICHE PERSONNE (2026-09-04) ─────────────────────────────
+  // Cette page montre UNE trace. La fiche personne les montre TOUTES, par
+  // l'empreinte de l'adresse — premier contact, dossier, candidature emploi,
+  // message. Sans ce lien, l'écran existe et personne ne l'atteint.
+  //
+  // 🔑 On compte les AUTRES traces ici plutôt que d'afficher un lien nu : un
+  // lien qui ne mène qu'à la ligne qu'on regarde déjà se clique une fois, puis
+  // plus jamais. Le nombre dit s'il y a quelque chose à y voir.
+  const empreintePersonne = hashEmailForLookup(submission.contactEmail);
+  const autresTraces = empreintePersonne
+    ? (await lireFichePersonne(empreintePersonne)).traces.length - 1
+    : 0;
+
   const clientExistant = submission.contactEmail
     ? await findClientByEmail(submission.contactEmail)
     : null;
@@ -107,6 +122,15 @@ export async function SubmissionDetailContent({
         }
         actions={
           <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            {empreintePersonne && autresTraces > 0 ? (
+              <a
+                href={`/fr/${adminPrefix}/contacts/personne/${empreintePersonne}`}
+                className="admin-button-secondary"
+              >
+                Voir la personne · {autresTraces} autre{autresTraces > 1 ? "s" : ""} trace
+                {autresTraces > 1 ? "s" : ""}
+              </a>
+            ) : null}
             {/* Raccourci CRM : pré-remplit le formulaire « nouveau client » avec
                 les coordonnées de ce lead (déchiffrées côté serveur sur la page
                 cible). Évite la re-saisie manuelle inbox → CRM Qualiopi. L'URL

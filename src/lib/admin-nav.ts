@@ -343,6 +343,33 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
 ];
 
 /**
+ * Les destinations ÉPINGLÉES en pied de barre latérale.
+ *
+ * ⚠️ Ce sont des entrées de navigation à part entière, mais elles ne passent
+ * PAS par `buildAdminNav()` : elles sont rendues avant la boucle des groupes,
+ * au-dessus de tout, parce que ce sont des postes de travail quotidiens et non
+ * des rubriques qu'on visite (console éditoriale ; agenda, épinglé à la demande
+ * de Will le 2026-08-26).
+ *
+ * 🔴 2026-09-05 — POURQUOI CETTE CONSTANTE EXISTE. Ces deux `href` étaient
+ * écrits en dur dans `AdminSidebarNav.tsx`. Conséquence : la navigation admin
+ * avait DEUX sources, et la garde `admin-nav:routes-check` n'en lisait qu'une.
+ * Vues depuis la garde, `/console-editoriale` — plus ses dix écrans — et
+ * `/agenda` étaient des routes SANS aucune entrée de menu. Un audit les a
+ * comptées comme orphelines et a failli les proposer à la suppression : douze
+ * écrans vivants, épinglés sur demande explicite, qu'aucune mesure ne
+ * rattachait à leur lien. Les déclarer ici rend la source unique — et la passe
+ * réciproque de la garde les reconnaît sans exception à écrire.
+ */
+export const ADMIN_LIENS_EPINGLES = {
+  consoleEditoriale: "/console-editoriale",
+  agenda: "/agenda",
+} as const;
+
+/** Les chemins épinglés, sous la forme que consomme la garde réciproque. */
+export const ADMIN_ROUTES_EPINGLEES: ReadonlyArray<string> = Object.values(ADMIN_LIENS_EPINGLES);
+
+/**
  * Construit la liste des items de navigation admin pour un adminPrefix donné.
  *
  * @param adminPrefix - segment URL admin résolu par adminSegment() (cf. src/lib/admin-path.ts).
@@ -515,6 +542,34 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/contacts/commercial`,
       label: "Recrutement",
       icon: "UserSearch",
+      group: "contacts",
+      navLevel: 2,
+    },
+    // Saisie manuelle d'un contact apporteur (2026-09-04). Posée JUSTE APRÈS
+    // « Commercial », et INDENTÉE comme elle : ce n'est pas un canal d'entrée
+    // mais une action sur ce canal.
+    //
+    // 🔴 Première tentative : entrée racine du pôle « contacts ». La garde
+    // « expose 5 canaux racine, un par type d'entrée réel » a rougi, et elle
+    // avait raison — une racine annonce un TYPE D'ENTRÉE (appels, messages,
+    // candidatures), pas un geste. Poser un bouton au rang d'un canal aurait
+    // laissé croire qu'une nouvelle source de contacts existait.
+    //
+    // 🔑 Sans entrée de menu, l'écran existe et n'est atteignable par aucun
+    // chemin. Six portes créaient un contact, toutes publiques ; celle-ci est
+    // la première qui parte de la console.
+    {
+      href: `${base}/contacts/commercial/nouveau`,
+      label: "Nouveau contact apporteur",
+      // 🔴 `UserPlus` était le choix évident — et « Candidatures » le portait
+      // déjà dans le MÊME groupe. La garde `admin-nav-icons` l'a refusé, à
+      // raison : deux entrées voisines partageant une icône deviennent
+      // indiscernables du coin de l'œil, ce qui est précisément la façon dont
+      // on lit une barre latérale.
+      //
+      // `PenLine` dit le bon geste : ici on ÉCRIT une fiche, on ne reçoit pas
+      // une candidature.
+      icon: "PenLine",
       group: "contacts",
       navLevel: 2,
     },

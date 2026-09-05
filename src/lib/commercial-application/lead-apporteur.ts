@@ -97,7 +97,27 @@ export const leadApporteurSchema = z
     prenom: z.string().trim().min(1).max(60),
     email: z.string().trim().email().max(180),
     telephone: z.string().trim().min(6).max(40).regex(TELEPHONE_RE),
-    ville: z.string().trim().min(1).max(120),
+    /**
+     * 🔴 2026-09-04 — RETIRÉE du mini formulaire, décision de Will.
+     *
+     * La ville reste une donnée UTILE : elle sert à recruter par région plus
+     * tard, et à savoir de quels bassins viennent les contacts. Mais elle n'a
+     * rien à faire à l'étape de CAPTURE, pour deux raisons :
+     *
+     *   1. La page elle-même affirme « Partout en France — ta ville n'a aucune
+     *      importance ». Exiger à l'écran un champ que la page déclare sans
+     *      objet est une contradiction que le visiteur ressent, même s'il ne la
+     *      formule pas.
+     *   2. Chaque champ de l'étape de capture se paie en abandons. Passer de
+     *      quatre à trois, c'est un quart d'effort en moins là où la perte est
+     *      TOTALE — un visiteur qui renonce ici ne laisse rien, pas même un
+     *      numéro à rappeler.
+     *
+     * Elle est demandée au DOSSIER (`model.ts`, écran « Qui es-tu ? »), où elle
+     * est obligatoire, et sur l'appel. Le champ reste accepté ici s'il est
+     * fourni — un lien ou un test qui la transmettrait n'est pas refusé.
+     */
+    ville: z.string().trim().max(120).optional(),
     statut: z.enum(STATUT_IDS).optional(),
     /**
      * Case NON pré-cochée (RGPD art. 4.11 : acte positif clair). `literal(true)`
@@ -123,3 +143,28 @@ export function extraireFbclid(query: string | undefined): string | null {
     return null;
   }
 }
+
+/**
+ * Ce que l'écran 1 du DOSSIER envoie pour être capturé.
+ *
+ * 🔑 Volontairement PLUS PETIT que `leadApporteurSchema` : on ne demande à la
+ * capture que ce sans quoi on ne peut ni rappeler ni écrire. Tout le reste du
+ * dossier arrive à la soumission complète — et s'il n'arrive jamais, on a
+ * quand même quelqu'un à appeler.
+ *
+ * `consent` est un `literal(true)` : une capture sans accord n'existe pas.
+ * L'accord PRÉCÈDE l'écriture, c'est pour ça que la case a été remontée à
+ * l'écran 1 (cf. `wizard-state.ts`).
+ */
+export const captureDossierSchema = z
+  .object({
+    prenom: z.string().trim().min(1).max(60),
+    nom: z.string().trim().min(1).max(60),
+    email: z.string().trim().email().max(180),
+    telephone: z.string().trim().min(6).max(40),
+    consent: z.literal(true),
+    sourceConnaissance: z.string().trim().max(60).optional(),
+  })
+  .strict();
+
+export type CaptureDossierInput = z.infer<typeof captureDossierSchema>;
