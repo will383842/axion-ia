@@ -370,3 +370,23 @@ Par priorité, tels que l'audit les a rendus :
    écrire l'ADR ; mais l'abonnement, lui, est une dépense de Will.
 3. **N6 SIRET** — à reconfirmer en PROD avant d'en faire un défaut : un constat
    sur des données de seed n'est pas un défaut de prod.
+4. 🔴 **La commission d'apporteur d'affaires est PUBLIÉE et CHIFFRÉE sur le site
+   public, sans aucun back-office** (audit D11, 2026-09-05). `content/pricing.ts`
+   annonce **500 €/journée**, **30 % audit**, **15 % intégration** (`:820`,
+   `:886`, `:896`) — et il n'existe dans ce dépôt **aucun modèle, aucun calcul,
+   aucun paiement, aucun rapprochement**. Rien ne rattache une vente à un
+   apporteur.
+
+   Ce n'est pas un défaut de code à corriger ici : c'est un **engagement public
+   chiffré** sans la machine qui l'honore. Deux sorties, et elles t'appartiennent :
+   soit la machine se construit (elle est planifiée dans `axion-partners`, 197
+   tâches), soit les montants quittent les pages publiques en attendant.
+   ⚠️ Le constat est **borné à ce dépôt** : `axion-partners` n'a pas été ouvert
+   par l'auditeur.
+5. **Payer un formateur sur une session que le client n'a pas réglée** (audit D2).
+   ⚠️ Volontairement NON bloqué, et c'est un arbitrage à connaître : ce qui est dû
+   à un sous-traitant l'est au titre de SON contrat, pas de la trésorerie de
+   l'organisme — refuser de payer un formateur qui a animé parce que le client
+   traîne serait un manquement, pas une garde. Le correctif engagé rend donc
+   l'encaissement client **VISIBLE au moment de la décision**, et laisse
+   l'arbitrage humain. Si tu veux un blocage dur, c'est toi qui le décides.
