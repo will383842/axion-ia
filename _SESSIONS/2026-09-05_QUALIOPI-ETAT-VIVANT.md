@@ -2,27 +2,36 @@
 
 > Tenu **au fil de l'eau**. Si Claude Code se referme, **c'est ce fichier qu'on
 > relit en premier**. Le transcript, jamais.
+> Dernière écriture : 2026-09-05 ~05:00 UTC (07:00 heure de Paris).
+
+---
 
 ## 0. Où on en est en une phrase
 
-#991 fusionnée et en vol. Le lot 3 (session éditable) est commencé. Trois
-chantiers restent : la **boucle contractuelle qui ne se referme pas** après la
-contresignature, le **distanciel de bout en bout**, et les **12 trous du moteur
-d'alertes** qu'un audit complet a inventoriés.
+**#991 fusionnée et ATTERRIE en production.** Le défaut le plus grave — *rien ne
+part après la contresignature* — est **corrigé, gardé et commité**. Le socle du
+lot 3 est posé côté serveur. Il reste le **câblage UI** du lot 3, puis le
+**distanciel** (lot 2), les **alertes**, la **facturation** et les **commissions**.
 
-## 1. File de fusion — ce que JE tiens
+---
+
+## 1. L'état mesuré, pas déduit
 
 | | |
 |---|---|
-| `origin/main` au départ | `e1ee5c6c5` (#986) |
-| **#991 fusionnée** | `2026-09-05 03:57:28 UTC` → main = **`f62368221`** |
-| Build en vol | run **33943260861**, démarré `03:57:30 UTC`, ~50-75 min |
-| Autres sessions | `axion-ia-84` (recrutement, arbre `wt-recrutement`) — prévenue, ne fusionne pas |
+| `origin/main` | **`f62368221`** — #991 fusionnée le 2026-09-05 à 03:57:28 UTC |
+| **Production sert** | `f62368221` ✅ **vérifié par moi** : `curl -sI https://axion-ia.com/fr \| grep x-axion-build-sha` |
+| Jobs du run 33943260861 | `Build & push` ✅ · `Trigger Coolify deploy` ✅ · `IndexNow` ✅ · `Telegram` ✅ · `lhci` ⏳ · `Warm edge cache` ⏳ |
+| **File de fusion** | **LIBRE pour le build.** Fusionner maintenant tuerait seulement le job `lhci` post-deploy (25-26 min), pas le déploiement. |
+| Ma branche | `qualiopi/session-editable-et-conventions` — **poussée sur `origin`**, 5 commits, arbre PROPRE |
+| Autre session | `axion-ia-84` (recrutement, arbre `wt-recrutement`). Ne réserve rien, ne fusionne rien. Prévenue. |
 
-⛔ Tant que ce build vole, **aucune fusion sur `main`** : `cancel-in-progress`
-le tuerait et les deux derniers runs ont coûté 1 h 16 et 1 h 17.
+⚠️ `lhci` est **post-atterrissage** : ne pas l'attendre pour reprendre la main.
+C'est écrit dans `AGENTS.md`, § durée du build.
 
-## 2. Acquis en PRODUCTION — ne pas refaire, ne pas casser
+---
+
+## 2. Acquis EN PRODUCTION — ne pas refaire, ne pas casser
 
 La session du **5 septembre** existe pour de vrai.
 
@@ -33,43 +42,263 @@ La session du **5 septembre** existe pour de vrai.
 - Questionnaire de positionnement envoyé **20:51 UTC** à `simone.blanc.26@gmail.com`.
 - Pièces `030`, `037`, `038` **annulées au registre avec motif**.
 
-Objets : client `AXI-CLI-001` SCI Invest Sun · stagiaire Simone Blanc
+Identifiants : client `AXI-CLI-001` SCI Invest Sun
+`eeaa0351-6846-4307-acaa-b7b73239a724` · stagiaire Simone Blanc
 `068304cd-8948-4e9b-83a6-8e79ca223b09` · session `AXI-SESS-2026-001`
 `0d4e0c8b-3aaa-4ec9-a8ff-d830f8a68613` · formateur Williams Jullin
 `4f0abec3-a1ee-4640-9eca-ea4f5a116e1c`.
 
-## 3. Le plan, et où j'en suis
+---
+
+## 3. Les 5 commits déjà écrits (branche poussée)
+
+| SHA | Objet | État |
+|---|---|---|
+| `e4d01fd5b` | `docs` — sauver du temporaire les 2 audits que la coupure a failli emporter | ✅ |
+| `ced63a85b` | `fix` — le suivi de dossier menait à un bloc qui n'existe pas (ancres) | ✅ vu rougir |
+| `f12917ced` | 🔴 `fix` — **la boucle contractuelle se referme** (lot A) | ✅ vu rougir ×3 |
+| `43713542e` | `feat` — le filet `exemplaire_signe_non_transmis` | ✅ garde a rougi seule |
+| `34bf4840b` | `feat` — socle lot 3 : montant, modalité, mots dérivés | ⚠️ **serveur seul, UI non câblée** |
+
+### Ce que `f12917ced` a réellement fait
+
+- `DocumentGenere.exemplaireSigneEnvoyeAt` + `exemplaireSigneKey` + index
+  (migration `20260905040000_exemplaire_signe_transmission`, nom d'index
+  **épinglé** parce que le nom dérivé par Prisma ferait 65 car. > 63).
+- `src/server/qualiopi/documents/signature/transmission-exemplaire.ts` — remise
+  idempotente **par revendication**, qui **relâche** en cas d'échec.
+- Gabarit `piece-exemplaire-signe` inscrit aux **4 points** obligatoires :
+  `queue/types.ts`, `email/templates/index.tsx`, `email/apercu/catalogue.ts`,
+  `email/outbox-policy.ts` (dans les envois **automatiques**, pas la corbeille).
+- Branché dans `consequenceSignatureComplete` (`piece-signature.ts`), **avant**
+  les branches par type — c'est le seul point que traversent les DEUX canaux.
+
+---
+
+## 4. Vérifications faites, et leur verdict EXACT
+
+| Contrôle | Verdict |
+|---|---|
+| `le-suivi-mene-au-geste.spec.ts` | 4/4 · **vu rougir** (ancre `formateur-inexistant` → 1 failed) |
+| `libelles-acces.spec.ts` | 18/18 · a rougi d'elle-même sur « salle d'attente » (garde trop large, corrigée) |
+| `transmission-exemplaire.spec.ts` | 19/19 · **vu rougir ×3** (organisme non exclu · revendication non conditionnelle · `relacher()` retirés) |
+| `catalogue.spec.ts` | 30/30 · **a rougi seule** à l'ajout du code (liste explicite) |
+| `pnpm typecheck` | ✅ **bannière lue**, exit 0, **sur l'arbre complet des 6 commits** |
+| `pnpm lint` | ✅ **0 erreur**, 73 warnings tous préexistants (fichiers de test) |
+| `pnpm qualiopi:isolation-check` | ✅ **bannière lue** — `11649 fichiers scannés, 0 violation, 63 consommateurs assumés` |
+
+### ⛔ CE QUI RESTE À VÉRIFIER À LA REPRISE
+
+Les quatre contrôles ci-dessus sont **verts sur l'arbre complet**. Il manque :
+
+1. Les **gardes de dépôt** `tests/unit/ci/` — ~17 min, elles balaient toute
+   l'arborescence et **n'apparaissent pas** si l'on cible un sous-ensemble.
+   Jamais lancées cette session.
+2. La **suite complète** `pnpm test` (les 4 fichiers ciblés sont verts, pas le
+   reste).
+3. La **recette PAR L'ÉCRAN** de la remise d'exemplaire : aucune convention n'a
+   été signée depuis le correctif, donc la boucle n'a **jamais été vue se
+   refermer en vrai**. C'est une correction PROUVÉE PAR TÉMOINS, pas VÉCUE.
+   Le refaire sur une vraie pièce est le premier geste de recette.
+
+---
+
+## 5. LE PLAN — ce qui reste, dans l'ordre
 
 | Lot | Objet | État |
 |---|---|---|
-| 0 | Fusionner #991, vérifier l'atterrissage | ✅ fusionnée · ⏳ atterrissage |
-| A | 🔴 **Rien ne part après la contresignature** | ⏳ |
-| B | Lot 3 — session éditable : N1 N2 N4 N5 N6 + frictions | 🟡 commencé |
-| C | Lot 2 — distanciel de bout en bout (visio, jetons, émargement) | ⏳ |
-| D | Moteur d'alertes — 12 trous, 3 codes hors catalogue | ⏳ |
-| E | Attestation / certificat de réalisation / facture / échéancier | ⏳ |
-| F | Formateur défaillant · pilotage des commissions | ⏳ |
+| 0 | Fusionner #991 + vérifier l'atterrissage | ✅ **FAIT ET VÉRIFIÉ** |
+| A | 🔴 Rien ne part après la contresignature | ✅ **FAIT** |
+| B | Lot 3 — session éditable | 🟡 **socle fait, UI à câbler** |
+| C | Lot 2 — distanciel de bout en bout | ⏳ carte du terrain FAITE (§7) |
+| D | Moteur d'alertes — 11 trous restants | ⏳ 1/12 fait |
+| E | Attestation · certificat · facture · échéancier | ⏳ carte du terrain FAITE (§8) |
+| F | Formateur défaillant · commissions | ⏳ audit à REFAIRE (sortie vide) |
 | G | Vérification de bout en bout | ⏳ |
 
-## 4. Ce qui était en l'air au redémarrage, et ce que j'en ai fait
+### Lot B — ce qu'il reste EXACTEMENT à faire
 
-Arbre `wt-app30`, branche `qualiopi/session-editable-et-conventions`, 4 fichiers
-non commités laissés par la coupure de 23:43.
+Le serveur est prêt ; aucun écran ne l'appelle. Reste :
 
-**La garde a été rejouée avant de commiter** — c'est la règle : un arbre laissé
-par une vérification interrompue peut porter une mutation.
+1. **N1 UI** — un `SessionMontantForm` (copier `SessionDatesForm.tsx`), monté
+   dans `qualiopi/sessions/[id]/financement/page.tsx`. Doit AFFICHER le retour
+   `piecesFinancieres` : « 2 pièces annoncent l'ancien montant, il faudra les
+   réémettre ».
+2. **N2 + F4 UI** — `LieuFieldset.tsx` doit appeler `libellesAcces()` au lieu de
+   ses 5 chaînes en dur, et `SessionLieuForm.tsx` doit exposer un `<select>` de
+   modalité + afficher `incoherenceModaliteLieu()`.
+3. **N4** 🔴 — `ConventionDocButton` (`DocumentsSection.tsx:774-874`) est le
+   **seul** bouton de la section qui n'appelle pas `useMotifRectification`
+   (`:220`). Conséquence prouvée : régénérer une convention produit
+   **TOUJOURS** un filigrane COPIE, sans aucun moyen de faire autrement depuis
+   l'UI. Il a son propre composant à cause du champ acompte — c'est comme ça
+   qu'il a échappé au correctif.
+4. **N5 + F7** — l'acompte par défaut est **30 %**, affirmé à 4 endroits dont
+   celui qui s'imprime : `templates/convention.tsx:170`
+   (`data.acomptePercent ?? 30`). Et le champ est SOUS le bouton qui le
+   consomme. → défaut `0`, champ AU-DESSUS.
+5. **F10** 🔴 défaut réel — les repères « (J-n) » du suivi sont comptés depuis
+   AUJOURD'HUI mais notés comme un décalage à la SESSION.
+   `parcours/etat-echeance.ts:191`. « Évaluation finale (J-3) » pour du J+2.
+6. **N6** — le SIRET saisi ne s'affiche pas dans la liste clients. **À TAGGER
+   `code` ou `données` et à reconfirmer en prod** avant d'en faire un défaut.
+7. **F1** entreprise saisie 2× en texte libre · **F2** consentements muets sur
+   leurs conséquences · **F5** montant HT jamais pré-rempli depuis le tarif de
+   l'offre · **F8** « Confirmer les journées » ne crée pas les créneaux ·
+   **F9** liens d'émargement perdus à la navigation · bloc Documents qui déborde
+   horizontalement.
 
-- `le-suivi-mene-au-geste.spec.ts` → **4/4 vert** sur l'arbre trouvé.
-- **Vue rougir** : ancre `formateur` mutée en `formateur-inexistant` →
-  `1 failed`, message nommant les 12 sections réellement présentes. Restaurée,
-  `git diff --stat` revenu à l'identique. La garde garde.
+---
 
-## 5. Sources lues (ne pas repayer)
+## 6. Sources déjà payées — NE PAS repayer
 
-- Audit du **moteur d'alertes** : rendu **COMPLET** malgré la coupure — 80 codes,
-  54 règles, 12 trous, 3 codes émis hors catalogue. Extrait sauvé en
-  `_AUDIT/AUDIT-MOTEUR-ALERTES-2026-09-04.md`.
-- Audit du **pilotage formateur** : sortie **vide** (0 octet) — l'agent est mort
-  avant d'écrire. À refaire.
-- Frictions d'écran F1→F10 + audit distanciel D1→D5 : `frictions-ui.md`,
-  recopiés dans `_AUDIT/`.
+| Source | Où | Contenu |
+|---|---|---|
+| Audit **moteur d'alertes** | `_AUDIT/AUDIT-MOTEUR-ALERTES-2026-09-04.md` | **COMPLET** — 80 codes, 54 règles, **12 trous**, 3 codes émis hors catalogue |
+| Frictions UI + distanciel | `_AUDIT/FRICTIONS-UI-ET-DISTANCIEL-2026-09-04.md` | F1→F10, D1→D5 |
+| Recette réelle | `_SESSIONS/2026-09-04_RECETTE-REELLE-DISTANCIEL-FORMATEUR.md` | sur `main` |
+| Carte **distanciel** | §7 ci-dessous | rendue par agent, 2026-09-05 |
+| Carte **facture/attestation** | §8 ci-dessous | rendue par agent, 2026-09-05 |
+| Audit **pilotage formateur** | ❌ **sortie de 0 octet** | l'agent est mort avant d'écrire — **à refaire** |
+
+---
+
+## 7. Carte du DISTANCIEL (lot C) — faits vérifiés, avec chemins
+
+**Il n'existe AUCUNE intégration Zoom / Teams / Meet.** `ls src/server/visio
+src/lib/zoom*` → rien. Aucun `ZOOM_*` ni `GRAPH_*`. Ce qui existe : le **parsing
+CSV a posteriori** (`src/server/qualiopi/presence/parse-{zoom,teams,meet}.ts`) et
+l'enum `PlateformeDistanciel { zoom teams meet autre }` (`schema.prisma:6549`).
+
+| Fait | Preuve |
+|---|---|
+| `lieuVisioUrl` = **URL nue**, `@db.Text`, sans expiration ni révocation | `schema.prisma:5382` |
+| Le stagiaire ne reçoit **JAMAIS** l'URL — seulement l'hôte | `notifications-service.ts:218` et `:391` via `formatLieu` |
+| Le formateur, LUI, la reçoit en clair et cliquable | `_infos-pratiques-formateur.tsx:62-64` |
+| Le portail stagiaire montre **titre, état, dates. Rien d'autre** | `portail/mon-espace/formations/page.tsx:64-89` |
+| **Aucun rappel J-1 stagiaire** (il n'existe que côté formateur) | `queues.ts:1622-1624` |
+| L'inscription est **1 action = 1 stagiaire**, aucun `createMany` | `enrollments.ts:71-116` |
+| `prisma.trainee.findMany` **sans `take`** charge TOUTE la table | `sessions/[id]/page.tsx:387` |
+| `nbParticipantsPrevus` n'est **opposé à rien** | aucune règle ne le lit |
+
+**Les briques à réutiliser, elles existent déjà :**
+
+- **Jeton lié à l'empreinte du destinataire** : `creerTokenCoaching`
+  (`src/server/qualiopi/emargement/token-service.ts:314`) — SHA-256 hex de
+  l'adresse minuscule trimée, colonne `EmargementToken.destinataireEmailSha256`
+  (`schema.prisma:7991`). ⚠️ **Le chemin COLLECTIF (`creerTokenInscription`,
+  `:138`) ne l'écrit PAS** — le binding n'existe qu'en AFEST 1-to-1.
+- **Contrôle avant vol bloquant** : le patron EXISTE, pour les horaires —
+  `TokenEmargementError("journees_non_declarees" | "horaires_non_confirmes")`,
+  `token-service.ts:149-173`. Doctrine écrite `:41-50` : « le refus se produit à
+  la CRÉATION DU LIEN, devant l'admin qui peut corriger, et non devant le
+  stagiaire en salle qui ne le peut pas ». **C'est exactement le patron à
+  copier.**
+- **Envoi par personne à l'échelle** : `envoyerRappelJ7`
+  (`notifications-service.ts:311`) — boucle sur tous les inscrits, `continue` sur
+  échec (jamais `return false` : le correctif du 2026-08-24 avait constaté que le
+  premier échec privait les 9 autres).
+- **Patron d'intégration tierce** : `src/lib/docuseal.ts` (711 l.) — le seul
+  module qui traite complètement *client HTTP / secret / mode dégradé / webhook
+  signé*. `isDocusealConfigured()` `:41`, `AbortSignal.timeout(15_000)` `:227`,
+  classe d'erreur avec `statusCode` `:240`.
+- **Variable d'env OPTIONNELLE** : `z.string().optional()` dans `src/env.ts`,
+  remappée dans `runtimeEnv` (`:552+`), et **le refus dur vit dans le MODULE**,
+  jamais dans `env.ts` (motif écrit `src/env.ts:50-56` : une exigence bloquante
+  y ferait échouer le BOOT du conteneur). ⇒ **c'est ce qui permet de tolérer
+  l'absence de licence Zoom/Teams sans rien casser.**
+- **Import CSV** : deux patrons — parsing CLIENT
+  (`ImportFacturesHistoriqueForm.tsx`, plafond 500 annoncé avant l'aller-retour)
+  et parsing SERVEUR (`ImportReleveForm.tsx`, archivage R2 + SHA-256 +
+  `unmatched Json`). **Le second est le bon pour un import de stagiaires.**
+
+**Arbitrage Zoom vs Teams : PAS ENCORE TRANCHÉ.** L'ADR reste à écrire.
+
+---
+
+## 8. Carte FACTURE / ATTESTATION (lot E) — faits vérifiés
+
+- **`certificat_realisation` EXISTE** (enum `schema.prisma:6210`, gabarit
+  `templates/certificat-realisation.tsx:151`) mais n'est produit **QUE par un
+  clic admin** — exclu de toute production automatique
+  (`production-au-jalon.ts:212-217`).
+  🔴 Le commentaire `:203-207` justifie l'exclusion en affirmant qu'un circuit
+  automatique existe. **C'est faux** : `attestation-service.ts:376` ne produit
+  que `attestation` / `attestation_partielle`.
+- 🔴 **Asymétrie confirmée** : l'**attestation** (due au STAGIAIRE, L.6353-1)
+  est MOINS gardée que le **certificat** (dû au FINANCEUR). L'action manuelle
+  `genererAttestationAction` n'exige **ni évaluation finale ni émargement** ;
+  seul le CRON exige `evaluations: { some: { type: "finale" } }`
+  (`crons-worker.ts:427-429`). Le certificat, lui, exige `tauxPresencePct !==
+  null` **et** une `EmargementSignature` non révoquée (`documents.ts:653-658`,
+  `:686+`).
+- Libellé de `attestation` = « Attestation **de réalisation** »
+  (`libelles-type-document.ts:63`) — c'est le vocabulaire du certificat.
+- **Aucune facture ne part seule.** Le seul cron qui crée
+  (`plan-recurrent.ts:105`) ne fait que des **brouillons**.
+- **L'échéancier existe** mais seulement en mémoire + sur le PDF du contrat B2C
+  (`financements/acompte.ts:430`, `echelonnerSolde` `:295`). **Aucun modèle
+  Prisma `Echeancier`**, aucun écran. **Quatre circuits d'acompte coexistent et
+  ne se parlent pas.**
+- 🔴 **TVA** : l'ordre permanent de Will est « toujours facturée, jamais
+  d'exonération ». **Le code ne le fait pas** : `exoneration_261` et
+  `franchise_293b` sont des chemins de première classe (`legal/tva.ts:28`), le
+  régime est relu depuis la config à chaque émission (8 sites), et un override
+  par ligne `tauxTvaPercent: 0` court-circuite tout (`tva.ts:64-66`). Le DÉFAUT
+  est bien `assujetti`. **→ ARBITRAGE WILL avant de verrouiller quoi que ce
+  soit.**
+
+---
+
+## 9. Les 11 trous d'alertes restants (le 12ᵉ est fait)
+
+Par priorité, tels que l'audit les a rendus :
+
+1. `formateur_desiste_session` — **le seul risque 100 % muet.** Le statut
+   `retiree` n'est lu par aucune règle ; l'incident `desistement` n'alimente que
+   `sous_traitant_incidents_repetes`, qui exige ≥2 faits sur 24 mois.
+2. `convocation_stagiaire_manquante` — J-2 sur `convocationEnvoyeeAt` nul.
+3. `session_distanciel_sans_lien` — J-2, `lieuVisioUrl` vide en distanciel.
+4. **Élargir les bornes** de `convention_tripartite_manquante`,
+   `formateur_non_habilite_assigne`, `formateur_indisponible_sur_session` :
+   **quatre alertes critiques s'auto-effacent au démarrage de la session**,
+   c'est-à-dire quand le risque devient un fait.
+5. **Cataloguer** `email_corbeille_indisponible` (critique !),
+   `positionnement_hors_delai`, `email_retenu_*` — émis SANS entrée au
+   catalogue ⇒ routés vers **aucune boîte** et **jamais auto-résolus**.
+6. `emargement_partiel` — les 4 règles d'émargement ne traitent que le ZÉRO.
+7. `formateur_rc_pro_absente` / URSSAF **étendues hors `sous_traitant`**.
+8. `effectif_depasse`.
+9. `session_realisee_non_facturee`.
+10. Recalibrer : `session_sans_formateur` en **critique** quand la session a
+    démarré ; `suppression_rgpd_j30` de `info` à `important`.
+
+---
+
+## 10. Pièges de cette session — déjà payés, ne pas re-payer
+
+- 🔴 **`prisma/generated/` est PAR ARBRE** (`output = "../prisma/generated/client"`,
+  gitignoré) — mais `node_modules` est un **lien symbolique partagé** vers
+  `axionia/node_modules`. Le typecheck de wt-app30 a échoué au démarrage sur
+  `sans_reponse` parce que la branche précédait #991. **Le remède est de
+  fast-forward la branche sur `main`, pas de régénérer.**
+- 🔴 **Les heredocs `bash` échouent** sur ce poste au-delà d'environ 150 lignes
+  (`unexpected EOF looking for matching '`). Pour un gros fichier : utiliser
+  l'outil **Write**, ou un script **Python** pour les patchs chirurgicaux.
+- `pnpm typecheck` ≈ **10-13 min**, `pnpm lint` ≈ **10 min**,
+  `qualiopi:isolation-check` > **5 min**, un `vitest run` ciblé ≈ **1 min**
+  (dont ~45 s d'environnement). Les lancer en arrière-plan, **et lire la
+  bannière**.
+- `gh pr merge` peut ne **rien afficher** en réussissant. Vérifier par
+  `gh pr view --json state,mergedAt`.
+
+---
+
+## 11. Ce qui restera pour Will (à ne PAS trancher à sa place)
+
+1. **TVA** — l'ordre permanent (« toujours facturée ») n'est pas implémenté, et
+   trois chemins d'exonération sont actifs. Verrouiller ou assumer ? (§8)
+2. **Zoom ou Teams** — je dois trancher moi-même selon mes recommandations et
+   écrire l'ADR ; mais l'abonnement, lui, est une dépense de Will.
+3. **N6 SIRET** — à reconfirmer en PROD avant d'en faire un défaut : un constat
+   sur des données de seed n'est pas un défaut de prod.
