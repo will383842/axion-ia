@@ -1,15 +1,36 @@
 name: CI · Gates A + B
 
 on:
+  # ⚠️ AUCUN filtre `branches:` ici — c'est délibéré, et ça a coûté cher.
+  #
+  # Jusqu'au 2026-09-05, ce déclencheur portait `branches: [main, staging]`.
+  # Le filtre d'un `pull_request` porte sur la **base** de la PR, pas sur sa
+  # tête : une PR empilée sur une branche de feature (`feat/b` basée sur
+  # `feat/a`) n'était donc jamais un événement retenu. Elle ne déclenchait
+  # RIEN, et GitHub l'affichait `mergeStateStatus: CLEAN` — le même mot que
+  # pour une PR dont les quatre gates sont vertes. Trois PR (#989, #990, #992)
+  # ont vécu ainsi, fusionnables sur ZÉRO contrôle.
+  #
+  # 🔑 « Aucun contrôle rapporté » n'est pas une gate rouge : c'est l'ABSENCE
+  # de gate, et l'interface ne les distingue pas.
+  #
+  # Écarté : `types: [opened, synchronize, reopened, edited]`. `edited` couvre
+  # bien le repointage automatique de la base après une fusion, mais il se
+  # déclenche AUSSI sur toute retouche du titre ou de la description — ~50 min
+  # de CI pour une virgule. Le coût était plus grand que le trou.
+  #
+  # ⛔ Ce que ceci ne répare PAS : après la fusion de sa base, GitHub repointe
+  # la PR suivante de la pile sans émettre d'événement d'un type déclencheur.
+  # La PR garde alors sa dernière conclusion, calculée contre l'ANCIENNE base.
+  # Avant de fusionner une pile, forcer un `synchronize` (un push, même un
+  # rebase à vide) sur chaque PR pour que sa gate soit évaluée contre `main`.
   pull_request:
-    branches: [main, staging]
   push:
     branches: [main, staging]
   # File de fusion (2026-08-18). SANS ce déclencheur, une file activée attend
   # indéfiniment des checks qui ne se lancent jamais : elle se bloque au premier
   # usage. Il s'ajoute AVANT d'activer la file, jamais après.
   merge_group:
-
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
