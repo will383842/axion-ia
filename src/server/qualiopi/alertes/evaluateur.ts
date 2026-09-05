@@ -725,7 +725,15 @@ async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> 
     const date = s.dateDebut.toLocaleDateString("fr-FR");
     return {
       code: "session_sans_formateur",
-      niveau: "important" as AlerteNiveau,
+      // 🔴 2026-09-05 (audit du moteur, trou n°10) — le niveau était FIXE à
+      // `important`, y compris sur « a démarré sans formateur principal ». Or
+      // c'est le seul état vers lequel les quatre alertes critiques du cycle
+      // formateur se rabattent une fois la session commencée : elles s'éteignent
+      // toutes à `dateDebut`, et celle-ci reprend — en DESSOUS. Une session qui
+      // démarre sans personne descendait donc d'un cran au pire moment.
+      // `formateur_mission_expiree`, où l'affectation TIENT ENCORE, est
+      // catalogué critique : l'écart de niveau disait l'inverse du réel.
+      niveau: (passee ? "critique" : "important") as AlerteNiveau,
       titre: passee
         ? "Session démarrée sans formateur principal"
         : "Session à J-7 sans formateur principal",
@@ -1763,26 +1771,61 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
   return alertes;
 }
 
-/** R14 — Convention tripartite manquante : opcoSubrogation = true + non signée + J-3. */
+/**
+ * R14 — Convention tripartite manquante : opcoSubrogation = true + non signée + J-3.
+ *
+ * 🔴 2026-09-05 (audit du moteur, trou n°4) — CETTE ALERTE CRITIQUE
+ * S'ÉTEIGNAIT TOUTE SEULE AU MOMENT OÙ LE RISQUE DEVENAIT UN FAIT.
+ *
+ * Le `where` exigeait `statut: "planifiee"`. Le jour du démarrage, le cron fait
+ * passer la session en `en_cours`, la règle cesse de produire la candidate, et
+ * `resolutionAuto: true` referme l'alerte au tour suivant. Autrement dit : la
+ * subrogation est définitivement perdue — l'OPCO ne paiera pas directement, et
+ * c'est le client qui devra avancer — et c'est PRÉCISÉMENT à cet instant que la
+ * console redevient silencieuse. L'administrateur voit une alerte disparaître
+ * et en déduit qu'elle a été traitée.
+ *
+ * ⚠️ Le contraste était déjà visible dans ce fichier : `regleConventionFormation`
+ * (R17), qui garde la convention de formation, couvre bien
+ * `planifiee | en_cours | realisee` — avec le commentaire « une session DÉJÀ
+ * DÉMARRÉE sans convention était donc parfaitement silencieuse ». Le même
+ * défaut, sur la pièce voisine, avait été corrigé sans que celle-ci le soit.
+ *
+ * La borne basse de 365 jours suit la doctrine de fenêtre glissante appliquée
+ * cinq fois ailleurs : sans elle, le premier passage remonterait tout
+ * l'historique d'un coup, et une salve d'alertes critiques noierait les vraies.
+ */
 async function regleConventionTripartite(now: Date): Promise<AlerteCandidate[]> {
   const j3 = daysFromNow(3, now);
   const sessions = await prisma.trainingSession.findMany({
     where: {
-      statut: "planifiee",
+      statut: { in: ["planifiee", "en_cours"] },
       opcoSubrogation: true,
       conventionTripartiteSigneeAt: null,
-      dateDebut: { lte: j3 },
+      dateDebut: { lte: j3, gte: daysAgo(365, now) },
     },
     select: { id: true, numero: true, dateDebut: true },
   });
-  return sessions.map((s) => ({
-    code: "convention_tripartite_manquante",
-    niveau: "critique" as AlerteNiveau,
-    titre: "Convention tripartite manquante (subrogation OPCO)",
-    message: `La session ${s.numero} (démarrage le ${s.dateDebut.toLocaleDateString("fr-FR")}) est en subrogation OPCO mais la convention tripartite n'est pas signée.`,
-    cibleType: "TrainingSession",
-    cibleId: s.id,
-  }));
+  return sessions.map((s) => {
+    // Ce que l'alerte DEMANDE change quand la session a démarré : avant, il
+    // s'agit encore de faire signer ; après, la subrogation est perdue et il
+    // faut décider qui facture. Une alerte qui continue à dire « faites signer »
+    // quand il n'y a plus rien à signer se fait ignorer.
+    const demarree = s.dateDebut.getTime() <= now.getTime();
+    const date = s.dateDebut.toLocaleDateString("fr-FR");
+    return {
+      code: "convention_tripartite_manquante",
+      niveau: "critique" as AlerteNiveau,
+      titre: demarree
+        ? "Session démarrée sans convention tripartite (subrogation OPCO perdue)"
+        : "Convention tripartite manquante (subrogation OPCO)",
+      message: demarree
+        ? `La session ${s.numero} a démarré le ${date} en subrogation OPCO sans convention tripartite signée. La subrogation n'est plus opposable à l'OPCO : ou bien la convention est régularisée et acceptée, ou bien la facture part au client, qui devra avancer les fonds.`
+        : `La session ${s.numero} (démarrage le ${date}) est en subrogation OPCO mais la convention tripartite n'est pas signée.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
+  });
 }
 
 /**
@@ -2568,7 +2611,15 @@ async function regleVigilanceUrssaf(now: Date): Promise<AlerteCandidate[]> {
   return alertes;
 }
 
-/** R16 — Demandes RGPD non traitées > 30 jours. */
+/**
+ * R16 — Demandes RGPD non traitées > 30 jours.
+ *
+ * 🔴 2026-09-05 (audit du moteur, trou n°10) — le niveau était `info`, ici comme
+ * au catalogue. L'article 12.3 du RGPD donne UN MOIS pour répondre à une demande
+ * d'effacement : quand cette règle lève, le délai n'est pas « proche », il est
+ * DÉPASSÉ, et le manquement est opposable devant la CNIL. `info` rangeait ce
+ * fait dans la colonne qu'on parcourt en diagonale, à côté d'un devis expiré.
+ */
 async function regleRgpdSuppression(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(30, now);
   const demandes = await prisma.rgpdDemande.findMany({
@@ -2581,7 +2632,7 @@ async function regleRgpdSuppression(now: Date): Promise<AlerteCandidate[]> {
   });
   return demandes.map((d) => ({
     code: "suppression_rgpd_j30",
-    niveau: "info" as AlerteNiveau,
+    niveau: "important" as AlerteNiveau,
     titre: "Demande de suppression RGPD non traitée depuis 30 jours",
     message: `Une demande de suppression RGPD (trainee ${d.traineeId}) est en attente depuis le ${d.demandeAt.toLocaleDateString("fr-FR")} (>30 jours).`,
     cibleType: "RgpdDemande",
@@ -3018,13 +3069,33 @@ async function regleMissionFormateurExpiree(now: Date): Promise<AlerteCandidate[
   return out;
 }
 
-/** Formateur affecté sur des jours où il s'est déclaré indisponible (congés, maladie…). */
+/**
+ * Formateur affecté sur des jours où il s'est déclaré indisponible (congés, maladie…).
+ *
+ * 🔴 2026-09-05 (audit du moteur, trou n°4) — la borne était `dateDebut > now`
+ * + `statut: "planifiee"` : l'alerte se fermait **le jour où la session
+ * commence**, c'est-à-dire au moment exact où le formateur est censé animer
+ * alors qu'il s'est déclaré absent. Le risque devenait un fait, et la console
+ * se taisait.
+ *
+ * ⚠️ La borne est désormais posée sur `dateFin` et non sur `dateDebut` : la
+ * session reste candidate tant qu'elle n'est pas terminée depuis plus d'une
+ * semaine. Ce n'est pas un détail de commodité — c'est ce qui garde la fenêtre
+ * de lecture `listIndisposEntre` étroite. Une borne basse de 365 jours sur
+ * `dateDebut`, comme ailleurs dans ce fichier, ferait lire deux ans
+ * d'indisponibilités à chaque balayage pour ne rien trouver.
+ *
+ * Les sept jours de grâce après la fin ne servent pas à rattraper (il n'y a
+ * plus rien à déplacer) : ils laissent le temps de LIRE, et de consigner
+ * l'incident si le formateur n'est effectivement pas venu.
+ */
 async function regleFormateurIndisponibleSurSession(now: Date): Promise<AlerteCandidate[]> {
   const horizon = daysFromNow(365, now);
   const sessions = await prisma.trainingSession.findMany({
     where: {
-      statut: "planifiee",
-      dateDebut: { gt: now, lte: horizon },
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { lte: horizon },
+      dateFin: { gte: daysAgo(7, now) },
       sessionFormateurs: { some: {} },
     },
     select: {
@@ -3064,13 +3135,25 @@ async function regleFormateurIndisponibleSurSession(now: Date): Promise<AlerteCa
         conflits.push(`${sf.trainer.prenom} ${sf.trainer.nom} — ${formulerConflit(c)}`);
     }
     if (conflits.length === 0) continue;
+    // Deux situations, deux gestes. Avant le démarrage, on déplace ou on
+    // remplace. Après, il n'y a plus rien à déplacer : la question devient
+    // « qui a animé, et l'a-t-on tracé ? ». Une alerte qui réclame un geste
+    // devenu impossible apprend à être ignorée — et il en reste quatre sur ce
+    // même écran.
+    const demarree = s.dateDebut.getTime() <= now.getTime();
     out.push({
       code: "formateur_indisponible_sur_session",
       niveau: "critique",
-      titre: "Formateur indisponible sur les dates de la session",
-      message:
-        `${designerSession(s)} est vendue sur des jours où son formateur s'est déclaré indisponible : ` +
-        `${conflits.join(" ; ")}. Déplacez la session, ou changez de formateur.`,
+      titre: demarree
+        ? "Session tenue sur des jours d'indisponibilité déclarée du formateur"
+        : "Formateur indisponible sur les dates de la session",
+      message: demarree
+        ? `${designerSession(s)} a démarré sur des jours où son formateur s'était déclaré indisponible : ` +
+          `${conflits.join(" ; ")}. Vérifiez QUI a réellement animé : si ce n'est pas lui, l'émargement ` +
+          `et le certificat de réalisation nomment la mauvaise personne ; si personne n'est venu, ` +
+          `il y a un incident à consigner et un client à rappeler.`
+        : `${designerSession(s)} est vendue sur des jours où son formateur s'est déclaré indisponible : ` +
+          `${conflits.join(" ; ")}. Déplacez la session, ou changez de formateur.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
@@ -3078,12 +3161,32 @@ async function regleFormateurIndisponibleSurSession(now: Date): Promise<AlerteCa
   return out;
 }
 
-/** Formateur principal sans habilitation ACTIVE sur la formation de la session (ind.21/22). */
+/**
+ * Formateur principal sans habilitation ACTIVE sur la formation de la session (ind.21/22).
+ *
+ * 🔴 2026-09-05 (audit du moteur, trou n°4) — la borne était `dateDebut > now`
+ * + `statut: "planifiee"` : **l'alerte se fermait le jour où le formateur non
+ * habilité anime.** Les indicateurs 21 et 22 portent sur la qualification de
+ * celui qui a effectivement dispensé l'action ; une session animée sans
+ * habilitation est une non-conformité constituée, et c'était exactement l'état
+ * dans lequel la console cessait d'en parler.
+ *
+ * La borne suit `dateFin` plutôt que `dateDebut`, comme la règle
+ * d'indisponibilité juste au-dessus : la session reste candidate tant qu'elle
+ * n'est pas finie depuis plus d'une semaine.
+ *
+ * ⚠️ Escalade en `critique` une fois la session commencée, alors que le
+ * catalogue porte `important`. Ce n'est pas un oubli : avant animation, le
+ * geste est simple et l'écart réparable (habiliter, ou changer de formateur) ;
+ * après, l'écart est au dossier et se lit lors d'un audit. La divergence est
+ * DÉCLARÉE dans l'entrée du catalogue, parce que l'audit du 2026-09-04 a montré
+ * qu'une divergence tacite ne se distingue plus d'une erreur.
+ */
 async function regleFormateurNonHabiliteAssigne(now: Date): Promise<AlerteCandidate[]> {
   const sessions = await prisma.trainingSession.findMany({
     where: {
-      statut: "planifiee",
-      dateDebut: { gt: now },
+      statut: { in: ["planifiee", "en_cours"] },
+      dateFin: { gte: daysAgo(7, now) },
       formateurPrincipalId: { not: null },
     },
     select: {
@@ -3092,6 +3195,7 @@ async function regleFormateurNonHabiliteAssigne(now: Date): Promise<AlerteCandid
       titreSession: true,
       formationId: true,
       formateurPrincipalId: true,
+      dateDebut: true,
       client: { select: { raisonSociale: true } },
       formateurPrincipal: {
         select: {
@@ -3110,18 +3214,579 @@ async function regleFormateurNonHabiliteAssigne(now: Date): Promise<AlerteCandid
     // d'habilitation ACTIVE, sans exception de statut — pas même le dirigeant.
     const habilite = f.habilitations.some((h) => h.formationId === s.formationId);
     if (habilite) continue;
+    const demarree = s.dateDebut.getTime() <= now.getTime();
     out.push({
       code: "formateur_non_habilite_assigne",
-      niveau: "important",
-      titre: "Formateur principal non habilité sur cette formation",
-      message:
-        `${f.prenom} ${f.nom} est formateur principal de ${designerSession(s)} sans habilitation active ` +
-        "sur cette formation. Habilitez-le (fiche formateur → Habilitations), ou changez de formateur (ind.21/22).",
+      niveau: demarree ? "critique" : "important",
+      titre: demarree
+        ? "Session animée par un formateur non habilité"
+        : "Formateur principal non habilité sur cette formation",
+      message: demarree
+        ? `${f.prenom} ${f.nom} anime ${designerSession(s)}, démarrée le ${s.dateDebut.toLocaleDateString("fr-FR")}, ` +
+          "sans habilitation active sur cette formation. L'écart n'est plus prévisible, il est au dossier : " +
+          "les indicateurs 21 et 22 portent sur la qualification de celui qui a réellement dispensé l'action. " +
+          "Habilitez-le en versant la preuve de compétence à sa fiche, ou consignez l'écart."
+        : `${f.prenom} ${f.nom} est formateur principal de ${designerSession(s)} sans habilitation active ` +
+          "sur cette formation. Habilitez-le (fiche formateur → Habilitations), ou changez de formateur (ind.21/22).",
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
   }
   return out;
+}
+
+/**
+ * 🔴 LE FORMATEUR A DIT OUI, PUIS S'EST DÉSISTÉ — ET RIEN NE LE DISAIT.
+ *
+ * Audit du moteur d'alertes, 2026-09-04, trou n°1 : **le seul risque du cycle
+ * formateur qui était 100 % muet**. Les sept codes existants partent tous d'une
+ * `MissionFormateur` restée sans réponse — refusée, expirée, sans réponse dans
+ * le délai, non habilitée. Ici, la réponse a été DONNÉE, puis reprise : aucun
+ * de ces états ne s'applique, et la session tombe en silence.
+ *
+ * Le fait n'a qu'une seule trace dans ce dépôt : le registre des incidents
+ * (`faitIntervenant: desistement | annulation_tardive`). Il n'était lu que par
+ * `sous_traitant_incidents_repetes`, qui exige **DEUX faits sur 24 mois** et
+ * regarde vers la reconduction — c'est-à-dire vers le passé, et pour un autre
+ * usage. La session qui tombe demain n'y apparaît jamais.
+ *
+ * ⚠️ CETTE RÈGLE NE LIT PAS `MissionFormateurStatut.retiree`, contrairement à
+ * ce que l'audit proposait, et c'est une correction vérifiée dans le code :
+ * `retiree` n'est jamais posé que sur une mission `en_attente`, par
+ * l'ORGANISME (`proposerMission` et `retirerMissionsEnAttente`, les deux seules
+ * écritures du dépôt). C'est la ménagerie normale d'une co-animation proposée à
+ * deux formateurs. En faire une alerte critique produirait du bruit à chaque
+ * affectation réussie — et le bruit apprend à ignorer les critiques.
+ *
+ * ⚠️ On ne lève PAS si le trou est déjà bouché : une mission acceptée par
+ * quelqu'un d'autre, ou un formateur principal qui n'est pas le désistant,
+ * suffisent. Sans cette garde, l'alerte crierait sur une session qu'on vient de
+ * sauver, et son extinction (`resolutionAuto`) n'aurait plus rien à dire.
+ *
+ * Fenêtre : la session ne doit pas être finie depuis plus de deux jours. Un
+ * désistement sur une session déjà passée relève du registre des incidents et
+ * de la reconduction, pas de l'urgence.
+ */
+async function regleFormateurDesisteSession(now: Date): Promise<AlerteCandidate[]> {
+  const incidents = await prisma.incident.findMany({
+    where: {
+      faitIntervenant: { in: ["desistement", "annulation_tardive"] },
+      sessionId: { not: null },
+      dateIncident: { gte: daysAgo(365, now) },
+      session: {
+        statut: { in: ["planifiee", "en_cours"] },
+        dateFin: { gte: daysAgo(2, now) },
+      },
+    },
+    select: {
+      id: true,
+      dateIncident: true,
+      faitIntervenant: true,
+      trainerId: true,
+      trainer: { select: { prenom: true, nom: true } },
+      sousTraitant: { select: { nom: true } },
+      session: {
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          statut: true,
+          dateDebut: true,
+          dateFin: true,
+          formateurPrincipalId: true,
+          client: { select: { raisonSociale: true } },
+          missionsFormateur: { where: { statut: "acceptee" }, select: { trainerId: true } },
+        },
+      },
+    },
+    take: 100,
+  });
+
+  // Une alerte par SESSION : c'est la session qu'il faut sauver, pas chaque
+  // ligne du registre. Même choix que `regleMissionFormateurExpiree`.
+  const vues = new Set<string>();
+  const out: AlerteCandidate[] = [];
+  for (const i of incidents) {
+    const s = i.session;
+    if (s === null) continue;
+    // Gardes applicatives doublant le `where` — les mocks de test ignorent le
+    // SQL, et une règle critique qui lèverait sur une session terminée depuis
+    // six mois est exactement le bruit que ce catalogue combat.
+    if (s.statut !== "planifiee" && s.statut !== "en_cours") continue;
+    if (s.dateFin.getTime() < daysAgo(2, now).getTime()) continue;
+
+    // Le trou est-il déjà bouché ? Quelqu'un d'AUTRE que le désistant a
+    // accepté, ou tient la place de formateur principal.
+    const desistantId = i.trainerId;
+    const remplace =
+      s.missionsFormateur.some((m) => m.trainerId !== desistantId) ||
+      (s.formateurPrincipalId !== null && s.formateurPrincipalId !== desistantId);
+    if (remplace) continue;
+
+    if (vues.has(s.id)) continue;
+    vues.add(s.id);
+
+    const qui =
+      i.trainer !== null
+        ? `${i.trainer.prenom} ${i.trainer.nom}`.trim()
+        : (i.sousTraitant?.nom ?? "L'intervenant");
+    const fait = i.faitIntervenant === "desistement" ? "s'est désisté" : "a annulé tardivement";
+    const quand = i.dateIncident.toLocaleDateString("fr-FR");
+    const debut = s.dateDebut.toLocaleDateString("fr-FR");
+    const demarree = s.dateDebut.getTime() <= now.getTime();
+
+    out.push({
+      code: "formateur_desiste_session",
+      niveau: "critique",
+      titre: demarree
+        ? "Session en cours sans intervenant confirmé après un désistement"
+        : "Formateur désisté — session sans intervenant confirmé",
+      message:
+        `${qui} ${fait} le ${quand} pour ${designerSession(s)}, qui ${demarree ? "a démarré" : "démarre"} le ${debut}. ` +
+        `Aucun autre formateur n'a accepté cette session et aucun principal n'y est affecté. ` +
+        `Trouvez un remplaçant, ou reportez la session et prévenez le client — le registre des ` +
+        `incidents garde la trace, il ne trouve personne.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
+/**
+ * 🔴 LE STAGIAIRE N'A PAS ÉTÉ CONVOQUÉ, ET PERSONNE NE SURVEILLAIT LA COLONNE
+ * QUI LE DIT.
+ *
+ * Audit du moteur, trou n°5. `Enrollment.convocationEnvoyeeAt` porte au schéma
+ * le récit d'un défaut déjà payé : « vérifié en production le 15/08/2026,
+ * AUCUNE convocation n'était jamais partie, sur tout l'historique ». La colonne
+ * a été créée pour rendre le cron RATTRAPANT — et elle n'est lue que par ce
+ * cron, comme garde de son propre envoi (`crons-worker.ts`).
+ *
+ * 🔑 Autrement dit : la colonne mesure exactement le défaut d'août, et
+ * personne ne lit la mesure. Si le cron ne tourne pas — déploiement, coupure
+ * Redis, file BullMQ bloquée — la colonne reste nulle et le silence est
+ * parfait. Il a fallu aller CHERCHER en production pour découvrir le premier ;
+ * cette règle est ce qui évite de recommencer.
+ *
+ * ⚠️ J-2 et non J-1 : la convocation part au plus tard à J-2 dans ce dépôt, et
+ * une alerte qui tombe le jour même de l'envoi accuserait un envoi normal. Deux
+ * jours laissent le temps d'envoyer à la main.
+ *
+ * ⚠️ Bornée aux sessions `planifiee` NON commencées : après le début, convoquer
+ * n'informe plus personne. Ce qui reste — le stagiaire n'est pas venu — relève
+ * de l'émargement et du registre des incidents. C'est la même borne que
+ * `positionnement_sans_reponse`, et pour la même raison : une alerte doit
+ * GARDER, pas CONSTATER.
+ */
+async function regleConvocationStagiaireManquante(now: Date): Promise<AlerteCandidate[]> {
+  const dansDeuxJours = daysFromNow(2, now);
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      session: { statut: "planifiee", dateDebut: { lte: dansDeuxJours, gte: now } },
+      ...inscriptionsActives(),
+      convocationEnvoyeeAt: null,
+    },
+    select: {
+      id: true,
+      convocationEnvoyeeAt: true,
+      trainee: { select: { nom: true, prenom: true } },
+      session: { select: { numero: true, dateDebut: true } },
+    },
+    take: 200,
+  });
+  return enrollments
+    // Garde applicative doublant le `where` : les mocks ignorent le SQL, et
+    // accuser d'un manque une convocation DÉJÀ partie serait le pire des
+    // messages — celui qu'on ne peut pas fermer.
+    .filter((e) => e.convocationEnvoyeeAt === null)
+    .map((e) => ({
+      code: "convocation_stagiaire_manquante",
+      niveau: "critique" as AlerteNiveau,
+      titre: "Stagiaire non convoqué à moins de 2 jours du début",
+      message:
+        `${e.trainee.prenom} ${e.trainee.nom} n'a reçu aucune convocation pour la session ` +
+        `${e.session.numero}, qui démarre le ${e.session.dateDebut.toLocaleDateString("fr-FR")}. ` +
+        `L'information du bénéficiaire avant l'entrée en formation est due (indicateur 9), et ` +
+        `sans convocation il ne saura ni où ni quand se présenter. Envoyez-la depuis la fiche ` +
+        `de session.`,
+      cibleType: "Enrollment",
+      cibleId: e.id,
+    }));
+}
+
+/**
+ * 🔴 UNE SESSION À DISTANCE SANS LIEN DE CONNEXION.
+ *
+ * Audit du moteur, trou n°3 : `TrainingSession.lieuVisioUrl` n'apparaissait
+ * NULLE PART dans ce fichier. La seule règle qui regarde le distanciel,
+ * `regleContactSurPlaceAbsent`, ne lit que le contact à joindre — et sort en
+ * `info`, « c'est gênant, pas bloquant ». Sans lien, ce n'est plus gênant : la
+ * formation n'a pas lieu, et le lieu de déroulement est une mention de la
+ * convention (L.6353-1, off.9).
+ *
+ * ⚠️ Le lien ne se rattrape pas le matin même : il figure dans la convocation
+ * du stagiaire ET dans celle du formateur, toutes deux parties avant J-2. Le
+ * poser tard oblige à réécrire à tout le monde.
+ *
+ * ⚠️ La fenêtre COUVRE `en_cours`, et c'est le point du trou n°4 appliqué
+ * d'avance : quatre alertes critiques de ce fichier s'éteignaient au démarrage,
+ * c'est-à-dire quand le risque devient un fait. Une session à distance qui a
+ * commencé sans lien n'a personne dans la salle — c'est l'instant où il faut
+ * crier le plus fort, pas se taire.
+ */
+async function regleSessionDistancielSansLien(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      lieuType: "distanciel",
+      dateDebut: { lte: daysFromNow(2, now) },
+      // Tant que la session n'est pas finie depuis deux jours : après, le lien
+      // ne sert plus à rien et l'écart se consigne.
+      dateFin: { gte: daysAgo(2, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      lieuType: true,
+      lieuVisioUrl: true,
+      client: { select: { raisonSociale: true } },
+    },
+    take: 100,
+  });
+
+  return sessions
+    // Gardes applicatives doublant le `where` — les mocks ignorent le SQL, et
+    // annoncer « session à distance » sur une session en salle enverrait
+    // chercher un lien qui n'a pas lieu d'être.
+    .filter((s) => s.lieuType === "distanciel" && (s.lieuVisioUrl ?? "").trim().length === 0)
+    .map((s) => {
+      const demarree = s.dateDebut.getTime() <= now.getTime();
+      const date = s.dateDebut.toLocaleDateString("fr-FR");
+      return {
+        code: "session_distanciel_sans_lien",
+        niveau: "critique" as AlerteNiveau,
+        titre: demarree
+          ? "Session à distance démarrée sans lien de connexion"
+          : "Session à distance sans lien de connexion",
+        message: demarree
+          ? `${designerSession(s)} est à distance, a démarré le ${date}, et aucun lien de connexion n'est enregistré. Personne ne peut se connecter : posez le lien et renvoyez-le immédiatement aux inscrits et au formateur.`
+          : `${designerSession(s)} est à distance et démarre le ${date} sans lien de connexion enregistré. Le lien part avec les convocations : sans lui, ni les stagiaires ni le formateur ne sauront où se rendre, et le lieu de déroulement manque à la convention.`,
+        cibleType: "TrainingSession",
+        cibleId: s.id,
+      };
+    });
+}
+
+/**
+ * 🔴 LES QUATRE RÈGLES D'ÉMARGEMENT NE SAVENT COMPTER QUE JUSQU'À ZÉRO.
+ *
+ * Audit du moteur, trou n°9. `regleEmargementManquant` porte
+ * `sansAucuneTraceDePresence()` ; `regleSessionBloqueeEnCours` et
+ * `regleEmargementAucuneSignature` portent `enrollments: { none: … }`. Toutes
+ * posent la même question — « pas UNE seule trace ? » — et une session où onze
+ * inscrits sur douze ont signé y répond « non ». Le douzième est invisible.
+ *
+ * Ce n'est pas totalement muet : `cloture_trace_presence_incomplete`
+ * (`signal-cloture.ts`) dit le cas partiel — mais À LA CLÔTURE, quand les
+ * jetons ont expiré et que le seul geste restant est de sortir du dispositif
+ * ceux qui ont renoncé. Celle-ci se lève PENDANT, tant qu'une signature est
+ * encore recevable. Les deux ne parlent pas au même moment, et c'est pour cela
+ * qu'elles coexistent plutôt que de se remplacer.
+ *
+ * ⚠️ La fenêtre est celle de `regleEmargementAucuneSignature`, sa jumelle en
+ * négatif : session commencée, jetons encore vivants (48 h après la fin). Au
+ * même instant, l'une dit « personne n'a signé », l'autre « tout le monde n'a
+ * pas signé » — et elles s'excluent, puisque la seconde exige qu'au moins un
+ * inscrit porte une trace.
+ *
+ * ⚠️ `important` et non `critique`. La session a des preuves, elle n'en a pas
+ * assez. Trois critiques d'émargement existent déjà pour le dossier vide ; en
+ * ajouter un quatrième sur le cas partiel apprendrait à les ignorer tous.
+ */
+async function regleEmargementPartiel(now: Date): Promise<AlerteCandidate[]> {
+  const finJetons = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { lte: now },
+      dateFin: { gte: finJetons },
+      AND: [
+        // Au moins un inscrit actif PORTE une trace — c'est ce qui distingue le
+        // partiel du zéro, et ce qui garantit qu'on ne double aucune des trois
+        // règles du dossier vide.
+        { enrollments: { some: { ...inscriptionsActives(), ...porteUneTraceDePresence() } } },
+        // …et au moins un n'en porte aucune.
+        { enrollments: { some: { ...inscriptionsActives(), ...sansAucuneTraceDePresence() } } },
+      ],
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateFin: true,
+      client: { select: { raisonSociale: true } },
+      enrollments: {
+        where: inscriptionsActives(),
+        select: {
+          emargementSigneAt: true,
+          tauxPresencePct: true,
+          trainee: { select: { nom: true, prenom: true } },
+        },
+      },
+    },
+    take: 50,
+  });
+
+  const out: AlerteCandidate[] = [];
+  for (const s of sessions) {
+    // Le comptage est refait en mémoire, et pas seulement parce que les mocks
+    // ignorent le SQL : c'est lui qui produit les NOMS. Une alerte qui dirait
+    // « 3 inscrits sans trace » sans les nommer obligerait à rouvrir la fiche
+    // pour savoir qui relancer — et sur une session de douze, personne ne le
+    // fait.
+    const sansTrace = s.enrollments.filter(
+      (e) => e.emargementSigneAt === null && e.tauxPresencePct === null,
+    );
+    const total = s.enrollments.length;
+    if (sansTrace.length === 0 || sansTrace.length === total) continue;
+
+    const noms = sansTrace
+      .slice(0, 5)
+      .map((e) => `${e.trainee.prenom} ${e.trainee.nom}`.trim())
+      .join(", ");
+    const reste = sansTrace.length > 5 ? ` et ${sansTrace.length - 5} autre(s)` : "";
+    out.push({
+      code: "emargement_partiel",
+      niveau: "important",
+      titre: "Émargement incomplet : une partie des inscrits n'a aucune trace",
+      message:
+        `${designerSession(s)} : ${sansTrace.length} inscrit(s) sur ${total} ne portent aucune ` +
+        `trace de présence — ${noms}${reste}. Les liens d'émargement expirent 48 h après le ` +
+        `${s.dateFin.toLocaleDateString("fr-FR")} : après, une attestation délivrée à ces ` +
+        `personnes ne serait adossée à aucune preuve, et l'écart devra être consigné.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
+/**
+ * 🔴 PLUS D'INSCRITS QUE DE PLACES VENDUES.
+ *
+ * Audit du moteur, trou n°12 : `nbParticipantsPrevus` n'était lu que par les
+ * écrans et les devis. Aucune règle ne comparait l'effectif réel à l'effectif
+ * conventionné, si bien que le dépassement se découvre dans la salle — ou sur
+ * la facture, quand l'OPCO refuse la part au-delà du barème.
+ *
+ * Ce n'est pas qu'une affaire de chaises : l'effectif conditionne le montant
+ * conventionné, la prise en charge « par stagiaire », et l'engagement
+ * pédagogique pris au catalogue (indicateur 17). Un groupe plus nombreux que
+ * prévu est un avenant à la convention, pas un détail d'intendance.
+ *
+ * ⚠️ On compte les inscriptions ACTIVES (`inscriptionsActives`) : un abandon
+ * n'occupe pas une place, et compter les sortis ferait crier sur une session
+ * qui s'est justement vidée. C'est le même dénominateur que le taux de présence
+ * et que le BPF — trois chiffres qui doivent coïncider.
+ */
+async function regleEffectifDepasse(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      // Fenêtre glissante : sans borne, le premier passage remonterait tout
+      // l'historique des sessions jamais rectifiées.
+      dateFin: { gte: daysAgo(30, now) },
+      dateDebut: { lte: daysFromNow(365, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      nbParticipantsPrevus: true,
+      client: { select: { raisonSociale: true } },
+      enrollments: { where: inscriptionsActives(), select: { id: true } },
+    },
+    take: 100,
+  });
+
+  return sessions
+    .filter((s) => s.nbParticipantsPrevus > 0 && s.enrollments.length > s.nbParticipantsPrevus)
+    .map((s) => ({
+      code: "effectif_depasse",
+      niveau: "important" as AlerteNiveau,
+      titre: "Plus d'inscrits que l'effectif prévu",
+      message:
+        `${designerSession(s)} compte ${s.enrollments.length} inscrits actifs pour ` +
+        `${s.nbParticipantsPrevus} prévus (démarrage le ${s.dateDebut.toLocaleDateString("fr-FR")}). ` +
+        `L'effectif conditionne le montant conventionné, la prise en charge au barème « par ` +
+        `stagiaire » et l'engagement pédagogique du catalogue : régularisez la convention, ou ` +
+        `reportez les inscrits en trop sur une autre date.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    }));
+}
+
+/**
+ * 🔴 LA PRESTATION EST LIVRÉE, ET AUCUNE FACTURE N'EXISTE.
+ *
+ * Audit du moteur, trou n°10. Les quatre règles de recouvrement de ce fichier —
+ * `facture_impayee_j60`, `facture_sans_echeance`, `relance_sans_effet`,
+ * `financeur_paiement_en_retard` — partent toutes d'une `FactureFormation` qui
+ * EXISTE. La session réalisée jamais facturée est hors de leur champ à toutes,
+ * et c'est le seul cas où l'argent ne revient pas sans que rien ne vieillisse :
+ * il n'y a pas de ligne dans la balance âgée, donc rien à voir.
+ *
+ * ⚠️ J+15 après la fin, pas le lendemain : la clôture, l'émargement et
+ * l'attestation passent d'abord. Facturer avant d'avoir clos revient à
+ * facturer un effectif qu'on n'a pas encore arrêté.
+ *
+ * ⚠️ `montantHtCents > 0` : une action interne ou offerte n'a rien à émettre,
+ * et l'alerte serait insoluble. Une facture `annulee` ne compte pas — elle est
+ * précisément le cas où il faut en réémettre une.
+ *
+ * ⚠️ Un BROUILLON est distingué d'une absence totale, et le message le dit. Ce
+ * n'est pas de la cosmétique : le geste diffère (émettre une pièce déjà
+ * préparée, ou tout créer), et une alerte qui réclame ce qui est déjà à moitié
+ * fait se fait ignorer.
+ */
+async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "realisee",
+      dateFin: { lte: daysAgo(15, now), gte: daysAgo(365, now) },
+      montantHtCents: { gt: 0 },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateFin: true,
+      montantHtCents: true,
+      client: { select: { raisonSociale: true } },
+      facturesFormation: { select: { statut: true } },
+    },
+    take: 100,
+  });
+
+  const out: AlerteCandidate[] = [];
+  for (const s of sessions) {
+    // 🔴 Garde applicative doublant `montantHtCents: { gt: 0 }` — et elle n'est
+    // pas décorative : le témoin « se tait sur une session à 0 € » a ROUGI sans
+    // elle (`expected { …(6) } to be undefined`), parce que les mocks de test
+    // ignorent le SQL. Réclamer une facture pour une action offerte produirait
+    // une alerte qu'aucun geste ne ferme.
+    if (s.montantHtCents <= 0) continue;
+    const emises = s.facturesFormation.filter(
+      (f) => f.statut !== "annulee" && f.statut !== "brouillon",
+    );
+    if (emises.length > 0) continue;
+    const brouillons = s.facturesFormation.filter((f) => f.statut === "brouillon").length;
+    const fin = s.dateFin.toLocaleDateString("fr-FR");
+    const montant = (s.montantHtCents / 100).toLocaleString("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+    });
+    out.push({
+      code: "session_realisee_non_facturee",
+      niveau: "important",
+      titre: "Session réalisée jamais facturée",
+      message:
+        brouillons > 0
+          ? `${designerSession(s)} est réalisée depuis le ${fin} et sa facture est restée en BROUILLON : ${montant} HT ne sont ni émis, ni exigibles, ni suivis par les relances. Émettez-la.`
+          : `${designerSession(s)} est réalisée depuis le ${fin} et aucune facture n'a été émise : ${montant} HT n'apparaissent nulle part — ni dans les encaissements attendus, ni dans la balance âgée, ni dans les relances. Créez la facture depuis la fiche de session.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
+/**
+ * 🔴 UNE RC PRO QUI TOMBE HORS SOUS-TRAITANCE NE DISAIT RIEN.
+ *
+ * Audit du moteur, trou n°11 — implémenté PARTIELLEMENT, et le partiel est le
+ * cœur de la décision.
+ *
+ * `rcProAttestationUrl` et `rcProEcheanceAt` sont des colonnes de `Trainer` :
+ * TOUS les formateurs peuvent en porter une. Mais `regleVigilanceSousTraitance`
+ * filtre sur `statut: "sous_traitant"`, si bien qu'une attestation versée à la
+ * fiche d'un formateur salarié ou dirigeant expirait sans que rien ne le dise.
+ *
+ * ⚠️ CETTE RÈGLE NE SIGNALE QUE L'EXPIRATION, JAMAIS L'ABSENCE.
+ * `requisPourStatut` (`trainers/conformite.ts`) est la source de vérité des
+ * pièces exigées : elle n'exige la RC pro d'aucun statut, et la RC pro de
+ * l'organisme couvre ses propres salariés. Réclamer chaque nuit une pièce que
+ * personne ne doit fournir produirait une alerte qu'AUCUN GESTE ne ferme — le
+ * motif écrit trois fois dans le catalogue pour lequel on n'alerte jamais sur
+ * un devoir qui n'existe pas. Le distinguo est celui que la règle
+ * sous-traitance pose déjà : absente → non exigée à l'entrée ; expirée → elle
+ * existait, elle est tombée. Seul le second cas a un sens ici, et il l'a quel
+ * que soit le statut.
+ *
+ * ⛔ LA VIGILANCE URSSAF N'EST PAS ÉTENDUE, contrairement à la lettre de
+ * l'audit. `vigilanceRequise` la réserve à l'indépendant, et c'est le droit qui
+ * le veut : l'article L.8222-1 vise le donneur d'ordre d'un PRESTATAIRE, pas
+ * l'employeur de son propre salarié. L'étendre exigerait de modifier le SSOT de
+ * conformité et produirait une alerte critique permanente et insoluble sur
+ * chaque salarié. C'est un arbitrage, il est signalé, il n'est pas pris ici.
+ */
+async function regleRcProFormateurHorsSousTraitance(now: Date): Promise<AlerteCandidate[]> {
+  const dans60j = daysFromNow(60, now);
+  const formateurs = await prisma.trainer.findMany({
+    where: {
+      actif: true,
+      // Les sous-traitants sont déjà couverts par `regleVigilanceSousTraitance`,
+      // avec leurs propres codes. Deux alertes pour le même fait, ce sont deux
+      // cycles de vie à tenir et un lecteur qui ne sait plus laquelle fermer.
+      statut: { not: "sous_traitant" },
+      rcProEcheanceAt: { not: null },
+    },
+    select: {
+      id: true,
+      nom: true,
+      prenom: true,
+      statut: true,
+      rcProEcheanceAt: true,
+    },
+  });
+
+  const alertes: AlerteCandidate[] = [];
+  for (const t of formateurs) {
+    // Gardes applicatives doublant le `where` : les mocks ignorent le SQL, et
+    // doubler l'alerte d'un sous-traitant est précisément ce que le filtre évite.
+    if (t.statut === "sous_traitant") continue;
+    if (t.rcProEcheanceAt === null) continue;
+
+    const nom = `${t.prenom} ${t.nom}`.trim();
+    const echeance = t.rcProEcheanceAt.toLocaleDateString("fr-FR");
+    if (t.rcProEcheanceAt <= now) {
+      alertes.push({
+        code: "formateur_rc_pro_expiree",
+        niveau: "critique",
+        titre: "Attestation RC pro d'un formateur expirée",
+        message:
+          `L'attestation de responsabilité civile professionnelle de ${nom} a expiré le ${echeance}. ` +
+          `Elle avait été fournie et versée à sa fiche : demandez le renouvellement. ` +
+          `AXION IA reste responsable devant le client de la bonne exécution de l'action.`,
+        cibleType: "Trainer",
+        cibleId: t.id,
+      });
+    } else if (t.rcProEcheanceAt <= dans60j) {
+      alertes.push({
+        code: "formateur_rc_pro_expire_j60",
+        niveau: "important",
+        titre: "Attestation RC pro d'un formateur expire dans 60 jours",
+        message: `L'attestation RC pro de ${nom} expire le ${echeance} : demandez le renouvellement dès maintenant.`,
+        cibleType: "Trainer",
+        cibleId: t.id,
+      });
+    }
+  }
+  return alertes;
 }
 
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
@@ -3183,6 +3848,20 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "session_contact_sur_place_absent", fn: regleContactSurPlaceAbsent },
   { nom: "formateur_indisponible_sur_session", fn: regleFormateurIndisponibleSurSession },
   { nom: "formateur_non_habilite_assigne", fn: regleFormateurNonHabiliteAssigne },
+  // Audit du moteur d'alertes du 2026-09-04 — les trous restants, comblés le
+  // 2026-09-05. Chacun était muet, pas approximatif : aucune règle ne lisait
+  // `Incident.faitIntervenant` sur une session vivante, ni
+  // `Enrollment.convocationEnvoyeeAt`, ni `TrainingSession.lieuVisioUrl`, ni
+  // `nbParticipantsPrevus`, ni l'absence de facture, ni la RC pro d'un
+  // formateur hors sous-traitance — et les quatre règles d'émargement ne
+  // savaient compter que jusqu'à zéro.
+  { nom: "formateur_desiste_session", fn: regleFormateurDesisteSession },
+  { nom: "convocation_stagiaire_manquante", fn: regleConvocationStagiaireManquante },
+  { nom: "session_distanciel_sans_lien", fn: regleSessionDistancielSansLien },
+  { nom: "emargement_partiel", fn: regleEmargementPartiel },
+  { nom: "effectif_depasse", fn: regleEffectifDepasse },
+  { nom: "session_realisee_non_facturee", fn: regleSessionRealiseeNonFacturee },
+  { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

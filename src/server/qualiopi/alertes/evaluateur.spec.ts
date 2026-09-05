@@ -32,7 +32,12 @@ vi.mock("@/lib/prisma", () => ({
     // Recouvrement 2026-08-02 : relances envoyées restées sans effet.
     relanceProposee: { findMany: vi.fn() },
     // Art. 8 sous-traitance : incidents répétés d'un intervenant. [2026-08-03]
-    incident: { groupBy: vi.fn() },
+    // 🔴 `findMany` ajouté le 2026-09-05 : `formateur_desiste_session` lit le
+    // registre ligne à ligne (le désistement d'AUJOURD'HUI, pas le cumul sur 24
+    // mois). Sans ce mock, la règle lirait un mock non configuré, lèverait, et
+    // le fail-soft PAR RÈGLE avalerait l'exception — elle serait INERTE partout,
+    // tests verts compris. C'est le piège déjà payé trois fois dans ce fichier.
+    incident: { groupBy: vi.fn(), findMany: vi.fn() },
     // Fraîcheur du référentiel des offres (SPEC_PART5 §A.2). [2026-08-05]
     offreSite: { findMany: vi.fn() },
     // Diaporama du kit non déposé pour une session imminente. [2026-08-05]
@@ -100,7 +105,7 @@ const mp = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
   sousTraitant: { findMany: ReturnType<typeof vi.fn> };
-  incident: { groupBy: ReturnType<typeof vi.fn> };
+  incident: { groupBy: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
   dossierFinancement: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
@@ -147,6 +152,9 @@ function setupEmptyMocks() {
   // régression y serait passée inaperçue.
   mp.sousTraitant.findMany.mockResolvedValue([]);
   mp.incident.groupBy.mockResolvedValue([]);
+  // Même piège : sans ce mock, `formateur_desiste_session` lèverait et le
+  // fail-soft par règle l'avalerait — inerte dans tous les blocs sauf le sien.
+  mp.incident.findMany.mockResolvedValue([]);
   // Même piège que sousTraitant/incident ci-dessus : sans ce mock, la règle
   // offres_site_non_verifiees lirait un mock non configuré, lèverait, et le
   // fail-soft par règle l'avalerait — règle INERTE dans tous les autres blocs.
@@ -1334,7 +1342,12 @@ describe("evaluerAlertes — suppression_rgpd_j30", () => {
     setupEmptyMocks();
   });
 
-  it("crée une alerte info si demande de suppression RGPD >30j non traitée", async () => {
+  // 🔴 2026-09-05 — ce témoin attendait `info`, et il GARDAIT donc le défaut
+  // relevé par l'audit du moteur : l'article 12.3 du RGPD donne UN MOIS pour
+  // répondre à une demande d'effacement. Quand cette règle lève, le délai n'est
+  // pas proche, il est DÉPASSÉ — le manquement est constitué et opposable
+  // devant la CNIL. `info` le rangeait à côté d'un devis expiré.
+  it("alerte en IMPORTANT si demande de suppression RGPD >30j non traitée", async () => {
     mp.rgpdDemande.findMany.mockResolvedValue([
       {
         id: "rgpd-001",
@@ -1346,7 +1359,7 @@ describe("evaluerAlertes — suppression_rgpd_j30", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "suppression_rgpd_j30");
     expect(a).toBeDefined();
-    expect(a?.niveau).toBe("info");
+    expect(a?.niveau).toBe("important");
     expect(a?.cibleType).toBe("RgpdDemande");
     expect(a?.cibleId).toBe("rgpd-001");
   });
@@ -2665,5 +2678,807 @@ describe("evaluerAlertes — catalogue_certifiant_incoherent", () => {
 
     const alertes = await evaluerAlertes();
     expect(alertes.find((x) => x.code === "catalogue_certifiant_incoherent")).toBeDefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LES ONZE TROUS DE L'AUDIT DU 2026-09-04 — témoins des règles qui les ferment
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 Chaque bloc porte DEUX cas au minimum : un qui DÉCLENCHE et un qui NE
+// déclenche PAS. Dix zéros ne distinguent pas « aucune alerte » de « la sonde
+// ne mesure rien » — c'est le mode d'échec que ce fichier documente déjà trois
+// fois (`sousTraitant`, `offreSite`, `formation.count` : des mocks absents
+// rendaient des règles INERTES, tests verts compris).
+
+const JOUR_MS = 24 * 60 * 60 * 1000;
+const dans = (j: number) => new Date(Date.now() + j * JOUR_MS);
+const ilYA = (j: number) => new Date(Date.now() - j * JOUR_MS);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°1 — formateur_desiste_session
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — formateur_desiste_session (le seul risque 100 % muet)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  /** Un désistement au registre, sur une session qui n'a pas encore eu lieu. */
+  function desistementSurSession(session: Record<string, unknown> = {}) {
+    mp.incident.findMany.mockResolvedValue([
+      {
+        id: "inc-001",
+        dateIncident: ilYA(1),
+        faitIntervenant: "desistement",
+        trainerId: "tr-100",
+        trainer: { prenom: "Paul", nom: "Durand" },
+        sousTraitant: null,
+        session: {
+          id: "ses-900",
+          numero: "SES-2026-900",
+          titreSession: "IA pour dirigeants",
+          statut: "planifiee",
+          dateDebut: dans(2),
+          dateFin: dans(3),
+          formateurPrincipalId: null,
+          client: { raisonSociale: "BEE EDITIONS" },
+          missionsFormateur: [],
+          ...session,
+        },
+      },
+    ]);
+  }
+
+  it("🔴 déclenche en CRITIQUE : il a dit oui, puis s'est désisté, et personne ne l'a remplacé", async () => {
+    desistementSurSession();
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "formateur_desiste_session");
+    expect(a, "Aucun des sept codes du cycle formateur ne voyait ce cas.").toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-900");
+    // Le lecteur doit savoir QUI, QUAND et pour QUELLE session sans rouvrir le
+    // dossier — c'est la leçon de `designerSession`.
+    expect(a?.message).toContain("Paul Durand");
+    expect(a?.message).toContain("s'est désisté");
+    expect(a?.message).toContain("BEE EDITIONS");
+  });
+
+  it("la règle n'est PAS en échec silencieux — elle a bien tourné", async () => {
+    // 🔴 Sans le mock `incident.findMany`, la règle lèverait et le fail-soft PAR
+    // RÈGLE avalerait l'exception : « aucune alerte » et « la règle n'a jamais
+    // tourné » sont alors indiscernables. Ce témoin les sépare.
+    desistementSurSession();
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("formateur_desiste_session");
+  });
+
+  it("se tait quand un AUTRE formateur a accepté la session", async () => {
+    // Co-animation, ou remplaçant trouvé dans la journée : le trou est bouché,
+    // et crier ici viderait l'alerte de son sens.
+    desistementSurSession({ missionsFormateur: [{ trainerId: "tr-200" }] });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_desiste_session")).toBeUndefined();
+  });
+
+  it("se tait quand un remplaçant a été affecté ET a confirmé", async () => {
+    // ⚠️ Les DEUX signaux ensemble, délibérément. Un principal affecté qui n'a
+    // rien confirmé n'est pas une session sauvée — voir le `todo` D1 ci-dessous.
+    // Poser ici la seule affectation ferait de ce témoin une fixture qui ÉVITE
+    // le trou au lieu de le mesurer.
+    desistementSurSession({
+      formateurPrincipalId: "tr-200",
+      missionsFormateur: [{ trainerId: "tr-200" }],
+    });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_desiste_session")).toBeUndefined();
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🔴🔴🔴 EN ATTENTE DU CORRECTIF **D1** — NE PAS ACTIVER CE TÉMOIN AVANT.
+  //
+  // Ce que la règle ci-dessus NE COUVRE PAS, et pourquoi ce n'est pas réparable
+  // depuis ce fichier.
+  //
+  // Séquence réelle, vérifiée dans le code le 2026-09-05 :
+  //   1. le formateur A accepte la mission (`MissionFormateur.statut = acceptee`) ;
+  //   2. A se désiste — un incident est consigné ;
+  //   3. l'organisme affecte B : `assignerFormateurPrincipal`
+  //      (`src/server/actions/qualiopi/trainers.ts`) pose `formateurPrincipalId = B`,
+  //      SUPPRIME la ligne `SessionFormateur` de A… et ne touche pas à la
+  //      mission de A. `retirerMissionsEnAttente` ne bascule en `retiree` que
+  //      les missions `en_attente` (`mission-formateur.ts`) : celle de A est
+  //      `acceptee`, elle SURVIT ;
+  //   4. B ne répond jamais.
+  //
+  // Résultat : la session part sans personne de confirmé, et TROIS alertes se
+  // taisent — `formateur_mission_sans_reponse_delai` et
+  // `formateur_mission_expiree`, aveuglées par la mission fantôme de A qui
+  // affirme que la place est tenue ; et celle-ci, qui lit `formateurPrincipalId`
+  // et voit bien quelqu'un d'affecté.
+  //
+  // ⚠️ Le trou ne se ferme PAS ici. Faire dépendre cette règle d'une mission
+  // acceptée du remplaçant la ferait crier pour toujours sur les formateurs
+  // internes, à qui `proposerMission` ne crée AUCUNE mission (`accordRequis`
+  // rend `false` : « un formateur interne n'a rien à accepter »). Le correctif
+  // appartient à `mission-formateur.ts` / `trainers.ts` : la mission `acceptee`
+  // d'un formateur écarté doit cesser d'être `acceptee`.
+  //
+  // Une fois D1 fermé, transformer ce `todo` en `it` et vérifier qu'il PASSE.
+  // ───────────────────────────────────────────────────────────────────────────
+  it.todo(
+    "🔴 D1 — A accepte, se désiste, B est affecté sans jamais confirmer : la session est " +
+      "sans intervenant confirmé et rien ne le dit (mission fantôme `acceptee` de A)",
+  );
+
+  it("🔴 déclenche quand le principal affiché est le désistant LUI-MÊME", async () => {
+    // Cas réel : l'affectation n'est pas retirée par le désistement. Traiter
+    // « il y a un principal » comme « c'est réglé » rendrait la règle aveugle
+    // au cas le plus fréquent — c'est exactement le défaut de
+    // `session_sans_formateur`, qui exige `formateurPrincipalId: null`.
+    desistementSurSession({ formateurPrincipalId: "tr-100" });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_desiste_session")).toBeDefined();
+  });
+
+  it("se tait sur une session terminée depuis plus de deux jours", async () => {
+    // Passé ce délai il n'y a plus de remplaçant à trouver : le fait relève du
+    // registre des incidents et de la reconduction (art. 8), pas de l'urgence.
+    desistementSurSession({ dateDebut: ilYA(10), dateFin: ilYA(9) });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_desiste_session")).toBeUndefined();
+  });
+
+  it("nomme l'ORGANISME sous-traitant quand l'incident ne vise pas une personne", async () => {
+    mp.incident.findMany.mockResolvedValue([
+      {
+        id: "inc-002",
+        dateIncident: ilYA(1),
+        faitIntervenant: "annulation_tardive",
+        trainerId: null,
+        trainer: null,
+        sousTraitant: { nom: "FORMA PARTNERS" },
+        session: {
+          id: "ses-901",
+          numero: "SES-2026-901",
+          titreSession: null,
+          statut: "en_cours",
+          dateDebut: ilYA(1),
+          dateFin: dans(1),
+          formateurPrincipalId: null,
+          client: null,
+          missionsFormateur: [],
+        },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "formateur_desiste_session");
+    expect(a?.message).toContain("FORMA PARTNERS");
+    expect(a?.message).toContain("a annulé tardivement");
+    expect(a?.titre).toContain("en cours");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°2 — convocation_stagiaire_manquante
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — convocation_stagiaire_manquante", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function inscriptionSansConvocation(convocationEnvoyeeAt: Date | null) {
+    mp.enrollment.findMany.mockImplementation((args: { where?: Record<string, unknown> }) => {
+      if (args?.where && "convocationEnvoyeeAt" in args.where) {
+        return Promise.resolve([
+          {
+            id: "enr-500",
+            convocationEnvoyeeAt,
+            trainee: { prenom: "Léa", nom: "Martin" },
+            session: { numero: "SES-2026-500", dateDebut: dans(1) },
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  it("🔴 déclenche en CRITIQUE quand la convocation n'est jamais partie", async () => {
+    // La colonne existe depuis le 15/08/2026, date à laquelle on a découvert EN
+    // PRODUCTION qu'aucune convocation n'était jamais partie. Elle n'était lue
+    // que par le cron qui l'écrit : personne ne surveillait la mesure.
+    inscriptionSansConvocation(null);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "convocation_stagiaire_manquante");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.cibleType).toBe("Enrollment");
+    expect(a?.cibleId).toBe("enr-500");
+    expect(a?.message).toContain("Léa Martin");
+    expect(a?.message).toContain("SES-2026-500");
+  });
+
+  it("se tait dès que la convocation est partie", async () => {
+    // Témoin de non-vacuité : sans lui, une règle qui alerterait TOUJOURS
+    // passerait le cas précédent sans rien prouver de sa condition.
+    inscriptionSansConvocation(ilYA(3));
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "convocation_stagiaire_manquante")).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°3 — session_distanciel_sans_lien
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — session_distanciel_sans_lien", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function sessionDistancielle(over: Record<string, unknown> = {}) {
+    mp.trainingSession.findMany.mockImplementation((args: { where?: { lieuType?: unknown } }) => {
+      if (args?.where?.lieuType === "distanciel") {
+        return Promise.resolve([
+          {
+            id: "ses-700",
+            numero: "SES-2026-700",
+            titreSession: "IA générative à distance",
+            dateDebut: dans(1),
+            lieuType: "distanciel",
+            lieuVisioUrl: null,
+            client: { raisonSociale: "INVEST SUN" },
+            ...over,
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  it("🔴 déclenche en CRITIQUE : `lieuVisioUrl` n'était lu NULLE PART dans l'évaluateur", async () => {
+    sessionDistancielle();
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_distanciel_sans_lien");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.cibleId).toBe("ses-700");
+    expect(a?.message).toContain("INVEST SUN");
+  });
+
+  it("se tait dès qu'un lien est enregistré", async () => {
+    sessionDistancielle({ lieuVisioUrl: "https://meet.google.com/abc-defg-hij" });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_distanciel_sans_lien")).toBeUndefined();
+  });
+
+  it("se tait sur un lien fait d'espaces — une chaîne blanche n'est pas un lien", async () => {
+    sessionDistancielle({ lieuVisioUrl: "   " });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_distanciel_sans_lien")).toBeDefined();
+  });
+
+  it("se tait si la session n'est pas à distance (garde applicative)", async () => {
+    // Les mocks ignorent le SQL : sans la garde en mémoire, la règle
+    // annoncerait « session à distance » sur une session en salle et enverrait
+    // chercher un lien qui n'a pas lieu d'être.
+    sessionDistancielle({ lieuType: "sur_site" });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_distanciel_sans_lien")).toBeUndefined();
+  });
+
+  it("🔴 continue de crier une fois la session DÉMARRÉE, avec un autre titre", async () => {
+    // C'est le point du trou n°4 appliqué d'avance : une session à distance
+    // commencée sans lien n'a personne dans la salle. C'est l'instant où il faut
+    // crier le plus fort, pas se taire.
+    sessionDistancielle({ dateDebut: ilYA(1) });
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_distanciel_sans_lien");
+    expect(a?.titre).toContain("démarrée");
+    expect(a?.message).toContain("Personne ne peut se connecter");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°4 — les bornes élargies, vues depuis l'évaluateur
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — les alertes ne s'éteignent plus au démarrage", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("🔴 convention_tripartite_manquante survit au passage en `en_cours`", async () => {
+    // Le défaut : `statut: "planifiee"` seul + `resolutionAuto: true`. Au
+    // démarrage, la candidate disparaît et l'alerte CRITIQUE se referme toute
+    // seule — au moment exact où la subrogation OPCO devient irrécupérable.
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { where?: { opcoSubrogation?: unknown } }) => {
+        if (args?.where?.opcoSubrogation === true) {
+          return Promise.resolve([
+            { id: "ses-800", numero: "SES-2026-800", dateDebut: ilYA(2) },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "convention_tripartite_manquante");
+    expect(a, "Une session DÉMARRÉE en subrogation sans convention doit rester visible.").toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.titre).toContain("démarrée");
+    expect(a?.message).toContain("subrogation n'est plus opposable");
+  });
+
+  it("convention_tripartite_manquante garde son message d'AVANT le démarrage", async () => {
+    // Témoin discriminant : sans lui, un message figé au passé passerait le
+    // test précédent en mentant sur toutes les sessions à venir.
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { where?: { opcoSubrogation?: unknown } }) => {
+        if (args?.where?.opcoSubrogation === true) {
+          return Promise.resolve([
+            { id: "ses-801", numero: "SES-2026-801", dateDebut: dans(2) },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "convention_tripartite_manquante");
+    expect(a?.titre).not.toContain("démarrée");
+    expect(a?.message).toContain("n'est pas signée");
+  });
+
+  it("🔴 formateur_non_habilite_assigne ESCALADE en critique le jour où il anime", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { where?: { formateurPrincipalId?: { not?: unknown } } }) => {
+        if (args?.where?.formateurPrincipalId?.not === null) {
+          return Promise.resolve([
+            {
+              id: "ses-810",
+              numero: "SES-2026-810",
+              titreSession: "IA et conformité",
+              formationId: "for-1",
+              formateurPrincipalId: "tr-1",
+              dateDebut: ilYA(1),
+              client: { raisonSociale: "DELIFRANCE" },
+              formateurPrincipal: { prenom: "Anne", nom: "Leroy", habilitations: [] },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "formateur_non_habilite_assigne");
+    expect(a, "L'alerte se fermait le jour où le formateur non habilité anime.").toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.titre).toContain("animée");
+  });
+
+  it("formateur_non_habilite_assigne reste `important` AVANT le démarrage", async () => {
+    // Témoin discriminant de l'escalade : sans lui, un niveau figé à `critique`
+    // passerait le test précédent et ferait crier la garde tous les jours.
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { where?: { formateurPrincipalId?: { not?: unknown } } }) => {
+        if (args?.where?.formateurPrincipalId?.not === null) {
+          return Promise.resolve([
+            {
+              id: "ses-811",
+              numero: "SES-2026-811",
+              titreSession: "IA et conformité",
+              formationId: "for-1",
+              formateurPrincipalId: "tr-1",
+              dateDebut: dans(5),
+              client: { raisonSociale: "DELIFRANCE" },
+              formateurPrincipal: { prenom: "Anne", nom: "Leroy", habilitations: [] },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "formateur_non_habilite_assigne");
+    expect(a?.niveau).toBe("important");
+  });
+
+  it("formateur_non_habilite_assigne se tait dès que l'habilitation existe", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { where?: { formateurPrincipalId?: { not?: unknown } } }) => {
+        if (args?.where?.formateurPrincipalId?.not === null) {
+          return Promise.resolve([
+            {
+              id: "ses-812",
+              numero: "SES-2026-812",
+              titreSession: "IA et conformité",
+              formationId: "for-1",
+              formateurPrincipalId: "tr-1",
+              dateDebut: ilYA(1),
+              client: null,
+              formateurPrincipal: {
+                prenom: "Anne",
+                nom: "Leroy",
+                habilitations: [{ formationId: "for-1" }],
+              },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_non_habilite_assigne")).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°6 — emargement_partiel
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — emargement_partiel (les quatre règles ne comptaient que le ZÉRO)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function sessionAvecTraces(enrollments: Array<Record<string, unknown>>) {
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { select?: { enrollments?: { select?: { tauxPresencePct?: unknown } } } }) => {
+        if (args?.select?.enrollments?.select?.tauxPresencePct === true) {
+          return Promise.resolve([
+            {
+              id: "ses-600",
+              numero: "SES-2026-600",
+              titreSession: "Prompt engineering",
+              dateFin: dans(1),
+              client: { raisonSociale: "TIIME" },
+              enrollments,
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+  }
+
+  const signe = (prenom: string, nom: string) => ({
+    emargementSigneAt: ilYA(1),
+    tauxPresencePct: null,
+    trainee: { prenom, nom },
+  });
+  const vide = (prenom: string, nom: string) => ({
+    emargementSigneAt: null,
+    tauxPresencePct: null,
+    trainee: { prenom, nom },
+  });
+
+  it("🔴 déclenche quand 1 inscrit sur 3 n'a aucune trace — et le NOMME", async () => {
+    sessionAvecTraces([signe("Léa", "Martin"), signe("Paul", "Durand"), vide("Marc", "Petit")]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "emargement_partiel");
+    expect(a, "Onze signatures sur douze répondaient « non » à « pas UNE seule trace ? ».").toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("1 inscrit(s) sur 3");
+    // Nommer, pas seulement compter : sur une session de douze, personne ne
+    // rouvre la fiche pour savoir qui relancer.
+    expect(a?.message).toContain("Marc Petit");
+  });
+
+  it("se tait quand TOUT LE MONDE porte une trace", async () => {
+    sessionAvecTraces([signe("Léa", "Martin"), signe("Paul", "Durand")]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "emargement_partiel")).toBeUndefined();
+  });
+
+  it("🔴 se tait quand PERSONNE n'a de trace — c'est le domaine des trois règles du zéro", async () => {
+    // Sinon deux alertes pour le même fait, deux cycles de vie à tenir, et un
+    // lecteur qui ne sait plus laquelle fermer.
+    sessionAvecTraces([vide("Léa", "Martin"), vide("Paul", "Durand")]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "emargement_partiel")).toBeUndefined();
+  });
+
+  it("compte le relevé de connexion comme une trace, pas seulement la signature", async () => {
+    // `D2-3-C2` : `emargementSigneAt` n'est posé que par la grille
+    // présentielle. Le lire seul accusait toute session distancielle bien menée.
+    sessionAvecTraces([
+      { emargementSigneAt: null, tauxPresencePct: 0, trainee: { prenom: "Léa", nom: "Martin" } },
+      vide("Marc", "Petit"),
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "emargement_partiel");
+    expect(a?.message).toContain("1 inscrit(s) sur 2");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°7 — RC pro d'un formateur hors sous-traitance
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — formateur_rc_pro_* hors sous-traitance", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function formateurAvecRcPro(over: Record<string, unknown>) {
+    mp.trainer.findMany.mockImplementation((args: { where?: { statut?: { not?: unknown } } }) => {
+      if (args?.where?.statut?.not === "sous_traitant") {
+        return Promise.resolve([
+          {
+            id: "tr-900",
+            nom: "Blanc",
+            prenom: "Marie",
+            statut: "salarie",
+            rcProEcheanceAt: null,
+            ...over,
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  it("🔴 déclenche en CRITIQUE sur une RC pro EXPIRÉE d'un formateur salarié", async () => {
+    // Elle avait été fournie et versée à la fiche ; elle est tombée. Seul
+    // `statut: "sous_traitant"` était surveillé.
+    formateurAvecRcPro({ rcProEcheanceAt: ilYA(2) });
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "formateur_rc_pro_expiree");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.cibleType).toBe("Trainer");
+    expect(a?.message).toContain("Marie Blanc");
+  });
+
+  it("préavis à 60 jours, en `important`", async () => {
+    formateurAvecRcPro({ rcProEcheanceAt: dans(30) });
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "formateur_rc_pro_expire_j60");
+    expect(a?.niveau).toBe("important");
+    expect(alertes.find((x) => x.code === "formateur_rc_pro_expiree")).toBeUndefined();
+  });
+
+  it("se tait sur une attestation encore valable plusieurs mois", async () => {
+    formateurAvecRcPro({ rcProEcheanceAt: dans(200) });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_rc_pro_expire_j60")).toBeUndefined();
+    expect(alertes.find((x) => x.code === "formateur_rc_pro_expiree")).toBeUndefined();
+  });
+
+  it("🔴 ne double PAS l'alerte d'un sous-traitant (garde applicative)", async () => {
+    // Les mocks ignorent le SQL. Sans la garde en mémoire, le même fait
+    // produirait `sous_traitant_rc_pro_expiree` ET `formateur_rc_pro_expiree` :
+    // deux cycles de vie à tenir pour une seule pièce.
+    formateurAvecRcPro({ statut: "sous_traitant", rcProEcheanceAt: ilYA(2) });
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "formateur_rc_pro_expiree")).toBeUndefined();
+  });
+
+  it("🔴 ne réclame JAMAIS une RC pro ABSENTE — aucun statut ne l'exige", async () => {
+    // `requisPourStatut` est la source de vérité des pièces exigées : elle
+    // n'exige la RC pro d'aucun statut. Une alerte qu'aucun geste ne ferme
+    // apprend à ignorer les alertes.
+    formateurAvecRcPro({ rcProEcheanceAt: null });
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((x) => x.code.startsWith("formateur_rc_pro_"))).toEqual([]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°8 — effectif_depasse
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — effectif_depasse", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function sessionAvecEffectif(prevus: number, inscrits: number) {
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { select?: { nbParticipantsPrevus?: unknown } }) => {
+        if (args?.select?.nbParticipantsPrevus === true) {
+          return Promise.resolve([
+            {
+              id: "ses-400",
+              numero: "SES-2026-400",
+              titreSession: "IA pour les RH",
+              dateDebut: dans(10),
+              nbParticipantsPrevus: prevus,
+              client: { raisonSociale: "DELIFRANCE" },
+              enrollments: Array.from({ length: inscrits }, (_, i) => ({ id: `enr-${i}` })),
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+  }
+
+  it("🔴 déclenche quand 9 inscrits occupent 8 places vendues", async () => {
+    // `nbParticipantsPrevus` n'était lu que par les écrans et les devis :
+    // le dépassement se découvrait dans la salle, ou sur la facture.
+    sessionAvecEffectif(8, 9);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "effectif_depasse");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("9 inscrits actifs pour 8 prévus");
+  });
+
+  it("se tait quand l'effectif est exactement atteint", async () => {
+    sessionAvecEffectif(8, 8);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "effectif_depasse")).toBeUndefined();
+  });
+
+  it("se tait quand aucun effectif n'est prévu — on ne dépasse pas zéro", async () => {
+    // Une session à `nbParticipantsPrevus: 0` n'a pas d'engagement à trahir ;
+    // alerter dessus ferait crier sur toutes les sessions mal saisies.
+    sessionAvecEffectif(0, 3);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "effectif_depasse")).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°9 — session_realisee_non_facturee
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — session_realisee_non_facturee", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function sessionRealisee(factures: Array<{ statut: string }>, montantHtCents = 250_000) {
+    mp.trainingSession.findMany.mockImplementation(
+      (args: { select?: { facturesFormation?: unknown } }) => {
+        if (args?.select?.facturesFormation !== undefined) {
+          return Promise.resolve([
+            {
+              id: "ses-300",
+              numero: "SES-2026-300",
+              titreSession: "IA et productivité",
+              dateFin: ilYA(20),
+              montantHtCents,
+              client: { raisonSociale: "BEE EDITIONS" },
+              facturesFormation: factures,
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+  }
+
+  it("🔴 déclenche quand la prestation est livrée et qu'aucune facture n'existe", async () => {
+    // Les quatre règles de recouvrement partent toutes d'une facture qui
+    // EXISTE : sans ligne, rien ne vieillit dans la balance âgée.
+    sessionRealisee([]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_realisee_non_facturee");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("aucune facture n'a été émise");
+  });
+
+  it("se tait dès qu'une facture est émise", async () => {
+    sessionRealisee([{ statut: "emise" }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_realisee_non_facturee")).toBeUndefined();
+  });
+
+  it("se tait aussi quand la facture est déjà PAYÉE", async () => {
+    // « La session est-elle facturée ? » n'est pas « la facture est-elle
+    // ouverte ? » — `statuts-facture.ts` le dit en toutes lettres.
+    sessionRealisee([{ statut: "payee" }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_realisee_non_facturee")).toBeUndefined();
+  });
+
+  it("🔴 déclenche quand la seule facture est ANNULÉE", async () => {
+    // C'est précisément le cas où il faut en réémettre une.
+    sessionRealisee([{ statut: "annulee" }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_realisee_non_facturee")).toBeDefined();
+  });
+
+  it("🔴 distingue le BROUILLON de l'absence totale — le geste n'est pas le même", async () => {
+    sessionRealisee([{ statut: "brouillon" }]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_realisee_non_facturee");
+    expect(a?.message).toContain("BROUILLON");
+    expect(a?.message).not.toContain("aucune facture n'a été émise");
+  });
+
+  it("se tait sur une session à 0 € — il n'y a rien à émettre", async () => {
+    // Une action interne ou offerte ; l'alerte serait insoluble.
+    sessionRealisee([], 0);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_realisee_non_facturee")).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trou n°10 — recalibrages
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — les deux niveaux recalibrés", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("🔴 session_sans_formateur passe en CRITIQUE quand la session a démarré", async () => {
+    // Les quatre alertes critiques du cycle formateur s'éteignent au démarrage
+    // et celle-ci reprend — elle était `important` : la console DESCENDAIT d'un
+    // cran au pire moment.
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { formateurPrincipalId?: unknown } }) => {
+        if (where && "formateurPrincipalId" in where && where.formateurPrincipalId === null) {
+          return Promise.resolve([
+            {
+              id: "ses-200",
+              numero: "SES-2026-200",
+              titreSession: "IA générative",
+              dateDebut: ilYA(3),
+              client: { raisonSociale: "TIIME" },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_sans_formateur");
+    expect(a?.niveau).toBe("critique");
+    expect(a?.titre).toBe("Session démarrée sans formateur principal");
+  });
+
+  it("session_sans_formateur reste `important` en garde à J-7", async () => {
+    // Témoin discriminant de l'escalade : la garde AVANT le démarrage est le cas
+    // fréquent, et la passer en critique ferait crier tous les jours.
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { formateurPrincipalId?: unknown } }) => {
+        if (where && "formateurPrincipalId" in where && where.formateurPrincipalId === null) {
+          return Promise.resolve([
+            {
+              id: "ses-201",
+              numero: "SES-2026-201",
+              titreSession: "IA générative",
+              dateDebut: dans(3),
+              client: { raisonSociale: "TIIME" },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_sans_formateur")?.niveau).toBe("important");
+  });
+
+  it("🔴 suppression_rgpd_j30 n'est plus `info` — le délai légal est DÉJÀ dépassé", async () => {
+    // Art. 12.3 RGPD : un mois pour répondre. Quand la règle lève, le
+    // manquement est constitué et opposable devant la CNIL. `info` le rangeait
+    // à côté d'un devis expiré, dans la colonne qu'on parcourt en diagonale.
+    mp.rgpdDemande.findMany.mockResolvedValue([
+      { id: "rgpd-1", traineeId: "trn-1", demandeAt: ilYA(45) },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "suppression_rgpd_j30");
+    expect(a?.niveau).toBe("important");
+    // Le catalogue et l'émission disent la MÊME chose : l'audit a relevé trois
+    // codes où ils divergeaient en silence.
+    expect(ALERTE_CATALOGUE["suppression_rgpd_j30"]?.niveau).toBe("important");
   });
 });

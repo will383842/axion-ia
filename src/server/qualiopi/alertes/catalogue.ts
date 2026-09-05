@@ -465,6 +465,35 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
   /**
+   * 🔴 LES QUATRE RÈGLES D'ÉMARGEMENT NE SAVENT COMPTER QUE JUSQU'À ZÉRO
+   * (audit du 2026-09-04, trou n°9).
+   *
+   * `emargement_manquant` porte `sansAucuneTraceDePresence()`,
+   * `session_bloquee_en_cours` et `emargement_aucune_signature` portent
+   * `enrollments: { none: … }`. Toutes trois posent la même question — « pas
+   * UNE seule trace ? » — et une session où onze inscrits sur douze ont signé
+   * y répond « non ». Le douzième est donc invisible : la session se clôture,
+   * `attestations-auto` délivre, et personne n'apprend rien avant l'audit.
+   *
+   * Le cas partiel n'était pas totalement muet : `cloture_trace_presence_incomplete`
+   * le dit — mais À LA CLÔTURE, c'est-à-dire quand la feuille n'est plus
+   * signable et que le geste possible se réduit à « sortir du dispositif ceux
+   * qui ont renoncé ». Celle-ci se lève PENDANT que la session vit, tant qu'un
+   * émargement peut encore être recueilli. Les deux ne disent pas la même
+   * chose au même moment, et c'est pour cela qu'elles coexistent.
+   *
+   * `important` et non `critique` : la session a des preuves, elle n'en a pas
+   * assez. Le critique est réservé au dossier entièrement vide — sans quoi
+   * l'administrateur apprend à ignorer les critiques d'émargement, et il en
+   * reste trois.
+   */
+  emargement_partiel: {
+    niveau: "important",
+    titre: "Émargement incomplet : une partie des inscrits n'a aucune trace",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
    * 🔴 2026-08-24, cahier D5 — la mesure existait, elle sortait en
    * `console.error`. Un journal de conteneur n'est lu par personne le lendemain.
    */
@@ -495,7 +524,84 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
 
+  /**
+   * 🔴 LA CONVOCATION DU STAGIAIRE N'ÉTAIT SURVEILLÉE PAR PERSONNE
+   * (audit du 2026-09-04, trou n°5).
+   *
+   * `Enrollment.convocationEnvoyeeAt` porte au schéma le récit d'un défaut déjà
+   * payé : « vérifié en production le 15/08/2026, AUCUNE convocation n'était
+   * jamais partie, sur tout l'historique ». La colonne a été créée pour rendre
+   * le cron RATTRAPANT — mais elle n'est lue que par le cron lui-même, comme
+   * garde de son propre envoi. Personne ne surveille l'état qu'elle décrit.
+   *
+   * Autrement dit : si le cron ne tourne pas, ou tourne et échoue, la colonne
+   * reste nulle et le silence est parfait — exactement la situation d'août,
+   * qu'il a fallu aller CHERCHER en production pour la découvrir.
+   *
+   * `critique` : la convocation est une obligation d'information (indicateur 9)
+   * et, plus concrètement, un stagiaire non convoqué ne vient pas. Le geste
+   * reste possible à J-2, il ne l'est plus le jour même.
+   */
+  convocation_stagiaire_manquante: {
+    niveau: "critique",
+    titre: "Stagiaire non convoqué à moins de 2 jours du début",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * 🔴 UNE SESSION À DISTANCE SANS LIEN DE CONNEXION (audit du 2026-09-04,
+   * trou n°3).
+   *
+   * `TrainingSession.lieuVisioUrl` n'apparaissait NULLE PART dans l'évaluateur.
+   * `session_contact_sur_place_absent` couvre le distanciel, mais ne regarde
+   * que le contact à joindre — et sort en `info`, « c'est gênant, pas
+   * bloquant ». Sans lien, ce n'est plus gênant : la formation n'a pas lieu.
+   *
+   * ⚠️ Le lien manquant ne se rattrape pas le matin même : il doit figurer dans
+   * la convocation du stagiaire et dans celle du formateur, toutes deux déjà
+   * parties à J-2. D'où `critique`, au même niveau que l'absence de convention.
+   */
+  session_distanciel_sans_lien: {
+    niveau: "critique",
+    titre: "Session à distance sans lien de connexion",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * 🔴 PLUS D'INSCRITS QUE DE PLACES (audit du 2026-09-04, trou n°12).
+   *
+   * `nbParticipantsPrevus` n'était lu que par les écrans et les devis : aucune
+   * règle ne comparait jamais l'effectif réel à l'effectif vendu. Le
+   * dépassement se découvre alors dans la salle, ou sur la facture.
+   *
+   * Ce n'est pas qu'un problème de chaises : l'effectif conditionne le montant
+   * conventionné, la prise en charge OPCO au barème « par stagiaire », et
+   * l'engagement pédagogique pris au catalogue (indicateur 17). Un groupe plus
+   * nombreux que prévu est une modification de la convention, pas un détail
+   * d'intendance.
+   */
+  effectif_depasse: {
+    niveau: "important",
+    titre: "Plus d'inscrits que l'effectif prévu",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+
   // ── Formateur ──────────────────────────────────────────────────────────────
+  /**
+   * ⚠️ Le titre dit « à J-7 » mais la règle escalade : sur une session DÉJÀ
+   * DÉMARRÉE sans formateur principal, elle émet en `critique`, avec son propre
+   * titre (« Session démarrée sans formateur principal »).
+   *
+   * 🔴 C'est une divergence catalogue ↔ émission, et elle est DÉCLARÉE ici
+   * plutôt que subie : l'audit du 2026-09-04 a relevé que trois codes émettent
+   * un niveau différent de celui catalogué sans que rien ne le dise, si bien
+   * qu'on ne peut plus distinguer une escalade voulue d'un oubli. Le niveau
+   * ci-dessous est celui du cas NOMINAL (l'alerte de garde, à J-7) ; le
+   * `critique` est le cas dégradé, où l'obligation n'est plus imminente mais
+   * dépassée. Il serait plus grave de cataloguer `critique` : la garde à J-7,
+   * qui est le cas fréquent, crierait alors tous les jours.
+   */
   session_sans_formateur: {
     niveau: "important",
     titre: "Session à J-7 sans formateur principal",
@@ -766,6 +872,79 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  /**
+   * 🔴 LE SEUL RISQUE DU CYCLE FORMATEUR QUI ÉTAIT 100 % MUET (audit du
+   * 2026-09-04, trou n°1).
+   *
+   * Un formateur se désiste d'une session qu'il devait animer. Le fait est
+   * consigné au registre des incidents (`faitIntervenant: desistement`, ou
+   * `annulation_tardive`) — et là, plus rien. Le registre n'est lu que par
+   * `sous_traitant_incidents_repetes`, qui exige **DEUX faits sur 24 mois** et
+   * regarde en arrière, vers la reconduction. La session qui tombe DEMAIN,
+   * elle, n'est signalée par aucun des sept codes du cycle formateur : ils
+   * partent tous d'une `MissionFormateur` restée sans réponse, or ici la
+   * réponse a été donnée, puis reprise.
+   *
+   * ⚠️ CE CODE NE LIT PAS `MissionFormateurStatut.retiree`, contrairement à ce
+   * que l'audit proposait — et c'est une correction de l'audit, vérifiée dans
+   * le code. `retiree` n'est jamais posé que sur une mission `en_attente`, par
+   * l'ORGANISME (`retirerMissionsEnAttente`, `proposerMission`), quand un autre
+   * formateur a accepté ou qu'on change d'avis. C'est la ménagerie normale du
+   * dispositif : en faire une alerte critique produirait du bruit à chaque
+   * co-animation proposée à deux. Le désistement du formateur, lui, n'a qu'une
+   * seule trace : l'incident.
+   *
+   * `critique` : à la différence de `sous_traitant_incidents_repetes` — qui
+   * INFORME pour la reconduction — celle-ci porte sur une session encore à
+   * venir ou en cours. Il y a un client à prévenir et un remplaçant à trouver,
+   * et le temps disponible est ce qui manque.
+   */
+  formateur_desiste_session: {
+    niveau: "critique",
+    titre: "Formateur désisté — session sans intervenant confirmé",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * 🔴 UNE RC PRO QUI TOMBE HORS SOUS-TRAITANCE NE DISAIT RIEN (audit du
+   * 2026-09-04, trou n°11 — implémenté PARTIELLEMENT, et le partiel est motivé).
+   *
+   * `rcProAttestationUrl` / `rcProEcheanceAt` sont des colonnes de `Trainer`,
+   * portées par TOUS les formateurs. Mais `regleVigilanceSousTraitance` filtre
+   * sur `statut: "sous_traitant"` : une attestation versée à la fiche d'un
+   * formateur salarié ou dirigeant expirait sans que rien ne le dise.
+   *
+   * ⚠️ CE CODE NE COUVRE QUE L'EXPIRATION, jamais l'ABSENCE — et c'est
+   * délibéré. `requisPourStatut` (`trainers/conformite.ts`) est la source de
+   * vérité des pièces exigées : elle n'exige la RC pro d'aucun statut, et la RC
+   * pro de l'organisme couvre déjà ses salariés. Réclamer chaque nuit une pièce
+   * que personne ne doit fournir produirait une alerte que NUL GESTE ne ferme —
+   * c'est le motif écrit trois fois dans ce fichier pour lequel on n'alerte
+   * jamais sur un devoir qui n'existe pas.
+   *
+   * Le distinguo est celui que la règle sous-traitance pose déjà : « RC pro
+   * absente → IMPORTANT, elle n'est pas exigée à l'entrée ; RC pro expirée →
+   * CRITIQUE, elle existait, elle est tombée ». Ici seul le second cas a un
+   * sens, et il l'a quel que soit le statut : une couverture versée au dossier
+   * puis périmée est un fait, pas une exigence.
+   *
+   * ⛔ La vigilance URSSAF n'est PAS étendue. `vigilanceRequise` la réserve à
+   * l'indépendant, et c'est le droit qui le veut (art. L.8222-1 vise le
+   * donneur d'ordre d'un PRESTATAIRE). L'exiger d'un salarié serait faux, et
+   * l'alerte serait insoluble. Voir le rapport de session.
+   */
+  formateur_rc_pro_expiree: {
+    niveau: "critique",
+    titre: "Attestation RC pro d'un formateur expirée",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  formateur_rc_pro_expire_j60: {
+    niveau: "important",
+    titre: "Attestation RC pro d'un formateur expire dans 60 jours",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
 
   // ── Sous-traitants ────────────────────────────────────────────────────────
   sous_traitant_qualiopi_expire_j60: {
@@ -936,6 +1115,34 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  /**
+   * 🔴 TOUTE LA CHAÎNE DE RECOUVREMENT COMMENCE APRÈS L'ÉMISSION (audit du
+   * 2026-09-04, trou n°10).
+   *
+   * `facture_impayee_j60`, `facture_sans_echeance`, `relance_sans_effet`,
+   * `financeur_paiement_en_retard` : les quatre partent d'une
+   * `FactureFormation` qui EXISTE. La prestation livrée et jamais facturée est
+   * en dehors de leur champ à toutes — et c'est le seul cas où l'argent ne
+   * revient pas sans que personne ne le remarque, puisqu'il n'y a pas de ligne
+   * à vieillir dans la balance âgée.
+   *
+   * ⚠️ J+15 après la fin, et pas le lendemain : la clôture, l'émargement et
+   * l'attestation passent d'abord, et facturer avant d'avoir clos revient à
+   * facturer un effectif qu'on n'a pas encore arrêté.
+   *
+   * ⚠️ Une session à 0 € n'est jamais candidate : une action financée
+   * intégralement hors facture (interne, offerte) n'a rien à émettre, et
+   * l'alerte serait insoluble.
+   *
+   * `direction` : émettre une facture ENGAGE l'organisme — c'est la frontière
+   * que `HABILITATIONS` trace, et les trois codes voisins la respectent déjà.
+   */
+  session_realisee_non_facturee: {
+    niveau: "important",
+    titre: "Session réalisée jamais facturée",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
 
   // ── Dossiers de financement (suivi OPCO / France Travail) ────────────────
   // 🔴 2026-07-31 — `echeanceFinanceurAt` existait au schéma (« les OPCO paient
@@ -973,13 +1180,105 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // ── RGPD ──────────────────────────────────────────────────────────────────
+  /**
+   * 🔴 `info` POUR UN DÉLAI LÉGAL DÉJÀ DÉPASSÉ (audit du 2026-09-04, trou n°10
+   * — recalibrage).
+   *
+   * Le niveau `info` a été relevé comme une erreur de calibrage, et il l'est :
+   * l'article 12.3 du RGPD donne UN MOIS pour répondre à une demande
+   * d'effacement. Quand cette alerte se lève, le délai n'est pas « bientôt
+   * atteint », il est PASSÉ — le manquement est constitué et opposable devant
+   * la CNIL. Un niveau `info` range ce fait à côté d'un devis expiré, dans la
+   * colonne qu'on parcourt en diagonale.
+   *
+   * `important` et non `critique` : le critique est réservé, dans ce catalogue,
+   * à ce qui empêche une action de se tenir ou fait perdre la certification.
+   * Ici l'organisme est en faute et doit répondre sous quelques jours, mais
+   * rien ne s'arrête. C'est le même arbitrage que `attestation_non_envoyee`,
+   * autre droit du bénéficiaire non honoré.
+   */
   suppression_rgpd_j30: {
-    niveau: "info",
+    niveau: "important",
     titre: "Demande de suppression RGPD non traitée depuis 30 jours",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non ». Une demande d effacement non traitée sous 30 jours est un dépassement de délai RGPD : il reste à documenter même une fois la suppression faite.",
     guichet: "qualite",
+  },
+  /**
+   * 🔴 CINQ CODES ÉMIS SANS ENTRÉE ICI — le défaut du 2026-08-05 était REVENU
+   * (audit du 2026-09-04, trou n°5).
+   *
+   * Le mécanisme est mécanique et il a déjà coûté deux fois : `guichetPourCode`
+   * rend `undefined` pour un code inconnu (`routage.ts`), l'alerte est rangée
+   * en `sansGuichet` par `envoi-groupe.ts` — elle n'arrive donc dans AUCUNE
+   * boîte — et elle est absente de `codesAutoResolution`, donc ouverte pour
+   * toujours. Une alerte qui n'atteint personne et ne se ferme jamais est pire
+   * qu'une alerte absente : elle occupe la place de celle qui aurait servi.
+   *
+   * ⚠️ Ces cinq codes naissent d'un GESTE (un envoi retenu, une écriture de
+   * corbeille refusée, une réponse hors délai), jamais du balayage quotidien.
+   * `resolutionAuto: true` les ferait donc résoudre au premier
+   * `synchroniserAlertes`, avant lecture — c'est la garde que
+   * `routage.spec.ts` fait respecter pour tous les codes hors balayage.
+   */
+  email_corbeille_indisponible: {
+    niveau: "critique",
+    titre: "Un email à relire n'a pas pu être mis en attente — il n'est PAS parti",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par `enqueueEmail` (`server/queue/queues.ts`) quand Postgres refuse l'écriture de la corbeille, jamais par `evaluerAlertes`. Le message N'EST PAS PARTI et ne repartira pas tout seul : l'alerte doit survivre au rétablissement de la base, sinon elle disparaîtrait à l'instant précis où le renvoi devient possible.",
+    guichet: "administratif",
+  },
+  /**
+   * Le positionnement d'entrée répondu APRÈS le début de la session.
+   *
+   * ⚠️ À ne pas confondre avec `positionnement_sans_reponse`, qui garde à J-2
+   * pendant qu'il est encore temps. Celui-ci CONSTATE : la réponse est arrivée,
+   * mais elle est datée après la formation, et aucune évaluation initiale n'a
+   * donc été versée au dossier (indicateur 4). Le geste n'est pas le même —
+   * relancer d'un côté, documenter l'impossibilité de l'autre.
+   */
+  positionnement_hors_delai: {
+    niveau: "important",
+    titre: "Positionnement d'entrée répondu après le début de la session",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "IRRÉVERSIBLE — la date de réponse ne changera pas, et une évaluation « avant formation » datée après la formation ne redeviendra jamais recevable. La condition ne peut pas disparaître : l'écart s'acquitte à la main, une fois le positionnement recueilli autrement ou son impossibilité notée au dossier.",
+    guichet: "qualite",
+  },
+  /**
+   * Trois codes pour trois motifs de retenue, et non un seul — le geste diffère.
+   *
+   * `rebond_dur` appelle une CORRECTION d'adresse puis un renvoi : tant qu'elle
+   * n'est pas faite, la personne ne recevra ni convocation, ni attestation, ni
+   * facture. `desabonne` et `oppose` n'appellent RIEN : le retrait est honoré,
+   * l'alerte est une trace. Les fondre en un code unique obligerait à lire le
+   * message pour savoir s'il y a quelque chose à faire.
+   */
+  email_retenu_rebond_dur: {
+    niveau: "important",
+    titre: "Envoi retenu : l'adresse a déjà rebondi définitivement",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par `retenirSiNecessaire` (`server/email/suppression.ts`) à l'instant de l'envoi, jamais par `evaluerAlertes`. Corriger l'adresse ne renvoie pas le message retenu : l'alerte doit rester ouverte jusqu'à ce que quelqu'un ait réémis l'envoi depuis son écran d'origine.",
+    guichet: "administratif",
+  },
+  email_retenu_desabonne: {
+    niveau: "important",
+    titre: "Envoi marketing retenu : la personne s'est désabonnée",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée à l'instant de l'envoi, jamais par `evaluerAlertes`. Aucune action n'est attendue (le retrait est honoré) : l'alerte est une TRACE, et une trace que la mécanique effacerait au tour suivant ne prouverait rien.",
+    guichet: "administratif",
+  },
+  email_retenu_oppose: {
+    niveau: "important",
+    titre: "Envoi marketing retenu : la personne s'est opposée à la prospection",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée à l'instant de l'envoi, jamais par `evaluerAlertes`. Comme `email_retenu_desabonne`, c'est une trace d'opposition honorée : elle doit survivre au balayage qui ne la voit pas.",
+    guichet: "administratif",
   },
 
   // ── Pilotage — cadence trimestrielle (LOT 4) ──────────────────────────────
