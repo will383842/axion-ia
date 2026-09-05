@@ -58,6 +58,7 @@ import {
 import { navIcon } from "@/lib/admin-nav-icons";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
 import {
+  ADMIN_LIENS_EPINGLES,
   ADMIN_NAV_GROUP_LABELS,
   ADMIN_NAV_GROUP_ORDER,
   GROUP_POLE_LABELS,
@@ -846,7 +847,7 @@ export function AdminSidebarNav({
               dans cette application. Pas de `target="_blank"`, pas de flèche
               sortante — les deux annonceraient un départ qui n'a pas lieu. */}
           <Link
-            href={`${accountHref ?? ""}/console-editoriale`}
+            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.consoleEditoriale}`}
             title="Ouvrir la console éditoriale"
             className={cn(
               "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
@@ -871,7 +872,7 @@ export function AdminSidebarNav({
               fusionnant ces réservations avec l'agenda Google : les rendez-vous
               personnels et ceux de l'iPhone, que la base ne connaît pas. */}
           <Link
-            href={`${accountHref ?? ""}/agenda`}
+            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.agenda}`}
             title="Ouvrir l'agenda"
             className={cn(
               "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",

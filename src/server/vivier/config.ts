@@ -16,6 +16,30 @@
  * Séparé de `CRM_SYNC_CANDIDATES_ENABLED` à dessein : informer les candidats
  * doit pouvoir démarrer AVANT que le canal CRM ne s'ouvre — c'est même l'ordre
  * imposé, puisque la fenêtre d'opposition de 30 jours doit s'écouler d'abord.
+ *
+ * ═════════════════════════════════════════════════════════════════════════════
+ * 🛑 ORDRE PERMANENT DE WILL (2026-09-04) — CE DRAPEAU RESTE FERMÉ.
+ * ═════════════════════════════════════════════════════════════════════════════
+ *
+ * **Rien ne part au CRM sans validation explicite de Will.** `VIVIER_STOCK_ENABLED`
+ * n'est posée nulle part en production, et elle ne doit pas l'être — ni « pour
+ * tester », ni parce qu'une recette a besoin de voir passer un e-mail.
+ *
+ * ⚠️ NE PAS SE RASSURER EN LISANT `CRM_SYNC_CANDIDATES_ENABLED=true`. Les deux
+ * drapeaux `CRM_SYNC_*` SONT ouverts en production (vérifié le 2026-09-05, sur
+ * les deux conteneurs). Ils sont inoffensifs **tant que celui-ci est fermé** :
+ * c'est lui, et lui seul, qui déclenche la campagne d'information au stock. Un
+ * lecteur qui voit deux drapeaux ouverts et en conclut que le canal est ouvert
+ * se trompe de verrou ; un lecteur qui pose celui-ci « puisque les autres sont
+ * déjà ouverts » ouvre le canal pour de bon.
+ *
+ * 🔑 ET L'OUVERTURE N'EST PAS RÉVERSIBLE COMME ELLE S'OUVRE. Refermer le
+ * drapeau arrête les envois SUIVANTS ; il ne rappelle pas les e-mails partis, et
+ * il ne remet pas à zéro les `vivierInfoSentAt` déjà horodatés — donc il ne
+ * rejoue pas la fenêtre d'opposition de 30 jours qui vient de commencer pour
+ * ces candidats. « On rouvrira si ça ne va pas » n'est pas une sortie.
+ *
+ * Décision et frontière : `docs/adr/0047-frontiere-console-recrutement-et-vivier-crm.md`.
  */
 export function isVivierStockEnabled(): boolean {
   return process.env.VIVIER_STOCK_ENABLED === "true";

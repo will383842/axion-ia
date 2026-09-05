@@ -567,3 +567,150 @@ pnpm exec vitest run --maxWorkers=2 --minWorkers=1 <chemins>
 ⚠️ Et ne PAS conclure « la suite est cassée » sur un crash de worker : lire la ligne
 `Test Files … / Tests …`. Si elle est absente, la suite n'a pas rendu de verdict — elle
 est morte avant.
+
+---
+
+# 2026-09-05 — Reprise : la sonde rejouée, et la garde réciproque
+
+## 11. La sonde de schéma, rejouée sur `e1ee5c6c5` — TOUT EST PASSÉ
+
+Prod servait bien `e1ee5c6c5` (`x-axion-build-sha`). La sonde, rejouée en lecture
+seule contre la base de production :
+
+```
+0 TEMOIN+ base courante                      | 1
+0 TEMOIN+ table:job_applications             | 1
+0 TEMOIN+ _prisma_migrations finies (>= 213) | 220
+0 TEMOIN- objet inexistant                   | 0
+1..3  journal, entretiens, statuts, décision | non-zéro partout
+4 journal:migrations recrutement finies      | 5
+5 journal:migrations recrutement EN ECHEC    | 0
+6 FK offer_id = SET NULL                     | 1
+```
+
+Les témoins positifs valent leur prix : **220** relie la sonde SQL au compte
+qu'aurait rendu `migrate status` — un binaire différent, dans un conteneur
+différent. Sans lui, dix zéros n'auraient pas distingué « rien n'a migré » de
+« ma sonde ne mesure rien ».
+
+### 🔴 Le témoin de non-destruction annonçait 86 et rendait 89 — et il avait tort
+
+La ligne `6 TEMOIN candidatures conservees (86 avant migration)` comptait
+`count(*)` sur la table VIVANTE. Trois candidatures étaient arrivées depuis. Ni
+destruction ni duplication — vérifié en séparant la cohorte : **86** soumises
+avant le `finished_at` de la migration, **3** après, **89** ids distincts, **0**
+orpheline.
+
+Mais c'est exactement le défaut que le § 4 de cette même sonde dénonçait déjà :
+_une attente dont le nombre retarde sur la réalité n'alerte pas, elle apprend au
+lecteur à ignorer la ligne._ Le fichier portait la leçon et la violait trois
+lignes plus bas.
+
+👉 **Le témoin porte désormais sur la COHORTE GELÉE** — les candidatures soumises
+avant l'instant où la migration s'est terminée. Ce sous-ensemble ne peut plus
+grandir : **86 est vrai pour toujours**, et tout écart désigne une vraie perte.
+Plus un témoin d'ancrage (la migration existe au journal, sinon la sous-requête
+rendrait NULL et le compte 0 se lirait comme une destruction totale), plus une
+ligne INFO pour le total vivant, qui a le droit de croître.
+
+---
+
+## 12. 🔴 La garde réciproque — et pourquoi les « 12 routes à arbitrer » n'existaient pas
+
+`admin-nav:routes-check` ne gardait qu'UN sens : chaque entrée de menu mène
+quelque part. Une route admin livrée **sans** entrée de menu n'était gardée par
+rien.
+
+### Ce qu'un audit naïf renvoie : 157 orphelines sur 308
+
+Presque toutes légitimes, pour **quatre raisons distinctes** qui se reconnaissent
+mécaniquement — et une garde qui ne les distingue pas rend une liste illisible,
+donc jamais lue :
+
+| Famille | Ce que c'est                                | Compte |
+| ------- | ------------------------------------------- | ------ |
+| A       | une entrée de menu pointe exactement dessus | 153    |
+| B       | segment dynamique `[x]` — écran de détail   | 68     |
+| C       | sous-écran d'une section déjà au menu       | 69     |
+| D       | la page ne fait QUE rediriger               | 17     |
+| E       | exception motivée                           | **1**  |
+
+### 🔑 Le résidu n'était pas 12. Il était **1**. Et le vrai défaut était ailleurs
+
+L'audit précédent annonçait « 12 de résidu, dont `/console-editoriale` + ses 10
+écrans et `/agenda`, zéro lien entrant » — et proposait d'arbitrer leur
+suppression. **Les douze sont vivants et atteignables.** `AdminSidebarNav.tsx`
+les ÉPINGLE en pied de barre latérale, par demande explicite de Will
+(2026-08-26 pour l'agenda), avec deux `<Link href={…}>` écrits **en dur, hors de
+`buildAdminNav()`**.
+
+La navigation admin avait donc **DEUX sources**, et la garde n'en lisait qu'une.
+Vus depuis la garde, douze écrans quotidiens passaient pour morts.
+
+Trois pièges de mesure traversés pour arriver là, tous du même genre :
+
+1. **Un détecteur de liens trop large.** Chercher `/agenda` dans les sources rend
+   un nom de sous-groupe de menu, un `revalidatePath()` (invalidation de cache,
+   pas un lien) et les auto-références de la page. Trois faux positifs qui
+   auraient conclu « atteignable » sans qu'aucun lien existe.
+2. **Un détecteur de liens trop étroit.** Le hub `/console-editoriale` lie ses dix
+   écrans par un gabarit à variable (`base` + le segment) — forme qu'aucune
+   recherche littérale ne peut voir. Le même outil rendait donc à la fois des faux
+   positifs et des faux négatifs.
+3. **Un critère de famille trop large tue sa propre famille.** La détection des
+   pages de redirection disqualifiait tout fichier contenant `<[A-Za-z]` :
+   `Promise<never>` matchait, la famille rendait **ZÉRO**, et ses 17 routes
+   tombaient au résidu. Le marqueur de JSX est la balise FERMANTE (`</` ou `/>`),
+   qu'aucun générique ne porte.
+
+👉 **Le correctif n'a pas été douze exceptions, mais une constante :**
+`ADMIN_LIENS_EPINGLES` dans `src/lib/admin-nav.ts`. La source redevient unique,
+la garde reconnaît les douze sans une ligne d'exception, et le pied de barre
+consomme la constante au lieu d'un href littéral.
+
+### La garde a rougi, et pas seulement rougi
+
+| Injection                                     | Attendu       | Obtenu                                  |
+| --------------------------------------------- | ------------- | --------------------------------------- |
+| un vrai écran sans entrée de menu             | ROUGE         | ✅ `1 route sans aucune entrée de menu` |
+| **la même route**, corps = simple redirection | VERT, D +1    | ✅ vert, famille D 17 → 18              |
+| `ADMIN_ROUTES_EPINGLEES` neutralisée          | ROUGE avec 12 | ✅ **exactement les 12 de l'audit**     |
+
+La deuxième ligne est celle qui compte : elle prouve que la garde juge le
+**corps** de la page, pas la nouveauté de la route. La troisième referme la
+boucle — les douze qu'on allait proposer à la suppression sont exactement ceux
+que la déclaration des liens épinglés fait disparaître.
+
+Contre-témoins posés dans la garde elle-même : moins de 100 routes trouvées, une
+famille tombée à zéro, la famille « redirection » qui avalerait plus d'un tiers
+des routes, ou plus de 5 exceptions → rouge, avec le motif.
+
+**Seule exception, motivée :** `/login`. Il ne PEUT pas figurer au menu — on
+l'atteint précisément quand on n'a pas de session, donc quand aucun menu ne
+s'affiche.
+
+---
+
+## 13. `VIVIER_STOCK_ENABLED` — la décision est désormais À CÔTÉ du drapeau
+
+L'ordre permanent de Will (« rien ne part au CRM sans ma validation ») ne vivait
+que dans un journal. Il est maintenant écrit dans `src/server/vivier/config.ts`,
+au-dessus de `isVivierStockEnabled()`, et dans l'**ADR 0047 § 4 bis**.
+
+**État mesuré le 2026-09-05, sur les DEUX conteneurs de production :**
+
+| Drapeau                       | Valeur          | Effet                                             |
+| ----------------------------- | --------------- | ------------------------------------------------- |
+| `VIVIER_STOCK_ENABLED`        | **non définie** | 🛑 la campagne d'information REFUSE de s'exécuter |
+| `CRM_SYNC_CANDIDATES_ENABLED` | `true`          | ouvert — sans effet tant que le premier est fermé |
+| `CRM_SYNC_ENABLED`            | `true`          | ouvert — sans effet tant que le premier est fermé |
+
+⚠️ **Le piège de lecture est à l'envers de l'intuition.** Les deux drapeaux
+`CRM_SYNC_*` sont ouverts. Qui les lit d'abord conclut que le canal l'est aussi ;
+qui pose `VIVIER_STOCK_ENABLED` « puisque les autres sont déjà ouverts » ouvre le
+canal pour de bon.
+
+🔑 **Et l'ouverture ne se referme pas comme elle s'ouvre** : refermer le drapeau
+arrête les envois suivants, mais ne rappelle aucun e-mail et ne remet à zéro
+aucun `vivierInfoSentAt` — donc ne rejoue pas la fenêtre d'opposition de 30 jours
+qui vient de démarrer pour ces candidats.

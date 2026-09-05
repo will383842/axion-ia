@@ -111,3 +111,16 @@ _AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/
 # Sorties de `pnpm qualiopi:audit-inventory` — 8 inventaires + PROGRESS.csv,
 # regeneres a chaque passage. Artefacts de run, pas pieces d audit.
 _AUDIT-INVENTAIRE/
+
+# Artefacts de `tests/unit/ci/route-admin-sans-entree-de-menu.spec.ts`.
+#
+# 🔴 2026-09-05 — cette spec MUTE deux fichiers sources suivis (`src/lib/admin-nav.ts`
+# et `AdminSidebarNav.tsx`) pour prouver que la garde rougit, puis les restaure dans
+# un `finally` avec une assertion d'egalite a l'octet pres. Le `finally` ne survit pas
+# a un kill brutal — et sur cette machine `vitest` a deja ete tue DEUX FOIS par
+# saturation memoire. Apres un kill, il reste un `.temoin-tmp` a cote du fichier mute.
+#
+# En CI le runner est jetable, donc sans consequence. En local, un fichier provisoire
+# non ignore se glisse dans un `git add -A` sans se faire remarquer. On l'ignore : il
+# n'a de sens que pendant la fraction de seconde qui separe l'ecriture du `rename`.
+*.temoin-tmp
