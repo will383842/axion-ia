@@ -25,8 +25,18 @@ test.afterAll(async () => {
 });
 
 test.describe("@saisie-manuelle un contact saisi depuis la console", () => {
-  // Sous `next dev`, la première navigation compile la route.
-  test.setTimeout(300_000);
+  // 🔴 BUDGET DÉCLARÉ, forme exigée par le cliquet
+  // `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts` : toute suite qui
+  // ouvre une session admin doit annoncer son budget, et au moins 90 s.
+  //
+  // `test.setTimeout()` ne compte PAS — le cliquet lit `describe.configure`.
+  // J'avais posé le premier, et la garde a rougi : elle a raison, un budget
+  // posé test par test se perd au premier test ajouté sans lui.
+  //
+  // Pourquoi si haut : la vérification du mot de passe est délibérément
+  // coûteuse (Argon2id), et sous `next dev` la PREMIÈRE navigation vers chaque
+  // route la COMPILE — 15 s à 3 min sur un poste chargé.
+  test.describe.configure({ timeout: 300_000 });
 
   test("l'écran s'ouvre, et il DIT qu'aucun e-mail ne partira", async ({ page }) => {
     await loginAsAdmin(page);

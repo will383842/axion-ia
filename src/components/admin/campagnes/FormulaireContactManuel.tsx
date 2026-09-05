@@ -22,12 +22,12 @@ import { creerContactManuelAction } from "@/features/commercial-application/sais
 // au rendu — ce qui s'est produit, et que seule la recette par l'interface a vu.
 import { ORIGINES_SAISIE, type TraceExistante } from "@/lib/commercial-application/saisie-manuelle";
 
-const CHAMP =
-  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 " +
-  "focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 " +
-  "dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100";
-const LABEL =
-  "block text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400";
+// Classes du SYSTEME de la console, pas des couleurs choisies a la main : la
+// garde `admin-design-tokens` refuse la palette Tailwind par defaut. Deux
+// ecrans qui choisissent chacun leur gris cessent de se ressembler, et le
+// theme sombre ne tient plus.
+const CHAMP = "admin-input";
+const LABEL = "admin-label";
 
 interface Champs {
   prenom: string;
@@ -96,11 +96,11 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
 
   if (cree) {
     return (
-      <div className="flex flex-col gap-3 rounded-lg border border-emerald-300 bg-emerald-50 p-4 dark:border-emerald-700/60 dark:bg-emerald-950/30">
-        <p className="flex items-center gap-2 font-medium text-emerald-900 dark:text-emerald-200">
+      <div className="admin-alert admin-alert-success flex flex-col gap-3">
+        <p className="flex items-center gap-2 font-medium">
           <Check className="size-4" aria-hidden /> Contact enregistré.
         </p>
-        <p className="text-sm text-emerald-900/80 dark:text-emerald-200/80">
+        <p className="text-sm">
           <strong>Aucun e-mail ne lui a été envoyé</strong> — ni confirmation, ni rappel. Il
           n&apos;a rien demandé.
         </p>
@@ -159,7 +159,7 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
             onChange={(e) => set({ email: e.target.value })}
             autoComplete="email"
           />
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="admin-help">
             C&apos;est elle qui relie cette personne à ses autres traces sur le site.
           </p>
         </div>
@@ -227,11 +227,11 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
       </div>
 
       {doublons ? (
-        <div className="flex flex-col gap-3 rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-700/60 dark:bg-amber-950/30">
-          <p className="flex items-center gap-2 font-medium text-amber-900 dark:text-amber-200">
+        <div className="admin-alert admin-alert-warning flex flex-col gap-3">
+          <p className="flex items-center gap-2 font-medium">
             <AlertTriangle className="size-4" aria-hidden /> Cette adresse est déjà connue
           </p>
-          <ul className="flex flex-col gap-1 text-sm text-amber-900/90 dark:text-amber-200/90">
+          <ul className="flex flex-col gap-1 text-sm">
             {doublons.map((t) => (
               <li key={t.id}>
                 {t.nom ?? "sans nom"} — {t.etape ?? t.type} · reçu le{" "}
@@ -239,7 +239,7 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
               </li>
             ))}
           </ul>
-          <p className="text-sm text-amber-900/80 dark:text-amber-200/80">
+          <p className="text-sm">
             Créer une seconde ligne n&apos;est pas réversible : la fusion n&apos;existe pas encore.
             Si c&apos;est bien la même personne, mieux vaut ouvrir la fiche existante.
           </p>
@@ -260,7 +260,7 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
       ) : null}
 
       {erreur ? (
-        <p role="alert" className="text-sm font-medium text-rose-700 dark:text-rose-300">
+        <p role="alert" className="admin-alert admin-alert-error text-sm font-medium">
           {erreur}
         </p>
       ) : null}
@@ -273,9 +273,7 @@ export function FormulaireContactManuel({ lienFiche }: { lienFiche: string }) {
         >
           {envoi ? "Enregistrement…" : "Enregistrer le contact"}
         </AdminButton>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Aucun e-mail ne sera envoyé à cette personne.
-        </p>
+        <p className="admin-help">Aucun e-mail ne sera envoyé à cette personne.</p>
       </div>
     </div>
   );

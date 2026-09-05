@@ -534,7 +534,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/contacts/commercial/nouveau`,
       label: "Nouveau contact apporteur",
-      icon: "UserPlus",
+      // 🔴 `UserPlus` était le choix évident — et « Candidatures » le portait
+      // déjà dans le MÊME groupe. La garde `admin-nav-icons` l'a refusé, à
+      // raison : deux entrées voisines partageant une icône deviennent
+      // indiscernables du coin de l'œil, ce qui est précisément la façon dont
+      // on lit une barre latérale.
+      //
+      // `PenLine` dit le bon geste : ici on ÉCRIT une fiche, on ne reçoit pas
+      // une candidature.
+      icon: "PenLine",
       group: "contacts",
       navLevel: 2,
     },
