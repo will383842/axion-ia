@@ -507,6 +507,43 @@ export const config = {
     // Trouvée par le harnais E2E, qui l'a signalée comme « requête en échec » sur
     // une route de sa propre liste. Personne ne l'ouvre en temps normal : c'est
     // exactement le genre de page qu'aucune relecture ne va vérifier.
-    "/((?!api/|widget/|qr/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    // 🔴 2026-09-05 — CONTOURNEMENT D'AUTHENTIFICATION, referme ici.
+    //
+    // Les deux alternatives d'extension ci-dessous portaient `.*\\.ext$`, donc TOUT
+    // chemin — y compris `/fr/<prefixe-admin>/...`. Or `callbacks.authorized`
+    // (src/auth.config.ts) est la SEULE verification d'authentification du perimetre
+    // admin : le layout ne fait qu'un `notFound()` sur le prefixe, plus un controle
+    // de role qui, de son propre commentaire, « ne se declenche que sur une session
+    // existante ». Sauter ce middleware, c'est entrer sans cle.
+    //
+    // Mesure en production, sans cookie, avec contre-temoin :
+    //     /fr/<prefixe>/qualiopi/stagiaires/temoin-inexistant       -> 302 /login
+    //     /fr/<prefixe>/qualiopi/stagiaires/temoin-inexistant.png   -> 200
+    //     /fr/admin-zzzzzzzzzzzz/.../temoin-inexistant.png          -> 404
+    // Et sur `submissions/[id]`, la reponse 200 portait un `NEXT_REDIRECT` vers la
+    // redirection METIER de la page : elle s'etait executee. 48 des 309 pages de la
+    // console n'ont pas de garde propre. Rien n'a fuite — les identifiants sont des
+    // cuid — mais c'est une propriete des VALEURS, pas une garde. La prochaine page
+    // ajoutee avec un identifiant lisible ouvre la porte, et rien ne rougirait.
+    //
+    // 🔑 LE CORRECTIF NE S'APPUIE PAS SUR LE NOM DU PREFIXE ADMIN. `ADMIN_URL_PREFIX`
+    //    est declare `z.string().min(1).optional()` : rien ne l'oblige a commencer
+    //    par `admin-`. Et Next exige un `matcher` statiquement analysable, donc on ne
+    //    peut pas l'y interpoler. Un correctif cale sur ce litteral se rouvrirait en
+    //    silence au premier changement de prefixe.
+    //
+    //    On s'appuie sur ce qui est vrai PAR CONSTRUCTION : ces exclusions visent des
+    //    fichiers RACINE — `robots.txt`, `ai.txt`, `llms.txt`, la cle IndexNow,
+    //    `/williams-jullin.vcf`, `/catalogue/index.html`, tout `/public/`. Aucune
+    //    n'est localisee, et verification faite, aucune route sous `[locale]` ne se
+    //    termine par l'une de ces extensions. Un chemin localise qui finit par une
+    //    extension est donc soit une route applicative — qui DOIT passer par le
+    //    middleware — soit un 404. `(?!(?:fr|en)/)` refuse l'exclusion a ces
+    //    chemins-la, et referme le trou pour TOUTES les routes localisees, pas
+    //    seulement l'admin.
+    //
+    // ⚠️ Les DEUX alternatives sont corrigees : `.txt` portait exactement le meme
+    //    trou que les images. N'en traiter qu'une laisserait la porte entrouverte.
+    "/((?!api/|widget/|qr/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };
