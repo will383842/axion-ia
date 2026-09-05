@@ -29,6 +29,27 @@ machine ne l'est pas, et les deux ne se comparent pas sans conversion.*
   formateur/commissions en lecture seule (lot F) · émargement, notifications
   et gabarits d'e-mail (lot C couche A).
 
+### Mesures prises à 08:35 heure locale (06:35 UTC)
+
+| | |
+|---|---|
+| `origin/main` | **`0452729b5`** — a bougé, ma base était `f62368221` |
+| **Prod sert** | `0452729b5` ✅ vérifié : `curl -sI https://axion-ia.com/fr` |
+| Écart de ma branche | **2 commits de retard, 11 d'avance**, **15 fichiers** — **aucun dans la zone Qualiopi**. La fusion sera propre. |
+| Build mesuré (run `33947545789`) | `Build & push` **50 min 09 s** · `Trigger Coolify deploy` **3 min 40 s** · total **53 min 49 s** |
+
+🔑 **Le run affichait encore `in_progress` alors que la prod servait déjà le
+nouveau SHA.** Il restait `Warm edge cache` et `Lighthouse CI post-deploy`, tous
+deux POST-atterrissage. **Lire le RUN au lieu des JOBS fait croire que la file
+est occupée ~25 min de plus qu'elle ne l'est.** Toujours descendre au niveau des
+jobs avant de conclure qu'un créneau est pris.
+
+⚠️ **Les 2 commits de `main` ajoutent une garde de dépôt**
+(`tests/unit/ci/une-pr-empilee-est-gardee.spec.ts`) et modifient
+`.github/workflows/ci.yml`. Le passage vert de `tests/unit/ci/` obtenu ce matin
+(31 fichiers, 151 témoins) a été mesuré AVANT eux : **il faudra le refaire après
+la mise à niveau sur `main`**, sur 32 fichiers.
+
 ⚠️ **File de fusion RÉSERVÉE par la session `axion-ia-20`** (capture apporteurs)
 depuis ~07:35 **heure locale** (05:35 UTC), pour #987 puis #993. Elle a mesuré le build de #991 à
 **1 h 16**, pas 50 min. Ne rien fusionner avant qu'elle rende la file.
