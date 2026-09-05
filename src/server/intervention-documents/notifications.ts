@@ -57,10 +57,26 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
   const pdfUrl = await sign(version.pdfKey);
   const portalUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com"}/fr/espace-ressources`;
 
+  // 🔴 2026-09-05 — `enqueued++` était INCONDITIONNEL, sur un retour jeté.
+  //
+  // Même famille que le `envoyes++` corrigé le 2026-08-19 dans
+  // `qualiopi/emargement/envoi-liens.ts` (constat `D5-3-01`) : le compteur
+  // comptait les TOURS DE BOUCLE, pas les mises en file. Le `try/catch`
+  // ci-dessous ne protégeait rien — `enqueueEmail` NE LÈVE PAS quand l'envoi
+  // n'a pas lieu, elle RETOURNE `{ enqueued: false }` (file absente, adresse
+  // retenue, e-mail garé en corbeille). Le `catch` ne voyait donc aucun de ces
+  // chemins, et la fonction annonçait N destinataires notifiés sur zéro envoi.
+  //
+  // ⚠️ Le compteur est aujourd'hui jeté par son unique appelant
+  // (`documents.actions.ts` : `.catch(() => undefined)`), donc rien ne ment à
+  // l'écran — le défaut est LATENT. Il se ferme maintenant parce qu'un
+  // compteur faux est un piège armé : le jour où quelqu'un l'affichera, il
+  // dira « 12 destinataires prévenus » sans qu'une ligne ait changé ici.
   let enqueued = 0;
+  const echecs: string[] = [];
   for (const r of recipients) {
     try {
-      await enqueueEmail(
+      const envoi = await enqueueEmail(
         "documents-nouvelle-version",
         r.email,
         "fr",
@@ -77,10 +93,28 @@ export async function notifyNewVersion(versionId: string): Promise<{ enqueued: n
         },
         { jobId: `doc-version-${versionId}-${r.id}` },
       );
-      enqueued++;
+      if (envoi.enqueued) {
+        enqueued++;
+      } else {
+        echecs.push(r.email);
+      }
     } catch {
       /* fail-soft par destinataire : un envoi raté n'invalide pas les autres */
+      echecs.push(r.email);
     }
   }
+
+  // Le fail-soft reste entier — la publication ne dépend pas de l'e-mail —,
+  // mais il cesse d'être MUET. Sans cette ligne, une publication qui ne
+  // prévient personne est indiscernable d'une publication sans destinataire.
+  if (echecs.length > 0) {
+    console.error(
+      `[intervention-documents] version ${versionId} : ${echecs.length} destinataire(s) ` +
+        `sur ${recipients.length} n'ont PAS été prévenus (file indisponible, adresse retenue, ` +
+        "ou e-mail garé en corbeille de validation). Aucun rattrapage automatique n'existe : " +
+        "les prévenir demande un geste manuel.",
+    );
+  }
+
   return { enqueued };
 }

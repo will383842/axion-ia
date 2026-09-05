@@ -78,12 +78,29 @@ export async function subscribeNewsletterAction(
   const confirmToken = crypto.randomBytes(32).toString("hex");
   const unsubscribeToken = crypto.randomBytes(32).toString("hex");
 
+  // 🔴 2026-09-05 — `confirmSentAt` NE SE POSE PLUS ICI.
+  //
+  // Il était écrit dans les deux branches de cet upsert, c'est-à-dire AVANT
+  // l'appel à `enqueueEmail` (étape 7), dont le retour est jeté. Or
+  // `enqueueEmail` NE LÈVE PAS quand l'envoi n'a pas lieu : elle RETOURNE
+  // `{ enqueued: false }` — file absente, corbeille indisponible, ou adresse
+  // RETENUE par la liste de suppression. Ce dernier cas n'a rien d'une panne :
+  // l'envoi porte `marketing: true`, donc une personne désabonnée ou dont
+  // l'adresse a rebondi dur est retenue par construction.
+  //
+  // La colonne affirmait donc « la confirmation est partie » sur des cas où
+  // rien ne partait — et c'est la trace du double opt-in, celle qui atteste
+  // qu'on a bien sollicité un consentement avant d'écrire à quelqu'un.
+  //
+  // ⚠️ Aucune lecture n'existe aujourd'hui dans `src/` : le défaut est LATENT,
+  // pas visible d'un écran. C'est précisément pourquoi il fallait le fermer
+  // maintenant — le jour où un écran affichera « confirmation envoyée le … »,
+  // il dira faux sans que personne n'ait touché à cette ligne.
   const sub = await prisma.newsletterSubscriber.upsert({
     where: { email: parsed.data.email },
     update: {
       // Si deja confirme, ne touche pas le status. Sinon reset le token.
       confirmToken,
-      confirmSentAt: new Date(),
       locale,
     },
     create: {
@@ -91,7 +108,6 @@ export async function subscribeNewsletterAction(
       locale,
       status: "pending",
       confirmToken,
-      confirmSentAt: new Date(),
       unsubscribeToken,
       source,
       ipAddress: ip,
@@ -121,7 +137,7 @@ export async function subscribeNewsletterAction(
 
   // 7. Enqueue email double opt-in (RFC 8058) — marketing=true pour expéditeur news@
   // (CLAUDE.md §11 doctrine : newsletter via news@axion-ia.com vs noreply@ transac)
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "newsletter-confirm-optin",
     parsed.data.email,
     locale,
@@ -131,6 +147,27 @@ export async function subscribeNewsletterAction(
     },
     { marketing: true },
   );
+
+  // La trace suit l'envoi, jamais l'intention. Même contrat que
+  // `vivier/stock.ts` et `calendly/rappels-appel.ts` : on ne pose l'horodatage
+  // que si la mise en file a réussi.
+  if (envoi.enqueued) {
+    await prisma.newsletterSubscriber
+      .update({ where: { id: sub.id }, data: { confirmSentAt: new Date() } })
+      .catch(() => undefined);
+  } else {
+    // 🔑 On ne renvoie PAS d'erreur à l'internaute, et c'est délibéré : une
+    // adresse retenue par la liste de suppression ne doit pas apprendre son
+    // propre statut (anti-énumération), et une file coupée n'est pas sa faute.
+    // Mais le défaut est DIT, au lieu d'être deviné plus tard sur une colonne
+    // qui prétendrait le contraire.
+    console.error(
+      `[newsletter] confirmation double opt-in NON partie (${
+        envoi.retenu ?? (envoi.corbeilleIndisponible === true ? "corbeille" : "file")
+      }) — l'inscription reste « pending » et confirmSentAt reste vide : ` +
+        "aucune trace ne prétendra qu'une confirmation a été envoyée.",
+    );
+  }
 
   return { ok: true };
 }
