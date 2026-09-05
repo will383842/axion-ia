@@ -12,11 +12,7 @@ import { describe, expect, it } from "vitest";
 
 import { MODELES_REPONSE, remplirModele } from "@/content/recrutement/modeles-reponse";
 
-import {
-  preparerEnvois,
-  variablesEmployees,
-  type DestinatairePrepare,
-} from "../reponse-en-masse";
+import { preparerEnvois, variablesEmployees, type DestinatairePrepare } from "../reponse-en-masse";
 
 const AMINA: DestinatairePrepare = { id: "a", prenom: "Amina", poste: "Monteur vidéo" };
 const BORIS: DestinatairePrepare = { id: "b", prenom: "Boris", poste: "Développeur" };
@@ -75,9 +71,7 @@ describe("preparerEnvois — un message PAR personne", () => {
 
     // Le geste n'est pas annulé : Amina part quand même.
     expect(envois.map((e) => e.id)).toEqual(["a"]);
-    expect(ecartes).toEqual([
-      { id: "c", motif: "variable_non_resolue", variables: ["prenom"] },
-    ]);
+    expect(ecartes).toEqual([{ id: "c", motif: "variable_non_resolue", variables: ["prenom"] }]);
   });
 
   it("écarte aussi sur un prénom fait d'espaces — `remplirModele` ne le résoudrait pas", () => {

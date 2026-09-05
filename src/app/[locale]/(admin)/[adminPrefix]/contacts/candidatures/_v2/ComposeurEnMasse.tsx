@@ -18,7 +18,10 @@
 import { useActionState, useState } from "react";
 
 import { repondreEnMasseAction } from "@/features/admin-job-applications/actions-reponse-en-masse";
-import type { EtatReponseEnMasse, MotifEcart } from "@/features/admin-job-applications/reponse-en-masse";
+import type {
+  EtatReponseEnMasse,
+  MotifEcart,
+} from "@/features/admin-job-applications/reponse-en-masse";
 
 /**
  * Un modèle, réduit à ce que l'écran en a besoin.
@@ -110,14 +113,13 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
 
       <div className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-3)]">
         <p className="admin-meta-small">
-          Un message <strong>par personne</strong>, jamais en copie : personne n’apprend qui
-          d’autre a candidaté. Au plus {plafond} destinataires par envoi.{" "}
+          Un message <strong>par personne</strong>, jamais en copie : personne n’apprend qui d’autre
+          a candidaté. Au plus {plafond} destinataires par envoi.{" "}
           {/* La personnalisation est le seul endroit où l'écran doit ENSEIGNER
               quelque chose : sans cette phrase, on écrit « Bonjour, » à tout le
               monde et on croit que c'est la seule forme possible. */}
-          <code>{"{prenom}"}</code> et <code>{"{poste}"}</code> sont remplacés depuis chaque
-          dossier ; un dossier qui n’en porte pas est <strong>écarté</strong> plutôt qu’envoyé
-          avec un trou.
+          <code>{"{prenom}"}</code> et <code>{"{poste}"}</code> sont remplacés depuis chaque dossier
+          ; un dossier qui n’en porte pas est <strong>écarté</strong> plutôt qu’envoyé avec un trou.
         </p>
 
         <div className="admin-field">
@@ -140,15 +142,34 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
           {/* 🔑 CE QUE LE MODÈLE SERT À DIRE, sous le choix. Un menu de cinq
               libellés seuls fait choisir « Refus » pour une relance : les deux
               mots se ressemblent à la lecture rapide, et le geste est groupé. */}
-          <p className="admin-meta-small">
-            {modeles.find((m) => m.value === choisi)?.quand ?? ""}
-          </p>
+          <p className="admin-meta-small">{modeles.find((m) => m.value === choisi)?.quand ?? ""}</p>
         </div>
 
         <div className="admin-field">
           <label htmlFor="masse-objet" className="admin-label">
             Objet
           </label>
+          {/* 🔴 ENTRÉE NE SOUMET PAS, ET CE N'EST PAS UN CONFORT.
+
+              Ce champ est le PREMIER champ texte d'une ligne de ce `<form>` —
+              qui ne contenait jusque-là que des cases à cocher et deux `select`.
+              Il réveille donc la SOUMISSION IMPLICITE de HTML, qui active le
+              premier bouton `submit` du formulaire **en ordre de document**.
+
+              Ce bouton n'est pas le nôtre : c'est « Appliquer à la sélection »,
+              rendu plus haut par `FormulaireEnMasse`. Une touche Entrée frappée
+              ici — le geste réflexe de qui vient de taper un objet — basculait
+              donc jusqu'à cinquante dossiers au statut par défaut `reviewing` et
+              EFFAÇAIT leurs motifs de refus, sans qu'aucun écran ne le demande.
+
+              🔑 Le geste voisin n'a pas ce danger parce qu'il est idempotent :
+              le réappliquer ne change rien, et il compte les dossiers « déjà
+              dans cet état ». Celui-ci ne se rattrape pas.
+
+              On bloque donc Entrée SUR CE CHAMP plutôt que de désarmer le
+              formulaire entier : le corps du message est un `<textarea>`, où
+              Entrée doit continuer à faire un retour à la ligne, et les `select`
+              du geste de statut gardent leur soumission au clavier. */}
           <input
             id="masse-objet"
             name="subject"
@@ -157,6 +178,9 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
             onChange={(e) => {
               setObjet(e.target.value);
               setRetouche(true);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.preventDefault();
             }}
             maxLength={120}
           />

@@ -175,7 +175,8 @@ export async function repondreEnMasseAction(
       // le défaut au mauvais endroit.
       details.push({
         id: envoi.id,
-        motif: issue.error === "invalid_recipient" ? "destinataire_injoignable" : "ecriture_impossible",
+        motif:
+          issue.error === "invalid_recipient" ? "destinataire_injoignable" : "ecriture_impossible",
         variables: [],
       });
       continue;
