@@ -18,6 +18,7 @@
 // VOCABULAIRE rendu, et dans la SÉPARATION des mondes.
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 
 const chercherSubmissions = vi.fn(async (_a: unknown) => [] as unknown[]);
 const chercherCandidatures = vi.fn(async (_a: unknown) => [] as unknown[]);
@@ -36,13 +37,25 @@ const { lireFichePersonne } = await import("../fiche-personne");
 
 const EMPREINTE = "a".repeat(64);
 
-/** Le cas qui justifie la fiche : la même personne des DEUX côtés. */
+/**
+ * Le cas qui justifie la fiche : la même personne des DEUX côtés.
+ *
+ * 🔑 La trace apporteur porte les DEUX clés, comme l'écrivent les quatre
+ * producteurs réels du monde apporteur (`commercial-application/*-actions.ts`).
+ * Une fixture qui n'écrirait que `unifiedType` décrirait une trace qui
+ * n'existe pas côté apporteur — et laisserait passer la confusion avec la
+ * rubrique « recrutement » du formulaire de contact public.
+ */
 function personneDesDeuxCotes() {
   chercherSubmissions.mockResolvedValue([
     {
       id: "sub-1",
       type: "contact",
-      details: { unifiedType: "recrutement", etape: "premier-contact" },
+      details: {
+        unifiedType: "recrutement",
+        subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
+        etape: "premier-contact",
+      },
       submittedAt: new Date("2026-06-01T10:00:00Z"),
       contactName: "chiffre(Camille)",
     },
@@ -161,5 +174,71 @@ describe("la fiche personne rapproche sans fusionner", () => {
     const f = await lireFichePersonne(EMPREINTE);
     expect(f.desDeuxCotes).toBe(false);
     expect(f.compte.emploi).toBe(0);
+  });
+
+  it("🔴 un message « recrutement » du formulaire public N'EST PAS un apporteur", async () => {
+    // Le franchissement le plus silencieux, et il ne demande aucun code
+    // fautif : `unifiedType: "recrutement"` n'appartient PAS au monde
+    // apporteur. C'est aussi l'une des rubriques du formulaire de contact
+    // public (`unified-contact/actions.ts` écrit `unifiedType: data.type`, et
+    // `submissionTypeFor` accepte `case "recrutement"`). Un visiteur qui écrit
+    // « je cherche un poste » depuis /contact produit exactement cette trace.
+    // La classer « apporteur » lui donne un dossier commercial qu'il n'a jamais
+    // ouvert — et fait de la fiche l'écran de FUSION qu'elle interdit.
+    //
+    // Le discriminant est `details.subType`, que les quatre producteurs
+    // apporteur écrivent et que le formulaire public ne pose jamais.
+    chercherSubmissions.mockResolvedValue([
+      {
+        id: "sub-contact",
+        type: "contact",
+        details: { unifiedType: "recrutement", ville: "Grenoble", message: "Je cherche un poste" },
+        submittedAt: new Date("2026-07-01T10:00:00Z"),
+        contactName: "chiffre(Nadia)",
+      },
+    ]);
+    const f = await lireFichePersonne(EMPREINTE);
+    expect(f.compte.apporteur, "un message public n'ouvre aucun dossier apporteur").toBe(0);
+    expect(f.traces[0]?.monde).toBe("autre");
+    expect(f.traces[0]?.intitule).toBe("Message reçu");
+    expect(f.traces[0]?.chemin).toBe("contacts/messages/sub-contact");
+  });
+
+  it("une trace portant les DEUX clés reste bien du monde apporteur", async () => {
+    // Contre-témoin du test précédent : sans lui, un `estApporteur` toujours
+    // faux le passerait sans rien prouver. Les deux intitulés du monde
+    // apporteur et son chemin de console sont vérifiés ici.
+    chercherSubmissions.mockResolvedValue([
+      {
+        id: "sub-premier",
+        type: "contact",
+        details: {
+          unifiedType: "recrutement",
+          subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
+          etape: "premier-contact",
+        },
+        submittedAt: new Date("2026-06-02T10:00:00Z"),
+        contactName: "chiffre(Camille)",
+      },
+      {
+        id: "sub-dossier",
+        type: "contact",
+        details: {
+          unifiedType: "recrutement",
+          subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
+          etape: "dossier-complet",
+        },
+        submittedAt: new Date("2026-06-01T10:00:00Z"),
+        contactName: "chiffre(Camille)",
+      },
+    ]);
+    const f = await lireFichePersonne(EMPREINTE);
+    expect(f.compte.apporteur).toBe(2);
+    expect(f.compte.autre).toBe(0);
+    const parId = Object.fromEntries(f.traces.map((t) => [t.id, t]));
+    expect(parId["sub-premier"]?.intitule).toBe("Premier contact apporteur");
+    expect(parId["sub-dossier"]?.intitule).toBe("Dossier apporteur");
+    expect(parId["sub-premier"]?.chemin).toBe("contacts/commercial/sub-premier");
+    expect(parId["sub-dossier"]?.chemin).toBe("contacts/commercial/sub-dossier");
   });
 });

@@ -38,6 +38,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 
 /** Les deux mondes, tenus séparés jusque dans le type. */
 export type MondeTrace = "apporteur" | "emploi" | "autre";
@@ -119,8 +120,27 @@ export async function lireFichePersonne(empreinte: string): Promise<FichePersonn
   let nom: string | null = null;
 
   for (const s of submissions) {
-    const d = s.details as { unifiedType?: string; etape?: string; origine?: string } | null;
-    const estApporteur = d?.unifiedType === "recrutement";
+    const d = s.details as {
+      unifiedType?: string;
+      subType?: string;
+      etape?: string;
+      origine?: string;
+    } | null;
+    // ⛔ `unifiedType === "recrutement"` NE SUFFIT PAS, et le croire fait de
+    // cette vue l'écran de fusion qu'elle interdit. Cette valeur est aussi
+    // l'une des rubriques du formulaire de contact public : `unified-contact`
+    // écrit `unifiedType: data.type`, et « recrutement » y est un choix offert
+    // au visiteur. Un « je cherche un poste » posté depuis /contact produirait
+    // donc un « Dossier apporteur » et un lien vers la file commerciale.
+    //
+    // Le discriminant réel est `details.subType`, écrit par les quatre
+    // producteurs du monde apporteur (`commercial-application/*-actions.ts`) et
+    // jamais posé par le formulaire public. C'est déjà le filtre de la file
+    // commerciale de la console (`admin-job-applications/actions.ts`) : cette
+    // vue lit donc la MÊME population, sans redéfinir la sienne. Les quatre
+    // producteurs écrivent les DEUX clés : on exige les deux.
+    const estApporteur =
+      d?.unifiedType === "recrutement" && d?.subType === CANDIDATURE_COMMERCIALE_SUBTYPE;
     nom ??= dechiffrer(s.contactName);
     traces.push({
       id: s.id,
