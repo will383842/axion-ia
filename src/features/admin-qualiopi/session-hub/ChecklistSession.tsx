@@ -114,6 +114,33 @@ export function ChecklistSession({
               <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 {e.mention} · {e.geste}
               </span>
+              {/*
+                🔴 LE LIEN QUI MANQUAIT — défaut vécu par Will le 2026-09-04 :
+                « je n'ai pas trouvé le bouton pour contresigner ». Le suivi
+                nommait un bloc « Signatures » qui s'appelle en réalité
+                « Signature des pièces contractuelles », et un bouton
+                « Contresigner » qui s'appelle « Signer pour l'organisme ».
+
+                Même exacte, la phrase n'aurait pas suffi : la fiche fait plus
+                de 4 000 px et empile douze blocs. Décrire un endroit sur une
+                page qu'il faut parcourir aux yeux, c'est ne pas le dire.
+
+                Le lien n'est offert que sur ce qui RESTE à faire : sur une
+                étape close il n'y a rien à aller poser, et l'afficher partout
+                noierait les trois lignes qui comptent sous quinze liens
+                identiques.
+              */}
+              {e.ancre !== undefined && e.etat !== "fait" && e.etat !== "sans_objet" ? (
+                <>
+                  {" "}
+                  <a
+                    href={`#${e.ancre.id}`}
+                    className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline"
+                  >
+                    Aller au {e.ancre.libelle} →
+                  </a>
+                </>
+              ) : null}
               {e.avertissement ? (
                 <>
                   <br />
