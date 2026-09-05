@@ -1,29 +1,45 @@
-> ⚠️ **MIS À JOUR le 2026-09-05 à 08:20 (heure locale, UTC+2).**
+> ⚠️ **MIS À JOUR le 2026-09-05 à 12:55 (heure locale, UTC+2).**
 >
-> **Une tâche planifiée Windows relance ce chantier aujourd'hui à 10:40.**
-> Nom : « Axion-IA relance Qualiopi 10h40 » · script :
-> `_RELANCE/relancer-qualiopi.cmd` · prompt : `_RELANCE/PROMPT-RELANCE-QUALIOPI.txt`
-> · journal des déclenchements : `_RELANCE/journal-relance.txt`.
-> Posée à la demande de Will (« si ça s'arrête parce que j'ai consommé tout mon
-> forfait, relance automatiquement à 10h40 »). Vérifiée : `StartBoundary
-> 2026-09-05T10:40:00+02:00`, `NextRunTime 10:40:40`, activée, et le script
-> éprouvé à blanc (il trouve `wt-app30` et écrit son journal).
+> **Filet de relance : tâche Windows « Axion-IA relance Qualiopi 10h40 »,
+> prochaine exécution vérifiée `2026-09-05 14:30:30`.**
+> Script `_RELANCE/relancer-qualiopi.cmd` · prompt `_RELANCE/PROMPT-RELANCE-QUALIOPI.txt`
+> · journal `_RELANCE/journal-relance.txt` · sorties `_RELANCE/relance-<date>.log`.
 >
-> 🔑 **Pourquoi une tâche WINDOWS et pas un rappel interne** : les tâches
-> `CronCreate` de Claude Code vivent DANS la session et meurent avec elle. Or le
-> cas à couvrir est précisément la mort de la session. Un rappel qui disparaît
-> quand survient l'événement qu'il devait couvrir n'est pas un filet.
->
-> ⛔ **Si le chantier est terminé avant 10:40, SUPPRIMER la tâche** :
+> ⛔ **Si le chantier se termine, SUPPRIMER la tâche** :
 > `Unregister-ScheduledTask -TaskName "Axion-IA relance Qualiopi 10h40" -Confirm:$false`
-> sinon elle ouvrira une seconde session Claude dans un arbre déjà occupé.
 >
-> **État réel à 08:20** : branche `qualiopi/session-editable-et-conventions`,
-> **8 commits**, poussée, partie de `main` = `f62368221`. Les 2 derniers commits
-> sont `01a42897c` (câblage UI du lot 3) et `76f631940` (ADR 0048, distanciel
-> tranché). ⚠️ **CINQ agents écrivaient en parallèle dans cet arbre** au moment
-> de cette écriture, leur travail N'ÉTAIT PAS commité : lire `git status` et le
-> diff AVANT de commiter, et ne JAMAIS `git checkout`/`stash`/`clean`/`reset`.
+> ### 🔴 Ce que le tir RÉEL de 12:30 a appris — et que le test à blanc n'avait pas vu
+>
+> La première version lançait `claude.exe` en mode **interactif** depuis le
+> Planificateur. Elle a tiré pour de vrai à 12:30:07. Résultat **mesuré** : le
+> processus a démarré (PID 3164), consommé **9 s de CPU en 18 minutes**, ne s'est
+> **jamais enregistré** auprès des autres sessions Claude, et n'a touché à rien.
+> Il attendait très probablement une confirmation que personne ne pouvait donner.
+>
+> 🔑 **Le test à blanc du matin ne pouvait pas le voir : il neutralisait
+> justement la ligne `claude.exe`.** Un essai qui saute la seule ligne qui compte
+> ne prouve rien d'elle — il prouve que le reste du script marche, ce qui n'était
+> pas la question.
+>
+> ⚠️ **Et ma première explication était fondée sur un MAUVAIS INSTRUMENT.** J'ai
+> conclu « aucune fenêtre » depuis `MainWindowHandle = 0` ; dans cet
+> environnement **toutes** les consoles rendent 0, y compris celles qui
+> fonctionnent. Le seul fait solide reste l'inactivité de 18 minutes.
+>
+> **Le filet tourne désormais en `claude -p`** — aucun terminal requis, aucune
+> question posée, sortie dans un fichier relisible à froid. Éprouvé **de bout en
+> bout depuis le Planificateur**, ligne `claude` comprise : la tâche a produit un
+> fichier contenant la réponse attendue.
+>
+> ⚠️ **Ce que je n'ai PAS vérifié** : qu'une session `-p` non surveillée puisse
+> réellement ÉDITER, COMMITER et POUSSER. Elle pourrait n'avoir le droit que de
+> lire. Le filet garantit donc qu'une reprise DÉMARRE et laisse une trace ; il ne
+> garantit pas qu'elle travaille. **Garder l'arbre commité et poussé en
+> permanence** reste la vraie protection.
+>
+> **État à 12:55** : branche `qualiopi/session-editable-et-conventions`,
+> **19 commits**, poussée, arbre PROPRE, aucune PR ouverte. Base `f62368221` ;
+> `origin/main` est à `0452729b5` (2 commits d'écart, aucun sur la zone Qualiopi).
 
 ---
 
