@@ -78,8 +78,25 @@ function pieceSignee(patch: Record<string, unknown> = {}) {
     exemplaireSigneEnvoyeAt: null,
     clientId: "cli-1",
     signatures: [
-      { partie: "client", signataireEmail: "beeeditions@gmail.com", signataireNom: "Simone Blanc" },
-      { partie: "axionia", signataireEmail: "contact@axion-ia.com", signataireNom: "Williams Jullin" },
+      // 🔴 2026-09-05 — cette fixture portait l'adresse RÉELLE de la cliente du
+      // dossier AXI-DOC-2026-039, une boîte personnelle chez un fournisseur
+      // grand public, commitée dans le dépôt. `destinataires-internes.spec.ts`
+      // l'a refusée : c'est sa raison d'être, empêcher qu'une adresse hors du
+      // domaine de l'organisme s'installe dans les sources.
+      //
+      // ⚠️ Ce témoin était rouge depuis `f12917ced` (hier) sans que personne le
+      // voie — la garde qui l'attrape vit dans un AUTRE fichier, et seuls quatre
+      // fichiers ciblés avaient été lancés. Troisième rouge de 24 h découvert en
+      // lançant la suite complète.
+      //
+      // `example.com` est réservé par la RFC 2606 exactement pour cet usage : il
+      // ne peut appartenir à personne, donc il ne peut pas fuiter.
+      { partie: "client", signataireEmail: "cliente@example.com", signataireNom: "Simone Blanc" },
+      {
+        partie: "axionia",
+        signataireEmail: "contact@axion-ia.com",
+        signataireNom: "Williams Jullin",
+      },
     ],
     ...patch,
   };
@@ -99,7 +116,14 @@ function cheminNominal(): void {
 }
 
 beforeEach(() => {
-  for (const m of [findUniqueMock, updateManyMock, updateMock, rendreMock, storeMock, enqueueMock]) {
+  for (const m of [
+    findUniqueMock,
+    updateManyMock,
+    updateMock,
+    rendreMock,
+    storeMock,
+    enqueueMock,
+  ]) {
     m.mockReset();
   }
 });
@@ -147,7 +171,11 @@ describe("la clé d'archive", () => {
   it("est VOISINE du PDF vierge, jamais la même", () => {
     // Écraser l'original par l'exemplaire signé détruirait la pièce telle
     // qu'elle a été présentée à la signature.
-    const doc = { type: "convention", numero: "AXI-DOC-2026-039", createdAt: new Date("2026-09-04") };
+    const doc = {
+      type: "convention",
+      numero: "AXI-DOC-2026-039",
+      createdAt: new Date("2026-09-04"),
+    };
     const signe = exemplaireSignePdfKey(doc);
     expect(signe).toBe("documents/2026/convention/AXI-DOC-2026-039-signe.pdf");
     expect(signe).not.toBe("documents/2026/convention/AXI-DOC-2026-039.pdf");
@@ -161,7 +189,7 @@ describe("le chemin nominal", () => {
 
     expect(res).toEqual({
       ok: true,
-      destinataires: ["beeeditions@gmail.com"],
+      destinataires: ["cliente@example.com"],
       r2Key: "documents/2026/convention/AXI-DOC-2026-039-signe.pdf",
     });
     expect(enqueueMock).toHaveBeenCalledTimes(1);
@@ -174,7 +202,7 @@ describe("le chemin nominal", () => {
       { attachments?: Array<{ r2Key: string }> },
     ];
     expect(gabarit).toBe("piece-exemplaire-signe");
-    expect(to).toBe("beeeditions@gmail.com");
+    expect(to).toBe("cliente@example.com");
     // Le PDF EST joint. Un e-mail qui annonce un exemplaire sans le porter
     // serait pire que pas d'e-mail : il ferait croire la boucle refermée.
     expect(options.attachments?.[0]?.r2Key).toBe(
@@ -240,8 +268,9 @@ describe("🔴 l'échec RELÂCHE la revendication", () => {
   /** La date posée puis retirée : la pièce redevient transmissible. */
   function aEteRelachee(): boolean {
     return updateMock.mock.calls.some(
-      (c) => (c[0] as { data: { exemplaireSigneEnvoyeAt?: unknown } }).data
-        .exemplaireSigneEnvoyeAt === null,
+      (c) =>
+        (c[0] as { data: { exemplaireSigneEnvoyeAt?: unknown } }).data.exemplaireSigneEnvoyeAt ===
+        null,
     );
   }
 
@@ -289,7 +318,10 @@ describe("🔴 l'échec RELÂCHE la revendication", () => {
 describe("ce qu'on ne transmet pas", () => {
   it("une pièce seulement PARTIELLE attend l'autre partie", async () => {
     findUniqueMock.mockResolvedValue(pieceSignee({ statutSignature: "partielle" }));
-    expect(await transmettreExemplaireSigne("doc-039")).toEqual({ ok: false, motif: "pas_complete" });
+    expect(await transmettreExemplaireSigne("doc-039")).toEqual({
+      ok: false,
+      motif: "pas_complete",
+    });
     expect(updateManyMock).not.toHaveBeenCalled();
   });
 
@@ -304,7 +336,9 @@ describe("ce qu'on ne transmet pas", () => {
 
   it("aucun signataire joignable : on n'a personne à qui écrire", async () => {
     findUniqueMock.mockResolvedValue(
-      pieceSignee({ signatures: [{ partie: "axionia", signataireEmail: "moi@of.fr", signataireNom: "W" }] }),
+      pieceSignee({
+        signatures: [{ partie: "axionia", signataireEmail: "moi@of.fr", signataireNom: "W" }],
+      }),
     );
     expect(await transmettreExemplaireSigne("doc-039")).toEqual({
       ok: false,

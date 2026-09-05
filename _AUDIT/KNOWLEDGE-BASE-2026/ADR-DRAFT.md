@@ -147,5 +147,5 @@ Si toutes les 5 décisions sont validées et `GO BUILD KB-SPRINT-1` reçu, statu
 
 ---
 
-**Auteur** : William Jullin (`williamsjullin@gmail.com` / `beeeditions@gmail.com`).
+**Auteur** : William Jullin (`williamsjullin@gmail.com` / `la boîte personnelle de la cliente (masquée — dépôt PUBLIC)`).
 **Reviewer requis avant ACCEPTED** : Will (auto-revue suffit, projet solo).

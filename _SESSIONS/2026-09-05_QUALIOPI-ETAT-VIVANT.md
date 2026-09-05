@@ -145,9 +145,9 @@ La session du **5 septembre** existe pour de vrai.
 
 - Convention **`AXI-DOC-2026-039`** — SIRET `90143483700018`, 4 rue Dervieux
   42000 Saint-Étienne, **100,00 €**, acompte **0 %**, **sans filigrane COPIE**.
-- Envoyée **20:47 UTC** à `beeeditions@gmail.com`, **signée par la cliente**,
+- Envoyée **20:47 UTC** à `la boîte personnelle de la cliente (masquée — dépôt PUBLIC)`, **signée par la cliente**,
   **contresignée 21:33 UTC**.
-- Questionnaire de positionnement envoyé **20:51 UTC** à `simone.blanc.26@gmail.com`.
+- Questionnaire de positionnement envoyé **20:51 UTC** à `la boîte personnelle de la stagiaire (masquée — dépôt PUBLIC)`.
 - Pièces `030`, `037`, `038` **annulées au registre avec motif**.
 
 Identifiants : client `AXI-CLI-001` SCI Invest Sun
