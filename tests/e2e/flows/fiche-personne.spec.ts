@@ -13,23 +13,208 @@
 // commerciale. Aucune fixture ne décrivait ce cas, parce qu'aucune fixture
 // n'était construite depuis le producteur réel.
 //
-// Pré-requis : serveur de dev sur la base `axion_masse_e2e`, garnie par le jeu
-// de recette (4 personnes, empreintes ci-dessous), et `E2E_BASE_URL` dessus.
-// Les empreintes sont des HMAC-SHA256 calculés avec `PII_ENCRYPTION_KEY` :
-// elles ne valent QUE pour la clé de développement.
+// ── 🔴 CE FICHIER SÈME SES PROPRES DONNÉES (2026-09-05) ────────────────────
+//
+// Il a porté jusqu'ici QUATRE EMPREINTES EN DUR — quatre HMAC de 64 caractères
+// hexadécimaux, calculés sur des personnes semées À LA MAIN dans une base
+// locale jetable. Elles n'existent dans aucun seed du dépôt. Conséquence
+// mesurée : la suite passait sur le poste qui avait fabriqué les lignes, et
+// ROUGISSAIT partout ailleurs — en CI comme chez le voisin. Une recette qui
+// dépend d'une donnée que personne d'autre n'a ne recette rien : elle ne dit
+// que « cette machine-ci ».
+//
+// Sa sœur `reponse-en-masse.spec.ts` s'est fait attraper par le même défaut, en
+// exigeant un dossier « écarté » fabriqué à la main.
+//
+// Le remède est celui déjà en place dans `saisie-manuelle.spec.ts`,
+// `capture-ecran-1.spec.ts` et `tunnel-apporteur-bout-en-bout.spec.ts` : la
+// spec parle à la base par le client Prisma généré. Ici elle va plus loin —
+// elle SÈME, elle utilise, elle EFFACE :
+//
+//   · `beforeAll` crée les quatre personnes avec le VRAI chiffrement
+//     (`encryptPii`) et la VRAIE empreinte (`hashEmailForLookup`), et surtout
+//     avec la forme de `details` que les producteurs RÉELS écrivent — c'est
+//     tout l'enjeu du cas D : le classement se joue sur `subType`, pas sur
+//     `unifiedType`. Une fixture inventée reproduirait l'erreur d'origine ;
+//   · les empreintes sont CALCULÉES ici, jamais recopiées ;
+//   · `afterAll` efface exactement ce qui a été créé.
+//
+// 🔑 Chaque exécution tire un MARQUEUR unique, présent dans les quatre adresses
+// e-mail. Deux conséquences, toutes deux voulues :
+//   · le nettoyage filtre sur des empreintes qui n'appartiennent qu'à CE
+//     passage — il ne peut donc emporter ni une vraie donnée, ni les lignes
+//     d'un autre worker Playwright qui tournerait en parallèle ;
+//   · le domaine `@recette-fiche-e2e.invalid` (TLD réservé, RFC 2606) rend ces
+//     lignes reconnaissables à l'œil si un nettoyage échouait.
+//
+// ── Pré-requis ────────────────────────────────────────────────────────────
+// Serveur de dev sur une base réelle, `E2E_BASE_URL` posé, `DATABASE_URL` sur
+// LA MÊME base que le serveur.
+//
+// ⚠️ Et `PII_ENCRYPTION_KEY` IDENTIQUE à celle du serveur. C'est elle — et non
+// `IP_HASH_SALT`, dont le nom le laisserait croire — qui sert de clé HMAC à
+// `hashEmailForLookup` ET de clé AES aux colonnes d'identité. Avec deux clés
+// différentes : l'URL cherche une empreinte que la base ne contient pas, ou le
+// serveur ne sait pas déchiffrer le nom qu'on vient d'écrire. Dans les deux cas
+// l'échec accuse l'écran au lieu d'accuser la configuration du test.
+
+import { randomUUID } from "node:crypto";
 
 import { expect, test } from "@playwright/test";
 
+import { PrismaClient, SubmissionType } from "../../../prisma/generated/client/index.js";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "../../../src/lib/commercial-application/model";
+import { encryptPii } from "../../../src/lib/pii-crypto";
+import { hashEmailForLookup } from "../../../src/lib/security/email-hash";
 import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
+
+const prisma = new PrismaClient();
 
 const fiche = (empreinte: string) => `/fr/${ADMIN_PREFIX}/contacts/personne/${empreinte}`;
 
-/** Les quatre repères du jeu de recette. */
-const A = "e513b9b1a1a1b73bb586f5085e3261a01c35ccfec578ca939b0f434c5a435d7c";
-const B = "0916906ea5582e8ec75be1a13ce61590c28f57df9ccb00e702385676ac732ecc";
-const C = "34a8c064490f733239313651c6764176dc9b4111e2e5625caeeca8d2a0d0d6e7";
+/**
+ * Ce qui rend CE passage distinguable de tous les autres.
+ *
+ * 🔑 Calculé au chargement du module, donc une fois par worker Playwright.
+ * Deux workers qui exécuteraient ce fichier en parallèle sèment deux jeux
+ * disjoints et n'effacent que le leur — c'est ce qui rend le nettoyage sûr sans
+ * jamais avoir à supposer qu'on est seul.
+ */
+const MARQUEUR = `${Date.now().toString(36)}-${randomUUID().slice(0, 8)}`;
+
+/** Adresse jetable, sur un TLD qui ne résout nulle part (RFC 2606). */
+const adresse = (qui: string) => `${qui}-${MARQUEUR}@recette-fiche-e2e.invalid`;
+
+interface Personne {
+  readonly prenom: string;
+  readonly nom: string;
+  readonly email: string;
+}
+
+const complet = (p: Personne) => `${p.prenom} ${p.nom}`;
+
+/** Les quatre repères du jeu de recette — semés plus bas, jamais supposés. */
+const ALICE: Personne = { prenom: "Alice", nom: "Moreau", email: adresse("alice") };
+const BRUNO: Personne = { prenom: "Bruno", nom: "Lefèvre", email: adresse("bruno") };
+const CAROLE: Personne = { prenom: "Carole", nom: "Simon", email: adresse("carole") };
+const DAVID: Personne = { prenom: "David", nom: "Nguyen", email: adresse("david") };
+
+/**
+ * L'empreinte d'une adresse — la clé de personne, celle de l'URL.
+ *
+ * 🔴 `hashEmailForLookup` rend `null` sur une adresse vide. Le laisser filer
+ * produirait une URL `/personne/null` et un écran vide : l'échec accuserait
+ * alors la fiche, pas la fixture. On tombe ici, avec le nom du coupable.
+ */
+function empreinteDe(email: string): string {
+  const h = hashEmailForLookup(email);
+  if (!h) throw new Error(`empreinte introuvable pour « ${email} » — fixture invalide`);
+  return h;
+}
+
+const A = empreinteDe(ALICE.email);
+const B = empreinteDe(BRUNO.email);
+const C = empreinteDe(CAROLE.email);
 /** Le témoin du défaut : un CHERCHEUR D'EMPLOI venu de /contact. */
-const D = "59a6965a78e6f959cffee227fdb37c8015961dd67457ae0b25773956d0248739";
+const D = empreinteDe(DAVID.email);
+
+const EMPREINTES = [A, B, C, D];
+
+/** Marque de fabrique des lignes de recette, dans une colonne qui l'accepte. */
+const CONSENT_RECETTE = "recette-fiche-personne-e2e";
+const TELEPHONE = "0600000000";
+
+/**
+ * Une candidature à une offre — le monde EMPLOI.
+ *
+ * Les champs posés sont ceux que `features/job-application/actions.ts` pose, et
+ * pas un de plus. ⚠️ `first_name`, `last_name`, `email`, `phone`,
+ * `offer_title_snap` et `consent_version` sont NOT NULL : les omettre fait
+ * échouer l'insertion tout au fond de la pile, sur un message Postgres qu'on
+ * lit d'abord comme une panne de la fiche.
+ *
+ * `offerId` reste absent : la colonne est nullable depuis
+ * `20260904010000_candidature_sans_offre`, et c'est le cas de la candidature
+ * spontanée. `offerTitleSnap` continue de dire pour quel poste elle a été
+ * déposée — c'est tout l'intérêt d'un instantané.
+ */
+async function semerCandidature(p: Personne, poste: string): Promise<void> {
+  await prisma.jobApplication.create({
+    data: {
+      offerTitleSnap: poste,
+      firstName: encryptPii(p.prenom),
+      lastName: encryptPii(p.nom),
+      email: encryptPii(p.email),
+      // Sans cette empreinte, la fiche ne retrouve JAMAIS la candidature :
+      // `email` est chiffré à IV aléatoire, aucune égalité SQL n'y est possible.
+      emailHash: empreinteDe(p.email),
+      phone: encryptPii(TELEPHONE),
+      consentVersion: CONSENT_RECETTE,
+      locale: "fr",
+      // `status` reste à son défaut `new`. ⛔ Ne pas le passer à `rejected` ni
+      // `withdrawn` sans motif : `job_applications_motif_coherent_check` le
+      // refuse au niveau SQL.
+    },
+  });
+}
+
+/**
+ * Une `Submission`, dans la forme exacte que les producteurs écrivent.
+ *
+ * `details` est reçu tel quel : c'est LUI qui décide du monde de la trace, et
+ * le paramétrer ici évite de fabriquer quatre variantes qui divergeraient du
+ * code réel.
+ */
+async function semerSubmission(p: Personne, details: Record<string, unknown>): Promise<void> {
+  await prisma.submission.create({
+    data: {
+      type: SubmissionType.contact,
+      locale: "fr",
+      companyName: "—",
+      contactName: encryptPii(complet(p)),
+      contactEmail: encryptPii(p.email),
+      contactEmailHash: empreinteDe(p.email),
+      contactPhone: encryptPii(TELEPHONE),
+      details: details as object,
+    },
+  });
+}
+
+/**
+ * Un dossier APPORTEUR — la forme des quatre producteurs du monde apporteur
+ * (`commercial-application/{actions,capture,lead,saisie-manuelle}-actions.ts`).
+ *
+ * 🔑 Les DEUX clés, parce que la fiche exige les deux. `subType` est dérivé de
+ * `lib/commercial-application/model.ts`, la source unique déjà lue par la file
+ * commerciale de la console : recopier la chaîne ici ferait de ce test un
+ * second dictionnaire, qui aurait raison le jour où le vrai changerait.
+ */
+const dossierApporteur = () => ({
+  unifiedType: "recrutement",
+  subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
+  ville: "Grenoble (38000)",
+  message: "Dossier de recette — aucune personne réelle derrière cette ligne.",
+  source: "/devenir-commercial-ia/candidature",
+  consentVersion: CONSENT_RECETTE,
+});
+
+/**
+ * Un message venu du formulaire de contact public
+ * (`features/unified-contact/actions.ts`, ~l. 230).
+ *
+ * 🔴 Ce producteur écrit `unifiedType: data.type` et `subType: data.subType` —
+ * et `subType` n'est renseigné par AUCUNE rubrique du formulaire public. C'est
+ * précisément ce qui fabrique le cas D quand la rubrique choisie est
+ * « recrutement » : une ligne qui ressemble à un dossier apporteur par son
+ * `unifiedType`, et qui n'en est pas un.
+ */
+const messagePublic = (unifiedType: string) => ({
+  unifiedType,
+  ville: "Grenoble",
+  message: "Message de recette — aucune personne réelle derrière cette ligne.",
+  source: "/contact",
+  consentVersion: CONSENT_RECETTE,
+});
 
 test.describe("@personne la fiche rapproche sans fusionner", () => {
   // 🔴 BUDGET DÉCLARÉ, forme exigée par le cliquet
@@ -40,6 +225,60 @@ test.describe("@personne la fiche rapproche sans fusionner", () => {
   // Pourquoi si haut : Argon2id à la connexion, et sous `next dev` la PREMIÈRE
   // navigation vers chaque route la COMPILE.
   test.describe.configure({ timeout: 240_000 });
+
+  test.beforeAll(async () => {
+    // Le budget d'un hook ne suit PAS celui du `describe` : sans cette ligne il
+    // resterait aux 30 s de `playwright.config.ts`, et le démarrage du moteur
+    // Prisma les consomme sur un poste chargé.
+    test.setTimeout(120_000);
+
+    // A — DEUX candidatures emploi, et rien d'autre. ⚠️ Aucun intitulé de poste
+    // ne doit contenir « apporteur » : la fiche l'affiche en clair, et c'est le
+    // mot que ce test interdit d'y voir.
+    await semerCandidature(ALICE, "Formateur IA (recette)");
+    await semerCandidature(ALICE, "Chargé de formation (recette)");
+
+    // B — un pied dans chaque monde. LE cas qui justifie la fiche.
+    await semerCandidature(BRUNO, "Formateur IA (recette)");
+    await semerSubmission(BRUNO, dossierApporteur());
+
+    // C — un message ET un dossier apporteur, aucune candidature emploi.
+    await semerSubmission(CAROLE, messagePublic("autre"));
+    await semerSubmission(CAROLE, dossierApporteur());
+
+    // D — le témoin du défaut : « je cherche un poste » posté depuis /contact.
+    // `unifiedType: "recrutement"` SANS `subType`.
+    await semerSubmission(DAVID, messagePublic("recrutement"));
+
+    // Fail-loud : une écriture avalée laisserait les quatre écrans vides, et
+    // l'échec accuserait la fiche. On veut savoir ICI que la base n'a rien pris.
+    const traces = await prisma.submission.count({
+      where: { contactEmailHash: { in: EMPREINTES } },
+    });
+    const candidatures = await prisma.jobApplication.count({
+      where: { emailHash: { in: EMPREINTES } },
+    });
+    if (traces !== 4 || candidatures !== 3) {
+      throw new Error(
+        `jeu de recette incomplet : ${traces}/4 submissions, ${candidatures}/3 candidatures — ` +
+          "DATABASE_URL pointe-t-elle sur la base du serveur ?",
+      );
+    }
+  });
+
+  test.afterAll(async () => {
+    test.setTimeout(120_000);
+    try {
+      // ⛔ On n'efface QUE ce qu'on a semé. Le filtre porte sur les empreintes
+      // de CE passage — quatre adresses tirées au hasard il y a quelques
+      // secondes : aucune ligne réelle ne peut y répondre, et aucune table
+      // n'est balayée en entier.
+      await prisma.jobApplication.deleteMany({ where: { emailHash: { in: EMPREINTES } } });
+      await prisma.submission.deleteMany({ where: { contactEmailHash: { in: EMPREINTES } } });
+    } finally {
+      await prisma.$disconnect();
+    }
+  });
 
   test("deux candidatures emploi, et AUCUN encadré « des deux côtés »", async ({ page }) => {
     await loginAsAdmin(page);
