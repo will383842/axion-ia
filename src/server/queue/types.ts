@@ -97,6 +97,10 @@ export type EmailJobName =
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
   | "convention-envoi"
+  // 🔴 L'exemplaire INTÉGRALEMENT SIGNÉ, remis au signataire (2026-09-05).
+  // Il n'existait pas : une pièce contresignée ne déclenchait RIEN, et la
+  // cliente d'AXI-DOC-2026-039 n'a jamais reçu sa convention signée.
+  | "piece-exemplaire-signe"
   // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12) :
   // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
   | "candidature-commercial-confirmee"

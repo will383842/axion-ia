@@ -215,6 +215,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le client",
     source: "server/actions/qualiopi/piece-lien-signature.ts",
   },
+  "piece-exemplaire-signe": {
+    categorie: "commerce",
+    quand: "Toutes les parties ont signé — remise automatique de l'exemplaire signé",
+    destinataire: "chaque signataire, sauf l'organisme",
+    source: "server/qualiopi/documents/signature/transmission-exemplaire.ts",
+  },
   "facture-envoi": {
     categorie: "commerce",
     quand: "Émission d'une facture — passe par la corbeille de validation",

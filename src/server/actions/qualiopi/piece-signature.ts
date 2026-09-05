@@ -55,6 +55,7 @@ import {
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
+import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
@@ -309,6 +310,47 @@ async function declencherPositionnement(documentGenereId: string): Promise<void>
 }
 
 async function consequenceSignatureComplete(type: string, documentGenereId: string): Promise<void> {
+  // ── LA BOUCLE CONTRACTUELLE SE REFERME ICI, ET NULLE PART AILLEURS ────────
+  //
+  // 🔴 Défaut vécu en production le 2026-09-04. La convention AXI-DOC-2026-039
+  // a été signée par la cliente à 20:47 UTC, contresignée par l'organisme à
+  // 21:33 UTC, et RIEN N'EST PARTI. La cliente n'a jamais reçu l'exemplaire
+  // intégralement signé — alors que l'écran de retour du portail le lui promet
+  // mot pour mot : « … vous adressera l'exemplaire contresigné ».
+  //
+  // Pourquoi ICI, et pas dans les deux Server Actions qui appellent cette
+  // fonction : parce qu'elles sont DEUX. La cliente peut signer en dernier
+  // (canal jeton), l'organisme peut contresigner en dernier (canal admin), et
+  // la remise doit avoir lieu dans les deux cas. Deux branchements auraient
+  // divergé — c'est littéralement l'histoire de ce défaut, où le canal jeton
+  // notifiait par Telegram et le canal contresignature ne notifiait rien.
+  //
+  // ⚠️ AVANT les branches par type, jamais après : les deux branches ci-dessous
+  // se terminent par un `return`, et une remise placée en fin de fonction ne
+  // s'exécuterait que pour les devis.
+  //
+  // ⚠️ FAIL-SOFT, comme tout ce qui suit une signature : la preuve est déjà
+  // écrite et chaînée en base. Une panne d'e-mail, de R2 ou de Redis ne doit
+  // jamais annuler une signature valide. Ce qui reste dû est un ENVOI, et
+  // l'alerte `exemplaire_signe_non_transmis` le rattrape.
+  try {
+    const remise = await transmettreExemplaireSigne(documentGenereId);
+    if (!remise.ok && remise.motif !== "deja_transmis" && remise.motif !== "aucun_destinataire") {
+      // On ne lève pas, mais on ne se tait pas non plus : le silence est
+      // exactement ce qui a permis au défaut d'origine de vivre trois mois.
+      Sentry.captureMessage("Exemplaire signé non transmis", {
+        level: "warning",
+        tags: { action: "consequenceSignatureComplete:exemplaire", motif: remise.motif },
+        extra: { documentGenereId, type, detail: remise.detail },
+      });
+    }
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "consequenceSignatureComplete:exemplaire" },
+      extra: { documentGenereId, type },
+    });
+  }
+
   if (PIECES_QUI_ENGAGENT_LACTION.has(type)) {
     // Encapsulé : `declencherPositionnement` capture déjà par stagiaire, mais
     // une panne AVANT la boucle (lecture de la pièce) remonterait ici et

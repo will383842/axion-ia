@@ -6342,6 +6342,32 @@ model DocumentGenere {
   /// de vérité reste la table de signatures, jamais cette colonne.
   /// `non_requise` par défaut → aucune pièce existante ne change de comportement.
   statutSignature     DocumentStatutSignature @default(non_requise) @map("statut_signature")
+  /// 🔴 L'exemplaire INTÉGRALEMENT SIGNÉ a-t-il été transmis au signataire ?
+  ///
+  /// Défaut vécu en production le 2026-09-04 : la convention AXI-DOC-2026-039 a
+  /// été signée par la cliente à 20:47, contresignée par l'organisme à 21:33 —
+  /// et **rien n'est parti**. La cliente n'a jamais reçu son exemplaire. Pire :
+  /// l'écran de retour du portail lui PROMET explicitement « … vous adressera
+  /// l'exemplaire contresigné » (`portail/signer/[token]/page.tsx`). La boucle
+  /// contractuelle ne se refermait nulle part.
+  ///
+  /// Cette colonne existe pour deux raisons, et la seconde est la vraie :
+  ///  1. l'idempotence — ne pas envoyer deux fois le même exemplaire ;
+  ///  2. **rendre le manque VISIBLE**. Avant elle, aucune colonne du schéma ne
+  ///     permettait de savoir quelles pièces déjà signées n'avaient jamais été
+  ///     transmises : le défaut était structurellement inobservable, et un
+  ///     rattrapage n'avait nulle part où s'écrire. C'est ce qui la rend
+  ///     indispensable même une fois l'envoi câblé — l'alerte
+  ///     `exemplaire_signe_non_transmis` la lit.
+  exemplaireSigneEnvoyeAt DateTime? @map("exemplaire_signe_envoye_at")
+  /// Clé R2 du PDF intégralement signé, archivée à la transmission.
+  ///
+  /// `rendreExemplaireSigne` REJOUE l'instantané de rendu à chaque appel et ne
+  /// persiste rien. C'était sans conséquence tant que l'exemplaire n'était que
+  /// consulté par un admin ; ça n'en a plus dès qu'on l'ENVOIE, pour deux
+  /// raisons : `enqueueEmail` n'accepte de pièce jointe que par clé R2, et une
+  /// pièce transmise à un tiers doit rester relisable telle qu'elle est partie.
+  exemplaireSigneKey      String?   @map("exemplaire_signe_key") @db.Text
   createdAt           DateTime                @default(now()) @map("created_at")
   updatedAt           DateTime                @updatedAt @map("updated_at")
 
@@ -6365,6 +6391,19 @@ model DocumentGenere {
   /// `annuleeAt` seul, déjà indexé, ne servait pas cette requête (la colonne
   /// est NULL pour presque toutes les lignes, donc peu sélective).
   @@index([statutSignature, annuleeAt])
+  /// L'alerte `exemplaire_signe_non_transmis` et la reprise balaient toutes les
+  /// deux `statutSignature = signee AND exemplaire_signe_envoye_at IS NULL`.
+  /// L'index précédent porte `annuleeAt` en seconde colonne et ne sert donc pas
+  /// ce prédicat : le balayage retomberait sur la table entière à chaque tour
+  /// de cron.
+  ///
+  /// ⚠️ Nom ÉPINGLÉ. Le nom que Prisma dériverait —
+  /// `documents_generes_statut_signature_exemplaire_signe_envoye_at_idx` — fait
+  /// 65 caractères et PostgreSQL tronque les identifiants à 63. Laisser Prisma
+  /// nommer et écrire un autre nom dans le SQL produirait une dérive
+  /// schéma ↔ base que `prisma migrate deploy` ne signale pas, et qu'on ne
+  /// découvrirait qu'au prochain `migrate dev` de quelqu'un d'autre.
+  @@index([statutSignature, exemplaireSigneEnvoyeAt], map: "documents_generes_statut_sig_exemplaire_envoye_idx")
   @@map("documents_generes")
 }
 

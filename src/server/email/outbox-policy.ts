@@ -79,6 +79,19 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // Un rappel retenu en validation manque le rendez-vous qu il devait preparer :
   // il part seul, exactement comme la convocation et le rappel J-7.
   "appel-rappel",
+  // 🔴 L'exemplaire signé part SEUL, et c'est un choix, pas un oubli.
+  //
+  // Le garer en corbeille recréerait exactement le défaut qu'il répare : la
+  // convention AXI-DOC-2026-039 a été contresignée le 2026-09-04 à 21:33 et
+  // la cliente n'a jamais rien reçu. Un envoi qui attend une relecture est un
+  // envoi qui n'a pas lieu — c'est le raisonnement déjà tenu pour la relance
+  // d'impayé, dont le double garage laissait l'impayé vieillir derrière un
+  // statut rassurant.
+  //
+  // Et il n'y a rien à relire : le contenu est la pièce que l'organisme vient
+  // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
+  // contresignature.
+  "piece-exemplaire-signe",
 ] as const;
 
 /**
@@ -107,6 +120,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-alerte-interne": "Alerte interne",
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
+  "piece-exemplaire-signe": "Remise de l'exemplaire signé",
 };
 
 export function libelleTemplateEmail(template: string | null): string {

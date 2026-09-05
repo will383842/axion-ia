@@ -117,6 +117,10 @@ import { leadApporteurRecuSubject, LeadApporteurRecuEmail } from "./lead-apporte
 import { leadApporteurRelanceSubject, LeadApporteurRelanceEmail } from "./lead-apporteur-relance";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
+import {
+  PieceExemplaireSigneEmail,
+  pieceExemplaireSigneSubject,
+} from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
 type TemplateMap = {
@@ -313,6 +317,10 @@ const TEMPLATES: TemplateMap = {
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
+  "piece-exemplaire-signe": {
+    subject: pieceExemplaireSigneSubject,
+    component: PieceExemplaireSigneEmail,
+  },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
   // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12)
   "candidature-commercial-confirmee": {
