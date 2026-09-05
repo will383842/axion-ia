@@ -1223,29 +1223,67 @@ async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidat
   }));
 }
 
-/** R06 — Attestation non envoyée : session realisee > 3 jours + attestationGenereeAt null. */
+/**
+ * R06 — L'attestation n'est pas parvenue au stagiaire, 3 jours après la session.
+ *
+ * 🔴 2026-09-05 — CETTE RÈGLE NE POUVAIT PAS SE LEVER DANS LE CAS QU'ELLE NOMME.
+ *
+ * Elle testait `attestationGenereeAt: null`, et n'attrapait donc QUE « aucune
+ * attestation n'a été produite ». Or `attestationGenereeAt` est posée à la
+ * GÉNÉRATION du PDF, sans condition ; la notification du stagiaire vient APRÈS,
+ * en fail-soft. Quand elle échoue, `attestation-service.ts` journalise mot pour
+ * mot : « NON ENVOYÉ — l'attestation est générée et enregistrée, mais le
+ * stagiaire n'a PAS été prévenu … Aucun rattrapage automatique n'existe ».
+ *
+ * Autrement dit : le diagnostic était écrit au bon endroit, dans les bons mots —
+ * et routé vers un `console.error` que personne ne lit le lendemain, pendant que
+ * le seul instrument disposant d'un ÉCRAN regardait la mauvaise colonne. Le
+ * titre promettait « non ENVOYÉE » et la condition mesurait « non PRODUITE ».
+ *
+ * Deux faits distincts, donc deux conditions, et deux messages qui ne demandent
+ * pas le même geste — c'est le patron de `positionnement_sans_reponse`, qui
+ * distingue déjà « jamais envoyé » de « envoyé sans réponse ».
+ *
+ * ⚠️ `attestationNotifieeAt` n'est renseignée rétroactivement pour PERSONNE : les
+ * attestations émises avant cette migration sont toutes `null`. La borne des
+ * 3 jours limite naturellement la remontée, mais un pic est attendu au premier
+ * balayage — ce n'est pas une régression, ce sont des envois dont on n'a jamais
+ * su s'ils étaient partis.
+ */
 async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(3, now);
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: threshold } },
       statut: { in: ["planifiee", "presente"] },
-      attestationGenereeAt: null,
+      // Le stagiaire n'a PAS la pièce entre les mains — que ce soit parce
+      // qu'elle n'a jamais été produite, ou parce qu'elle l'a été sans qu'il en
+      // soit prévenu. Les deux se soldent pareil pour lui : il n'a rien.
+      OR: [{ attestationGenereeAt: null }, { attestationNotifieeAt: null }],
     },
     select: {
       id: true,
+      attestationGenereeAt: true,
       trainee: { select: { nom: true, prenom: true } },
       session: { select: { numero: true } },
     },
   });
-  return enrollments.map((e) => ({
-    code: "attestation_non_envoyee",
-    niveau: "important" as AlerteNiveau,
-    titre: "Attestation non envoyée au stagiaire",
-    message: `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) n'a pas été générée/envoyée 3 jours après la session.`,
-    cibleType: "Enrollment",
-    cibleId: e.id,
-  }));
+  return enrollments.map((e) => {
+    const produite = e.attestationGenereeAt !== null;
+    return {
+      code: "attestation_non_envoyee",
+      niveau: "important" as AlerteNiveau,
+      titre: "Attestation non parvenue au stagiaire",
+      // Deux gestes DIFFÉRENTS derrière le même code : produire, ou prévenir.
+      // Un message unique enverrait régénérer une pièce qui existe déjà — et
+      // une régénération non motivée ressort filigranée « COPIE ».
+      message: produite
+        ? `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) EXISTE mais le stagiaire n'a jamais été prévenu qu'elle est disponible. Ne la régénérez pas : renvoyez-lui la notification depuis sa fiche.`
+        : `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) n'a pas été produite, 3 jours après la fin de la session.`,
+      cibleType: "Enrollment",
+      cibleId: e.id,
+    };
+  });
 }
 
 /** R07 — Satisfaction sous seuil (seuil_satisfaction_pct, défaut 90%). */

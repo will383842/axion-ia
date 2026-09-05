@@ -3001,16 +3001,17 @@ describe("evaluerAlertes — les alertes ne s'éteignent plus au démarrage", ()
     mp.trainingSession.findMany.mockImplementation(
       (args: { where?: { opcoSubrogation?: unknown } }) => {
         if (args?.where?.opcoSubrogation === true) {
-          return Promise.resolve([
-            { id: "ses-800", numero: "SES-2026-800", dateDebut: ilYA(2) },
-          ]);
+          return Promise.resolve([{ id: "ses-800", numero: "SES-2026-800", dateDebut: ilYA(2) }]);
         }
         return Promise.resolve([]);
       },
     );
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "convention_tripartite_manquante");
-    expect(a, "Une session DÉMARRÉE en subrogation sans convention doit rester visible.").toBeDefined();
+    expect(
+      a,
+      "Une session DÉMARRÉE en subrogation sans convention doit rester visible.",
+    ).toBeDefined();
     expect(a?.niveau).toBe("critique");
     expect(a?.titre).toContain("démarrée");
     expect(a?.message).toContain("subrogation n'est plus opposable");
@@ -3022,9 +3023,7 @@ describe("evaluerAlertes — les alertes ne s'éteignent plus au démarrage", ()
     mp.trainingSession.findMany.mockImplementation(
       (args: { where?: { opcoSubrogation?: unknown } }) => {
         if (args?.where?.opcoSubrogation === true) {
-          return Promise.resolve([
-            { id: "ses-801", numero: "SES-2026-801", dateDebut: dans(2) },
-          ]);
+          return Promise.resolve([{ id: "ses-801", numero: "SES-2026-801", dateDebut: dans(2) }]);
         }
         return Promise.resolve([]);
       },
@@ -3163,7 +3162,10 @@ describe("evaluerAlertes — emargement_partiel (les quatre règles ne comptaien
     sessionAvecTraces([signe("Léa", "Martin"), signe("Paul", "Durand"), vide("Marc", "Petit")]);
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "emargement_partiel");
-    expect(a, "Onze signatures sur douze répondaient « non » à « pas UNE seule trace ? ».").toBeDefined();
+    expect(
+      a,
+      "Onze signatures sur douze répondaient « non » à « pas UNE seule trace ? ».",
+    ).toBeDefined();
     expect(a?.niveau).toBe("important");
     expect(a?.message).toContain("1 inscrit(s) sur 3");
     // Nommer, pas seulement compter : sur une session de douze, personne ne
@@ -3480,5 +3482,65 @@ describe("evaluerAlertes — les deux niveaux recalibrés", () => {
     // Le catalogue et l'émission disent la MÊME chose : l'audit a relevé trois
     // codes où ils divergeaient en silence.
     expect(ALERTE_CATALOGUE["suppression_rgpd_j30"]?.niveau).toBe("important");
+  });
+});
+
+describe("🔴 attestation_non_parvenue — produite N'EST PAS parvenue", () => {
+  // Le défaut : la règle testait `attestationGenereeAt: null`, donc n'attrapait
+  // QUE « jamais produite ». Or cette colonne est posée à la GÉNÉRATION du PDF ;
+  // la notification du stagiaire vient après, en fail-soft, et son échec ne
+  // laissait qu'un `console.error`. L'alerte ne pouvait pas se lever dans le
+  // seul cas que son titre nommait.
+
+  it("🔴 se lève quand la pièce EXISTE mais que le stagiaire n'a pas été prévenu", async () => {
+    mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
+      // On ne répond QUE si la règle interroge bien les deux colonnes : sans ce
+      // filtre, le témoin passerait aussi sur l'ancienne requête, et il ne
+      // mesurerait donc rien de ce qu'il prétend garder.
+      const ou = args?.where?.["OR"] as ReadonlyArray<Record<string, unknown>> | undefined;
+      if (ou === undefined) return [];
+      const clefs = ou.flatMap((c) => Object.keys(c));
+      if (!clefs.includes("attestationNotifieeAt")) return [];
+      return [
+        {
+          id: "enr-produite-non-notifiee",
+          attestationGenereeAt: new Date("2026-08-01T00:00:00.000Z"),
+          trainee: { nom: "Blanc", prenom: "Simone" },
+          session: { numero: "AXI-SESS-2026-001" },
+        },
+      ];
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "attestation_non_envoyee");
+    expect(a).toBeDefined();
+    // Le message doit envoyer PRÉVENIR, pas RÉGÉNÉRER : une régénération non
+    // motivée ressort filigranée « COPIE », et la pièce existe déjà.
+    expect(a!.message).toMatch(/EXISTE/);
+    expect(a!.message).toMatch(/Ne la régénérez pas/);
+  });
+
+  it("dit un geste DIFFÉRENT quand la pièce n'a jamais été produite", async () => {
+    // Contre-témoin : les deux branches ne doivent pas rendre le même texte,
+    // sinon le code aurait deux conditions et un seul conseil — et le conseil
+    // serait faux pour la moitié des cas.
+    mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
+      const ou = args?.where?.["OR"] as ReadonlyArray<Record<string, unknown>> | undefined;
+      if (ou === undefined) return [];
+      return [
+        {
+          id: "enr-jamais-produite",
+          attestationGenereeAt: null,
+          trainee: { nom: "Blanc", prenom: "Simone" },
+          session: { numero: "AXI-SESS-2026-001" },
+        },
+      ];
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "attestation_non_envoyee");
+    expect(a).toBeDefined();
+    expect(a!.message).toMatch(/n'a pas été produite/);
+    expect(a!.message).not.toMatch(/Ne la régénérez pas/);
   });
 });

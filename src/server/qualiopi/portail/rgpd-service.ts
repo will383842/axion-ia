@@ -413,7 +413,13 @@ async function notifierDemandeRgpd(
 
   // Accusé à la personne : c'est sa seule preuve que la demande est arrivée,
   // et il matérialise la date de départ du délai pour les deux parties.
-  await enqueueEmail("rgpd-demande-recue", trainee.email, "fr", {
+  // 🔴 2026-09-05 — le retour était JETÉ sur un accusé de réception que le
+  // RGPD IMPOSE. L'article 12.3 donne un mois pour répondre, et l'accusé est ce
+  // qui prouve que le délai a commencé à courir du bon côté. Un envoi non
+  // accepté (file indisponible, adresse sur liste de suppression) laissait la
+  // personne sans accusé et l'organisme sans trace — le compteur des 30 jours
+  // tournant quand même.
+  const accuse = await enqueueEmail("rgpd-demande-recue", trainee.email, "fr", {
     type,
     reference: demandeId,
     deposeeLe: fmt(demandeAt),
@@ -446,4 +452,12 @@ async function notifierDemandeRgpd(
       echeance: fmt(echeance),
     },
   });
+
+  if (accuse.enqueued !== true && accuse.garePourValidation !== true) {
+    console.error(
+      `[rgpd] ACCUSÉ DE RÉCEPTION NON PARTI — demande ${demandeId} (${type}) : la ` +
+        "personne n'a PAS reçu l'accusé que l'article 12.3 du RGPD impose, alors " +
+        "que le délai d'un mois court depuis sa demande. À lui adresser à la main.",
+    );
+  }
 }

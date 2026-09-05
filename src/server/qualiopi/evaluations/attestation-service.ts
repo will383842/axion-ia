@@ -783,7 +783,35 @@ export async function genererAttestationPourEnrollment(
   // Fail-soft, donc : on ne bloque pas. Mais on le DIT, et le message nomme la
   // conséquence pour que la ligne de journal soit actionnable.
   try {
-    if (!(await envoyerAttestationDisponible(enrollmentId))) {
+    if (await envoyerAttestationDisponible(enrollmentId)) {
+      // 🔴 On MARQUE la notification, et seulement quand elle a été acceptée.
+      //
+      // Sans cette colonne, l'alerte « Attestation non envoyée au stagiaire »
+      // testait `attestationGenereeAt: null` — une colonne posée à la
+      // génération, donc jamais nulle ici. Elle ne pouvait pas se lever dans le
+      // cas qu'elle nomme, et le seul diagnostic partait en `console.error`.
+      //
+      // ⚠️ Écriture BEST-EFFORT, et ce n'est pas de la superstition : le worker
+      // tourne `tsx` sur les SOURCES et atterrit ~50 min AVANT l'image de
+      // l'app, or c'est l'entrypoint de l'APP qui applique les migrations
+      // (cf. AGENTS.md, « DEUX conteneurs, DEUX vitesses »). Pendant cette
+      // fenêtre, ce code s'exécute alors que la colonne n'existe pas encore.
+      // Un throw ici ferait échouer une attestation POURTANT produite et
+      // envoyée. Le prix de l'échec est un faux positif d'alerte pendant une
+      // heure ; celui d'un throw serait une pièce perdue.
+      try {
+        await prisma.enrollment.update({
+          where: { id: enrollmentId },
+          data: { attestationNotifieeAt: new Date() },
+        });
+      } catch (err) {
+        console.error(
+          `[attestation-service] colonne attestation_notifiee_at non écrite pour ` +
+            `${enrollmentId} (migration pas encore appliquée ?) : `,
+          err instanceof Error ? err.message : String(err),
+        );
+      }
+    } else {
       console.error(
         `[attestation-service] NON ENVOYÉ — l'attestation de l'inscription ` +
           `${enrollmentId} est générée et enregistrée, mais le stagiaire n'a PAS ` +

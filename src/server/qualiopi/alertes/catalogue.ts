@@ -723,7 +723,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // ── Attestations ──────────────────────────────────────────────────────────
   attestation_non_envoyee: {
     niveau: "important",
-    titre: "Attestation non envoyée au stagiaire",
+    titre: "Attestation non parvenue au stagiaire",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non ». L attestation est un droit du stagiaire (L.6353-1). Le manquement se solde par un geste tracé, pas par la disparition du signal.",

@@ -6105,6 +6105,10 @@ model Enrollment {
   attestationDocumentId String?                  @map("attestation_document_id") @db.Uuid
   attestationDocument   DocumentGenere?          @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
   attestationGenereeAt  DateTime?                @map("attestation_generee_at")
+  /// Le stagiaire a-t-il été PRÉVENU que son attestation est disponible ?
+  /// Distinct de `attestationGenereeAt`, qui ne dit que « le PDF existe ».
+  /// Écrite UNIQUEMENT quand `envoyerAttestationDisponible` a rendu `true`.
+  attestationNotifieeAt DateTime?                @map("attestation_notifiee_at")
   /// Convocation reglementaire (ind. 9) reellement PARTIE — pas seulement generee.
   ///
   /// 🔴 Verifie en production le 15/08/2026 : AUCUNE convocation n'etait jamais
