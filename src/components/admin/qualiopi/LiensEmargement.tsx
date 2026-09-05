@@ -116,29 +116,49 @@ export function LiensEmargement({
     }
   }
 
+  // Restauration depuis `sessionStorage` — microtask defer pour
+  // `react-hooks/set-state-in-effect`.
+  //
+  // 🔴 Cette relecture DOIT rester dans un effet, et pas dans un initialiseur
+  // paresseux de `useState` : ce composant est rendu côté SERVEUR au premier
+  // passage, où `sessionStorage` n'existe pas. Un initialiseur rendrait donc du
+  // vide au serveur et les liens au client — une divergence d'hydratation sur
+  // le contenu même de l'écran.
+  //
+  // Le `queueMicrotask` est le patron déjà employé dans ce dépôt pour exactement
+  // ce cas (`AdminSidebarNav`, restauration depuis `localStorage`) : il évite le
+  // rendu en cascade que la règle vise, sans supprimer la règle. Le drapeau
+  // `cancelled` évite d'écrire sur un composant démonté entre-temps.
   useEffect(() => {
-    let brut: string | null = null;
-    try {
-      brut = window.sessionStorage.getItem(clef);
-    } catch {
-      brut = null;
-    }
-    const repris = lireLiensMemorises(brut, new Date());
-    if (repris === null) {
-      // Purge une entrée entièrement expirée : garder un QR mort est pire qu'un
-      // écran vide — on le projette en salle et personne ne peut signer.
-      if (brut !== null) memoriser(null);
-      return;
-    }
-    setLiens(
-      repris.map((l) => ({
-        enrollmentId: l.enrollmentId,
-        stagiaireNom: l.stagiaireNom,
-        url: l.url,
-        qr: l.qr,
-        expiresAt: new Date(l.expiresAtIso).toLocaleString("fr-FR"),
-      })),
-    );
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      let brut: string | null = null;
+      try {
+        brut = window.sessionStorage.getItem(clef);
+      } catch {
+        brut = null;
+      }
+      const repris = lireLiensMemorises(brut, new Date());
+      if (repris === null) {
+        // Purge une entrée entièrement expirée : garder un QR mort est pire
+        // qu'un écran vide — on le projette en salle et personne ne peut signer.
+        if (brut !== null) memoriser(null);
+        return;
+      }
+      setLiens(
+        repris.map((l) => ({
+          enrollmentId: l.enrollmentId,
+          stagiaireNom: l.stagiaireNom,
+          url: l.url,
+          qr: l.qr,
+          expiresAt: new Date(l.expiresAtIso).toLocaleString("fr-FR"),
+        })),
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
     // `clef` dérive de `sessionId` : la relecture doit rejouer si l'écran passe
     // d'une session à une autre sans démontage.
     // eslint-disable-next-line react-hooks/exhaustive-deps

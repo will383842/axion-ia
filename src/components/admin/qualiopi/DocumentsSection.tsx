@@ -52,7 +52,6 @@ import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
-import { LIBELLES_TYPE_DOCUMENT } from "@/server/qualiopi/documents/libelles-type-document";
 import {
   MOTIF_PREUVES_MIN,
   refusEstRattrapableParMotif,
@@ -184,8 +183,18 @@ const DOC_LABELS: Record<DocumentType, string> = {
   // formation ». L'écran et la pièce ne nommaient pas le même document, et un
   // auditeur confondait les deux. Recopier la nouvelle chaîne ici reproduirait
   // exactement le défaut : la prochaine divergence ne se verrait pas davantage.
-  attestation: LIBELLES_TYPE_DOCUMENT.attestation,
-  attestation_partielle: LIBELLES_TYPE_DOCUMENT.attestation_partielle,
+  // ⚠️ Écrits en toutes lettres, PAS dérivés — et ce n'est pas un retour en
+  // arrière. Importer `LIBELLES_TYPE_DOCUMENT` embarquait la table ENTIÈRE
+  // (une trentaine de libellés) dans le paquet du navigateur pour n'en lire que
+  // DEUX. Le client n'a pas besoin du catalogue, il a besoin de deux chaînes.
+  //
+  // La propriété qu'on voulait — « ces libellés ne peuvent pas diverger de la
+  // source » — est conservée, mais elle est garantie par un TÉMOIN
+  // (`docs-section-libelles-derivent.spec.ts`) au lieu d'un import : le test
+  // compare ces deux chaînes à `LIBELLES_TYPE_DOCUMENT` et rougit à la moindre
+  // dérive. Une garde qui s'exécute au test coûte zéro octet au navigateur.
+  attestation: "Attestation de fin de formation",
+  attestation_partielle: "Attestation partielle de formation",
   certificat_realisation: "Certificat de réalisation (R.6313-3)",
   facture: "Facture",
   devis: "Devis",
