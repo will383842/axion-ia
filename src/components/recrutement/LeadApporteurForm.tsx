@@ -56,7 +56,6 @@ interface Champs {
   prenom: string;
   telephone: string;
   email: string;
-  ville: string;
   consent: boolean;
 }
 
@@ -73,7 +72,6 @@ function valider(c: Champs): Erreurs {
     e.telephone = "Ce numéro ne ressemble pas à un téléphone.";
   if (!c.email.trim()) e.email = "Ton e-mail, pour t'envoyer le lien du dossier.";
   else if (!EMAIL_RE.test(c.email.trim())) e.email = "Cet e-mail ne ressemble pas à une adresse.";
-  if (!c.ville.trim()) e.ville = "Ta ville, pour savoir où tu es.";
   if (!c.consent) e.consent = "Coche la case pour qu'on puisse te rappeler.";
   return e;
 }
@@ -85,7 +83,6 @@ export function LeadApporteurForm() {
     prenom: "",
     telephone: "",
     email: "",
-    ville: "",
     consent: false,
   });
   const [erreurs, setErreurs] = React.useState<Erreurs>({});
@@ -153,7 +150,6 @@ export function LeadApporteurForm() {
       prenom: c.prenom.trim(),
       email: c.email.trim(),
       telephone: c.telephone.trim(),
-      ville: c.ville.trim(),
       consent: true,
       contexte: {
         query: window.location.search.slice(0, 2000),
@@ -180,7 +176,6 @@ export function LeadApporteurForm() {
         prenom: payload.prenom,
         email: payload.email,
         telephone: payload.telephone,
-        ville: payload.ville,
         sourceConnaissance: LEAD_APPORTEUR_SOURCE,
       });
       trackFunnel("Lead Apporteur Submitted", { landing: "facebook" });
@@ -247,25 +242,13 @@ export function LeadApporteurForm() {
           onChange={(e) => set({ email: e.target.value })}
           onBlur={() => validerAuBlur("email")}
           autoComplete="email"
+          // Dernier champ depuis le retrait de la ville (2026-09-04) : ici
+          // Entrée ENVOIE vraiment. Le défaut « next » promettrait un champ
+          // suivant qui n'existe plus — un clavier qui ment sur ce que fait sa
+          // touche coûte un aller-retour au pouce, sur le geste final.
+          enterKeyHint="send"
           maxLength={180}
           error={erreurs.email}
-        />
-        <TextField
-          label="Ville"
-          fieldId="lead-ville"
-          name="ville"
-          requiredField
-          value={c.ville}
-          onChange={(e) => set({ ville: e.target.value })}
-          onBlur={() => validerAuBlur("ville")}
-          autoComplete="address-level2"
-          // Dernier champ : ici Entrée ENVOIE vraiment (soumission implicite du
-          // formulaire). Le défaut « next » de `TextField` est calibré pour le
-          // wizard, où Entrée ne soumet rien — l'y laisser promettrait un écran
-          // suivant qui n'existe pas.
-          enterKeyHint="send"
-          maxLength={120}
-          error={erreurs.ville}
         />
       </div>
 

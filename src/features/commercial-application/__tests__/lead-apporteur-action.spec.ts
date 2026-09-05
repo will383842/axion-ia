@@ -202,6 +202,50 @@ describe("submitLeadApporteurAction", () => {
     expect(o2.consentPub).toBe("declined");
   });
 
+  it("ACCEPTE une capture SANS ville — c'est la décision du 2026-09-04", async () => {
+    // 🔴 Cette garde existe parce que la suite passait AUSSI BIEN avec la ville
+    // obligatoire qu'avec la ville retirée : elle ne verrouillait donc rien.
+    //
+    // La ville a été sortie du mini formulaire pour deux raisons. La page
+    // affirme « Partout en France — ta ville n'a aucune importance » : exiger un
+    // champ que la page déclare sans objet est une contradiction que le visiteur
+    // ressent. Et chaque champ de l'étape de CAPTURE se paie en abandons, là où
+    // la perte est TOTALE — un visiteur qui renonce ici ne laisse pas même un
+    // numéro à rappeler.
+    //
+    // ⛔ La donnée n'est pas abandonnée : elle est demandée au DOSSIER, où elle
+    // reste obligatoire, et sur l'appel. Ne pas la remettre ici.
+    const { ville: _ignoree, ...sansVille } = valide as Record<string, unknown>;
+    const r = await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(sansVille));
+
+    expect(r, "une capture sans ville doit être acceptée").toMatchObject({ ok: true });
+    expect(creer).toHaveBeenCalledTimes(1);
+
+    const args = creer.mock.calls[0]?.[0] as CreateArgs;
+    // Le récapitulatif interne ne doit pas laisser une ligne blanche : une ville
+    // vide se lirait comme une donnée PERDUE, pas comme une donnée non demandée.
+    const recap = enfiler.mock.calls.find((c) => c[0] === "candidature-commercial-recap");
+    const lignes = (recap?.[3] as { rows?: Array<{ label: string; value: string }> })?.rows ?? [];
+    const ligneVille = lignes.find((l) => l.label === "Ville");
+    expect(ligneVille?.value, "le récap doit DIRE que la ville reste à demander").toContain(
+      "à demander",
+    );
+    expect(args.data.details).toBeDefined();
+  });
+
+  it("REFUSE toujours une capture sans prénom, e-mail ou téléphone", async () => {
+    // Contre-témoin du test précédent : retirer la ville ne doit pas avoir
+    // relâché le reste. Sans ces trois-là, on ne peut ni rappeler ni écrire —
+    // la ligne n'aurait aucune valeur.
+    for (const champ of ["prenom", "email", "telephone"]) {
+      creer.mockClear();
+      const { [champ]: _retire, ...ampute } = valide as Record<string, unknown>;
+      const r = await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(ampute));
+      expect(r, `sans ${champ}, la capture doit être refusée`).toMatchObject({ ok: false });
+      expect(creer, `sans ${champ}, rien ne doit être écrit`).not.toHaveBeenCalled();
+    }
+  });
+
   it("robot (honeypot) : succès silencieux, rien n'est écrit ni envoyé", async () => {
     const r = await submitLeadApporteurAction(
       { ok: false, error: "" },

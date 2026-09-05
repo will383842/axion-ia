@@ -14,6 +14,7 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 // sans arrêt. Le cron en prend le compte, cette règle en mappe les lignes.
 import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
 import { DELAI_RELANCE_JOURS } from "@/server/qualiopi/trainers/mission-formateur";
+import { instantRelance } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import { listIndisposEntre } from "@/server/qualiopi/trainers/availability-queries";
 import {
   conflitIndisponibilite,
@@ -2722,15 +2723,27 @@ async function regleMissionFormateurRefusee(now: Date): Promise<AlerteCandidate[
 
 /** Proposition sans réponse depuis `DELAI_RELANCE_JOURS` jours : relancé, mais toujours muet. */
 async function regleMissionFormateurSansReponse(now: Date): Promise<AlerteCandidate[]> {
+  // 🔴 C'était `solliciteAt <= daysAgo(3)`. Un seuil FIXE de trois jours, alors
+  // que la question est « reste-t-il du temps ? ». Sur une session à moins de
+  // trois jours — le cas courant — la condition n'était jamais vraie : l'alerte
+  // ne se levait donc JAMAIS quand le silence coûtait le plus cher.
+  //
+  // On alerte désormais dès que la MOITIÉ du délai accordé est écoulée, c'est-
+  // à-dire au moment où la relance part. Repli sur l'ancien seuil pour les
+  // propositions antérieures à `echeanceReponseAt`, qui n'en ont pas.
   const missions = await prisma.missionFormateur.findMany({
     where: {
       statut: "en_attente",
-      solliciteAt: { lte: daysAgo(DELAI_RELANCE_JOURS, now) },
+      OR: [
+        { echeanceReponseAt: null, solliciteAt: { lte: daysAgo(DELAI_RELANCE_JOURS, now) } },
+        { echeanceReponseAt: { not: null } },
+      ],
       session: { statut: "planifiee", dateDebut: { gt: now } },
     },
     select: {
       solliciteAt: true,
       relanceAt: true,
+      echeanceReponseAt: true,
       trainer: { select: { prenom: true, nom: true } },
       session: {
         select: {
@@ -2743,25 +2756,91 @@ async function regleMissionFormateurSansReponse(now: Date): Promise<AlerteCandid
       },
     },
   });
-  return missions.map((m) => {
+  return missions.flatMap((m) => {
+    // Garde applicative doublant le `where` : la moitié du délai doit être
+    // écoulée. Le SQL ne sait pas exprimer « mi-chemin entre deux colonnes ».
+    if (
+      m.echeanceReponseAt !== null &&
+      instantRelance(m.solliciteAt, m.echeanceReponseAt).getTime() > now.getTime()
+    ) {
+      return [];
+    }
     const depuis = Math.floor((now.getTime() - m.solliciteAt.getTime()) / (24 * 60 * 60 * 1000));
     const dans = Math.ceil((m.session.dateDebut.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
     // Le niveau suit l'URGENCE : à moins de sept jours du démarrage, un
     // formateur qui n'a pas confirmé est un risque sur une prestation vendue.
     const niveau: AlerteNiveau = dans <= 7 ? "critique" : "important";
-    return {
-      code: "formateur_mission_sans_reponse",
-      niveau,
-      titre: "Formateur sans réponse à la proposition de mission",
+    return [
+      {
+        code: "formateur_mission_sans_reponse",
+        niveau,
+        titre: "Formateur sans réponse à la proposition de mission",
+        message:
+          `${m.trainer.prenom} ${m.trainer.nom} n'a pas répondu à la proposition pour ` +
+          `${designerSession(m.session)} depuis ${depuis} jour${depuis > 1 ? "s" : ""}` +
+          `${m.relanceAt !== null ? " (relancé)" : ""} ; démarrage dans ${dans} jour${dans > 1 ? "s" : ""}.` +
+          " Appelez-le, ou affectez quelqu'un d'autre.",
+        cibleType: "TrainingSession",
+        cibleId: m.session.id,
+      },
+    ];
+  });
+}
+
+/**
+ * ÉCHÉANCE DÉPASSÉE, session pas encore démarrée : la session est LIBRE.
+ *
+ * Distincte de `regleMissionFormateurSansReponse`, qui dit « on attend encore ».
+ * Ici on n'attend plus — le cron a retiré l'affectation — et le geste attendu
+ * n'est plus d'appeler mais de réaffecter. Les fondre en une seule alerte
+ * ferait lire « relancez-le » à quelqu'un qui doit chercher quelqu'un d'autre.
+ *
+ * ⚠️ On ne lève pas si un AUTRE formateur a accepté la même session : une
+ * co-animation proposée à deux dont un seul répond est un non-événement.
+ */
+async function regleMissionFormateurSansReponseDelai(now: Date): Promise<AlerteCandidate[]> {
+  const missions = await prisma.missionFormateur.findMany({
+    where: {
+      statut: "sans_reponse",
+      session: { statut: "planifiee", dateDebut: { gt: now } },
+    },
+    select: {
+      echeanceReponseAt: true,
+      trainer: { select: { prenom: true, nom: true } },
+      session: {
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          client: { select: { raisonSociale: true } },
+          missionsFormateur: { where: { statut: "acceptee" }, select: { id: true } },
+        },
+      },
+    },
+  });
+
+  const vues = new Set<string>();
+  const out: AlerteCandidate[] = [];
+  for (const m of missions) {
+    if (m.session.missionsFormateur.length > 0) continue;
+    if (vues.has(m.session.id)) continue;
+    vues.add(m.session.id);
+    const dans = Math.ceil((m.session.dateDebut.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+    out.push({
+      code: "formateur_mission_sans_reponse_delai",
+      niveau: "critique",
+      titre: "Délai dépassé — session libérée, formateur à réaffecter",
       message:
-        `${m.trainer.prenom} ${m.trainer.nom} n'a pas répondu à la proposition pour ` +
-        `${designerSession(m.session)} depuis ${depuis} jour${depuis > 1 ? "s" : ""}` +
-        `${m.relanceAt !== null ? " (relancé)" : ""} ; démarrage dans ${dans} jour${dans > 1 ? "s" : ""}.` +
-        " Appelez-le, ou affectez quelqu'un d'autre.",
+        `${m.trainer.prenom} ${m.trainer.nom} n'a pas répondu dans le délai pour ` +
+        `${designerSession(m.session)} : l'affectation a été retirée et la session n'a plus de ` +
+        `formateur (démarrage dans ${dans} jour${dans > 1 ? "s" : ""}). Affectez quelqu'un d'autre. ` +
+        `Ce n'est pas un refus — il n'a rien refusé, il n'a rien dit.`,
       cibleType: "TrainingSession",
       cibleId: m.session.id,
-    };
-  });
+    });
+  }
+  return out;
 }
 
 /**
@@ -2999,6 +3078,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // Cycle de vie du formateur sur une session (2026-09-03).
   { nom: "formateur_mission_refusee", fn: regleMissionFormateurRefusee },
   { nom: "formateur_mission_sans_reponse", fn: regleMissionFormateurSansReponse },
+  { nom: "formateur_mission_sans_reponse_delai", fn: regleMissionFormateurSansReponseDelai },
   { nom: "formateur_mission_expiree", fn: regleMissionFormateurExpiree },
   { nom: "session_contact_sur_place_absent", fn: regleContactSurPlaceAbsent },
   { nom: "formateur_indisponible_sur_session", fn: regleFormateurIndisponibleSurSession },

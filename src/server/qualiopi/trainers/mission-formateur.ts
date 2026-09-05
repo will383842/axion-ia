@@ -42,6 +42,13 @@ import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
+import {
+  accordRequis,
+  echeanceReponse,
+  instantRelance,
+  libelleEcheance,
+  libelleInfosPratiques,
+} from "@/server/qualiopi/trainers/delai-reponse-mission";
 import type {
   MissionFormateurStatut,
   SessionFormateurRole,
@@ -52,7 +59,18 @@ import type {
 // parler du même délai.
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Sans réponse au bout de ce délai, une relance part et une alerte se lève. */
+/**
+ * ⚠️ CONSERVÉ pour les propositions ANTÉRIEURES à `echeanceReponseAt` (colonne
+ * ajoutée le 2026-09-04), qui n'ont pas d'échéance en base et retombent sur ce
+ * délai. Il ne pilote plus rien d'autre.
+ *
+ * 🔴 Ce qu'il faisait avant, et pourquoi c'était faux : il fixait À LA FOIS la
+ * relance et le seuil de l'alerte « sans réponse », à trois jours, quelle que
+ * soit la date de la session. Sur une session à moins de trois jours — le cas
+ * courant, vérifié sur tout l'historique — ni l'une ni l'autre ne se
+ * déclenchait jamais. Le délai est désormais dérivé du temps réellement
+ * disponible : cf. `delai-reponse-mission.ts`.
+ */
 export const DELAI_RELANCE_JOURS = 3;
 
 /** Un refus sans motif n'apprend rien à l'organisme : motif obligatoire. */
@@ -65,6 +83,7 @@ export const LIBELLE_STATUT_MISSION: Record<MissionFormateurStatut, string> = {
   refusee: "Refusée",
   retiree: "Retirée par l'organisme",
   expiree: "Expirée sans réponse",
+  sans_reponse: "Sans réponse dans le délai",
 };
 
 /** Les réponses qu'un formateur peut donner — et rien d'autre. */
@@ -165,7 +184,10 @@ export async function proposerMissionFormateur(
       }),
       prisma.trainer.findUnique({
         where: { id: input.trainerId },
-        select: { id: true, email: true, prenom: true, nom: true, actif: true },
+        // 🔴 `statut` n'était PAS lu. C'est la colonne qui dit si l'accord de
+        // cette personne est requis — sans elle, on demandait au dirigeant de
+        // l'organisme s'il acceptait d'animer sa propre session.
+        select: { id: true, email: true, prenom: true, nom: true, actif: true, statut: true },
       }),
       prisma.enrollment.count({
         where: { sessionId: input.sessionId, ...inscriptionsActives() },
@@ -179,6 +201,14 @@ export async function proposerMissionFormateur(
     if (session.dateDebut.getTime() <= now.getTime()) {
       return { proposee: false, raison: "session déjà démarrée, aucune proposition" };
     }
+    // ⚠️ Le silence est ici la bonne réponse, pas un échec : l'AFFECTATION est
+    // faite (elle l'est chez l'appelant, avant nous), et un formateur interne
+    // n'a rien à accepter. On ne crée même pas de ligne de sollicitation — un
+    // journal des accords qui contiendrait des accords jamais demandés ne
+    // vaudrait plus rien comme preuve.
+    if (!accordRequis(trainer.statut)) {
+      return { proposee: false, raison: `formateur ${trainer.statut}, accord non requis` };
+    }
 
     const mission = await prisma.$transaction(async (tx) => {
       await tx.missionFormateur.updateMany({
@@ -186,7 +216,13 @@ export async function proposerMissionFormateur(
         data: { statut: "retiree" },
       });
       return tx.missionFormateur.create({
-        data: { sessionId: session.id, trainerId: trainer.id, role, solliciteAt: now },
+        data: {
+          sessionId: session.id,
+          trainerId: trainer.id,
+          role,
+          solliciteAt: now,
+          echeanceReponseAt: echeanceReponse(session.dateDebut, now),
+        },
         select: { id: true },
       });
     });
@@ -233,8 +269,11 @@ async function envoyerProposition(args: {
   trainer: { id: string; email: string; prenom: string; nom: string };
   inscrits: number;
   role: SessionFormateurRole;
+  /** Échéance réelle de réponse ; absente sur une proposition ancienne. */
+  echeance?: Date | null;
 }): Promise<boolean> {
   const { session, trainer, now } = args;
+  const echeance = args.echeance ?? echeanceReponse(session.dateDebut, now);
   const token = await signMagicToken({
     scope: "formateur_mission",
     resourceId: args.missionId,
@@ -259,7 +298,13 @@ async function envoyerProposition(args: {
       effectif: formulerEffectif(args.inscrits, session.nbParticipantsPrevus),
       roleLibelle: ROLE_FORMATEUR_LABELS[args.role].toLowerCase(),
       lienReponse: buildMissionReponseUrl(token),
-      dateLimiteReponse: fmtDateLongue(session.dateDebut),
+      // 🔴 C'était `fmtDateLongue(session.dateDebut)` : le message annonçait
+      // que le lien valait « jusqu'au démarrage », ce qui est exact pour le
+      // JETON mais faux pour la RÉPONSE — passé l'échéance, la session est
+      // réaffectée et le lien ne sert plus qu'à écrire à l'organisme.
+      dateLimiteReponse: fmtDateLongue(echeance),
+      delaiReponse: libelleEcheance(echeance, now),
+      infosPratiques: libelleInfosPratiques(session.dateDebut, now),
       ...(args.relance ? { relance: true } : {}),
     },
     {
@@ -323,6 +368,8 @@ export interface BilanRelances {
   relancees: number;
   erreurs: number;
   expirees: number;
+  /** Échéance dépassée AVANT le démarrage : la session est libérée. */
+  sansReponse: number;
 }
 
 /**
@@ -331,7 +378,7 @@ export interface BilanRelances {
  * démarré. Fail-soft par mission.
  */
 export async function relancerEtExpirerMissions(now: Date = new Date()): Promise<BilanRelances> {
-  const bilan: BilanRelances = { relancees: 0, erreurs: 0, expirees: 0 };
+  const bilan: BilanRelances = { relancees: 0, erreurs: 0, expirees: 0, sansReponse: 0 };
   if (isStub()) return bilan;
 
   // 1. Expirer — AVANT de relancer : une session démarrée ne se relance pas.
@@ -341,21 +388,39 @@ export async function relancerEtExpirerMissions(now: Date = new Date()): Promise
   });
   bilan.expirees = expirees.count;
 
-  // 2. Relancer.
-  const seuil = new Date(now.getTime() - DELAI_RELANCE_JOURS * 24 * 60 * 60 * 1000);
-  const aRelancer = await prisma.missionFormateur.findMany({
+  // 1 bis. ÉCHÉANCE DÉPASSÉE, session pas encore démarrée — le cas qui n'existait
+  // pas. Avant, la seule sortie d'une proposition muette était `expiree`, AU
+  // démarrage : l'organisme apprenait que personne n'avait confirmé le matin
+  // même, quand il n'y a plus rien à faire. Ici on tranche AVANT, et on libère
+  // la session pour qu'un autre formateur puisse la prendre.
+  //
+  // ⚠️ On retire l'affectation, exactement comme un refus — c'est l'effet
+  // voulu — mais on n'écrit PAS `refusee`. Cf. le commentaire de l'énumération :
+  // un refus non formulé, avec un motif forcé, salirait le registre des refus.
+  bilan.sansReponse = await passerLesSansReponse(now);
+
+  // 2. Relancer — à MI-DÉLAI, jamais à J+3 fixe.
+  const candidates = await prisma.missionFormateur.findMany({
     where: {
       statut: "en_attente",
       relanceAt: null,
-      solliciteAt: { lte: seuil },
       session: { statut: "planifiee", dateDebut: { gt: now } },
     },
     select: {
       id: true,
       role: true,
+      solliciteAt: true,
+      echeanceReponseAt: true,
       session: { select: SESSION_POUR_MISSION },
       trainer: { select: { id: true, email: true, prenom: true, nom: true } },
     },
+  });
+  const aRelancer = candidates.filter((m) => {
+    // Proposition antérieure à la colonne d'échéance : ancien régime, J+3.
+    const echeance =
+      m.echeanceReponseAt ??
+      new Date(m.solliciteAt.getTime() + DELAI_RELANCE_JOURS * 24 * 60 * 60 * 1000);
+    return instantRelance(m.solliciteAt, echeance).getTime() <= now.getTime();
   });
 
   for (const m of aRelancer) {
@@ -371,6 +436,7 @@ export async function relancerEtExpirerMissions(now: Date = new Date()): Promise
         trainer: m.trainer,
         inscrits,
         role: m.role,
+        echeance: m.echeanceReponseAt,
       });
       if (ok) bilan.relancees += 1;
       else bilan.erreurs += 1;
@@ -383,6 +449,64 @@ export async function relancerEtExpirerMissions(now: Date = new Date()): Promise
     }
   }
   return bilan;
+}
+
+/**
+ * Passe en `sans_reponse` les propositions dont l'échéance est dépassée et
+ * dont la session n'a pas encore démarré, et LIBÈRE la session.
+ *
+ * Le retrait de l'affectation est fait dans la même transaction que le
+ * changement de statut : sans lui, la session garderait un formateur principal
+ * qui n'a jamais confirmé, `regleSessionSansFormateur` ne la verrait pas
+ * (elle exige `formateurPrincipalId: null`), et on retomberait exactement dans
+ * le trou constaté sur AXI-SESS-2026-010 le 2026-09-03 — une session qui
+ * démarre sans que personne n'ait dit oui, et zéro alerte.
+ */
+async function passerLesSansReponse(now: Date): Promise<number> {
+  const echues = await prisma.missionFormateur.findMany({
+    where: {
+      statut: "en_attente",
+      // La colonne est nullable : une proposition sans échéance garde l'ancien
+      // régime (elle n'expire qu'au démarrage). On ne la fait pas basculer
+      // rétroactivement.
+      echeanceReponseAt: { not: null, lte: now },
+      session: { statut: "planifiee", dateDebut: { gt: now } },
+    },
+    select: {
+      id: true,
+      sessionId: true,
+      trainerId: true,
+      session: { select: { formateurPrincipalId: true } },
+    },
+  });
+
+  let n = 0;
+  for (const m of echues) {
+    try {
+      await prisma.$transaction(async (tx) => {
+        await tx.missionFormateur.update({
+          where: { id: m.id },
+          data: { statut: "sans_reponse" },
+        });
+        if (m.session.formateurPrincipalId === m.trainerId) {
+          await tx.trainingSession.update({
+            where: { id: m.sessionId },
+            data: { formateurPrincipalId: null },
+          });
+        }
+        await tx.sessionFormateur.deleteMany({
+          where: { sessionId: m.sessionId, trainerId: m.trainerId },
+        });
+      });
+      n += 1;
+    } catch (err) {
+      console.error(
+        `[mission-formateur] passage sans_reponse impossible (mission ${m.id}):`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+  return n;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -431,6 +555,7 @@ export async function repondreMission(
       trainerId: true,
       sessionId: true,
       statut: true,
+      echeanceReponseAt: true,
       session: { select: { dateDebut: true, statut: true, formateurPrincipalId: true } },
     },
   });
@@ -453,6 +578,26 @@ export async function repondreMission(
       data: { statut: "expiree" },
     });
     return { ok: false, erreur: "La session a déjà démarré : cette proposition a expiré." };
+  }
+  // 🔴 L'ÉCHÉANCE, et pas seulement le démarrage. Sans elle, un formateur
+  // pouvait accepter à H-1 une session que l'organisme avait déjà réattribuée
+  // faute de réponse — deux formateurs convaincus d'animer la même journée.
+  //
+  // Le cron a normalement déjà basculé la ligne ; ce chemin couvre le clic qui
+  // arrive ENTRE l'échéance et le passage du cron. Il bascule lui-même plutôt
+  // que d'attendre : la personne a le refus sous les yeux, elle doit lire la
+  // vraie raison.
+  if (mission.echeanceReponseAt !== null && mission.echeanceReponseAt.getTime() <= now.getTime()) {
+    await prisma.missionFormateur.update({
+      where: { id: mission.id },
+      data: { statut: "sans_reponse" },
+    });
+    return {
+      ok: false,
+      erreur:
+        "Le délai de réponse est dépassé : la session a été libérée pour être confiée à quelqu'un d'autre. " +
+        "Si vous êtes malgré tout disponible, écrivez-le-nous ci-dessous — nous n'avons peut-être pas encore réaffecté.",
+    };
   }
 
   if (input.reponse === "acceptee") {
@@ -571,6 +716,10 @@ export interface MissionParJeton {
   id: string;
   statut: MissionFormateurStatut;
   role: SessionFormateurRole;
+  /** Échéance de réponse ; `null` sur une proposition antérieure au 2026-09-04. */
+  echeanceReponseAt: Date | null;
+  /** L'échéance est-elle passée ? Calculé ici pour que l'écran n'ait pas à le refaire. */
+  delaiDepasse: boolean;
   trainer: { id: string; prenom: string; nom: string };
   session: {
     id: string;
@@ -599,6 +748,7 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
         id: true,
         statut: true,
         role: true,
+        echeanceReponseAt: true,
         trainer: { select: { id: true, prenom: true, nom: true } },
         session: {
           select: {
@@ -613,6 +763,9 @@ export async function lireMissionParJeton(token: string): Promise<MissionParJeto
       id: m.id,
       statut: m.statut,
       role: m.role,
+      echeanceReponseAt: m.echeanceReponseAt,
+      delaiDepasse:
+        m.echeanceReponseAt !== null && m.echeanceReponseAt.getTime() <= new Date().getTime(),
       trainer: m.trainer,
       session: {
         id: m.session.id,
@@ -647,6 +800,17 @@ export interface StatsMissionsFormateur {
   proposees: number;
   acceptees: number;
   refusees: number;
+  /** Proposition ENCORE ouverte : le délai court, il peut répondre. */
+  enAttente: number;
+  /**
+   * Délai DÉPASSÉ sans réponse, session libérée.
+   *
+   * 🔴 Ce champ portait auparavant le compte des propositions `en_attente` —
+   * c'est-à-dire qu'il appelait « sans réponse » quelqu'un qui avait encore le
+   * temps de répondre. Sur la fiche d'un sous-traitant, cette ligne sert à
+   * décider d'une reconduction : compter un délai en cours comme un silence
+   * fabrique un grief.
+   */
   sansReponse: number;
   expirees: number;
   /** Incidents `desistement` ou `annulation_tardive` consignés contre lui. */
@@ -663,6 +827,7 @@ const STATS_VIDES: StatsMissionsFormateur = {
   proposees: 0,
   acceptees: 0,
   refusees: 0,
+  enAttente: 0,
   sansReponse: 0,
   expirees: 0,
   absences: 0,
@@ -706,12 +871,17 @@ export async function statsMissionsFormateur(
       parStatut.find((p) => p.statut === s)?._count._all ?? 0;
     // Une proposition RETIRÉE par l'organisme n'est pas un fait du formateur :
     // elle ne compte ni pour lui ni contre lui.
-    const proposees = n("en_attente") + n("acceptee") + n("refusee") + n("expiree");
+    // ⚠️ `sans_reponse` DOIT figurer ici : c'est une sollicitation qui a bien
+    // été faite. L'omettre ferait baisser le dénominateur et gonflerait
+    // mécaniquement le taux d'acceptation de quelqu'un qui ne répond jamais.
+    const proposees =
+      n("en_attente") + n("acceptee") + n("refusee") + n("expiree") + n("sans_reponse");
     return {
       proposees,
       acceptees: n("acceptee"),
       refusees: n("refusee"),
-      sansReponse: n("en_attente"),
+      enAttente: n("en_attente"),
+      sansReponse: n("sans_reponse"),
       expirees: n("expiree"),
       absences,
       derniersRefus,

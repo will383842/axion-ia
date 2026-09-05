@@ -24,6 +24,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { loginAsAdmin, baseSemeeAttendue, ADMIN_PREFIX } from "../fixtures/admin-auth";
+import { estFicheCandidatureEmploi } from "../fixtures/href-candidature";
 
 /**
  * Borne de navigation propre à ce parcours.
@@ -156,7 +157,10 @@ test.describe("recrutement — la console a de la matière à montrer", () => {
         noeuds.map((n) => (n as HTMLAnchorElement).getAttribute("href")),
       )
     )
-      .filter((h): h is string => typeof h === "string" && h.length > 0)
+      // Les fiches d'apporteurs d'affaires partagent cette liste depuis la
+      // fusion des deux tables : elles n'ont pas de photo de candidat, et une
+      // seule d'entre elles en tête consommerait une des six places.
+      .filter(estFicheCandidatureEmploi)
       .slice(0, 6);
 
     let trouvee = false;

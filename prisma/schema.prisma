@@ -5763,6 +5763,17 @@ enum MissionFormateurStatut {
   refusee
   retiree
   expiree
+  /// Delai de reponse depasse, sans reponse. DISTINCT de `refusee`, et ce n'est
+  /// pas un detail de vocabulaire : les refus nourrissent le pilotage « refus
+  /// par formateur », qui sert a motiver une non-reconduction sur des FAITS
+  /// (art. 8 de la procedure de sous-traitance). Inscrire un refus que
+  /// personne n'a formule — avec un motif force, puisque le motif est
+  /// obligatoire — salirait cette piece. Un silence n'est pas un refus.
+  ///
+  /// DISTINCT de `expiree` aussi : `expiree` constate que la session a DEMARRE
+  /// sans reponse, quand il n'y a plus rien a faire. `sans_reponse` tombe AVANT
+  /// le demarrage, et libere la session pour qu'on trouve quelqu'un d'autre.
+  sans_reponse
 }
 
 /// Jointure normalisée session ↔ formateur. Remplace le champ Json
@@ -5840,6 +5851,17 @@ model MissionFormateur {
   solliciteAt   DateTime               @default(now()) @map("sollicite_at")
   /// E-mail de proposition effectivement mis en file.
   emailEnvoyeAt DateTime?              @map("email_envoye_at")
+  /// Instant au-dela duquel le silence vaut `sans_reponse`.
+  ///
+  /// PROPORTIONNEL, jamais fixe : `min(48 h, jusqu'a J-3)`, plancher 2 h. Un
+  /// delai fixe de trois jours ne veut rien dire pour une session qui demarre
+  /// demain — c'etait le defaut : la relance J+3 et l'alerte « sans reponse »
+  /// exigeant `solliciteAt <= J-3` ne se declenchaient JAMAIS sous trois jours,
+  /// c'est-a-dire exactement quand le silence coute le plus cher.
+  ///
+  /// Null = proposition anterieure a cette colonne : le silence ne vaut alors
+  /// que `expiree`, au demarrage, comme avant.
+  echeanceReponseAt DateTime?          @map("echeance_reponse_at")
   /// Relance envoyée faute de réponse.
   relanceAt     DateTime?              @map("relance_at")
   reponduAt     DateTime?              @map("repondu_at")

@@ -24,6 +24,7 @@
 import { Worker } from "bullmq";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { relancerEtExpirerMissions } from "@/server/qualiopi/trainers/mission-formateur";
+import { accordRequis } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import {
   envoyerConvocationJ7Formateur,
   envoyerRappelJ1Formateur,
@@ -1773,6 +1774,7 @@ async function handleMissionsFormateur(): Promise<void> {
   const bilan = await relancerEtExpirerMissions(new Date());
   console.log(
     `[formation-crons] missions-formateur: ${bilan.relancees} relance(s) envoyée(s), ` +
+      `${bilan.sansReponse} sans réponse dans le délai (session libérée), ` +
       `${bilan.expirees} proposition(s) expirée(s), ${bilan.erreurs} erreur(s)`,
   );
 }
@@ -1838,14 +1840,55 @@ async function affectationsAConvoquer(
         }
       : { rappelJ1EnvoyeAt: null };
 
-  return prisma.sessionFormateur.findMany({
+  const affectations = await prisma.sessionFormateur.findMany({
     where: {
       [trace]: null,
       ...pasDeDoublon,
       session: { statut: "planifiee", dateDebut: { gt: now, lte: plafond } },
     },
-    select: { id: true },
+    select: {
+      id: true,
+      sessionId: true,
+      trainerId: true,
+      trainer: { select: { statut: true } },
+    },
   });
+  if (affectations.length === 0) return [];
+
+  /**
+   * 🔴 LE FILTRE QUI MANQUAIT (constaté en production le 2026-09-04).
+   *
+   * Cette sélection ne regardait QUE `SessionFormateur` et les dates. Le statut
+   * de la MISSION — proposée, acceptée, refusée — n'était consulté nulle part.
+   * Résultat observé sur AXI-SESS-2026-001 : proposition envoyée à 16h30
+   * (« acceptez-vous d'animer cette session ? »), rappel de la veille envoyé à
+   * 16h40 (« votre session de demain, voici les informations pratiques »). Dix
+   * minutes d'écart, au même destinataire, qui n'avait rien accepté.
+   *
+   * Ce n'est pas qu'une maladresse de ton : envoyer les informations pratiques
+   * d'une session à quelqu'un qui ne l'a pas acceptée lui fait croire que
+   * l'affaire est conclue, et l'organisme perd le signal qui lui disait de
+   * chercher quelqu'un d'autre.
+   *
+   * La règle : on informe quand l'accord n'est PAS requis (salarié,
+   * dirigeant-formateur — cf. `accordRequis`), ou quand il a été DONNÉ. Un
+   * sous-traitant silencieux ne reçoit rien tant qu'il n'a pas répondu.
+   */
+  const aAccepte = new Set(
+    (
+      await prisma.missionFormateur.findMany({
+        where: {
+          statut: "acceptee",
+          OR: affectations.map((a) => ({ sessionId: a.sessionId, trainerId: a.trainerId })),
+        },
+        select: { sessionId: true, trainerId: true },
+      })
+    ).map((m) => `${m.sessionId}|${m.trainerId}`),
+  );
+
+  return affectations
+    .filter((a) => !accordRequis(a.trainer.statut) || aAccepte.has(`${a.sessionId}|${a.trainerId}`))
+    .map((a) => ({ id: a.id }));
 }
 
 async function traiterAffectations(
