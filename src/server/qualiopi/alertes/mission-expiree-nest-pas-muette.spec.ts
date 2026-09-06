@@ -116,7 +116,12 @@ describe("la règle est branchée et regarde le bon état", () => {
     // Co-animation proposée à deux, un seul répond : la session a bien un
     // formateur confirmé, et crier ici ferait désarmer l'alerte.
     const corps = corpsDeLaRegle();
-    expect(corps).toContain('missionsFormateur: { where: { statut: "acceptee" }');
+    // 2026-09-06 — élargi à `accord_hors_outil` : un accord consigné par
+    // l'organisme éteint l'alerte au même titre qu'une acceptation cliquée,
+    // sinon le geste existerait et l'alerte resterait allumée pour toujours.
+    expect(corps).toMatch(
+      /missionsFormateur:\s*\{\s*where:\s*\{\s*statut:\s*\{\s*in:\s*\["acceptee",\s*"accord_hors_outil"\]/,
+    );
     expect(corps).toContain("if (m.session.missionsFormateur.length > 0) continue;");
   });
 
