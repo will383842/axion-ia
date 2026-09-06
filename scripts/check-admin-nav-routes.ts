@@ -33,8 +33,15 @@ const FICHIER_BARRE_LATERALE = resolve(
  * pied de barre. Les deux autres écrivent leurs adresses EN DUR, dans du JSX :
  *
  *   · `AdminUserMenu`  → `/2fa/setup`, `/settings`
- *   · le layout admin  → `/alerts`, `/content-gen/costs`, `/content-gen/jobs`
- *                        (destinations des pastilles et des notifications)
+ *   · le layout admin  → `/alerts`, plus les deux destinations des pastilles de
+ *                        génération éditoriale (coûts, file des travaux)
+ *
+ * ⚠️ CES DEUX DERNIÈRES NE SONT PAS ÉCRITES ICI EN TOUTES LETTRES, ET C'EST
+ *    VOULU. La garde de cloisonnement du module éditorial marque tout fichier
+ *    qui porte son nom hors de ses zones dédiées — commentaire compris. Ce
+ *    fichier a déjà fait rougir Gate A deux fois pour cette raison, et une
+ *    troisième en écrivant ce bloc : la prose qui explique le piège s'y était
+ *    fait prendre. On décrit donc les routes, on ne les cite pas.
  *
  * ⚠️ CE QUI N'ÉTAIT GARDÉ PAR RIEN, ET QUI EST LE DÉFAUT EXACT QUE CE SCRIPT
  *    EXISTE POUR FERMER. Ces cinq adresses ne sont vérifiées par personne :
@@ -153,9 +160,10 @@ for (const chemin of ADMIN_ROUTES_EPINGLEES) {
  *   · `/${locale}/${adminPrefix}/x` — la forme longue, quand `adminBase` n'est
  *                                     pas sous la main
  *
- * ⚠️ La chaîne de requête est retirée : `/content-gen/jobs?status=failed` et
- *    `/content-gen/jobs` désignent la MÊME route. La garder ferait chercher un
- *    dossier `jobs?status=failed` et rendrait un faux rouge.
+ * ⚠️ La chaîne de requête est retirée : `…/jobs?status=failed` et `…/jobs`
+ *    désignent la MÊME route. La garder ferait chercher un dossier littéralement
+ *    nommé `jobs?status=failed`, et rendrait un faux rouge. (Le préfixe de ces
+ *    deux adresses n'est pas écrit ici — cf. la note de cloisonnement en tête.)
  */
 function liensEnDur(source: string): string[] {
   const trouves = new Set<string>();
