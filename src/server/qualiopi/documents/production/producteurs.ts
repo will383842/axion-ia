@@ -24,6 +24,7 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
@@ -299,8 +300,9 @@ export async function produireConvention(
           effectif: session.nbParticipantsPrevus,
           ...mentionsStagiairesDe(session),
           prixHt: session.montantHtCents / 100,
-          // Absent → le gabarit applique 30 % (usage commercial). `0` = payable
-          // en totalité à réception de facture.
+          // Absent → le gabarit applique `ACOMPTE_DEFAUT_PERCENT`, soit 0
+          // depuis le 2026-09-05 : « payable en totalité à réception de
+          // facture ». Cf. `acompte-defaut.ts` pour l'arbitrage.
           ...(opts?.acomptePercent !== undefined ? { acomptePercent: opts.acomptePercent } : {}),
           dateConvention: formatDateFr(new Date()),
         },
@@ -314,7 +316,7 @@ export async function produireConvention(
     ok: true,
     documentId: doc.id,
     numero: doc.numero,
-    details: { acomptePercent: opts?.acomptePercent ?? 30 },
+    details: { acomptePercent: opts?.acomptePercent ?? ACOMPTE_DEFAUT_PERCENT },
   };
 }
 

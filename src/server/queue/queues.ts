@@ -1623,6 +1623,17 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "40 * * * *",
         jobId: "formation-crons-formateur-rappel-j1-cron",
       },
+      // Rappel de la veille au STAGIAIRE (2026-09-05, ADR 0048 §4.3) — le seul
+      // envoi qui porte le lien de connexion en entier. HORAIRE comme son
+      // homologue formateur : la fenêtre fait 30 h, et une session créée la
+      // veille ne doit pas attendre le lendemain matin, quand elle a déjà
+      // commencé. `:45` pour ne percuter ni le rappel formateur (:40) ni la
+      // surveillance des e-mails (:20).
+      {
+        type: "formation-crons.rappel-j1",
+        pattern: "45 * * * *",
+        jobId: "formation-crons-rappel-j1-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

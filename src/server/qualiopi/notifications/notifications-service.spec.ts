@@ -42,6 +42,12 @@ vi.mock("@/lib/prisma", () => ({
     emargementToken: {
       findFirst: vi.fn(),
     },
+    // 🔴 Le rappel de la VEILLE (ADR 0048 §4.3) lit la trace DURABLE de son
+    // propre envoi ici, et non une colonne d'état : son cron est horaire sur
+    // une fenêtre de 30 h, et la déduplication BullMQ expire.
+    emailLog: {
+      findFirst: vi.fn(),
+    },
     // Relances 2026-08-04 — lecture + trace (relanceCount/derniereRelanceAt).
     questionnaire: {
       findUnique: vi.fn(),
@@ -105,6 +111,7 @@ import {
 import {
   envoyerConvocation,
   envoyerRappelJ7,
+  envoyerRappelJ1,
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
   envoyerAttestationDisponible,
@@ -131,6 +138,7 @@ const mockPrisma = prisma as unknown as {
   };
   portailAcces: { findFirst: ReturnType<typeof vi.fn> };
   emargementToken: { findFirst: ReturnType<typeof vi.fn> };
+  emailLog: { findFirst: ReturnType<typeof vi.fn> };
   questionnaire: {
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
@@ -958,5 +966,206 @@ describe("envoyerEnqueteEntreprise", () => {
     });
     await expect(envoyerEnqueteEntreprise(SESSION_ID)).rejects.toThrow(/inscription active/);
     expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// envoyerRappelJ1 — le rappel de la VEILLE (ADR 0048 §4.3)
+//
+// 🔴 Il n'existait pas. `formateur-rappel-j1` oui, `qualiopi-rappel-j7` oui,
+// mais rien entre J-7 et la séance pour le PARTICIPANT — et c'est le seul
+// message qui puisse lui donner la manière d'entrer.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Session distancielle avec deux inscrits — la forme que rend Prisma. */
+function sessionDistanciel(over: Record<string, unknown> = {}) {
+  return {
+    ...fakeSessionWithEnrollments,
+    modalite: "distanciel",
+    lieuType: "distanciel",
+    lieuIntitule: null,
+    lieuAdresse: null,
+    lieuCodePostal: null,
+    lieuVille: null,
+    lieuSalle: null,
+    lieuVisioUrl: "https://meet.google.com/abc-defg-hij",
+    ...over,
+  };
+}
+
+describe("envoyerRappelJ1", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+    // Aucun jeton d'émargement vivant → le rappel en met un en circulation.
+    mockPrisma.emargementToken.findFirst.mockResolvedValue(null);
+    // Aucune trace d'envoi antérieure : le rappel n'est pas encore parti.
+    mockPrisma.emailLog.findFirst.mockResolvedValue(null);
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+    mockCreerTokenInscription.mockResolvedValue({
+      token: "e".repeat(80),
+      tokenId: "tok-uuid-1",
+      expiresAt: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+    });
+    mockCreerAcces.mockResolvedValue({
+      id: "acces-uuid-1",
+      token: "b".repeat(64),
+      expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
+  });
+
+  it("🔴 PORTE LE LIEN DE CONNEXION EN ENTIER — c'est la raison d'être de ce message", async () => {
+    // Le défaut fermé : la convocation passe le lieu par `formatLieu`, qui
+    // réduit l'URL à son seul hôte. Le stagiaire recevait « meet.google.com »
+    // et n'avait aucune manière d'entrer.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+
+    const ok = await envoyerRappelJ1(SESSION_ID);
+
+    expect(ok).toBe(true);
+    const payload = (mockEnqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+    expect(payload["lienVisio"]).toBe("https://meet.google.com/abc-defg-hij");
+    // ⚠️ ET LE CONTRE-TÉMOIN : `lieu`, qui part aussi sur la pièce archivée,
+    // continue de n'en montrer QUE l'hôte. Les deux comportements doivent
+    // coexister — sans cette assertion, remettre le lien complet PARTOUT
+    // passerait, et c'est exactement ce que la réduction de `formatLieu` évite.
+    expect(payload["lieu"]).toBe("Distanciel — meet.google.com");
+    expect(String(payload["lieu"])).not.toContain("abc-defg-hij");
+  });
+
+  it("n'invente PAS de lien quand la session n'en porte pas", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      sessionDistanciel({ lieuVisioUrl: null }),
+    );
+    await envoyerRappelJ1(SESSION_ID);
+    const payload = (mockEnqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+    expect(payload["lienVisio"]).toBeUndefined();
+  });
+
+  it("ignore une valeur qui n'est pas une URL — « à venir » ne se clique pas", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      sessionDistanciel({ lieuVisioUrl: "lien Zoom à venir" }),
+    );
+    await envoyerRappelJ1(SESSION_ID);
+    const payload = (mockEnqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+    expect(payload["lienVisio"]).toBeUndefined();
+  });
+
+  it("🔴 un premier échec ne prive PAS les suivants — `continue`, jamais `return false`", async () => {
+    // Le correctif du 2026-08-24 sur le rappel J-7 : sur une session de dix, un
+    // message garé en corbeille pour le premier privait les neuf autres.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    mockEnqueueEmail
+      .mockResolvedValueOnce({ enqueued: false, garePourValidation: true })
+      .mockResolvedValueOnce({ enqueued: true });
+
+    const ok = await envoyerRappelJ1(SESSION_ID);
+
+    // Le second inscrit a bien été servi…
+    expect(mockEnqueueEmail).toHaveBeenCalledTimes(2);
+    // …et l'échec du premier n'est pas avalé pour autant.
+    expect(ok).toBe(false);
+  });
+
+  it("une erreur LEVÉE sur un stagiaire ne prive pas non plus les suivants", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    mockEnqueueEmail
+      .mockRejectedValueOnce(new Error("relais injoignable"))
+      .mockResolvedValueOnce({ enqueued: true });
+
+    const ok = await envoyerRappelJ1(SESSION_ID);
+
+    expect(mockEnqueueEmail).toHaveBeenCalledTimes(2);
+    expect(ok).toBe(false);
+  });
+
+  it("porte une clé d'idempotence de DATE, dérivée du DÉBUT de session", async () => {
+    // Pas du jour courant : trente passages horaires doivent produire trente
+    // fois la même clé, sinon la file ne dédoublonne rien.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    await envoyerRappelJ1(SESSION_ID);
+    const options = (mockEnqueueEmail.mock.calls[0] as unknown[])[4] as { jobId?: string };
+    expect(options.jobId).toBe(`qualiopi-rappel-j1-${ENROLLMENT_ID}-20260901`);
+  });
+
+  it("🔴 NE RENVOIE PAS ce que le journal dit déjà parti", async () => {
+    // La déduplication BullMQ expire au min(7 jours, 1 000 jobs). Sur un cron
+    // HORAIRE, s'y fier seul ferait recevoir trente fois « c'est demain ».
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    mockPrisma.emailLog.findFirst.mockResolvedValue({ id: "log-1" });
+
+    const ok = await envoyerRappelJ1(SESSION_ID);
+
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+    // Rien à renvoyer n'est pas un échec : les deux inscrits ont leur message.
+    expect(ok).toBe(true);
+  });
+
+  it("le journal est interrogé par le jobId, pas par l'inscription", async () => {
+    // Interroger par inscription confondrait ce rappel avec tous les autres
+    // e-mails de la même personne, et le rappel ne partirait jamais.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    await envoyerRappelJ1(SESSION_ID);
+    const where = (mockPrisma.emailLog.findFirst.mock.calls[0]?.[0] as { where: { jobId: string } })
+      .where;
+    expect(where.jobId).toBe(`qualiopi-rappel-j1-${ENROLLMENT_ID}-20260901`);
+  });
+
+  it("un journal ILLISIBLE n'empêche pas le rappel de partir", async () => {
+    // Le déséquilibre des deux fautes commande le repli : un doublon est
+    // désagréable, une absence la veille d'une séance à distance est un trou
+    // dans la preuve d'assiduité.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    mockPrisma.emailLog.findFirst.mockRejectedValue(new Error("base muette"));
+
+    const ok = await envoyerRappelJ1(SESSION_ID);
+
+    expect(mockEnqueueEmail).toHaveBeenCalledTimes(2);
+    expect(ok).toBe(true);
+  });
+
+  it("émet le gabarit `qualiopi-rappel-j1` à CHAQUE inscrit actif", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    await envoyerRappelJ1(SESSION_ID);
+    expect(mockEnqueueEmail).toHaveBeenCalledTimes(2);
+    for (const call of mockEnqueueEmail.mock.calls as unknown[][]) {
+      expect(call[0]).toBe("qualiopi-rappel-j1");
+      expect(call[2]).toBe("fr");
+    }
+    expect((mockEnqueueEmail.mock.calls[0] as unknown[])[1]).toBe("jean@example.com");
+    expect((mockEnqueueEmail.mock.calls[1] as unknown[])[1]).toBe("marie@example.com");
+  });
+
+  it("lie le jeton d'émargement à l'adresse du stagiaire (ADR 0048 §4.1)", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    await envoyerRappelJ1(SESSION_ID);
+    expect(mockCreerTokenInscription).toHaveBeenCalledWith(
+      expect.objectContaining({
+        enrollmentId: ENROLLMENT_ID,
+        destinataireEmail: "jean@example.com",
+      }),
+    );
+  });
+
+  it("session sans inscrit → rien n'est envoyé, et ce n'est PAS un succès", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel({ enrollments: [] }));
+    const ok = await envoyerRappelJ1(SESSION_ID);
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+    expect(ok).toBe(false);
+  });
+
+  it("session introuvable → `false`, sans rien enfiler", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(null);
+    expect(await envoyerRappelJ1("inconnue")).toBe(false);
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("N'ÉCRIT AUCUNE trace sur la session — la preuve vit dans `email_logs`", async () => {
+    // Une colonne de plus redirait ce que le journal dit, et ferait échouer le
+    // cron du worker pendant l'heure où il tourne devant sa propre migration
+    // (cf. AGENTS.md, « le worker atterrit ~50 min AVANT l'app »).
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    await envoyerRappelJ1(SESSION_ID);
+    expect(mockPrisma.trainingSession.update).not.toHaveBeenCalled();
   });
 });

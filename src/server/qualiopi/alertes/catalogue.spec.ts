@@ -57,6 +57,12 @@ const CODES_ATTENDUS: string[] = [
   "devis_sans_reponse",
   "signature_en_attente",
   "signature_contreseing_du",
+  // 🔴 2026-09-05 — le filet du défaut le plus silencieux du domaine : une
+  // pièce intégralement signée dont l'exemplaire n'est jamais parti. Les
+  // quatre surfaces de rattrapage filtrent sur `en_attente|partielle` ; une
+  // pièce COMPLÈTE en sort, et le succès de la signature éteignait le seul
+  // signal qui restait.
+  "exemplaire_signe_non_transmis",
   "devis_expire_j7",
   "devis_expire",
   // Déblocages du parcours vente (2026-08-05) : l'étape suivante attend
@@ -74,6 +80,10 @@ const CODES_ATTENDUS: string[] = [
   // Les liens SONT partis et personne n'a signe : l'angle mort que les trois
   // autres regles laissaient ouvert, et que le cron de 06:00 ouvrait lui-meme.
   "emargement_aucune_signature",
+  // 🔴 2026-09-05 (audit du moteur, trou n°9) — les quatre règles d'émargement
+  // ne savaient compter que jusqu'à ZÉRO : onze inscrits sur douze ayant signé,
+  // le douzième était invisible jusqu'à la clôture.
+  "emargement_partiel",
   "rappel_j7_non_envoye",
   "journee_sans_creneaux",
   // Phase « Tout pour animer » (2026-08-05) : le slot `diaporama` du kit (LE
@@ -161,6 +171,33 @@ const CODES_ATTENDUS: string[] = [
   "formateur_mission_sans_reponse_delai",
   "formateur_message_apres_delai",
   "formateur_non_habilite_assigne",
+  // 🔴 2026-09-05 (audit du moteur, trou n°1) — LE SEUL RISQUE 100 % MUET. Sept
+  // codes couvrent le formateur qui ne répond pas ; aucun ne couvrait celui qui
+  // répond OUI puis se désiste. Le fait n'existe qu'au registre des incidents,
+  // lu par la seule règle des incidents RÉPÉTÉS (≥2 sur 24 mois).
+  "formateur_desiste_session",
+  // Trou n°11, partie tenable : la RC pro est une colonne de TOUS les
+  // formateurs, mais seuls les sous-traitants étaient surveillés. L'ABSENCE
+  // reste non signalée hors sous-traitance — aucun statut ne l'exige, et une
+  // alerte qu'aucun geste ne ferme n'est pas une alerte.
+  "formateur_rc_pro_expiree",
+  "formateur_rc_pro_expire_j60",
+  // Trous n°2, 3 et 12 : la convocation du stagiaire, le lien de visio et
+  // l'effectif vendu n'étaient lus par AUCUNE règle du balayage.
+  "convocation_stagiaire_manquante",
+  "session_distanciel_sans_lien",
+  "effectif_depasse",
+  // Trou n°10 : toute la chaîne de recouvrement part d'une facture qui EXISTE.
+  "session_realisee_non_facturee",
+  // 🔴 Trou n°5 — CINQ CODES ÉMIS SANS ENTRÉE ICI, le défaut du 2026-08-05
+  // revenu. Sans entrée : pas de guichet (`sansGuichet`, aucune boîte) et
+  // absence de `codesAutoResolution` (ouvertes pour toujours). Tous levés hors
+  // du balayage, donc tous `resolutionAuto: false` — garde `routage.spec.ts`.
+  "email_corbeille_indisponible",
+  "positionnement_hors_delai",
+  "email_retenu_rebond_dur",
+  "email_retenu_desabonne",
+  "email_retenu_oppose",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
@@ -242,8 +279,37 @@ describe("ALERTE_CATALOGUE", () => {
     expect(ALERTE_CATALOGUE["bpf_a_deposer_j60"]?.niveau).toBe("info");
   });
 
-  it("suppression_rgpd_j30 est info", () => {
-    expect(ALERTE_CATALOGUE["suppression_rgpd_j30"]?.niveau).toBe("info");
+  // 🔴 2026-09-05 — recalibré de `info` à `important`. Ce témoin disait
+  // l'inverse depuis l'origine, et il gardait donc le défaut : l'article 12.3
+  // du RGPD donne UN MOIS pour répondre, et cette alerte ne se lève qu'APRÈS.
+  // Le délai n'est pas « bientôt atteint », il est dépassé — le manquement est
+  // constitué et opposable. `info` le rangeait à côté d'un devis expiré.
+  it("suppression_rgpd_j30 est important — le délai légal est DÉJÀ dépassé", () => {
+    expect(ALERTE_CATALOGUE["suppression_rgpd_j30"]?.niveau).toBe("important");
+  });
+
+  // Témoin discriminant : `info` existe toujours et reste le bon niveau pour ce
+  // qui n'est pas encore dû. Sans lui, une recalibration en masse de tout le
+  // catalogue vers `important` passerait le test ci-dessus sans rien prouver.
+  it("bpf_a_deposer_j60 reste info — l'échéance, elle, n'est PAS dépassée", () => {
+    expect(ALERTE_CATALOGUE["bpf_a_deposer_j60"]?.niveau).toBe("info");
+  });
+
+  // 🔴 Les cinq codes levés HORS du balayage quotidien. `synchroniserAlertes`
+  // ne les verra jamais parmi les candidates : à `resolutionAuto: true`, il les
+  // résoudrait au premier tour, avant que quiconque les ait lus. C'est le
+  // défaut que `routage.spec.ts` garde par dérivation ; ici on le nomme.
+  it.each([
+    "email_corbeille_indisponible",
+    "positionnement_hors_delai",
+    "email_retenu_rebond_dur",
+    "email_retenu_desabonne",
+    "email_retenu_oppose",
+  ])("%s — levé hors balayage, donc jamais auto-résolu, et le motif est écrit", (code) => {
+    const entree = ALERTE_CATALOGUE[code];
+    expect(entree, `« ${code} » est émis par le code mais absent du catalogue`).toBeDefined();
+    expect(entree?.resolutionAuto).toBe(false);
+    expect(entree?.resolutionAuto === false ? entree.motifSansResolutionAuto : "").toMatch(/\S/);
   });
 
   // Vérifications resolutionAuto SPEC §6.5

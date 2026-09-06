@@ -64,6 +64,7 @@ import {
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import {
@@ -160,7 +161,8 @@ const sessionIdSchema = z.object({
  * physique (contrat B2C), une convention lie des professionnels et l'acompte y
  * est purement contractuel. `0` est une valeur légitime (convention établie
  * après la tenue de l'action : « payable en totalité à réception de facture »).
- * Absent → 30 %, l'usage commercial en vigueur, inchangé pour l'existant.
+ * Absent → `ACOMPTE_DEFAUT_PERCENT` (0 depuis le 2026-09-05 : on ne réclame pas
+ * par défaut de l'argent que personne n'a promis — cf. `acompte-defaut.ts`).
  */
 const genererConventionSchema = z.object({
   sessionId: z.string().uuid(),
@@ -207,7 +209,11 @@ export async function genererConventionAction(input: {
     targetId: sessionId,
     // L'acompte est une CLAUSE de la pièce : sa valeur (et le fait qu'elle ait
     // été choisie ou laissée au défaut) appartient au journal.
-    changes: { documentId: doc.id, numero: doc.numero, acomptePercent: acomptePercent ?? 30 },
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      acomptePercent: acomptePercent ?? ACOMPTE_DEFAUT_PERCENT,
+    },
     session: adminSession,
   });
 

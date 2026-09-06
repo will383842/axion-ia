@@ -287,10 +287,34 @@ export async function demanderAccesParEmail(email: string): Promise<void> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const lienPortail = `${baseUrl}/fr/portail/acces/${token}`;
 
-  await enqueueEmail("qualiopi-portail-acces", normalized, "fr", {
+  // 🔴 2026-09-05 — le retour était JETÉ, et il l'était au pire endroit.
+  //
+  // Cette fonction est SILENCIEUSE envers le demandeur, à dessein (anti-
+  // énumération : elle rend toujours la même chose, stagiaire trouvé ou non).
+  // Le silence protège donc l'inconnu — mais il couvrait aussi l'échec d'envoi.
+  // Un accès était créé, aucun lien ne partait, et PERSONNE ne pouvait
+  // l'apprendre : ni le demandeur, à qui l'on ne dit rien par construction, ni
+  // l'organisme, qui n'avait aucune trace.
+  //
+  // ⚠️ L'accès est créé AVANT l'envoi (ligne `creerAcces` ci-dessus), et ça ne
+  // change pas : le jeton doit exister pour figurer dans le message. Mais un
+  // accès vivant sans lien remis n'est pas un accès — d'où ce journal, qui nomme
+  // la conséquence pour que la ligne soit actionnable.
+  const envoiAcces = await enqueueEmail("qualiopi-portail-acces", normalized, "fr", {
     stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`.trim(),
     lienPortail,
   });
+
+  if (envoiAcces.enqueued !== true && envoiAcces.garePourValidation !== true) {
+    console.error(
+      `[portail] ACCÈS CRÉÉ SANS LIEN REMIS — un accès au portail a été ouvert pour ` +
+        `le stagiaire ${trainee.id}, mais le message porteur du lien n'a PAS été ` +
+        "accepté (file de messages indisponible, ou adresse sur liste de " +
+        "suppression). Le demandeur ne peut pas le savoir : cette fonction est " +
+        "silencieuse par construction (anti-énumération). Le lien doit lui être " +
+        "renvoyé à la main depuis sa fiche.",
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

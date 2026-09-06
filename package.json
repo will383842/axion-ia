@@ -99,7 +99,7 @@
     "positionnement:check": "tsx scripts/check-positionnement.ts",
     "contrast:check": "tsx scripts/check-contrast.ts",
     "radius:check": "tsx scripts/check-radius.ts",
-    "bundle:check": "size-limit",
+    "bundle:check": "node scripts/ci/bundle-check.mjs",
     "mcp:manifeste": "tsx scripts/mcp/ecrire-manifeste.ts",
     "mcp:fixtures": "tsx scripts/mcp/ecrire-fixtures-max.ts",
     "partners:fixtures": "tsx scripts/partners/fixtures.ts",
@@ -240,6 +240,7 @@
   },
   "_size_limit_doctrine": "Sprint S6.3 P1-6 (2026-05-15) — refactor multi-bucket aligné AGENTS.md. 75 KB gz/route (cible interne stricte), 110 KB sur /appel (iframe Calendly client-heavy, ADR exception). Per-route strict path-matching n'est pas supporté nativement par size-limit (les page-*.js sont sommés sur tout le glob) ; on contrôle donc le shell partagé + les pages standard via globs séparés, et Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route LCP/INP/CLS. ⚠️ 2026-08-15 (audit GEO/AEO E2E, GEO-025) : les trois globs /reserver étaient MORTS depuis la suppression de la page le 2026-06-26 (Will) — size-limit ne mesurait donc RIEN sur l'exception de budget, et /appel, la vraie page à iframe Calendly, tombait dans le bucket 'Pages standard' à 75 KB au lieu des 110 KB promis par AGENTS.md. Verrou : tests/unit/ci/size-limit-buckets.spec.ts refuse tout glob nommant une route qui n'existe plus. 🟢 2026-08-24 : l'étape « Poids du bundle » N'EST PLUS en continue-on-error — elle BLOQUE. Le bucket « Shell partagé » porte un CLIQUET à 138 KB calé sur la mesure (135,75 kB, run 32701301987) tandis que sa CIBLE de 100 KB reste écrite dans son nom ; les cinq autres buckets étaient déjà verts, l'étape est donc devenue bloquante en passant. Abaisser le cliquet se fait APRÈS le travail de réduction. Verrou : tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts. 🔴 2026-08-24 — DEUX AFFIRMATIONS DE CE TEXTE ÉTAIENT FAUSSES. (1) « Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route » : Lighthouse ne l'a jamais exercée — il échouait sur 11 URL sur 11 en mesurant le runner, pendant que le lhci post-deploy passait propre sur la prod (run 32666732630 vs 32668725236) — et le step est RETIRÉ de ci.yml depuis. (2) Le bucket qui somme s'appelait « page chunks individuels » et portait 75 KB, soit un budget PAR ROUTE comparé à une SOMME : 654 KB mesurés, impossible à passer, et muet sur chaque route. Il s'appelle désormais « SOMME … cliquet anti-croissance » avec une limite de 700 KB, calée sur la mesure : il attrape une PR qui alourdit, il ne prétend plus rien sur une route. ⛔ CONSÉQUENCE À CONNAÎTRE : le First Load JS PAR ROUTE (≤ 75 KB gz, AGENTS.md) n'est mesuré par AUCUNE gate. Il se mesure à la main, cf. AGENTS.md. ⚠️ Le SHELL PARTAGÉ est réellement dépassé : 135,75 kB mesurés pour une cible de 100 KB — dette assumée, encadrée par le cliquet à 138 KB.",
   "_size_limit_running_note": "running:false sur chaque entrée (2026-05-29) — on ne mesure QUE la taille gz (le seuil du gate), pas le temps d'exécution JS qui exige un Chrome headless. size-limit lançait Chrome en CI et restait bloqué (« Running JS in headless Chrome » → SIGTERM Gate B). Lighthouse CI reste l'autorité perf (LCP/INP/CLS). Cf doctrine ci-dessous.",
+  "_size_limit_alias_note": "2026-09-06 — les motifs `gallery/**` et `locations/**` ont ete RETIRES des buckets /galerie et /implantations. Ce sont des alias `pathnames` next-intl, reecrits au runtime : ils n'ont jamais de repertoire propre dans l'App Router, donc jamais de repertoire de chunks. Ils etaient donc incapables PAR CONSTRUCTION de correspondre a un fichier, et verts depuis le jour de leur ecriture, noyes dans un bucket dont l'autre inclusion, elle, correspondait. Detecte par `scripts/ci/bundle-check.mjs`, qui refuse desormais tout motif sans correspondance AU MOMENT DE LA MESURE. Ne pas les remettre a la re-activation du locale EN : le chemin de chunk vient de l'arborescence de fichiers, jamais du pathname localise.",
   "size-limit": [
     {
       "name": "Shell partagé (framework + main + webpack + polyfills) — CLIQUET 138 KB gz, CIBLE 100 KB (dette ouverte 35,75 KB)",
@@ -260,19 +261,25 @@
       "running": false
     },
     {
-      "name": "SOMME de tous les page chunks hors /appel — cliquet anti-croissance, PAS un budget par route",
+      "name": "SOMME des page chunks PUBLICS (hors /appel, hors console admin) — cliquet anti-croissance, PAS un budget par route",
       "path": [
         ".next/static/chunks/app/**/page-*.js",
-        "!.next/static/chunks/app/**/appel/**"
+        "!.next/static/chunks/app/**/appel/**",
+        "!.next/static/chunks/app/**/[(]admin[)]/**"
       ],
-      "limit": "703 KB",
+      "limit": "265 KB",
+      "running": false
+    },
+    {
+      "name": "SOMME des page chunks de la CONSOLE ADMIN — cliquet anti-croissance, hors budget Web Vitals (écrans authentifiés)",
+      "path": ".next/static/chunks/app/**/[(]admin[)]/**/page-*.js",
+      "limit": "470 KB",
       "running": false
     },
     {
       "name": "Routes /galerie (image-bank V1) — page chunks ≤ 75 KB gz",
       "path": [
-        ".next/static/chunks/app/**/galerie/**/page-*.js",
-        ".next/static/chunks/app/**/gallery/**/page-*.js"
+        ".next/static/chunks/app/**/galerie/**/page-*.js"
       ],
       "limit": "75 KB",
       "running": false
@@ -280,8 +287,7 @@
     {
       "name": "Routes /implantations hub villes (2157 pages, stratégie ISR T3/T4) — page chunks ≤ 72 KB gz stricter",
       "path": [
-        ".next/static/chunks/app/**/implantations/**/page-*.js",
-        ".next/static/chunks/app/**/locations/**/page-*.js"
+        ".next/static/chunks/app/**/implantations/**/page-*.js"
       ],
       "limit": "72 KB",
       "running": false

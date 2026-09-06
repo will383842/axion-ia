@@ -72,7 +72,7 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 49 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 51 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
@@ -81,7 +81,13 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // apporté par ce lot. Le chiffre est relevé de la MESURE, jamais deviné : le
     // compter à la main aurait raté les gabarits arrivés sur `main` pendant que
     // cette branche vivait.
-    expect(tous.length).toBe(49);
+    // 🔴 2026-09-05 — RELEVÉ À 51, et le chemin pour y arriver mérite d'être
+    // écrit : la garde était DÉJÀ ROUGE à 50 avant ce lot. `piece-exemplaire-signe`
+    // (lot A) a été ajouté sans relever ce compteur ni déclarer son champ
+    // `libellePiece` ci-dessous. Le rappel de la veille (ADR 0048 §4.3) fait le
+    // 51ᵉ. Deux gabarits, un seul chiffre — c'est exactement ce que cette garde
+    // existe pour attraper, et elle l'a attrapé.
+    expect(tous.length).toBe(51);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

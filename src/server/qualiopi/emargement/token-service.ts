@@ -21,6 +21,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { signMagicToken, verifyMagicToken } from "@/lib/magic-token";
+import { lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
 import type { CoachingSignataireRole } from "../../../../prisma/generated/client";
 
 /**
@@ -53,8 +54,18 @@ export type MotifRefusEmission =
   | "horaires_non_confirmes"
   /** AFEST : le formateur signe authentifié, aucun lien ne lui est émis. */
   | "role_non_eligible_au_lien"
-  /** AFEST : un lien sans destinataire ne peut être lié à personne. */
-  | "destinataire_absent";
+  /** Un lien sans destinataire ne peut être lié à personne. */
+  | "destinataire_absent"
+  /**
+   * 🔴 ADR 0048 §4.2 (2026-09-05) — session à distance sans lien de connexion.
+   *
+   * Exactement le même raisonnement que les deux motifs du dessus, appliqué au
+   * distanciel : une session à distance dont personne n'a renseigné l'adresse
+   * de réunion se découvrait à L'HEURE DE LA SÉANCE, quand plus personne ne
+   * peut rien corriger. En présentiel l'oubli se rattrape — on est quelque
+   * part, on s'appelle. À distance il n'y a pas de « quelque part ».
+   */
+  | "distanciel_sans_lien";
 
 export class TokenEmargementError extends Error {
   readonly motif: MotifRefusEmission;
@@ -130,26 +141,69 @@ export function calculerExpiration(dateFinSession: Date, maintenant: Date): Date
  * circulation signifieraient qu'en révoquer un donne une fausse impression de
  * sécurité. Toute création révoque donc le précédent, dans la même transaction.
  *
+ * 🔴 LE BINDING E-MAIL (2026-09-05, ADR 0048 §4.1). `destinataireEmail` est
+ * OBLIGATOIRE, et ce n'est pas une commodité de signature.
+ *
+ * L'empreinte de l'adresse destinataire n'était écrite que sur le chemin AFEST
+ * individuel (`creerTokenCoaching`). C'est-à-dire que la protection existait
+ * précisément là où il y a UN participant, et manquait là où il y en a douze —
+ * un lien collectif transféré, réexpédié ou laissé dans une boîte partagée ne
+ * disait à personne pour QUI il avait été émis. Le rendre obligatoire est le
+ * seul moyen qu'aucun appelant ne puisse le sauter en silence : un paramètre
+ * optionnel se serait fait oublier au premier appelant neuf, exactement comme
+ * il l'a été ici pendant tout le chemin collectif.
+ *
+ * ⚠️ Ce que ce champ fait AUJOURD'HUI, et ce qu'il ne fait pas : il TRACE le
+ * destinataire (remonté par `verifierToken`, effacé par `rgpd-erase`). Aucune
+ * vérification à la signature ne s'appuie encore dessus — sur AUCUN des deux
+ * chemins. Écrire la trace est le préalable ; la garde qui la confrontera à une
+ * adresse saisie viendra après, et n'aurait rien à lire sans elle.
+ *
  * @throws {TokenEmargementError} Si la session n'a déclaré aucune journée
  *         (`session_jours`, décision D14) : sans horaires réels, la signature
  *         qui suivrait serait insuffisamment probante. Refuser ici, devant
  *         l'admin, plutôt qu'en salle devant le stagiaire.
+ * @throws {TokenEmargementError} Si la session est à DISTANCE et qu'aucun lien
+ *         de connexion n'est renseigné (`distanciel_sans_lien`, ADR 0048 §4.2).
+ * @throws {TokenEmargementError} Si `destinataireEmail` est vide ou sans « @ ».
  */
 export async function creerTokenInscription(input: {
   enrollmentId: string;
   dateFinSession: Date;
+  /** Adresse à laquelle le lien sera remis. Jamais stockée en clair. */
+  destinataireEmail: string;
   createdIpHash?: string | null;
   maintenant?: Date;
 }): Promise<{ token: string; tokenId: string; expiresAt: Date }> {
   const maintenant = input.maintenant ?? new Date();
 
-  // Garde-fou D14 — voir `TokenEmargementError`. Une seule requête : les
-  // journées de la session à laquelle appartient cette inscription, avec leur
-  // état de confirmation.
-  const jours = await prisma.sessionJour.findMany({
-    where: { session: { enrollments: { some: { id: input.enrollmentId } } } },
-    select: { horairesConfirmes: true },
+  // Même refus, mot pour mot, que sur le chemin AFEST : un lien qui n'est lié à
+  // personne n'a aucune valeur probante. Contrôle PUR, avant toute lecture.
+  const email = input.destinataireEmail.trim().toLowerCase();
+  if (email === "" || !email.includes("@")) {
+    throw new TokenEmargementError(
+      "destinataire_absent",
+      "Aucune adresse électronique n'est renseignée pour ce stagiaire : sans destinataire, le lien ne peut être lié à personne et n'aurait aucune valeur probante.",
+    );
+  }
+
+  // Garde-fou D14 + ADR 0048 §4.2 — voir `TokenEmargementError`. Une seule
+  // requête : la session à laquelle appartient cette inscription, avec ses
+  // journées déclarées et son lieu.
+  //
+  // 🔴 `findFirst` par la relation, et non `findUnique` sur l'inscription : la
+  // forme d'origine (`sessionJour.findMany`) partait déjà de l'inscription, et
+  // la remplacer par une lecture de session conserve exactement la même clé de
+  // recherche — on ajoute des colonnes, on ne change pas ce qui est visé.
+  const session = await prisma.trainingSession.findFirst({
+    where: { enrollments: { some: { id: input.enrollmentId } } },
+    select: {
+      lieuType: true,
+      lieuVisioUrl: true,
+      jours: { select: { horairesConfirmes: true } },
+    },
   });
+  const jours = session?.jours ?? [];
   if (jours.length === 0) {
     throw new TokenEmargementError(
       "journees_non_declarees",
@@ -172,14 +226,47 @@ export async function creerTokenInscription(input: {
     );
   }
 
+  // 🔴 ADR 0048 §4.2 — LE DISTANCIEL SANS PORTE D'ENTRÉE.
+  //
+  // Le contrôle est posé ICI, au même endroit et dans la même forme que les
+  // deux précédents, parce que c'est mot pour mot le même raisonnement : le
+  // refus se produit à la CRÉATION DU LIEN, devant l'admin qui a l'éditeur de
+  // session sous les yeux, et non devant le participant à l'heure de la séance,
+  // qui ne peut rien y faire — et qui, à distance, ne manque à personne jusqu'à
+  // ce que la séance soit finie.
+  //
+  // ⚠️ NE PORTE QUE SUR `distanciel`. Une session HYBRIDE (`sur_site` ou
+  // `nos_locaux` avec un lien de visio) a une porte d'entrée physique : elle
+  // n'est pas concernée, et exiger le lien la bloquerait sans raison.
+  //
+  // ⚠️ ET NE JUGE PAS LA PLATEFORME. L'ADR 0048 §2 tranche Zoom comme chemin
+  // OUTILLÉ, jamais comme chemin OBLIGATOIRE : un client qui impose son propre
+  // Teams doit continuer à fonctionner. Refuser une session parce que son lien
+  // n'est pas un lien Zoom remplacerait un manque par une impasse.
+  if (session?.lieuType === "distanciel" && lienVisioRemis(session) === null) {
+    throw new TokenEmargementError(
+      "distanciel_sans_lien",
+      "Cette session est à distance et aucun lien de connexion n'est renseigné : les participants n'auraient aucune manière d'entrer. Renseignez l'adresse de la réunion (champ « Lien de visioconférence », avec son https://) avant d'émettre les liens de signature.",
+    );
+  }
+
   const expiresAt = calculerExpiration(input.dateFinSession, maintenant);
 
+  // ⚠️ L'adresse N'ENTRE PAS dans le jeton, contrairement au chemin AFEST.
+  //
+  // Ce n'est pas un oubli de symétrie. `verifyMagicToken` ne lit pas ce champ
+  // (son `expected` ne contrôle que `scope` et `resourceId`) : le binding réel
+  // est la colonne, jamais le payload. L'y mettre écrirait donc une adresse en
+  // CLAIR dans une URL — celle-là même que la console affiche en QR code sur un
+  // écran de salle et qu'un stagiaire recopie. Un champ inutile qui coûte une
+  // donnée personnelle de plus dans un journal de serveur n'est pas neutre.
   const token = await signMagicToken({
     scope: "emargement",
     resourceId: input.enrollmentId,
     ttlMs: Math.max(1, expiresAt.getTime() - maintenant.getTime()),
   });
   const tokenHash = await sha256Hex(token);
+  const destinataireEmailSha256 = await sha256Hex(email);
 
   const ligne = await prisma.$transaction(async (tx) => {
     // Révoque l'éventuel jeton actif : sans cela l'index partiel ferait échouer
@@ -193,6 +280,8 @@ export async function creerTokenInscription(input: {
         contexteType: "collectif",
         enrollmentId: input.enrollmentId,
         tokenHash,
+        // 🔴 Le liage au destinataire, qui n'existait QUE sur le chemin AFEST.
+        destinataireEmailSha256,
         expiresAt,
         createdIpHash: input.createdIpHash ?? null,
       },

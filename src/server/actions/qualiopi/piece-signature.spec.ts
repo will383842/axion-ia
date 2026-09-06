@@ -52,6 +52,28 @@ vi.mock("next/headers", () => ({
   headers: vi.fn(async () => ({ get: (_: string): string | null => null })),
 }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
+
+// 🔴 2026-09-05 — CE TÉMOIN ÉTAIT ROUGE DEPUIS `f12917ced`, ET PERSONNE NE L'A VU.
+//
+// Ce commit (la veille) a inséré `transmettreExemplaireSigne` en TÊTE de
+// `consequenceSignatureComplete`, avant les branches par type. Le mock de Prisma
+// ci-dessus ne porte pas les méthodes qu'elle appelle (`documentGenere.updateMany`
+// notamment) : elle levait, le `catch` fail-soft l'avalait — et le positionnement
+// ne partait plus. Le témoin mesurait donc une chaîne cassée par sa propre
+// fixture.
+//
+// Il n'a pas été exécuté depuis, parce que la session précédente n'avait lancé
+// que QUATRE fichiers ciblés. C'est le second témoin rouge depuis 24 h découvert
+// en lançant la suite COMPLÈTE — après `outbox-policy.spec.ts`. Un sous-ensemble
+// ciblé ne dit rien de ce qu'il ne contient pas.
+//
+// On MOQUE la transmission ici : ce fichier éprouve la conséquence
+// POSITIONNEMENT, pas la remise de l'exemplaire — laquelle a ses 19 témoins à
+// elle dans `transmission-exemplaire.spec.ts`. Un témoin qui traverse pour de
+// vrai un module qu'il ne teste pas ne mesure plus ce qu'il annonce.
+vi.mock("@/server/qualiopi/documents/signature/transmission-exemplaire", () => ({
+  transmettreExemplaireSigne: vi.fn(async () => ({ ok: true as const })),
+}));
 vi.mock("./_guards", () => ({
   requireAdminWrite: vi.fn(),
   requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),

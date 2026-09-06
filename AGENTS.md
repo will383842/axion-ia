@@ -57,11 +57,37 @@ et l'a toujours été :
   appliquée à ce bucket. Verrouillé par
   `tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts`, qui refuse le retour du
   `continue-on-error` ET un cliquet reposé sous la mesure.
+- **🟢 2026-09-06 — LE CLIQUET UNIQUE EST SCINDÉ : PUBLIC 265 KB, CONSOLE ADMIN 470 KB**
+  (ADR 0049). Le bucket unique sommait tout hors `/appel` à 703 KB. Mesuré en séparant les
+  populations sur un seul build : **public 254,36 kB (186 chunks) · console admin
+  452,01 kB (311 chunks)**. Les deux tiers d'un budget de performance PUBLIQUE étaient
+  occupés par des écrans authentifiés qu'aucune mesure Lighthouse ne regarde — donc le
+  seuil était **trop lâche là où il comptait** (le public pouvait presque tripler) et
+  **bloquant là où il ne comptait pas** (3,44 kB d'admin fermaient une PR de 30 commits).
+  C'est aussi ce qui explique les recalages 700 → 702 → 703 en une journée par trois
+  sessions : elles livraient toutes de l'admin. Le budget public est désormais **2,7 fois
+  plus strict** qu'avant. Le bucket admin porte « hors budget Web Vitals » dans son nom :
+  ne pas le lire comme une dette de performance publique.
+  - ⚠️ **Le groupe de routes s'écrit `[(]admin[)]` dans un motif `size-limit`, jamais
+    `(admin)` nu.** Mesuré : `(admin)/**/page-*.js` → 0 fichier, `[(]admin[)]/**/page-*.js`
+    → 311. Et sur une NÉGATION la faute est **muette** : `(admin)/**` nu trouve 8 chunks de
+    `chunks/app/api/admin/`, aucun n'est un `page-*.js`, donc l'exclusion n'exclut rien et
+    le bucket public ré-avale la console en vert.
+  - L'étape « Poids du bundle » est **déplacée après la suite E2E** avec
+    `if: ${{ !cancelled() }}`. Un dépassement de 2,9 kB avait `skipped` toute la suite
+    Playwright (run `33989952957`) : 37 min de CI pour un décompte d'octets et aucun signal
+    fonctionnel. Elle bloque toujours ; ce qui change est QUAND on l'apprend.
+  - `pnpm bundle:check` lance `scripts/ci/bundle-check.mjs`, pas `size-limit` nu : il
+    vérifie **au moment de la mesure** que chaque motif correspond à ≥ 1 fichier ET que la
+    partition des `page-*.js` (`/appel` + public + admin) est exacte et exhaustive. Le
+    second est le seul qui discrimine la faute des parenthèses nues. Verrouillé par
+    `tests/unit/ci/budget-public-et-admin-sont-separes.spec.ts`.
 - **⛔ CE QUI N'EST MESURÉ PAR AUCUNE GATE : le First Load JS PAR ROUTE** (la cible ≤ 75 KB
   gz ci-dessus). `size-limit` ne sait pas exprimer un budget par route sur un glob — il
   **SOMME**. Le bucket qui prétendait le faire s'appelait « page chunks individuels » et
   comparait 654 KB de somme à 75 KB par route : impossible à passer, et muet sur chaque
-  route. Il est renommé en **cliquet anti-croissance** (limite 700 KB, calée sur la mesure).
+  route. Il est renommé en **cliquet anti-croissance** (limite 700 KB à l'époque, calée sur
+  la mesure ; scindé en public 265 KB / admin 470 KB le 2026-09-06, cf. le point ci-dessus).
   La doctrine renvoyait la question à Lighthouse ; Lighthouse n'y a jamais répondu. **Se
   mesure à la main** : `next build --experimental-build-mode compile` (~2 min) puis lecture
   de `.next/static/chunks/app/`.

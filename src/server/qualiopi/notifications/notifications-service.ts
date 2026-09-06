@@ -6,6 +6,9 @@
  *                               ⚠️ PAS appelé à la confirmation d'inscription —
  *                               cf. le commentaire de la fonction.
  *   envoyerRappelJ7           : session J-7 → qualiopi-rappel-j7 (par enrollment)
+ *   envoyerRappelJ1           : session J-1 → qualiopi-rappel-j1 (par enrollment)
+ *                               ⚠️ Le SEUL envoi qui porte le lien de visio
+ *                               ENTIER — cf. le commentaire de la fonction.
  *   envoyerSatisfactionJ1     : session réalisée J+1 → qualiopi-satisfaction-j1
  *   envoyerSuiviJ30           : session réalisée J+30 → qualiopi-suivi-j30
  *   envoyerAttestationDisponible : attestation générée → qualiopi-attestation-disponible
@@ -24,7 +27,7 @@ import { prisma } from "@/lib/prisma";
 import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
-import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
+import { formatLieu, lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import {
   creerQuestionnaire,
@@ -85,6 +88,11 @@ async function getLienEmargementSiPremier(
   enrollmentId: string,
   dateFinSession: Date,
   baseUrl: string,
+  /**
+   * Adresse du stagiaire — le jeton lui est LIÉ (ADR 0048 §4.1). Obligatoire :
+   * un lien émis sans destinataire ne serait rattaché à personne.
+   */
+  destinataireEmail: string,
 ): Promise<string | null> {
   try {
     const actif = await prisma.emargementToken.findFirst({
@@ -92,7 +100,11 @@ async function getLienEmargementSiPremier(
       select: { id: true },
     });
     if (actif) return null;
-    const { token } = await creerTokenInscription({ enrollmentId, dateFinSession });
+    const { token } = await creerTokenInscription({
+      enrollmentId,
+      dateFinSession,
+      destinataireEmail,
+    });
     return `${baseUrl}/fr/portail/emarger/${token}`;
   } catch {
     return null;
@@ -372,6 +384,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
         enrollment.id,
         session.dateFin,
         baseUrl,
+        trainee.email,
       );
       const envoi = await enqueueEmail(
         "qualiopi-rappel-j7",
@@ -445,6 +458,203 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
       data: { rappelJ7EnvoyeAt: new Date() },
     });
   }
+  return tousPartis;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// envoyerRappelJ1  (ADR 0048 §4.3)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Un rappel de la veille est-il DÉJÀ parti pour cette inscription ?
+ *
+ * 🔴 L'idempotence de ce rappel ne peut pas reposer sur la seule déduplication
+ * BullMQ, et c'est la conséquence directe du calendrier retenu : le cron est
+ * HORAIRE sur une fenêtre de 30 h, donc la même inscription se représente une
+ * trentaine de fois. BullMQ dédoublonne bien sur `jobId`, mais sa rétention
+ * expire au min(7 jours, 1 000 jobs) — une purge Redis ou une journée chargée
+ * suffirait à faire repartir le message, et un stagiaire recevrait trente fois
+ * « c'est demain ».
+ *
+ * On lit donc la trace DURABLE : `email_logs` porte une ligne par `jobId` dès
+ * l'enfilage (`journaliserEnAttente`), et cette ligne survit à Redis. C'est
+ * aussi, accessoirement, la seule chose qui prouve devant un certificateur que
+ * le rappel est parti — ce qui évite d'ajouter une colonne de plus à
+ * `TrainingSession` pour redire ce que le journal dit déjà.
+ *
+ * ⚠️ Une ligne en ÉCHEC compte comme « déjà parti » : on ne relance pas. C'est
+ * le comportement de tous les autres rappels (le `jobId` stable les dédoublonne
+ * de la même façon), et l'échec est visible ailleurs — `verifierSanteEmails()`
+ * lit ce même journal. Réessayer ici sans compteur ferait boucler à l'heure sur
+ * une adresse morte.
+ */
+async function rappelJ1DejaParti(jobId: string): Promise<boolean> {
+  try {
+    const ligne = await prisma.emailLog.findFirst({ where: { jobId }, select: { id: true } });
+    return ligne !== null;
+  } catch (err) {
+    // Base momentanément muette : on NE bloque PAS le rappel. Un doublon est
+    // désagréable ; une absence la veille d'une session à distance est un trou
+    // dans la preuve d'assiduité. Le déséquilibre des deux fautes commande le
+    // repli.
+    console.error(
+      "[rappel-j1] journal illisible, envoi maintenu (risque de doublon assumé) :",
+      err instanceof Error ? err.message : String(err),
+    );
+    return false;
+  }
+}
+
+/**
+ * Rappel de la VEILLE au stagiaire — et il porte la manière d'ENTRER.
+ *
+ * 🔴 ADR 0048 §4.3. `formateur-rappel-j1` existait, `qualiopi-rappel-j7`
+ * existait, il n'y avait AUCUN `qualiopi-rappel-j1` : le participant n'était
+ * plus recontacté entre J-7 et la séance.
+ *
+ * En présentiel, l'oubli se rattrape — la personne est attendue quelque part,
+ * on l'appelle. À distance, un participant qui oublie NE MANQUE À PERSONNE
+ * jusqu'à ce que la séance soit finie, et son absence devient un trou dans la
+ * preuve d'assiduité. Le rappel de la veille est donc une exigence du
+ * distanciel, pas un confort.
+ *
+ * 🔑 CE QU'IL PORTE ET QUE RIEN D'AUTRE NE PORTAIT : le lien de connexion
+ * ENTIER. La convocation, elle, continue de n'en montrer que l'hôte via
+ * `formatLieu` — c'est une pièce archivée, réexpédiée, versée au dossier de
+ * contrôle, et un lien qui vaut clé d'accès n'y a pas sa place. Ce rappel-ci
+ * n'est archivé nulle part et s'adresse à UNE personne : c'est le canal qui
+ * devait faire exception, et qui n'existait pas.
+ *
+ * Contrat de retour identique à `envoyerRappelJ7` : `true` seulement si CHAQUE
+ * inscrit a été remis à la file (ou l'avait déjà été).
+ */
+export async function envoyerRappelJ1(sessionId: string): Promise<boolean> {
+  if (isStub()) return false;
+
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      modalite: true,
+      lieuType: true,
+      lieuIntitule: true,
+      lieuAdresse: true,
+      lieuCodePostal: true,
+      lieuVille: true,
+      lieuSalle: true,
+      lieuVisioUrl: true,
+      enrollments: {
+        where: { statut: { in: ["planifiee", "presente"] } },
+        select: {
+          id: true,
+          trainee: { select: { id: true, email: true, nom: true, prenom: true } },
+        },
+      },
+    },
+  });
+
+  if (!session) return false;
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  // Clé de DATE, comme rappel-j7 / satisfaction-j1 / suivi-j30 : dérivée de la
+  // date de DÉBUT de session, jamais du jour courant. Trente passages horaires
+  // produisent donc trente fois la même clé.
+  const dk = dateKey(session.dateDebut);
+  const lienVisio = lienVisioRemis(session);
+
+  // 🔑 L'ÉCART QU'IL FAUT NOMMER PLUTÔT QUE DE RETENIR LE MESSAGE.
+  //
+  // Une session à distance sans lien ne devrait plus exister : `creerTokenInscription`
+  // la refuse à l'émission des liens de signature (ADR 0048 §4.2). Mais rien
+  // n'oblige un admin à être passé par là, et retenir le rappel priverait les
+  // stagiaires de tout — y compris de la date. On envoie, et on écrit l'écart.
+  if (session.lieuType === "distanciel" && lienVisio === null) {
+    console.error(
+      `[rappel-j1] ÉCART — session ${sessionId} est à DISTANCE et ne porte aucun lien de ` +
+        "connexion utilisable : le rappel part sans manière d'entrer. Renseignez " +
+        "« Lien de visioconférence » sur la session.",
+    );
+  }
+
+  let tousPartis = true;
+
+  for (const enrollment of session.enrollments) {
+    const { trainee } = enrollment;
+    const jobId = `qualiopi-rappel-j1-${enrollment.id}-${dk}`;
+    try {
+      // Déjà parti : ce n'est ni un succès à recompter, ni un échec. On passe.
+      if (await rappelJ1DejaParti(jobId)) continue;
+
+      const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
+      const lienEmargement = await getLienEmargementSiPremier(
+        enrollment.id,
+        session.dateFin,
+        baseUrl,
+        trainee.email,
+      );
+      const envoi = await enqueueEmail(
+        "qualiopi-rappel-j1",
+        trainee.email,
+        "fr",
+        {
+          stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
+          titreFormation: session.titreSession,
+          dateDebut: fmtDate(session.dateDebut),
+          dateFin: fmtDate(session.dateFin),
+          lieu: formatLieu(session) ?? "Voir convocation",
+          modalite: session.modalite,
+          numeroSession: session.numero,
+          lienPortail,
+          // Les deux liens ne sont posés QUE s'ils existent : le gabarit
+          // arbitre son budget de liens sur leur présence, et un `undefined`
+          // explicite vaut mieux qu'une chaîne vide qui rendrait un `href=""`.
+          ...(lienVisio !== null ? { lienVisio } : {}),
+          ...(lienEmargement !== null ? { lienEmargement } : {}),
+        },
+        {
+          jobId,
+          entityType: "Enrollment",
+          entityId: enrollment.id,
+        },
+      );
+      if (!envoi.enqueued) {
+        console.error(
+          `[rappel-j1] NON ENVOYÉ — session ${sessionId}, inscription ${enrollment.id} ` +
+            "laissée candidate au rattrapage" +
+            (envoi.garePourValidation === true
+              ? " (e-mail garé en corbeille de validation)"
+              : " (file de messages indisponible)"),
+        );
+        // `continue`, PAS `return` : le correctif du 2026-08-24 avait constaté
+        // qu'un premier échec privait les neuf autres de leur rappel — et que
+        // le journal ne nommait qu'une session, pas neuf personnes.
+        tousPartis = false;
+        continue;
+      }
+    } catch (err) {
+      // Fail-soft PAR STAGIAIRE, même raison.
+      tousPartis = false;
+      console.error(
+        `[notifications] rappel-j1: erreur enrollment ${enrollment.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  // Une session sans inscrit n'a personne à prévenir : ne rien attester. Elle
+  // reste candidate, et le journal la nomme — c'est un écart à traiter (session
+  // planifiée à la veille sans aucun stagiaire), pas un envoi réussi.
+  if (session.enrollments.length === 0) {
+    console.error(
+      `[rappel-j1] session ${sessionId} SANS INSCRIT à la veille — aucun rappel à envoyer`,
+    );
+    return false;
+  }
+
   return tousPartis;
 }
 

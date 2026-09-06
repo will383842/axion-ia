@@ -1,0 +1,22 @@
+-- 🔴 L'alerte « Attestation non envoyée au stagiaire » ne pouvait JAMAIS se
+-- lever dans le cas qu'elle nomme (2026-09-05).
+--
+-- `attestationGenereeAt` est posée à la GÉNÉRATION du PDF, sans condition. La
+-- notification du stagiaire vient APRÈS, en fail-soft, et le service journalise
+-- mot pour mot « NON ENVOYÉ — … le stagiaire n'a PAS été prévenu … Aucun
+-- rattrapage automatique n'existe ». Or la règle testait
+-- `attestationGenereeAt: null` — une colonne qui vient précisément d'être
+-- posée. Le diagnostic était donc écrit au bon endroit, dans les bons mots, et
+-- routé vers un `console.error` que personne ne lit le lendemain, pendant que
+-- le seul instrument disposant d'un écran regardait la mauvaise colonne.
+--
+-- Cette colonne sépare les deux faits : la pièce EXISTE (`generee_at`) et le
+-- stagiaire a été PRÉVENU (`notifiee_at`). C'est le patron déjà employé par
+-- `positionnement_sans_reponse`, qui distingue « jamais envoyé » de « envoyé
+-- sans réponse ».
+--
+-- Purement ADDITIVE : colonne nullable, aucune contrainte, aucune valeur
+-- rétroactive. ⚠️ Les attestations déjà émises restent `NULL` — elles ne sont
+-- PAS présumées non notifiées : la règle ne regarde que les sessions dont la
+-- fin est postérieure au déploiement (cf. le commentaire de la règle).
+ALTER TABLE "enrollments" ADD COLUMN "attestation_notifiee_at" TIMESTAMP(3);

@@ -186,11 +186,56 @@ function jourHeure(d: Date): string {
 
 const MS_JOUR = 24 * 60 * 60 * 1000;
 
-/** « J-5 », « aujourd'hui », « J-1 ». */
+/**
+ * Combien de temps il reste, DEPUIS AUJOURD'HUI : « aujourd'hui », « demain »,
+ * « dans 5 jours ».
+ *
+ * 🔴 F10, recette du 2026-09-04 — cette fonction rendait « J-5 ».
+ *
+ * Le compte est juste : il vaut bien le nombre de jours entre MAINTENANT et
+ * l'échéance. C'est la NOTATION qui ment. Dans le vocabulaire de la formation,
+ * « J » est le jour de la SESSION : « J-7 » désigne la convocation à envoyer
+ * sept jours avant l'action, et c'est ainsi que le reste du produit l'emploie
+ * (rappel J-7, rappel J-1, alerte J-2). Ici « J » désignait AUJOURD'HUI.
+ *
+ * Les deux repères ne coïncident que si l'échéance tombe le jour de la session.
+ * Dès qu'elle est POSTÉRIEURE — évaluation à chaud due deux jours APRÈS la fin,
+ * par exemple — l'écran affichait « Évaluation finale (J-3) » pour une échéance
+ * qui se situe à J+2. Le lecteur en déduit qu'il est en retard de cinq jours,
+ * ou qu'il lui reste trois jours avant la session : les deux sont faux.
+ *
+ * Aucune notation ne pouvait lever l'ambiguïté, parce que le lecteur ne sait
+ * pas laquelle des deux origines est employée. On abandonne donc « J-n » ici et
+ * on écrit le délai en toutes lettres : « dans 5 jours » ne se confond avec
+ * aucun repère de session. « J-n » reste réservé aux jalons RELATIFS À LA
+ * SESSION, où il est exact.
+ */
 function enJours(de: Date, a: Date): string {
-  const n = Math.ceil((a.getTime() - de.getTime()) / MS_JOUR);
+  const n = ecartEnJoursCalendaires(de, a);
   if (n <= 0) return "aujourd'hui";
-  return `J-${n}`;
+  if (n === 1) return "demain";
+  return `dans ${n} jours`;
+}
+
+/**
+ * Écart en jours de CALENDRIER, pas en tranches de 24 h.
+ *
+ * 🔴 Second défaut, trouvé en écrivant le témoin du premier. Le calcul était
+ * `Math.ceil((a - de) / MS_JOUR)` : une échéance due AUJOURD'HUI à 17 h, lue à
+ * 9 h, donne 8 h d'écart, dont le plafond vaut 1 — soit « demain ». La mention
+ * annonçait donc pour le lendemain une pièce à produire dans la journée, et
+ * « aujourd'hui » n'était atteignable qu'une fois l'échéance DÉPASSÉE.
+ *
+ * C'est la même faute que « dans 7 jours » affiché pour demain (recette
+ * formateur du 2026-09-04) : compter des durées là où l'utilisateur lit des
+ * dates. On compare donc les quantièmes, dans le même fuseau que `jour()` qui
+ * imprime la date juste à côté — sans quoi la mention pourrait dire « demain »
+ * en affichant la date du jour.
+ */
+function ecartEnJoursCalendaires(de: Date, a: Date): number {
+  const minuit = (d: Date): number =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  return Math.round((minuit(a) - minuit(de)) / MS_JOUR);
 }
 
 /** « +1 j », « +12 j ». Toujours au moins « +1 j » : un dépassement se voit. */

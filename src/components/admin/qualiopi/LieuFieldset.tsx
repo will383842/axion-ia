@@ -13,6 +13,7 @@
  */
 
 import type { LieuValues } from "@/components/admin/qualiopi/lieu-values";
+import { libellesAcces } from "@/server/qualiopi/lieu/libelles-acces";
 
 export interface LieuFieldsetProps {
   value: LieuValues;
@@ -63,6 +64,21 @@ export function LieuFieldset({
   const estHybride = modalite === "hybride";
   const afficherAdresse = !estDistanciel;
   const afficherVisio = estDistanciel || estHybride;
+
+  // 🔴 F4 — les mots de la porte survivaient en visioconférence.
+  //
+  // Recette du 2026-09-04, session AXI-SESS-2026-001, modalité « Distanciel » :
+  // les CHAMPS adresse / CP / ville / salle disparaissaient bien, mais trois
+  // LIBELLÉS restaient ceux du présentiel — « Contact sur place », « Consignes
+  // d'accès », et l'aide qui promettait un envoi « avec l'adresse, la salle et
+  // le contact » alors qu'il n'y a ni adresse ni salle.
+  //
+  // C'est le même défaut que l'alerte de la PR 980 : l'écran de SORTIE avait été rendu
+  // par modalité, l'écran de SAISIE qui l'alimente ne l'avait pas été. Les cinq
+  // chaînes viennent donc d'UNE fonction, et sa garde exige qu'elles bougent
+  // TOUTES ensemble — trois ternaires côte à côte se corrigent une par une, et
+  // on en oublie une : c'est précisément ce qui s'était produit.
+  const mots = libellesAcces(value.lieuType, modalite);
 
   return (
     <fieldset className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
@@ -200,10 +216,11 @@ export function LieuFieldset({
             Ces trois champs partent dans la convocation J-7 et le rappel J-1
             du FORMATEUR, et s'affichent dans son espace. Ils ne figurent sur
             aucun document remis au client. Toujours visibles : en distanciel
-            aussi, il y a quelqu'un à joindre si le lien ne s'ouvre pas. */}
+            aussi, il y a quelqu'un à joindre si le lien ne s'ouvre pas —
+            seuls leurs LIBELLÉS changent (cf. `mots`, plus haut). */}
         <div>
           <label className={labelCls} htmlFor={`${idPrefix}-contact-nom`}>
-            Contact sur place (nom)
+            {mots.contactNom}
           </label>
           <input
             id={`${idPrefix}-contact-nom`}
@@ -217,7 +234,7 @@ export function LieuFieldset({
         </div>
         <div>
           <label className={labelCls} htmlFor={`${idPrefix}-contact-tel`}>
-            Contact sur place (téléphone)
+            {mots.contactTelephone}
           </label>
           <input
             id={`${idPrefix}-contact-tel`}
@@ -232,7 +249,7 @@ export function LieuFieldset({
         </div>
         <div className="sm:col-span-2">
           <label className={labelCls} htmlFor={`${idPrefix}-consignes`}>
-            Consignes d&apos;accès pour le formateur
+            {mots.consignes}
           </label>
           <textarea
             id={`${idPrefix}-consignes`}
@@ -241,12 +258,11 @@ export function LieuFieldset({
             disabled={disabled}
             maxLength={2000}
             rows={3}
-            placeholder="Badge à retirer à l'accueil, parking visiteurs, étage, code de la porte, heure d'arrivée conseillée…"
+            placeholder={mots.consignesPlaceholder}
             className={inputCls}
           />
           <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Envoyé au formateur 7 jours avant et la veille, avec l&apos;adresse, la salle et le
-            contact. Jamais imprimé sur les documents du client.
+            {mots.aide}
           </p>
         </div>
       </div>

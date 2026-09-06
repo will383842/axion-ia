@@ -66,8 +66,26 @@ export interface TraineeSerialized {
 export interface EnrollmentsSectionProps {
   sessionId: string;
   enrollments: EnrollmentSerialized[];
-  /** Tous les stagiaires existants — utilisés comme options du sélecteur d&apos;inscription. */
+  /**
+   * Les stagiaires proposés au sélecteur d&apos;inscription — une PAGE du
+   * registre, plus le registre entier.
+   *
+   * 🔴 Le parent chargeait `prisma.trainee.findMany` SANS `take` : toute la
+   * table était sérialisée vers le navigateur à chaque ouverture d&apos;une
+   * fiche session. Tenable sur une base vierge, insoutenable en volume.
+   *
+   * ⚠️ Un plafond SEUL aurait été pire que le défaut : au-delà de la borne, un
+   * stagiaire devient ININSCRIPTIBLE et rien ne le dit — on remplacerait une
+   * lenteur par une impossibilité. D&apos;où les trois propriétés qui suivent :
+   * elles ne sont pas décoratives, elles sont la contrepartie du plafond.
+   */
   availableTrainees: TraineeSerialized[];
+  /** Recherche serveur en cours (paramètre `qStagiaire`), « » si aucune. */
+  rechercheStagiaire?: string;
+  /** Combien de stagiaires au REGISTRE — jamais le compte de la page affichée. */
+  totalStagiairesRegistre?: number;
+  /** Borne appliquée par le parent, pour dire « N sur M » sans la deviner. */
+  plafondStagiaires?: number;
   /** Server Actions injectées par le parent (Server Component). */
   enrollAction: (input: {
     sessionId: string;
@@ -444,6 +462,11 @@ interface EnrollFormProps {
   alreadyEnrolledIds: Set<string>;
   enrollAction: EnrollmentsSectionProps["enrollAction"];
   onEnrolled: () => void;
+  /** Recherche serveur en cours — voir `EnrollmentsSectionProps`. */
+  rechercheStagiaire: string;
+  /** Le sélecteur ne montre-t-il qu'une partie du registre ? */
+  listeTronquee: boolean;
+  totalStagiairesRegistre: number;
 }
 
 function EnrollForm({
@@ -452,6 +475,9 @@ function EnrollForm({
   alreadyEnrolledIds,
   enrollAction,
   onEnrolled,
+  rechercheStagiaire,
+  listeTronquee,
+  totalStagiairesRegistre,
 }: EnrollFormProps): React.ReactElement {
   const [isPending, startTransition] = useTransition();
   const [selectedTraineeId, setSelectedTraineeId] = useState<string>("");
@@ -488,57 +514,107 @@ function EnrollForm({
     });
   }
 
+  /*
+   * 🔴 La contrepartie du plafond : la RECHERCHE.
+   *
+   * Le sélecteur ne montre qu'une page du registre. Sans ce champ, le stagiaire
+   * au-delà de la borne serait inatteignable et rien ne le dirait — on aurait
+   * remplacé une lenteur par une impossibilité. Formulaire GET pur, sans une
+   * ligne de JS : c'est le même recours que celui de `/qualiopi/stagiaires`, et
+   * il ne peut pas être imbriqué dans le formulaire d'inscription (deux
+   * `<form>` emboîtés sont invalides). D'où le fragment.
+   */
+  const recherche = (
+    <div className="mb-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)]">
+      <form method="get" className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+        <label
+          htmlFor="recherche-stagiaire-inscription"
+          className="text-[length:var(--text-admin-xs)] font-medium tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase"
+        >
+          Chercher dans le registre
+        </label>
+        <input
+          id="recherche-stagiaire-inscription"
+          type="search"
+          name="qStagiaire"
+          defaultValue={rechercheStagiaire}
+          placeholder="Nom, prénom, e-mail, entreprise…"
+          className="admin-input min-w-[260px]"
+        />
+        <button type="submit" className="admin-button-secondary">
+          Rechercher
+        </button>
+      </form>
+      {listeTronquee && (
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+          {`Le sélecteur n'affiche que ${availableTrainees.length} stagiaires sur ${totalStagiairesRegistre} au registre. Celui que vous cherchez n'y est peut-être pas : passez par la recherche ci-dessus.`}
+        </p>
+      )}
+    </div>
+  );
+
   if (candidates.length === 0) {
     return (
-      <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-        Tous les stagiaires disponibles sont déjà inscrits à cette session.
-      </p>
+      <>
+        {recherche}
+        {/* Ce message affirmait « tous déjà inscrits ». Depuis la recherche,
+            une liste vide veut aussi dire « aucun résultat » — et ces deux
+            situations demandent des gestes opposés. */}
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {rechercheStagiaire !== ""
+            ? `Aucun stagiaire du registre ne correspond à « ${rechercheStagiaire} », ou ceux qui correspondent sont déjà inscrits à cette session.`
+            : "Tous les stagiaires disponibles sont déjà inscrits à cette session."}
+        </p>
+      </>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
-      <div className="min-w-[16rem] flex-1">
-        <label htmlFor="enroll-trainee-select" className={labelCls}>
-          Stagiaire
-        </label>
-        <select
-          id="enroll-trainee-select"
-          value={selectedTraineeId}
-          onChange={(e) => setSelectedTraineeId(e.target.value)}
-          disabled={isPending}
-          className={inputCls}
-        >
-          <option value="">— Choisir un stagiaire</option>
-          {candidates.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.prenom} {t.nom} ({t.email})
-            </option>
-          ))}
-        </select>
-      </div>
+    <>
+      {recherche}
+      <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
+        <div className="min-w-[16rem] flex-1">
+          <label htmlFor="enroll-trainee-select" className={labelCls}>
+            Stagiaire
+          </label>
+          <select
+            id="enroll-trainee-select"
+            value={selectedTraineeId}
+            onChange={(e) => setSelectedTraineeId(e.target.value)}
+            disabled={isPending}
+            className={inputCls}
+          >
+            <option value="">— Choisir un stagiaire</option>
+            {candidates.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.prenom} {t.nom} ({t.email})
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button type="submit" disabled={isPending || !selectedTraineeId} className="admin-button">
-        {isPending ? "Inscription…" : "Inscrire"}
-      </button>
+        <button type="submit" disabled={isPending || !selectedTraineeId} className="admin-button">
+          {isPending ? "Inscription…" : "Inscrire"}
+        </button>
 
-      {error && (
-        <p
-          role="alert"
-          className="w-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
-        >
-          Erreur : {error}
-        </p>
-      )}
-      {successMsg && (
-        <p
-          role="status"
-          className="w-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
-        >
-          {successMsg}
-        </p>
-      )}
-    </form>
+        {error && (
+          <p
+            role="alert"
+            className="w-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          >
+            Erreur : {error}
+          </p>
+        )}
+        {successMsg && (
+          <p
+            role="status"
+            className="w-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          >
+            {successMsg}
+          </p>
+        )}
+      </form>
+    </>
   );
 }
 
@@ -550,6 +626,9 @@ export function EnrollmentsSection({
   sessionId,
   enrollments,
   availableTrainees,
+  rechercheStagiaire = "",
+  totalStagiairesRegistre,
+  plafondStagiaires,
   enrollAction,
   setStatutAction,
   setAdaptationsAction,
@@ -615,6 +694,16 @@ export function EnrollmentsSection({
             alreadyEnrolledIds={alreadyEnrolledIds}
             enrollAction={enrollAction}
             onEnrolled={refresh}
+            rechercheStagiaire={rechercheStagiaire}
+            totalStagiairesRegistre={totalStagiairesRegistre ?? availableTrainees.length}
+            // La liste est tronquée quand elle touche le plafond du parent, ou
+            // quand elle est plus courte que le registre. Deux signaux plutôt
+            // qu'un : le second reste juste si le plafond n'est pas transmis.
+            listeTronquee={
+              (plafondStagiaires !== undefined && availableTrainees.length >= plafondStagiaires) ||
+              (totalStagiairesRegistre !== undefined &&
+                availableTrainees.length < totalStagiairesRegistre)
+            }
           />
         </div>
       </div>

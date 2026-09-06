@@ -63,6 +63,11 @@ export type EmailJobName =
   // T15 — emails auto Qualiopi lifecycle stagiaires + alertes internes
   | "qualiopi-convocation"
   | "qualiopi-rappel-j7"
+  // 🔴 Le rappel de la VEILLE au stagiaire (2026-09-05, ADR 0048 §4.3). Il
+  // n'existait pas : `formateur-rappel-j1` et `qualiopi-rappel-j7` oui, celui-ci
+  // non. C'est le SEUL envoi qui porte le lien de visioconférence ENTIER — la
+  // convocation n'en montre que l'hôte, parce qu'elle est archivée.
+  | "qualiopi-rappel-j1"
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
   // Positionnement (ind. 8) — AVANT la formation. Distinct de l'accès portail :
@@ -97,6 +102,10 @@ export type EmailJobName =
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
   | "convention-envoi"
+  // 🔴 L'exemplaire INTÉGRALEMENT SIGNÉ, remis au signataire (2026-09-05).
+  // Il n'existait pas : une pièce contresignée ne déclenchait RIEN, et la
+  // cliente d'AXI-DOC-2026-039 n'a jamais reçu sa convention signée.
+  | "piece-exemplaire-signe"
   // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12) :
   // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
   | "candidature-commercial-confirmee"

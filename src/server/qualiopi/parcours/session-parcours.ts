@@ -125,6 +125,33 @@ export interface EtapeParcours {
    * catalogue d'alertes — et corrigé ici de la même façon, au niveau du TYPE.
    */
   readonly motifSansBorne?: string;
+  /**
+   * OÙ poser le geste — l'ancre de la section qui le porte, sur la fiche de
+   * session.
+   *
+   * 🔴 Défaut vécu le 2026-09-04, par Will lui-même : « je n'ai pas trouvé le
+   * bouton pour contresigner ». Le suivi DÉCRIT pourtant le geste — « bloc
+   * Signatures, "Contresigner" » — et cette phrase est fausse deux fois : le
+   * bloc s'appelle « Signature des pièces contractuelles » et le bouton
+   * « Signer pour l'organisme ». Aucun des deux mots cités n'existe à l'écran.
+   *
+   * Et même exacte, la phrase resterait insuffisante : la fiche fait plus de
+   * 4 000 px et empile douze blocs. Décrire où aller, sur une page qu'il faut
+   * parcourir aux yeux, revient à ne pas le dire.
+   *
+   * L'ancre supprime la recherche. Elle n'est PAS un raccourci de confort :
+   * c'est ce qui rend le parcours praticable par quelqu'un qui découvre
+   * l'outil — l'exigence que Will pose pour tout le système.
+   *
+   * Absente = le geste n'a pas de lieu sur cette page (il est chez le
+   * stagiaire, chez le client, ou dans une sous-page à part).
+   */
+  readonly ancre?: {
+    /** Fragment de l'URL, SANS le « # ». Doit exister comme `id` de section. */
+    readonly id: string;
+    /** Ce qu'on lit sur le lien — nomme le BLOC tel qu'il s'affiche. */
+    readonly libelle: string;
+  };
 }
 
 export interface Parcours {
@@ -253,6 +280,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "formateur_assigne",
+      ancre: { id: "formateur", libelle: "bloc Formateur principal" },
       libelle: "Formateur assigné",
       fait: session.formateurPrincipalId !== null,
       faitLe: null,
@@ -269,6 +297,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "convention_generee",
+      ancre: { id: "documents", libelle: "bloc Documents → Session" },
       libelle: "Convention générée",
       fait: conventions.length > 0,
       faitLe: conventions[0]?.createdAt ?? null,
@@ -317,6 +346,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "convention_signee",
+      ancre: { id: "documents", libelle: "bloc Signature des pièces contractuelles" },
       libelle: "Convention signée par le client",
       fait: conventionSigneeClient,
       faitLe: null,
@@ -330,6 +360,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "convention_contresignee",
+      ancre: { id: "documents", libelle: "bloc Signature des pièces contractuelles" },
       libelle: "Convention contresignée par l'organisme",
       // ⚠️ On ne coche PAS sur `conventionComplete` : une convention où seul
       // l'organisme aurait signé passerait alors pour contresignée à bon
@@ -368,6 +399,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "positionnement_envoye",
+      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
       libelle: "Questionnaire de positionnement envoyé",
       fait: n > 0 && posEnvoyes === n,
       faitLe: null,
@@ -381,6 +413,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
     }),
     etape({
       cle: "positionnement_repondu",
+      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
       libelle: "Positionnement répondu",
       fait: n > 0 && posRepondus === n,
       faitLe: null,
@@ -408,6 +441,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   });
   etapes.push({
     cle: "convocation_envoyee",
+    ancre: { id: "stagiaires", libelle: "bloc Stagiaires" },
     libelle: "Convocation envoyée",
     ...etatConvocation,
     geste:
@@ -429,6 +463,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "creneaux_emargement",
+      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
       libelle: "Journées de présence confirmées",
       fait: input.creneauxEmargement > 0,
       faitLe: null,
@@ -444,7 +479,15 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "liens_signature_emis",
-      libelle: "Liens d'émargement émis",
+      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
+      // 🔴 2026-09-05 — ce libellé disait « émis », mot qui se lit « envoyés ».
+      // Le voyant ne mesure QUE la fabrication : `liensEmargementActifs` compte
+      // des jetons vivants, et `emettreLiensSessionAction` ne contient aucun
+      // `enqueueEmail`. Le voyant passait donc au vert sans qu'aucun e-mail ne
+      // parte — un état lu en base présenté comme la preuve d'une livraison.
+      // C'est la même famille que le défaut documenté en tête de
+      // `transmission-exemplaire.ts`.
+      libelle: "Liens d'émargement fabriqués",
       fait: input.liensEmargementActifs > 0,
       faitLe: null,
       echeance: avant(debut, 1),
@@ -455,6 +498,9 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       // 🔴 Une réémission RÉVOQUE la précédente (index unique partiel) : le QR
       // déjà imprimé ou déjà distribué devient mort.
       avertissement:
+        "Fabriquer un lien ne l'ENVOIE pas : « Émettre les liens » crée les jetons et affiche " +
+        "les QR à l'écran, sans expédier le moindre message. Utilisez « Envoyer les liens » " +
+        "pour qu'ils partent, ou distribuez les QR en séance. " +
         "Réémettre révoque les liens en circulation — un QR déjà imprimé cesse de fonctionner.",
     }),
   );
@@ -464,6 +510,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "emargement_signe",
+      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
       libelle: "Émargement signé",
       fait: n > 0 && emarges === n,
       faitLe: null,
@@ -482,6 +529,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "evaluation_finale",
+      ancre: { id: "sous-pages", libelle: "sous-page Évaluations" },
       libelle: "Évaluation finale des acquis",
       fait: n > 0 && evalues === n,
       faitLe: null,
@@ -514,6 +562,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "attestation",
+      ancre: { id: "documents", libelle: "bloc Documents → Par stagiaire" },
       libelle: "Attestation de fin de formation",
       fait: n > 0 && attestations.length >= n,
       faitLe: attestations[0]?.createdAt ?? null,
@@ -541,6 +590,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "acces_portail",
+      ancre: { id: "stagiaires", libelle: "bloc Stagiaires" },
       libelle: "Accès à l'espace stagiaire",
       fait: n > 0 && avecAcces === n,
       faitLe: null,
@@ -569,6 +619,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "satisfaction_chaud",
+      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
       libelle: "Satisfaction à chaud recueillie",
       fait: n > 0 && chaud === n,
       faitLe: null,
@@ -585,6 +636,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
     }),
     etape({
       cle: "satisfaction_froid",
+      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
       libelle: "Suivi à froid (J+30) recueilli",
       fait: n > 0 && froid === n,
       faitLe: null,
@@ -643,6 +695,8 @@ function etape(args: {
   avertissement?: string;
   sansObjetSi?: boolean;
   motifSansObjet?: string;
+  /** Où poser le geste — cf. `EtapeParcours.ancre`. */
+  ancre?: { id: string; libelle: string };
 }): EtapeParcours {
   // Une borne DÉCLARÉE absente vaut `null` pour le calcul — mais son motif
   // survit jusqu'à l'écran, ce qui est toute la différence avec un oubli.
@@ -673,6 +727,7 @@ function etape(args: {
     ...(args.avancement !== undefined ? { avancement: args.avancement } : {}),
     ...(args.avertissement !== undefined ? { avertissement: args.avertissement } : {}),
     ...(motifSansBorne !== undefined ? { motifSansBorne } : {}),
+    ...(args.ancre !== undefined ? { ancre: args.ancre } : {}),
   };
 }
 

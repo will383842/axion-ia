@@ -161,7 +161,7 @@ describe("🔴 l'état est dans le TEXTE, jamais dans la seule couleur", () => {
     maintenant: d("2026-09-08T10:00:00Z"),
   };
 
-  it("« à faire » porte la date et le compte à rebours", () => {
+  it("« à faire » porte la date et le compte a rebours, SANS notation J-n", () => {
     const m = mentionPour({
       ...base,
       etat: "a_faire",
@@ -169,7 +169,31 @@ describe("🔴 l'état est dans le TEXTE, jamais dans la seule couleur", () => {
       maintenant: d("2026-08-31T09:00:00.000Z"),
     });
     expect(m).toContain("05/09/2026");
-    expect(m).toContain("J-5");
+    expect(m).toContain("dans 5 jours");
+    // F10 — le compte etait juste, la NOTATION mentait : « J » designe le jour
+    // de la SESSION partout ailleurs dans le produit (rappel J-7, alerte J-2),
+    // et ici il designait AUJOURD'HUI. Sur une echeance posterieure a la
+    // session, l'ecran affichait « J-3 » pour du J+2.
+    expect(m).not.toMatch(/J-\d/);
+  });
+
+  it("« demain » et « aujourd'hui » se disent, jamais « dans 1 jours »", () => {
+    const demain = mentionPour({
+      ...base,
+      etat: "a_faire",
+      faitLe: null,
+      maintenant: d("2026-09-04T09:00:00.000Z"),
+    });
+    expect(demain).toContain("demain");
+    expect(demain).not.toContain("dans 1 jours");
+
+    const auj = mentionPour({
+      ...base,
+      etat: "a_faire",
+      faitLe: null,
+      maintenant: d("2026-09-05T08:00:00.000Z"),
+    });
+    expect(auj).toContain("aujourd'hui");
   });
 
   it("« rattrapable » dit jusqu'à QUAND, à l'heure près", () => {

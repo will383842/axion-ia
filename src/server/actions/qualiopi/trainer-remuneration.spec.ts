@@ -219,7 +219,13 @@ describe("transitionStatementAction — gel et dégel des lignes", () => {
       data: { statut: "valide" },
     });
     const data = tx.trainerStatement.update.mock.calls[0]?.[0]?.data as Record<string, unknown>;
-    expect(data.validatedById).toBe("u1");
+    // 🔴 `admin-uuid`, PAS `u1` : depuis D3 (2026-09-05) cette action passe par
+    // `requireHabilitation("remunerer_formateur")` et non plus par
+    // `requireAdminWrite` — qui autorisait `editor` à déclarer un relevé payé.
+    // Le mock de `requireAdminWrite` rend `u1`, celui de `requireHabilitation`
+    // rend `admin-uuid` : cette assertion prouve donc AUSSI par quelle garde
+    // l'action est réellement passée. Un retour en arrière la ferait rougir.
+    expect(data.validatedById).toBe("admin-uuid");
   });
 
   it("RÉGRESSION : redescendre en `a_valider` DÉGÈLE les lignes", async () => {
@@ -326,7 +332,8 @@ describe("createCompensationRuleAction — versionnement", () => {
       unknown
     >;
     expect(data.effectiveTo).toBeNull();
-    expect(data.createdById).toBe("u1");
+    // Même raison qu'au-dessus : l'identité vient de la garde ENGAGEANTE.
+    expect(data.createdById).toBe("admin-uuid");
     expect(data.tauxJourneeHtCents).toBe(90_000);
     // Les taux des autres modèles restent vides : pas de valeur fantôme.
     expect(data.commissionPct).toBeNull();

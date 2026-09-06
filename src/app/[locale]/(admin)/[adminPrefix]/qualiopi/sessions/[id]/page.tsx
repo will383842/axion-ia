@@ -36,6 +36,7 @@ import { compterJoursHorsPlage } from "@/server/qualiopi/sessions/requalificatio
 import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntreprisesSection";
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
+import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
 import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
@@ -152,16 +153,36 @@ function statutColor(s: TrainingSessionStatut): string {
 // Props
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Plafond du sélecteur d'inscription.
+ *
+ * 200 lignes tiennent dans un `<select>` sans le rendre inutilisable, et
+ * bornent la sérialisation vers le navigateur. Au-delà, la recherche serveur
+ * prend le relais — c'est elle, et non le plafond, qui garantit qu'aucun
+ * stagiaire ne devient inatteignable.
+ */
+const PLAFOND_STAGIAIRES_INSCRIPTIBLES = 200;
+
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  /**
+   * `qStagiaire` — recherche SERVEUR dans le registre des stagiaires.
+   *
+   * C'est le recours qu'exige le plafond posé sur `listTrainees` ci-dessous :
+   * un `take` sans recherche ne remplacerait pas une lenteur, il fabriquerait
+   * une IMPOSSIBILITÉ — le 201ᵉ stagiaire deviendrait ininscriptible, sans le
+   * moindre message. Même patron que l'écran `/qualiopi/stagiaires`.
+   */
+  searchParams: Promise<{ qStagiaire?: string }>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default async function SessionHubPage({ params }: PageProps) {
+export default async function SessionHubPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
+  const rechercheStagiaire = ((await searchParams).qStagiaire ?? "").trim();
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -308,7 +329,7 @@ export default async function SessionHubPage({ params }: PageProps) {
   }));
 
   // ── Données des sections (Vague 2) ────────────────────────────────────────
-  const [enrollmentsRaw, documentsRaw, traineesRaw] = await Promise.all([
+  const [enrollmentsRaw, documentsRaw, traineesRaw, totalStagiairesRegistre] = await Promise.all([
     prisma.enrollment.findMany({
       where: { sessionId: id },
       orderBy: { createdAt: "asc" },
@@ -384,11 +405,25 @@ export default async function SessionHubPage({ params }: PageProps) {
         remplaceeParNumero: true,
       },
     }),
-    prisma.trainee.findMany({
-      where: { deletedAt: null },
-      orderBy: [{ nom: "asc" }, { prenom: "asc" }],
-      select: { id: true, nom: true, prenom: true, email: true },
+    // 🔴 Ce `findMany` n'avait NI `take` NI recherche : tout le registre des
+    // stagiaires était chargé, sérialisé vers le navigateur et rendu dans un
+    // `<select>`, à CHAQUE ouverture d'une fiche session. Tenable sur une base
+    // vierge, insoutenable en volume.
+    //
+    // Le plafond seul aurait été pire que le défaut : au-delà de la borne, un
+    // stagiaire devient ININSCRIPTIBLE et rien ne le dit. Le plafond ne vaut
+    // donc que ACCOMPAGNÉ de la recherche serveur — c'est exactement l'arbitrage
+    // déjà rendu sur `/qualiopi/stagiaires` le 2026-09-02, et on réutilise sa
+    // fonction (`listTrainees`) plutôt que d'en réécrire une seconde qui
+    // divergerait.
+    listTrainees({
+      limit: PLAFOND_STAGIAIRES_INSCRIPTIBLES,
+      ...(rechercheStagiaire === "" ? {} : { search: rechercheStagiaire }),
     }),
+    // Le compte porte sur le REGISTRE, jamais sur la page affichée : c'est lui
+    // qui permet de dire « 200 sur 1 240 » plutôt que de laisser croire que le
+    // registre s'arrête là.
+    countTrainees(),
   ]);
 
   // ── Pièces CONTRACTUELLES de la session et leurs signatures ──
@@ -793,9 +828,12 @@ export default async function SessionHubPage({ params }: PageProps) {
         />
       </section>
 
-      {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
+      {/* ── Modalité et lieu (convention L.6353-1 · Qualiopi off.9) ────────
+          Les deux dans la MÊME section, depuis le 2026-09-05 : ils décident
+          ensemble de ce que la convention imprime, et les séparer garantissait
+          qu'on corrige l'un en oubliant l'autre. Cf. `SessionLieuForm`. */}
       <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
+        <h2 className={sectionHeadCls}>Modalité et lieu de déroulement</h2>
         <SessionLieuForm
           sessionId={id}
           initial={lieuValuesDepuisSession(trainingSession)}
@@ -909,7 +947,15 @@ export default async function SessionHubPage({ params }: PageProps) {
         <EnrollmentsSection
           sessionId={id}
           enrollments={enrollmentsSerialized}
-          availableTrainees={traineesRaw}
+          availableTrainees={traineesRaw.map((t) => ({
+            id: t.id,
+            nom: t.nom,
+            prenom: t.prenom,
+            email: t.email,
+          }))}
+          rechercheStagiaire={rechercheStagiaire}
+          totalStagiairesRegistre={totalStagiairesRegistre}
+          plafondStagiaires={PLAFOND_STAGIAIRES_INSCRIPTIBLES}
           enrollAction={enrollTraineeAction}
           setStatutAction={setEnrollmentStatutAction}
           setAdaptationsAction={setEnrollmentAdaptationsAction}

@@ -137,6 +137,15 @@ export default async function EvaluationsPage({ params }: PageProps) {
 
       {/* Lien retour vers l'émargement */}
       <div className="mb-[var(--space-admin-5)]">
+        {/* 🔴 2026-09-05 — cette page ne ramenait qu'a sa page SOEUR
+          (emargement), jamais a la fiche parente. Naviguer de soeur en
+          soeur sans jamais remonter est un labyrinthe poli. */}
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}`}
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          ← Retour à la session
+        </Link>
         <Link
           href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}/emargement`}
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"

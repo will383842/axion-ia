@@ -108,6 +108,42 @@ const createSessionSchema = z.object({
 const setSessionLieuSchema = z.object({
   id: z.string().uuid(),
   ...lieuInputSchema.shape,
+  /**
+   * 🔴 La MODALITÉ n'était modifiable NULLE PART après la création (constat du
+   * 2026-09-04). `createSessionAction` était sa seule écriture.
+   *
+   * Ce n'est pas un manque de confort : elle décide de ce que les documents
+   * impriment, et le formulaire de lieu, lui, permettait déjà de passer de
+   * « distanciel » à « nos locaux ». On pouvait donc obtenir une session
+   * `modalite = distanciel` **et** `lieuType = nos_locaux` — deux affirmations
+   * contradictoires sur la même prestation, qu'aucun écran ne signalait. C'est
+   * exactement l'état dans lequel AXI-SESS-2026-001 s'est retrouvée.
+   *
+   * Elle se corrige donc AVEC le lieu, dans le même geste : les deux disent la
+   * même chose et doivent bouger ensemble.
+   */
+  modalite: z.enum(["presentiel", "distanciel", "hybride"]).optional(),
+});
+
+/**
+ * 🔴 Le MONTANT n'était écrit qu'à la création (constat du 2026-09-04).
+ *
+ * `createSessionAction` était sa seule écriture : il existait
+ * `setSessionLieuAction` et `setSessionDatesAction`, mais rien pour le prix. La
+ * page Financement l'affichait en lecture seule. Un montant saisi de travers
+ * était donc gelé pour toujours — et il part sur la CONVENTION et sur la
+ * FACTURE. Sur AXI-SESS-2026-001, il a fallu une écriture SQL directe en
+ * production pour corriger 1 900 € en 100 €.
+ *
+ * Le motif est exigé dès qu'une pièce financière existe : un prix qui bouge
+ * après qu'une convention l'a annoncé, ou qu'une facture l'a réclamé, doit
+ * pouvoir s'expliquer devant un contrôle.
+ */
+const setSessionMontantSchema = z.object({
+  id: z.string().uuid(),
+  /** En CENTIMES, comme la colonne — jamais en euros flottants. */
+  montantHtCents: z.number().int().min(0),
+  motif: z.string().trim().min(10).max(500).optional(),
 });
 
 const setSessionDatesSchema = z.object({
@@ -574,7 +610,7 @@ export async function setSessionLieuAction(
     const premier = parsed.error.issues[0];
     return { error: premier?.message ?? "Données invalides" };
   }
-  const { id, ...lieuBrut } = parsed.data;
+  const { id, modalite, ...lieuBrut } = parsed.data;
   const lieu = normaliserLieu(lieuBrut);
 
   const LIEU_SELECT = {
@@ -592,14 +628,23 @@ export async function setSessionLieuAction(
 
   let avant: Record<string, unknown> | null;
   try {
-    avant = await prisma.trainingSession.findUnique({ where: { id }, select: LIEU_SELECT });
+    avant = await prisma.trainingSession.findUnique({
+      where: { id },
+      select: { ...LIEU_SELECT, modalite: true },
+    });
   } catch {
     return { error: "Erreur lors de la lecture de la session" };
   }
   if (!avant) return { error: "Session introuvable" };
 
   try {
-    await prisma.trainingSession.update({ where: { id }, data: lieu as never });
+    await prisma.trainingSession.update({
+      where: { id },
+      // La modalité voyage AVEC le lieu : elles disent la même chose, et les
+      // laisser diverger produit une session « distancielle » qui se tient dans
+      // nos locaux. Absente de l'entrée = inchangée, comme les champs de lieu.
+      data: { ...(lieu as object), ...(modalite !== undefined ? { modalite } : {}) } as never,
+    });
   } catch (err) {
     Sentry.captureException(err);
     return { error: "Erreur lors de l'enregistrement du lieu" };
@@ -609,11 +654,89 @@ export async function setSessionLieuAction(
     action: "qualiopi.session.lieu.set",
     targetType: "TrainingSession",
     targetId: id,
-    changes: { avant, apres: lieu },
+    changes: {
+      avant,
+      apres: { ...lieu, ...(modalite !== undefined ? { modalite } : {}) },
+    },
     session,
   });
 
   return { data: { id } };
+}
+
+/**
+ * Corrige le MONTANT HT d'une session. Cf. `setSessionMontantSchema` pour le
+ * défaut que cette action ferme.
+ *
+ * ⚠️ Ce qui NE SUIT PAS, volontairement, et qu'il faut donc dire à l'écran :
+ * les documents DÉJÀ émis sont figés. Une convention qui annonce 1 900 € reste
+ * à 1 900 € tant qu'on ne la refait pas. Corriger le montant sans réémettre
+ * laisserait la pièce contredire la base — c'est-à-dire la situation que cette
+ * action existe pour rendre réparable, pas pour masquer.
+ */
+export async function setSessionMontantAction(
+  input: z.infer<typeof setSessionMontantSchema>,
+): Promise<ActionResult<{ id: string; piecesFinancieres: number; motifRequis: boolean }>> {
+  const session = await requireAdminWrite();
+  const parsed = setSessionMontantSchema.safeParse(input);
+  if (!parsed.success) {
+    const premier = parsed.error.issues[0];
+    return { error: premier?.message ?? "Données invalides" };
+  }
+  const { id, montantHtCents, motif } = parsed.data;
+
+  let avant: { montantHtCents: number } | null;
+  try {
+    avant = await prisma.trainingSession.findUnique({
+      where: { id },
+      select: { montantHtCents: true },
+    });
+  } catch {
+    return { error: "Erreur lors de la lecture de la session" };
+  }
+  if (!avant) return { error: "Session introuvable" };
+  if (avant.montantHtCents === montantHtCents) return { error: "Le montant est déjà celui-ci." };
+
+  // Une pièce FINANCIÈRE vivante (convention, facture, devis non annulés) porte
+  // déjà ce prix. Le changer sans un mot laisserait un écart inexpliqué entre
+  // la pièce et le registre — c'est précisément ce qu'un contrôle relève.
+  const piecesFinancieres = await prisma.documentGenere.count({
+    where: {
+      sessionId: id,
+      type: { in: ["convention", "convention_tripartite", "facture", "devis"] },
+      annuleeAt: null,
+    },
+  });
+  if (piecesFinancieres > 0 && (motif === undefined || motif.length < 10)) {
+    return {
+      error:
+        `${piecesFinancieres} pièce(s) financière(s) annoncent déjà l'ancien montant. ` +
+        "Indiquez pourquoi il change (10 caractères au moins) : le motif est porté au registre, " +
+        "et il faudra réémettre ces pièces — elles ne se corrigent pas toutes seules.",
+    };
+  }
+
+  try {
+    await prisma.trainingSession.update({ where: { id }, data: { montantHtCents } });
+  } catch (err) {
+    Sentry.captureException(err);
+    return { error: "Erreur lors de l'enregistrement du montant" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.session.montant.set",
+    targetType: "TrainingSession",
+    targetId: id,
+    changes: {
+      avant: avant.montantHtCents,
+      apres: montantHtCents,
+      ...(motif !== undefined ? { motif } : {}),
+      piecesFinancieresConcernees: piecesFinancieres,
+    },
+    session,
+  });
+
+  return { data: { id, piecesFinancieres, motifRequis: piecesFinancieres > 0 } };
 }
 
 /**

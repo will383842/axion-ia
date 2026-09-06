@@ -65,6 +65,7 @@ import {
   envoyerConvocation,
   envoyerPositionnement,
   envoyerRappelJ7,
+  envoyerRappelJ1,
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
   envoyerRelanceQuestionnaire,
@@ -133,7 +134,11 @@ export type FormationCronJobType =
   // Cycle de vie du formateur sur une session (2026-09-03).
   | "formation-crons.missions-formateur"
   | "formation-crons.formateur-convocation-j7"
-  | "formation-crons.formateur-rappel-j1";
+  | "formation-crons.formateur-rappel-j1"
+  // 🔴 Rappel de la VEILLE au STAGIAIRE (2026-09-05, ADR 0048 §4.3). À ne pas
+  // confondre avec `formateur-rappel-j1` juste au-dessus : celui-ci s'adresse
+  // aux participants, et il porte le lien de connexion.
+  | "formation-crons.rappel-j1";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -384,7 +389,9 @@ async function handleClotureAuto(): Promise<void> {
  * Daily 09:00 — Génère les attestations automatiques pour les sessions `realisee`.
  *
  * Scan toutes les sessions `realisee` ayant des enrollments (statut planifiee ou
- * presente) dont l'attestation n'a pas encore été générée (attestationGenereeAt: null).
+ * presente) dont l'attestation n'a pas encore été générée (attestationGenereeAt: null)
+ * ET qui portent les PREUVES exigées : taux de présence mesuré, trace d'assiduité
+ * vérifiable, évaluation finale (cf. `preuvesRequises` plus bas).
  * Pour chaque enrollment, délègue à `genererAttestationPourEnrollment` (AGENT A).
  * Fail-soft par enrollment : une erreur ne bloque pas les autres.
  * Idempotence garantie car `realisee` n'arrive qu'après dateFin + 24h (cloture-auto).
@@ -424,8 +431,39 @@ async function handleAttestationsAuto(): Promise<void> {
     attestationGenereeAt: null,
   } satisfies Prisma.EnrollmentWhereInput;
 
+  // 🔴 2026-09-05 — LES PREUVES, ET NON PLUS LA SEULE ÉVALUATION.
+  //
+  // `attestation-service` refuse désormais d'émettre sans taux de présence
+  // MESURÉ ni trace d'assiduité vérifiable — les mêmes exigences que le
+  // certificat de réalisation, qui les portait seul jusqu'ici (l'attestation,
+  // due au STAGIAIRE par L.6353-1, était moins gardée que la pièce du payeur).
+  //
+  // Le cron pré-filtre sur ces mêmes preuves plutôt que de laisser le service
+  // lever : sans ce filtre, chaque passage compterait en ERREURS des dossiers
+  // qui ne sont pas en panne, seulement incomplets — et le journal du matin
+  // deviendrait illisible là où il doit être actionnable.
+  //
+  // ⚠️ Le cron ne passe JAMAIS `motifPreuvesManquantes` : la soupape est un acte
+  // humain, écrit et porté au registre. Un automate qui se la donnerait à
+  // lui-même ne serait qu'un contournement avec un nom rassurant.
+  const preuvesRequises = {
+    tauxPresencePct: { not: null },
+    evaluations: { some: { type: "finale" } },
+    OR: [
+      { emargementSignatures: { some: { revokedAt: null } } },
+      {
+        presences: {
+          some: {
+            source: { in: ["import_zoom", "import_teams", "import_meet"] },
+            importId: { not: null },
+          },
+        },
+      },
+    ],
+  } satisfies Prisma.EnrollmentWhereInput;
+
   const enrollments = await prisma.enrollment.findMany({
-    where: { ...where, evaluations: { some: { type: "finale" } } },
+    where: { ...where, ...preuvesRequises },
     select: { id: true, session: { select: { id: true } } },
   });
 
@@ -434,6 +472,15 @@ async function handleAttestationsAuto(): Promise<void> {
   const enAttenteEvaluation = await prisma.enrollment.count({
     where: { ...where, evaluations: { none: { type: "finale" } } },
   });
+
+  // Évaluées MAIS sans preuve d'assiduité. DÉRIVÉ par soustraction d'un
+  // sous-ensemble à son sur-ensemble (`preuvesRequises` contient déjà
+  // `evaluations: some finale`), et non par une troisième requête qui
+  // divergerait de `preuvesRequises` le jour où l'une des deux bougerait.
+  const avecEvaluation = await prisma.enrollment.count({
+    where: { ...where, evaluations: { some: { type: "finale" } } },
+  });
+  const sansPreuvePresence = avecEvaluation - enrollments.length;
 
   let ok = 0;
   let ko = 0;
@@ -475,7 +522,8 @@ async function handleAttestationsAuto(): Promise<void> {
   console.log(
     `[formation-crons] attestations-auto: ${ok} générées, ${sansPiece} sans pièce ` +
       `(présence sous le seuil), ${ko} erreurs ` +
-      `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale)`,
+      `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale, ` +
+      `${sansPreuvePresence} évaluées mais sans taux mesuré ni trace d'assiduité)`,
   );
 }
 
@@ -1949,6 +1997,100 @@ async function handleFormateurRappelJ1(): Promise<void> {
   await traiterAffectations("formateur-rappel-j1", affectations, envoyerRappelJ1Formateur);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Rappel de la VEILLE au STAGIAIRE — ADR 0048 §4.3
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fenêtre du rappel stagiaire de la veille : 30 h.
+ *
+ * Volontairement plus large que 24 h. Le cron est horaire ; à exactement 24 h,
+ * une session qui démarre à 09:00 ne deviendrait candidate qu'au passage de
+ * 09:45 la veille, et le message arriverait le matin même pour une séance de
+ * l'après-midi — ce qui n'est plus « la veille ». 30 h garantit un passage en
+ * fin de journée précédente quelle que soit l'heure de démarrage.
+ */
+const FENETRE_RAPPEL_J1_STAGIAIRE_HEURES = 30;
+
+/**
+ * Anti-doublon avec le rappel J-7 — DEUX HEURES, et non vingt-quatre.
+ *
+ * ⚠️ C'est l'arbitrage INVERSE de `DELAI_ANTI_DOUBLON_MS` (24 h) qui gouverne
+ * les deux e-mails du formateur, et l'écart est délibéré.
+ *
+ * Côté formateur, les deux messages partagent le même bloc d'informations
+ * pratiques : le second n'apporte rien, et 24 h de silence ne coûtent rien.
+ * Côté stagiaire, le rappel de la veille porte quelque chose que le J-7 ne
+ * porte PAS — le lien de connexion en entier. Un délai de 24 h créerait donc un
+ * trou exact : une session créée moins de 24 h avant son début reçoit son
+ * rappel J-7 le matin, et n'aurait jamais son lien de connexion. C'est
+ * précisément le cas ordinaire dans ce dépôt (session du 31/07 créée le 31/07).
+ *
+ * Deux heures suffisent à ce que les deux messages ne tombent pas dans la même
+ * boîte à la même minute, sans jamais fermer la porte au seul message qui dit
+ * comment entrer.
+ */
+const DELAI_ANTI_DOUBLON_J1_STAGIAIRE_MS = 2 * 60 * 60 * 1000;
+
+/**
+ * Horaire — rappel de la veille aux STAGIAIRES d'une session qui démarre.
+ *
+ * 🔴 Pas de colonne d'état sur `TrainingSession`, contrairement au rappel J-7,
+ * et c'est un choix motivé : l'idempotence ET la preuve sont déjà portées par
+ * `email_logs`, une ligne par `jobId` posée dès l'enfilage et lue par
+ * `envoyerRappelJ1`. Ajouter une colonne redirait ce que le journal dit,
+ * imposerait une migration, et surtout ouvrirait la fenêtre décrite dans
+ * `AGENTS.md` — le worker atterrit ~50 min AVANT l'app qui applique les
+ * migrations, donc un cron horaire qui lirait une colonne fraîchement migrée
+ * échouerait à chaque passage pendant cette heure-là.
+ *
+ * Le rattrapage est donc par la FENÊTRE (30 h) et non par l'état : chaque
+ * passage horaire représente toute session encore non prévenue.
+ */
+async function handleRappelJ1(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] rappel-j1: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const plafond = new Date(now.getTime() + FENETRE_RAPPEL_J1_STAGIAIRE_HEURES * 60 * 60 * 1000);
+  const seuilAntiDoublon = new Date(now.getTime() - DELAI_ANTI_DOUBLON_J1_STAGIAIRE_MS);
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      // Pas encore commencée : rappeler après coup n'informe plus personne.
+      dateDebut: { gt: now, lte: plafond },
+      // Jamais dans la même heure que le rappel J-7 — voir la constante.
+      OR: [{ rappelJ7EnvoyeAt: null }, { rappelJ7EnvoyeAt: { lt: seuilAntiDoublon } }],
+    },
+    select: { id: true },
+  });
+
+  let ok = 0;
+  let ko = 0;
+  for (const session of sessions) {
+    try {
+      if (await envoyerRappelJ1(session.id)) ok++;
+      else ko++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] rappel-j1: erreur session ${session.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  // On journalise CHAQUE passage, même vide : un cron dont on ne voit que les
+  // envois ne se distingue pas d'un cron qui ne tourne plus.
+  console.log(
+    `[formation-crons] rappel-j1: ${ok} session(s) traitée(s), ${ko} en écart ` +
+      `(${sessions.length} candidate(s) sous ${FENETRE_RAPPEL_J1_STAGIAIRE_HEURES} h)`,
+  );
+}
+
 /**
  * Rappels d'entretien — J-1 et H-1, deux passages par tick.
  *
@@ -2025,6 +2167,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
+  "formation-crons.rappel-j1": handleRappelJ1,
 };
 
 /**

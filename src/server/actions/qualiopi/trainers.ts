@@ -27,8 +27,12 @@ import {
 import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import {
   proposerMissionFormateur,
-  retirerMissionsEnAttente,
+  retirerMissionsOuvertes,
 } from "@/server/qualiopi/trainers/mission-formateur";
+import {
+  archiverAffectationsRetirees,
+  lireAffectationsAvantRetrait,
+} from "@/server/qualiopi/trainers/affectation-retiree";
 import {
   detecterIndisponibiliteFormateur,
   formulerConflit,
@@ -701,6 +705,28 @@ export async function assignTrainerToSessionAction(
     tarifSnapshot = trainer.tarifJourneeHtCents ?? null;
   }
 
+  // 🔴 D6 (2026-09-05) — CE QUE LA SUPPRESSION CI-DESSOUS DÉTRUISAIT.
+  //
+  // Le `deleteMany` qui suit fait disparaître la ligne de l'ancien formateur, et
+  // avec elle `tarifHtCents` (le tarif SNAPSHOTÉ à SON affectation, celui que sa
+  // lettre de mission a repris), `heuresAnimees`, `convocationJ7EnvoyeeAt` et
+  // `rappelJ1EnvoyeAt`. Après un remplacement, plus rien ne disait qu'une
+  // personne avait un jour été le formateur de cette session — ni à quel tarif,
+  // ni ce qu'on lui avait déjà envoyé. Sur un dossier qui doit se raconter
+  // devant un auditeur, c'est une preuve perdue.
+  //
+  // On lit le snapshot AVANT la transaction (après, il n'y a plus rien à lire)
+  // et on l'archive APRÈS son succès (avant, on écrirait un retrait qui n'a
+  // peut-être pas eu lieu). Le choix d'une table d'archive plutôt qu'un
+  // `retireAt` en place est motivé dans `affectation-retiree.ts` : ~20 lectures
+  // de `SessionFormateur` signifient « qui anime MAINTENANT », et une ligne
+  // conservée sans les filtrer paierait et convoquerait un formateur écarté.
+  const ecartes = await lireAffectationsAvantRetrait({
+    sessionId,
+    role: "principal",
+    saufTrainerId: trainerId,
+  });
+
   // Dual-write transactionnel : la FK `formateurPrincipalId` (source de vérité,
   // lue par la garde d'habilitation) ET la table normalisée `SessionFormateur`
   // (rôle principal, snapshot tarif) restent synchrones. Un seul principal par
@@ -730,6 +756,29 @@ export async function assignTrainerToSessionAction(
     return { error: "Erreur lors de l'assignation du formateur" };
   }
 
+  // L'archive suit le succès. `remplacement` quand quelqu'un prend la place,
+  // `desaffectation` quand l'organisme retire sans désigner personne : ce ne
+  // sont pas les mêmes faits, et un auditeur ne lit pas le second comme le
+  // premier.
+  //
+  // 🔴 CET APPEL AVAIT DISPARU. Un agent l'a remplacé par le marqueur
+  // `// MUTATION` pour éprouver sa garde, puis est mort avant de le restaurer —
+  // tué par le plafond de session à 10:20. Le code compilait, les tests
+  // passaient, et l'archive n'était simplement JAMAIS écrite : la fonction
+  // restait importée, jamais appelée. Un import inutilisé est le seul indice
+  // qu'une mutation a survécu à son auteur.
+  //
+  // ⚠️ Fail-soft assumé : `archiverAffectationsRetirees` avale ses erreurs et
+  // rend 0. Le remplacement a DÉJÀ eu lieu et il est juste ; refuser
+  // l'affectation parce que le journal n'a pas pu s'écrire punirait
+  // l'utilisateur pour une panne d'archive. C'est aussi ce qui rend cet appel
+  // sûr pendant la fenêtre où le worker tourne du code plus récent que la
+  // migration appliquée par l'app.
+  await archiverAffectationsRetirees(ecartes, {
+    motif: trainerId !== null ? "remplacement" : "desaffectation",
+    retireById: session.userId,
+  });
+
   // ── Conformité documentaire : AVERTISSEMENT, jamais blocage ──────────────────
   // L'habilitation (ci-dessus) est un refus dur : un formateur non habilité sur
   // une formation ne doit pas l'animer. La conformité documentaire, elle, est un
@@ -752,7 +801,16 @@ export async function assignTrainerToSessionAction(
   // sollicitations encore ouvertes des formateurs écartés sont retirées, sinon
   // l'un d'eux pourrait « accepter » une session qui n'est plus la sienne.
   // Fail-soft : l'affectation est faite, la proposition suit.
-  await retirerMissionsEnAttente(sessionId, { saufTrainerId: trainerId, role: "principal" });
+  //
+  // 🔴 D1 (2026-09-05) — CE RETRAIT NE COUVRAIT QUE LES MISSIONS `en_attente`.
+  //
+  // La mission d'un formateur qui avait DÉJÀ ACCEPTÉ survivait au remplacement :
+  // sa ligne `SessionFormateur` était supprimée trois lignes plus haut, mais son
+  // accord restait `acceptee` en base, pour toujours. Trois règles d'alerte s'en
+  // servent comme preuve que quelqu'un tient la place — A accepte, on le
+  // remplace par B, B ne répond jamais, et la mission fantôme de A les fait
+  // toutes taire. Cf. `retirerMissionsOuvertes`, qui porte le raisonnement.
+  await retirerMissionsOuvertes(sessionId, { saufTrainerId: trainerId, role: "principal" });
   let missionProposee = false;
   if (trainerId !== null) {
     const proposition = await proposerMissionFormateur({ sessionId, trainerId, role: "principal" });

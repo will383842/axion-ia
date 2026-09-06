@@ -199,12 +199,42 @@ export const TYPES_PIECES_NOMINATIVES_PRODUCTION: ReadonlyArray<string> = [
 
 /**
  * Types à jalon ≠ `jamais` que CE lot ne produit PAS, chacun pour une raison
- * nommée — jamais par oubli :
- *  - `attestation` / `attestation_partielle` / `certificat_realisation` : leur
- *    circuit automatique EXISTE (`attestation-service` + cron
- *    `attestations-auto`), avec la garde « pas d'attestation sans évaluation
- *    finale » et le claim atomique `attestationGenereeAt`. Les produire ici
- *    contournerait cette garde — le défaut AXI-ATT-2026-003 reviendrait.
+ * nommée — jamais par oubli.
+ *
+ * 🔴 2026-09-05 — CE COMMENTAIRE DÉCRIVAIT UN CÂBLAGE QUI N'EXISTE PAS.
+ *
+ * Il rangeait `certificat_realisation` avec les attestations en affirmant que
+ * « leur circuit automatique EXISTE (`attestation-service` + cron
+ * `attestations-auto`) ». C'est vrai des deux attestations. C'est FAUX du
+ * certificat : `attestation-service.ts` ne produit que `attestation` et
+ * `attestation_partielle`, et aucun cron ne mentionne le certificat. Un
+ * commentaire qui justifie une exclusion par un circuit inexistant est pire
+ * que pas de commentaire — il ferme la question au lecteur suivant, qui n'ira
+ * pas vérifier, et il ferait passer une pièce jamais émise pour une pièce
+ * automatique. Chaque exclusion dit désormais ce qui est vrai d'ELLE.
+ *
+ *  - `attestation` / `attestation_partielle` : circuit automatique RÉEL — cron
+ *    `formation-crons.attestations-auto` → `genererAttestationPourEnrollment`.
+ *    Il porte des gardes que ce lot n'a pas : taux de présence mesuré, trace
+ *    d'assiduité vérifiable, évaluation finale, et le claim atomique
+ *    `attestationGenereeAt`. Les produire ici les contournerait — le défaut
+ *    AXI-ATT-2026-003 (attestation qui se contredit elle-même) reviendrait.
+ *
+ *  - `certificat_realisation` : **AUCUN circuit automatique. Clic admin
+ *    uniquement** (`genererCertificatRealisationAction`). Et c'est délibéré,
+ *    pour deux raisons :
+ *      1. sa garde vit DANS l'action — taux mesuré + `EmargementSignature` non
+ *         révoquée ou créneau importé. La rebrancher ici en ferait une seconde
+ *         copie, et ce dépôt a payé neuf fois en une nuit le motif « deux
+ *         gardes jumelles qui divergent le jour où l'on corrige l'une » ;
+ *      2. le certificat est la pièce du FINANCEUR, réclamée au règlement d'un
+ *         dossier — pas une conséquence d'un jalon de calendrier. L'émettre
+ *         d'office pour chaque inscrit de chaque session close consommerait un
+ *         numéro dans une série continue (CGI art. 242 nonies A ann. II) pour
+ *         des dossiers que personne ne financera jamais.
+ *    ⇒ Si un jour ce circuit doit devenir automatique, la garde doit d'abord
+ *    descendre de l'action vers un service partagé. Pas l'inverse.
+ *
  *  - `releve_connexion` : la pièce naît d'un IMPORT de données externes (CSV
  *    plateforme distancielle). Sans source, il n'y a rien à produire — un PDF
  *    vide serait une fausse preuve.

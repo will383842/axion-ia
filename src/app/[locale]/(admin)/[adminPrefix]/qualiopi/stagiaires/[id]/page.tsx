@@ -15,6 +15,7 @@ import { lireBesoinAdaptationAction } from "@/server/actions/qualiopi/portail";
 import { TraineeForm } from "@/components/admin/qualiopi/TraineeForm";
 import { getTrainee } from "@/server/qualiopi/trainees/trainees";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { listClients } from "@/server/qualiopi/crm/clients";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +39,16 @@ export default async function FicheStagiairePage({ params }: PageProps) {
   const trainee = await getTrainee(id);
   if (!trainee) notFound();
 
+  // 🔴 F1 — mêmes clients qu'à la création. Une fiche déjà enregistrée dont
+  // l'entreprise DÉSIGNE un client existant se rouvre sur ce client : c'est
+  // ainsi que les variantes déjà écrites en base convergent au prochain
+  // enregistrement, au lieu de rester côte à côte pour toujours.
+  const clients = (await listClients()).map((c) => ({
+    id: c.id,
+    numero: c.numero,
+    raisonSociale: c.raisonSociale,
+  }));
+
   return (
     <AdminPageShell width="narrow">
       <AdminPageHeader title={`${trainee.prenom} ${trainee.nom}`} description={trainee.email} />
@@ -52,6 +63,7 @@ export default async function FicheStagiairePage({ params }: PageProps) {
         mode="edit"
         baseHref={base}
         traineeId={trainee.id}
+        clients={clients}
         initial={{
           nom: trainee.nom,
           prenom: trainee.prenom,

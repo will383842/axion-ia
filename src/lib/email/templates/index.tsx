@@ -55,6 +55,7 @@ import {
 // T15 — emails auto Qualiopi lifecycle
 import { QualiopiConvocationEmail, qualiopiConvocationSubject } from "./qualiopi-convocation";
 import { QualiopiRappelJ7Email, qualiopiRappelJ7Subject } from "./qualiopi-rappel-j7";
+import { QualiopiRappelJ1Email, qualiopiRappelJ1Subject } from "./qualiopi-rappel-j1";
 import {
   QualiopiSatisfactionJ1Email,
   qualiopiSatisfactionJ1Subject,
@@ -117,6 +118,7 @@ import { leadApporteurRecuSubject, LeadApporteurRecuEmail } from "./lead-apporte
 import { leadApporteurRelanceSubject, LeadApporteurRelanceEmail } from "./lead-apporteur-relance";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
+import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
 type TemplateMap = {
@@ -240,6 +242,10 @@ const TEMPLATES: TemplateMap = {
     subject: qualiopiRappelJ7Subject,
     component: QualiopiRappelJ7Email,
   },
+  "qualiopi-rappel-j1": {
+    subject: qualiopiRappelJ1Subject,
+    component: QualiopiRappelJ1Email,
+  },
   "qualiopi-satisfaction-j1": {
     subject: qualiopiSatisfactionJ1Subject,
     component: QualiopiSatisfactionJ1Email,
@@ -313,6 +319,10 @@ const TEMPLATES: TemplateMap = {
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
+  "piece-exemplaire-signe": {
+    subject: pieceExemplaireSigneSubject,
+    component: PieceExemplaireSigneEmail,
+  },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
   // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12)
   "candidature-commercial-confirmee": {

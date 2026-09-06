@@ -79,6 +79,29 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // Un rappel retenu en validation manque le rendez-vous qu il devait preparer :
   // il part seul, exactement comme la convocation et le rappel J-7.
   "appel-rappel",
+  // 🔴 L'exemplaire signé part SEUL, et c'est un choix, pas un oubli.
+  //
+  // Le garer en corbeille recréerait exactement le défaut qu'il répare : la
+  // convention AXI-DOC-2026-039 a été contresignée le 2026-09-04 à 21:33 et
+  // la cliente n'a jamais rien reçu. Un envoi qui attend une relecture est un
+  // envoi qui n'a pas lieu — c'est le raisonnement déjà tenu pour la relance
+  // d'impayé, dont le double garage laissait l'impayé vieillir derrière un
+  // statut rassurant.
+  //
+  // Et il n'y a rien à relire : le contenu est la pièce que l'organisme vient
+  // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
+  // contresignature.
+  "piece-exemplaire-signe",
+  // 🔴 Le rappel de la VEILLE part SEUL, et c'est le cas le plus net de toute
+  // cette liste (2026-09-05, ADR 0048 §4.3).
+  //
+  // Un message dont l'objet est « c'est demain » et qui attend une relecture
+  // humaine n'est pas un message retardé : c'est un message annulé. Et il porte
+  // le lien de connexion — retenir la seule chose qui dise à un participant à
+  // distance COMMENT entrer, c'est fabriquer l'absence qu'il existe pour
+  // éviter. Même raisonnement que la convocation et le rappel J-7, en plus
+  // court : ici la fenêtre utile fait vingt-quatre heures.
+  "qualiopi-rappel-j1",
 ] as const;
 
 /**
@@ -96,6 +119,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "facture-envoi": "Envoi d'une facture",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
+  "qualiopi-rappel-j1": "Rappel de la veille (avec le lien de connexion)",
   "qualiopi-satisfaction-j1": "Questionnaire de satisfaction (J+1)",
   "qualiopi-suivi-j30": "Suivi à J+30",
   "qualiopi-positionnement": "Questionnaire de positionnement (avant la formation)",
@@ -107,6 +131,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-alerte-interne": "Alerte interne",
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
+  "piece-exemplaire-signe": "Remise de l'exemplaire signé",
 };
 
 export function libelleTemplateEmail(template: string | null): string {

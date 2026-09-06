@@ -121,6 +121,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le stagiaire",
     source: "server/qualiopi/notifications/notifications-service.ts",
   },
+  "qualiopi-rappel-j1": {
+    categorie: "formation",
+    quand: "La veille de la session — porte le lien de connexion en entier",
+    destinataire: "le stagiaire",
+    source: "server/qualiopi/notifications/notifications-service.ts",
+  },
   "formateur-mission-proposee": {
     categorie: "formation",
     quand:
@@ -214,6 +220,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand: "Envoi de la convention à signer — passe par la corbeille",
     destinataire: "le client",
     source: "server/actions/qualiopi/piece-lien-signature.ts",
+  },
+  "piece-exemplaire-signe": {
+    categorie: "commerce",
+    quand: "Toutes les parties ont signé — remise automatique de l'exemplaire signé",
+    destinataire: "chaque signataire, sauf l'organisme",
+    source: "server/qualiopi/documents/signature/transmission-exemplaire.ts",
   },
   "facture-envoi": {
     categorie: "commerce",

@@ -53,6 +53,11 @@ import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFacture
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import {
+  MOTIF_PREUVES_MIN,
+  refusEstRattrapableParMotif,
+} from "@/server/qualiopi/evaluations/refus-attestation";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
+import {
   motifRepli,
   pieceMiseEnAvant,
   type ContexteSession,
@@ -172,8 +177,24 @@ const DOC_LABELS: Record<DocumentType, string> = {
   positionnement: "Questionnaire de positionnement",
   grille_evaluation: "Grille d'évaluation",
   satisfaction: "Questionnaire de satisfaction",
-  attestation: "Attestation de réalisation",
-  attestation_partielle: "Attestation partielle",
+  // 🔴 DÉRIVÉS, jamais recopiés (2026-09-05). Ces deux libellés disaient
+  // « Attestation de réalisation » — le vocabulaire du CERTIFICAT, qui est dû
+  // au FINANCEUR — pendant que le PDF imprimait « Attestation de fin de
+  // formation ». L'écran et la pièce ne nommaient pas le même document, et un
+  // auditeur confondait les deux. Recopier la nouvelle chaîne ici reproduirait
+  // exactement le défaut : la prochaine divergence ne se verrait pas davantage.
+  // ⚠️ Écrits en toutes lettres, PAS dérivés — et ce n'est pas un retour en
+  // arrière. Importer `LIBELLES_TYPE_DOCUMENT` embarquait la table ENTIÈRE
+  // (une trentaine de libellés) dans le paquet du navigateur pour n'en lire que
+  // DEUX. Le client n'a pas besoin du catalogue, il a besoin de deux chaînes.
+  //
+  // La propriété qu'on voulait — « ces libellés ne peuvent pas diverger de la
+  // source » — est conservée, mais elle est garantie par un TÉMOIN
+  // (`docs-section-libelles-derivent.spec.ts`) au lieu d'un import : le test
+  // compare ces deux chaînes à `LIBELLES_TYPE_DOCUMENT` et rougit à la moindre
+  // dérive. Une garde qui s'exécute au test coûte zéro octet au navigateur.
+  attestation: "Attestation de fin de formation",
+  attestation_partielle: "Attestation partielle de formation",
   certificat_realisation: "Certificat de réalisation (R.6313-3)",
   facture: "Facture",
   devis: "Devis",
@@ -763,13 +784,33 @@ function LettreMissionButtons({
 
 /**
  * La convention porte une CLAUSE que les autres documents n'ont pas : l'acompte.
- * Le gabarit l'acceptait depuis le 2026-07-27 mais aucun écran ne le
- * transmettait — toute convention sortait à 30 %, y compris régularisée après
- * la tenue de l'action, où « acompte à la signature » n'a plus d'objet.
+ * C'est pour ce seul champ qu'elle a son propre composant plutôt que le
+ * `SessionDocButton` générique.
  *
- * Champ vide = 30 % (usage commercial, comportement historique). `0` = payable
- * en totalité à réception de facture. Pas de plafond B2B (cf. gabarit) — le
- * plafond L.6353-6 ne concerne que le contrat B2C, qui a son propre calcul.
+ * 🔴 2026-09-05 — et c'est ainsi qu'elle avait échappé à DEUX correctifs.
+ *
+ * ## N4 — le filigrane « COPIE » était FORCÉ, sans aucun moyen d'y échapper
+ *
+ * Ce bouton était le SEUL de la section à ne pas appeler `useMotifRectification`.
+ * Conséquence, vérifiée : régénérer une convention produisait TOUJOURS une pièce
+ * filigranée « COPIE » — y compris quand on la refaisait précisément parce que
+ * l'original était faux. Il ne restait qu'à choisir devant l'auditeur entre un
+ * original erroné et une copie exacte, sur la pièce contractuelle la plus
+ * importante du dossier. Le correctif du 2026-08-04 avait traité les deux
+ * boutons GÉNÉRIQUES ; celui-ci vivait à côté du patron et n'a rien reçu.
+ *
+ * Gardé désormais par `aucun-bouton-ne-force-le-filigrane-copie.spec.ts`, qui
+ * vise la RÈGLE — « qui dessine l'affordance régénérer porte le motif » — et
+ * non ce bouton-ci : le prochain document à réglage particulier repartirait
+ * sinon d'un composant neuf et referait exactement la même chose.
+ *
+ * ## F7 — le champ était SOUS le bouton qui le consomme
+ *
+ * On ne lit pas un réglage après avoir cliqué. L'acompte est désormais AU-DESSUS,
+ * et son défaut ne réclame plus rien (`ACOMPTE_DEFAUT_PERCENT` = 0 : « payable en
+ * totalité à réception de facture »). Champ vide = ce défaut. Pas de plafond B2B
+ * (cf. gabarit) — le plafond L.6353-6 ne concerne que le contrat B2C, qui a son
+ * propre calcul.
  */
 function ConventionDocButton({
   sessionId,
@@ -786,8 +827,18 @@ function ConventionDocButton({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [acompte, setAcompte] = useState("");
+  // 🔴 N4 — le patron que ce composant n'avait jamais reçu. Sans lui, toute
+  // régénération sortait filigranée « COPIE », sans recours depuis l'écran.
+  const rect = useMotifRectification(dejaGenereLe);
 
   function handleClick() {
+    // Première frappe sur une convention DÉJÀ produite : on ouvre le motif au
+    // lieu de régénérer. Exactement `SessionDocButton`, et c'est voulu — la
+    // divergence entre les deux est ce qui a produit le défaut.
+    if (rect.requis && !rect.ouvert) {
+      rect.ouvrir();
+      return;
+    }
     setError(null);
     setSuccess(null);
     // Validation locale AVANT l'action : « 150 » renverrait un « Données
@@ -796,7 +847,7 @@ function ConventionDocButton({
     if (acompte.trim() !== "") {
       const n = Number(acompte);
       if (!Number.isInteger(n) || n < 0 || n > 100) {
-        setError("Acompte : entier entre 0 et 100 (vide = 30 %).");
+        setError(`Acompte : entier entre 0 et 100 (vide = ${ACOMPTE_DEFAUT_PERCENT} %).`);
         return;
       }
       acomptePercent = n;
@@ -805,6 +856,7 @@ function ConventionDocButton({
       const result = await genererConventionAction({
         sessionId,
         ...(acomptePercent !== undefined ? { acomptePercent } : {}),
+        ...rect.argument,
       });
       if ("error" in result) {
         setError(result.error);
@@ -816,6 +868,7 @@ function ConventionDocButton({
           numero: result.data.numero,
           documentId: result.data.documentId,
         });
+        rect.fermer();
         router.refresh();
       }
     });
@@ -823,25 +876,12 @@ function ConventionDocButton({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-1)]">
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={isPending}
-        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
-        aria-label={
-          dejaGenereLe
-            ? `Régénérer : Convention de formation (dernière génération le ${dejaGenereLe})`
-            : "Générer : Convention de formation"
-        }
-      >
-        {isPending
-          ? "Génération…"
-          : dejaGenereLe
-            ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
-            : "Convention de formation"}
-      </button>
+      {/* 🔴 F7 — l'acompte est AU-DESSUS du bouton depuis le 2026-09-05.
+          Il était en dessous, en petit : on ne lit pas un réglage après avoir
+          cliqué. C'est une CLAUSE de la pièce que le client signe, pas une
+          option d'affichage. */}
       <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        <span>Acompte (%)</span>
+        <span>Acompte à la signature (%)</span>
         <input
           type="number"
           inputMode="numeric"
@@ -851,12 +891,37 @@ function ConventionDocButton({
           value={acompte}
           onChange={(e) => setAcompte(e.target.value)}
           disabled={isPending}
-          placeholder="30"
-          aria-label="Acompte à la signature en pourcentage (vide = 30, 0 = payable en totalité)"
+          placeholder={String(ACOMPTE_DEFAUT_PERCENT)}
+          aria-label={`Acompte à la signature en pourcentage (vide = ${ACOMPTE_DEFAUT_PERCENT}, 0 = payable en totalité à réception de facture)`}
           className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)] focus:ring-1 focus:ring-[color:var(--color-admin-accent)] focus:outline-none"
         />
-        <span>0 = totalité à réception de facture</span>
+        <span>vide ou 0 = totalité à réception de facture</span>
       </label>
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={isPending || (rect.ouvert && !rect.valide)}
+        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
+        aria-label={
+          dejaGenereLe
+            ? `Régénérer : Convention de formation (dernière génération le ${dejaGenereLe})`
+            : "Générer : Convention de formation"
+        }
+      >
+        {isPending
+          ? "Génération…"
+          : rect.ouvert
+            ? "Rectifier : Convention de formation"
+            : dejaGenereLe
+              ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
+              : "Convention de formation"}
+      </button>
+      {rect.champ("Convention de formation")}
+      {rect.ouvert && (
+        <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
+          Annuler
+        </button>
+      )}
       {error && (
         <p
           role="alert"
@@ -883,7 +948,15 @@ function ConventionDocButton({
 
 interface EnrollmentDocButtonProps {
   label: string;
-  action: (input: { enrollmentId: string; rectificationMotif?: string }) => Promise<
+  action: (input: {
+    enrollmentId: string;
+    rectificationMotif?: string;
+    /**
+     * 🔴 La SOUPAPE de la garde des preuves de l'attestation. Inerte pour les
+     * autres pièces : leur refus ne porte jamais le marqueur qui l'ouvre.
+     */
+    motifPreuvesManquantes?: string;
+  }) => Promise<
     // `avertissement` : le document EST produit, mais il lui manque une mention
     // que le logiciel ne peut pas fabriquer seul (cf. médiation de la
     // consommation sur le contrat individuel). Distinct d'une erreur — le
@@ -911,6 +984,12 @@ function EnrollmentDocButton({
   const [success, setSuccess] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const rect = useMotifRectification(dejaGenereLe);
+  // 🔴 La soupape des PREUVES — distincte du motif de RECTIFICATION, et il ne
+  // faut surtout pas les confondre : « je refais une pièce » n'est pas
+  // « j'assume l'absence de preuves ». Les fusionner ferait sortir une pièce
+  // sans preuve à chaque simple régénération.
+  const [motifPreuvesOuvert, setMotifPreuvesOuvert] = useState(false);
+  const [motifPreuves, setMotifPreuves] = useState("");
 
   function handleClick() {
     // Cf. SessionDocButton : régénérer, c'est rectifier — donc dire pourquoi.
@@ -922,9 +1001,23 @@ function EnrollmentDocButton({
     setSuccess(null);
     setWarning(null);
     startTransition(async () => {
-      const result = await action({ enrollmentId, ...rect.argument });
+      const result = await action({
+        enrollmentId,
+        ...rect.argument,
+        ...(motifPreuves.trim().length >= MOTIF_PREUVES_MIN
+          ? { motifPreuvesManquantes: motifPreuves.trim() }
+          : {}),
+      });
       if ("error" in result) {
         setError(result.error);
+        // 🔴 Le refus des PREUVES se lève en écrivant pourquoi ; on révèle donc
+        // le champ. Le prédicat vit à côté du message qu'il reconnaît
+        // (`refus-attestation.ts`) : tester le texte ici le ferait diverger en
+        // silence, et le champ cesserait un jour d'apparaître.
+        //
+        // ⚠️ Le refus DUR (taux non mesuré) ne l'ouvre PAS — un motif qu'on
+        // saisit sans effet fait croire qu'on a agi.
+        if (refusEstRattrapableParMotif(result.error)) setMotifPreuvesOuvert(true);
         return;
       }
       let msg: string;
@@ -977,6 +1070,24 @@ function EnrollmentDocButton({
               : label}
       </button>
       {rect.champ(label)}
+      {motifPreuvesOuvert && (
+        <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+          <span className="text-[color:var(--color-admin-fg-muted)]">
+            Pourquoi attester malgré ces manques ? Le motif est porté au registre et lu par
+            l&apos;auditeur.
+          </span>
+          <textarea
+            value={motifPreuves}
+            onChange={(e) => setMotifPreuves(e.target.value)}
+            rows={2}
+            required
+            minLength={MOTIF_PREUVES_MIN}
+            aria-label={`Motif d'attestation sans preuves pour ${label}`}
+            placeholder="Émargement papier de 2024 archivé hors logiciel, retrouvé au dossier client."
+            className="admin-input"
+          />
+        </label>
+      )}
       {rect.ouvert && (
         <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
           Annuler
@@ -1090,6 +1201,28 @@ export function DocumentsSection({
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
+  //
+  // 🔴 DÉBORDEMENT HORIZONTAL DU BLOC DOCUMENTS (constaté le 2026-09-04, cause
+  // trouvée le 2026-09-05).
+  //
+  // Ce n'est PAS le tableau du registre — il est dans un `overflow-x-auto`
+  // depuis toujours. Ce sont les GRILLES DE BOUTONS. `.admin-button` et
+  // `.admin-button-ghost` portent `white-space: nowrap` (admin.css), et
+  // l'étiquette d'une pièce déjà générée fait une ligne insécable de la forme
+  // « Questionnaire de positionnement · génération du 05/09/2026 — régénérer ».
+  // Les pistes valent `minmax(0, 1fr)`, donc elles ne s'élargissent pas ; c'est
+  // le BOUTON qui déborde de sa piste, puis de la carte, puis de la page — et
+  // rien ne le retenait : la PAGE ENTIÈRE se mettait à défiler latéralement.
+  //
+  // Le remède respecte la contrainte du dépôt : « tout contenu large défile
+  // DANS son propre conteneur, jamais la page ». D'où `overflow-x-auto` sur
+  // chacune des quatre grilles.
+  //
+  // ⚠️ Ne PAS « corriger » en posant `whitespace-normal` ou `min-w-0` sur les
+  // boutons : `.admin-button*` vit HORS COUCHE CSS, donc l'utilitaire Tailwind
+  // serait INERTE — et `admin-design-tokens.test.ts` rougirait, à raison. Le
+  // retour à la ligne se règlerait dans `admin.css`, hors du périmètre de ce
+  // fichier.
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-6)]">
@@ -1283,7 +1416,7 @@ export function DocumentsSection({
 
           return (
             <>
-              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                 {attendues.map((b) => b.el)}
               </div>
 
@@ -1297,7 +1430,7 @@ export function DocumentsSection({
                   <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                     Autres pièces ({autres.length}) — hors du cas de ce dossier
                   </summary>
-                  <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                     {autres.map((b) => (
                       <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
                         {b.el}
@@ -1474,7 +1607,7 @@ export function DocumentsSection({
                 );
                 return (
                   <>
-                    <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                       {attenduesStagiaire.map((b) => b.el)}
                       {/* Export d'état (pas un document officiel numéroté) :
                           fiche d'adaptation individuelle (A16/A9), toujours
@@ -1490,7 +1623,7 @@ export function DocumentsSection({
                         <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                           Autres pièces ({autresStagiaire.length}) — hors du cas de ce dossier
                         </summary>
-                        <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] overflow-x-auto sm:grid-cols-2 lg:grid-cols-3">
                           {autresStagiaire.map((b) => (
                             <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
                               {b.el}

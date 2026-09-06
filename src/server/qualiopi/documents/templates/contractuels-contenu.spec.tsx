@@ -17,6 +17,7 @@ import type { ConventionTripartiteData } from "./convention-tripartite";
 import { ReglementInterieurPdf } from "./reglement-interieur";
 import { collectPdfTextNormalized } from "../collect-pdf-text";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import type { OrganismeIdentite } from "../organisme";
 
 const IDENTITE: OrganismeIdentite = {
@@ -102,11 +103,39 @@ describe("ConventionPdf — contenu", () => {
     expect(text).toContain("84691234567");
     expect(text).toContain("1 rue de la Paix, 75001 Paris");
   });
-  it("acompte par défaut : 30 % — comportement historique inchangé", () => {
-    // 2800 × 30 % = 840. Le défaut ne doit JAMAIS bouger silencieusement :
-    // c'est la clause de toutes les conventions émises sans choix explicite.
-    // `collectPdfText` joint les enfants JSX par des espaces → « ( 30 %) ».
-    expect(text).toMatch(/Acompte à la signature \( ?30 ?%\)/);
+  it("acompte par défaut : la convention ne RÉCLAME rien — 0 %, pas 30 %", () => {
+    // 🔴 2026-09-05 — ce témoin épinglait 30 % avec la mention « ne doit JAMAIS
+    // bouger silencieusement ». Il n'a pas bougé silencieusement : il est
+    // réécrit dans le commit qui déplace le défaut, et il continue d'interdire
+    // toute dérive ultérieure.
+    //
+    // Pourquoi 0 : le champ qui permet de choisir se trouvait SOUS le bouton
+    // qui le consomme. Toute convention générée sans l'avoir remarqué réclamait
+    // donc 30 % à la signature — une clause qu'aucune des deux parties n'avait
+    // négociée, imprimée sur la pièce que le client SIGNE, et que rien à
+    // l'écran ne signalait.
+    //
+    // Ce témoin est ASYMÉTRIQUE à dessein : il exige la mention de repli ET
+    // interdit la ligne d'acompte. Vérifier seulement l'absence de « 30 % »
+    // passerait aussi si le gabarit n'imprimait plus rien du tout.
+    expect(text).toContain("Payable en totalité à réception de facture");
+    expect(text).not.toContain("Acompte à la signature");
+  });
+  it("le défaut de la convention est bien celui de `acompte-defaut.ts`, pas un 0 recopié", () => {
+    // Sans ce témoin, la constante partagée pourrait valoir 30 et le gabarit
+    // rester juste par coïncidence : c'est le lien entre les deux qui est
+    // gardé, pas la valeur écrite deux fois.
+    expect(ACOMPTE_DEFAUT_PERCENT).toBe(0);
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: { ...CONVENTION, acomptePercent: ACOMPTE_DEFAUT_PERCENT },
+        identite: IDENTITE,
+      }),
+    );
+    // Le rendu SANS pourcentage et le rendu AVEC le défaut explicite doivent
+    // être le même document. S'ils divergent, `?? ACOMPTE_DEFAUT_PERCENT` a été
+    // retiré quelque part.
+    expect(t).toBe(text);
   });
   it("acomptePercent personnalisé : le pourcentage ET le montant suivent", () => {
     const t = collectPdfTextNormalized(

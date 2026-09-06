@@ -57,6 +57,24 @@ const genererAttestationSchema = z.object({
    * Sans lui, rien ne change — une régénération non motivée reste une copie.
    */
   rectificationMotif: z.string().trim().min(10).max(500).optional(),
+  /**
+   * 🔴 La SOUPAPE de la garde des preuves. [2026-09-05]
+   *
+   * Depuis que l'attestation exige les mêmes preuves que le certificat (taux de
+   * présence mesuré, trace d'assiduité, évaluation finale), un dossier dont
+   * l'émargement s'est perdu ne peut plus en obtenir. Or l'attestation est
+   * **due au stagiaire** par l'article L.6353-1 : un refus sec condamnerait la
+   * personne pour une défaillance de l'organisme, ce qui est un pire défaut que
+   * celui que la garde ferme.
+   *
+   * Le motif permet donc de passer outre EN LE DÉCLARANT : la pièce sort, et le
+   * motif accompagné de la liste des preuves manquantes part au registre.
+   *
+   * ⚠️ Ce champ n'existe QUE pour l'humain. Le cron ne le passe jamais — un
+   * automate qui se donnerait à lui-même l'autorisation d'ignorer les preuves
+   * serait un contournement portant un nom rassurant.
+   */
+  motifPreuvesManquantes: z.string().trim().min(10).max(500).optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -139,6 +157,7 @@ export async function genererAttestationAction(input: {
   enrollmentId: string;
   force?: boolean;
   rectificationMotif?: string;
+  motifPreuvesManquantes?: string;
 }): Promise<
   ActionResult<{ resultat: "complete" | "partielle" | "aucune"; documentId: string | null }>
 > {
@@ -158,6 +177,9 @@ export async function genererAttestationAction(input: {
     const res = await genererAttestationPourEnrollment(v.enrollmentId, {
       ...(forcer ? { force: true } : {}),
       ...(v.rectificationMotif !== undefined ? { rectificationMotif: v.rectificationMotif } : {}),
+      ...(v.motifPreuvesManquantes !== undefined
+        ? { motifPreuvesManquantes: v.motifPreuvesManquantes }
+        : {}),
     });
     resultat = res.resultat;
     documentId = res.documentId;
@@ -171,7 +193,17 @@ export async function genererAttestationAction(input: {
     action: "qualiopi.attestation.generer",
     targetType: "Enrollment",
     targetId: v.enrollmentId,
-    changes: { resultat, documentId, force: v.force ?? false },
+    changes: {
+      resultat,
+      documentId,
+      force: v.force ?? false,
+      // Porté au registre : c'est la trace qu'une attestation est sortie SANS
+      // ses preuves, et sur quelle justification. Sans elle, la soupape serait
+      // indiscernable d'un dossier complet.
+      ...(v.motifPreuvesManquantes !== undefined
+        ? { preuvesManquantesAssumees: v.motifPreuvesManquantes }
+        : {}),
+    },
     session,
   });
 

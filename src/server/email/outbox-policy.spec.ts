@@ -8,6 +8,7 @@
 
 import { describe, it, expect } from "vitest";
 import type { EmailJobName } from "@/server/queue/types";
+import { EMAIL_TEMPLATE_NAMES } from "@/lib/email/templates";
 import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   EMAILS_AUTOMATIQUES_PAR_DEFAUT,
@@ -246,40 +247,35 @@ describe("estEmailQualiopiAutomatique", () => {
 // faute de frappe. Ce test-ci le fait : toute entrée qui n'est pas un
 // `EmailJobName` réel casse la compilation ET l'assertion.
 describe("Cohérence avec les noms de jobs réels", () => {
-  // Recensement des templates réellement enfilables, tiré de l'union de types.
-  const TEMPLATES_REELS: readonly EmailJobName[] = [
-    "qualiopi-convocation",
-    "qualiopi-rappel-j7",
-    "qualiopi-satisfaction-j1",
-    "qualiopi-suivi-j30",
-    "qualiopi-attestation-disponible",
-    "qualiopi-portail-acces",
-    // Lien PERSONNEL de signature de présence (2026-08-16) — envoyé par
-    // `envoyerLiensPourSession`, depuis la console ou le cron J-0. Il
-    // n'existait pas : les jetons étaient fabriqués et affichés, jamais
-    // transmis, et la chaîne probante des indicateurs 9 et 11 reposait sur un
-    // envoi que personne n'avait écrit.
-    "qualiopi-emargement-lien",
-    "qualiopi-alerte-interne",
-    "qualiopi-relance-impayee",
-    // Positionnement (2026-08-15) — envoyé par `envoyerPositionnement`, depuis
-    // l'action « Envoyer au stagiaire ». Remplace le repli sur
-    // `qualiopi-portail-acces`, qui invitait le stagiaire à ignorer le message.
-    "qualiopi-positionnement",
-    // Relances questionnaires + enquête entreprise (2026-08-04) — envoyés par
-    // les crons relance-questionnaires / enquete-entreprise-j30.
-    "qualiopi-questionnaire-relance",
-    "qualiopi-enquete-entreprise",
-    "devis-envoi",
-    "facture-envoi",
-    // Lien de signature d'une convention adressé au client (2026-08-01) :
-    // pièce contractuelle → même traitement que devis et contrat.
-    "convention-envoi",
-    // Rappel H-1 avant l'appel de découverte (2026-08-28) — envoyé par la passe
-    // `rappel-h1` du worker de sondage Calendly. Automatique par nature : un
-    // rappel retenu en validation manque le rendez-vous qu'il devait préparer.
-    "appel-rappel",
-  ];
+  // 🔴 2026-09-05 — cette liste était RECOPIÉE À LA MAIN, et elle a périmé.
+  //
+  // Le commit `f12917ced` (lot A, « la boucle contractuelle se referme ») a
+  // inscrit `piece-exemplaire-signe` parmi les envois AUTOMATIQUES sans
+  // l'ajouter ici. Le témoin est donc devenu ROUGE — et personne ne l'a vu,
+  // parce que la suite complète n'avait pas été lancée : seuls quatre fichiers
+  // ciblés l'avaient été. Un témoin rouge que personne n'exécute ne garde rien.
+  //
+  // Le commentaire ci-dessus dit « tiré de l'union de types ». C'était faux :
+  // `EmailJobName` est un type TypeScript, effacé à l'exécution — on ne peut
+  // pas l'énumérer. D'où la recopie, et d'où la péremption.
+  //
+  // Mais il EXISTE une source énumérable à l'exécution : `EMAIL_TEMPLATE_NAMES`
+  // (`Object.keys(TEMPLATES)`, 53 entrées), c'est-à-dire les gabarits qui ont
+  // réellement un composant à rendre. C'est même une définition PLUS FORTE de
+  // « job réel » que la liste manuelle : un envoi déclaré automatique sans
+  // composant échouerait au rendu, et ce témoin l'attrape désormais.
+  //
+  // On dérive donc, on ne recopie plus. La prochaine divergence est impossible.
+  const TEMPLATES_REELS: readonly EmailJobName[] = EMAIL_TEMPLATE_NAMES;
+
+  it("le recensement n'est pas VIDE — sinon ce bloc ne garderait rien", () => {
+    // Témoin positif obligatoire : `Object.keys` d'un module mal importé rend
+    // `[]`, et un ensemble vide fait passer `toContain` sur… rien du tout. Sans
+    // cette ligne, « aucune incohérence » et « je ne mesure rien » seraient
+    // indiscernables.
+    expect(TEMPLATES_REELS.length).toBeGreaterThan(40);
+    expect(TEMPLATES_REELS).toContain("qualiopi-convocation" as EmailJobName);
+  });
 
   it("chaque email « à valider » correspond à un job réel", () => {
     for (const t of EMAILS_A_VALIDER_PAR_DEFAUT) {

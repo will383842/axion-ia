@@ -43,6 +43,10 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import { ROLE_FORMATEUR_LABELS, MODALITE_LABELS } from "@/server/formateur/collectif-labels";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import {
+  archiverAffectationsRetirees,
+  lireAffectationsAvantRetrait,
+} from "@/server/qualiopi/trainers/affectation-retiree";
+import {
   accordRequis,
   echeanceReponse,
   instantRelance,
@@ -330,12 +334,49 @@ async function envoyerProposition(args: {
 }
 
 /**
- * Retire les sollicitations encore ouvertes d'une session — quand l'organisme
- * retire le formateur ou en affecte un autre AVANT la réponse. Sans cela, le
- * formateur écarté pourrait encore « accepter » une session qui n'est plus la
- * sienne, et l'alerte « sans réponse » continuerait de le réclamer.
+ * Statuts qu'une mission peut porter tant qu'elle TIENT LA PLACE : celle qu'on
+ * attend, et celle qui a dit oui. Ce sont les deux que l'organisme doit reprendre
+ * quand il écarte le formateur — cf. {@link retirerMissionsOuvertes}.
  */
-export async function retirerMissionsEnAttente(
+const STATUTS_MISSION_OUVERTE = ["en_attente", "acceptee"] as const;
+
+/**
+ * Reprend les sollicitations encore OUVERTES d'une session — quand l'organisme
+ * retire le formateur ou en affecte un autre. Sans cela, le formateur écarté
+ * pourrait encore « accepter » une session qui n'est plus la sienne, et
+ * l'alerte « sans réponse » continuerait de le réclamer.
+ *
+ * 🔴 D1 (2026-09-05) — ELLE NE REPRENAIT QUE LES `en_attente`, ET C'EST LE CAS
+ * `acceptee` QUI FAISAIT LE TROU.
+ *
+ * Cette fonction s'appelait `retirerMissionsEnAttente`, et son `where` portait
+ * `statut: "en_attente"`. Or le remplacement d'un formateur SUPPRIME sa ligne
+ * `SessionFormateur` (`assignTrainerToSessionAction`) sans toucher à sa
+ * mission : celle d'un formateur qui avait DÉJÀ accepté restait `acceptee`,
+ * pour toujours, alors que son affectation venait de disparaître.
+ *
+ * Séquence, entièrement dans le code : A accepte → l'organisme affecte B → la
+ * mission fantôme de A affirme que la place est tenue → B ne répond jamais.
+ * Trois règles d'alerte s'en servent comme preuve que quelqu'un tient la place
+ * (`regleMissionFormateurSansReponseDelai` et `regleMissionFormateurExpiree`
+ * font `missionsFormateur: { where: { statut: "acceptee" } }` puis `continue` ;
+ * `regleFormateurDesisteSession` teste
+ * `some((m) => m.trainerId !== desistantId)`). **Les trois se taisaient**, et
+ * la session pouvait démarrer sans personne, en silence. C'est le cas le plus
+ * COURANT du désistement.
+ *
+ * `retiree` est le bon statut, et pas un statut neuf : le libellé de l'énum dit
+ * « Retirée par l'organisme », ce qui est exactement ce qui vient de se passer.
+ * Le catalogue d'alertes motive de ne lever AUCUNE alerte dessus — un
+ * remplacement délibéré n'est pas un incident ; l'incident, s'il y en a un, est
+ * consigné à part.
+ *
+ * ⚠️ Renommée `retirerMissionsEnAttente` → `retirerMissionsOuvertes` : le nom
+ * disait le `where`, et c'est le `where` qui était faux. Un nom qui ment sur ce
+ * qu'une fonction reprend est ce qui a permis à quatre règles de la lire comme
+ * exhaustive.
+ */
+export async function retirerMissionsOuvertes(
   sessionId: string,
   opts: { saufTrainerId?: string | null; role?: SessionFormateurRole } = {},
 ): Promise<number> {
@@ -344,7 +385,7 @@ export async function retirerMissionsEnAttente(
     const r = await prisma.missionFormateur.updateMany({
       where: {
         sessionId,
-        statut: "en_attente",
+        statut: { in: [...STATUTS_MISSION_OUVERTE] },
         ...(opts.role !== undefined ? { role: opts.role } : {}),
         ...(opts.saufTrainerId ? { trainerId: { not: opts.saufTrainerId } } : {}),
       },
@@ -483,6 +524,13 @@ async function passerLesSansReponse(now: Date): Promise<number> {
   let n = 0;
   for (const m of echues) {
     try {
+      // 🔴 D6 — on LIT ce que la ligne porte avant de la supprimer. Après la
+      // transaction il n'y aurait plus rien à lire, et c'est précisément le
+      // défaut : le tarif snapshoté et les envois déjà faits partaient avec.
+      const snapshot = await lireAffectationsAvantRetrait({
+        sessionId: m.sessionId,
+        trainerId: m.trainerId,
+      });
       await prisma.$transaction(async (tx) => {
         await tx.missionFormateur.update({
           where: { id: m.id },
@@ -497,6 +545,14 @@ async function passerLesSansReponse(now: Date): Promise<number> {
         await tx.sessionFormateur.deleteMany({
           where: { sessionId: m.sessionId, trainerId: m.trainerId },
         });
+      });
+      // Archive APRÈS le succès : une archive qui ment sur un retrait qui n'a
+      // pas eu lieu serait pire que pas d'archive du tout.
+      await archiverAffectationsRetirees(snapshot, {
+        motif: "sans_reponse_delai",
+        // Chemin du cron : aucun humain ne pose ce retrait.
+        retireById: null,
+        now,
       });
       n += 1;
     } catch (err) {
@@ -620,6 +676,11 @@ export async function repondreMission(
       erreur: `Indiquez le motif de votre refus (${MOTIF_REFUS_MIN} caractères au moins) : il nous aide à réaffecter la session.`,
     };
   }
+  // 🔴 D6 — snapshot AVANT la suppression (cf. `affectation-retiree.ts`).
+  const snapshot = await lireAffectationsAvantRetrait({
+    sessionId: mission.sessionId,
+    trainerId: mission.trainerId,
+  });
   await prisma.$transaction(async (tx) => {
     await tx.missionFormateur.update({
       where: { id: mission.id },
@@ -634,6 +695,13 @@ export async function repondreMission(
     await tx.sessionFormateur.deleteMany({
       where: { sessionId: mission.sessionId, trainerId: mission.trainerId },
     });
+  });
+  await archiverAffectationsRetirees(snapshot, {
+    motif: "refus_formateur",
+    // Le retrait est posé par le FORMATEUR lui-même, pas par un compte admin :
+    // `retireById` reste nul, et le motif de refus vit au journal des missions.
+    retireById: null,
+    now,
   });
   return {
     ok: true,

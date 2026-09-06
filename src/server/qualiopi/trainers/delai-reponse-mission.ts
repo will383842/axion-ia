@@ -141,3 +141,56 @@ export function libelleInfosPratiques(dateDebut: Date, now: Date): string {
   if (jours > 1.5) return "vous seront envoyées la veille de la session";
   return "vous parviennent dans la foulée de ce message";
 }
+
+/**
+ * 🔴 UN FORMATEUR AFFECTÉ N'EST PAS UN FORMATEUR CONFIRMÉ (D1, 2026-09-05).
+ *
+ * ## Le défaut que ce prédicat ferme
+ *
+ * La place d'une session était réputée tenue dès que `formateurPrincipalId`
+ * n'était pas nul. Or l'affectation est un geste de l'ORGANISME ; la
+ * confirmation est un geste du FORMATEUR. Entre les deux il y a une question
+ * posée et une réponse qui n'est pas venue.
+ *
+ * Séquence mesurée dans le code : A accepte → A se désiste → l'organisme
+ * affecte B → **B ne répond jamais**. `formateurPrincipalId = B` suffisait à
+ * éteindre les alertes de désistement : la session partait sans personne
+ * d'engagé, et rien ne le disait. C'est le cas le plus courant du désistement,
+ * et c'est celui qui n'alertait pas.
+ *
+ * ## Pourquoi ce prédicat existe ICI et pas dans la règle qui en a besoin
+ *
+ * La notion de confirmation EXISTE déjà dans le dépôt — le cron des
+ * convocations la calcule depuis le 2026-09-04 (défaut : proposition à 16h30,
+ * rappel « votre session de demain » à 16h40 au même destinataire qui n'avait
+ * rien accepté). Mais elle y vit EN LIGNE, dans la sélection du worker. Une
+ * règle qui ne vit qu'à l'endroit où on l'a écrite ne protège que cet endroit :
+ * c'est le motif dominant des défauts de ce dépôt, et c'est exactement ce qui
+ * s'est passé — le cron savait distinguer affecté et confirmé, le moteur
+ * d'alertes non.
+ *
+ * ## Les deux moitiés, et pourquoi aucune ne suffit seule
+ *
+ * - **L'accord n'est pas toujours requis.** Un salarié ou un
+ *   dirigeant-formateur n'a rien à accepter, et `proposerMissionFormateur` ne
+ *   leur crée AUCUNE mission (cf. `accordRequis`). Exiger une mission
+ *   `acceptee` de tout le monde ferait crier pour toujours sur eux.
+ * - **Une mission `acceptee` ne vaut que pour la personne AFFECTÉE.** Une
+ *   mission acceptée par quelqu'un qui n'est plus sur la session ne tient
+ *   aucune place — c'est le fantôme que `retirerMissionsOuvertes` referme.
+ *
+ * ⚠️ L'appelant doit donc passer le couple (statut du formateur AFFECTÉ,
+ * a-t-il une mission `acceptee` sur CETTE session). En Prisma :
+ * `formateurPrincipal: { select: { statut: true } }` et
+ * `missionsFormateur: { where: { statut: "acceptee" }, select: { trainerId: true } }`,
+ * puis `missionsFormateur.some((m) => m.trainerId === formateurPrincipalId)`.
+ */
+export function affectationConfirmee(input: {
+  /** Statut du formateur RÉELLEMENT affecté ; `null` = personne n'est affecté. */
+  statutFormateur: TrainerStatut | null;
+  /** Ce formateur-là a-t-il une mission `acceptee` sur CETTE session ? */
+  missionAcceptee: boolean;
+}): boolean {
+  if (input.statutFormateur === null) return false;
+  return !accordRequis(input.statutFormateur) || input.missionAcceptee;
+}

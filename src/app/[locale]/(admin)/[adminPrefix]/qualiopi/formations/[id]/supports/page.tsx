@@ -144,6 +144,15 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
   return (
     <AdminPageShell width="wide">
       <div className="mb-[var(--space-admin-4)]">
+        {/* 🔴 2026-09-05 — ne ramenait qu'a la LISTE des formations : on
+          arrivait depuis une formation precise et on ressortait a la
+          racine, a charge de la retrouver. */}
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/formations/${id}`}
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          ← Retour à la formation
+        </Link>
         <Link
           href={`/${locale}/${adminPrefix}/qualiopi/formations`}
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-accent)]"

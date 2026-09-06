@@ -46,6 +46,15 @@ export default async function QualiopiFormationCertificationPage({ params }: Pag
 
       {/* Lien retour vers la liste formations */}
       <div className="mb-[var(--space-admin-5)]">
+        {/* 🔴 2026-09-05 — ne ramenait qu'a la LISTE des formations : on
+          arrivait depuis une formation precise et on ressortait a la
+          racine, a charge de la retrouver. */}
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/formations/${id}`}
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+        >
+          ← Retour à la formation
+        </Link>
         <Link
           href={`/${locale}/${adminPrefix}/qualiopi/formations`}
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
