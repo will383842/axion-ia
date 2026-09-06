@@ -117,7 +117,7 @@ export function CoverageDistributionV2({ rows }: Props): React.ReactElement {
               id="distribution"
               name="distribution"
               rows={10}
-              className="admin-input font-mono text-[length:var(--text-admin-sm)]"
+              className="admin-input admin-input-mono admin-input-sm"
               defaultValue={DEFAULT_PROFILE}
               required
             />

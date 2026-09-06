@@ -173,7 +173,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
               defaultValue={t.body}
               required
               minLength={50}
-              className="admin-input font-mono text-[length:var(--text-admin-sm)]"
+              className="admin-input admin-input-mono admin-input-sm"
             />
           </div>
 

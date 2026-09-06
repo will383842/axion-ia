@@ -279,7 +279,7 @@ function ActionsCell({
     <div className="flex flex-wrap gap-[var(--space-admin-2)]">
       <Link
         href={`/fr/${adminPrefix}/content-gen/publications/${articleId}/edit`}
-        className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+        className="admin-button-ghost admin-button-xs"
       >
         Éditer
       </Link>
@@ -287,7 +287,7 @@ function ActionsCell({
         <form action={doDemote}>
           <button
             type="submit"
-            className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+            className="admin-button-ghost admin-button-xs"
             title="Rendre l'article non indexé (ne plus apparaître sur Google)"
           >
             Retirer de Google
@@ -296,7 +296,7 @@ function ActionsCell({
       ) : null}
       {status === "published" ? (
         <form action={doArchive}>
-          <button type="submit" className="admin-button-ghost text-[length:var(--text-admin-xs)]">
+          <button type="submit" className="admin-button-ghost admin-button-xs">
             Archiver
           </button>
         </form>
@@ -316,7 +316,7 @@ function ActionsCell({
         <form action={doRollback}>
           <button
             type="submit"
-            className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+            className="admin-button-ghost admin-button-xs"
             title="Dépublier : repasse l'article en brouillon (retiré du site)"
           >
             Dépublier

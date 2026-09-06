@@ -110,8 +110,8 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
     ? "Archives comprises — tout l'historique"
     : `Les ${FENETRE_SESSIONS_MOIS} derniers mois et les sessions à venir`;
   const pagination = `page ${liste.page} / ${liste.totalPages}`;
-  const description = `${perimetre} · ${liste.total} sessions · ${pagination}.`;
-  const labelArchives = `Voir les archives (${liste.nbArchives} sessions plus anciennes)`;
+  const description = `${perimetre} · ${liste.total} session${liste.total > 1 ? "s" : ""} · ${pagination}.`;
+  const labelArchives = `Voir les archives (${liste.nbArchives} session${liste.nbArchives > 1 ? "s" : ""} plus ancienne${liste.nbArchives > 1 ? "s" : ""})`;
   // 🔴 Le message envoyait AILLEURS que là où se trouve l'action.
   //
   // Il disait « Créez-en une depuis la page Formations » : la création se fait
