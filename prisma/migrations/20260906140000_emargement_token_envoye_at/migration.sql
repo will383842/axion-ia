@@ -1,0 +1,55 @@
+-- 🔴 Un clic sur « Émettre les liens » désarmait DÉFINITIVEMENT le cron
+-- d'émargement, et personne ne pouvait l'apprendre (2026-09-06).
+--
+-- `emettreLiensSessionAction` fabrique les jetons et affiche les QR pour la
+-- salle — sans expédier le moindre message ; le dépôt le dit partout, jusque
+-- sur l'écran : « Fabriquer un lien ne l'ENVOIE pas ». `envoyerLiensPourSession`
+-- est l'acte distinct qui remet le lien par e-mail, et cette séparation est
+-- délibérée (cf. l'en-tête de `envoyerLiensEmargementAction` : réémettre révoque
+-- le jeton précédent, donc l'envoi doit rester un geste décidé).
+--
+-- Mais les deux actes produisaient la MÊME LIGNE. Rien, en base, ne distinguait
+-- un jeton fabriqué d'un jeton remis. Or la garde anti-réémission du cron
+-- `liens-emargement-j0` écarte les sessions où « un jeton vivant existe » :
+--
+--     enrollments: { none: { emargementTokens: { some: {
+--       revokedAt: null, expiresAt: { gt: now } } } } }
+--
+-- Un clic sur « Émettre » suffisait donc à faire croire au cron que le travail
+-- était fait, et il ne repassait plus jamais.
+--
+-- Vécu sur AXI-SESS-2026-001 (SCI Invest Sun), session du 05/09 : jetons
+-- fabriqués, aucun `qualiopi-emargement-lien` dans le journal des envois les 04,
+-- 05 et 06/09, la stagiaire n'a jamais rien reçu. Et le défaut ne s'arrête pas
+-- là : sans émargement, pas de taux de présence, donc pas d'attestation — le
+-- cron `attestations-auto` exige une trace de présence. Un état intermédiaire
+-- que rien ne nomme arrête toute une chaîne, jusqu'à la pièce due au stagiaire.
+--
+-- Pire : l'alerte `emargement_aucune_signature` s'appuie sur la même condition
+-- et annonçait « liens en circulation, personne n'a signé » — une cause FAUSSE,
+-- qui oriente vers « relancer la stagiaire » quand l'hypothèse vivante est
+-- qu'elle n'a jamais rien reçu. Le titre a été corrigé le 05/09 ; la condition,
+-- elle, ne POUVAIT pas distinguer les deux cas sans cette colonne.
+--
+-- Purement ADDITIVE : colonne nullable, aucune contrainte, aucune valeur
+-- rétroactive.
+--
+-- ⚠️ AUCUN BACKFILL, ET C'EST LE POINT DÉLICAT. Les jetons déjà REMIS portent
+-- donc `NULL`, exactement comme les jetons seulement fabriqués. Les antidater
+-- serait une invention ; mais lire ce `NULL` comme « jamais envoyé » serait pire
+-- qu'une invention — le cron réémettrait, et réémettre RÉVOQUE le lien
+-- précédent : on couperait sous les pieds d'un stagiaire un lien qu'il a reçu et
+-- s'apprête peut-être à utiliser. Le correctif d'un envoi manquant deviendrait
+-- la cause d'un émargement perdu.
+--
+-- La garde applicative traite donc les jetons ANTÉRIEURS à cette migration avec
+-- l'ancienne sémantique (leur existence vaut « traité »), et les suivants avec
+-- la nouvelle (`envoye_at` seul fait foi) — cf. `SEUIL_ENVOYE_AT` dans
+-- `qualiopi-formation-crons-worker.ts`. Le coût de cette prudence est borné dans
+-- le temps : un jeton d'émargement expire 48 h après la fin de session, donc le
+-- stock hérité s'éteint de lui-même en quelques jours.
+ALTER TABLE "emargement_tokens" ADD COLUMN "envoye_at" TIMESTAMP(3);
+
+-- Sert la garde du cron — « existe-t-il un jeton REMIS et encore vivant ? » —
+-- qui filtre sur les deux colonnes ensemble.
+CREATE INDEX "emargement_tokens_envoye_expire_idx" ON "emargement_tokens" ("envoye_at", "expires_at");
