@@ -10,7 +10,6 @@ import {
 } from "@/server/formateur/coaching-options";
 import { sumHeuresReelles } from "@/server/qualiopi/coaching-1to1/heures";
 import { CoachingFacturationPanel } from "@/components/admin/coaching/CoachingFacturationPanel";
-import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
@@ -45,10 +44,16 @@ export default async function AdminSeanceDetailPage({
   params: Promise<{ id: string; locale: string; adminPrefix: string }>;
 }): Promise<React.ReactElement> {
   const { id, locale, adminPrefix } = await params;
-  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
-  if (!acces.autorise) {
-    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
-  }
+  // 🔑 On appelle la garde pour son EFFET : sans session, elle redirige vers la
+  // connexion. C'est ce que cette page doit garantir par elle-même — le proxy
+  // ne peut pas être la seule couche (contournement du 2026-09-05).
+  //
+  // ⚠️ Pas de `<AccesRefuse>` ici, et ce n'est pas un oubli : en consultation,
+  //    le seul refus possible est « rôle non reconnu », que le layout admin
+  //    intercepte DÉJÀ avant de rendre ses enfants. La branche serait morte, et
+  //    elle coûtait 1,64 kB gz au cliquet de bundle sur les 29 pages de ce lot
+  //    (mesuré par Gate B) — `AccesRefuse` tire `next/link` et une icône.
+  await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
 
   const s = await getSessionAdmin(id);
   if (!s) notFound();

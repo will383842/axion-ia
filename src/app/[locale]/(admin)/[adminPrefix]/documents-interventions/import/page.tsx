@@ -37,7 +37,19 @@ export default async function ImportKitPage({
   params: Promise<{ locale: string; adminPrefix: string }>;
 }): Promise<React.ReactElement> {
   const { locale, adminPrefix } = await params;
-  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  // 🔑 `ecriture`, et PAS `consultation` comme les 29 autres pages de ce lot.
+  //
+  // Cet écran importe un kit : c'est un écran de CRÉATION, et le dépôt tranche
+  // déjà la question — `parcours-reservation-passe-par-le-ssot.spec.ts` exige
+  // que tout `/(new|edit|upload|import|nouveau)/` gardé le soit en écriture.
+  // Un `reader` y verrait un formulaire dont toutes les actions échoueraient :
+  // une promesse non tenue.
+  //
+  // ⚠️ Cette règle ne s'appliquait PAS tant que la page n'avait aucune garde —
+  //    le test ne couvre que les écrans de création DÉJÀ gardés. En posant la
+  //    garde, on fait entrer la page dans le périmètre d'une règle qui ne la
+  //    concernait pas la minute d'avant. C'est Gate A qui l'a signalé, pas moi.
+  const acces = await gardePage("ecriture", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
