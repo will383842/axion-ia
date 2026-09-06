@@ -491,8 +491,6 @@ jobs:
       #
       # ⛔ NE PAS remettre `continue-on-error` ici. Verrouillé par
       # `tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts`.
-      - name: Poids du bundle (gate bloquante — cliquet anti-croissance, PAS un budget per-route)
-        run: pnpm bundle:check
       # ⚠️ `DATABASE_URL` reste `stub.invalid` AU NIVEAU DU JOB, et ce n'est pas un
       # oubli : le contrat d'ADR 0026 veut que le BUILD tourne sur les stubs Prisma
       # (cf. AGENTS.md, « magic string stub.invalid »). Seules les étapes d'exécution
@@ -737,6 +735,42 @@ jobs:
       # documenté dans `AGENTS.md`, et il se comble à la main
       # (`next build --experimental-build-mode compile`, ~2 min).
       # ═══════════════════════════════════════════════════════════════════
+      # ═══════════════════════════════════════════════════════════════════
+      # POIDS DU BUNDLE — DÉPLACÉE ICI LE 2026-09-06, APRÈS la suite E2E.
+      #
+      # 🔴 CE QUE SA POSITION PRÉCÉDENTE COÛTAIT, MESURÉ SUR LE RUN 33989952957 :
+      #
+      #     failure  Poids du bundle
+      #     skipped  Migrer et semer la base E2E
+      #     skipped  Prouver que le build de production a survécu
+      #     skipped  Playwright suite
+      #
+      # L'étape était placée AVANT les trois étapes qui prouvent que le produit
+      # FONCTIONNE. Un dépassement de 2,9 kB sur un cliquet a donc supprimé
+      # l'intégralité du signal fonctionnel : 37 min de CI payées pour apprendre
+      # un décompte d'octets, et RIEN sur les 30 commits de la PR — dont des
+      # migrations et sept règles d'alertes.
+      #
+      # 🔑 Le classement est le sujet, pas le seuil. Entre « le paquet a grossi
+      # de 2,9 kB » et « la console d'administration ne s'ouvre plus », le second
+      # doit toujours être connu ; le premier ne doit jamais empêcher de
+      # l'apprendre. Une gate de CONFORT ne se place pas devant une gate de
+      # CORRECTION.
+      #
+      # ⚠️ `!cancelled()` est OBLIGATOIRE ici, et c'est exactement ce qu'exige
+      # `tests/unit/ci/gate-b-a-ses-services.spec.ts` de toute étape postérieure
+      # à la suite E2E : sans lui, un rouge Playwright sauterait cette étape et
+      # on retomberait dans le défaut symétrique — on saurait que le produit est
+      # cassé, plus jamais ce que pèse le paquet.
+      #
+      # Elle BLOQUE toujours : pas de `continue-on-error` (verrouillé par
+      # `tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts`). Ce qui change
+      # est QUAND on l'apprend, jamais SI elle compte.
+      # ═══════════════════════════════════════════════════════════════════
+      - name: Poids du bundle (gate bloquante — cliquet anti-croissance, PAS un budget per-route)
+        if: ${{ !cancelled() }}
+        run: pnpm bundle:check
+
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v7
