@@ -1472,8 +1472,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //   Masqués via `parent` (filtre `it.parent == null` dans AdminSidebarNav) :
     //   routes + command palette + breadcrumb conservés. Réversible — retirer
     //   `parent` le jour où le Sprint 2.x est réellement livré.
-    //   NB : 4 autres stubs (licensing, seo-audit, sitemap-status, taxonomy)
-    //   n'ont jamais eu d'entrée de nav — routes accessibles par URL seulement.
+    //   🔴 2026-09-06 — LES 4 STUBS ORPHELINS SONT RENTRÉS DANS LE RANG.
+    //   Ce commentaire disait, depuis des mois : « NB : 4 autres stubs
+    //   (licensing, seo-audit, sitemap-status, taxonomy) n'ont jamais eu
+    //   d'entrée de nav — routes accessibles par URL seulement. » Le dépôt
+    //   documentait donc son propre angle mort, et la garde réciproque les
+    //   absolvait par simple préfixe (`/image-bank` est au menu).
+    //   Ils sont désormais déclarés ici comme leurs 5 frères : `parent` posé,
+    //   donc TOUJOURS masqués de la barre latérale — mais atteignables par la
+    //   palette de commandes et porteurs d'un fil d'Ariane, au lieu de n'être
+    //   accessibles qu'en tapant leur URL.
+    //   🔑 Ce qui a tranché : `AdminStubPageV2` affiche lui-même « L'entrée de
+    //   menu existe déjà pour que vous sachiez ce qui est prévu ». Pour ces
+    //   quatre-là, l'écran mentait. Les 9 stubs sont maintenant homogènes ; les
+    //   retirer TOUS reste un arbitrage ouvert, mais il n'en concernerait plus
+    //   4 arbitrairement choisis.
     {
       href: `${base}/image-bank/bulk-import`,
       label: "Import CSV en masse",
@@ -1495,6 +1508,25 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/image-bank/tags`,
       label: "Étiquettes",
       icon: "Tags",
+      group: "image-bank",
+      subGroup: "organisation",
+      parent: `${base}/image-bank`,
+    },
+    {
+      href: `${base}/image-bank/taxonomy`,
+      label: "Taxonomie",
+      icon: "Network",
+      group: "image-bank",
+      subGroup: "organisation",
+      parent: `${base}/image-bank`,
+    },
+    {
+      href: `${base}/image-bank/seo-audit`,
+      label: "Audit SEO",
+      // PAS `ScanSearch` : « File de qualité » le porte déjà dans ce groupe, et
+      // deux entrées à la même icône sont indiscernables dans la liste — c'est
+      // exactement ce que garde `admin-nav-icons.test.ts`, qui l'a refusé.
+      icon: "Gauge",
       group: "image-bank",
       subGroup: "organisation",
       parent: `${base}/image-bank`,
@@ -1526,6 +1558,22 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/image-bank/settings`,
       label: "Réglages",
       icon: "Settings",
+      group: "image-bank",
+      subGroup: "admin",
+      parent: `${base}/image-bank`,
+    },
+    {
+      href: `${base}/image-bank/licensing`,
+      label: "Licences",
+      icon: "Scale",
+      group: "image-bank",
+      subGroup: "admin",
+      parent: `${base}/image-bank`,
+    },
+    {
+      href: `${base}/image-bank/sitemap-status`,
+      label: "État du sitemap",
+      icon: "FileSearch",
       group: "image-bank",
       subGroup: "admin",
       parent: `${base}/image-bank`,
