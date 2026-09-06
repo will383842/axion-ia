@@ -25,6 +25,36 @@ const FICHIER_BARRE_LATERALE = resolve(
   "src/components/admin/ui/AdminSidebarNav.tsx",
 );
 
+/**
+ * 🔴 LES TROISIÈME ET QUATRIÈME SOURCES DE NAVIGATION (2026-09-06).
+ *
+ * La console n'a jamais eu DEUX sources de destinations, elle en a QUATRE. Deux
+ * sont gardées depuis le 2026-09-05 — `buildAdminNav()` et les liens épinglés du
+ * pied de barre. Les deux autres écrivent leurs adresses EN DUR, dans du JSX :
+ *
+ *   · `AdminUserMenu`  → `/2fa/setup`, `/settings`
+ *   · le layout admin  → `/alerts`, `/content-gen/costs`, `/content-gen/jobs`
+ *                        (destinations des pastilles et des notifications)
+ *
+ * ⚠️ CE QUI N'ÉTAIT GARDÉ PAR RIEN, ET QUI EST LE DÉFAUT EXACT QUE CE SCRIPT
+ *    EXISTE POUR FERMER. Ces cinq adresses ne sont vérifiées par personne :
+ *    renommer le dossier `2fa/setup/` ferait pointer l'entrée « Sécurité (2FA) »
+ *    du menu utilisateur sur un 404, et TOUT serait resté vert. C'est mot pour
+ *    mot le raisonnement qui avait fait entrer les liens épinglés dans cette
+ *    passe : « une destination n'est pas moins une destination parce qu'elle est
+ *    écrite dans un composant plutôt que dans le menu. »
+ *
+ * 🔑 Aujourd'hui ces cinq routes figurent AUSSI dans `buildAdminNav()`. C'est
+ *    une coïncidence, pas une garantie : rien n'oblige un lien écrit en dur à
+ *    doubler une entrée de menu, et la prochaine pastille ajoutée au layout
+ *    n'aura aucune raison d'en avoir une. La garde porte donc sur la FORME du
+ *    lien, pas sur la liste d'aujourd'hui.
+ */
+const SOURCES_DE_LIENS_EN_DUR: ReadonlyArray<string> = [
+  "src/components/admin/ui/AdminUserMenu.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/layout.tsx",
+];
+
 /** Segments concrets d'un chemin épinglé (`/console-editoriale` → ["console-editoriale"]). */
 function segmentsEpingles(chemin: string): string[] {
   return chemin.split("/").filter(Boolean);
@@ -113,6 +143,61 @@ for (const chemin of ADMIN_ROUTES_EPINGLEES) {
   if (!routeExists(ADMIN_ROOT, segmentsEpingles(chemin))) {
     missing.push(`(épinglé en pied de barre latérale) → ${chemin}`);
   }
+}
+
+/**
+ * Les adresses écrites en dur dans les deux sources restantes.
+ *
+ * On accepte les deux formes que le dépôt emploie :
+ *   · `${adminBase}/x/y`            — menu utilisateur, pastilles du layout
+ *   · `/${locale}/${adminPrefix}/x` — la forme longue, quand `adminBase` n'est
+ *                                     pas sous la main
+ *
+ * ⚠️ La chaîne de requête est retirée : `/content-gen/jobs?status=failed` et
+ *    `/content-gen/jobs` désignent la MÊME route. La garder ferait chercher un
+ *    dossier `jobs?status=failed` et rendrait un faux rouge.
+ */
+function liensEnDur(source: string): string[] {
+  const trouves = new Set<string>();
+  for (const m of source.matchAll(/\$\{adminBase\}(\/[^`"'\s{}]*)/g)) {
+    trouves.add((m[1] ?? "").split("?")[0] ?? "");
+  }
+  for (const m of source.matchAll(/\/\$\{locale\}\/\$\{adminPrefix\}(\/[^`"'\s{}]*)/g)) {
+    trouves.add((m[1] ?? "").split("?")[0] ?? "");
+  }
+  // `${adminBase}` seul (la racine de la console) n'est pas une sous-route.
+  return [...trouves].filter((c) => c.length > 1);
+}
+
+let liensEnDurExamines = 0;
+for (const fichier of SOURCES_DE_LIENS_EN_DUR) {
+  const chemin = resolve(process.cwd(), fichier);
+  const source = readFileSync(chemin, "utf8");
+  for (const lien of liensEnDur(source)) {
+    liensEnDurExamines++;
+    if (!routeExists(ADMIN_ROOT, segmentsEpingles(lien))) {
+      missing.push(`(lien écrit en dur dans ${fichier}) → ${lien}`);
+    }
+  }
+}
+
+/**
+ * 🔴 CONTRE-TÉMOIN. Une extraction qui ne trouve plus rien rendrait « 0 lien
+ *    invalide » — indiscernable d'un vrai succès. C'est le piège qui a déjà
+ *    coûté une garde ce matin même, ailleurs dans le dépôt : le motif cherché
+ *    avait cessé de correspondre au code, et le vert n'avait plus de sens.
+ *
+ *    Les deux fichiers portent cinq adresses au 2026-09-06. Le seuil est posé
+ *    à quatre pour tolérer qu'une pastille disparaisse sans rougir à tort,
+ *    mais pas qu'elles disparaissent toutes.
+ */
+if (liensEnDurExamines < 4) {
+  console.error(
+    `❌ [admin-nav:routes] seulement ${liensEnDurExamines} lien(s) écrit(s) en dur trouvé(s) ` +
+      `dans ${SOURCES_DE_LIENS_EN_DUR.join(" et ")} : l'extraction ne reconnaît plus la ` +
+      `forme des liens, et un « aucun lien invalide » ne voudrait plus rien dire.`,
+  );
+  process.exit(1);
 }
 
 // 🔴 2026-09-05 — ET DANS L'AUTRE SENS : le composant doit RENDRE ce que la
@@ -245,7 +330,10 @@ if (violationsMcp.length > 0) {
 
 console.log(
   `✅ [admin-nav:routes] OK — ${internes.length} routes internes résolues, ` +
-    `${externes.length} lien(s) externe(s) valides · ` +
+    `${externes.length} lien(s) externe(s) valides, ` +
+    // Annoncé, et pas seulement vérifié : un compte qui n'apparaît nulle part ne
+    // se surveille pas. Le jour où il tombe à zéro, on doit le LIRE.
+    `${liensEnDurExamines} lien(s) écrit(s) en dur résolu(s) · ` +
     `${fichiersMcp.length} fichier(s) d'adaptateur MCP lu(s), ` +
     `${INTERDITS_DANS_MCP.length} motif(s) interdit(s) confronté(s).`,
 );
