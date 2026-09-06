@@ -107,6 +107,15 @@ export type FormationCronJobType =
   // 2026-08-16 — liens de signature des sessions qui COMMENCENT aujourd'hui.
   // Envoyer un lien n'engage pas l'organisme (signer, si) : automatisable.
   | "formation-crons.liens-emargement-j0"
+  // 2026-09-06 (ADR 0050) — remise des exemplaires signés que le hook de
+  // complétion de signature n'a pas pu servir. Le bouton « Relancer la remise »
+  // RESTE : ce cron couvre ce que personne ne va cliquer, parce qu'une pièce
+  // COMPLÈTE disparaît de toutes les surfaces de rattrapage.
+  //
+  // ⚠️ Contrairement aux liens d'émargement, ceci ENGAGE : une convention part à
+  // un vrai client. D'où les deux bornes exigées par l'ADR — un seuil au 01/09 et
+  // un plafond par passage — et la garde de dépôt qui vérifie qu'elles y sont.
+  | "formation-crons.exemplaires-non-transmis"
   // Hub facturation Phase 3 — marquage des factures en retard (STATUT SEUL,
   // AUCUN email : les relances sont 100 % manuelles, règle produit).
   | "formation-crons.factures-retard"
@@ -2195,6 +2204,71 @@ async function handleCandidaturesEnSommeil(): Promise<void> {
   else console.log(ligne);
 }
 
+/**
+ * Remise des exemplaires signés que le hook de complétion n'a pas pu servir.
+ *
+ * ADR 0050 — renversement assumé de la décision « bouton seul » du matin même, sur
+ * accord explicite de Will. Le corps vit dans `rattrapage-transmission.ts` ; ici on
+ * déclenche et on trace.
+ *
+ * Fail-soft : `rattraperExemplairesNonTransmis` ne lève pas, mais le `catch` reste —
+ * un cron qui casse emporterait avec lui tout ce qu'il rattrape par ailleurs.
+ */
+async function handleExemplairesNonTransmis(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] exemplaires-non-transmis: stub DB, skip");
+    return;
+  }
+  try {
+    const { rattraperExemplairesNonTransmis, PLAFOND_PAR_PASSAGE } =
+      await import("@/server/qualiopi/documents/signature/rattrapage-transmission");
+    const r = await rattraperExemplairesNonTransmis();
+
+    const motifs = Object.entries(r.motifs)
+      .map(([m, n]) => `${m}=${n}`)
+      .join(", ");
+    console.log(
+      `[formation-crons] exemplaires-non-transmis: ${r.transmises} remis, ` +
+        `${r.nonTransmises} non remis${motifs === "" ? "" : ` (${motifs})`} ` +
+        `sur ${r.examinees} examiné(s)` +
+        // Les NUMÉROS, pas seulement le compte. « 3 remis » ne dit pas à QUI une
+        // pièce contractuelle vient de partir — et c'est la première question
+        // qu'on se pose en relisant ce journal le lendemain.
+        (r.numerosRemis.length > 0 ? ` — ${r.numerosRemis.join(", ")}` : ""),
+    );
+
+    // 🔑 LE PLAFOND EST UN DÉBIT, PAS UNE TRONCATURE — et le journal doit le dire.
+    // La sélection est un ÉTAT (`exemplaireSigneEnvoyeAt: null`), pas une fenêtre :
+    // ce qui déborde d'un passage est repris au suivant, une heure plus tard. Sans
+    // cette ligne, un administrateur qui lit « 25 examinés » sur un stock de 40
+    // conclurait que quinze pièces ont été silencieusement abandonnées.
+    if (r.examinees === PLAFOND_PAR_PASSAGE) {
+      console.log(
+        `[formation-crons] exemplaires-non-transmis: plafond de ${PLAFOND_PAR_PASSAGE} ` +
+          "atteint — le reste est repris au passage suivant, rien n'est abandonné.",
+      );
+    }
+
+    // Le stock antérieur au seuil n'est PAS un stock sain : ces exemplaires n'ont
+    // réellement jamais été remis (la migration l'écrit : « ce qui est exactement
+    // vrai »). La borne les écarte de l'automate, elle ne les absout pas — ils
+    // restent dus, cliquables au bouton, et listés par l'alerte.
+    if (r.ignoreesAvantSeuil > 0) {
+      console.warn(
+        `[formation-crons] exemplaires-non-transmis: ${r.ignoreesAvantSeuil} pièce(s) ` +
+          "ANTÉRIEURE(S) au seuil de rattrapage — jamais transmises, hors du champ de " +
+          "l'automate par décision (ADR 0050). Elles restent dues : bouton « Relancer " +
+          "la remise » sur la fiche, et l'alerte `exemplaire_signe_non_transmis` les liste.",
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[formation-crons] exemplaires-non-transmis: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.positionnement": handlePositionnement,
@@ -2208,6 +2282,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
   "formation-crons.liens-emargement-j0": handleLiensEmargementJ0,
+  "formation-crons.exemplaires-non-transmis": handleExemplairesNonTransmis,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
