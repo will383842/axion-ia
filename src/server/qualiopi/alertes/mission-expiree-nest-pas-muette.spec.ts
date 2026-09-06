@@ -124,3 +124,56 @@ describe("la règle est branchée et regarde le bon état", () => {
     expect(corpsDeLaRegle()).toContain("vues.has(m.session.id)");
   });
 });
+
+/**
+ * 🔴 ET ELLE DOIT POUVOIR S'ÉTEINDRE — 2026-09-06.
+ *
+ * La règle ci-dessus était juste, et elle produisait une critique INEFFAÇABLE.
+ * Sa condition est un fait passé qui ne change plus : proposition expirée,
+ * session démarrée, aucun accord tracé — et `repondreMission` refuse toute
+ * réponse dès que `dateDebut <= now`. Rien ne peut faire disparaître la cause.
+ *
+ * La résoudre à la main ne servait à rien : `creerOuDedup` ne dédoublonne que
+ * sur les alertes NON résolues, donc le balayage suivant la recrée à
+ * l'identique. `resolutionAuto` ne pilote QUE la résolution automatique, pas la
+ * re-création — c'est le piège, parce que son nom laisse croire l'inverse.
+ * Vécu le 2026-09-06 sur AXI-SESS-2026-001 : résolue à la main, revenue dans
+ * l'heure.
+ *
+ * 🔑 Une critique qu'aucun geste ne peut fermer apprend à ignorer les critiques.
+ * Le remède n'est pas de la taire : c'est de lui donner les DEUX SORTIES que son
+ * propre message prescrit — « vérifiez que la session a bien été animée, et
+ * consignez un incident si elle ne l'a pas été ».
+ */
+describe("🔴 l'alerte a une SORTIE : elle s'éteint quand sa question a reçu sa réponse", () => {
+  it("une trace de présence l'éteint — la session a bien été animée", () => {
+    // Première des deux issues prescrites, et elle est établie par une signature
+    // d'émargement plutôt que par un clic : une preuve opposable à un
+    // certificateur, pas une déclaration.
+    expect(
+      corpsDeLaRegle(),
+      "la règle ne regarde plus les traces de présence : elle criera même sur une " +
+        "session dont l'émargement est signé, c'est-à-dire dont on SAIT qu'elle a été " +
+        "animée — et plus rien ne pourra l'éteindre.",
+    ).toContain("emargementSignatures: { some: { revokedAt: null } }");
+  });
+
+  it("un incident consigné l'éteint — l'organisme a instruit le cas", () => {
+    // Seconde issue prescrite, pour le cas où la session n'a PAS été animée.
+    expect(
+      corpsDeLaRegle(),
+      "la règle ne regarde plus les incidents : consigner un incident — le geste " +
+        "qu'elle réclame elle-même quand la session n'a pas été animée — ne la ferme " +
+        "toujours pas.",
+    ).toContain("incidents: { none: {} }");
+  });
+
+  it("elle reste levée tant qu'AUCUNE des deux réponses n'existe", () => {
+    // Contre-témoin : les deux sorties sont des `none`, donc la règle ne se tait
+    // que si la preuve est ABSENTE. Une garde qui aurait inversé le sens
+    // éteindrait l'alerte précisément quand elle doit crier.
+    const corps = corpsDeLaRegle();
+    expect(corps).toContain("enrollments: { none: {");
+    expect(corps).not.toContain("enrollments: { some: { emargementSignatures");
+  });
+});
