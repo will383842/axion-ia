@@ -197,3 +197,97 @@ largement dépassé. Rectificatif, vérifié dans le code :
   commit y font plusieurs milliers de mots et remontent sur presque tout motif.
   Passer par `--json jobs --jq '.steps[] | select(.conclusion=="failure")'` pour
   obtenir le NOM de l'étape, puis ne grepper que sa sortie.
+
+---
+
+## 7. Reprise du 2026-09-06 matin — ce que la mutation a corrigé dans mon propre raisonnement
+
+> Session relancée après la fermeture inopinée de 00:51. L'arbre portait le split
+> non commité et deux commits non poussés ; rien n'a été perdu.
+
+### 7.1 Le témoin neuf rougit — vérifié avant d'être cru
+
+`budget-public-et-admin-sont-separes.spec.ts` : 6 tests verts sur l'arbre sain.
+Glob muté en `(admin)` nu → **2 tests rouges** (l'exclusion et l'échappement),
+puis restauré. La garde discrimine.
+
+Suite complète `tests/unit/ci/` : **37 fichiers, 184 tests, verts.** `typecheck`
+vert (bannière `> tsc --noEmit` lue). `format:check` vert sur le glob complet.
+
+### 7.2 🔴 Ce que le prompt de relance demandait ne suffisait PAS — et je l'ai découvert en mutant
+
+Le pas 6 demandait « chaque bucket a matché ≥ 1 fichier, sinon exit 1 ». Écrit,
+puis **éprouvé** en remettant `(admin)` nu dans la seule NÉGATION, avec la limite
+publique desserrée pour isoler le cas muet.
+
+**Le contrôle est resté VERT. La mesure aussi.**
+
+Parce que `(admin)` ne correspond pas à _rien_ :
+
+| Motif                                    | Fichiers |
+| ---------------------------------------- | -------- |
+| `chunks/app/**/(admin)/**/page-*.js`     | **0**    |
+| `chunks/app/**/[(]admin[)]/**/page-*.js` | **311**  |
+| `chunks/app/**/(admin)/**` ← l'EXCLUSION | **8**    |
+
+picomatch lit les parenthèses comme un groupe, donc le motif désigne le
+répertoire **littéralement** nommé `admin` — et il en existe un,
+`chunks/app/api/admin/`, qui porte 8 chunks de route handlers. Aucun n'est un
+`page-*.js`. L'exclusion satisfait donc « ≥ 1 correspondance » **en n'excluant
+rien du tout**, et le bucket public ré-avale les 452 kB de la console en vert.
+
+🔑 **Un compte non nul ne prouve pas qu'un motif désigne la bonne population.**
+Le seul témoin qui discrimine est une **identité exacte**. D'où le second
+contrôle, la **PARTITION** : `/appel` + public + admin couvrent tous les
+`page-*.js` et n'en partagent aucun.
+
+- arbre sain : `5 + 186 + 311 = 502` pour 502 chunks ✅
+- sous mutation : `5 + 497 + 311 = 813` pour 502 chunks → **311 comptés deux
+  fois**, rouge, avec les trois premiers chemins fautifs nommés ✅
+
+### 7.3 Le moteur de globs du contrôle DOIT être celui de la mesure
+
+Premier jet écrit avec `fs.globSync` de Node. Il rend **311 fichiers pour
+`(admin)` nu** — le glob de Node traite `(` comme un caractère littéral. Un
+contrôle bâti dessus aurait été **vert sur la faute exacte qu'il doit attraper**.
+
+`scripts/ci/bundle-check.mjs` importe donc `tinyglobby` **par la résolution de
+size-limit lui-même** (`size-limit/get-config.js` : `glob(patterns, { cwd })`).
+Contrôle et mesure ne peuvent plus diverger : même moteur, même version, même
+`cwd`.
+
+### 7.4 Deux motifs morts, trouvés dès le premier passage
+
+`gallery/**` (bucket `/galerie`) et `locations/**` (bucket `/implantations`) :
+**0 fichier chacun, depuis le jour de leur écriture.** Ce sont des alias
+`pathnames` de next-intl, réécrits au runtime — ils n'ont jamais de répertoire
+propre dans l'App Router, donc jamais de répertoire de chunks. Ils étaient verts
+parce que l'autre inclusion de leur bucket, elle, correspondait : size-limit ne
+dit rien tant que l'union n'est pas vide.
+
+C'est le trou de `/reserver` (juin → août), toujours ouvert, sur deux autres
+motifs. Retirés ; raison consignée dans `package.json`
+(`_size_limit_alias_note`). ⛔ **Ne pas les remettre à la réactivation du locale
+EN** : le chemin de chunk vient de l'arborescence de fichiers, jamais du pathname
+localisé.
+
+### 7.5 Ce qui est commité
+
+| Commit      | Contenu                                                                                         |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| `fff4e9e48` | Gate A (format) — 8 fichiers dont 3 `.md`                                                       |
+| `d4aa0f2d8` | ce journal                                                                                      |
+| `51acefe58` | split public 265 / admin 470, étape déplacée, `bundle-check.mjs`, garde statique, alias retirés |
+| `6f3da0f02` | **ADR 0049** + point daté dans `AGENTS.md`                                                      |
+
+### 7.6 File de fusion — engagement pris envers une session pair
+
+`axion-ia-f1` a réservé la file le 06/09 : **#997 et #999 fusionnées en une seule
+salve** (06:44:09Z → `b8d3134b1`, 06:44:37Z → `1dfab1872`), `cancel-in-progress` a
+tué le premier build, **un seul survit** (`34017291398`). Cible d'atterrissage :
+`x-axion-build-sha = 1dfab1872…` sur la prod. Budget annoncé **1 h 15**, pas 50
+min (mesuré trois fois le 05/09).
+
+⛔ **#1003 ne sera pas fusionnée avant son signal.** Pousser sur la branche de PR
+ne déclenche que `ci.yml` ; `deploy-coolify` ne part que sur push `main`. Aucun
+risque pour son build.
