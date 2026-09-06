@@ -23,7 +23,9 @@ type ActionResult<T> = { data: T } | { error: string };
 
 type ResoudreAction = (input: { id: string }) => Promise<ActionResult<{ id: string }>>;
 type MarquerLuAction = (input: { id: string }) => Promise<ActionResult<{ id: string }>>;
-type SynchroniserAction = () => Promise<ActionResult<{ crees: number; resolues: number }>>;
+type SynchroniserAction = () => Promise<
+  ActionResult<{ crees: number; resolues: number; rafraichies: number }>
+>;
 type MarquerToutLuAction = () => Promise<ActionResult<{ count: number }>>;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -128,9 +130,31 @@ export function AlerteActions(props: AlerteActionsProps): React.ReactElement {
       if ("error" in result) {
         setError(result.error);
       } else {
-        const { crees, resolues } = result.data;
+        const { crees, resolues, rafraichies } = result.data;
+        // 🔴 `rafraichies` EST AFFICHE, et ce n'est pas un detail de rapport.
+        //
+        // Une alerte deja ouverte gardait son libelle du jour de sa creation :
+        // le titre de `emargement_aucune_signature` a ete corrige le 2026-09-05
+        // et la prod affichait encore l'ancien. #1010 a repare le moteur, qui
+        // relit et remet a jour les lignes ouvertes.
+        //
+        // Mais le compteur s'arretait au serveur : l'action ne rendait que
+        // `crees` et `resolues`, et l'ecran n'en disait rien. Constate EN PROD
+        // le 2026-09-06 en cliquant ce bouton — « 1 creee, 0 resolues », et pas
+        // un mot sur ce qui venait d'etre reecrit. Le commit de #1010 promettait
+        // pourtant l'inverse : « un rafraichissement muet ne previent personne
+        // qu'un texte a change sous les yeux du lecteur ».
+        //
+        // 🔑 Un texte qui change sous les yeux de quelqu'un sans que rien ne le
+        // dise est pire qu'un texte perime : le lecteur croit relire ce qu'il
+        // avait deja lu. Le nombre n'apparait donc QUE s'il est non nul — le cas
+        // courant reste « 3 creees, 1 resolue », sans bruit.
+        const suffixe =
+          rafraichies > 0
+            ? `, ${rafraichies} libellé${rafraichies !== 1 ? "s" : ""} mis à jour`
+            : "";
         setSuccessMsg(
-          `Synchronisation terminée — ${crees} créée${crees !== 1 ? "s" : ""}, ${resolues} résolue${resolues !== 1 ? "s" : ""}.`,
+          `Synchronisation terminée — ${crees} créée${crees !== 1 ? "s" : ""}, ${resolues} résolue${resolues !== 1 ? "s" : ""}${suffixe}.`,
         );
         router.refresh();
       }
