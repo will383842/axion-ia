@@ -32,6 +32,8 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 /**
  * Pictogramme et teinte d'identité par canal — refonte 2026-08-02.
@@ -71,6 +73,11 @@ export default async function InboxPage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/contacts`;
 

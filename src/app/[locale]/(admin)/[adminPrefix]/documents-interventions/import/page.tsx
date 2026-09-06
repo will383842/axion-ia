@@ -5,6 +5,8 @@
 import { prisma } from "@/lib/prisma";
 import { KitImporter } from "@/components/admin/documents-interventions/KitImporter";
 import { TriangleAlert } from "lucide-react";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" });
 
@@ -29,7 +31,17 @@ interface Summary {
   errors?: string[];
 }
 
-export default async function ImportKitPage(): Promise<React.ReactElement> {
+export default async function ImportKitPage({
+  params,
+}: {
+  params: Promise<{ locale: string; adminPrefix: string }>;
+}): Promise<React.ReactElement> {
+  const { locale, adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+
   const runs = await prisma.kitImportRun.findMany({
     orderBy: { createdAt: "desc" },
     take: 10,

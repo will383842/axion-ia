@@ -42,6 +42,8 @@ import {
   semaineDe,
   type VueAgenda,
 } from "@/features/admin-agenda/calendrier";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -106,6 +108,11 @@ export default async function AgendaPage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const { jour: jourBrut, vue: vueBrute, sources: sourcesBrutes } = await searchParams;
 
   const maintenant = new Date();

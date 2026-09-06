@@ -9,6 +9,8 @@ import type { Metadata } from "next";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { listFormateurs } from "@/server/coaching-admin/queries";
 import { FormateurAccountManager } from "@/components/admin/coaching/FormateurAccountManager";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 // Cet écran était le seul du pôle Qualiopi sans titre : l'onglet du navigateur
 // affichait le nom générique du site. Le reste du back-office en manque aussi
@@ -19,7 +21,17 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function CoachingFormateursPage(): Promise<React.ReactElement> {
+export default async function CoachingFormateursPage({
+  params,
+}: {
+  params: Promise<{ locale: string; adminPrefix: string }>;
+}): Promise<React.ReactElement> {
+  const { locale, adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+
   const rows = await listFormateurs();
   const formateurs = rows.map((f) => ({
     id: f.id,

@@ -7,6 +7,8 @@
 // comme filtre interne à l'écran Messages. Même patron que /contacts/presse.
 
 import { SubmissionsV2 } from "../../submissions/_v2/SubmissionsV2";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,11 @@ interface PageProps {
 
 export default async function ContactsConferencesPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const sp = await searchParams;
   return (
     <SubmissionsV2

@@ -23,6 +23,8 @@ import { MonthGridCalendar, type MonthGridDay } from "@/components/admin/ui/Mont
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { AdminPageHeader, AdminButton } from "@/components/admin/ui";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -120,6 +122,11 @@ export default async function PlanningPage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const sp = await searchParams;
 
   const now = new Date();

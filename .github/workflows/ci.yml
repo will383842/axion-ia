@@ -150,6 +150,13 @@ jobs:
       # ni tests ne bronchent. Ce gate résout chaque href sur le disque.
       - name: Admin nav → routes existantes
         run: pnpm admin-nav:routes-check
+      # Leçon du contournement du 2026-09-05 : une URL admin finissant par une
+      # extension sortait du proxy, donc de la SEULE authentification du
+      # périmètre, et 48 écrans s'ouvraient d'un coup. La faille est fermée
+      # (#1000) ; ce gate empêche qu'un 27ᵉ écran soit à nouveau écrit sans
+      # garde propre, côté serveur.
+      - name: Chaque page de la console consulte une session
+        run: pnpm admin-gardes:check
       # Repositionnement 2026-08-29 (PME, ETI et grands groupes). La régression
       # ne vient pas d'un humain qui réécrit une page : elle vient des PROMPTS,
       # qui reconstruisent le positionnement à chaque run. Trouvé le 2026-08-30 :

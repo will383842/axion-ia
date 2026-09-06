@@ -15,6 +15,8 @@ import {
 } from "@/content/intervention-documents-catalog";
 import { getSlotStates } from "@/server/intervention-documents/queries";
 import { SlotUploader } from "@/components/admin/documents-interventions/SlotUploader";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; famille: string; slug: string }>;
@@ -39,6 +41,11 @@ export default async function InterventionDocumentsPage({
   params,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix, famille: segment, slug } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const famille = ROUTE_SEGMENT_TO_FAMILLE[segment];
   if (!famille) notFound();
 

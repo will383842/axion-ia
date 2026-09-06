@@ -22,6 +22,8 @@ import { dayKeyInParis } from "@/lib/calendar-grid";
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 import { TriangleAlert } from "lucide-react";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -81,6 +83,11 @@ export default async function PlanningDetailPage({
   params,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix, type, id } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   if (!(TYPES as string[]).includes(type)) notFound();
 
   const e = await getPlanningEventDetail(type as PlanningEventType, id);

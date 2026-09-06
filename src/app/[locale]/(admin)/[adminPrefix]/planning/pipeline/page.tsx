@@ -18,6 +18,8 @@ import Link from "next/link";
 import { getPipeline, FENETRE_JOURS_DEFAUT } from "@/features/admin-planning/pipeline-queries";
 import type { Etage } from "@/features/admin-planning/pipeline";
 import { AdminPageHeader, AdminBadge, AdminCard } from "@/components/admin/ui";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -97,6 +99,11 @@ export default async function PlanningPipelinePage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const sp = await searchParams;
 
   const fenetre = parseFenetre(sp["fenetre"]);

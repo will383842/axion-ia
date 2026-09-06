@@ -8,6 +8,8 @@
 import { auth } from "@/auth";
 import { markInboxRead } from "@/features/admin-inbox/reads";
 import { SubmissionDetailContent } from "../../../submissions/_v2/SubmissionDetailContent";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +19,11 @@ interface PageProps {
 
 export default async function ContactsCommercialDetailPage({ params }: PageProps) {
   const { adminPrefix, id } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   // Boîte de réception : ouvrir la fiche vaut lecture (best-effort, ne throw pas).
   const session = await auth();
   await markInboxRead(session?.user?.id, "submission", id);

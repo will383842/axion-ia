@@ -13,6 +13,8 @@ import { getPrevisionnel } from "@/server/qualiopi/previsionnel/queries";
 import { ligneVide, totaux, type LignePrevisionnel } from "@/server/qualiopi/previsionnel/calcul";
 import { AdminPageHeader, AdminButton } from "@/components/admin/ui";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 
@@ -99,6 +101,11 @@ export default async function PlanningPrevisionnelPage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/fr/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/fr/${adminPrefix}`} />;
+  }
+
   const sp = await searchParams;
 
   const now = new Date();

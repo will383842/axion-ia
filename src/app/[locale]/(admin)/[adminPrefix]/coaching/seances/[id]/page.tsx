@@ -10,6 +10,8 @@ import {
 } from "@/server/formateur/coaching-options";
 import { sumHeuresReelles } from "@/server/qualiopi/coaching-1to1/heures";
 import { CoachingFacturationPanel } from "@/components/admin/coaching/CoachingFacturationPanel";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
@@ -43,6 +45,11 @@ export default async function AdminSeanceDetailPage({
   params: Promise<{ id: string; locale: string; adminPrefix: string }>;
 }): Promise<React.ReactElement> {
   const { id, locale, adminPrefix } = await params;
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+
   const s = await getSessionAdmin(id);
   if (!s) notFound();
   const seancesHref = `/${locale}/${adminPrefix}/coaching/seances`;
