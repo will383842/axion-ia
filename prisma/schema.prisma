@@ -5764,6 +5764,21 @@ enum SessionFormateurRole {
 enum MissionFormateurStatut {
   en_attente
   acceptee
+  /// Accord donne HORS de l'outil, consigne a posteriori par l'organisme.
+  ///
+  /// 🔴 2026-09-06 — DISTINCT de `acceptee`, et ce n'est pas un detail de
+  /// vocabulaire. `acceptee` signifie « le formateur a repondu par son lien » :
+  /// la piece porte alors une trace horodatee de SON geste. Ecrire `acceptee`
+  /// pour un accord recueilli au telephone fabriquerait cette trace — le meme
+  /// defaut que le commentaire de `sans_reponse` refuse dans l'autre sens
+  /// (« un silence n'est pas un refus »).
+  ///
+  /// Ici l'accord EXISTE, mais sa preuve est ailleurs : l'organisme l'atteste,
+  /// se nomme, se date et se justifie. Un auditeur doit pouvoir lire les deux
+  /// cas SANS les confondre, donc ils ne partagent pas la meme valeur.
+  ///
+  /// Pour les regles d'alerte, il vaut `acceptee` : quelqu'un tient la place.
+  accord_hors_outil
   refusee
   retiree
   expiree
@@ -5956,6 +5971,14 @@ model MissionFormateur {
   /// Obligatoire sur un refus : l'organisme doit pouvoir dire POURQUOI il a
   /// changé de formateur.
   motifRefus    String?                @map("motif_refus") @db.Text
+  /// Accord consigne a posteriori — QUAND, PAR QUI, et POURQUOI.
+  ///
+  /// Les trois vont ensemble : une attestation sans auteur ni motif n'est pas
+  /// une preuve, c'est une affirmation. Le motif est obligatoire cote service,
+  /// comme celui d'une annulation de piece — c'est l'auditeur qui le lit.
+  accordHorsOutilAt    DateTime? @map("accord_hors_outil_at")
+  accordHorsOutilParId String?   @map("accord_hors_outil_par_id") @db.Uuid
+  accordHorsOutilMotif String?   @map("accord_hors_outil_motif") @db.Text
   createdAt     DateTime               @default(now()) @map("created_at")
   updatedAt     DateTime               @updatedAt @map("updated_at")
 

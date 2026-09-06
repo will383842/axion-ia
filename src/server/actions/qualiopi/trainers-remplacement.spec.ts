@@ -285,7 +285,12 @@ describe("🔴 D1 — la mission ACCEPTÉE d'un formateur écarté cesse de teni
     });
     store.formateurPrincipalId = null;
 
-    const accepteesRestantes = store.missions.filter((m) => m.statut === "acceptee");
+    // ⚠️ Les DEUX statuts qui « tiennent la place » — cf. le prédicat du moteur.
+    // N'en compter qu'un laisserait passer un accord consigné hors outil resté
+    // sur le formateur écarté, qui ferait taire les alertes exactement pareil.
+    const accepteesRestantes = store.missions.filter(
+      (m) => m.statut === "acceptee" || m.statut === "accord_hors_outil",
+    );
     expect(
       accepteesRestantes,
       "une mission « acceptee » subsiste : les deux règles feront `continue` et la session " +
@@ -301,7 +306,13 @@ describe("🔴 D1 — la mission ACCEPTÉE d'un formateur écarté cesse de teni
       evaluateur,
       'le moteur d\'alertes ne sélectionne plus `missionsFormateur` sur `statut: "acceptee"` : ' +
         "le prédicat mesuré ici n'est plus le sien",
-    ).toMatch(/missionsFormateur:\s*\{\s*where:\s*\{\s*statut:\s*"acceptee"\s*\}/);
+      // 2026-09-06 — la sélection s'est ÉLARGIE à `accord_hors_outil` : un accord
+      // donné hors de l'outil et consigné par l'organisme tient la place autant
+      // qu'une acceptation cliquée. Le prédicat mesuré ici suit, sinon ce témoin
+      // resterait vert sur une condition que le moteur n'emploie plus.
+    ).toMatch(
+      /missionsFormateur:\s*\{\s*where:\s*\{\s*statut:\s*\{\s*in:\s*\["acceptee",\s*"accord_hors_outil"\]/,
+    );
   });
 });
 

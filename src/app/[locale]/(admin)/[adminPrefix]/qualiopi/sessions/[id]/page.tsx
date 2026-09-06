@@ -878,6 +878,16 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               trainingSession.statut === "planifiee" && trainingSession.dateDebut > new Date()
             }
             absencePossible={trainingSession.dateDebut <= new Date()}
+            // Le geste n'a de sens que si la session a démarré ET que personne
+            // n'a répondu. Sur une mission acceptée, refusée ou retirée, il n'y
+            // a rien à consigner — et le service refuse, mais un bouton qui
+            // refuse une fois sur deux n'est pas un bouton.
+            accordConsignable={
+              trainingSession.dateDebut <= new Date() &&
+              (missionFormateur?.statut === "expiree" ||
+                missionFormateur?.statut === "sans_reponse" ||
+                missionFormateur?.statut === "en_attente")
+            }
           />
         )}
       </section>
