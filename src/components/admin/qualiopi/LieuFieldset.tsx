@@ -73,7 +73,7 @@ export function LieuFieldset({
   // d'accès », et l'aide qui promettait un envoi « avec l'adresse, la salle et
   // le contact » alors qu'il n'y a ni adresse ni salle.
   //
-  // C'est le même défaut que l'alerte #980 : l'écran de SORTIE avait été rendu
+  // C'est le même défaut que l'alerte de la PR 980 : l'écran de SORTIE avait été rendu
   // par modalité, l'écran de SAISIE qui l'alimente ne l'avait pas été. Les cinq
   // chaînes viennent donc d'UNE fonction, et sa garde exige qu'elles bougent
   // TOUTES ensemble — trois ternaires côte à côte se corrigent une par une, et
