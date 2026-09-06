@@ -289,6 +289,21 @@ export function LiensEmargement({
         est personnel, il ne se projette pas pour toute la salle. En distanciel, copiez le lien dans
         le chat de la visio.
       </p>
+      {/*
+        🔴 2026-09-06 — dire ce que « Émettre » ne fait PAS, et ce qu'il coûte.
+        « Émettre » fabrique et affiche ; il n'envoie rien. Un admin qui s'arrête
+        là croit ses stagiaires servis : c'est ce qui est arrivé sur
+        AXI-SESS-2026-001, où personne n'a pu émarger. Depuis, le cron horaire
+        rattrape ce cas — mais en réémettant, donc en tuant le QR déjà imprimé.
+        Ce résidu ne se corrige pas en code : il se DIT, ici, avant le clic.
+      */}
+      <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        <strong>« Émettre » n&apos;envoie rien</strong> : le bouton fabrique les liens et affiche
+        les QR, c&apos;est tout. Pour que les stagiaires les reçoivent, cliquez «&nbsp;Envoyer les
+        liens par e-mail&nbsp;». Si vous imprimez un QR sans envoyer, le rattrapage automatique du
+        jour J enverra les liens — et <strong>le QR imprimé cessera alors de fonctionner</strong>,
+        chaque envoi révoquant le lien précédent.
+      </p>
 
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
         <button type="button" onClick={emettre} disabled={isPending} className="admin-button">

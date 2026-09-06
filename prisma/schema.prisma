@@ -8119,6 +8119,24 @@ model EmargementToken {
   /// cette colonne, un lien transféré signe au nom du destinataire initial.
   /// Hashée, jamais en clair : la ligne survit cinq ans.
   destinataireEmailSha256 String?                 @map("destinataire_email_sha256") @db.VarChar(64)
+  /// 🔴 Instant où le lien a été REMIS à son destinataire — posé APRÈS un
+  /// `enqueueEmail` accepté, jamais à la création (2026-09-06).
+  ///
+  /// Fabriquer un lien et l'envoyer sont deux actes distincts, et c'est
+  /// délibéré : « Émettre les liens » crée les jetons et affiche les QR pour la
+  /// salle sans expédier le moindre message. Mais rien ne les DISTINGUAIT en
+  /// base — un jeton fabriqué et un jeton remis étaient la même ligne.
+  ///
+  /// Vécu sur AXI-SESS-2026-001 (SCI Invest Sun) : la garde anti-réémission du
+  /// cron `liens-emargement-j0` écartait les sessions ayant « un jeton vivant ».
+  /// Un clic sur « Émettre » suffisait donc à la désarmer DÉFINITIVEMENT — la
+  /// stagiaire n'a jamais rien reçu, personne n'a pu émarger, et le dossier
+  /// s'est arrêté jusqu'à l'attestation, qui exige une trace de présence. Un
+  /// état intermédiaire que rien ne nomme arrête toute une chaîne.
+  ///
+  /// Même doctrine que `Enrollment.convocationEnvoyeeAt` et
+  /// `DocumentGenere.exemplaireSigneEnvoyeAt` : l'horodatage SUIT l'envoi.
+  envoyeAt                DateTime?               @map("envoye_at")
   createdAt               DateTime                @default(now()) @map("created_at")
 
   signatures       EmargementSignature[]
@@ -8127,6 +8145,8 @@ model EmargementToken {
   @@index([enrollmentId])
   @@index([coachingId])
   @@index([expiresAt])
+  /// Sert la garde du cron : « existe-t-il un jeton REMIS et encore vivant ? ».
+  @@index([envoyeAt, expiresAt], map: "emargement_tokens_envoye_expire_idx")
   @@map("emargement_tokens")
 }
 

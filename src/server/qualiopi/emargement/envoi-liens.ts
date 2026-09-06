@@ -87,7 +87,7 @@ export async function envoyerLiensPourSession(input: {
   for (const inscription of formation.enrollments) {
     const nom = `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim();
     try {
-      const { token } = await creerTokenInscription({
+      const { token, tokenId } = await creerTokenInscription({
         enrollmentId: inscription.id,
         dateFinSession: formation.dateFin,
         // Le lien est LIÉ à l'adresse qui le reçoit (ADR 0048 §4.1) : c'est la
@@ -137,6 +137,46 @@ export async function envoyerLiensPourSession(input: {
               : "File de messages indisponible — le lien n'est pas parti, réessayez.",
         });
         continue;
+      }
+      // 🔴 2026-09-06 — MARQUER LE JETON COMME REMIS, et seulement ici.
+      //
+      // C'est la seule ligne de code qui sépare « fabriqué » de « envoyé ».
+      // Sans elle, la garde anti-réémission du cron `liens-emargement-j0` lit
+      // l'EXISTENCE d'un jeton vivant : un clic sur « Émettre les liens »
+      // (qui n'expédie rien, par décision) la désarmait définitivement, et plus
+      // aucun lien ne partait — vécu sur AXI-SESS-2026-001.
+      //
+      // Posée APRÈS le `if (!envoi.enqueued)` ci-dessus, jamais avant : c'est la
+      // même doctrine que `convocationEnvoyeeAt` et `exemplaireSigneEnvoyeAt`.
+      // Un horodatage posé avant l'envoi affirme un fait qui n'a pas eu lieu.
+      //
+      // 🔴 `try/catch` ET NON `.catch()`. Le compteur reste incrémenté quoi
+      // qu'il arrive : l'e-mail EST accepté par la file à ce stade, le stagiaire
+      // recevra son lien même si cette écriture échoue. Faire échouer l'envoi
+      // pour une marque non posée inverserait le remède et le mal — le seul coût
+      // d'un échec ici est qu'un passage du cron pourra réémettre, ce qui est
+      // visible et sans perte de preuve.
+      //
+      // ⚠️ Le `.catch()` d'origine ne suffisait PAS, et un test voisin l'a montré
+      // avant la production : il n'intercepte qu'une promesse rejetée. Si l'accès
+      // `prisma.emargementToken` lève d'abord — client non initialisé, modèle
+      // absent d'un double de test —, l'exception est SYNCHRONE, aucun `.catch()`
+      // n'est encore attaché, et elle remonte au `try` de la boucle. L'envoi
+      // réussi était alors rapporté comme « Envoi impossible » : exactement
+      // l'inversion que le paragraphe ci-dessus dit vouloir éviter, écrite deux
+      // lignes plus bas. Un fail-soft qui ne couvre qu'une moitié des façons
+      // d'échouer n'est pas un fail-soft.
+      try {
+        await prisma.emargementToken.update({
+          where: { id: tokenId },
+          data: { envoyeAt: new Date() },
+        });
+      } catch (err) {
+        console.error(
+          `[envoi-liens] jeton ${tokenId} REMIS mais non marqué — le cron ` +
+            "pourra le réémettre :",
+          err instanceof Error ? err.message : String(err),
+        );
       }
       envoyes++;
     } catch (err) {

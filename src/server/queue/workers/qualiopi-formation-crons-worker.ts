@@ -1713,6 +1713,19 @@ async function handleOffresFraicheur(): Promise<void> {
  * probante. Le cron le journalise ; l'alerte `session_sans_dispositif_emargement`
  * le rend visible dans la console le jour même.
  */
+/**
+ * Frontière entre l'ancienne sémantique des jetons d'émargement et la nouvelle.
+ *
+ * Un jeton créé AVANT la migration `20260906140000_emargement_token_envoye_at`
+ * porte `envoyeAt = NULL` qu'il ait été remis ou non — la colonne n'existait
+ * pas. Le lire comme « jamais envoyé » ferait réémettre, donc révoquer, un lien
+ * peut-être déjà entre les mains d'un stagiaire.
+ *
+ * Exporté pour que le témoin puisse fabriquer un jeton de chaque côté de la
+ * frontière : c'est la seule façon de prouver que l'héritage est bien épargné.
+ */
+export const SEUIL_ENVOYE_AT = new Date("2026-09-06T14:00:00.000Z");
+
 async function handleLiensEmargementJ0(): Promise<void> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     console.log("[formation-crons] liens-emargement-j0: stub DB, skip");
@@ -1741,10 +1754,48 @@ async function handleLiensEmargementJ0(): Promise<void> {
       dateDebut: { gte: borneBasse24h, lt: finJour },
       AND: [
         { enrollments: { some: { ...inscriptionsActives() } } },
-        // La garde anti-réémission : personne n'a de lien vivant.
+        // 🔴 2026-09-06 — LA GARDE LISAIT L'EXISTENCE D'UN JETON, PAS SA REMISE.
+        //
+        // Elle disait « personne n'a de lien vivant ». Mais fabriquer un lien et
+        // l'envoyer sont deux actes distincts et délibérément séparés :
+        // « Émettre les liens » crée les jetons et affiche les QR pour la salle
+        // SANS expédier le moindre message. Un clic sur ce bouton suffisait donc
+        // à faire croire à ce cron que le travail était fait — et il ne repassait
+        // plus jamais.
+        //
+        // Vécu sur AXI-SESS-2026-001 : jetons fabriqués, aucun envoi dans le
+        // journal, la stagiaire n'a jamais rien reçu, personne n'a pu émarger. Et
+        // faute de trace de présence, `attestations-auto` ne pouvait pas délivrer
+        // sa pièce non plus. Un seul état non nommé arrêtait toute la chaîne.
+        //
+        // La garde lit désormais `envoyeAt`, posé par `envoyerLiensPourSession`
+        // APRÈS un envoi accepté.
         {
           enrollments: {
-            none: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
+            none: {
+              emargementTokens: {
+                some: {
+                  revokedAt: null,
+                  expiresAt: { gt: now },
+                  OR: [
+                    { envoyeAt: { not: null } },
+                    // ⚠️ HÉRITAGE — les jetons d'avant la migration portent
+                    // `envoyeAt = NULL` qu'ils aient été remis ou non : la
+                    // colonne n'existait pas, et aucun backfill ne peut inventer
+                    // ce qui n'a pas été écrit. Les lire comme « jamais envoyés »
+                    // ferait réémettre — donc RÉVOQUER — un lien qu'un stagiaire
+                    // a peut-être reçu et s'apprête à utiliser. On corrigerait un
+                    // envoi manquant en fabriquant un émargement perdu.
+                    //
+                    // Ils gardent donc l'ancienne sémantique : leur existence
+                    // vaut « traité ». Le coût est borné dans le temps — un jeton
+                    // expire 48 h après la fin de session, le stock hérité
+                    // s'éteint de lui-même en quelques jours.
+                    { createdAt: { lt: SEUIL_ENVOYE_AT } },
+                  ],
+                },
+              },
+            },
           },
         },
       ],
