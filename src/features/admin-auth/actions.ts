@@ -11,7 +11,13 @@ import { signIn, signOut, auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generate2FASecret, verify2FACode } from "@/lib/auth-2fa";
 import { verifyPasswordSafe } from "@/lib/auth-password";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { consulterRateLimit, enregistrerTentative } from "@/lib/rate-limit";
+import {
+  LIMITE_CONNEXION_COMPTE,
+  LIMITE_CONNEXION_IP,
+  cleConnexionCompte,
+  cleConnexionIp,
+} from "@/lib/limites-connexion-admin";
 import { getClientIp } from "@/lib/client-ip";
 import { signInSchema, setup2FASchema, disable2FASchema } from "@/lib/schemas/auth";
 import { adminPath } from "@/lib/admin-path";
@@ -41,18 +47,17 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
 
 async function _signInActionInner(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const ip = await getClientIp();
-  // Rate-limit composite IP+email — relaxé 2026-05-10 pendant phase
-  // stabilisation (Will + Claude debug). Original Sprint 15: IP=10/15min,
-  // email=5/15min — trop strict en debug actif où on retente plusieurs fois
-  // par minute. Doctrine ANSSI standard pour login admin = ~5-10 attempts
-  // /15 min, mais sur SaaS B2B premium avec 1 seul admin (Will), risque de
-  // brute-force réel = nul (URL admin secrète + mdp fort + 2FA optionnel).
-  // À redurcir si tu ouvres l'admin à plus d'utilisateurs.
-  const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, {
-    limit: 100,
-    windowSec: 900,
-    surPanne: "refuser",
-  });
+  // 🔴 ON CONSULTE ICI, ON NE COMPTE PAS. Cette action appelle plus bas
+  // `signIn("credentials")`, dont `authorize()` verifie les MEMES cles : une
+  // connexion reussie consommait donc deux hits, et c'est l'utilisateur
+  // legitime qui payait le double comptage (l'attaquant, lui, rend la main
+  // avant `signIn` sur un mot de passe faux — voir `limites-connexion-admin.ts`).
+  //
+  // ⚠️ Consulter ne suffit pas : les chemins qui rendent la main SANS appeler
+  //    `signIn` doivent enregistrer la tentative eux-memes, sinon la force
+  //    brute par mot de passe passe sous le compteur. C'est fait plus bas, a
+  //    chaque `return` d'echec d'identifiants.
+  const rlIp = await consulterRateLimit(cleConnexionIp(ip), LIMITE_CONNEXION_IP);
   if (!rlIp.allowed) {
     return { ok: false, error: messageRefus(rlIp.panne) };
   }
@@ -65,11 +70,10 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
   if (!parsed.success) {
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
-  const rlEmail = await checkRateLimit(`auth:login:email:${parsed.data.email}`, {
-    limit: 50,
-    windowSec: 900,
-    surPanne: "refuser",
-  });
+  const rlEmail = await consulterRateLimit(
+    cleConnexionCompte(parsed.data.email),
+    LIMITE_CONNEXION_COMPTE,
+  );
   if (!rlEmail.allowed) {
     return { ok: false, error: messageRefus(rlEmail.panne) };
   }
@@ -83,6 +87,14 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
   });
   const passwordOk = await verifyPasswordSafe(user?.passwordHash, parsed.data.password);
   if (!user || user.status !== "active" || !passwordOk) {
+    // 🔑 LE SEUL CHEMIN QUE LA FORCE BRUTE EMPRUNTE, et il rend la main sans
+    //    jamais appeler `signIn` : c'est donc ICI que la tentative se compte.
+    //    L'oublier rendrait le formulaire de connexion illimite tout en laissant
+    //    les deux compteurs a l'air actifs.
+    await Promise.all([
+      enregistrerTentative(cleConnexionIp(ip), LIMITE_CONNEXION_IP),
+      enregistrerTentative(cleConnexionCompte(parsed.data.email), LIMITE_CONNEXION_COMPTE),
+    ]);
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
 

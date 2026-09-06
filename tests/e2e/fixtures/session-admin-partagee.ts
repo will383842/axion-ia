@@ -3,14 +3,27 @@
 // 🔴 CE QUE CE CACHE EMPÊCHE, ET POURQUOI IL NE POUVAIT PAS RESTER DANS LES SPECS.
 //
 // La connexion admin est limitée en débit, sur deux compteurs Redis partagés par
-// tous les workers : `auth:login:ip:<ip>` (100 / 15 min) et
-// `auth:login:email:<email>` (50 / 15 min). Deux détails rendent ce plafond
-// beaucoup plus bas qu'il n'en a l'air :
+// tous les workers : `auth:login:ip:<ip>` et `auth:login:email:<email>`.
 //
-//   1. **Une connexion réussie consomme DEUX hits sur chaque compteur.**
-//      `signInAction` compte (features/admin-auth/actions.ts), puis appelle
-//      `signIn("credentials")`, dont `authorize()` recompte les mêmes clés
-//      (auth.ts). Le budget réel est donc de 25 connexions, pas 50.
+// ⚠️ **CES DEUX CHIFFRES ONT CHANGÉ LE 2026-09-06** — SSOT désormais dans
+//    `src/lib/limites-connexion-admin.ts`, à lire là-bas plutôt qu'ici :
+//    **20 / 15 min par IP** et **10 / 15 min par compte** (les anciens 100 et 50
+//    étaient dix fois la doctrine ANSSI, relevés « temporairement » en mai).
+//    Le plafond est donc BEAUCOUP plus bas qu'à l'écriture de ce cache — ce qui
+//    ne rend pas ce cache facultatif, mais indispensable.
+//
+// Un détail rend ce plafond plus bas encore qu'il n'en a l'air :
+//
+//   1. ~~Une connexion réussie consomme DEUX hits~~ — **corrigé le 2026-09-06.**
+//      `signInAction` CONSULTE désormais sans compter, et seul `authorize()`
+//      compte (c'est le chemin qu'un POST direct sur
+//      `/api/auth/callback/credentials` ne peut pas éviter). Une connexion
+//      réussie coûte donc un hit, plus un seul.
+//      🔑 Le « budget réel de 25 » qu'on lisait ici valait pour les connexions
+//      RÉUSSIES, et il a été repris ailleurs comme s'il décrivait la force
+//      brute. C'est faux : sur un mot de passe faux, l'action rendait la main
+//      AVANT `signIn`, donc l'attaquant n'était compté qu'une fois et disposait
+//      de 50 essais, pas de 25.
 //   2. **En CI, l'IP est la même pour tout le monde.** Sous `pnpm start` sans
 //      proxy, ni `x-real-ip` ni `x-forwarded-for` n'existent : `getClientIp()`
 //      rend `"unknown"`, et les quatre workers partagent une seule clé.
