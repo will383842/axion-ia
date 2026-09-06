@@ -122,7 +122,7 @@ export async function marquerToutLuAction(): Promise<ActionResult<{ count: numbe
  * immédiat sans attendre minuit).
  */
 export async function synchroniserAlertesAction(): Promise<
-  ActionResult<{ crees: number; resolues: number }>
+  ActionResult<{ crees: number; resolues: number; rafraichies: number }>
 > {
   const session = await requireAdminWrite();
 
@@ -131,7 +131,7 @@ export async function synchroniserAlertesAction(): Promise<
   await logQualiopiActivity({
     action: "qualiopi.alertes.synchroniser",
     targetType: "AlerteSysteme",
-    changes: { crees: result.crees, resolues: result.resolues },
+    changes: { crees: result.crees, resolues: result.resolues, rafraichies: result.rafraichies },
     session,
   });
 
