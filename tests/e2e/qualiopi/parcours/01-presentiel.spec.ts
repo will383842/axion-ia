@@ -141,6 +141,7 @@
  */
 
 import { test, expect, type Locator, type Page } from "@playwright/test";
+import { LIBELLES_TYPE_DOCUMENT } from "@/server/qualiopi/documents/libelles-type-document";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
 import { CONTENU, creerSession, ENREGISTREMENT, ouvrir, ouvrirSessionDemo } from "./_communs";
 
@@ -763,12 +764,36 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
         "l'écrit avec son `sessionId` (demo.ts:1459-1475, `sessionId` en :1466) : si elle " +
         "manque, soit le seed n'a pas tourné, soit la pièce a été détachée de la session.",
     ).toHaveCount(1, { timeout: 90_000 });
+    // 🔴 2026-09-06 — CETTE ASSERTION ÉTAIT PÉRIMÉE, ET RIEN NE POUVAIT LE DIRE.
+    //
+    // Elle exigeait « Attestation de réalisation ». Or ce libellé est le défaut
+    // qui a été CORRIGÉ le 2026-09-05 : « réalisation » est le vocabulaire du
+    // CERTIFICAT, dû au FINANCEUR, tandis que l'attestation est due au
+    // STAGIAIRE — un auditeur lisant deux lignes voisines ne pouvait pas les
+    // distinguer. L'écran dit désormais ce que la PIÈCE imprime déjà
+    // (`docTitle` de `templates/attestation.tsx`), et deux témoins unitaires le
+    // verrouillent : `docs-section-libelles-derivent.spec.ts` interdit à
+    // `DOC_LABELS.attestation` de dériver de la source ET d'employer le mot
+    // « réalisation », `libelles-vs-titres-pdf.spec.ts` tient l'écran sur le PDF.
+    //
+    // Le correctif est donc parti VERT : la suite E2E ne tournait plus. L'étape
+    // de budget du bundle était placée AVANT elle et la faisait `skipped` sur un
+    // dépassement de quelques kilo-octets (cf. ADR 0049). Cette assertion est le
+    // premier défaut que la remise en ordre a rendu visible.
+    //
+    // ⚠️ DÉRIVÉE, jamais recopiée. Une chaîne écrite ici en toutes lettres
+    // serait exactement ce qui vient de se produire : elle survivrait au
+    // prochain arbitrage de vocabulaire sans que personne ne la relie à sa
+    // source. `LIBELLES_TYPE_DOCUMENT` est LA table, et l'écran lui est adossé
+    // par le témoin cité plus haut — donc lire la table ici, c'est lire l'écran.
     await expect(
       ligneAttestation,
-      "la pièce n'est pas libellée « Attestation de réalisation ». Ce libellé vient de " +
-        "`DOC_LABELS.attestation` (DocumentsSection.tsx:175) : un autre libellé signifie que " +
-        "le `type` en base n'est plus `attestation` (demo.ts:791).",
-    ).toContainText("Attestation de réalisation", { timeout: 30_000 });
+      `la pièce n'est pas libellée « ${LIBELLES_TYPE_DOCUMENT.attestation} ». Ce libellé vient ` +
+        "de `DOC_LABELS.attestation` (DocumentsSection.tsx:196), que " +
+        "`docs-section-libelles-derivent.spec.ts` tient égal à " +
+        "`LIBELLES_TYPE_DOCUMENT.attestation` : un autre libellé signifie que le `type` en " +
+        "base n'est plus `attestation` (demo.ts:791).",
+    ).toContainText(LIBELLES_TYPE_DOCUMENT.attestation, { timeout: 30_000 });
 
     // 🔴 UNE PIÈCE ANNULÉE EST INDISCERNABLE D'UNE PIÈCE VALABLE — SAUF ICI.
     //
