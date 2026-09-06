@@ -291,3 +291,90 @@ min (mesuré trois fois le 05/09).
 ⛔ **#1003 ne sera pas fusionnée avant son signal.** Pousser sur la branche de PR
 ne déclenche que `ci.yml` ; `deploy-coolify` ne part que sur push `main`. Aucun
 risque pour son build.
+
+---
+
+## 8. Run `34018394703` — la CI a tranché, et le déplacement a PAYÉ immédiatement
+
+`b813bb175` · Gate C ✅ · Gate D ✅ · Gate A ❌ · Gate B ❌.
+
+### 8.1 ✅ Ce que le déplacement de l'étape a produit — mesuré, pas espéré
+
+| Étape Gate B                                 | Avant (run 33989952957) | Maintenant    |
+| -------------------------------------------- | ----------------------- | ------------- |
+| Migrer et semer la base E2E                  | `skipped`               | ✅            |
+| Prouver que le build de production a survécu | `skipped`               | ✅            |
+| **Playwright suite**                         | `skipped`               | **a TOURNÉ**  |
+| Poids du bundle                              | `failure` (en tête)     | ✅ (en queue) |
+
+**La suite E2E a tourné pour la première fois sur cette branche : 299 passés,
+1 échec, 1 flaky, 12,7 min.** Et l'étape de budget a tourné **quand même**,
+APRÈS l'échec Playwright — le `if: !cancelled()` a fait exactement ce qu'on lui
+demandait. On connaît maintenant les deux choses au lieu d'aucune.
+
+### 8.2 ✅ Le budget scindé est VERT en CI, aux mêmes comptes qu'en local
+
+```
+· 5 /appel · 186 public · 311 admin = 502 pour 502 chunks — partition exacte
+  public  254,41 kB / 265 KB ✅        admin  451,44 kB / 470 KB ✅
+```
+
+Les **comptes de fichiers sont identiques** au local (502/5/341/311/186), seuls
+les octets bougent : shell 134,94 kB en local → **136,17 kB** en CI. C'est le
+« 500 octets d'écart » du prompt, mesuré ici à ~1,2 kB. **Le local ne certifie
+pas cette gate ; il en donne l'ordre de grandeur.**
+
+### 8.3 🔴 Le PREMIER défaut rendu visible par la remise en ordre
+
+`01-presentiel.spec.ts:655` exigeait « Attestation de réalisation ». L'écran rend
+« Attestation de **fin de formation** ».
+
+**C'est l'écran qui a raison.** « Réalisation » est le vocabulaire du
+**CERTIFICAT**, dû au **FINANCEUR** ; l'attestation est due au **STAGIAIRE**. Un
+auditeur lisant deux lignes voisines ne pouvait pas les distinguer. Corrigé le
+2026-09-05, aligné sur ce que la **pièce imprime déjà**, et verrouillé par DEUX
+témoins unitaires (`docs-section-libelles-derivent.spec.ts`,
+`libelles-vs-titres-pdf.spec.ts`).
+
+🔑 **Le correctif est donc parti VERT en laissant derrière lui une assertion E2E
+qui le contredisait** — parce que l'étape de budget faisait `skipped` la suite
+qui l'aurait dit. Ce n'est pas une hypothèse sur le coût de l'ordre des étapes :
+c'est le premier cas réel qu'il produit, trouvé le jour même de la correction.
+
+L'attente est désormais **dérivée** de `LIBELLES_TYPE_DOCUMENT.attestation`. Une
+chaîne recopiée ici survivrait au prochain arbitrage de vocabulaire sans que
+personne ne la relie à sa source — ce qui vient exactement de se produire.
+⚠️ Aucun autre fichier de `tests/e2e` n'importe de `@/` : l'alias a été **sondé**
+(spec jetable, exécutée, verte) avant d'être écrit, pas supposé.
+
+### 8.4 🔴 Gate A — un numéro de PR lu comme une couleur
+
+`Anti-hex grep` rouge sur `LieuFieldset.tsx:76` : le commentaire citait
+« l'alerte **#980** ». Le motif de `check-anti-hex.sh` accepte 3, 4, 6 ou 8
+chiffres hexadécimaux — `#980` en est un de 3, comme `#abc`.
+
+Là encore ce n'est **pas une régression** : l'étape n'avait jamais tourné.
+Gate A échouait plus tôt, sur `format:check`, et sanctionnait tout le reste en
+`skipped`. **Une gate placée avant les autres décide de ce qu'on apprend** — le
+même énoncé que le §3, sur une autre gate, dans la même journée.
+
+Corrigé en reformulant (« la PR 980 »), pas avec le marqueur `// hex-ok:` : ce
+serait mentir au script sur la nature de la chaîne. Vérifié : seule occurrence du
+motif dans `src/components` et `src/app`.
+
+### 8.5 ⚠️ Non traité, et assumé
+
+`sprint-a-user-journeys.spec.ts:21` — « Expected a Service JSON-LD schema on
+Paris hub » — est **flaky** : passé au retry, il ne fait pas échouer le run. Il
+est antérieur à cette branche. À instruire séparément, pas ici.
+
+### 8.6 Ce qui part au run suivant
+
+| Commit      | Contenu                                                   |
+| ----------- | --------------------------------------------------------- |
+| `6c7418bec` | `#980` → « la PR 980 » (Gate A, anti-hex)                 |
+| `d57c579f3` | l'assertion E2E de l'attestation, **dérivée** de la table |
+
+Contrôles locaux avant push : `typecheck` ✅ (bannière lue), `eslint` ✅ 0 erreur,
+`format:check` ✅ glob complet, `check-anti-hex.sh` ✅, `playwright --list` ✅ sur
+le fichier modifié.
