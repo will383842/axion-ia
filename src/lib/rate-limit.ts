@@ -71,6 +71,87 @@ export interface RateLimitResult {
   panne: boolean;
 }
 
+/**
+ * CONSULTE un compteur sans y ajouter de tentative.
+ *
+ * ── 🔴 Pourquoi cette fonction existe (2026-09-06) ───────────────────────────
+ *
+ * La connexion a la console est verifiee DEUX fois sur les memes cles :
+ * `signInAction` (features/admin-auth/actions.ts) puis `authorize()` (auth.ts),
+ * que la premiere appelle via `signIn("credentials")`. Une connexion REUSSIE
+ * consommait donc deux hits — le budget reel etait la moitie de celui affiche,
+ * et c'est l'utilisateur legitime qui le payait.
+ *
+ * ⚠️ CE QUE CETTE FONCTION NE DOIT PAS DEVENIR. Remplacer naivement le
+ *    comptage d'`authorize()` par une consultation OUVRIRAIT le peage :
+ *    `/api/auth/callback/credentials` est joignable directement, sans passer
+ *    par l'action serveur. Le comptage doit rester sur le chemin qu'on ne peut
+ *    pas contourner. C'est donc l'ACTION qui consulte, et qui n'enregistre la
+ *    tentative que sur les chemins ou elle rend la main sans appeler `signIn`.
+ *
+ * Sur panne, la conduite est celle de `config.surPanne`, comme `checkRateLimit`.
+ */
+export async function consulterRateLimit(
+  key: string,
+  config: RateLimitConfig,
+): Promise<RateLimitResult> {
+  const now = Date.now();
+  const windowMs = config.windowSec * 1000;
+  const cutoff = now - windowMs;
+
+  try {
+    const pipe = redis.pipeline();
+    pipe.zremrangebyscore(key, 0, cutoff);
+    pipe.zcard(key);
+    const results = await pipe.exec();
+
+    if (!results) {
+      return surPanne(new Error("rate-limit: pipeline sans resultat"), key, now, config, windowMs);
+    }
+    const count = (results[1]?.[1] as number | undefined) ?? 0;
+    return {
+      // 🔑 `<` et non `<=` : la tentative en cours n'est PAS encore comptee.
+      //    Autoriser a `count === limit` laisserait passer la (limit + 1)e.
+      allowed: count < config.limit,
+      count,
+      remaining: Math.max(0, config.limit - count),
+      resetAt: now + windowMs,
+      panne: false,
+    };
+  } catch (err) {
+    return surPanne(err, key, now, config, windowMs);
+  }
+}
+
+/**
+ * ENREGISTRE une tentative sans rendre de verdict.
+ *
+ * Complement de `consulterRateLimit` : l'appelant a consulte, a laisse passer,
+ * et sait maintenant que la tentative doit etre decomptee (mot de passe faux,
+ * compte inconnu, compte inactif). N'echoue jamais bruyamment — une panne du
+ * compteur ne doit pas transformer un refus de connexion en erreur 500.
+ */
+export async function enregistrerTentative(key: string, config: RateLimitConfig): Promise<void> {
+  const now = Date.now();
+  const windowMs = config.windowSec * 1000;
+  const member = `${now}:${Math.random().toString(36).slice(2, 8)}`;
+
+  try {
+    const pipe = redis.pipeline();
+    pipe.zremrangebyscore(key, 0, now - windowMs);
+    pipe.zadd(key, now, member);
+    pipe.pexpire(key, windowMs);
+    await pipe.exec();
+  } catch (err) {
+    // Meme signalement que les verdicts : un compteur aveugle doit etre datable.
+    Sentry.captureException(err, {
+      level: "error",
+      tags: { service: "enregistrerTentative" },
+      extra: { clePrefixe: key.split(":").slice(0, 2).join(":") },
+    });
+  }
+}
+
 export async function checkRateLimit(
   key: string,
   config: RateLimitConfig,

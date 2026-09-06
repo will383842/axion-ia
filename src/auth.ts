@@ -17,6 +17,12 @@ import { prisma } from "./lib/prisma";
 import { verify2FACode } from "./lib/auth-2fa";
 import { verifyPasswordSafe } from "./lib/auth-password";
 import { checkRateLimit } from "./lib/rate-limit";
+import {
+  LIMITE_CONNEXION_COMPTE,
+  LIMITE_CONNEXION_IP,
+  cleConnexionCompte,
+  cleConnexionIp,
+} from "./lib/limites-connexion-admin";
 import { signInSchema } from "./lib/schemas/auth";
 import type { AdminRole, AdminStatus } from "../prisma/generated/client";
 
@@ -136,20 +142,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const { email, password, totp } = parsed.data;
         const ip = typeof raw?.ipAddress === "string" ? raw.ipAddress : "unknown";
 
-        // 2. Rate limit composite IP + email — relaxé 2026-05-10 (cf.
-        // commentaire identique dans actions.ts signInAction). Limites élevées
-        // pour V1 admin solo, à redurcir si admin ouvert à plus d'utilisateurs.
-        const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, {
-          limit: 100,
-          windowSec: 900,
-          surPanne: "refuser",
-        });
+        // 2. Rate limit composite IP + email. Plafonds : SSOT
+        //    `lib/limites-connexion-admin.ts` (plus de littéral recopié ici).
+        //
+        // 🔑 C'EST ICI QUE L'ON COMPTE, ET PAS DANS `signInAction`.
+        //    `/api/auth/callback/credentials` est joignable directement, sans
+        //    passer par l'action serveur : le comptage doit vivre sur le chemin
+        //    qu'on ne peut pas contourner. L'action, elle, se contente de
+        //    consulter — sinon une connexion réussie coûterait deux hits, ce
+        //    qu'elle faisait jusqu'au 2026-09-06.
+        const rlIp = await checkRateLimit(cleConnexionIp(ip), LIMITE_CONNEXION_IP);
         if (!rlIp.allowed) return null;
-        const rlEmail = await checkRateLimit(`auth:login:email:${email}`, {
-          limit: 50,
-          windowSec: 900,
-          surPanne: "refuser",
-        });
+        const rlEmail = await checkRateLimit(cleConnexionCompte(email), LIMITE_CONNEXION_COMPTE);
         if (!rlEmail.allowed) return null;
 
         // 3. Lookup user
