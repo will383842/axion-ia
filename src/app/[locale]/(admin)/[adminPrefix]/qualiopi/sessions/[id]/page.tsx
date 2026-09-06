@@ -403,6 +403,14 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         annuleeMotif: true,
         annuleePar: true,
         remplaceeParNumero: true,
+        // 2026-09-06 — sans ces deux colonnes, l'ecran ne peut pas dire si
+        // l'exemplaire signe est parti, et le bouton de relance ne saurait pas
+        // quand s'afficher. La remise n'a qu'UN declencheur automatique, au
+        // moment ou la derniere signature tombe : une piece signee avant la
+        // livraison de ce mecanisme n'a aucun autre chemin. Cf.
+        // `relancerRemiseExemplaireAction`.
+        statutSignature: true,
+        exemplaireSigneEnvoyeAt: true,
       },
     }),
     // 🔴 Ce `findMany` n'avait NI `take` NI recherche : tout le registre des
@@ -533,6 +541,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       // registre propose l'exemplaire signé dès qu'une preuve existe, au lieu de
       // le cacher dans le seul panneau de signature.
       aSignatures: (signaturesParPiece.get(d.id) ?? []).length > 0,
+      statutSignature: d.statutSignature,
+      exemplaireSigneEnvoyeAt: d.exemplaireSigneEnvoyeAt
+        ? d.exemplaireSigneEnvoyeAt.toISOString()
+        : null,
     };
   });
 

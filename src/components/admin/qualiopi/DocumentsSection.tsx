@@ -46,6 +46,7 @@ import {
   genererKitFranceTravailAction,
   genererAutorisationCaptationAction,
   annulerDocumentAction,
+  relancerRemiseExemplaireAction,
 } from "@/server/actions/qualiopi/documents";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
@@ -119,6 +120,20 @@ export interface DocumentGenereInfo {
   /** Numéro de la pièce que celle-ci rectifie, lu depuis `metadata.rectifie`. */
   rectifieNumero?: string | null;
   rectifieMotif?: string | null;
+  /**
+   * État de signature de la pièce, tel qu'il est écrit en base
+   * (`en_attente | partielle | signee`). Sert UNIQUEMENT à savoir si la remise
+   * de l'exemplaire est due — le registre affiche déjà `aSignatures` pour dire
+   * qu'une preuve existe, ce qui n'est pas la même chose : une pièce
+   * PARTIELLEMENT signée porte des signatures et ne se remet pas.
+   */
+  statutSignature?: string | null;
+  /**
+   * Date à laquelle l'exemplaire intégralement signé est parti à ses
+   * signataires. `null` sur une pièce signée = il n'est JAMAIS parti, et c'est
+   * ce que l'alerte `exemplaire_signe_non_transmis` réclame.
+   */
+  exemplaireSigneEnvoyeAt?: string | null;
 }
 
 /**
@@ -310,6 +325,87 @@ function useMotifRectification(dejaGenereLe: string | undefined): {
  * ⚠️ Pas de `window.confirm` : une boîte native bloque la page entière. La
  * confirmation, c'est la saisie du motif — qui est de toute façon obligatoire.
  */
+/**
+ * Relance la remise de l'exemplaire intégralement signé à ses signataires.
+ *
+ * 🔴 CE BOUTON EST LA MOITIÉ MANQUANTE D'UNE PHRASE DÉJÀ ÉCRITE. L'alerte
+ * `exemplaire_signe_non_transmis` se lève en `critique` sur toute pièce signée
+ * dont l'exemplaire n'est pas parti, et son message se termine par : « Rouvrez
+ * la pièce et relancez la remise. » Ce geste n'existait pas. Une alerte
+ * critique qui ordonne l'impossible n'apprend qu'une chose à celui qui la lit :
+ * à ignorer les critiques.
+ *
+ * ⚠️ Il ne s'affiche QUE sur une pièce intégralement signée, non annulée, dont
+ * l'exemplaire n'est jamais parti. Sur toutes les autres il n'y a rien à faire,
+ * et un bouton qui refuse une fois sur deux n'est pas un bouton.
+ *
+ * ⚠️ Pas de confirmation modale, mais le destinataire est nommé dans le
+ * résultat : ce qui protège d'un envoi malheureux ici n'est pas un « êtes-vous
+ * sûr » — c'est de VOIR à qui c'est parti, et la garde atomique côté serveur
+ * qui refuse le second envoi.
+ */
+function RelancerRemiseButton({
+  documentId,
+  numero,
+  libelle,
+}: {
+  documentId: string;
+  numero: string;
+  libelle: string;
+}): React.ReactElement {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [succes, setSucces] = useState<string | null>(null);
+
+  function handleRelancer() {
+    setError(null);
+    setSucces(null);
+    startTransition(async () => {
+      const result = await relancerRemiseExemplaireAction({ documentId });
+      if ("error" in result) {
+        setError(result.error);
+        return;
+      }
+      // Nommer les destinataires, jamais « envoyé ✓ » : celui qui clique doit
+      // pouvoir vérifier que la pièce est partie à la bonne adresse, sans
+      // rouvrir le dossier.
+      setSucces(`Exemplaire remis à ${result.data.destinataires.join(", ")}.`);
+      router.refresh();
+    });
+  }
+
+  return (
+    <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
+      <button
+        type="button"
+        onClick={handleRelancer}
+        disabled={isPending}
+        className="block text-left text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg)] underline underline-offset-2 hover:opacity-80 disabled:opacity-50"
+        aria-label={`Relancer la remise de l'exemplaire signé : ${libelle} n° ${numero}`}
+      >
+        {isPending ? "Remise en cours…" : "Relancer la remise"}
+      </button>
+      {error !== null && (
+        <span
+          role="alert"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-destructive-fg)]"
+        >
+          {error}
+        </span>
+      )}
+      {succes !== null && (
+        <span
+          role="status"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+        >
+          {succes}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function AnnulerDocumentButton({
   documentId,
   numero,
@@ -1820,6 +1916,26 @@ export function DocumentsSection({
                       ) : (
                         <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                       )}
+                      {/* 2026-09-06 — l'etat de la REMISE de l'exemplaire signe.
+                          Il etait invisible : une piece integralement signee dont
+                          l'exemplaire n'est jamais parti avait exactement la meme
+                          ligne qu'une piece remise. Seule l'alerte nocturne le
+                          disait, et elle prescrivait un geste qui n'existait pas. */}
+                      {doc.statutSignature === "signee" &&
+                        doc.annuleeAt == null &&
+                        (typeof doc.exemplaireSigneEnvoyeAt === "string" ? (
+                          <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            {`Exemplaire signé remis le ${new Date(
+                              doc.exemplaireSigneEnvoyeAt,
+                            ).toLocaleDateString("fr-FR")}`}
+                          </span>
+                        ) : (
+                          <RelancerRemiseButton
+                            documentId={doc.id}
+                            numero={doc.numero}
+                            libelle={DOC_LABELS[doc.type] ?? doc.type}
+                          />
+                        ))}
                       {doc.annuleeAt == null && (
                         <AnnulerDocumentButton
                           documentId={doc.id}

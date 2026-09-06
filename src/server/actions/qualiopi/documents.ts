@@ -64,6 +64,7 @@ import {
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
@@ -2818,4 +2819,122 @@ export async function annulerDocumentAction(input: {
   });
 
   return { data: { numero: doc.numero } };
+}
+
+/**
+ * Relance la remise de l'exemplaire intégralement signé à ses signataires.
+ *
+ * ══════════════════════════════════════════════════════════════════════════
+ * 🔴 POURQUOI CE GESTE DOIT EXISTER — L'ALERTE LE PRESCRIVAIT DÉJÀ
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * La remise automatique a été livrée le 2026-09-06 (PR #997). Elle a UN seul
+ * déclencheur : `consequenceSignatureComplete`, appelée AU MOMENT où la
+ * dernière signature tombe (`piece-signature.ts:337`). Et
+ * `exemplaireSigneEnvoyeAt` n'est posé qu'à l'intérieur de
+ * `transmettreExemplaireSigne` elle-même.
+ *
+ * Conséquence, vérifiée appelant par appelant : **une pièce déjà
+ * intégralement signée AVANT la livraison du correctif ne peut plus jamais
+ * être remise.** Son moment de signature est passé, il ne reviendra pas.
+ *
+ * Le correctif fermait le chemin nominal — « les prochaines partiront-elles ? »
+ * oui — et laissait le stock existant hors d'atteinte — « celles qui auraient
+ * dû partir partiront-elles ? » non. Deux questions distinctes ; une seule
+ * avait été posée.
+ *
+ * 🔑 Et l'alerte qui devait rattraper ce cas prescrivait un geste qui
+ * n'existait pas. `regleExemplaireSigneNonTransmis` est `critique`, sans borne
+ * basse, `resolutionAuto: true` — donc elle ne s'éteint QUE si
+ * `exemplaireSigneEnvoyeAt` se pose. Son message se termine par :
+ *
+ *     « Rouvrez la pièce et relancez la remise. »
+ *
+ * Une alerte critique, inextinguible, qui ordonne l'impossible : c'est
+ * exactement le mécanisme que son propre commentaire redoute — « le bruit
+ * apprend à ignorer les critiques, c'est-à-dire l'unique fonction du
+ * dispositif ». Cette action est la moitié manquante de cette phrase.
+ *
+ * ══════════════════════════════════════════════════════════════════════════
+ * ⚠️ UN GESTE D'ADMINISTRATION, PAS UN BALAYAGE AUTOMATIQUE
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * L'autre sortie envisagée était un rattrapage au démarrage, ou un cron, qui
+ * aurait vidé le stock d'un coup. Écartée délibérément : **il enverrait des
+ * courriels contractuels à de vrais clients sans que personne ne l'ait
+ * décidé**, et un doublon chez un client réel ne se rattrape pas. Ici
+ * l'administrateur voit la pièce, voit à qui elle part, et clique.
+ *
+ * C'est aussi, mot pour mot, ce que la copie de l'alerte promet déjà.
+ *
+ * ⚠️ Sûre à rejouer. `transmettreExemplaireSigne` revendique la pièce
+ * atomiquement (`updateMany where exemplaireSigneEnvoyeAt: null`, puis
+ * `count === 0` → abandon) et relâche la revendication si le rendu ou
+ * l'archivage échoue. Deux clics concurrents n'envoient qu'une fois.
+ *
+ * ⚠️ Cette action ne rejoue PAS `consequenceSignatureComplete`. Le hook fait
+ * trois choses — la remise, l'envoi des questionnaires de positionnement, et
+ * la bascule d'un devis en `accepte`. Un bouton nommé « relancer la remise »
+ * qui enverrait aussi des questionnaires mentirait sur ce qu'il fait, et son
+ * innocuité ne tiendrait qu'à l'idempotence des deux autres. On appelle la
+ * fonction de remise, et elle seule.
+ */
+export async function relancerRemiseExemplaireAction(input: {
+  documentId: string;
+}): Promise<ActionResult<{ numero: string; destinataires: string[] }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Remise désactivée en mode build (stub)" };
+
+  const documentId = typeof input?.documentId === "string" ? input.documentId.trim() : "";
+  if (documentId === "") return { error: "Pièce non désignée." };
+
+  const doc = await prisma.documentGenere.findUnique({
+    where: { id: documentId },
+    select: { id: true, numero: true },
+  });
+  if (doc === null) return { error: "Pièce introuvable" };
+
+  const remise = await transmettreExemplaireSigne(documentId);
+
+  if (!remise.ok) {
+    // Chaque motif dit ce qui bloque ET ce qu'on peut y faire. « Échec de la
+    // remise » renverrait l'administrateur au même point qu'avant le bouton.
+    const messages: Record<typeof remise.motif, string> = {
+      deja_transmis: `L'exemplaire de ${doc.numero} est déjà parti — rien n'a été renvoyé.`,
+      pas_complete: `${doc.numero} n'est pas intégralement signée : il reste une partie à signer.`,
+      annulee: `${doc.numero} est annulée au registre : elle ne fait plus foi, on ne la diffuse pas.`,
+      aucun_destinataire: `Aucune partie signataire de ${doc.numero} ne porte d'adresse e-mail : il n'y a personne à qui remettre l'exemplaire.`,
+      rendu_impossible: `Le PDF signé de ${doc.numero} n'a pas pu être reconstitué. La pièce reste transmissible : réessayez, et si l'échec persiste l'instantané de rendu est en cause.`,
+      archivage_impossible: `L'archive R2 n'est pas joignable : un e-mail annonçant l'exemplaire sans le porter serait pire que pas d'e-mail. Rien n'a été envoyé, la pièce reste transmissible.`,
+      file_indisponible: `La file d'e-mails n'a rien accepté. Rien n'est parti, la pièce reste transmissible — réessayez.`,
+    };
+    // Le journal porte AUSSI les échecs : une remise tentée et refusée est un
+    // fait que l'auditeur peut avoir à lire, au même titre qu'une remise faite.
+    await logQualiopiActivity({
+      action: "qualiopi.document.exemplaire_remise_refusee",
+      targetType: "DocumentGenere",
+      targetId: documentId,
+      changes: {
+        numero: doc.numero,
+        motif: remise.motif,
+        ...(remise.detail ? { detail: remise.detail } : {}),
+      },
+      session: adminSession,
+    });
+    return { error: messages[remise.motif] };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.exemplaire_remis",
+    targetType: "DocumentGenere",
+    targetId: documentId,
+    changes: {
+      numero: doc.numero,
+      destinataires: [...remise.destinataires],
+      relanceManuelle: true,
+    },
+    session: adminSession,
+  });
+
+  return { data: { numero: doc.numero, destinataires: [...remise.destinataires] } };
 }
