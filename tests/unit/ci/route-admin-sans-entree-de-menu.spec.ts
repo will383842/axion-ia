@@ -48,6 +48,8 @@ const DOSSIER_TEMOIN = join(ADMIN_ROOT, "temoin-de-garde-reciproque");
 const PAGE_TEMOIN = join(DOSSIER_TEMOIN, "page.tsx");
 const FICHIER_NAV = join(RACINE, "src/lib/admin-nav.ts");
 const FICHIER_BARRE = join(RACINE, "src/components/admin/ui/AdminSidebarNav.tsx");
+/** TROISIÈME source de destinations : les liens écrits en dur du menu utilisateur. */
+const FICHIER_MENU_UTILISATEUR = join(RACINE, "src/components/admin/ui/AdminUserMenu.tsx");
 
 /** Un écran ordinaire : du JSX, et aucune entrée de menu. */
 const ECRAN_ORDINAIRE = `export default function TemoinDeGarde() {
@@ -284,5 +286,64 @@ describe("admin-nav:routes-check refuse une route admin sans entrée de menu", (
       intact,
     );
     expect(lancerLaGarde().code, "et la garde doit être redevenue verte").toBe(0);
+  });
+
+  /**
+   * 🔴 LES TROISIÈME ET QUATRIÈME SOURCES DE NAVIGATION (2026-09-06).
+   *
+   * La console a QUATRE sources de destinations, pas deux : `buildAdminNav()`,
+   * les liens épinglés, le MENU UTILISATEUR et le LAYOUT admin. Les deux
+   * dernières écrivent leurs adresses en dur dans du JSX, et rien ne les
+   * vérifiait — renommer `2fa/setup/` faisait pointer le menu utilisateur sur
+   * un 404, tout en laissant la garde verte.
+   */
+  it("ROUGIT quand un lien écrit en dur dans le menu utilisateur pointe dans le vide", () => {
+    const intact = readFileSync(FICHIER_MENU_UTILISATEUR, "utf8");
+    // La mutation qu'on verrait vraiment : un dossier de route renommé, et un
+    // lien resté sur l'ancien nom parce qu'aucun compilateur ne les relie.
+    const casse = intact.replace("${adminBase}/2fa/setup", "${adminBase}/2fa/setup-renomme");
+    // Sans cette assertion, un remaniement du composant ferait passer le
+    // remplacement à côté : la garde resterait verte, et ce test aussi.
+    expect(casse, "le lien `2fa/setup` est introuvable dans le menu utilisateur").not.toBe(intact);
+
+    try {
+      ecrireAtomiquement(FICHIER_MENU_UTILISATEUR, casse);
+
+      const { code, sortie } = lancerLaGarde();
+
+      expect(code, `un lien en dur vers une route absente devait ÉCHOUER.\n${sortie}`).toBe(1);
+      // On exige le NOM DU FICHIER dans le message : un rouge qui ne dit pas
+      // laquelle des quatre sources est fautive laisse chercher à l'aveugle.
+      expect(sortie).toContain("AdminUserMenu.tsx");
+      expect(sortie).toContain("/2fa/setup-renomme");
+    } finally {
+      ecrireAtomiquement(FICHIER_MENU_UTILISATEUR, intact);
+    }
+
+    expect(
+      readFileSync(FICHIER_MENU_UTILISATEUR, "utf8"),
+      "l'arbre doit être restauré à l'octet près",
+    ).toBe(intact);
+    expect(lancerLaGarde().code, "et la garde doit être redevenue verte").toBe(0);
+  });
+
+  it("ANNONCE combien de liens en dur elle a résolus — sinon son vert ne dit rien", () => {
+    // 🔑 CONTRE-TÉMOIN, et il n'est pas théorique : le même jour, ailleurs dans
+    //    le dépôt, un motif de reconnaissance a cessé de correspondre au code et
+    //    une garde a continué de verdir en ne couvrant plus rien. Une extraction
+    //    qui ne trouve plus aucun lien rendrait « aucun lien invalide », mot pour
+    //    mot ce que rend un vrai succès.
+    const { code, sortie } = lancerLaGarde();
+    expect(code, `la garde devait passer sur un arbre propre.\n${sortie}`).toBe(0);
+
+    const compte = sortie.match(/(\d+) lien\(s\) écrit\(s\) en dur résolu\(s\)/);
+    expect(
+      compte,
+      `la garde n'annonce pas les liens en dur qu'elle a lus.\n${sortie}`,
+    ).not.toBeNull();
+    expect(
+      Number(compte?.[1] ?? 0),
+      "l'extraction ne reconnaît plus la forme des liens en dur",
+    ).toBeGreaterThanOrEqual(4);
   });
 });
