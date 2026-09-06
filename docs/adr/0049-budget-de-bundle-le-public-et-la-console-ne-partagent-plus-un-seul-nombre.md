@@ -64,6 +64,27 @@ Le bucket unique est scindé en deux, et la partition devient un invariant véri
 Le budget public devient donc **2,7 fois plus strict** qu'avant (703 → 265 KB pour la
 même population). Ce n'est pas un assouplissement déguisé : c'est l'inverse.
 
+### ⚠️ Le local donne l'ordre de grandeur de cette gate, jamais son verdict
+
+Le même code, mesuré en local (build Windows) et en CI (run `34018394703`) :
+
+| Bucket        | Local     | CI            | Écart       |
+| ------------- | --------- | ------------- | ----------- |
+| Shell partagé | 134,94 kB | **136,17 kB** | **1,23 kB** |
+| Public        | 254,36 kB | 254,41 kB     | 0,05 kB     |
+| Console admin | 452,01 kB | 451,44 kB     | −0,57 kB    |
+
+🔑 Les **comptes de fichiers, eux, sont identiques** — 502 / 5 / 341 / 311 / 186 des deux
+côtés. Ce qui bouge n'est donc pas ce qu'on mesure mais combien pèse ce qu'on mesure : la
+compression brotli et le contenu exact des chunks diffèrent d'une machine à l'autre.
+
+**Conséquence pratique, et c'est le chiffre qui compte** : l'écart maximum observé
+(1,23 kB) vaut **6,5 % de la marge de 18,5 kB du bucket admin**. Quiconque serrerait un
+cliquet « au plus près du mesuré » depuis un poste local ouvrirait donc un rouge que la
+CI seule verrait, et que personne ne pourrait fermer dans sa propre PR. Les cliquets se
+recalent **sur une mesure de CI**, jamais sur une mesure locale. (Diagnostic partagé avec
+la session `axion-ia-f1`, qui en a produit le chiffrage en pourcentage de marge.)
+
 ## 3. La gate change de PLACE, jamais de force
 
 L'étape « Poids du bundle » était placée **avant** les trois étapes qui prouvent que le
