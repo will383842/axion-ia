@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { listFormateurs } from "@/server/coaching-admin/queries";
 import { FormateurAccountManager } from "@/components/admin/coaching/FormateurAccountManager";
+import { gardePage } from "@/server/auth/garde-page";
 
 // Cet écran était le seul du pôle Qualiopi sans titre : l'onglet du navigateur
 // affichait le nom générique du site. Le reste du back-office en manque aussi
@@ -19,7 +20,23 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function CoachingFormateursPage(): Promise<React.ReactElement> {
+export default async function CoachingFormateursPage({
+  params,
+}: {
+  params: Promise<{ locale: string; adminPrefix: string }>;
+}): Promise<React.ReactElement> {
+  const { locale, adminPrefix } = await params;
+  // 🔑 On appelle la garde pour son EFFET : sans session, elle redirige vers la
+  // connexion. C'est ce que cette page doit garantir par elle-même — le proxy
+  // ne peut pas être la seule couche (contournement du 2026-09-05).
+  //
+  // ⚠️ Pas de `<AccesRefuse>` ici, et ce n'est pas un oubli : en consultation,
+  //    le seul refus possible est « rôle non reconnu », que le layout admin
+  //    intercepte DÉJÀ avant de rendre ses enfants. La branche serait morte, et
+  //    elle coûtait 1,64 kB gz au cliquet de bundle sur les 29 pages de ce lot
+  //    (mesuré par Gate B) — `AccesRefuse` tire `next/link` et une icône.
+  await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+
   const rows = await listFormateurs();
   const formateurs = rows.map((f) => ({
     id: f.id,
