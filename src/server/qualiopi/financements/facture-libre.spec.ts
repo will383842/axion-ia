@@ -55,14 +55,29 @@ describe("normaliserLignesPourActivite", () => {
     expect(result.every((l) => l.tauxTvaPercent === 20)).toBe(true);
   });
 
-  it("exonération 261 + activité hors champ → un taux explicite par ligne est respecté", () => {
+  it("🔴 un taux explicite SOUS le standard est relevé — verrou TVA (ADR 0050)", () => {
+    // Le taux par ligne est une SAISIE UTILISATEUR (`FactureLibreForm`, champ
+    // « TVA % »). Il court-circuitait le régime et toute lecture d'écran : une
+    // exonération de fait, ligne par ligne, que rien ne montrait. C'est la
+    // moitié discrète du verrou, et la plus dangereuse.
     const mixte: LigneFacture[] = [
       { designation: "Conseil", quantite: 1, prixUnitaireHtCents: 100_000, tauxTvaPercent: 10 },
       { designation: "Dev", quantite: 1, prixUnitaireHtCents: 50_000 },
     ];
     const result = normaliserLignesPourActivite(mixte, "implementation", "exoneration_261", 20);
-    expect(result[0]?.tauxTvaPercent).toBe(10);
+    expect(result[0]?.tauxTvaPercent).toBe(20);
     expect(result[1]?.tauxTvaPercent).toBe(20);
+  });
+
+  it("un taux explicite AU-DESSUS du standard est respecté — le verrou ne fige pas", () => {
+    // Sans ce témoin, quelqu'un « simplifierait » le clamp en une égalité et
+    // fermerait les taux supérieurs sans s'en apercevoir. Le verrou existe pour
+    // ne jamais SOUS-facturer, pas pour interdire un autre taux.
+    const cher: LigneFacture[] = [
+      { designation: "Hors UE", quantite: 1, prixUnitaireHtCents: 100_000, tauxTvaPercent: 25 },
+    ];
+    const result = normaliserLignesPourActivite(cher, "implementation", "assujetti", 20);
+    expect(result[0]?.tauxTvaPercent).toBe(25);
   });
 
   it("bout en bout : audit sous exonération 261 → la facture PORTE de la TVA", () => {

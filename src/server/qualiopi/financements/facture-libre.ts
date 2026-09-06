@@ -33,6 +33,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   computeTotauxFacture,
   isRegimeTva,
+  regimeTvaDepuisConfig,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
@@ -147,7 +148,7 @@ export async function genererFactureLibre(
 
   // Régime + taux (snapshot) et normalisation TVA par activité.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
   const lignes = normaliserLignesPourActivite(
     input.lignes,
@@ -344,6 +345,15 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     );
   }
 
+  // ⛔ PAS `regimeTvaDepuisConfig` ICI, et c'est délibéré (ADR 0050 §7).
+  //
+  // Un avoir ANNULE une facture : il doit porter le régime de CETTE facture,
+  // pas le régime courant. Verrouiller ici émettrait un avoir à 20 % contre une
+  // facture exonérée — l'avoir ne l'annulerait plus, et les deux pièces
+  // resteraient au registre en se contredisant.
+  //
+  // « Une facture émise fige son régime » : c'est ce qui la rend opposable, et
+  // le verrou de la TVA ne s'applique qu'aux pièces à VENIR.
   const regimeTva: RegimeTva = isRegimeTva(origine.regimeTva)
     ? origine.regimeTva
     : REGIME_TVA_DEFAUT;

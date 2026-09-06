@@ -10,6 +10,7 @@
  */
 
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
+import { clampTauxLigneCreation } from "@/server/qualiopi/legal/tva";
 import { activitesDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import type { RegimeTva } from "@/server/qualiopi/legal/tva";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -49,9 +50,29 @@ export function normaliserLignesPourActivite(
   regimeTva: RegimeTva,
   tauxStandard: number,
 ): LigneFacture[] {
-  if (regimeTva !== "exoneration_261") return lignes;
-  if (ACTIVITES_EXONERABLES.includes(activite)) return lignes;
-  return lignes.map((l) =>
+  // 🔴 VERROU TVA (ADR 0050) — la moitié DISCRÈTE, et la plus dangereuse.
+  //
+  // Le régime est visible : config, écran, audit. Un `tauxTvaPercent: 0` posé
+  // sur une ligne ne l'est pas — et c'est une SAISIE UTILISATEUR
+  // (`FactureLibreForm`, champ « TVA % » par ligne). Il court-circuitait le
+  // régime, le défaut et toute lecture d'écran : une exonération de fait, ligne
+  // par ligne, que rien ne montrait.
+  //
+  // ⚠️ Le clamp est ICI, au moment où l'on CRÉE les lignes, et pas dans
+  // `tauxTvaLigne` : cette dernière sert aussi à re-rendre une facture déjà
+  // émise, et l'y verrouiller falsifierait une pièce opposable.
+  //
+  // Il ne borne que vers le BAS : un taux supérieur au standard passe. Le verrou
+  // existe pour ne jamais SOUS-facturer la TVA, pas pour figer un taux.
+  const bornees = lignes.map((l) =>
+    l.tauxTvaPercent === undefined
+      ? l
+      : { ...l, tauxTvaPercent: clampTauxLigneCreation(l.tauxTvaPercent, tauxStandard) },
+  );
+
+  if (regimeTva !== "exoneration_261") return bornees;
+  if (ACTIVITES_EXONERABLES.includes(activite)) return bornees;
+  return bornees.map((l) =>
     l.tauxTvaPercent === undefined ? { ...l, tauxTvaPercent: tauxStandard } : l,
   );
 }
