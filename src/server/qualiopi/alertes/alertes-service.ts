@@ -215,6 +215,14 @@ export interface SyntheseSynchronisation {
    * personne. L'appelant (cron, action de console) doit pouvoir la relayer.
    */
   tronquees: { nom: string; trouvees: number; retenues: number }[];
+  /**
+   * Alertes DEJA OUVERTES dont le libelle a ete remis a jour depuis la regle.
+   *
+   * Declare pour la meme raison que `tronquees` : un rafraichissement muet ne
+   * previent personne qu'un texte a change sous les yeux du lecteur. Vaut
+   * normalement zero.
+   */
+  rafraichies: number;
 }
 
 /**
@@ -227,7 +235,7 @@ export interface SyntheseSynchronisation {
  * lecture-puis-écriture que deux passages concurrents pouvaient traverser.
  */
 export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
-  if (isStub()) return { crees: 0, resolues: 0, tronquees: [] };
+  if (isStub()) return { crees: 0, resolues: 0, tronquees: [], rafraichies: 0 };
 
   const {
     candidates: candidats,
@@ -278,6 +286,64 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
       ? await prisma.alerteSysteme.createMany({ data: aInserer, skipDuplicates: true })
       : { count: 0 };
 
+  // ── 🔴 UNE CORRECTION DE LIBELLE N'ATTEIGNAIT JAMAIS LE STOCK ─────────────
+  //
+  // `createMany({ skipDuplicates: true })` INSERE ou NE FAIT RIEN. Une alerte
+  // deja ouverte garde donc, pour toujours, le titre et le message ecrits le
+  // jour de sa creation — meme quand la regle qui la produit a ete corrigee.
+  //
+  // Cas reel du 2026-09-06, releve sur la prod par une session voisine :
+  // `emargement_aucune_signature` disait « Liens d'emargement PARTIS, aucune
+  // signature ». La regle ne sait rien d'un envoi — sa condition est « un jeton
+  // vivant existe », c'est-a-dire FABRIQUE, et `emettreLiensSessionAction` ne
+  // contient aucun `enqueueEmail`. Le titre a ete corrige en « Lien d'emargement
+  // EMIS » le 2026-09-05 (`catalogue.ts`, `evaluateur.ts:567`), et l'ecran
+  // affichait toujours l'ancien : les lignes ouvertes n'avaient pas bouge.
+  //
+  // 🔑 Ce n'est pas un detail de formulation. Le commentaire du catalogue le dit
+  // lui-meme : « une alerte qui nomme une cause fausse est pire qu'une alerte
+  // absente — elle deplace l'attention ». Elle l'a fait : le libelle a oriente
+  // vers « relancer la stagiaire » alors que l'hypothese vivante etait qu'elle
+  // n'avait jamais rien recu.
+  //
+  // ⚠️ On NE touche ni `resolue`, ni `resolueAt`, ni `createdAt` : l'anciennete
+  // d'une alerte est une information, la rafraichir la ferait rajeunir. Seuls
+  // le titre, le message et le niveau — c'est-a-dire ce que la REGLE dit
+  // aujourd'hui — sont remis a jour.
+  //
+  // ⚠️ Une LECTURE d'abord, des ecritures ensuite, et seulement sur ce qui a
+  // reellement derive : le cas courant est zero ecriture. Ecrire sans comparer
+  // ferait tourner `updatedAt` de toutes les alertes ouvertes chaque nuit.
+  let rafraichies = 0;
+  if (aInserer.length > 0) {
+    const codes = [...new Set(aInserer.map((c) => c.code))];
+    const ouvertes = await prisma.alerteSysteme.findMany({
+      where: { resolue: false, code: { in: codes } },
+      select: { id: true, code: true, cibleId: true, titre: true, message: true, niveau: true },
+    });
+    const parCle = new Map(ouvertes.map((a) => [`${a.code}::${a.cibleId ?? "null"}`, a]));
+
+    for (const c of aInserer) {
+      const ligne = parCle.get(`${c.code}::${c.cibleId ?? "null"}`);
+      if (ligne === undefined) continue;
+      if (ligne.titre === c.titre && ligne.message === c.message && ligne.niveau === c.niveau) {
+        continue;
+      }
+      await prisma.alerteSysteme.update({
+        where: { id: ligne.id },
+        data: { titre: c.titre, message: c.message, niveau: c.niveau },
+      });
+      rafraichies++;
+    }
+
+    if (rafraichies > 0) {
+      console.warn(
+        `[alertes-service] ${rafraichies} alerte(s) ouverte(s) rafraichie(s) : leur libelle ` +
+          "avait derive de la regle qui les produit.",
+      );
+    }
+  }
+
   // 🔴 Une règle en échec (fail-soft) ne produit AUCUNE candidate : résoudre
   // « ce qui n'est plus signalé » effacerait alors en masse toutes les alertes
   // ouvertes de ses codes — un timeout DB un matin suffirait. Créations
@@ -286,7 +352,7 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
     console.warn(
       `[alertes-service] résolution auto SUSPENDUE ce tour : ${reglesEnEchec.length} règle(s) en échec (${reglesEnEchec.join(", ")})`,
     );
-    return { crees, resolues: 0, tronquees };
+    return { crees, resolues: 0, tronquees, rafraichies };
   }
 
   // Résolution automatique : codes à resolutionAuto=true dont la condition
@@ -325,5 +391,5 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
         })
       : { count: 0 };
 
-  return { crees, resolues, tronquees };
+  return { crees, resolues, tronquees, rafraichies };
 }
