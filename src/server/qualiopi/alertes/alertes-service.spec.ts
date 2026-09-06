@@ -142,7 +142,7 @@ describe("alertes-service — stub-aware", () => {
     process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
     try {
       const result = await synchroniserAlertes();
-      expect(result).toEqual({ crees: 0, resolues: 0, tronquees: [] });
+      expect(result).toEqual({ crees: 0, resolues: 0, tronquees: [], rafraichies: 0 });
     } finally {
       process.env["DATABASE_URL"] = orig;
     }
@@ -540,5 +540,129 @@ describe("synchroniserAlertes", () => {
       where: { id: { in: string[] } };
     };
     expect(args.where.id.in).toEqual(["alert-ses-002"]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Une correction de libellé doit ATTEINDRE les alertes déjà ouvertes
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * `createMany({ skipDuplicates: true })` insère ou ne fait RIEN. Une alerte déjà
+ * ouverte gardait donc, pour toujours, le titre écrit le jour de sa création —
+ * même après correction de la règle qui la produit.
+ *
+ * Cas réel du 2026-09-06 : `emargement_aucune_signature` affichait encore
+ * « Liens d'émargement PARTIS, aucune signature » sur la prod, alors que le
+ * titre avait été corrigé en « Lien d'émargement ÉMIS » la veille — la règle ne
+ * sait rien d'un envoi, elle lit un jeton FABRIQUÉ. Le commentaire du catalogue
+ * l'écrit lui-même : « une alerte qui nomme une cause fausse est pire qu'une
+ * alerte absente — elle déplace l'attention ». Elle l'avait déplacée.
+ */
+describe("🔴 le libellé d'une alerte ouverte suit la règle qui la produit", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mp.alerteSysteme.createMany.mockResolvedValue({ count: 0 }); // la base refuse le doublon
+    mp.alerteSysteme.updateMany.mockResolvedValue({ count: 0 });
+    mp.alerteSysteme.update.mockResolvedValue(makeAlerte());
+    mp.alerteSysteme.findMany.mockResolvedValue([]);
+  });
+
+  it("réécrit titre, message et niveau quand la règle a changé d'avis", async () => {
+    mockEvaluerAlertes.mockResolvedValue([
+      {
+        code: "referent_handicap_absent",
+        niveau: "important",
+        titre: "Lien d'émargement ÉMIS, aucune signature",
+        message: "Le message corrigé.",
+        cibleId: "ses-001",
+      },
+    ]);
+    // 1er `findMany` = la lecture de rafraîchissement ; 2e = la résolution auto.
+    mp.alerteSysteme.findMany.mockResolvedValueOnce([
+      makeAlerte({
+        id: "alerte-perimee",
+        code: "referent_handicap_absent",
+        cibleId: "ses-001",
+        niveau: "critique",
+        titre: "Liens d'émargement PARTIS, aucune signature",
+        message: "L'ancien message.",
+      }),
+    ]);
+
+    const result = await synchroniserAlertes();
+
+    expect(result.rafraichies, "la ligne périmée n'a pas été rafraîchie").toBe(1);
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as {
+      where: { id: string };
+      data: Record<string, unknown>;
+    };
+    expect(args.where.id).toBe("alerte-perimee");
+    expect(args.data["titre"]).toBe("Lien d'émargement ÉMIS, aucune signature");
+    expect(args.data["message"]).toBe("Le message corrigé.");
+    expect(args.data["niveau"]).toBe("important");
+  });
+
+  it("🔴 ne touche NI `resolue`, NI `resolueAt`, NI `createdAt`", async () => {
+    // L'ancienneté d'une alerte est une information que l'administrateur lit.
+    // Un rafraîchissement qui la remettrait à zéro ferait rajeunir un problème
+    // vieux de trois semaines — exactement le contraire du but.
+    mockEvaluerAlertes.mockResolvedValue([
+      {
+        code: "referent_handicap_absent",
+        niveau: "critique",
+        titre: "Nouveau titre",
+        message: "M",
+        cibleId: "ses-001",
+      },
+    ]);
+    mp.alerteSysteme.findMany.mockResolvedValueOnce([
+      makeAlerte({
+        id: "a1",
+        code: "referent_handicap_absent",
+        cibleId: "ses-001",
+        titre: "Vieux",
+      }),
+    ]);
+
+    await synchroniserAlertes();
+
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(Object.keys(args.data).sort()).toEqual(["message", "niveau", "titre"]);
+  });
+
+  it("🔴 n'écrit RIEN quand le libellé n'a pas bougé — sinon il tourne chaque nuit", async () => {
+    // Témoin du cas COURANT, et il est le plus important des trois : sans la
+    // comparaison, chaque passage du cron réécrirait toutes les alertes
+    // ouvertes, ferait tourner leur `updatedAt`, et noierait le signal « ce
+    // texte a changé » dans un bruit quotidien.
+    mockEvaluerAlertes.mockResolvedValue([
+      {
+        code: "referent_handicap_absent",
+        niveau: "critique",
+        titre: "Titre identique",
+        message: "Message identique",
+        cibleId: "ses-001",
+      },
+    ]);
+    mp.alerteSysteme.findMany.mockResolvedValueOnce([
+      makeAlerte({
+        id: "a1",
+        code: "referent_handicap_absent",
+        cibleId: "ses-001",
+        niveau: "critique",
+        titre: "Titre identique",
+        message: "Message identique",
+      }),
+    ]);
+
+    const result = await synchroniserAlertes();
+
+    expect(result.rafraichies).toBe(0);
+    expect(
+      mp.alerteSysteme.update,
+      "une alerte inchangée a quand même été réécrite : le cron ferait tourner " +
+        "`updatedAt` sur toute la table chaque nuit.",
+    ).not.toHaveBeenCalled();
   });
 });
