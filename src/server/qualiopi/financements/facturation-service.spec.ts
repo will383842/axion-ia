@@ -198,8 +198,17 @@ describe("genererFactureFormation", () => {
     expect(assujetti["tvaExoneree"]).toBe(assujetti["montantTvaCents"] === 0);
     expect(assujetti["tvaExoneree"]).toBe(false);
 
-    // Exonération = choix EXPLICITE par config (jamais un défaut) : TVA nulle
-    // → et alors seulement, la facture est marquée exonérée.
+    // 🔴 2026-09-06, VERROU TVA (ADR 0050) — ce bloc décrivait l'inverse.
+    //
+    // L'exonération par config produisait une TVA nulle. L'ordre permanent de
+    // Will est « TVA toujours facturée, jamais d'exonération », et le code ne le
+    // faisait pas : un `regime_tva` mal saisi suffisait à émettre des factures à
+    // 0 %, et une facture émise FIGE son régime — la corriger suppose un avoir.
+    //
+    // Le régime est désormais verrouillé À LA CRÉATION
+    // (`regimeTvaDepuisConfig`). L'INVARIANT testé ici, lui, ne bouge pas d'un
+    // pouce, et c'est tout son intérêt : `tvaExoneree` reste dérivé du calcul,
+    // jamais posé en dur. Il vaut simplement `false` des deux côtés maintenant.
     const { getQualiopiConfig } = await import("@/server/qualiopi/config/site-settings");
     vi.mocked(getQualiopiConfig).mockImplementation(async (key: string) =>
       key === "regime_tva" ? "exoneration_261" : key === "taux_tva_standard_percent" ? 20 : "",
@@ -212,9 +221,15 @@ describe("genererFactureFormation", () => {
     const exonere = (
       mockPrisma.factureFormation.create.mock.calls[1]![0] as { data: Record<string, unknown> }
     ).data;
-    expect(exonere["montantTvaCents"]).toBe(0);
+    expect(exonere["montantTvaCents"]).toBeGreaterThan(0);
+    // L'invariant, inchangé : le drapeau DÉRIVE du montant, il ne le contredit
+    // jamais. C'est lui qui a trouvé que mon verrou oubliait la persistance.
     expect(exonere["tvaExoneree"]).toBe(exonere["montantTvaCents"] === 0);
-    expect(exonere["tvaExoneree"]).toBe(true);
+    expect(exonere["tvaExoneree"]).toBe(false);
+    // Et le régime ENREGISTRÉ est celui réellement appliqué, pas celui saisi :
+    // une facture qui porterait « exoneration_261 » avec 20 % de TVA se
+    // contredirait elle-même.
+    expect(exonere["regimeTva"]).toBe("assujetti");
 
     // clearAllMocks ne restaure PAS les implémentations : on remet le régime
     // assujetti pour ne pas contaminer les tests suivants.
