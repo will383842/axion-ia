@@ -146,7 +146,16 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-04, « Nouveau contact apporteur », indenté sous Commercial) :
     // six portes créaient un contact, toutes publiques ; celle-ci est la
     // première qui parte de la console. = 166.
-    expect(items.length).toBe(166);
+    // +4 (2026-09-06, stubs `image-bank` : Taxonomie, Audit SEO, Licences, État
+    // du sitemap) : quatre écrans `AdminStubPageV2` identiques à cinq autres qui,
+    // eux, avaient leur entrée depuis toujours. Ils n'étaient atteignables qu'en
+    // tapant leur URL, et la garde réciproque les absolvait par simple préfixe.
+    // `parent` est posé comme sur leurs cinq frères : ils restent MASQUÉS de la
+    // barre latérale — ce compteur monte donc de 4 sans qu'aucune entrée
+    // n'apparaisse à l'écran. C'est voulu, et c'est la raison pour laquelle il
+    // faut lire ce nombre comme un inventaire du SSOT, pas comme un compte de ce
+    // que la barre affiche. = 170.
+    expect(items.length).toBe(170);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

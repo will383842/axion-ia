@@ -312,66 +312,6 @@ const EXCEPTIONS_RECIPROQUES: Readonly<Record<string, string>> = {
     "L'écran de connexion. Il ne PEUT pas figurer au menu : on l'atteint " +
     "précisément quand on n'a pas de session, donc quand aucun menu ne " +
     "s'affiche. Toutes les autres routes y renvoient par redirection.",
-
-  // 🔴 2026-09-05 — LES QUATRE STUBS QUE LA FAMILLE C ABSOLVAIT EN SILENCE.
-  //
-  // La famille C blanchit une route dès qu'un ANCÊTRE est une destination. Elle
-  // ne vérifie aucun lien entrant : c'est un test de préfixe de chemin. Comme
-  // `/image-bank` est au menu, ces quatre écrans passaient pour des « sous-écrans
-  // d'une section au menu » — alors qu'ils sont exactement ce que cette garde a
-  // été écrite pour trouver, et que le dépôt le DISAIT déjà, en toutes lettres,
-  // dans le fichier même que ce lot modifie :
-  //
-  //   admin-nav.ts — « NB : 4 autres stubs (licensing, seo-audit, sitemap-status,
-  //   taxonomy) n'ont jamais eu d'entrée de nav — routes accessibles par URL
-  //   seulement. »
-  //
-  // Un balayage de tous les `.ts/.tsx` de `src` ne trouve aucun lien entrant vers
-  // eux. Les déclarer ici ne les rend pas atteignables : ça rend VISIBLE ce qui
-  // était absous sans qu'on le sache, et ça force un motif écrit. Le résidu réel
-  // de cette passe n'était donc pas 1, mais 5.
-  //
-  // ⛔ CE N'EST PAS UN CLASSEMENT DÉFINITIF — c'est un arbitrage qui revient à Will :
-  //    soit ces quatre écrans reçoivent une entrée de menu, soit ils sont retirés.
-  //    Tant qu'ils vivent sans lien entrant, ils coûtent une route à maintenir que
-  //    personne ne peut ouvrir autrement qu'en tapant son URL.
-  "/image-bank/licensing":
-    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
-    "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
-  "/image-bank/seo-audit":
-    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
-    "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
-  "/image-bank/sitemap-status":
-    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
-    "documente). Aucun lien entrant dans src. À arbitrer : entrée de menu ou retrait.",
-  // ⚠️ Celui-ci se vérifie mal : un `grep image-bank/taxonomy` rend HUIT résultats
-  //    et donne l'impression d'une route très liée. Les huit sont des imports du
-  //    MODULE SERVEUR homonyme, sous `@/server/image-bank/`, qui porte le même
-  //    nom que la route sans avoir rien à voir avec elle. Aucun n'est un lien.
-  //    Compter des occurrences répond à « ce nom apparaît-il ? », jamais à
-  //    « peut-on y arriver ? ».
-  //
-  // 🔴 Et cette phrase a elle-même fait rougir Gate A — DEUX FOIS. Ça vaut d'être
-  //    gardé, parce que la seconde fois est la plus instructive.
-  //
-  //    La garde de cloisonnement du module marque une ligne qui porte À LA FOIS
-  //    un motif d'arête de dépendance et le nom du module. Or :
-  //      · la version d'origine de ce commentaire CITAIT la syntaxe d'import
-  //        qu'elle décrivait — la prose qui explique le piège s'est fait prendre
-  //        pour le piège ;
-  //      · la correction, qui DÉCRIVAIT cette mécanique, énumérait les motifs
-  //        surveillés et nommait le module sur la même ligne. Elle est donc
-  //        retombée dedans, exactement.
-  //
-  //    D'où la forme d'aujourd'hui : on ne cite ni la syntaxe d'import, ni les
-  //    motifs à côté du nom du module. On ne desserre pas la garde pour autant —
-  //    son critère est bon, il a ramené 31 faux signalements à 3 vrais — et
-  //    surtout on ne s'inscrit PAS dans ses `CONSOMMATEURS_ASSUMES` : ce fichier
-  //    n'importe rien, l'y mettre serait mentir à la garde pour se faire taire.
-  "/image-bank/taxonomy":
-    "Stub `AdminStubPageV2` sans donnée, jamais entré au menu (admin-nav.ts le " +
-    "documente). Aucun lien entrant dans src — les occurrences du nom visent le " +
-    "module `@/server/image-bank/taxonomy`, homonyme. À arbitrer : menu ou retrait.",
 };
 
 const routesAdmin = routesDuDisque(ADMIN_ROOT).filter((r) => r.route !== "/");
@@ -499,10 +439,24 @@ if (famSousEcran.length > routesAdmin.length / 3) {
       `entières et cette passe ne mesure plus grand-chose.`,
   );
 }
-if (Object.keys(EXCEPTIONS_RECIPROQUES).length > 5) {
+// 🔴 CLIQUET RESSERRÉ DE 5 À 1 LE 2026-09-06, PARCE QUE LA MESURE L'A PERMIS.
+//
+// Le seuil valait 5 : c'était `/login` plus les quatre stubs `image-bank` sans
+// entrée de menu. Ces quatre-là ont reçu leur entrée (masquée par `parent`,
+// comme leurs cinq frères), donc l'exception n'a plus d'objet et le cliquet
+// descend AVEC la mesure — jamais avant elle. Il ne reste que `/login`, dont
+// l'exception est structurelle : c'est l'écran qu'on atteint sans session, donc
+// sans menu.
+//
+// ⚠️ Ne PAS relever ce seuil pour faire passer une nouvelle route. Une exception
+//    de plus veut dire qu'une famille manque au classement, pas qu'un cas
+//    particulier est apparu — c'est le raisonnement qui avait laissé quatre
+//    écrans vivre sans lien entrant.
+if (Object.keys(EXCEPTIONS_RECIPROQUES).length > 1) {
   alertesDeFamille.push(
     `${Object.keys(EXCEPTIONS_RECIPROQUES).length} exceptions réciproques : ` +
-      `au-delà de cinq, c'est une famille qui manque, pas des cas particuliers.`,
+      `au-delà d'une (l'écran de connexion), c'est une famille qui manque, ` +
+      `pas des cas particuliers.`,
   );
 }
 
