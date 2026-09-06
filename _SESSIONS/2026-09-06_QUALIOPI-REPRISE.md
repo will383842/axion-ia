@@ -378,3 +378,100 @@ est antérieur à cette branche. À instruire séparément, pas ici.
 Contrôles locaux avant push : `typecheck` ✅ (bannière lue), `eslint` ✅ 0 erreur,
 `format:check` ✅ glob complet, `check-anti-hex.sh` ✅, `playwright --list` ✅ sur
 le fichier modifié.
+
+---
+
+## 9. Clôture de la journée — trois PR en production, et le même défaut trois fois
+
+### 9.1 Ce qui a atterri
+
+| PR        | Fusion    | Atterrissage | Contenu                                                                               |
+| --------- | --------- | ------------ | ------------------------------------------------------------------------------------- |
+| **#1003** | 09:41:23Z | 10:28:19Z    | split du budget, étape de budget déplacée, `bundle-check.mjs`, ADR 0049, 2 correctifs |
+| **#1008** | 11:01:58Z | ~11:49Z      | le geste « Relancer la remise » que l'alerte prescrivait sans qu'il existe            |
+| **#1010** | 12:55:25Z | en vol       | le libellé d'une alerte ouverte suit désormais la règle qui la produit                |
+
+Durées de bout en bout mesurées : **51 min 39**, **46 min 56**, **47 min 38**. `AGENTS.md`
+à ~50 min est juste ; le « 1 h 15 » qui circulait le matin venait d'une reprise non
+mesurée.
+
+✅ **Atterrissage vérifié jusqu'au schéma**, pas seulement à l'en-tête : les DEUX
+conteneurs sur le même SHA, `[entrypoint] Migrations applied successfully`, et
+`prisma migrate status` → « Database schema is up to date! » (224 migrations). C'est le
+seul des trois contrôles qui pouvait démentir les autres.
+
+✅ **La gate `lhci` post-deploy est VERTE** sur le run `34029062916` — elle échouait sur
+`main` au réveil (run `33967996086`, `categories.performance` et
+`first-contentful-paint`). ⚠️ Je ne l'attribue à rien : je n'ai pas mesuré la cause, et
+cette gate bouge d'un run à l'autre (cf. `AGENTS.md`, « le TBT a bougé de +13 % à +36 %
+sans qu'une ligne change »). C'est un fait, pas un résultat.
+
+### 9.2 🔑 LE MÊME DÉFAUT, TROIS FOIS, SUR TROIS SURFACES SANS RAPPORT
+
+C'est la leçon de la journée, et elle n'était écrite nulle part :
+
+> **Une correction ferme le chemin nominal et laisse le stock derrière.**
+> « Les prochains passeront-ils ? » et « ceux qui auraient dû passer passeront-ils ? »
+> sont deux questions. On n'en pose qu'une.
+
+1. **La remise d'exemplaire** (#997 → #1008). `transmettreExemplaireSigne` n'avait qu'un
+   appelant : le crochet de complétion de signature. Une pièce signée AVANT la livraison
+   n'y repasserait jamais — dont `AXI-DOC-2026-039`, la convention qui a motivé tout le
+   correctif. Et l'alerte censée rattraper le cas **prescrivait un geste inexistant** :
+   « Rouvrez la pièce et relancez la remise. »
+2. **Le libellé des alertes** (#1010). `createMany({ skipDuplicates })` insère ou ne fait
+   rien : une alerte ouverte garde pour toujours le titre du jour de sa création. Le titre
+   corrigé le 05/09 n'a jamais atteint la prod.
+3. **L'assertion E2E de l'attestation** (#1003). Le vocabulaire a été corrigé, ses deux
+   témoins unitaires mis à jour, et l'assertion E2E laissée derrière — invisible parce que
+   la suite était `skipped`.
+
+### 9.3 🔑 ET UN SECOND MOTIF, AUSSI RÉCURRENT
+
+> **Un témoin qui répond à une question VOISINE de celle qu'on pose.**
+
+- « chaque motif trouve ≥ 1 fichier » reste **vert** sur `(admin)` nu, qui trouve 8 chunks
+  de `api/admin/` et n'exclut aucun `page-*.js`. Le seul témoin qui discrimine est une
+  **identité exacte** : la partition `5 + 186 + 311 = 502` ;
+- `fs.globSync` rend **311** fichiers pour `(admin)` nu là où tinyglobby rend **0** : un
+  contrôle bâti dessus aurait été vert sur la faute qu'il devait attraper ;
+- « 0 `use client` ajouté » n'est pas « 0 octet ajouté » : #1004 a coûté 1,64 kB par un
+  `next/link` (mesure d'`axion-ia-f1`, qui s'est corrigée elle-même) ;
+- `mergeStateStatus` répond à « **peut**-elle fusionner ? », jamais à « **où** ? »
+  (`axion-ia-40`). Une PR empilée reste pointée sur une branche morte en affichant `CLEAN`.
+
+### 9.4 ⚠️ `cancel-in-progress` menace plus que le build d'un pair
+
+Découvert en fin de journée : le run de déploiement reste `in_progress` **après**
+l'atterrissage — `Lighthouse CI post-deploy` (~25 min) et `Warm edge cache` tournent
+encore. Fusionner à ce moment-là les annule.
+
+🔑 **« Le build est fini » n'est pas « le run est fini ».** Et ce qu'on perd alors est
+précisément la seule gate de perf qui fasse autorité, sur la prod qui vient de changer.
+#1010 a donc attendu la fin du run de #1008, alors qu'elle était verte depuis une heure.
+
+### 9.5 Coordination — quatre sessions, zéro doublon, une disparition
+
+- `axion-ia-f1` a tenu la file de fusion toute la matinée, puis **a disparu de
+  `ListAgents`**. Sa réservation est morte avec elle. ⚠️ Une réservation de file ne survit
+  pas à la session qui la porte : vérifier `ListAgents` avant de croire une file tenue.
+- `axion-ia-6c` allait écrire une seconde fois le rattrapage de la remise ; arrêtée à
+  temps. Elle a en échange **trouvé sur la prod** le défaut de #1010, que je n'aurais pas
+  vu depuis le code.
+- `axion-ia-40` a évité un rebase inutile de #1010 : après un squash, la PR empilée affiche
+  les fichiers de sa base. **Comparer les empreintes** (`git hash-object`) plutôt que
+  rebaser — les 4 fichiers étaient identiques.
+
+### 9.6 ⛔ Reste Will
+
+1. **facture / échéancier / TVA** — l'arbitrage TVA lui appartient, §11 de l'état vivant ;
+2. la **recette PAR L'ÉCRAN** de la remise d'exemplaire : le bouton existe et est en prod,
+   il n'a jamais été cliqué en vrai ;
+3. le **lot F** au-delà de D6 ;
+4. 🔴 **le cron d'émargement désarmé par une simple FABRICATION de jetons.** « Émettre les
+   liens » crée des jetons sans rien envoyer, et la garde de `liens-emargement-j0` exclut
+   toute session portant un jeton vivant : un clic désarme le cron pour toujours. C'est
+   pourquoi une stagiaire n'a jamais reçu son lien. ⚠️ Le correctif évident (réémettre)
+   **révoque les QR déjà imprimés**, c'est-à-dire le cas d'usage qui justifie « Émettre ».
+   Chantier repris par `axion-ia-6c`. Le geste manuel, lui, **existe déjà** : le bouton
+   « Envoyer les liens » fabrique un jeton neuf ET l'envoie.
