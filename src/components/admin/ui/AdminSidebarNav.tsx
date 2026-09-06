@@ -66,6 +66,7 @@ import {
   findActiveNavHref,
 } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
+import { agregerBadges, type BadgeTone as BadgeToneRollup } from "./badge-rollup";
 
 // Toutes les clés de pôles, tous groupes confondus (content_gen + qualiopi).
 // Les clés sont disjointes entre groupes → un seul Set<string> pilote l'état
@@ -133,7 +134,9 @@ const GROUPS_COLLAPSED_LS_KEY = "admin-sidebar-groups-collapsed-v2";
 // FERMÉS (défaut : tous fermés sauf celui de la page courante).
 const CONTENT_GEN_POLES_COLLAPSED_LS_KEY = "admin-content-gen-poles-collapsed-v1";
 
-type BadgeTone = "danger" | "warn";
+// Réexporté depuis `badge-rollup.ts` : le type vit avec la fonction qui décide
+// de la tonalité d'une bulle, pour qu'ils ne puissent pas diverger.
+type BadgeTone = BadgeToneRollup;
 
 /** Calcule initiales (max 2 lettres) à partir d'un email pour l'avatar footer. */
 function initialsFromEmail(email: string | undefined): string {
@@ -425,7 +428,30 @@ export function AdminSidebarNav({
   }, [activeGroup]);
 
   // Badge éventuel pour un item donné (tone + count), sinon null.
-  const badgeFor = (href: string): { count: number; tone: BadgeTone; label: string } | null => {
+  //
+  // 🔴 `rollup` — 2026-09-06. Deux items de cette barre ne comptent pas ce
+  // qu'ils portent, mais ce que leurs FRÈRES portent. « À traiter » affiche
+  // `qualiopiCounts.total`, c'est-à-dire `signatures + emails + alertes +
+  // relances + sessions` ; « Tout » (boîte de réception) affiche la somme des
+  // quatre catégories. Les additionner à leurs frères dans la bulle d'un
+  // en-tête replié comptait donc les mêmes choses deux fois (cf. `badgeRollup`).
+  //
+  // Le savoir ne peut PAS se déduire du `href` au moment de la somme : c'est
+  // ici, là où le chiffre est construit, qu'on sait s'il agrège. D'où
+  // l'étiquette portée par le badge — `role: "total"` pour l'agrégat,
+  // `role: "part"` pour chaque frère qu'il englobe, partageant la même `key`.
+  //
+  // ⚠️ Un badge SANS `rollup` s'additionne toujours. Le drapeau n'éteint que ce
+  // qui est démontré redondant : sans cette réserve, on éteindrait des badges
+  // légitimes qui ressemblent à des parties sans en être.
+  const badgeFor = (
+    href: string,
+  ): {
+    count: number;
+    tone: BadgeTone;
+    label: string;
+    rollup?: { key: string; role: "total" | "part" };
+  } | null => {
     if (failedJobsCount > 0 && href.includes("/content-gen/jobs")) {
       return { count: failedJobsCount, tone: "danger", label: "jobs en échec" };
     }
@@ -449,19 +475,44 @@ export function AdminSidebarNav({
       const total =
         inboxCounts.appel + inboxCounts.message + inboxCounts.candidature + inboxCounts.podcast;
       if (exact("/contacts") && total > 0) {
-        return { count: total, tone: "danger", label: "entrées à traiter" };
+        return {
+          count: total,
+          tone: "danger",
+          label: "entrées à traiter",
+          rollup: { key: "inbox", role: "total" },
+        };
       }
       if (exact("/contacts/appels") && inboxCounts.appel > 0) {
-        return { count: inboxCounts.appel, tone: "danger", label: "appels à compléter" };
+        return {
+          count: inboxCounts.appel,
+          tone: "danger",
+          label: "appels à compléter",
+          rollup: { key: "inbox", role: "part" },
+        };
       }
       if (exact("/contacts/messages") && inboxCounts.message > 0) {
-        return { count: inboxCounts.message, tone: "danger", label: "messages sans réponse" };
+        return {
+          count: inboxCounts.message,
+          tone: "danger",
+          label: "messages sans réponse",
+          rollup: { key: "inbox", role: "part" },
+        };
       }
       if (exact("/contacts/candidatures") && inboxCounts.candidature > 0) {
-        return { count: inboxCounts.candidature, tone: "danger", label: "candidatures à traiter" };
+        return {
+          count: inboxCounts.candidature,
+          tone: "danger",
+          label: "candidatures à traiter",
+          rollup: { key: "inbox", role: "part" },
+        };
       }
       if (exact("/podcast") && inboxCounts.podcast > 0) {
-        return { count: inboxCounts.podcast, tone: "warn", label: "demandes de podcast" };
+        return {
+          count: inboxCounts.podcast,
+          tone: "warn",
+          label: "demandes de podcast",
+          rollup: { key: "inbox", role: "part" },
+        };
       }
     }
     if (unreadContactsCount > 0 && href.includes("/contacts/messages")) {
@@ -480,18 +531,38 @@ export function AdminSidebarNav({
     if (qualiopiCounts) {
       const base = accountHref ?? "";
       if (href === `${base}/qualiopi/a-traiter` && qualiopiCounts.total > 0) {
-        return { count: qualiopiCounts.total, tone: "danger", label: "actions en attente" };
+        return {
+          count: qualiopiCounts.total,
+          tone: "danger",
+          label: "actions en attente",
+          rollup: { key: "qualiopi", role: "total" },
+        };
       }
       if (href === `${base}/qualiopi/emails` && qualiopiCounts.emails > 0) {
-        return { count: qualiopiCounts.emails, tone: "danger", label: "e-mails à valider" };
+        return {
+          count: qualiopiCounts.emails,
+          tone: "danger",
+          label: "e-mails à valider",
+          rollup: { key: "qualiopi", role: "part" },
+        };
       }
       if (href === `${base}/qualiopi/alertes` && qualiopiCounts.alertes > 0) {
-        return { count: qualiopiCounts.alertes, tone: "warn", label: "alertes non lues" };
+        return {
+          count: qualiopiCounts.alertes,
+          tone: "warn",
+          label: "alertes non lues",
+          rollup: { key: "qualiopi", role: "part" },
+        };
       }
       // Recouvrement : une facture échue attend un clic. Ton « danger » comme
       // les e-mails à valider — c'est de la trésorerie qui ne rentre pas.
       if (href === `${base}/qualiopi/facturation` && qualiopiCounts.relances > 0) {
-        return { count: qualiopiCounts.relances, tone: "danger", label: "relances à envoyer" };
+        return {
+          count: qualiopiCounts.relances,
+          tone: "danger",
+          label: "relances à envoyer",
+          rollup: { key: "qualiopi", role: "part" },
+        };
       }
     }
     return null;
@@ -517,18 +588,19 @@ export function AdminSidebarNav({
   // le dossier replié affiche son nombre de non-lus. Remplace l'ancien point
   // de 7 px (qui disait « il y a quelque chose » sans dire combien).
   // Tonalité : danger dès qu'UN item est danger, warn sinon.
+  // 🔴 2026-09-06 — ce n'est PLUS une somme. « À traiter » et « Tout » agrègent
+  // déjà leurs frères ; les additionner comptait les alertes deux fois (bulle
+  // observée à 71 pour 36 + 35, soit `2 × alertes + le reste`). La règle et sa
+  // réserve vivent dans `badge-rollup.ts`, éprouvables sans rendre la barre.
   const badgeRollup = (
     list: ReadonlyArray<AdminNavItem>,
   ): { count: number; tone: BadgeTone } | null => {
-    let count = 0;
-    let tone: BadgeTone = "warn";
+    const badges = [];
     for (const it of list) {
       const b = badgeFor(it.href);
-      if (!b) continue;
-      count += b.count;
-      if (b.tone === "danger") tone = "danger";
+      if (b) badges.push(b);
     }
-    return count > 0 ? { count, tone } : null;
+    return agregerBadges(badges);
   };
 
   const initials = initialsFromEmail(userEmail ?? undefined);
