@@ -82,7 +82,7 @@ function WeightEditor({
               else next[o.value] = n;
               onChange(next);
             }}
-            className="admin-input admin-input-w-sm text-right"
+            className="admin-input admin-input-w-sm admin-input-right"
             aria-label={`${ariaLabel} — ${o.labelFr}`}
           />
         </label>

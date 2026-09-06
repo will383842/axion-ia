@@ -32,7 +32,7 @@ export function LlmsTxtV2({ content }: Props): React.ReactElement {
               id="content"
               name="content"
               rows={28}
-              className="admin-input font-mono text-[length:var(--text-admin-sm)]"
+              className="admin-input admin-input-mono admin-input-sm"
               defaultValue={content}
               maxLength={50_000}
               required

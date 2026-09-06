@@ -306,7 +306,7 @@ export function ReplyComposer({
                 rows={12}
                 maxLength={50_000}
                 required
-                className="admin-input admin-textarea font-mono text-sm"
+                className="admin-input admin-textarea admin-input-mono"
                 disabled={inputsDisabled}
                 aria-describedby="reply-body-preview"
               />
@@ -336,7 +336,7 @@ export function ReplyComposer({
               onChange={(e) => setInternalNote(e.target.value)}
               rows={2}
               maxLength={2000}
-              className="admin-input admin-textarea text-sm"
+              className="admin-input admin-textarea"
               disabled={inputsDisabled}
             />
           </div>

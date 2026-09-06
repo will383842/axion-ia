@@ -357,10 +357,10 @@ export function ApplicationsV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button-secondary">
+            <button type="submit" className="admin-button-ghost">
               Appliquer
             </button>
-            <Link href={`${baseHref}${viewQuery}`} className="admin-button-ghost">
+            <Link href={`${baseHref}${viewQuery}`} className="admin-button-secondary">
               Réinitialiser
             </Link>
           </div>

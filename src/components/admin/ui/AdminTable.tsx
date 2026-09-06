@@ -101,7 +101,14 @@ export function AdminTable<T>({
         className,
       )}
     >
-      <table className="w-full border-collapse text-[length:var(--text-admin-base)]">
+      {/* 🔴 2026-09-06 — la police et les chiffres sont ALIGNÉS SUR `.admin-table`.
+          Mesuré en production sur deux écrans de liste de la même console :
+          « Utilisateurs » (ce composant) rendait son corps en 16 px, « Sessions »
+          en 13 px — 23 % d’écart entre deux listes voisines. Et aucune des deux
+          n’avait `tabular-nums`, donc les colonnes de nombres ne s’alignaient
+          pas verticalement, ce qui est précisément ce que `.admin-table` corrige.
+          `admin-table-derive-de-la-classe.spec.ts` échoue si les deux repartent. */}
+      <table className="w-full border-collapse text-[length:var(--text-admin-sm)] [font-variant-numeric:tabular-nums]">
         {caption ? <caption className="sr-only">{caption}</caption> : null}
         <thead>
           <tr>

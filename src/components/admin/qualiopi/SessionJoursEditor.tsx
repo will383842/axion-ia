@@ -290,7 +290,7 @@ export function SessionJoursEditor({
               <button
                 type="button"
                 onClick={() => retirer(index)}
-                className="admin-button-ghost text-[length:var(--text-admin-sm)]"
+                className="admin-button-ghost admin-button-sm"
               >
                 Retirer<span className="sr-only"> la journée {jour.date || `n° ${index + 1}`}</span>
               </button>
