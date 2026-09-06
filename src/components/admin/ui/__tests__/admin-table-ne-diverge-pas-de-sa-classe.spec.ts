@@ -27,12 +27,28 @@
  * ## Pourquoi ce test plutôt que la fusion des deux
  *
  * Fusionner pour de bon — poser `class="admin-table"` sur le composant et
- * retirer ses utilitaires — est la bonne cible, mais `.admin-table` est HORS
- * COUCHE : elle écraserait d'un coup les paddings et l'en-tête des 51 écrans
- * qui passent par le composant, en laissant derrière une pile d'utilitaires
- * morts que la garde des jetons ne voit pas (elle compare classe et utilitaire
- * sur le MÊME élément ; ici la classe serait sur `<table>` et les utilitaires
- * sur `<th>`/`<td>`). Cette bascule se fait **en la regardant**, pas à l'aveugle.
+ * retirer ses utilitaires — semble être la bonne cible. Ce n'en est pas une, et
+ * la raison est mécanique, pas prudentielle :
+ *
+ *     .admin-table th, .admin-table td { text-align: left; }
+ *
+ * Cette règle est HORS COUCHE, donc elle bat les utilitaires. Or `AdminTable`
+ * aligne ses cellules avec `ALIGN_CLASS` — `text-right`, `text-center` — posees
+ * en utilitaires. **28 colonnes de la console declarent `align: "right"`** :
+ * toutes repasseraient a gauche, EN SILENCE, le jour de la fusion. Des montants
+ * et des taux alignes a gauche, c'est exactement le defaut qu'on pretendait
+ * corriger.
+ *
+ * Et la garde des jetons ne le verrait pas : elle compare classe et utilitaire
+ * sur le MEME element, or la classe serait sur `<table>` et les utilitaires sur
+ * `<td>`. On recreerait donc, d'un seul geste, la famille de defauts que le
+ * cliquet `INERT_UTILITIES_BASELINE` vient de vider.
+ *
+ * La vraie fusion demande d'abord de trancher la CASCADE : soit retirer
+ * `text-align` de la classe partagee (32 fichiers l'utilisent), soit deplacer
+ * les classes `.admin-*` dans une couche declaree AVANT `utilities` — ce que
+ * `admin.css` documente comme un choix delibere (« priorite forte volontaire »).
+ * C'est une decision d'architecture, pas un renommage.
  *
  * En attendant, ce test verrouille les deux propriétés qui DIVERGEAIENT
  * vraiment, et il les **dérive de `admin.css`** au lieu de les recopier : si

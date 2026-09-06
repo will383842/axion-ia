@@ -89,12 +89,20 @@ n'alignait ses colonnes de nombres.
 
 Les deux propriétés qui divergeaient sont alignées depuis le 2026-09-06, et
 `admin-table-ne-diverge-pas-de-sa-classe.spec.ts` les **dérive d'`admin.css`**
-au lieu de les recopier. **La fusion complète reste à faire** : poser
-`class="admin-table"` sur le composant et retirer ses utilitaires écraserait
-d'un coup les paddings des 51 écrans concernés, en laissant des utilitaires
-morts que la garde des jetons ne voit pas — elle compare classe et utilitaire
-sur le MÊME élément, or la classe serait sur `<table>` et les utilitaires sur
-`<th>`/`<td>`. Cette bascule se fait en la regardant à l'écran.
+au lieu de les recopier.
+
+⛔ **La fusion complète est BLOQUÉE par la cascade, et ce n'est pas de la
+prudence.** `.admin-table th, td` impose `text-align: left` hors couche : elle
+bat les utilitaires `text-right` que le composant pose via `ALIGN_CLASS`.
+**28 colonnes de la console déclarent `align: "right"`** — montants, taux,
+effectifs. Elles repasseraient toutes à gauche en silence. Et la garde des
+jetons ne le verrait pas : elle compare classe et utilitaire sur le MÊME
+élément, or la classe serait sur `<table>` et les utilitaires sur `<td>`.
+
+Fusionner demande donc de trancher la cascade d'abord : retirer `text-align`
+de la classe partagée (32 fichiers), ou déplacer les classes `.admin-*` dans
+une couche déclarée avant `utilities` — ce que `admin.css` documente comme un
+choix délibéré. C'est une décision d'architecture, pas un renommage.
 
 ## 3. Le piège de cascade — à lire avant de poser une classe
 
