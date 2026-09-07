@@ -135,13 +135,13 @@ export function AlerteActions(props: AlerteActionsProps): React.ReactElement {
         //
         // Une alerte deja ouverte gardait son libelle du jour de sa creation :
         // le titre de `emargement_aucune_signature` a ete corrige le 2026-09-05
-        // et la prod affichait encore l'ancien. #1010 a repare le moteur, qui
+        // et la prod affichait encore l'ancien. La PR 1010 a repare le moteur, qui
         // relit et remet a jour les lignes ouvertes.
         //
         // Mais le compteur s'arretait au serveur : l'action ne rendait que
         // `crees` et `resolues`, et l'ecran n'en disait rien. Constate EN PROD
         // le 2026-09-06 en cliquant ce bouton — « 1 creee, 0 resolues », et pas
-        // un mot sur ce qui venait d'etre reecrit. Le commit de #1010 promettait
+        // un mot sur ce qui venait d'etre reecrit. Le commit de la PR 1010 promettait
         // pourtant l'inverse : « un rafraichissement muet ne previent personne
         // qu'un texte a change sous les yeux du lecteur ».
         //
