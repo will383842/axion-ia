@@ -40,7 +40,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { lireDernierAppelWebhook } from "./webhook-battement";
+import { lireDernierAppelRecu, lireDernierAppelWebhook } from "./webhook-battement";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { notify } from "@/server/notifications";
 import { EmailLogStatus } from "../../../prisma/generated/client";
@@ -143,6 +143,26 @@ export interface SanteEmails {
    * obtenir une réponse définitive en trente secondes.
    */
   dernierAppelWebhook: string | null;
+  /**
+   * 🔑 Date ISO du dernier appel RECU sur la route, **authentifie ou non**, ou
+   * `null` si aucun n'a jamais ete vu.
+   *
+   * Ajoute le 2026-09-07. `dernierAppelWebhook` ne se pose qu'apres une
+   * signature valide ; comme la route rend `200` sur signature invalide (pour
+   * que ZeptoMail puisse creer le webhook), un appel refuse etait totalement
+   * invisible. Les deux pannes rendaient donc le meme `JAMAIS` :
+   *
+   *   `dernierAppelRecu` null      -> rien n'atteint la route (abonnement absent
+   *                                   ou URL fausse cote ZeptoMail).
+   *   `dernierAppelRecu` date +
+   *   `dernierAppelWebhook` null   -> ils nous atteignent, la signature est
+   *                                   refusee : cle desynchronisee.
+   *
+   * ⚠️ Comme son voisin, ce champ ne leve AUCUNE alerte : ZeptoMail n'appelle
+   * que sur evenement, donc le silence est le comportement normal d'un parc
+   * dont rien ne rebondit. On expose la valeur, on ne la juge pas.
+   */
+  dernierAppelRecu: string | null;
   alertesLevees: string[];
   /**
    * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
@@ -175,6 +195,7 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     // rebond possible, jamais.
     detectionRebondsDebranchee: !process.env["ZEPTOMAIL_WEBHOOK_KEY"]?.trim(),
     dernierAppelWebhook: null,
+    dernierAppelRecu: null,
     alertesLevees: [],
     mesureIndisponible: false,
   };
@@ -184,7 +205,10 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   // reste lisible quand Postgres est en panne — c'est-à-dire dans le chemin où
   // les trois compteurs ci-dessous ne veulent plus rien dire. Fail-soft de bout
   // en bout : la fonction rend `null` plutôt que de lever.
-  resultat.dernierAppelWebhook = await lireDernierAppelWebhook();
+  [resultat.dernierAppelWebhook, resultat.dernierAppelRecu] = await Promise.all([
+    lireDernierAppelWebhook(),
+    lireDernierAppelRecu(),
+  ]);
 
   const depuis = new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000);
   const avant = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);

@@ -22,6 +22,8 @@ import {
   lireStatutEmail,
 } from "@/features/admin-emails/query";
 import { VueEmails } from "./_components/VueEmails";
+import { EtatWebhookRebonds } from "./_components/EtatWebhookRebonds";
+import { lireDernierAppelRecu, lireDernierAppelWebhook } from "@/server/email/webhook-battement";
 import { EMAIL_TEMPLATE_NAMES } from "@/lib/email/templates";
 
 export const dynamic = "force-dynamic";
@@ -55,8 +57,17 @@ export default async function EmailsEnvoyesPage({
 
   const donnees = await chargerEmails(filtres);
 
+  // Deux lectures Redis bornees a 1,5 s, fail-soft : elles rendent `null`
+  // plutot que de lever. Le bloc affiche alors « jamais », ce qui est le bon
+  // defaut prudent — et non une page en erreur.
+  const [appelRecu, appelAuthentifie] = await Promise.all([
+    lireDernierAppelRecu(),
+    lireDernierAppelWebhook(),
+  ]);
+
   return (
     <AdminPageShell width="wide">
+      <EtatWebhookRebonds recu={appelRecu} authentifie={appelAuthentifie} />
       <VueEmails
         donnees={donnees}
         filtres={filtres}
