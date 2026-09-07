@@ -60,9 +60,9 @@ export const COMMERCIAL_HERO_NODES: ReadonlyArray<ServiceHeroNode & { benefitEn:
     accent: "sage",
   },
   {
-    label: "Dashboard",
-    benefit: "Suivi & commissions",
-    benefitEn: "Tracking & commissions",
+    label: "Suivi",
+    benefit: "Commissions tracées",
+    benefitEn: "Tracked commissions",
     accent: "mocha",
   },
 ];
@@ -81,8 +81,8 @@ export const COMMERCIAL_HERO = {
     en: "AI — the biggest market of the coming decades. Simple, often-fundable products that companies are eager to buy. Independent rep, sales agent or business introducer: uncapped income — getting started costs you nothing.",
   },
   ariaLabel: {
-    fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, produits financés à coût quasi nul pour le client, statut indépendant et dashboard de suivi des commissions.",
-    en: "The Axion-IA AI sales role in 8 facets: all-sector prospecting, selling trainings, audits, 1-on-1 support, integrations, funded near-zero-cost products, self-employed status and a commission tracking dashboard.",
+    fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, produits financés à coût quasi nul pour le client, statut indépendant et suivi des commissions.",
+    en: "The Axion-IA AI sales role in 8 facets: all-sector prospecting, selling trainings, audits, 1-on-1 support, integrations, funded near-zero-cost products, self-employed status and commission tracking.",
   },
   ctaLabel: { fr: "Je veux devenir commercial", en: "I want to become a sales rep" },
 } as const;
@@ -115,8 +115,8 @@ export const COMMERCIAL_OPPORTUNITY = {
       en: '"You introduce. It\'s tracked. You get paid."',
     },
     sub: {
-      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom sur votre dashboard. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient sur chaque vente.",
-      en: "No need to be a closer. Every company you introduce is logged under your name on your dashboard. Whether it signs with you or contacts us directly, the commission is yours on every sale.",
+      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient sur chaque vente.",
+      en: "No need to be a closer. Every company you introduce is logged under your name by our team. Whether it signs with you or contacts us directly, the commission is yours on every sale.",
     },
   },
 } as const;
@@ -148,12 +148,12 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
       "Just about ten clear products, easy to understand and sell. No endless catalogue: you master the offer in a few hours.",
   },
   {
-    titleFr: "Vous tracez vos entreprises",
-    titleEn: "You log your companies",
+    titleFr: "Vous déclarez vos entreprises",
+    titleEn: "You declare your companies",
     textFr:
-      "Vous renseignez sur votre dashboard les entreprises démarchées avec votre nom et prénom — c'est ce qui sécurise et déclenche vos commissions sur chaque vente signée.",
+      "Vous nous déclarez les entreprises démarchées avec votre nom et prénom — c'est cette déclaration qui sécurise et déclenche vos commissions sur chaque vente signée.",
     textEn:
-      "You record prospected companies on your dashboard under your name — this secures and triggers your commissions on every signed sale.",
+      "You declare prospected companies to us under your name — that declaration secures and triggers your commissions on every signed sale.",
   },
   {
     titleFr: "Vous touchez vos commissions",
@@ -291,8 +291,8 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
       en: "How am I sure to get my commissions?",
     },
     a: {
-      fr: "Chaque entreprise démarchée est enregistrée sur votre dashboard à votre nom. Toute vente signée sur une de vos entreprises déclenche votre commission, tracée de bout en bout.",
-      en: "Every prospected company is logged on your dashboard under your name. Any signed sale on one of your companies triggers your commission, tracked end to end.",
+      fr: "Chaque entreprise démarchée est enregistrée à votre nom dès que vous nous la déclarez, et cette déclaration fait foi. Toute vente signée sur une de vos entreprises déclenche votre commission.",
+      en: "Every prospected company is logged under your name as soon as you declare it to us, and that declaration is what counts. Any signed sale on one of your companies triggers your commission.",
     },
   },
 ];
