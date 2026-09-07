@@ -914,6 +914,58 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
   /**
+   * D8 — la désactivation d'un formateur ne retire PAS ses affectations.
+   *
+   * `setTrainerActifAction` écrit un booléen ; la garde `isTrainerHabilite` ne
+   * joue qu'AU MOMENT de l'affectation. Elle protège l'entrée, jamais le stock :
+   * un formateur désactivé le lendemain reste principal sur toutes ses sessions
+   * à venir, et aucune règle ne lisait `actif: false` — `grep` rendait zéro sur
+   * l'évaluateur ET sur ce fichier.
+   *
+   * ⚠️ `important`, PAS `critique`, et c'est un arbitrage. La désactivation est
+   * souvent administrative (fin de contrat, pièce expirée) et la session garde
+   * un intervenant identifié. Le cas « personne ne tient la place » a déjà ses
+   * trois alertes critiques ; crier aussi fort ici les noierait, et le bruit
+   * apprend à ignorer les critiques.
+   *
+   * `resolutionAuto` : la condition disparaît dès qu'on réaffecte OU qu'on
+   * réactive. Les deux gestes existent, et ce sont exactement les deux que le
+   * message propose.
+   */
+  formateur_desactive_encore_affecte: {
+    niveau: "important",
+    titre: "Formateur désactivé, toujours affecté à une session",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * D10 — personne ne prévient les stagiaires d'un changement de formateur.
+   *
+   * `notifications-service.ts` ne mentionne « formateur » que dans un
+   * commentaire : le code n'a pas tranché, il n'a rien prévu. Un stagiaire
+   * convoqué pour rencontrer quelqu'un se présentait devant quelqu'un d'autre.
+   *
+   * 🔑 UNE ALERTE, PAS UN ENVOI AUTOMATIQUE. Un changement de formateur se
+   * raconte : « votre formateur a changé » sans un mot d'explication inquiète
+   * plus qu'il n'informe, et la bonne formulation dépend du motif — un
+   * remplacement préparé et un désistement de la veille ne s'annoncent pas
+   * pareil. L'organisme décide, l'outil rappelle.
+   *
+   * ⚠️ STRUCTUREL — `resolutionAuto: false`. « J'ai prévenu les stagiaires » est
+   * un fait HUMAIN qu'aucune colonne n'observe. Une résolution automatique
+   * devrait s'appuyer sur autre chose, et il n'y a rien d'autre : la refermer à
+   * la main est la seule fin honnête. C'est l'administrateur qui atteste, pas le
+   * balayage qui devine.
+   */
+  stagiaires_non_prevenus_changement_formateur: {
+    niveau: "important",
+    titre: "Changement de formateur — les stagiaires n'ont pas été prévenus",
+    resolutionAuto: false,
+    guichet: "administratif",
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte constate un changement de formateur, pas une absence d'envoi : aucune colonne n'enregistre « les stagiaires ont été prévenus ». La passer à `true` la ferait résoudre au premier balayage, avant que quiconque ait prévenu qui que ce soit. Elle se résout à la main, une fois les stagiaires informés.",
+  },
+  /**
    * 🔴 UNE RC PRO QUI TOMBE HORS SOUS-TRAITANCE NE DISAIT RIEN (audit du
    * 2026-09-04, trou n°11 — implémenté PARTIELLEMENT, et le partiel est motivé).
    *

@@ -3870,6 +3870,176 @@ async function regleRcProFormateurHorsSousTraitance(now: Date): Promise<AlerteCa
   return alertes;
 }
 
+/**
+ * D8 — un formateur DÉSACTIVÉ reste principal sur des sessions non terminées.
+ *
+ * `setTrainerActifAction` écrit un booléen, et c'est tout ce qu'il fait. La
+ * garde `isTrainerHabilite` ne joue qu'AU MOMENT de l'affectation : elle protège
+ * l'entrée, jamais le stock. Un formateur désactivé le lendemain d'une
+ * affectation reste donc principal sur toutes ses sessions à venir, et aucune
+ * règle ne lisait `actif: false` — vérifié : `grep` rendait zéro sur
+ * l'évaluateur ET sur le catalogue.
+ *
+ * 🔑 C'est le motif de la journée, une fois de plus : **on ferme le chemin
+ * nominal (l'affectation) et on laisse le stock derrière** (les affectations
+ * déjà en place). « Peut-on encore l'affecter ? » et « est-il encore affecté ? »
+ * sont deux questions ; une seule était posée.
+ *
+ * ⚠️ NIVEAU. `important`, pas `critique`, et c'est un arbitrage assumé : la
+ * désactivation d'un formateur est souvent administrative (fin de contrat à
+ * venir, pièce expirée) et la session a encore un intervenant identifié. Le
+ * risque est réel mais il n'est pas « personne ne tient la place » — ce cas-là a
+ * déjà ses trois alertes critiques. Crier plus fort ici les noierait.
+ *
+ * ⚠️ BORNE. Sessions `planifiee` ou `en_cours` seulement. Une session terminée
+ * avec un formateur depuis désactivé n'appelle aucun geste : elle a été animée.
+ */
+async function regleFormateurDesactiveEncoreAffecte(_now: Date): Promise<AlerteCandidate[]> {
+  const liens = await prisma.sessionFormateur.findMany({
+    where: {
+      trainer: { actif: false },
+      session: { statut: { in: ["planifiee", "en_cours"] } },
+    },
+    select: {
+      role: true,
+      trainer: { select: { id: true, prenom: true, nom: true } },
+      session: {
+        select: { id: true, numero: true, titreSession: true, dateDebut: true, statut: true },
+      },
+    },
+    // Plafond aligné sur les règles voisines (50). Ce qui déborde est repris au
+    // passage suivant : la sélection est un ÉTAT, pas une fenêtre — rien ne se
+    // perd, le débit est simplement borné.
+    take: 50,
+  });
+
+  const out: AlerteCandidate[] = [];
+  // Une session peut porter plusieurs liens désactivés (principal + co-animant) :
+  // on n'en fait qu'UNE alerte, sinon l'écran répète le même dossier.
+  const vues = new Set<string>();
+  for (const l of liens) {
+    const s = l.session;
+    if (vues.has(s.id)) continue;
+    vues.add(s.id);
+
+    const qui = `${l.trainer.prenom} ${l.trainer.nom}`.trim();
+    const debut = s.dateDebut.toLocaleDateString("fr-FR");
+    const demarree = s.statut === "en_cours";
+
+    out.push({
+      code: "formateur_desactive_encore_affecte",
+      niveau: "important",
+      titre: "Formateur désactivé, toujours affecté à une session",
+      message:
+        `${qui} est désactivé au registre des intervenants, et reste pourtant ` +
+        `${l.role === "principal" ? "formateur PRINCIPAL" : "co-animant"} de ${designerSession(s)}, ` +
+        `qui ${demarree ? "a démarré" : "démarre"} le ${debut}. La désactivation n'a pas ` +
+        `retiré l'affectation : elle empêche seulement d'en créer de nouvelles. ` +
+        `Réaffectez quelqu'un, ou réactivez ${qui} si la désactivation était prématurée.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
+/**
+ * D10 — personne ne prévient les stagiaires quand le formateur change.
+ *
+ * `notifications-service.ts` ne mentionne « formateur » que dans un commentaire.
+ * Le code n'a pas tranché : **il n'a rien prévu**. Un stagiaire convoqué pour
+ * rencontrer quelqu'un se présente devant quelqu'un d'autre, et l'a appris sur
+ * place.
+ *
+ * ## 🔑 POURQUOI UNE ALERTE, ET PAS UN E-MAIL AUTOMATIQUE
+ *
+ * L'arbitrage était ouvert. Envoyer tout seul serait plus « complet », et c'est
+ * précisément pourquoi je ne le fais pas : un changement de formateur se
+ * raconte. « Votre formateur a changé » sans un mot d'explication inquiète plus
+ * qu'il n'informe, et la bonne formulation dépend du motif — un remplacement
+ * préparé et un désistement de la veille ne s'annoncent pas pareil, et le motif
+ * est justement ce que `motifRetrait` enregistre sans le comprendre.
+ *
+ * L'organisme décide, l'outil rappelle. C'est aussi l'ordre permanent de Will
+ * sur les envois vers de vraies personnes.
+ *
+ * ## ⚠️ `resolutionAuto: false`, et c'est structurel
+ *
+ * « J'ai prévenu les stagiaires » est un fait HUMAIN qu'aucune colonne
+ * n'observe. Une résolution automatique devrait donc s'appuyer sur autre chose —
+ * et il n'y a rien d'autre. La refermer à la main est la seule fin honnête :
+ * c'est l'administrateur qui atteste, pas le balayage qui devine.
+ *
+ * ## Bornes
+ *
+ * Retrait dans les 30 derniers jours, session NON DÉMARRÉE, au moins un inscrit
+ * actif. Prévenir après coup n'a plus d'objet : le stagiaire a rencontré le
+ * remplaçant, il le sait mieux que nous.
+ */
+async function regleStagiairesNonPrevenusChangementFormateur(
+  now: Date,
+): Promise<AlerteCandidate[]> {
+  const retraits = await prisma.sessionFormateurRetire.findMany({
+    where: {
+      retireAt: { gte: daysAgo(30, now) },
+      role: "principal",
+      session: {
+        statut: "planifiee",
+        dateDebut: { gt: now },
+        enrollments: { some: { ...inscriptionsActives() } },
+      },
+    },
+    select: {
+      retireAt: true,
+      trainer: { select: { prenom: true, nom: true } },
+      session: {
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          formateurPrincipalId: true,
+          _count: { select: { enrollments: true } },
+        },
+      },
+    },
+    orderBy: { retireAt: "desc" },
+    take: 50,
+  });
+
+  const out: AlerteCandidate[] = [];
+  const vues = new Set<string>();
+  for (const r of retraits) {
+    const s = r.session;
+    if (vues.has(s.id)) continue;
+    vues.add(s.id);
+
+    // Sans remplaçant désigné, ce n'est pas « prévenir d'un changement » : c'est
+    // « la session n'a plus de formateur », et trois alertes CRITIQUES le disent
+    // déjà. Doubler ici ferait deux lignes pour un seul geste.
+    if (s.formateurPrincipalId === null) continue;
+
+    const ancien = `${r.trainer.prenom} ${r.trainer.nom}`.trim();
+    const quand = r.retireAt.toLocaleDateString("fr-FR");
+    const debut = s.dateDebut.toLocaleDateString("fr-FR");
+
+    out.push({
+      code: "stagiaires_non_prevenus_changement_formateur",
+      niveau: "important",
+      titre: "Changement de formateur — les stagiaires n'ont pas été prévenus",
+      message:
+        `${ancien} a été retiré de ${designerSession(s)} le ${quand}, et un autre formateur ` +
+        `a pris la place. La session démarre le ${debut} et ${s._count.enrollments} ` +
+        `stagiaire(s) y sont inscrits : ils ont reçu une convocation qui nomme ` +
+        `${ancien}. Prévenez-les, puis refermez cette alerte — l'outil ne peut pas ` +
+        `savoir si vous l'avez fait.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return out;
+}
+
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
@@ -3898,6 +4068,11 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "cv_formateur_perime", fn: regleCvFormateurPerime },
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
   { nom: "vigilance_sous_traitance", fn: regleVigilanceSousTraitance },
+  { nom: "formateur_desactive_encore_affecte", fn: regleFormateurDesactiveEncoreAffecte },
+  {
+    nom: "stagiaires_non_prevenus_changement_formateur",
+    fn: regleStagiairesNonPrevenusChangementFormateur,
+  },
   { nom: "vigilance_urssaf", fn: regleVigilanceUrssaf },
   { nom: "opco", fn: regleOpco },
   { nom: "convention_tripartite", fn: regleConventionTripartite },

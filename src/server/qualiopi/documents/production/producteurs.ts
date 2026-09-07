@@ -98,6 +98,25 @@ export function modaliteLabelLower(
  * (fiable, écrite par l'assignation), repli sur le Json `coFormateurs` (legacy),
  * puis `fallback` (raison sociale).
  */
+/**
+ * Ce qu'on ecrit a la ligne « Formateur / Formatrice » quand PERSONNE n'est
+ * affecté.
+ *
+ * 🔴 D9 — la raison sociale de l'organisme y était imprimée. Sur une convocation
+ * et sur une grille d'évaluation, la ligne s'appelle « Formateur / Formatrice » :
+ * y mettre « Axion-IA OU » affirme qu'une personne morale a animé la session.
+ * C'est faux, et c'est faux sur une pièce que l'auditeur lit.
+ *
+ * Pire sur la grille : le nom est repris dans le bloc de SIGNATURE (« Nom : … »).
+ * Nommer l'organisme y fabrique un signataire qui n'existe pas.
+ *
+ * ⚠️ Ce repli ne vaut PAS partout. Sur le livret d'accueil, le même nom alimente
+ * « Contact pédagogique › Nom / Prénom » : la raison sociale y est LÉGITIME —
+ * l'organisme est bien le contact quand aucun formateur n'est encore désigné.
+ * Un repli uniforme aurait corrigé deux pièces et cassé la troisième.
+ */
+export const FORMATEUR_A_DESIGNER = "Formateur à désigner";
+
 export async function resolveFormateurNom(
   input: { formateurPrincipalId: string | null; coFormateurs: unknown },
   fallback: string,
@@ -622,7 +641,9 @@ export async function produireConvocation(
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const formateurNom = await resolveFormateurNom(
     { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
+    // 🔴 D9 — PAS la raison sociale : cette valeur part a la ligne
+    // « Formateur / Formatrice ». Cf. `FORMATEUR_A_DESIGNER`.
+    FORMATEUR_A_DESIGNER,
   );
 
   const nomStagiaire = `${trainee.prenom} ${trainee.nom}`.trim();
@@ -773,7 +794,9 @@ export async function produireGrilleEvaluation(
   const trainee = enrollment.trainee;
   const formateurNom = await resolveFormateurNom(
     { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
+    // 🔴 D9 — PAS la raison sociale : cette valeur part a la ligne
+    // « Formateur / Formatrice ». Cf. `FORMATEUR_A_DESIGNER`.
+    FORMATEUR_A_DESIGNER,
   );
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const rawObjectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
@@ -1118,6 +1141,12 @@ export async function produireLivretAccueil(
   const identite = await getOrganismeIdentite();
 
   // Contact pédagogique — formateur principal ou identité OF.
+  //
+  // ⚠️ D9 — ICI la raison sociale est LÉGITIME, et c'est délibéré : cette valeur
+  // alimente « Contact pédagogique › Nom / Prénom », pas une ligne
+  // « Formateur / Formatrice ». Quand personne n'est encore désigné, l'organisme
+  // EST le contact. Ne pas y propager `FORMATEUR_A_DESIGNER` : le stagiaire se
+  // retrouverait sans interlocuteur.
   const formateurNom = await resolveFormateurNom(
     { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
     identite.raisonSociale,
