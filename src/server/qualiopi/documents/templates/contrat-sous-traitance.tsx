@@ -172,10 +172,72 @@ export function ContratSousTraitancePdf({
         <DocSection title="4. Rémunération">
           <FieldRow label="Honoraires" value={data.remuneration} required />
           <Text style={pdfStyles.legalNote}>
-            La rémunération est versée sur présentation d&apos;une facture d&apos;honoraires
-            conforme émise par le sous-traitant après réalisation de chaque mission. Les montants
-            sont exprimés hors taxes ; la TVA est appliquée selon le régime fiscal propre au
-            sous-traitant.
+            Les montants sont exprimés hors taxes ; la TVA est appliquée selon le régime fiscal
+            propre au sous-traitant.
+          </Text>
+
+          {/*
+            🔴 2026-09-06 — LE DÉLAI DE PAIEMENT MANQUAIT, ET SON ABSENCE COÛTE.
+            Sans stipulation, le délai supplétif de l'art. L441-10 s'applique (30
+            jours après réception), et les pénalités courent sans que personne les
+            ait décidées. Le silence n'était pas neutre : il choisissait pour nous.
+          */}
+          <Text style={pdfStyles.paragraph}>
+            <Text style={{ fontWeight: "bold" }}>Délai de paiement.</Text> Les honoraires sont
+            réglés dans un délai de <Text style={{ fontWeight: "bold" }}>trente (30) jours</Text> à
+            compter de la date d&apos;émission de la facture, par virement bancaire.
+          </Text>
+          <Text style={pdfStyles.legalNote}>
+            Ce délai est conforme au plafond d&apos;ordre public de l&apos;article L.441-10 du Code
+            de commerce. Tout retard de paiement fait courir de plein droit, sans mise en demeure,
+            des pénalités au taux de la Banque centrale européenne majoré de 10 points, ainsi
+            qu&apos;une indemnité forfaitaire pour frais de recouvrement de 40 € (art. D.441-5 du
+            Code de commerce), sans préjudice d&apos;une indemnisation complémentaire sur
+            justificatifs. Aucun escompte n&apos;est accordé pour paiement anticipé.
+          </Text>
+
+          {/*
+            🔑 LE DÉCLENCHEUR, ET C'EST LUI QUI RÉPOND AU BESOIN DE TRÉSORERIE.
+            Le délai légal court à partir de la FACTURE. On ne peut pas retarder
+            une dette due — « payé quand le client aura payé » est réputé non
+            écrit et sanctionné jusqu'à 2 M€ pour une personne morale. Mais on
+            peut définir QUAND la facture est émise : à la validation du relevé
+            mensuel, qui suppose la mission réalisée et les heures constatées.
+            On déplace le point de départ ; on ne repousse aucune échéance.
+          */}
+          <Text style={pdfStyles.paragraph}>
+            <Text style={{ fontWeight: "bold" }}>Fait générateur de la facturation.</Text> La
+            facture est émise après réalisation de la mission et validation du relevé de
+            rémunération de la période, qui constate les interventions effectivement réalisées et
+            les heures animées. Le relevé est communiqué au sous-traitant avant émission ; il
+            dispose de <Text style={{ fontWeight: "bold" }}>huit (8) jours</Text> pour en contester
+            le contenu.
+          </Text>
+        </DocSection>
+
+        {/* 4 bis. Mandat de facturation (autofacturation) */}
+        <DocSection title="4 bis. Mandat de facturation (autofacturation)">
+          {/*
+            ⚠️ L'AUTOFACTURATION NE S'IMPROVISE PAS. Elle exige un mandat ÉCRIT et
+            PRÉALABLE, la mention « Autofacturation » sur la pièce, l'émission au
+            nom et pour le compte du sous-traitant, et un droit de contestation.
+            Sans l'un de ces quatre éléments, la facture n'est pas régulière et la
+            TVA qu'elle porte n'est pas déductible.
+          */}
+          <Text style={pdfStyles.paragraph}>
+            Le sous-traitant donne mandat à l&apos;organisme d&apos;établir en son nom et pour son
+            compte les factures d&apos;honoraires correspondant aux missions réalisées. Chaque
+            facture porte la mention <Text style={{ fontWeight: "bold" }}>« Autofacturation »</Text>{" "}
+            et reprend l&apos;ensemble des mentions obligatoires, dont le numéro de TVA
+            intracommunautaire du sous-traitant lorsqu&apos;il y est assujetti.
+          </Text>
+          <Text style={pdfStyles.legalNote}>
+            Le sous-traitant conserve la qualité de fournisseur et demeure seul redevable, le cas
+            échéant, de la TVA mentionnée. Chaque facture lui est transmise dès son émission ; il
+            dispose de <Text style={{ fontWeight: "bold" }}>huit (8) jours</Text> pour la contester,
+            faute de quoi elle est réputée acceptée. Le mandat est révocable à tout moment par
+            écrit, sans effet rétroactif sur les factures déjà émises. À défaut de mandat en
+            vigueur, le sous-traitant émet lui-même ses factures d&apos;honoraires.
           </Text>
         </DocSection>
 
