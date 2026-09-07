@@ -39,7 +39,6 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import {
   computeTotauxFacture,
-  isRegimeTva,
   regimeTvaDepuisConfig,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,

@@ -29,7 +29,6 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   computeTotauxFacture,
-  isRegimeTva,
   regimeTvaDepuisConfig,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,

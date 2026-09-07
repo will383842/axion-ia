@@ -33,7 +33,6 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { regimeEstimationMutualisee } from "@/server/qualiopi/financements/estimation-certification";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
-  isRegimeTva,
   regimeTvaDepuisConfig,
   mentionTva,
   REGIME_TVA_DEFAUT,

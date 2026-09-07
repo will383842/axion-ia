@@ -19,7 +19,6 @@ import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   computeTotauxFacture,
-  isRegimeTva,
   regimeTvaDepuisConfig,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
