@@ -160,8 +160,8 @@ export default async function DevenirCommercialHub({ params }: Props) {
       ? "Fibre commerciale et motivation. Débutants acceptés : nous formons à l'offre IA."
       : "Sales instinct and motivation. Beginners welcome: we train you on the AI offer.",
     responsibilities: isFr
-      ? "Démarcher les entreprises, présenter l'offre IA, suivre les comptes sur un dashboard, conclure des ventes."
-      : "Prospect companies, present the AI offer, track accounts on a dashboard, close sales.",
+      ? "Démarcher les entreprises, présenter l'offre IA, déclarer les comptes démarchés, conclure des ventes."
+      : "Prospect companies, present the AI offer, declare prospected accounts, close sales.",
     jobBenefits: isFr
       ? "Statut indépendant, revenus déplafonnés, emploi du temps libre, démarrage sans coût, portefeuille conservé, formation à l'offre."
       : "Self-employed status, uncapped income, flexible schedule, no-cost start, keep your portfolio, training provided.",
