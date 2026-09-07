@@ -356,6 +356,91 @@ export async function genererDossierSessionZip(
     );
   }
 
+  // ── 2 bis. LE JOURNAL DES ENVOIS — la preuve de SOLLICITATION ────────────
+  //
+  // 🔴 2026-09-07 — elle manquait, et c'est la seule que l'indicateur 30 réclame
+  // vraiment.
+  //
+  // L'indicateur 30 n'exige pas que le stagiaire RÉPONDE — on ne peut pas l'y
+  // contraindre. Il exige que l'organisme ait DEMANDÉ, et relancé. Ce que
+  // l'auditeur regarde, c'est donc la trace de la sollicitation.
+  //
+  // Or ce dossier ne portait que les PIÈCES et les signatures. La trace des
+  // envois vivait ailleurs, dans un écran qu'il fallait filtrer à la main par
+  // adresse — donc absente du paquet qu'on remet au certificateur. Un dossier
+  // de preuves auquel il manque la preuve la plus demandée oblige à ouvrir la
+  // console en séance, ce qui est exactement ce qu'un dossier doit éviter.
+  //
+  // ⚠️ Ce journal dit QUI a reçu QUOI et QUAND, jamais le contenu du message
+  // (ni sujet, ni corps, ni variables) — l'en-tête du fichier le répète, pour
+  // qu'un lecteur n'y cherche pas un archivage qu'il n'est pas.
+  //
+  // Filtré sur les entités de CETTE session (`entityId`), et non sur les
+  // adresses : une même adresse peut servir deux dossiers dans l'année, et
+  // mélanger deux sessions dans un dossier de preuves serait pire que ne rien
+  // fournir.
+  try {
+    const idsSession = [
+      sessionId,
+      ...session.enrollments.map((e) => e.id),
+      ...session.documents.map((d) => d.id),
+    ];
+    const envois = await prisma.emailLog.findMany({
+      where: { entityId: { in: idsSession } },
+      orderBy: { createdAt: "asc" },
+      select: {
+        createdAt: true,
+        template: true,
+        recipient: true,
+        status: true,
+        bounceType: true,
+        entityType: true,
+        entityId: true,
+      },
+    });
+
+    const enTete = [
+      "# Journal des envois — preuve de sollicitation",
+      "",
+      `Session ${session.numero} — ${session.titreSession}`,
+      `Extrait le ${new Date().toLocaleString("fr-FR")}`,
+      "",
+      "Ce journal enregistre QUI a reçu QUOI et QUAND, ainsi que le résultat.",
+      "Il ne contient PAS le contenu des messages : ni sujet, ni texte, ni variables.",
+      "",
+      "« Envoyé » signifie remis au serveur d'envoi sans erreur — pas nécessairement lu.",
+      "",
+      "date;gabarit;destinataire;statut;entite",
+    ];
+    const lignesCsv = envois.map((e) =>
+      [
+        e.createdAt.toISOString(),
+        e.template,
+        e.recipient,
+        e.status === "bounced" && e.bounceType !== null ? `${e.status}:${e.bounceType}` : e.status,
+        `${e.entityType ?? "—"}:${(e.entityId ?? "").slice(0, 8)}`,
+      ].join(";"),
+    );
+    zip.file("journal-envois.csv", [...enTete, ...lignesCsv].join("\n"));
+    index.push(
+      envois.length === 0
+        ? "Journal des envois : AUCUN envoi rattaché à cette session."
+        : `Journal des envois : ${envois.length} envoi${envois.length > 1 ? "s" : ""} tracé${envois.length > 1 ? "s" : ""}.`,
+    );
+    if (envois.length === 0) {
+      avertissements.push(
+        "⚠️ Aucun envoi n'est rattaché à cette session : la preuve de sollicitation (ind. 30) est absente du dossier.",
+      );
+    }
+  } catch {
+    // Fail-soft : un journal illisible ne doit pas priver le certificateur des
+    // pièces et des signatures, qui sont l'essentiel du dossier. Mais on le DIT,
+    // sinon son absence se confondrait avec « aucun envoi ».
+    avertissements.push(
+      "⚠️ Le journal des envois n'a pas pu être lu : la preuve de sollicitation est absente de ce dossier, et ce n'est PAS un constat d'absence d'envoi.",
+    );
+  }
+
   // ── 3. Documents générés de la session ── (`r2Ok` déjà calculé plus haut)
   if (!r2Ok) {
     avertissements.push(

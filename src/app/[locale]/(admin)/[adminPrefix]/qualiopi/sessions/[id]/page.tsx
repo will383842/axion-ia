@@ -1031,6 +1031,20 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             >
               Registre des signatures de cette session
             </Link>
+            {/* 🔴 2026-09-07 — la PREUVE DE SOLLICITATION, qui n'avait aucun
+                chemin depuis la session.
+                L'indicateur 30 ne demande pas que le stagiaire réponde — il
+                demande que l'organisme ait DEMANDÉ, et relancé. Cette preuve
+                vit dans le journal des envois, qui ne s'indexait que par
+                adresse : pour une session à douze inscrits, douze recherches et
+                un recollement à la main. Ce lien pose la question comme
+                l'auditeur la pose — par session, pas par personne. */}
+            <Link
+              href={`/${locale}/${adminPrefix}/emails-envoyes?session=${id}&fenetre=0`}
+              className="admin-button-ghost"
+            >
+              Journal des envois de cette session
+            </Link>
           </div>
         </div>
 

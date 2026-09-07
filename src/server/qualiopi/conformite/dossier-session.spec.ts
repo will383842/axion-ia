@@ -19,6 +19,18 @@ vi.mock("@/lib/prisma", () => ({
     // Les pièces ANNULÉES sont lues à part : elles ne doivent pas entrer dans la
     // relation qui alimente le ZIP, mais le dossier doit quand même les NOMMER.
     documentGenere: { findMany: vi.fn() },
+    // 🔴 2026-09-07 — le journal des envois (preuve de sollicitation, ind. 30)
+    // entre désormais dans le dossier. Sans ce modèle au double, l'accès
+    // `prisma.emailLog` lève, le fail-soft l'attrape, et un dossier
+    // PARFAITEMENT sain repart avec un avertissement : un test rouge sur du
+    // code juste.
+    //
+    // 🔑 C'est ce fichier-là qui l'a montré, pas les témoins du nouveau code :
+    // le double d'un test ne modélise que ce que son auteur connaissait le jour
+    // où il l'a écrit. Ajouter une lecture au code, c'est ajouter une ligne à
+    // tous les doubles qui le traversent — sinon leur silence passe pour un
+    // verdict.
+    emailLog: { findMany: vi.fn(async () => []) },
   },
 }));
 
@@ -59,6 +71,9 @@ const mockFindUnique = (
 const mockDocsAnnulees = (
   prisma as unknown as { documentGenere: { findMany: ReturnType<typeof vi.fn> } }
 ).documentGenere.findMany;
+const mockEmailLogFindMany = (
+  prisma as unknown as { emailLog: { findMany: ReturnType<typeof vi.fn> } }
+).emailLog.findMany;
 const mockR2Ok = isR2Configured as unknown as ReturnType<typeof vi.fn>;
 const mockGetBuffer = getObjectBufferR2 as unknown as ReturnType<typeof vi.fn>;
 const mockFeuille = construireFeuillePdf as unknown as ReturnType<typeof vi.fn>;
@@ -165,6 +180,9 @@ beforeEach(() => {
   // valeur par défaut se repose ici, sinon elle fuit d'un test à l'autre.
   mockFindUnique.mockResolvedValue(session());
   mockDocsAnnulees.mockResolvedValue([]);
+  // Journal des envois vide par défaut : la fixture ne modélise aucun e-mail,
+  // et c'est le cas qui doit lever l'avertissement de sollicitation manquante.
+  mockEmailLogFindMany.mockResolvedValue([]);
   mockR2Ok.mockReturnValue(true);
   mockGetBuffer.mockResolvedValue(Buffer.from("%PDF-"));
   // `null` = « cette pièce ne porte aucune signature », le cas d'une convocation
@@ -199,7 +217,16 @@ describe("genererDossierSessionZip", () => {
     // désormais. L'assertion d'origine était exacte sur son objet (l'intégrité
     // des chaînes) mais elle verrouillait un SILENCE qui n'était pas mérité :
     // le dossier ne disait rien d'une pièce manquante.
-    expect(res?.avertissements.filter((a) => !a.includes("contresignature"))).toEqual([]);
+    // 🔴 2026-09-07 — même raisonnement, second cas. Le dossier porte désormais
+    // le journal des envois (preuve de sollicitation, ind. 30), et la fixture
+    // par défaut n'a aucun envoi : l'avertissement est MÉRITÉ. L'exiger absent
+    // verrouillerait de nouveau un silence — exactement ce que la note de 08-20
+    // reprochait à l'assertion d'origine. Ce cas porte sur l'INTÉGRITÉ DES
+    // CHAÎNES, pas sur la complétude du dossier ; deux tests dédiés couvrent
+    // l'avertissement d'envoi plus bas.
+    expect(
+      res?.avertissements.filter((a) => !a.includes("contresignature") && !a.includes("envoi")),
+    ).toEqual([]);
 
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
     expect(JSON.parse(rapport!).signatures[0]).toMatchObject({ integrite: "OK", nbSignatures: 2 });
@@ -548,6 +575,51 @@ describe("genererDossierSessionZip", () => {
     const index = await fichierDuZip(res!.base64, "index.txt");
     expect(index).toContain("Intégrité des chaînes de contresignatures :");
     expect(index).not.toContain("AUCUNE contresignature");
+  });
+
+  /**
+   * 🔴 LE JOURNAL DES ENVOIS — la preuve de SOLLICITATION (ind. 30), 2026-09-07.
+   *
+   * L'indicateur 30 n'exige pas que le stagiaire RÉPONDE — on ne peut pas l'y
+   * contraindre. Il exige que l'organisme ait DEMANDÉ, et relancé. Ce que
+   * l'auditeur regarde est donc la trace de la sollicitation, et elle ne
+   * figurait nulle part dans le dossier remis : il fallait ouvrir la console en
+   * séance et filtrer un écran à la main, adresse par adresse.
+   */
+  describe("journal des envois", () => {
+    it("🔴 l'absence d'envoi est un AVERTISSEMENT, pas un silence", async () => {
+      // Une session dont aucune trace d'envoi n'existe est un dossier auquel il
+      // manque la preuve la plus demandée. Le taire le ferait passer pour
+      // complet — et c'est en séance que le trou apparaîtrait.
+      const res = await genererDossierSessionZip("s-1");
+      expect(res?.avertissements.join(" ")).toContain("preuve de sollicitation");
+    });
+
+    it("joint le journal au ZIP et se tait dès qu'un envoi existe", async () => {
+      // Témoin de non-vacuité : sans lui, un avertissement inconditionnel ferait
+      // passer le cas ci-dessus sans rien prouver de sa condition.
+      mockEmailLogFindMany.mockResolvedValue([
+        {
+          createdAt: new Date("2026-06-11T08:00:00Z"),
+          template: "qualiopi-satisfaction-j1",
+          recipient: "stagiaire@exemple.fr",
+          status: "sent",
+          bounceType: null,
+          entityType: "Enrollment",
+          entityId: "enr-1",
+        },
+      ]);
+
+      const res = await genererDossierSessionZip("s-1");
+      expect(res?.avertissements.join(" ")).not.toContain("preuve de sollicitation");
+
+      const journal = await fichierDuZip(res!.base64, "journal-envois.csv");
+      expect(journal).toContain("qualiopi-satisfaction-j1");
+      expect(journal).toContain("stagiaire@exemple.fr");
+      // Le journal doit DIRE ce qu'il n'est pas : un lecteur ne doit pas y
+      // chercher le contenu des messages, qui n'y est pas et n'y sera jamais.
+      expect(journal).toContain("ni sujet, ni texte");
+    });
   });
 
   it("🔴 M2 — signale une IMAGE de signature qui ne correspond plus à son condensat scellé", async () => {
