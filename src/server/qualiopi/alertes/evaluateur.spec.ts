@@ -3710,3 +3710,87 @@ describe("releve_formateur_echu", () => {
     expect(reglesEnEchec).not.toContain("releve_formateur_echu");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cliquet — la dette de règles INERTES ne grossit pas, et ne se périme pas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 CE FICHIER A L'AIR DE COUVRIR L'ÉVALUATEUR. IL N'EN COUVRE QU'UNE PARTIE.
+ *
+ * Le prisma mocké est déclaré DEUX FOIS — la fabrique passée à `vi.mock`, et le
+ * cast `mp` écrit à la main — et aucune des deux ne porte tous les modèles que
+ * les règles lisent. Une règle dont le modèle manque LÈVE ; `evaluerAlertes`
+ * attrape en fail-soft PAR RÈGLE, passe à la suivante, et la suite reste verte
+ * pendant que stderr répète « erreur règle … ». Ces règles ne sont donc pas
+ * mesurées : elles sont ABSOUTES. Un témoin qui ne regarde rien rend le même
+ * vert qu'un témoin satisfait.
+ *
+ * ## Pourquoi un CLIQUET et pas « zéro erreur »
+ *
+ * Un témoin « aucune règle en échec » serait rouge dès son écriture : la dette
+ * préexiste, mesurée à SIX règles le 2026-09-09. Poser une gate sur un seuil
+ * déjà dépassé ouvre un rouge permanent que personne ne peut fermer dans sa
+ * propre PR — c'est la doctrine que ce dépôt s'est donnée après le bucket
+ * « Shell partagé » : **seuil aligné d'abord, blocage ensuite**.
+ *
+ * ## Il rougit dans les DEUX sens, et les deux sont utiles
+ *
+ *   · une SEPTIÈME règle devient inerte → rouge. C'est le cas qui compte : une
+ *     règle ajoutée sans son modèle part en production, tombe à chaque balayage,
+ *     et rien ne le dit ;
+ *   · une règle est RÉPARÉE sans que la liste bouge → rouge aussi. Un cliquet
+ *     qui ne rougirait que dans un sens laisserait la liste se périmer, et une
+ *     liste périmée absout exactement ce qu'elle prétend surveiller.
+ *
+ * ⚠️ Ce cliquet ne RÉPARE rien. Compléter le mock ferait s'exécuter six règles
+ * qui ne s'exécutaient pas, sur 178 tests qui ne les attendent pas : c'est un
+ * chantier à part, avec son propre risque de faux rouges. Le cliquet empêche
+ * entre-temps que la dette grossisse — le seul risque qu'une gate sache traiter.
+ */
+const REGLES_INERTES_CONNUES = [
+  "formateur_desactive_encore_affecte",
+  "formateur_mission_expiree",
+  "formateur_mission_refusee",
+  "formateur_mission_sans_reponse",
+  "formateur_mission_sans_reponse_delai",
+  "stagiaires_non_prevenus_changement_formateur",
+] as const;
+
+describe("cliquet des règles inertes", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  it("🔴 l'ensemble des règles en échec est EXACTEMENT la dette connue", async () => {
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(
+      [...reglesEnEchec].sort(),
+      "La liste des règles INERTES a bougé.\n" +
+        "  · une règle EN PLUS : son modèle Prisma manque au mock ET au cast `mp` " +
+        "ci-dessus. Elle lève, le fail-soft l'avale, elle n'est mesurée par rien — " +
+        "et elle tombera de la même façon en production si elle y lit un modèle absent. " +
+        "Ajoutez le modèle aux DEUX endroits ; ne l'ajoutez pas à cette liste.\n" +
+        "  · une règle EN MOINS : vous venez d'en réparer une. Retirez-la de " +
+        "`REGLES_INERTES_CONNUES` — la dette a baissé, le cliquet doit le savoir.",
+    ).toEqual([...REGLES_INERTES_CONNUES]);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : le mécanisme mesure bien quelque chose", async () => {
+    // Si `evaluerAlertesDetaille` cessait de remplir `reglesEnEchec` — champ
+    // renommé, fail-soft retiré — le test ci-dessus deviendrait une comparaison
+    // de deux listes vides, et il verdirait en ne mesurant plus rien.
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec.length).toBeGreaterThan(0);
+  });
+
+  it("🔴 `releve_formateur_echu` n'est PAS dans la dette", async () => {
+    // La règle de cette PR lit `trainerStatement`, présent au mock ET au cast.
+    // Ce test dit explicitement ce que le cliquet garantit pour elle.
+    expect(REGLES_INERTES_CONNUES as readonly string[]).not.toContain("releve_formateur_echu");
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("releve_formateur_echu");
+  });
+});
