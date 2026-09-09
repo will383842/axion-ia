@@ -176,6 +176,12 @@ const CODES_ATTENDUS: string[] = [
   // répond OUI puis se désiste. Le fait n'existe qu'au registre des incidents,
   // lu par la seule règle des incidents RÉPÉTÉS (≥2 sur 24 mois).
   "formateur_desiste_session",
+  // D8 (2026-09-06) — la désactivation d'un formateur ne retirait pas ses
+  // affectations : la garde d'habilitation protège l'entrée, jamais le stock.
+  "formateur_desactive_encore_affecte",
+  // D10 (2026-09-06) — le code n'avait rien prévu pour prévenir les stagiaires
+  // d'un changement de formateur. Alerte, pas envoi automatique.
+  "stagiaires_non_prevenus_changement_formateur",
   // Trou n°11, partie tenable : la RC pro est une colonne de TOUS les
   // formateurs, mais seuls les sous-traitants étaient surveillés. L'ABSENCE
   // reste non signalée hors sous-traitance — aucun statut ne l'exige, et une
