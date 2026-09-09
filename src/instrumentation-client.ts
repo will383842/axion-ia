@@ -10,8 +10,7 @@
 // timeout fallback). Le bundle Sentry devient un chunk async chargé après
 // que le main thread soit idle → shell tombe à ~120-130 KB br (gain ~80 KB).
 // LCP mobile attendu -1200 à -1800 ms, TBT -1200 à -1400 ms selon AGENT 1
-// §2.4 P0-A1.3. Trade-off : les erreurs survenant durant les ~3s avant init
-// ne sont pas capturées (acceptable V1 vs gain Web Vitals critique).
+// §2.4 P0-A1.3.
 //
 // `onRouterTransitionStart` reste exporté synchrone (Next 16 doit pouvoir
 // l'appeler immédiatement au montage du root) mais devient no-op tant que
@@ -21,63 +20,17 @@
 // V2 perf Sprint 17 : ré-évaluer si on bascule RUM Web Vitals via Sentry
 // (auquel cas init synchrone pour capter LCP/INP/CLS de la première nav)
 // vs garder notre WebVitalSample maison (qui n'a pas besoin du SDK Sentry).
+//
+// 🔴 2026-09-09 — LE COMPROMIS AVAIT UNE CONSÉQUENCE NON ÉCRITE, ET ELLE A
+// COÛTÉ UN DIAGNOSTIC. « Les erreurs survenant durant les ~3 s avant init ne
+// sont pas capturées (acceptable V1) » : c'est exactement la fenêtre où vit une
+// erreur d'HYDRATATION. Trois frontières React étaient donc muettes, dont une
+// qui appelait pourtant `captureException`. Le mécanisme de chargement vit
+// désormais dans `lib/observability/sentry-client-lazy.ts`, qu'une erreur de
+// frontière peut FORCER au lieu d'attendre l'inactivité. Ce fichier ne garde
+// que l'ordonnancement du chemin nominal — inchangé.
 
-type SentryModule = typeof import("@sentry/nextjs");
-
-let sentryModule: SentryModule | null = null;
-let sentryInitPromise: Promise<SentryModule | null> | null = null;
-
-async function initSentryLazy(): Promise<SentryModule | null> {
-  if (sentryModule) return sentryModule;
-  if (sentryInitPromise) return sentryInitPromise;
-
-  const dsn = process.env["NEXT_PUBLIC_SENTRY_DSN"];
-  if (!dsn) return null;
-
-  sentryInitPromise = (async () => {
-    const [Sentry, { piiScrubBeforeSend }] = await Promise.all([
-      import("@sentry/nextjs"),
-      import("./lib/observability/sentry-pii-scrub"),
-    ]);
-
-    Sentry.init({
-      dsn,
-      // Slim integrations (batch 2 `df5b9ed`) — pas de BrowserTracing/Replay/
-      // Breadcrumbs (économise ~80-100 KB raw vs default).
-      defaultIntegrations: false,
-      integrations: [
-        Sentry.dedupeIntegration(),
-        Sentry.inboundFiltersIntegration(),
-        Sentry.functionToStringIntegration(),
-        Sentry.linkedErrorsIntegration(),
-        Sentry.globalHandlersIntegration(),
-        Sentry.httpContextIntegration(),
-      ],
-      tracesSampleRate: 0,
-      environment: process.env["NEXT_PUBLIC_APP_ENV"] ?? "development",
-      // Méta-cert 2026-05-15 AGENT 17 P1 — release tracking explicite cohérent
-      // avec sentry.{server,edge}.config.ts. NEXT_PUBLIC_SENTRY_RELEASE pour le
-      // client (lisible côté browser), fallback SENTRY_RELEASE puis npm version.
-      release:
-        process.env["NEXT_PUBLIC_SENTRY_RELEASE"] ??
-        process.env["SENTRY_RELEASE"] ??
-        process.env["npm_package_version"],
-      replaysSessionSampleRate: 0,
-      replaysOnErrorSampleRate: 0,
-      sendDefaultPii: false,
-      beforeSend: piiScrubBeforeSend,
-    });
-
-    if (process.env["NODE_ENV"] === "production") {
-      Sentry.setTag("runtime.client", "browser");
-    }
-
-    sentryModule = Sentry;
-    return Sentry;
-  })();
-
-  return sentryInitPromise;
-}
+import { chargerSentry, sentryDejaCharge } from "./lib/observability/sentry-client-lazy";
 
 // Schedule init durant idle time pour minimiser l'impact LCP/TBT.
 // `requestIdleCallback` disponible sur Chrome/Edge/Firefox 100%, Safari 18+.
@@ -90,13 +43,13 @@ if (typeof window !== "undefined") {
       }
     ).requestIdleCallback(
       () => {
-        void initSentryLazy();
+        void chargerSentry();
       },
       { timeout: 3000 },
     );
   } else {
     setTimeout(() => {
-      void initSentryLazy();
+      void chargerSentry();
     }, 3000);
   }
 }
@@ -106,8 +59,9 @@ if (typeof window !== "undefined") {
 // (~3s post-load), c'est un no-op silencieux. Une fois init terminé, déléguée
 // au handler natif Sentry.
 export function onRouterTransitionStart(href: string, navigationType: string): void {
-  if (sentryModule) {
-    sentryModule.captureRouterTransitionStart(href, navigationType);
+  const Sentry = sentryDejaCharge();
+  if (Sentry) {
+    Sentry.captureRouterTransitionStart(href, navigationType);
   }
   // Pas de queue/replay des transitions manquées avant init —
   // un fire-and-forget early transition est acceptable V1.

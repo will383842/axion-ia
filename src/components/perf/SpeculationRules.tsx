@@ -15,9 +15,10 @@
  *  - prerender `moderate` sur 14 URLs stratégiques publiques (top nav + CTA).
  *    `moderate` = déclenche au hover/scroll (pas au load), évite saturation 4G.
  *  - prefetch fallback `moderate` sur tout le locale public.
- *  - SKIP totalement si le pathname commence par `/admin/` ou `/<adminPrefix>/`
- *    (= console admin runtime-rotated) — évite le conflit avec les RSC stream
- *    de l'admin qui crashaient l'error boundary.
+ *  - SKIP totalement sur la console admin (préfixe rotatif) — évite le conflit
+ *    avec les flux RSC de l'admin qui crashaient l'error boundary. La détection
+ *    passe par `pageEstConsoleAdmin` ; lire le bloc 2026-09-09 ci-dessous, la
+ *    version d'origine de cette garde ne fermait rien.
  *
  * Pourquoi client-side et pas server-side ?
  *  - Au server-side, on n'a pas l'info de la route au moment du render layout
@@ -37,17 +38,47 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
+import { pageEstConsoleAdmin, urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 
+/**
+ * 🔴 2026-09-09 — LA GARDE « CONSOLE ADMIN » N'A JAMAIS PU ÊTRE VRAIE.
+ *
+ * Ce module documente depuis le 2026-05-22 qu'il doit sauter la console, parce
+ * que les règles de spéculation « crashaient l'error boundary RSC stream » de
+ * l'admin le 2026-05-18. Les trois conditions écrites pour cela ne fermaient
+ * rien :
+ *
+ *   1. `pathname.startsWith("/admin/")` — `usePathname()` de `next/navigation`
+ *      rend le chemin AVEC le préfixe de locale, et `localePrefix: "always"`.
+ *      Aucun chemin de ce site ne commence par `/admin/` : ils commencent tous
+ *      par `/fr/`. Cette condition était fausse pour TOUTE URL, console comprise.
+ *   2. `urlPorteUnSecret(pathname)` — ne couvre que `/portail`.
+ *   3. `adminPrefix && …` — le seul point de montage,
+ *      `src/app/[locale]/layout.tsx`, écrit `<SpeculationRules locale={locale} />`
+ *      SANS `adminPrefix`. La prop étant facultative, ni TypeScript ni ESLint
+ *      n'avaient de raison de le dire.
+ *
+ * ⟹ Les règles étaient donc injectées sur les ~305 pages de la console, EN
+ * PRODUCTION uniquement (`NODE_ENV`), ce qui explique qu'aucune recette locale
+ * ne l'ait jamais vu. Et la dernière règle est un attrape-tout
+ * (`href_matches: "/{LOCALE}/*"`, `eagerness: "moderate"`) : le navigateur
+ * préchargeait les ~150 liens de la barre latérale, chacun étant une page
+ * `force-dynamic` lourde — c'est-à-dire exactement la configuration que le
+ * 2026-05-18 avait désactivée.
+ *
+ * 🔑 UNE PROP FACULTATIVE N'EST PAS UNE GARDE. Le comportement sûr dépendait
+ * qu'on n'oublie pas de la passer, et l'oubli est silencieux par construction.
+ * La garde ne prend donc plus de paramètre : elle lit le DOM, où le layout
+ * admin pose déjà sa coquille. Une page ne peut plus « oublier » d'être la
+ * console.
+ *
+ * ⚠️ NE PAS « RÉPARER » CECI EN PASSANT `ADMIN_URL_PREFIX` EN PROP. Le layout
+ * `[locale]` est la racine de TOUT le site : la valeur atterrirait dans le HTML
+ * des 17 000 pages publiques, et le préfixe secret cesserait d'être secret.
+ */
 interface SpeculationRulesProps {
   /** Locale courant (fr / en). Passé depuis le Server Layout via prop. */
   locale: string;
-  /**
-   * Prefixe admin runtime-rotated (env ADMIN_URL_PREFIX). Si le pathname
-   * démarre par ce préfixe → skip injection (évite crash error boundary).
-   * Si non fourni, on skip uniquement les patterns connus (/admin/*).
-   */
-  adminPrefix?: string;
 }
 
 const RULES = {
@@ -129,18 +160,18 @@ function expandLocale(rules: typeof RULES, locale: string): unknown {
   };
 }
 
-export function SpeculationRules({ locale, adminPrefix }: SpeculationRulesProps): null {
+export function SpeculationRules({ locale }: SpeculationRulesProps): null {
   const pathname = usePathname();
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") return;
 
-    // Skip sur routes admin (RSC stream crash 2026-05-18).
-    if (pathname?.startsWith("/admin/")) return;
+    // Skip sur la console admin (crash du flux RSC, 2026-05-18). Voir le bloc
+    // 2026-09-09 en tête de fichier : la garde d'origine ne fermait rien.
+    if (pageEstConsoleAdmin(pathname)) return;
     // Pré-charger une URL à jeton la fait entrer dans les journaux du CDN et du
     // serveur pour une page que le visiteur n'ouvrira peut-être jamais.
     if (urlPorteUnSecret(pathname)) return;
-    if (adminPrefix && pathname?.includes(`/${adminPrefix}/`)) return;
 
     // Feature detection — browsers sans support ignorent + pas d'overhead.
     if (typeof HTMLScriptElement === "undefined") return;
@@ -162,7 +193,7 @@ export function SpeculationRules({ locale, adminPrefix }: SpeculationRulesProps)
       const existing = document.getElementById(EXISTING_ID);
       if (existing) existing.remove();
     };
-  }, [pathname, locale, adminPrefix]);
+  }, [pathname, locale]);
 
   return null;
 }

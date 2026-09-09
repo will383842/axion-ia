@@ -5,6 +5,7 @@
 // are available even though the root layout never ran. Doctrine v3 légère.
 
 import * as React from "react";
+import { capturerErreurDeFrontiere } from "@/lib/observability/sentry-client-lazy";
 import "./globals.css";
 
 interface GlobalErrorProps {
@@ -14,7 +15,12 @@ interface GlobalErrorProps {
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   React.useEffect(() => {
-    console.error("[global:error]", error);
+    // 🔴 2026-09-09 — cette frontière ne faisait QUE `console.error`. C'est elle
+    // qui s'affiche par intermittence sur `/qualiopi/alertes` en production, et
+    // la reprise partait chercher dans Sentry une trace qui n'y était jamais
+    // entrée. `capturerErreurDeFrontiere` force le chargement du SDK au lieu
+    // d'attendre l'inactivité — une erreur d'hydratation arrive AVANT.
+    void capturerErreurDeFrontiere(error, "global-error");
   }, [error]);
 
   return (

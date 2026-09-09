@@ -8,6 +8,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { capturerErreurDeFrontiere } from "@/lib/observability/sentry-client-lazy";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -19,8 +20,10 @@ export default function LocaleError({ error, reset }: ErrorProps) {
   const t = useTranslations("errors");
 
   useEffect(() => {
-    // Sprint 21 wires Sentry capture here. For now we log to the browser.
-    console.error("[locale/error]", error);
+    // 2026-09-09 — « Sprint 21 wires Sentry capture here » a tenu quatre mois.
+    // Une frontière qui ne loge que dans la console du visiteur ne rapporte
+    // rien à personne.
+    void capturerErreurDeFrontiere(error, "locale-error");
   }, [error]);
 
   return (
