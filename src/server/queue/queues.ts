@@ -905,6 +905,11 @@ export async function enqueueEmail(
       locale,
       marketing: options?.marketing === true,
       jobId: job.id,
+      // L'échéance, et non la seule date de création : sans elle, un envoi
+      // différé volontairement (relances apporteur J+2 / J+7) se lit comme une
+      // file non consommée dès la 16e minute. `delayMs` absent ⇒ échéance
+      // immédiate, ce qui redonne exactement `createdAt`.
+      dueAt: new Date(Date.now() + (options?.delayMs ?? 0)),
       ...(options?.entityType ? { entityType: options.entityType } : {}),
       ...(options?.entityId ? { entityId: options.entityId } : {}),
     });
