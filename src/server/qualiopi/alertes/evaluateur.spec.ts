@@ -125,6 +125,11 @@ const mp = prisma as unknown as {
   offreSite: { findMany: ReturnType<typeof vi.fn> };
   interventionDocument: { findMany: ReturnType<typeof vi.fn> };
   formation: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
+  // 🔑 CE CAST EST TENU À LA MAIN, et il ne suit PAS la fabrique de `vi.mock`
+  // ci-dessus. Ajouter le modèle à la fabrique sans l'ajouter ici laisse Vitest
+  // parfaitement vert — il n'exécute pas `tsc` — et ne rougit qu'en CI, à
+  // l'étape « TypeScript strict ». C'est arrivé le 2026-09-09.
+  trainerStatement: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
