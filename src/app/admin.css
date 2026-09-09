@@ -1597,6 +1597,63 @@
   border-bottom: 1px solid var(--color-admin-border);
   vertical-align: top;
 }
+
+/* =============================================================
+ * 🔴 2026-09-09 — VINGT-HUIT CELLULES DEMANDAIENT `text-right` ET
+ * S'AFFICHAIENT À GAUCHE, EN PRODUCTION.
+ *
+ * La règle juste au-dessus est HORS COUCHE, et les utilitaires Tailwind sont
+ * dans `@layer utilities` (vérifié dans la feuille RÉELLEMENT SERVIE en prod :
+ * `properties, theme, base, components, utilities`). En cascade CSS, une règle
+ * non-layered l'emporte sur TOUTE règle layered, quelle que soit la
+ * spécificité. Donc `<td className="text-right">` perdait, silencieusement.
+ *
+ * Mesuré : 28 cellules, 7 fichiers — et ce sont des colonnes d'ARGENT.
+ * `qualiopi/remuneration` (10 : total HT, TVA, total TTC), le rapprochement de
+ * relevé bancaire (6), `qualiopi/audits` (2, montant HT), plus des effectifs.
+ * Des montants alignés à gauche sous `tabular-nums`, c'est-à-dire exactement le
+ * défaut que `.admin-table` avait été écrite pour corriger.
+ *
+ * 🔑 CE DÉFAUT ÉTAIT DÉCRIT DANS LE DÉPÔT AU FUTUR, PAS AU PRÉSENT.
+ * `admin-table-ne-diverge-pas-de-sa-classe.spec.ts` annonçait que ces colonnes
+ * « repasseraient toutes à gauche, EN SILENCE, le jour de la fusion » de
+ * `<AdminTable>` avec `.admin-table`. La fusion n'a jamais eu lieu — mais les
+ * cellules portant déjà l'utilitaire, elles, étaient DÉJÀ à gauche. Un risque
+ * décrit comme futur peut être en cours : les 28 cellules existaient au moment
+ * où la phrase a été écrite.
+ *
+ * ## Pourquoi une surcharge par spécificité, et PAS un déplacement en couche
+ *
+ * Envelopper la règle dans `@layer components` la ferait passer sous
+ * `utilities` et marcherait — MAIS cela repose sur une hypothèse invérifiable
+ * depuis ce fichier : que l'ordre des couches soit bien établi par
+ * `globals.css` AVANT que `admin.css` ne soit inséré. `admin.css` est une
+ * feuille SÉPARÉE, chargée par le layout admin ; si elle était insérée en
+ * premier, c'est ELLE qui fixerait l'ordre, et `theme` / `base` se
+ * retrouveraient après `components`. Cette hypothèse ne se vérifie qu'à
+ * l'écran, sur une page de la console.
+ *
+ * Les trois règles ci-dessous ne supposent RIEN : elles sont hors couche comme
+ * celle qu'elles surchargent, et `(0,2,1)` bat `(0,1,1)` par simple
+ * spécificité. Déterministe, lisible, et ça déverrouille `ALIGN_CLASS` de
+ * `<AdminTable>` — donc la fusion des deux rendus, qui était bloquée par ça.
+ *
+ * ⚠️ Les trois noms de classe viennent de `ALIGN_CLASS` (AdminTable.tsx). Le
+ * test `l-alignement-demande-est-l-alignement-rendu.spec.ts` les DÉRIVE de là :
+ * ajouter une valeur d'alignement au composant sans l'ajouter ici rougit.
+ * =============================================================*/
+.admin-table th.text-left,
+.admin-table td.text-left {
+  text-align: left;
+}
+.admin-table th.text-center,
+.admin-table td.text-center {
+  text-align: center;
+}
+.admin-table th.text-right,
+.admin-table td.text-right {
+  text-align: right;
+}
 .admin-table th {
   background-color: var(--color-admin-surface-sunken);
   font-weight: 600;
