@@ -440,6 +440,29 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...num(0),
     description: "Dernière année dont le BPF a été déposé (DREETS).",
   },
+  // 🔴 2026-09-07 — SANS CETTE CLÉ, LA RÈGLE BPF RÉCLAMAIT UN BILAN POUR UNE
+  // ANNÉE OÙ L'ORGANISME N'EXISTAIT PAS.
+  //
+  // Le garde-fou posé le 2026-07-26 (F56) demandait « as-tu un NDA ? » et
+  // concluait, si oui, que le BPF de l'année précédente était dû. Il manquait
+  // « DEPUIS QUAND ? ». Axion-IA a été déclarée en 2026 : le tableau de bord
+  // affichait donc, en CRITIQUE, « Le BPF 2025 aurait dû être déposé avant le
+  // 31 mai — régularisation urgente auprès de la DREETS » pour une année où la
+  // société n'était pas constituée. C'est le cas de TOUT organisme nouvellement
+  // déclaré, c'est-à-dire le cas le plus fréquent au démarrage.
+  //
+  // 🔑 L'année suffit, la date exacte serait un faux besoin : un organisme
+  // déclaré en cours d'année N doit le BPF de N (même à zéro d'activité). Le
+  // test est donc « déclaré au plus tard pendant l'année du bilan ».
+  //
+  // Défaut à 2026 : la société a été créée en juillet 2026, un NDA ne peut pas
+  // précéder la personne morale qui le porte. À corriger dans la console si la
+  // déclaration porte une autre année.
+  nda_annee_declaration: {
+    ...num(2026),
+    description:
+      "Année de la déclaration d'activité (NDA). Aucun BPF n'est dû pour une année antérieure.",
+  },
 
   // ── Seuils pédagogiques / qualité ──
   ratio_pratique_min: {

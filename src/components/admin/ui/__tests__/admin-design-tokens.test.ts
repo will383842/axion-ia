@@ -141,24 +141,26 @@ const HOOK_ONLY_CLASSES = new Set([
  * DIMINUER. Corriger une entrée, c'est retirer sa ligne ci-dessous.
  */
 const INERT_UTILITIES_BASELINE: readonly string[] = [
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/author/manon/_v2/AuthorManonV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input text-right",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-order/_v3/CitiesOrderV3.tsx :: admin-input text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage-map/_v2/CoverageMapV2.tsx :: admin-input text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/layout.tsx :: admin-button-cta text-[length:var(--text-admin-xs)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/[id]/edit/_v2/PublicationEditV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/_v2/PublicationsV2.tsx :: admin-button-ghost text-[length:var(--text-admin-xs)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/rss/_v2/RssListV2.tsx :: admin-button-ghost text-[length:var(--text-admin-xs)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/audience-mix/_v2/AudienceMixV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/coverage-distribution/_v2/CoverageDistributionV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/llms-txt/_v2/LlmsTxtV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/devis/page.tsx :: admin-button inline-block",
-  "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionRowActions.tsx :: admin-button-ghost text-[length:var(--text-admin-sm)]",
-  "src/components/admin/contacts/CalendlyEventEditor.tsx :: admin-input font-mono text-xs",
-  "src/components/admin/contacts/ReplyComposer.tsx :: admin-input font-mono text-sm",
-  "src/components/admin/contacts/ReplyComposer.tsx :: admin-input text-sm",
-  "src/components/admin/qualiopi/LiensEmargement.tsx :: admin-button-ghost text-[length:var(--text-admin-sm)]",
-  "src/components/admin/qualiopi/SessionJoursEditor.tsx :: admin-button-ghost text-[length:var(--text-admin-sm)]",
+  // 🟢 VIDE depuis le 2026-09-06 — les 18 dernières entrées ont été corrigées.
+  //
+  // Ce qu'elles cachaient réellement, une fois ouvertes :
+  //   · 7 champs demandaient la chasse fixe et ne l'ont JAMAIS eue (éditeurs de
+  //     gabarit, de JSON, de llms.txt, identifiant Calendly) — leurs colonnes
+  //     ne s'alignaient pas, ce qui est tout l'intérêt d'un éditeur pareil ;
+  //   · 9 boutons d'action de ligne s'affichaient à la taille standard dans des
+  //     listes denses conçues pour du compact ;
+  //   · 1 champ de nombre restait aligné à gauche ;
+  //   · 1 `inline-block` contredisait le `display:inline-flex` de sa classe.
+  //
+  // Remède : quatre modificateurs déclarés dans `admin.css` au MÊME niveau de
+  // cascade que les classes qu'ils modifient — `.admin-input-sm`,
+  // `.admin-input-mono`, `.admin-input-right`, `.admin-button-xs` — plus
+  // `.admin-button-sm`, qui existait déjà et n'était pas utilisé.
+  //
+  // ⚠️ CETTE LISTE NE DOIT JAMAIS REPARTIR À LA HAUSSE. Une entrée ajoutée ici
+  // est un style que l'auteur croit avoir posé et que personne ne verra. Si la
+  // suite échoue sur une nouvelle combinaison, le remède est un modificateur
+  // dans `admin.css`, pas une ligne de plus ci-dessous.
 ];
 
 function walk(dir: string): string[] {

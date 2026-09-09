@@ -104,7 +104,7 @@ export function SubmissionRowActions({
             type="button"
             disabled={isPending}
             onClick={() => run(() => restoreSubmissionAction(id))}
-            className="admin-button-ghost text-[length:var(--text-admin-sm)]"
+            className="admin-button-ghost admin-button-sm"
             title="Restaurer le message (le sort de la corbeille)"
           >
             <Undo2 size={14} aria-hidden="true" className="inline-block align-[-0.125em]" />{" "}
@@ -115,7 +115,7 @@ export function SubmissionRowActions({
               type="button"
               disabled={isPending}
               onClick={eraseForever}
-              className="admin-button-refuse text-[length:var(--text-admin-sm)]"
+              className="admin-button-refuse admin-button-sm"
               title="Suppression RGPD irréversible"
             >
               Confirmer ?
@@ -152,7 +152,7 @@ export function SubmissionRowActions({
         onClick={() =>
           run(() => (archived ? unarchiveSubmissionAction(id) : archiveSubmissionAction(id)))
         }
-        className="admin-button-ghost text-[length:var(--text-admin-sm)]"
+        className="admin-button-ghost admin-button-sm"
         title={archived ? "Sortir de l'archive" : "Archiver (réduit le bruit de l'inbox)"}
       >
         {archived ? (
@@ -167,7 +167,7 @@ export function SubmissionRowActions({
 
       <details className="relative">
         <summary
-          className="admin-button-ghost cursor-pointer list-none text-[length:var(--text-admin-sm)]"
+          className="admin-button-ghost admin-button-sm cursor-pointer list-none"
           aria-label="Plus d'actions"
           title="Plus d'actions"
         >

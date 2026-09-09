@@ -260,6 +260,89 @@ describe("creerOuDedup", () => {
     expect(createCall?.data?.cibleType).toBe("Enrollment");
     expect(createCall?.data?.cibleId).toBe("enr-001");
   });
+
+  /**
+   * 🔴 `resolutionAuto: false` NE TENAIT PAS SA PROMESSE — 2026-09-07.
+   *
+   * Le dé-doublonnage ne regardait que les alertes NON résolues. Une alerte
+   * fermée à la main était donc recréée à l'identique au balayage suivant, tant
+   * que sa règle produisait le candidat. Pour un code dont la cause est un fait
+   * PASSÉ, aucun geste ne pouvait la fermer : on cliquait « Résoudre » et on la
+   * retrouvait le lendemain matin.
+   *
+   * 🔑 Le drapeau ne pilotait QUE la résolution automatique, jamais la
+   * re-création — son nom disait l'inverse de ce qu'il faisait, et c'est ce qui
+   * a rendu le défaut invisible. Huit codes étaient concernés.
+   */
+  describe("🔴 une alerte à fermeture HUMAINE ne se recrée pas à l'identique", () => {
+    // Le double de catalogue de ce fichier (en tête) déclare `satisfaction_manquante`
+    // avec `resolutionAuto: false` — c'est lui qui fait foi ici, pas le vrai
+    // catalogue : on éprouve le MÉCANISME, pas la table.
+    const SANS_AUTO = "satisfaction_manquante";
+
+    it("ne recrée PAS quand une alerte résolue porte le même message", async () => {
+      mp.alerteSysteme.findFirst
+        .mockResolvedValueOnce(null) // aucune ouverte
+        .mockResolvedValueOnce(makeAlerte()); // une RÉSOLUE, même message
+
+      const r = await creerOuDedup({
+        code: SANS_AUTO,
+        niveau: "critique",
+        titre: "T",
+        message: "Taux de satisfaction 42 % sur AXI-SESS-2026-001",
+        cibleId: "sess-1",
+      });
+
+      expect(mp.alerteSysteme.create).not.toHaveBeenCalled();
+      expect(r).toBeNull();
+    });
+
+    it("🔑 recrée si le MESSAGE a changé — c'est un fait nouveau", async () => {
+      // Contre-témoin capital. Un « ne jamais recréer après résolution » serait
+      // faux : une habilitation renouvelée puis ré-expirée des années plus tard
+      // doit crier de nouveau. Le message porte la donnée qui distingue les deux
+      // cas — date d'échéance, valeur mesurée. La recherche doit donc le filtrer.
+      mp.alerteSysteme.findFirst.mockResolvedValue(null);
+
+      await creerOuDedup({
+        code: SANS_AUTO,
+        niveau: "critique",
+        titre: "T",
+        message: "Taux de satisfaction 31 % sur AXI-SESS-2026-007",
+        cibleId: "sess-1",
+      });
+
+      expect(mp.alerteSysteme.create).toHaveBeenCalledOnce();
+      expect(mp.alerteSysteme.findFirst).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            resolue: true,
+            message: "Taux de satisfaction 31 % sur AXI-SESS-2026-007",
+          }),
+        }),
+      );
+    });
+
+    it("🔑 ne regarde PAS les résolues pour un code à résolution AUTO", async () => {
+      // Second contre-témoin. Ces codes-là s'éteignent et se rallument par
+      // construction : leur appliquer la garde les rendrait muets pour toujours
+      // après une seule résolution — on aurait échangé une alerte ineffaçable
+      // contre une alerte définitivement éteinte, ce qui est pire.
+      mp.alerteSysteme.findFirst.mockResolvedValue(null);
+
+      await creerOuDedup({
+        code: "referent_handicap_absent", // resolutionAuto: true dans le double
+        niveau: "critique",
+        titre: "T",
+        message: "M",
+        cibleId: "sess-2",
+      });
+
+      expect(mp.alerteSysteme.create).toHaveBeenCalledOnce();
+      // Une seule lecture : celle des non résolues. La seconde n'a pas lieu.
+      expect(mp.alerteSysteme.findFirst).toHaveBeenCalledOnce();
+    });
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

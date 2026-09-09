@@ -475,3 +475,135 @@ précisément la seule gate de perf qui fasse autorité, sur la prod qui vient d
    **révoque les QR déjà imprimés**, c'est-à-dire le cas d'usage qui justifie « Émettre ».
    Chantier repris par `axion-ia-6c`. Le geste manuel, lui, **existe déjà** : le bouton
    « Envoyer les liens » fabrique un jeton neuf ET l'envoie.
+
+---
+
+## 10. L'après-midi du 06 — quatre PR de plus, et une conception corrigée par les tests
+
+> Écrit après la fusion de #1003, #1008, #1010 et #1012. Les quatre PR de cette
+> section sont OUVERTES, pas fusionnées.
+
+### 10.1 Les quatre PR, et leur ordre de fusion CONTRAINT
+
+⚠️ **Trois d'entre elles sont EMPILÉES.** Deux branches ont été créées avec
+`git checkout -b` **sans base explicite**, donc depuis la branche courante :
+
+```
+main ← #1015 ← #1017 ← #1018          #1019 (indépendante)
+```
+
+L'ordre n'est pas libre : **#1015, puis #1017, puis #1018**. #1019 passe quand
+elle veut.
+
+🔑 `git checkout -b <nom>` sans base part de **là où on est**, pas de `main`. Le
+symptôme n'apparaît qu'au moment de fusionner, quand il est le plus cher.
+`git log --oneline origin/main..<branche>` le dit en deux secondes.
+
+| PR        | Ce qu'elle ferme                                                  |
+| --------- | ----------------------------------------------------------------- |
+| **#1015** | le compteur de rafraîchissement des alertes s'arrêtait au serveur |
+| **#1017** | l'alerte du formateur n'offrait qu'une de ses deux branches       |
+| **#1018** | l'ordre « TVA toujours facturée » passe du document au code       |
+| **#1019** | lot F — D8, D9, D10 (le formateur fantôme dans les pièces)        |
+
+### 10.2 🔴 NEUF TESTS EXISTANTS ONT CORRIGÉ MA CONCEPTION (TVA)
+
+C'est le fait le plus important de l'après-midi.
+
+Le premier jet du verrou TVA le posait au point d'**USAGE** — dans `tauxTvaLigne`
+et `mentionTvaKey` — au motif que « tous les chemins y passent ». L'ADR le
+défendait sur une demi-page. **C'était faux**, et neuf tests l'ont dit :
+
+> Ces fonctions servent DEUX moments qu'elles ne peuvent pas distinguer : le
+> calcul d'une pièce qu'on **crée**, et le **re-rendu** d'une pièce déjà émise.
+
+Le verrou réimprimait donc à 20 % une facture partie exonérée, et émettait un
+avoir à 20 % contre elle. **Ce n'est pas empêcher un document futur, c'est
+falsifier un document opposable** — et un avoir qui ne porte pas le régime de sa
+facture cesse de l'annuler.
+
+🔑 **La leçon dépasse la TVA : une valeur qui a deux cycles de vie — CHOISIE,
+puis FIGÉE — ne se verrouille pas là où on la LIT, mais là où on la CHOISIT.**
+Une fonction pure partagée par la création et la reproduction ne peut pas porter
+la règle : elle ne sait pas lequel des deux mondes l'appelle.
+
+⚠️ Un invariant de test existant (`tvaExoneree ⇔ montantTvaCents === 0`) a en
+outre trouvé une **quatrième porte** que j'avais manquée : le régime
+**ENREGISTRÉ**. Sans elle, une facture serait née avec `regimeTva:
+"exoneration_261"` **et** 20 % de TVA.
+
+L'erreur est laissée écrite dans l'ADR 0050 §3 plutôt que réécrite en silence.
+
+### 10.3 🔴 J'AI COMMIS DEUX FOIS LA MÊME FAUTE — ET LA CAUSE N'EST PAS L'ÉTOURDERIE
+
+Le matin, Gate A m'apprend que `#980` dans un commentaire est lu comme une
+couleur hex. Je corrige, et j'**ajoute au message d'échec** la sortie explicite.
+
+L'après-midi, j'écris `#1010` dans un commentaire. Même garde, même rouge.
+
+Deux causes, et la seconde est la vraie :
+
+1. **Une leçon consignée dans un commit qui n'a pas atterri ne protège personne,
+   y compris son auteur.** Mon message d'aide vit dans #1015, non fusionnée : je
+   ne l'ai pas lu en écrivant.
+2. 🔑 **Je ne lançais pas les bonnes gardes avant de pousser.** `typecheck`,
+   `eslint`, `format:check` et les tests ne couvrent **PAS** les dix contrôles
+   `grep` de Gate A :
+
+   ```
+   anti-hex · anti-siren · admin-gardes · positionnement · radius
+   use-client · zod · contrast · i18n · bundle
+   ```
+
+   Ils sont désormais passés systématiquement, branche par branche — **9/9 verts
+   sur les quatre**.
+
+### 10.4 Ce que chaque PR ferme, en une phrase
+
+- **#1015** — `synchroniserAlertesAction` ne rendait que `{crees, resolues}` : le
+  compteur de libellés réécrits mourait dans la couche action. Constaté EN PROD
+  en cliquant « Synchroniser ». La garde surveille une CHAÎNE (moteur → action →
+  écran) : casser n'importe lequel des trois maillons rendait le compteur muet
+  sans qu'aucun test de fichier ne rougisse.
+- **#1017** — l'alerte `formateur_mission_expiree` demandait de « vérifier que la
+  session a bien été animée » OU de consigner un incident ; l'écran n'offrait que
+  le second. Nouveau statut **`accord_hors_outil`** — PAS `acceptee`, qui
+  fabriquerait la trace d'un clic qui n'a pas eu lieu — et trois colonnes de
+  provenance. Les **trois** règles d'alerte le reconnaissent, sinon le geste
+  existait et l'alerte restait allumée.
+- **#1018** — verrou TVA au point de création, ADR 0050. La facture mixte
+  disparaît ; ses tests sont **retournés, pas supprimés** : ils rougiront en
+  premier le jour où l'attestation DREETS lèvera le verrou.
+- **#1019** — D9 : une pièce nommait l'ORGANISME à la ligne « Formateur /
+  Formatrice », jusque dans un bloc de SIGNATURE. ⚠️ Le correctif n'est PAS
+  uniforme : sur le livret d'accueil la même valeur sert « Contact pédagogique »,
+  où la raison sociale est légitime — un repli uniforme aurait corrigé deux
+  pièces et cassé la troisième. D8 : la désactivation d'un formateur ne retirait
+  pas ses affectations. D10 : **une alerte, pas un envoi automatique**, et
+  `resolutionAuto: false` parce que « j'ai prévenu » est un fait humain
+  qu'aucune colonne n'observe.
+
+### 10.5 ⚠️ Une correction que je dois à un rapport antérieur
+
+J'ai annoncé à Will « D1, D2, D3 critiques et D7-D10 restent ». **Faux** : je
+lisais la liste de l'audit sans vérifier le code. **D1, D3 et D7 étaient déjà
+corrigés le 05/09.** Le reste réel était D8, D9, D10.
+
+🔑 Le même motif que le 04/09 (`auditer-le-code-sans-lire-les-adr`) : un document
+d'audit décrit le monde **au moment où il a été écrit**. Vérifier dans le code
+avant de servir une liste à quelqu'un coûte deux minutes.
+
+### 10.6 ⛔ Reste Will
+
+1. **D2** — payer un formateur sur une session que le client n'a pas réglée.
+   Arbitrage, pas défaut : ce qui est dû à un sous-traitant l'est au titre de SON
+   contrat. Le correctif engagé rend l'encaissement VISIBLE et laisse décider.
+2. **D11** — la commission d'apporteur est **publiée et chiffrée** sur le site
+   public (500 €/journée, 30 % audit, 15 % intégration) **sans aucun
+   back-office**. Soit la machine se construit (`axion-partners`), soit les
+   montants quittent les pages publiques.
+3. **L'alerte formateur sur AXI-SESS-2026-001** — se fermera d'un clic dès que
+   #1017 sera en prod.
+4. **Facture / échéancier** — la TVA est traitée (#1018) ; l'échéancier ne l'est
+   pas : aucun modèle `Echeancier`, quatre circuits d'acompte qui ne se parlent
+   pas (§8 de l'état vivant du 05).

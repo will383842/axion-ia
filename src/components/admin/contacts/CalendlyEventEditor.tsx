@@ -176,7 +176,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
           </label>
           <input
             id="linkedSubmissionId"
-            className="admin-input font-mono text-xs"
+            className="admin-input admin-input-mono admin-input-sm"
             value={state.linkedSubmissionId}
             onChange={(e) => setState({ ...state, linkedSubmissionId: e.target.value.trim() })}
             maxLength={64}

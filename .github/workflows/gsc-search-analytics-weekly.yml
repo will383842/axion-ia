@@ -103,7 +103,7 @@ jobs:
       # file de fusion.
       - name: Publier le CSV en artefact
         if: ${{ inputs.dry_run != 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gsc-search-analytics
           path: _AUDIT/search-analytics-*.csv

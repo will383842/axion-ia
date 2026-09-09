@@ -101,7 +101,7 @@ export function AuthorManonV2({ author }: Props): React.ReactElement {
               name="bioMd"
               rows={10}
               defaultValue={author.bioMd}
-              className="admin-input font-mono text-[length:var(--text-admin-sm)]"
+              className="admin-input admin-input-mono admin-input-sm"
               maxLength={20_000}
             />
           </div>

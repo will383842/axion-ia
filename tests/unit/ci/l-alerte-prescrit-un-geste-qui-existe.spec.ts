@@ -126,19 +126,61 @@ describe("🔴 le geste que l'alerte prescrit existe vraiment", () => {
     ).toContain("transmettreExemplaireSigne(");
   });
 
-  it("🔴 aucun BALAYAGE automatique ne remet des exemplaires en masse", () => {
-    // Décision de conception, pas préférence de style : un rattrapage
-    // automatique enverrait des pièces contractuelles à de vrais clients sans
-    // que personne ne l'ait décidé, et un doublon chez un client réel ne se
-    // rattrape pas. Le geste est manuel, et il doit le rester.
-    const crons = lire("src/server/queue/workers/qualiopi-formation-crons-worker.ts");
-    expect(
-      crons,
-      "un cron appelle désormais `transmettreExemplaireSigne` : des exemplaires " +
-        "contractuels partiraient vers de vrais signataires sans qu'aucun écran humain " +
-        "s'interpose. Si c'est délibéré, il faut un ADR et l'accord de Will — pas un " +
-        "import de plus.",
-    ).not.toContain("transmettreExemplaireSigne");
+  // 🔴 CETTE GARDE A ÉTÉ RETOURNÉE, PAS SUPPRIMÉE (2026-09-06, ADR 0050).
+  //
+  // Elle exigeait « AUCUN cron n'appelle `transmettreExemplaireSigne` ». Will a
+  // renversé cette décision en connaissance de cause le jour même, et une garde
+  // qui interdit TOUT disparaît le jour où l'interdit est levé — laissant zéro
+  // protection à l'instant précis où le risque devient réel.
+  //
+  // Elle exige désormais la FORME SÛRE : le balayage existe, et il porte ses deux
+  // bornes. C'est la forme exacte à laquelle Will a consenti — « avec borne basse
+  // au 01/09 et plafond par passage, ADR à l'appui, le bouton reste » —, et non
+  // « automatise » en général. Retirer l'une des deux bornes, c'est sortir de ce
+  // consentement : ça doit rougir.
+  describe("🔴 le balayage automatique existe, et il porte ses deux bornes", () => {
+    const RATTRAPAGE = "src/server/qualiopi/documents/signature/rattrapage-transmission.ts";
+
+    it("un cron déclenche bien le rattrapage", () => {
+      const crons = lire("src/server/queue/workers/qualiopi-formation-crons-worker.ts");
+      expect(
+        crons,
+        "plus aucun cron ne rattrape les exemplaires non transmis : on retombe sur le " +
+          "défaut d'origine, où une pièce complète disparaît de toutes les surfaces de " +
+          "rattrapage et où seul un clic — que personne ne sait devoir faire — la remet.",
+      ).toContain("rattraperExemplairesNonTransmis");
+    });
+
+    it("la BORNE BASSE est là — sans elle, cinq semaines d'historique partent d'un coup", () => {
+      // Ces pièces n'ont réellement jamais été remises (la migration l'écrit :
+      // « ce qui est exactement vrai »). Sans seuil, le premier passage écrirait à
+      // tous les clients ayant jamais signé une convention, sans prévenir.
+      expect(
+        lire(RATTRAPAGE),
+        "`SEUIL_RATTRAPAGE` a disparu du module de rattrapage : le balayage n'a plus de " +
+          "borne basse et remettrait des conventions signées il y a des semaines à de " +
+          "vrais clients, sans qu'aucun humain ne les ait regardées.",
+      ).toContain("SEUIL_RATTRAPAGE");
+    });
+
+    it("le PLAFOND par passage est là — il fait du débit, pas une rafale", () => {
+      expect(
+        lire(RATTRAPAGE),
+        "`PLAFOND_PAR_PASSAGE` a disparu : un défaut de masse (R2 muet une journée, file " +
+          "bloquée) partirait en une seule rafale d'e-mails vers des clients réels au lieu " +
+          "de s'écouler en plusieurs vagues.",
+      ).toContain("PLAFOND_PAR_PASSAGE");
+    });
+
+    it("le BOUTON reste — le cron le complète, il ne le remplace pas", () => {
+      // Il est le seul moyen d'agir sur le stock antérieur au seuil, qui est du
+      // vrai dû et non des pièces « qui vont bien ».
+      expect(
+        ECRAN,
+        "le bouton de relance a disparu : le stock antérieur au seuil de rattrapage " +
+          "n'a plus aucun geste possible, alors qu'il n'a jamais été transmis.",
+      ).toContain("RelancerRemiseButton");
+    });
   });
 
   it("l'écran offre le geste, et ne l'offre QUE quand il a un sens", () => {

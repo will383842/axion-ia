@@ -905,6 +905,11 @@ export async function enqueueEmail(
       locale,
       marketing: options?.marketing === true,
       jobId: job.id,
+      // L'échéance, et non la seule date de création : sans elle, un envoi
+      // différé volontairement (relances apporteur J+2 / J+7) se lit comme une
+      // file non consommée dès la 16e minute. `delayMs` absent ⇒ échéance
+      // immédiate, ce qui redonne exactement `createdAt`.
+      dueAt: new Date(Date.now() + (options?.delayMs ?? 0)),
       ...(options?.entityType ? { entityType: options.entityType } : {}),
       ...(options?.entityId ? { entityId: options.entityId } : {}),
     });
@@ -1535,6 +1540,24 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.liens-emargement-j0",
         pattern: "5 * * * *",
         jobId: "formation-crons-liens-emargement-j0-cron",
+      },
+      // Remise des exemplaires signés jamais transmis (ADR 0050, 2026-09-06).
+      //
+      // HORAIRE, comme les autres rattrapages pilotés par un ÉTAT et non par une
+      // fenêtre : un passage manqué se reprend au suivant, et une pièce signée à
+      // 14 h n'attend pas le lendemain. `:35` pour ne percuter aucune des minutes
+      // déjà prises — convocation-j5 (:00), liens-emargement-j0 (:05),
+      // documents-auto (:15), email-sante (:20), formateur-rappel-j1 (:40),
+      // rappel-j1 (:45).
+      //
+      // ⚠️ Ce cron ENVOIE des pièces contractuelles à de vrais clients. Ses deux
+      // bornes ne sont pas des réglages : `SEUIL_RATTRAPAGE` et
+      // `PLAFOND_PAR_PASSAGE` sont la forme à laquelle Will a consenti, et une
+      // garde de dépôt vérifie qu'elles sont toujours là.
+      {
+        type: "formation-crons.exemplaires-non-transmis",
+        pattern: "35 * * * *",
+        jobId: "formation-crons-exemplaires-non-transmis-cron",
       },
       // Hub facturation Phase 3 — marquage retards (statut seul, AUCUN email),
       // daily 06:30 UTC (avant les alertes 07:00 pour qu'elles voient l'état à jour)

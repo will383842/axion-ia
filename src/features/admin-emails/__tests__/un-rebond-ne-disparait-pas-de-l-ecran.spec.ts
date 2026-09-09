@@ -93,6 +93,7 @@ describe("un rebond ne disparaît pas de l'écran", () => {
       failed: "echecs",
       pending: "enAttente",
       bounced: "rebonds",
+      cancelled: "annules",
     };
     const sansCompteur = Object.values(EmailLogStatus).filter(
       (s) => compteurs[s] === undefined || !QUERY.includes(`${compteurs[s]}: compte("${s}")`),

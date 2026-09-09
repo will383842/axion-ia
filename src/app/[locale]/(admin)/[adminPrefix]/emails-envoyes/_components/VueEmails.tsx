@@ -239,6 +239,22 @@ export function VueEmails({
           value={nb(donnees.parStatut.enAttente)}
           meta="Encore en file"
         />
+        {/* 🔴 2026-09-09 — UN ENVOI ANNULÉ RESTAIT « EN ATTENTE » POUR TOUJOURS.
+            `annulerRelancesLeadApporteur()` retire le job quand le dossier
+            complet arrive — c'est voulu. Mais elle ne refermait pas la ligne du
+            journal : plus aucun job ne pouvait la clore, et son échéance passée
+            elle se présentait comme un envoi bloqué. Deux lignes dans cet état
+            en production, mesurées ce jour-là.
+            Ton neutre, et pas d'alerte : une annulation est un fonctionnement
+            normal, pas un incident. Elle doit être VISIBLE, pas criarde. */}
+        <AdminStatCard
+          label="Annulés"
+          value={nb(donnees.parStatut.annules)}
+          meta="Retirés de la file avant échéance"
+          {...(donnees.parStatut.annules > 0
+            ? { href: lien({ statut: "cancelled", page: 1 }) }
+            : {})}
+        />
         {/* 🔴 2026-08-24 — LE REBOND N'ÉTAIT AFFICHÉ NULLE PART.
             Le webhook ZeptoMail écrit `bounced` depuis le 2026-08-20, mais la
             console ne le comptait ni ne le filtrait : le message est parti,

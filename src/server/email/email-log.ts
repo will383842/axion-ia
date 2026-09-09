@@ -41,6 +41,16 @@ export interface EntreeJournal {
   jobId?: string | undefined;
   entityType?: string | undefined;
   entityId?: string | undefined;
+  /**
+   * Échéance d'envoi — `maintenant + delayMs`. Posée par `enqueueEmail`, qui
+   * est le seul endroit où le délai est connu.
+   *
+   * 🔑 Elle existe pour que `verifierSanteEmails()` puisse distinguer « en
+   * attente parce que la file est morte » de « en attente parce que ce n'est
+   * pas encore l'heure ». Les deux états rendaient la MÊME ligne `pending`
+   * ancienne, et la surveillance les confondait (cf. `health.ts`).
+   */
+  dueAt?: Date | undefined;
 }
 
 /**
@@ -74,6 +84,7 @@ export async function journaliserEnAttente(entree: EntreeJournal): Promise<void>
         ...(entree.entityType ? { entityType: entree.entityType } : {}),
         ...(entree.entityId ? { entityId: entree.entityId } : {}),
         ...(entree.jobId ? { jobId: entree.jobId } : {}),
+        ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
       },
     });
   } catch (e) {
@@ -81,6 +92,43 @@ export async function journaliserEnAttente(entree: EntreeJournal): Promise<void>
       `[email-log] écriture « en attente » impossible (${entree.template} → ${entree.recipient}) :`,
       e instanceof Error ? e.message : String(e),
     );
+  }
+}
+
+/**
+ * Referme une ligne « en attente » dont le job a été RETIRÉ de la file.
+ *
+ * 🔴 Le trou que ce module fermait à moitié. `journaliserEnAttente()` pose la
+ * ligne à l'enfilage, le worker la clôt à l'exécution — mais un job ANNULÉ
+ * n'est jamais exécuté. Sa ligne restait donc `pending` pour toujours : plus
+ * aucun code ne pouvait la clore, puisque le job n'existait plus. Son échéance
+ * passée, elle se présentait comme un envoi bloqué (mesuré : 2 lignes en
+ * production le 2026-09-09).
+ *
+ * ⚠️ La garde `status: pending` n'est pas une précaution de style. `remove()`
+ * rend 0 aussi bien pour « job déjà retiré » que pour « job déjà PARTI » : sans
+ * elle, on réécrirait en « annulé » un e-mail réellement envoyé — on
+ * détruirait la preuve d'un envoi, sur un journal qui sert d'abord à ça.
+ *
+ * Fail-soft comme le reste du module : une panne d'écriture du journal ne doit
+ * jamais faire échouer l'annulation elle-même.
+ *
+ * @returns le nombre de lignes refermées (0 si le job était déjà clos).
+ */
+export async function marquerAnnule(jobId: string, motif: string): Promise<number> {
+  if (estStub()) return 0;
+  try {
+    const r = await prisma.emailLog.updateMany({
+      where: { jobId, status: EmailLogStatus.pending },
+      data: { status: EmailLogStatus.cancelled, error: motif },
+    });
+    return r.count;
+  } catch (e) {
+    console.error(
+      `[email-log] cloture « annule » impossible (${jobId}) :`,
+      e instanceof Error ? e.message : String(e),
+    );
+    return 0;
   }
 }
 

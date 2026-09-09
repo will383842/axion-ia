@@ -1,0 +1,31 @@
+-- Un envoi ANNULÉ n'est ni parti, ni en échec, ni en attente.
+--
+-- ## Le défaut fermé
+--
+-- `annulerRelancesLeadApporteur()` retire les jobs BullMQ quand le dossier
+-- complet arrive — c'est le comportement voulu : on ne relance pas quelqu'un
+-- qui a déjà répondu. Mais elle ne touche PAS `email_logs` : la ligne posée à
+-- l'enfilage reste `pending` POUR TOUJOURS. Aucun job ne la clôturera, puisque
+-- le job n'existe plus.
+--
+-- Mesuré en production le 2026-09-09 : deux lignes dans cet état, pour une
+-- personne dont les relances avaient été correctement annulées. Leur échéance
+-- passée, elles se présentent comme des envois bloqués — et la surveillance,
+-- rendue honnête la veille par la colonne `due_at`, allait légitimement les
+-- signaler. Retirer le bruit fait apparaître ce qu'il cachait.
+--
+-- ## Pourquoi une valeur neuve, et pas un état existant
+--
+--   `failed`  : FAUX, et dangereux. Au-delà de 3 en 6 h (`SEUIL_ECHECS`), il
+--               lèverait « e-mails en échec » — on remplacerait une fausse
+--               alerte par une autre.
+--   supprimer : détruit la trace. Un journal d'envois amputé est exactement ce
+--               qu'un auditeur Qualiopi relève.
+--
+-- ## Deux fichiers, et c'est imposé par Postgres
+--
+-- `ALTER TYPE … ADD VALUE` ne permet pas d'UTILISER la valeur dans la même
+-- transaction. Prisma applique chaque migration dans la sienne : la valeur est
+-- donc ajoutée ici, et employée dans la migration suivante.
+
+ALTER TYPE "email_log_status" ADD VALUE IF NOT EXISTS 'cancelled';

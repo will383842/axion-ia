@@ -143,7 +143,7 @@ export function AudienceMixV2({ rows }: Props): React.ReactElement {
               id="mix"
               name="mix"
               rows={14}
-              className="admin-input font-mono text-[length:var(--text-admin-sm)]"
+              className="admin-input admin-input-mono admin-input-sm"
               defaultValue={DEFAULT_MIX}
               required
             />

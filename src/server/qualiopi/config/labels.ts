@@ -85,6 +85,7 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
 
   // ── BPF ──
   bpf_annee_deposee: "Année du Bilan Pédagogique et Financier déjà déposé",
+  nda_annee_declaration: "Année de la déclaration d'activité (NDA)",
 
   // ── Seuils pédagogiques / qualité ──
   ratio_pratique_min: "Ratio pratique plancher (bloquant)",

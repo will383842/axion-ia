@@ -663,6 +663,19 @@ enum EmailLogStatus {
   /// ensuite, et rien ne revenait. Une convocation « envoyée » pouvait n'être
   /// jamais arrivée.
   bounced
+  /// 🔴 2026-09-09 — un envoi ANNULÉ : ni parti, ni en échec, ni en attente.
+  ///
+  /// `annulerRelancesLeadApporteur()` retire le job BullMQ quand le dossier
+  /// complet arrive — c'est voulu, on ne relance pas qui a déjà répondu. Mais
+  /// la ligne posée à l'enfilage restait `pending` POUR TOUJOURS : plus aucun
+  /// job ne pouvait la clôturer. Son échéance passée, elle se présentait comme
+  /// un envoi bloqué.
+  ///
+  /// ⚠️ NE PAS remplacer par `failed` : au-delà de 3 en 6 h, `SEUIL_ECHECS`
+  /// lèverait « e-mails en échec ». On échangerait une fausse alerte contre une
+  /// autre. Et ne pas supprimer la ligne : un journal d'envois amputé est ce
+  /// qu'un auditeur Qualiopi relève.
+  cancelled
 
   @@map("email_log_status")
 }
@@ -696,6 +709,19 @@ model EmailLog {
   /// fournisseur, la réécrire lui ferait dire ce qu'on aurait supposé.
   bounceReason      String?        @map("bounce_reason") @db.Text
   bouncedAt         DateTime?      @map("bounced_at")
+  /// 🔴 Échéance d'envoi — posée à l'enfilage, `createdAt + delayMs`.
+  ///
+  /// Sans elle, `verifierSanteEmails()` lisait « en attente depuis plus de
+  /// 15 minutes » comme « la file n'est pas consommée », et comptait donc
+  /// comme BLOQUÉ tout envoi volontairement différé. `health.ts` avait écrit
+  /// l'avertissement lui-même — « les envois différés volontairement au-delà
+  /// de cette fenêtre déclencheraient un faux positif ; si cela change, il
+  /// faudra porter la date d'échéance sur la ligne » — puis les relances
+  /// apporteur à J+2 et J+7 sont arrivées et personne n'a porté la date.
+  ///
+  /// Nullable pour les lignes antérieures à ce champ : la surveillance
+  /// retombe alors sur `createdAt`, c'est-à-dire sur son comportement d'avant.
+  dueAt             DateTime?      @map("due_at")
   createdAt         DateTime       @default(now()) @map("created_at")
   updatedAt         DateTime       @updatedAt @map("updated_at")
 

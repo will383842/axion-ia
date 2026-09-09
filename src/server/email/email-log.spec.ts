@@ -33,7 +33,12 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { journaliserEnAttente, cloturerJournal, noterTentativeEchouee } from "./email-log";
+import {
+  journaliserEnAttente,
+  cloturerJournal,
+  noterTentativeEchouee,
+  marquerAnnule,
+} from "./email-log";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
 const BASE = {
@@ -234,5 +239,56 @@ describe("lot 2 — une ligne par job", () => {
     await expect(
       noterTentativeEchouee({ ...BASE, jobId: "job-1", attempts: 1, error: "x" }),
     ).resolves.toBeUndefined();
+  });
+});
+
+/**
+ * 🔴 Le troisième versant de l'invariant, découvert le 2026-09-09.
+ *
+ * Une ligne `pending` signale une chaîne rompue — sauf quand le job a été
+ * ANNULÉ. Le worker clôt à l'exécution ; un job annulé n'est jamais exécuté, et
+ * sa ligne restait ouverte POUR TOUJOURS. C'est le seul cas où la pose est
+ * juste, la clôture légitime, et pourtant personne ne referme.
+ */
+describe("marquerAnnule", () => {
+  beforeEach(() => {
+    updateManyMock.mockReset();
+    updateManyMock.mockResolvedValue({ count: 1 });
+    delete process.env["DATABASE_URL"];
+  });
+
+  it("NE TOUCHE QUE les lignes encore en attente — un envoi parti n'est jamais réécrit", async () => {
+    // 🔑 La garde décisive. `remove()` rend 0 aussi bien pour « job déjà
+    // retiré » que pour « job déjà PARTI ». Sans la borne `status: pending`, on
+    // réécrirait en « annulé » un e-mail réellement envoyé : on détruirait la
+    // preuve d'un envoi, sur un journal qui sert d'abord à ça.
+    await marquerAnnule("job-42", "motif");
+    const where = updateManyMock.mock.calls[0]?.[0]?.where;
+    expect(where).toEqual({ jobId: "job-42", status: EmailLogStatus.pending });
+  });
+
+  it("écrit l'état « annulé » ET le motif — une ligne close sans raison n'apprend rien", async () => {
+    await marquerAnnule("job-42", "Relance annulée : le dossier complet est arrivé.");
+    const data = updateManyMock.mock.calls[0]?.[0]?.data;
+    expect(data?.status).toBe(EmailLogStatus.cancelled);
+    expect(data?.error).toMatch(/dossier complet/i);
+  });
+
+  it("rend le nombre de lignes refermées", async () => {
+    updateManyMock.mockResolvedValue({ count: 0 });
+    await expect(marquerAnnule("job-deja-clos", "motif")).resolves.toBe(0);
+  });
+
+  it("ne LÈVE JAMAIS : une panne du journal ne doit pas faire échouer l'annulation", async () => {
+    // Même contrat que le reste du module. L'annulation protège une personne
+    // d'une relance inutile ; elle ne doit pas dépendre de la base.
+    updateManyMock.mockRejectedValue(new Error("postgres indisponible"));
+    await expect(marquerAnnule("job-42", "motif")).resolves.toBe(0);
+  });
+
+  it("ne touche à rien quand la base est le stub de build", async () => {
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    await expect(marquerAnnule("job-42", "motif")).resolves.toBe(0);
+    expect(updateManyMock).not.toHaveBeenCalled();
   });
 });

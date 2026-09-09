@@ -73,6 +73,12 @@ export const LIBELLES_STATUT_EMAIL: Readonly<Record<EmailLogStatus, string>> = {
   sent: "Envoyé",
   failed: "Échec",
   bounced: "Rebond",
+  // 🔴 2026-09-09 — AJOUTÉ AVANT QUE LA VALEUR N'EXISTE EN BASE, et c'est
+  // délibéré. Cette carte est la seule source des libellés ; une ligne portant
+  // un statut absent d'ici s'afficherait avec une cellule VIDE — pas une
+  // erreur, pas un rouge, juste un trou que personne ne remarque. Le libellé
+  // précède donc l'écriture du statut, jamais l'inverse.
+  cancelled: "Annulé",
 };
 
 /** Libellé complet d'une ligne : le type de rebond compte, il commande le geste. */
@@ -125,6 +131,8 @@ export type ChargementEmails = {
     echecs: number;
     enAttente: number;
     rebonds: number;
+    /** Envois retirés de la file avant leur échéance (2026-09-09). */
+    annules: number;
     /** Rebonds DÉFINITIFS : les seuls qui demandent de corriger une adresse (lot 3). */
     rebondsDurs: number;
   };
@@ -161,7 +169,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     total: 0,
     page: 1,
     pages: 1,
-    parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0, rebondsDurs: 0 },
+    parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0, annules: 0, rebondsDurs: 0 },
     gabarits: [],
   };
 
@@ -247,6 +255,11 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
         // jamais. C'est le seul statut qui exige un geste humain — corriger
         // l'adresse — et il n'était affiché nulle part.
         rebonds: compte("bounced"),
+        // Retiré de la file avant son échéance : la relance apporteur d'une
+        // personne qui a répondu entre-temps. Ni parti, ni en échec — et
+        // surtout PAS « en attente », état dans lequel ces lignes restaient
+        // bloquées pour toujours faute d'un job pour les clore.
+        annules: compte("cancelled"),
         rebondsDurs,
       },
       gabarits: gabaritsBruts.map((g) => ({ nom: g.template, envois: g._count._all })),

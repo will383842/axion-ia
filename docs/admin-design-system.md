@@ -1,195 +1,261 @@
-# Admin Design System v1 (Mai 2026)
+# Système de design de la console d'administration
 
-> Statut : Foundation Implemented (PRs 0-5 + 13 livrées) ; migrations per-page incrémentales restantes.
+> Mesuré le **2026-09-06** sur `main`. Les chiffres de ce document sont vérifiables
+> par les commandes données en annexe — s'ils ne tombent plus juste, c'est le
+> document qu'il faut corriger, pas la commande.
+>
 > ADR : [`docs/adr/0028-admin-design-system-v1.md`](./adr/0028-admin-design-system-v1.md).
 > Audits / décisions : [`_AUDIT/ADMIN-REFONTE-2026-05-17/`](../_AUDIT/ADMIN-REFONTE-2026-05-17/).
 
-## Vue d'ensemble
+## ⚠️ Ce que la version précédente de ce document disait de faux
 
-L'admin v2 introduit un design system **strictement cloisonné** sous :
+Jusqu'au 2026-09-06, cette page annonçait **116 routes admin**, **28 primitives**
+et un feature flag `ADMIN_V2_ENABLED` permettant de basculer entre V1 et V2.
 
-- `src/app/admin.css` — tokens admin préfixés (importé uniquement par le layout admin).
-- `src/app/print.css` — print mode (factures/devis/échéanciers).
-- `src/components/admin/ui/**` — 28 primitives admin (ne JAMAIS importer hors admin).
-- `src/lib/admin-nav.ts` — SSOT navigation (sidebar + cmdk consomment).
-- `src/lib/feature-flags.ts` — toggle `ADMIN_V2_ENABLED` + cookie override.
+Les trois étaient faux :
 
-Aucun token public (`globals.css @theme`) ni composant `src/components/ui/**` n'a été modifié.
+- la console porte **311 fichiers `page.tsx`**, pas 116 — un facteur 2,7 ;
+- `src/components/admin/ui/` contient **42 fichiers de composant** ;
+- `isAdminV2Enabled()` a été **supprimé le 2026-05-20** (`src/lib/feature-flags.ts:1`).
+  V2 est le seul chemin, il n'y a plus rien à basculer.
 
-## Tokens admin
+C'est le genre d'écart qui coûte cher sans jamais rien casser : quelqu'un
+dimensionne un lot sur « 116 pages » et découvre le reste en cours de route.
 
-Tous préfixés `--*-admin-*`. Cf. [`src/app/admin.css`](../src/app/admin.css) pour la liste complète.
+---
 
-| Catégorie  | Préfixe              | Exemples                                                             |
-| ---------- | -------------------- | -------------------------------------------------------------------- |
-| Surfaces   | `--color-admin-*`    | `bg`, `paper`, `paper-alt`, `surface-hover`, `border`                |
-| Foreground | `--color-admin-fg*`  | `fg`, `fg-soft`, `fg-muted`, `fg-disabled`                           |
-| Status     | `--color-admin-*`    | `success / warning / destructive / info / neutral` + `*-soft / *-fg` |
-| Spacing    | `--space-admin-*`    | `1` (2px) à `9` (48px)                                               |
-| Typography | `--text-admin-*`     | `xs` (11px) à `2xl` (24px) + `--lh-admin-*`                          |
-| Radius     | `--radius-admin-*`   | `sm` (4px) à `xl` (12px)                                             |
-| Shadows    | `--shadow-admin-*`   | `1` (subtle) à `4` (modal)                                           |
-| Z-index    | `--z-admin-*`        | `base / sticky / dropdown / modal / toast`                           |
-| Targets    | `--target-admin-*`   | `min-desktop` (24px) / `min-mobile` (44px) (WCAG 2.2 §2.5.8)         |
-| Timings    | `--duration-admin-*` | `fast / base / slow` + `--easing-admin`                              |
+## 1. Il y a UN système, avec DEUX écritures
 
-### Étendre les tokens
+C'est le point que ce document n'expliquait pas, et l'incompréhension la plus
+fréquente en revue.
 
-Ajouter dans `src/app/admin.css` à l'intérieur du `@layer admin-tokens`. **Ne jamais modifier** les variables existantes (compat ascendante).
+La console se style à **deux niveaux qui ne se concurrencent pas** :
 
-## Primitives livrées (28 composants)
+| Écriture            | Où                         | Exemple                             |
+| ------------------- | -------------------------- | ----------------------------------- |
+| **Classe CSS**      | `src/app/admin.css`        | `<button className="admin-button">` |
+| **Primitive React** | `src/components/admin/ui/` | `<AdminButton>`                     |
 
-Import : `import { ... } from "@/components/admin/ui"`.
+**La primitive compose la classe.** `AdminButton` mappe ses variantes sur
+`.admin-button`, `.admin-button-secondary`, `.admin-button-ghost`… ; il n'invente
+aucun style. Les deux écritures rendent donc **exactement pareil à l'écran**, et
+une page peut migrer progressivement sans rupture visuelle.
 
-### Layout & shells
+Ce que la primitive apporte en plus : le typage des variantes, l'état
+« en cours » (`loading`), les attributs ARIA, et l'impossibilité de poser un
+utilitaire Tailwind inerte (cf. §3).
 
-- `<AdminPageShell>` — wrapper page (width `full / narrow / wide`).
-- `<AdminPageHeader>` — title + description + breadcrumbs + actions + meta.
-- `<AdminTopbar>` — header sticky (brand + breadcrumbs + cmdk + notifications + user menu).
-- `<AdminToolbar>` — filters + search + sort + actions slots, `role="toolbar"`.
-- `<AdminCard>` — 3 variants (compact / informational / interactive), 3 elevations.
+👉 **Préférer la primitive dans le code neuf.** Ne pas migrer en masse du code
+qui marche : le gain est ergonomique, pas visuel.
 
-### Navigation
+## 2. La troisième couche, invisible : `@layer base`
 
-- `<AdminSidebarNav>` — v2 sidebar (icônes lucide, collapse 64px via Cmd+B, search, groupes collapsibles).
-- `<AdminBreadcrumbs>` — a11y nav, truncation 5 items.
-- `<AdminTabs>` — count badge, aria-current, min target.
-- `<AdminUserMenu>` — dropdown native `<details>` (email + 2FA + settings + logout).
-- `<AdminNotificationsDropdown>` — bell + badge counter + liste 5 + lien « voir toutes ».
+`admin.css` normalise **les éléments HTML eux-mêmes** à l'intérieur des shells
+`.admin-layout-v2` / `.admin-layout` (`admin.css` §`@layer base`) :
+
+```
+select · textarea · input[type=text|email|url|tel|number|password|search|date|…]
+button (sauf .admin-button*, .bg-*, .absolute, .fixed, .unstyled)
+input[type=checkbox] · input[type=radio]
+```
+
+Conséquence pratique, souvent ignorée : **un `<select>` nu, sans aucune classe,
+est déjà au gabarit de la console** — même hauteur, même bordure, même anneau de
+focus. Il n'y a rien à ajouter, et compter ces éléments comme « non stylés » est
+une erreur de lecture du système.
+
+Pourquoi `@layer base` et pas une couche maison : une couche déclarée après
+`utilities` écraserait les classes Tailwind posées par les pages. En réinjectant
+dans la couche `base` existante, ces règles fournissent un défaut soigné que
+n'importe quelle page peut encore surcharger.
+
+**`table` n'est PAS normalisé — et c'est le seul trou du système.** Un `<table>`
+nu tombe sur le rendu navigateur. Pire : les trois écritures ne s'accordent pas.
+Mesuré en production le 2026-09-06 sur deux écrans de liste voisins :
+
+|                 | `<AdminTable>` (51 fichiers) | `.admin-table` (32 fichiers) | à la main (51 fichiers) |
+| --------------- | ---------------------------- | ---------------------------- | ----------------------- |
+| police du corps | 13 px _(était 16 px)_        | 13 px                        | 13 px mesuré            |
+| chiffres        | `tabular-nums` _(ajouté)_    | `tabular-nums`               | `normal`                |
+| fond d'en-tête  | `surface-sunken`             | `surface-sunken`             | transparent             |
+| padding cellule | 12 px                        | 12/16 px                     | 6/8 px mesuré           |
+
+⚠️ **`AdminTable` ne compose PAS `.admin-table`.** Contrairement à `AdminButton`
+qui compose `.admin-button`, il réimplémente son rendu avec des utilitaires. Il
+portait même le commentaire « Aligné sur `.admin-table` » sur UNE propriété
+recopiée à la main, les autres oubliées. Conséquence mesurée : 23 % d'écart de
+taille de texte entre deux listes de la même console, et aucune des deux
+n'alignait ses colonnes de nombres.
+
+Les deux propriétés qui divergeaient sont alignées depuis le 2026-09-06, et
+`admin-table-ne-diverge-pas-de-sa-classe.spec.ts` les **dérive d'`admin.css`**
+au lieu de les recopier.
+
+⛔ **La fusion complète est BLOQUÉE par la cascade, et ce n'est pas de la
+prudence.** `.admin-table th, td` impose `text-align: left` hors couche : elle
+bat les utilitaires `text-right` que le composant pose via `ALIGN_CLASS`.
+**28 colonnes de la console déclarent `align: "right"`** — montants, taux,
+effectifs. Elles repasseraient toutes à gauche en silence. Et la garde des
+jetons ne le verrait pas : elle compare classe et utilitaire sur le MÊME
+élément, or la classe serait sur `<table>` et les utilitaires sur `<td>`.
+
+Fusionner demande donc de trancher la cascade d'abord : retirer `text-align`
+de la classe partagée (32 fichiers), ou déplacer les classes `.admin-*` dans
+une couche déclarée avant `utilities` — ce que `admin.css` documente comme un
+choix délibéré. C'est une décision d'architecture, pas un renommage.
+
+## 3. Le piège de cascade — à lire avant de poser une classe
+
+Les classes `.admin-*` sont **hors couche CSS**. En cascade, une règle hors
+couche l'emporte sur _toutes_ les couches, `utilities` comprise.
+
+```tsx
+// ❌ le `font-mono` ne fait RIEN : `.admin-input` fixe déjà font-family
+<input className="admin-input font-mono" />
+
+// ✅ modificateur déclaré au même niveau de cascade
+<input className="admin-input admin-input-mono" />
+```
+
+Ce piège a produit des défauts réels et silencieux : des éditeurs de JSON qui
+n'étaient pas en chasse fixe, des boutons de suppression rendus en noir au lieu
+de rouge, un kill-switch indiscernable d'une action banale.
+
+`admin-design-tokens.test.ts` **fait échouer la suite** si le motif réapparaît.
+Le remède est toujours un modificateur dans `admin.css`, jamais une entrée
+d'exception.
+
+Modificateurs disponibles : `.admin-button-sm`, `.admin-button-xs`,
+`.admin-button-block`, `.admin-button-ghost-danger`, `.admin-input-sm`,
+`.admin-input-mono`, `.admin-input-right`, `.admin-input-w-sm`,
+`.admin-input-w-md`.
+
+## 4. Jetons
+
+**138 jetons** déclarés dans `@layer admin-tokens` (`src/app/admin.css`), tous
+préfixés `--*-admin-*`, et **219 classes** `.admin-*`.
+
+| Catégorie           | Préfixe                                            | Étendue                                                                                  |
+| ------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Surfaces / bordures | `--color-admin-*`                                  | `bg`, `paper`, `paper-alt`, `surface-hover`, `surface-sunken`, `border`, `border-strong` |
+| Texte               | `--color-admin-fg*`                                | `fg`, `fg-soft`, `fg-muted`, `fg-disabled`                                               |
+| États               | `--color-admin-*`                                  | `success` / `warning` / `destructive` / `info` / `neutral` (+ `-soft` / `-fg`)           |
+| Marque              | `--color-admin-terracotta`, `--color-admin-accent` | une seule couleur d'action : terracotta                                                  |
+| Rail                | `--color-admin-rail-*`                             | fond mocha, encres ivoire, badges                                                        |
+| Espacement          | `--space-admin-1..9`                               | 2 px → 48 px                                                                             |
+| Typo                | `--text-admin-xs..2xl` + `--lh-admin-*`            | 12 px → 26 px                                                                            |
+| Polices             | `--font-admin`, `--font-admin-mono`                | Inter, Inconsolata                                                                       |
+| Contrôles           | `--control-admin-h-sm/md/lg`, `--control-admin-px` | grille de hauteurs unique                                                                |
+| Rayons / ombres     | `--radius-admin-*`, `--shadow-admin-*`             |                                                                                          |
+
+**Étendre :** ajouter dans `@layer admin-tokens`. **Ne jamais modifier** un jeton
+existant (compatibilité ascendante).
+
+### Cloisonnement — vérifié, et gardé
+
+- aucun import de `@/components/ui` (design system public) dans la console ;
+- aucun import de `@/components/admin` hors de la console ;
+- le layout admin n'importe que `admin.css` et `print.css`.
+
+⚠️ **Dette connue : 38 règles se stylent encore avec la palette PUBLIQUE**
+(`--color-bg`, `--color-terracotta`, `--color-sage`, `--color-error`…). Le
+2026-09-06, les 81 références dont la valeur était identique octet pour octet
+ont été migrées ; les 38 restantes portent des jetons dont la valeur _diffère_ —
+les basculer change le rendu, ça se décide en le regardant.
+
+`la-console-ne-porte-pas-la-palette-publique.spec.ts` gèle cette liste : elle ne
+peut que diminuer, et **aucune règle nouvelle** ne peut s'y ajouter. Les polices,
+elles, sont à tolérance zéro depuis que Manrope — la police du site public —
+a été retirée de `.admin-textarea`, `.admin-tab` et de la barre de l'éditeur riche.
+
+C'est le prérequis d'un futur mode sombre : une règle sur la palette publique
+n'est pas atteignable depuis un bloc sombre de la console.
+
+## 5. Primitives
+
+`import { … } from "@/components/admin/ui"` — **42 fichiers**.
+
+### Structure de page
+
+`AdminPageShell` (largeur `full` 1440 / `narrow` 720 / `wide`) ·
+`AdminPageHeader` · `AdminTopbar` · `AdminSidebarNav` · `AdminBreadcrumbs` ·
+`AdminToolbar` · `AdminCard`
 
 ### Données
 
-- `<AdminTable<T>>` — générique typée, sortable (aria-sort), row hover, empty fallback.
-- `<AdminPagination>` — Précédent / Suivant + preserved params.
-- `<AdminBulkActions>` — sticky bottom bar quand selection > 0.
-- `<AdminFilterChip>` — dismissible (href ou callback).
+`AdminTable<T>` (générique, triable, `aria-sort`) · `AdminPagination` ·
+`AdminBulkActions` · `AdminFilterTabs` · `AdminFilterChip` · `AdminStatCard`
 
 ### Formulaires
 
-- `<AdminFormField>` — label + input/textarea/select + hint + error inline. A11y : `aria-required`, `aria-invalid`, `aria-errormessage`, `aria-describedby`.
-- `<AdminFormSection>` — section verticale + variante collapsible (`<details>`).
-- `<AdminSubmitButton>` — `useFormStatus` React 19 (disabled pendant pending).
-- `<AdminInlineEdit>` — clic → input → Enter/ESC.
+`AdminFormField` · `AdminFormSection` · `AdminSubmitButton` · `AdminFormError` ·
+`AdminFormDirtyGuard` · `AdminInlineEdit` · `AdminAutosaveIndicator`
 
-### Présentation
+### Présentation et états
 
-- `<AdminBadge>` — 6 tones (`neutral / info / success / warning / destructive / outline`).
-- `<AdminStatusBadge>` — mappe enum Prisma → tone (booking/invoice/quote/job/publication/user-role/image-asset/review).
-- `<AdminStatCard>` — KPI tile (delta auto-colored + lien opt).
-- `<AdminKeyboardHint>` — `<kbd>` stylé pour shortcuts.
-- `<AdminAutosaveIndicator>` — états idle/saving/saved/error.
+`AdminBadge` · `AdminStatusBadge` · `AdminEtatBooleen` · `AdminEmptyState` ·
+`AdminLoadingState` · `AdminErrorState` · `AdminKeyboardHint`
 
-### États
+### Interaction
 
-- `<AdminEmptyState>` — icon + heading + body + CTA. 3 variants (card / inline / not-found).
-- `<AdminLoadingState>` — skeleton 5 variants (table / card / stat-grid / detail-header / form), dimensions exactes (CLS = 0).
-- `<AdminErrorState>` — `role="alert"`, detail dev-only. 2 variants (page / inline).
+`AdminConfirmDialog` · `useConfirmation` · `AdminUndoToast` ·
+`AdminConflictDialog` · `AdminSessionExpiryWarning` · `AdminShortcutListener` ·
+`AdminNotificationsDropdown` · `AdminUserMenu`
 
-### Modals
+### ⚠️ Primitives écrites mais jamais branchées
 
-- `<AdminConfirmDialog>` — destructive avec require-type-to-confirm (2-step).
+Sept primitives ont **zéro appelant** dans la console :
 
-### UX critique (mitigations §3.6-3.7 master prompt)
-
-- `<AdminSessionExpiryWarning>` — heartbeat 5min `/api/admin/session-ping`, modal non-bloquante (`Reconnect` + `Save local draft`).
-- `<AdminConflictDialog>` — optimistic concurrency `updatedAt` round-trip.
-
-## Trio error/loading/not-found
-
-Couverture des 116 routes admin via héritage Next 16, au niveau `src/app/[locale]/(admin)/[adminPrefix]/` :
-
-- `error.tsx` (client, Sentry capture + tags `route=admin/boundary=adminPrefix-root`)
-- `loading.tsx` (RSC, `<AdminLoadingState variant="card">`)
-- `not-found.tsx` (RSC, `<AdminEmptyState variant="not-found">`)
-
-Override par section dense (`content-gen/`, `image-bank/`, `factures/`) possible en posant un trio plus profond.
-
-## Patterns canoniques
-
-Voir [`_AUDIT/ADMIN-REFONTE-2026-05-17/PATTERNS.md`](../_AUDIT/ADMIN-REFONTE-2026-05-17/PATTERNS.md) pour les 5 templates :
-
-1. Page liste (resource/page.tsx)
-2. Page détail (resource/[id]/page.tsx)
-3. Page formulaire (resource/new/page.tsx + edit)
-4. Page dashboard (page.tsx racine)
-5. Page settings (settings/page.tsx)
-
-## Feature flag
-
-```tsx
-import { isAdminV2Enabled } from "@/lib/feature-flags";
-
-export default async function Page() {
-  const v2 = await isAdminV2Enabled();
-  return v2 ? <PageV2 /> : <PageV1 />;
-}
+```
+AdminAutosaveIndicator   AdminConflictDialog   AdminFilterChip   AdminInlineEdit
+AdminKeyboardHint        AdminShortcutListener AdminUndoToast
 ```
 
-- Bascule globale : env var `ADMIN_V2_ENABLED=true`.
-- Override per-session : cookie `admin_v2=1` (Will peut tester V2 dans son navigateur sans flip prod global).
+Elles viennent des PR 4 et 12 de l'ADR 0028 (« polish UX »), livrées d'avance et
+jamais câblées. `AdminConflictDialog` en particulier est la mitigation §3.7 du
+master prompt — le scénario « Will ouvre la même fiche dans deux onglets et
+édite dans les deux » n'est donc **pas** couvert en pratique.
 
-## Endpoint session-ping
+Ne pas les compter comme des capacités disponibles. Les brancher ou les
+supprimer est un arbitrage ouvert.
 
-`GET /api/admin/session-ping` :
+## 6. Le rapport de masse
 
-- 200 `{ ok: true, expiresAt: "<ISO>" }` si session valide.
-- 401 `{ ok: false }` sinon.
-- `Cache-Control: no-store`.
+```
+primitives partagées (components/admin/ui)        5 511 lignes
+UI de fonctionnalité (routes _v2 + components)   74 002 lignes
+```
 
-Consommé par `<AdminSessionExpiryWarning>` monté dans `layout.tsx` admin.
+**7 %.** Le kit est mince par rapport à la surface qu'il couvre — c'est pourquoi
+chaque écran dense finit par écrire sa propre barre de filtres et son propre
+tableau. Étendre le kit vaut mieux que discipliner 106 dossiers `_v2`.
 
-## A11y WCAG 2.2 AA
+## 7. Conventions de route
 
-Tous les composants respectent :
+- `page.tsx` = authentification + récupération des données, puis délégation.
+- `_v2/<Écran>V2.tsx` = tout le rendu (**106 dossiers** `_v2` / `_v3`).
+- Trio `error.tsx` / `loading.tsx` / `not-found.tsx` hérité depuis
+  `[locale]/(admin)/[adminPrefix]/` ; surcharger par section dense si besoin.
+- Une section peut poser son `AdminPageShell` dans son `layout.tsx` plutôt que
+  dans chaque page (`contacts`, `societe`, `tunnels`, `documents-interventions`).
 
-- `:focus-visible` ring (2px primary + offset 2px).
-- `aria-*` (current, sort, invalid, required, errormessage, describedby, live, pressed, busy).
-- `role` (alert, status, toolbar, navigation).
-- Min target size desktop 24×24px, mobile 44×44px (WCAG 2.2 §2.5.8).
-- `@media (prefers-reduced-motion: reduce)` → transitions 0ms.
-- Focus trap natif via `<dialog>` (showModal).
-- Return focus to trigger sur modal close.
+## 8. Ce que la console n'a pas
 
-## Préservations
+À dire explicitement, pour que personne ne le cherche :
 
-Aucune régression sur :
+- **pas de mode sombre** (aucun `prefers-color-scheme` dans `admin.css`) ;
+- **quasi pas de responsive** — la console est un outil de bureau assumé ;
+- **pas de bibliothèque de graphiques** ;
+- **pas de Storybook ni de test visuel** ;
+- **couverture a11y automatisée : 18 écrans** (`tests/e2e/a11y-admin.spec.ts`),
+  et la suite se **saute** en CI faute d'identifiants de seed.
 
-- Server Actions admin (signatures inchangées).
-- API routes admin (`/api/admin/**` intactes, sauf `session-ping` ajouté).
-- Prisma schema / RLS / migrations.
-- Workers BullMQ.
-- Auth.js config / middleware admin (`adminPrefix` validation, FR redirect).
-- CSP nonce + COEP.
-- `logActivity()` audit trail (26 occurrences content-gen intactes).
-- `force-dynamic` sur 50+ pages admin.
-- Endpoints SSE (`JobLogStream`, `GeoEventsBanner` — contrat préservé).
-- Sentry instrumentation.
+## Annexe — vérifier les chiffres
 
-## Tests
-
-- **Vitest** : ~50 tests primitives admin (cf. `*.test.tsx` colocalisés + `src/lib/admin-nav.test.ts`).
-- Couverture cible primitives ≥ 80 % (atteinte sur `AdminPageHeader / Badge / StatusBadge / EmptyState / FormField / Pagination / LoadingState` + `admin-nav`).
-- Total projet : 937 tests verts (vs 887 baseline pré-refonte).
-
-## Roadmap migrations per-page (PRs 6-12 reportées)
-
-Les primitives sont prêtes. La migration des 116 routes admin reste à faire incrémentalement :
-
-- PR 6 — pages main (9 routes) : dashboard, calendrier, reservations, devis, factures, paiements, echeanciers, options, submissions.
-- PR 7 — pages content-gen (48 routes) — FOCUS WILL.
-- PR 8 — pages image-bank (15 routes).
-- PR 9 — pages content (blog, categories, etc.).
-- PR 10 — pages ops (analytics, web-vitals, infra, alerts, newsletter).
-- PR 11 — pages système (users, activity-logs, settings, 2fa).
-- PR 12 — polish UX (shortcuts, optimistic updates, autosave Tiptap localStorage).
-
-Effort estimé restant : ~50h (cf. `IMPLEMENTATION-PLAN.md`).
-
-Méthode par page :
-
-1. Lire la page actuelle (`page.tsx` + sous-composants).
-2. **Inventorier** Server Actions / hooks / loaders / fetchs — **0 modification**.
-3. **Remplacer uniquement le JSX** par les primitives admin/ui/\*\*.
-4. **Préserver** les `key`, `id`, `name`, `aria-*` ciblés par e2e tests.
-5. Tester `pnpm test:e2e:admin` (au moins le smoke).
-6. Bench Lighthouse desktop (≥ 90).
+```bash
+find "src/app/[locale]/(admin)" -name page.tsx | wc -l          # 311
+ls src/components/admin/ui/*.tsx | grep -v '\.test\.' | wc -l   # 42
+grep -cE '^\s*--[a-z0-9-]+\s*:' src/app/admin.css               # 138
+grep -oE '\.admin-[a-z0-9-]+' src/app/admin.css | sort -u | wc -l  # 219
+find "src/app/[locale]/(admin)" -type d \( -name _v2 -o -name _v3 \) | wc -l  # 106
+```

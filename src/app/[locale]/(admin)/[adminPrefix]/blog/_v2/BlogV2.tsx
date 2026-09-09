@@ -132,10 +132,10 @@ export function BlogV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button-secondary">
+            <button type="submit" className="admin-button-ghost">
               Appliquer
             </button>
-            <Link href={`/fr/${adminPrefix}/blog`} className="admin-button-ghost">
+            <Link href={`/fr/${adminPrefix}/blog`} className="admin-button-secondary">
               Réinitialiser
             </Link>
           </div>

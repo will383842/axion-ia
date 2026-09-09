@@ -40,7 +40,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { lireDernierAppelWebhook } from "./webhook-battement";
+import { lireDernierAppelRecu, lireDernierAppelWebhook } from "./webhook-battement";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { notify } from "@/server/notifications";
 import { EmailLogStatus } from "../../../prisma/generated/client";
@@ -65,15 +65,60 @@ export const FENETRE_ECHECS_H = 6;
 export const SEUIL_ECHECS = 3;
 
 /**
- * Âge à partir duquel une ligne `pending` est anormale. Le worker prend un job
- * en quelques secondes ; quinze minutes couvrent largement un `delayMs` court,
- * un redéploiement et une reprise de file.
+ * Âge à partir duquel une ligne `pending` est anormale — compté depuis son
+ * ÉCHÉANCE, jamais depuis sa création. Le worker prend un job en quelques
+ * secondes ; quinze minutes couvrent largement un redéploiement et une reprise
+ * de file.
  *
- * ⚠️ Les envois différés volontairement (`delayMs`) au-delà de cette fenêtre
- * déclencheraient un faux positif. Aucun appelant n'en pose aujourd'hui de plus
- * long ; si cela change, il faudra porter la date d'échéance sur la ligne.
+ * 🔴 2026-09-09 — LE FAUX POSITIF QUE CE FICHIER AVAIT LUI-MÊME ANNONCÉ.
+ *
+ * Cette place portait l'avertissement : « Les envois différés volontairement
+ * (`delayMs`) au-delà de cette fenêtre déclencheraient un faux positif. Aucun
+ * appelant n'en pose aujourd'hui de plus long ; si cela change, il faudra
+ * porter la date d'échéance sur la ligne. »
+ *
+ * Les relances apporteur (`relances-lead-apporteur.ts`) ont ensuite posé des
+ * envois à **J+2 et J+7**. L'hypothèse est tombée, la consigne n'a pas été
+ * suivie, et le compteur s'est mis à lire « la file n'est pas consommée » sur
+ * quatre envois qui attendaient sagement leur date.
+ *
+ * Le coût n'est pas théorique : une alerte CRITIQUE est restée ouverte du 07/09
+ * au 09/09 en annonçant « AUCUN e-mail ne part — convocations comprises »,
+ * pendant que 137 e-mails partaient sans un seul échec. Une alerte critique qui
+ * ment est pire qu'une alerte absente : elle apprend à ne plus lire les
+ * critiques.
+ *
+ * 🔑 Une constante de seuil ne protège de rien si la GRANDEUR qu'elle borne
+ * n'est pas la bonne. Ici le seuil était juste et la grandeur fausse.
  */
 export const AGE_BLOCAGE_MIN = 15;
+
+/**
+ * Condition « cet envoi est réellement bloqué », isolée pour être éprouvée.
+ *
+ * Elle vit hors de la requête parce qu'une condition noyée dans un `count()`
+ * ne se teste qu'à travers un mock qui ne regarde pas ce qu'elle dit — c'est
+ * exactement ainsi que la précédente a pu être fausse pendant deux jours sans
+ * qu'un seul test ne rougisse.
+ *
+ * Deux branches, et les deux comptent :
+ *   - `dueAt` posée (toute ligne écrite depuis le 2026-09-09) → on borne sur
+ *     l'échéance. Un envoi différé à J+7 n'est en retard qu'à J+7 + 15 min ;
+ *   - `dueAt` absente (lignes antérieures au champ) → on retombe sur
+ *     `createdAt`, c'est-à-dire sur le comportement d'avant. Ne rien compter
+ *     dans ce cas rendrait la surveillance AVEUGLE sur l'historique, ce qui
+ *     échangerait un faux positif contre un faux négatif — le mauvais côté du
+ *     marché quand l'enjeu est « aucune convocation ne part ».
+ */
+export function whereEnvoisBloques(avant: Date): {
+  status: typeof EmailLogStatus.pending;
+  OR: [{ dueAt: { lt: Date } }, { dueAt: null; createdAt: { lt: Date } }];
+} {
+  return {
+    status: EmailLogStatus.pending,
+    OR: [{ dueAt: { lt: avant } }, { dueAt: null, createdAt: { lt: avant } }],
+  };
+}
 
 /**
  * Fenêtre d'observation des rebonds. Vingt-quatre heures et non six : un rebond
@@ -143,6 +188,26 @@ export interface SanteEmails {
    * obtenir une réponse définitive en trente secondes.
    */
   dernierAppelWebhook: string | null;
+  /**
+   * 🔑 Date ISO du dernier appel RECU sur la route, **authentifie ou non**, ou
+   * `null` si aucun n'a jamais ete vu.
+   *
+   * Ajoute le 2026-09-07. `dernierAppelWebhook` ne se pose qu'apres une
+   * signature valide ; comme la route rend `200` sur signature invalide (pour
+   * que ZeptoMail puisse creer le webhook), un appel refuse etait totalement
+   * invisible. Les deux pannes rendaient donc le meme `JAMAIS` :
+   *
+   *   `dernierAppelRecu` null      -> rien n'atteint la route (abonnement absent
+   *                                   ou URL fausse cote ZeptoMail).
+   *   `dernierAppelRecu` date +
+   *   `dernierAppelWebhook` null   -> ils nous atteignent, la signature est
+   *                                   refusee : cle desynchronisee.
+   *
+   * ⚠️ Comme son voisin, ce champ ne leve AUCUNE alerte : ZeptoMail n'appelle
+   * que sur evenement, donc le silence est le comportement normal d'un parc
+   * dont rien ne rebondit. On expose la valeur, on ne la juge pas.
+   */
+  dernierAppelRecu: string | null;
   alertesLevees: string[];
   /**
    * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
@@ -175,6 +240,7 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     // rebond possible, jamais.
     detectionRebondsDebranchee: !process.env["ZEPTOMAIL_WEBHOOK_KEY"]?.trim(),
     dernierAppelWebhook: null,
+    dernierAppelRecu: null,
     alertesLevees: [],
     mesureIndisponible: false,
   };
@@ -184,7 +250,10 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   // reste lisible quand Postgres est en panne — c'est-à-dire dans le chemin où
   // les trois compteurs ci-dessous ne veulent plus rien dire. Fail-soft de bout
   // en bout : la fonction rend `null` plutôt que de lever.
-  resultat.dernierAppelWebhook = await lireDernierAppelWebhook();
+  [resultat.dernierAppelWebhook, resultat.dernierAppelRecu] = await Promise.all([
+    lireDernierAppelWebhook(),
+    lireDernierAppelRecu(),
+  ]);
 
   const depuis = new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000);
   const avant = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);
@@ -195,9 +264,7 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       prisma.emailLog.count({
         where: { status: EmailLogStatus.failed, failedAt: { gte: depuis } },
       }),
-      prisma.emailLog.count({
-        where: { status: EmailLogStatus.pending, createdAt: { lt: avant } },
-      }),
+      prisma.emailLog.count({ where: whereEnvoisBloques(avant) }),
       // Fenêtre volontairement plus large que celle des échecs : un rebond
       // remonte quand le serveur destinataire répond, parfois des heures après
       // l'acceptation par le relais.

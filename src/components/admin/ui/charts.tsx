@@ -127,6 +127,22 @@ export function BarresMensuelles({
 }: BarresMensuellesProps): React.ReactElement | null {
   if (barres.length === 0) return null;
 
+  // 2026-09-06 : douze mois a zero ne rendaient AUCUNE barre (`b.value > 0`
+  // conditionne le trace), il ne restait que la ligne de base et les lettres
+  // de mois. Vu en production sur les trois colonnes du bloc « Activite » du
+  // tableau de bord. Un axe nu ne dit pas « aucune donnee » : il ressemble a
+  // un graphique qui a echoue. On le dit, a hauteur constante pour ne pas
+  // deplacer la mise en page quand les donnees arrivent.
+  if (barres.every((b) => b.value <= 0)) {
+    return (
+      <p className={className} style={{ height, display: "flex", alignItems: "center" }}>
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Aucune donnée sur la période.
+        </span>
+      </p>
+    );
+  }
+
   const GAP = 2;
   const AXE = 16; // bande des libellés sous la ligne de base
   const n = barres.length;

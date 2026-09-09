@@ -20,6 +20,10 @@ vi.mock("@/server/queue/queues", () => ({
 vi.mock("@/lib/security/email-hash", () => ({
   hashEmailForLookup: (e: string) => (e ? `h-${e.replace(/[^a-z]/g, "")}` : null),
 }));
+const marquerAnnuleMock = vi.fn(async (_id: string, _motif: string) => 1);
+vi.mock("@/server/email/email-log", () => ({
+  marquerAnnule: (id: string, motif: string) => marquerAnnuleMock(id, motif),
+}));
 
 import {
   annulerRelancesLeadApporteur,
@@ -30,6 +34,8 @@ import {
 beforeEach(() => {
   retirer.mockClear();
   enfiler.mockClear();
+  marquerAnnuleMock.mockClear();
+  marquerAnnuleMock.mockResolvedValue(1);
   queueMock.present = true;
 });
 
@@ -95,5 +101,51 @@ describe("annulerRelancesLeadApporteur", () => {
     retirer.mockImplementationOnce(async () => 0);
     await expect(annulerRelancesLeadApporteur("nadia@example.com")).resolves.toBe(0);
     expect(retirer).toHaveBeenCalledTimes(2);
+  });
+});
+
+/**
+ * 🔴 2026-09-09 — RETIRER LE JOB NE SUFFIT PAS.
+ *
+ * La ligne « en attente » posée à l'enfilage n'était refermée par personne : le
+ * worker la clôt à l'exécution, et un job annulé n'est jamais exécuté. Elle
+ * restait `pending` POUR TOUJOURS, et son échéance passée elle se présentait
+ * comme un envoi bloqué — deux lignes dans cet état en production.
+ */
+describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulement la file", () => {
+  it("referme la ligne des DEUX étapes, avec le même identifiant que le job retiré", async () => {
+    await annulerRelancesLeadApporteur("nadia@example.com");
+    const idsRetires = retirer.mock.calls.map((c) => c[0]);
+    const idsRefermes = marquerAnnuleMock.mock.calls.map((c) => c[0]);
+    // Le témoin porte sur l'ÉGALITÉ des identifiants, pas sur leur nombre :
+    // refermer deux lignes qui ne sont pas celles qu'on vient de retirer serait
+    // vert sur un simple compte.
+    expect(idsRefermes).toEqual(idsRetires);
+    expect(idsRefermes).toEqual([
+      "lead-apporteur-relance-j2-h-nadiaexamplecom",
+      "lead-apporteur-relance-j7-h-nadiaexamplecom",
+    ]);
+  });
+
+  it("referme la ligne MÊME si le job n'était plus dans la file", async () => {
+    // `remove()` rend 0 pour « déjà retiré » comme pour « déjà parti ». La ligne
+    // peut être restée ouverte dans le premier cas : ne refermer que sur un
+    // retrait réussi laisserait précisément les lignes qu'on veut fermer.
+    retirer.mockResolvedValue(0);
+    await annulerRelancesLeadApporteur("nadia@example.com");
+    expect(marquerAnnuleMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("referme la ligne même si le retrait LÈVE", async () => {
+    retirer.mockRejectedValue(new Error("redis indisponible"));
+    await expect(annulerRelancesLeadApporteur("nadia@example.com")).resolves.toBe(0);
+    expect(marquerAnnuleMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("porte un motif lisible — le journal doit dire POURQUOI la ligne est close", async () => {
+    await annulerRelancesLeadApporteur("nadia@example.com");
+    const motif = marquerAnnuleMock.mock.calls[0]?.[1] ?? "";
+    expect(motif).toMatch(/annul/i);
+    expect(motif).toMatch(/dossier complet/i);
   });
 });

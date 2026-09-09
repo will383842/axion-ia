@@ -35,7 +35,13 @@ vi.mock("@/server/notifications", () => ({
   notify: (...a: unknown[]) => notifyMock(...a),
 }));
 
-import { verifierSanteEmails, SEUIL_ECHECS, FENETRE_ECHECS_H, AGE_BLOCAGE_MIN } from "./health";
+import {
+  verifierSanteEmails,
+  SEUIL_ECHECS,
+  FENETRE_ECHECS_H,
+  AGE_BLOCAGE_MIN,
+  whereEnvoisBloques,
+} from "./health";
 
 /**
  * `count` est appelé TROIS fois depuis le 2026-08-31 : échecs, bloqués, puis
@@ -172,9 +178,18 @@ describe("verifierSanteEmails — les fenêtres interrogées", () => {
     expect((appelEchecs?.[0] as { where: { failedAt: { gte: Date } } }).where.failedAt.gte).toEqual(
       new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000),
     );
-    expect(
-      (appelBloques?.[0] as { where: { createdAt: { lt: Date } } }).where.createdAt.lt,
-    ).toEqual(new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000));
+    // 🔴 2026-09-09 — cette assertion portait sur `where.createdAt.lt`, et
+    // c'est CE QU'ELLE FIGEAIT qui était le défaut : la borne s'appliquait à la
+    // date de CRÉATION, donc un envoi différé à J+7 comptait comme bloqué dès
+    // la 16e minute. Le test était vert sur une condition fausse parce qu'il
+    // vérifiait la forme qu'elle avait, pas la question qu'elle posait.
+    // La borne est la même ; elle porte désormais sur l'ÉCHÉANCE, avec un repli
+    // sur `createdAt` pour les lignes antérieures au champ.
+    const bornee = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);
+    const where = (appelBloques?.[0] as { where: ReturnType<typeof whereEnvoisBloques> }).where;
+    expect(where).toEqual(whereEnvoisBloques(bornee));
+    expect(where.OR[0].dueAt.lt).toEqual(bornee);
+    expect(where.OR[1].createdAt.lt).toEqual(bornee);
   });
 });
 
@@ -247,5 +262,73 @@ describe("verifierSanteEmails — robustesse", () => {
     const r = await verifierSanteEmails();
     expect(r.alertesLevees).toEqual([]);
     expect(countMock).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * 🔴 Le faux positif du 2026-09-09 — et le témoin qui manquait pour l'attraper.
+ *
+ * Une alerte CRITIQUE est restée ouverte deux jours en annonçant « AUCUN e-mail
+ * ne part — convocations comprises », pendant que 137 e-mails partaient sans un
+ * seul échec. Les quatre lignes `pending` incriminées étaient les relances
+ * apporteur J+2 et J+7 : elles attendaient leur date.
+ *
+ * 🔑 Pourquoi AUCUN test n'a rougi pendant ces deux jours : la condition vivait
+ * à l'intérieur d'un `count()` dont le mock ne regarde pas l'argument. Un test
+ * qui ne lit pas ce que la requête DIT ne mesure pas la requête. La condition
+ * est donc sortie dans `whereEnvoisBloques()`, et on l'éprouve ici en
+ * l'APPLIQUANT à des lignes, pas en comparant sa forme.
+ */
+describe("whereEnvoisBloques — un envoi différé n'est pas un envoi bloqué", () => {
+  const maintenant = new Date("2026-09-09T08:00:00.000Z");
+  const avant = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);
+
+  /** Applique le `where` rendu à une ligne, comme le ferait la base. */
+  function retenue(ligne: { dueAt: Date | null; createdAt: Date }): boolean {
+    const w = whereEnvoisBloques(avant);
+    return w.OR.some((clause) =>
+      "createdAt" in clause
+        ? ligne.dueAt === null && ligne.createdAt < clause.createdAt.lt
+        : ligne.dueAt !== null && ligne.dueAt < clause.dueAt.lt,
+    );
+  }
+
+  const relanceJ7NonEchue = {
+    createdAt: new Date("2026-09-08T13:11:00.000Z"),
+    dueAt: new Date("2026-09-15T13:11:00.000Z"),
+  };
+  const relanceEchueDepuisLongtemps = {
+    createdAt: new Date("2026-09-01T10:00:00.000Z"),
+    dueAt: new Date("2026-09-03T10:00:00.000Z"),
+  };
+  const ligneHeritee = { createdAt: new Date("2026-09-07T10:07:00.000Z"), dueAt: null };
+  const ligneTouteFraiche = { createdAt: new Date("2026-09-09T07:59:00.000Z"), dueAt: null };
+
+  it("NE COMPTE PAS une relance différée dont l'échéance est dans le futur", () => {
+    // Le défaut exact : créée il y a 19 heures, donc « ancienne » au sens de
+    // `createdAt` — mais elle n'est due que le 15.
+    expect(retenue(relanceJ7NonEchue)).toBe(false);
+  });
+
+  it("COMPTE une ligne dont l'échéance est dépassée depuis plus de 15 min", () => {
+    // Témoin POSITIF : sans lui, une condition qui ne retient JAMAIS rien
+    // passerait le test précédent en paraissant correcte.
+    expect(retenue(relanceEchueDepuisLongtemps)).toBe(true);
+  });
+
+  it("COMPTE encore les lignes antérieures au champ, via createdAt", () => {
+    // Échanger un faux positif contre un faux négatif serait le mauvais côté du
+    // marché : l'enjeu est « aucune convocation ne part ».
+    expect(retenue(ligneHeritee)).toBe(true);
+    expect(retenue(ligneTouteFraiche)).toBe(false);
+  });
+
+  it("l'ANCIENNE condition aurait retenu la relance non échue — la garde discrimine", () => {
+    // Rejoue littéralement la condition d'avant (`createdAt < avant`, sans
+    // égard pour l'échéance) sur la MÊME ligne. Si elle ne rougissait pas ici,
+    // ce fichier ne prouverait pas que quelque chose a changé.
+    const ancienneCondition = (l: { createdAt: Date }): boolean => l.createdAt < avant;
+    expect(ancienneCondition(relanceJ7NonEchue)).toBe(true);
+    expect(retenue(relanceJ7NonEchue)).toBe(false);
   });
 });
