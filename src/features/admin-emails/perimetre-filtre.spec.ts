@@ -71,7 +71,7 @@ beforeEach(() => {
 
 describe("🔴 le périmètre du filtre s'applique À TOUTES les lectures", () => {
   it("le destinataire restreint la liste ET les compteurs", async () => {
-    await chargerEmails({ ...BASE, destinataire: "simone.blanc.26@gmail.com" });
+    await chargerEmails({ ...BASE, destinataire: "simone.blanc.26@exemple.fr" });
 
     const tous = wheres();
     expect(tous.length).toBeGreaterThan(3); // liste + total + 2 groupBy + rebonds durs
@@ -80,7 +80,7 @@ describe("🔴 le périmètre du filtre s'applique À TOUTES les lectures", () =
         w["recipient"],
         "une lecture ignore le filtre de destinataire : ses compteurs porteront sur le journal entier " +
           "alors que la liste est filtrée — le défaut d'origine, à l'identique.",
-      ).toEqual({ contains: "simone.blanc.26@gmail.com" });
+      ).toEqual({ contains: "simone.blanc.26@exemple.fr" });
     }
   });
 

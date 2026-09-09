@@ -367,7 +367,7 @@ export function VueEmails({
           </span>
         </p>
       ) : filtres.sessionId !== null ? (
-        <p className="admin-alert admin-alert-warn mt-[var(--space-admin-3)]">
+        <p className="admin-alert admin-alert-warning mt-[var(--space-admin-3)]">
           <span>
             Aucune session ne porte cet identifiant. Le journal est donc vide —{" "}
             <strong>et non « aucun envoi »</strong> :{" "}
