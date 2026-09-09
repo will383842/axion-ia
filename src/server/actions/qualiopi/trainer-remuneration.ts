@@ -31,6 +31,7 @@ import { prisma } from "@/lib/prisma";
 import { requireHabilitation, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { runRemunerationMensuelle } from "@/server/qualiopi/remuneration/statements";
 import { transitionAutorisee, type StatementStatut } from "@/server/qualiopi/remuneration/run";
+import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -229,6 +230,21 @@ export async function transitionStatementAction(
           ...(v.to === "valide" ? { validatedById: session.userId } : {}),
           ...(v.numeroFacture !== undefined ? { numeroFacture: v.numeroFacture } : {}),
           ...(v.dateFacture !== undefined ? { dateFacture: v.dateFacture } : {}),
+          /**
+           * 🔴 `echeanceAt` existait au schéma depuis le 2026-07-09, INDEXÉE, et
+           * personne ne l'écrivait. C'est ici — et nulle part ailleurs — qu'une
+           * facture d'honoraires entre dans le système : la garde juste
+           * au-dessus exige déjà `dateFacture` pour ce passage. Poser
+           * l'échéance ici, c'est la poser sur toute la production à venir.
+           *
+           * Sans elle, aucune alerte ni aucun écran ne peut voir un retard :
+           * aucune comparaison SQL n'est vraie pour NULL. Le stock antérieur est
+           * rattrapé par le repli de `echeanceEffective` et par
+           * `pnpm backfill:echeance-honoraires`.
+           */
+          ...(v.dateFacture !== undefined
+            ? { echeanceAt: calculerEcheanceHonoraires(v.dateFacture) }
+            : {}),
           ...(v.montantFactureTtcEuros !== undefined
             ? { montantFactureTtcCents: v.montantFactureTtcEuros }
             : {}),

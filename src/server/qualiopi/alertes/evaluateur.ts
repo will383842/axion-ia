@@ -32,6 +32,11 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
+import {
+  echeanceEffective,
+  joursDeRetard,
+  STATUTS_RELEVE_DU,
+} from "@/server/qualiopi/remuneration/echeance";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import {
   CONFORMITE_DEFAUTS,
@@ -3815,6 +3820,89 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
 }
 
 /**
+ * 🔴 LE MOTEUR NE REGARDAIT QUE L'ARGENT QU'ON NOUS DOIT (2026-09-09).
+ *
+ * Sept règles de facturation, sept créances CLIENTS. Un relevé d'honoraires de
+ * formateur pouvait dépasser son échéance sans qu'aucune surface ne le dise :
+ * pas d'alerte, pas de colonne à l'écran, pas de compteur. Le seul mécanisme de
+ * rappel était le formateur qui relance — c'est-à-dire l'inverse d'un pilotage.
+ *
+ * Depuis le 2026-09-06, la clause 4 du contrat de sous-traitance stipule
+ * 30 jours, les pénalités BCE + 10 points et l'indemnité de 40 € de l'art.
+ * D.441-5, qui courent de plein droit et SANS MISE EN DEMEURE. L'organisme s'est
+ * donné une horloge ; cette règle en est le cadran.
+ *
+ * ── POURQUOI ELLE NE FILTRE PAS EN SQL SUR `echeanceAt` ─────────────────────
+ *
+ * 🔑 C'est le point qui rendait ce correctif piégeux, et il a failli passer
+ * inaperçu. `TrainerStatement.echeanceAt` existe et est INDEXÉE depuis le
+ * 2026-07-09 — et personne ne l'écrivait. Un `where: { echeanceAt: { lt: now } }`
+ * aurait produit une règle verte, muette et vide pour toujours : aucune
+ * comparaison SQL n'est vraie pour NULL. C'est mot pour mot le défaut que
+ * `facture_sans_echeance` documente sur les factures clients.
+ *
+ * La règle part donc du STATUT — un ensemble petit et borné (`valide`,
+ * `facture_recue`) — et date chaque ligne par `echeanceEffective`, qui retombe
+ * sur `dateFacture + 30 j` quand la colonne manque. L'écriture de la colonne est
+ * posée en amont (`transitionStatementAction`), et le stock est rattrapé par
+ * `pnpm backfill:echeance-honoraires` ; mais aucune de ces deux réparations
+ * n'est une CONDITION pour que la règle voie juste. Une règle qui n'alerte que
+ * si un autre correctif a été déployé n'alerte pas.
+ *
+ * ⚠️ Un relevé `valide` sans facture n'est jamais candidat : sans facture, il
+ * n'y a pas d'échéance, et lui en inventer une lui donnerait une ancienneté de
+ * dette devinée. Ce trou-là — « validé depuis des mois, jamais facturé » — est
+ * celui que l'autofacturation ferme, pas celui-ci. Il est signalé à l'écran
+ * « Ce qu'on doit », qui montre les deux états.
+ */
+async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
+  const releves = await prisma.trainerStatement.findMany({
+    where: { statut: { in: [...STATUTS_RELEVE_DU] }, payeAt: null },
+    select: {
+      id: true,
+      statut: true,
+      dateFacture: true,
+      echeanceAt: true,
+      payeAt: true,
+      numeroFacture: true,
+      periodeYear: true,
+      periodeMonth: true,
+      totalTtcCents: true,
+      trainer: { select: { nom: true, prenom: true } },
+    },
+    take: 200,
+  });
+
+  const out: AlerteCandidate[] = [];
+  for (const r of releves) {
+    const retard = joursDeRetard(r, now);
+    if (retard === null) continue;
+    const echeance = echeanceEffective(r);
+    if (echeance === null) continue;
+
+    const qui = `${r.trainer.prenom} ${r.trainer.nom}`.trim();
+    const montant = (r.totalTtcCents / 100).toLocaleString("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+    });
+    const piece = r.numeroFacture !== null ? `facture ${r.numeroFacture}` : "facture d'honoraires";
+    out.push({
+      code: "releve_formateur_echu",
+      niveau: "important",
+      titre: "Honoraires de formateur échus",
+      message:
+        `${montant} TTC sont dus à ${qui} (${piece}, période ${String(r.periodeMonth).padStart(2, "0")}/${r.periodeYear}) : ` +
+        `l'échéance du ${echeance.toLocaleDateString("fr-FR")} est dépassée de ${retard} jour${retard > 1 ? "s" : ""}. ` +
+        `Le contrat de sous-traitance fait courir de plein droit, sans mise en demeure, des pénalités au taux BCE majoré de 10 points ` +
+        `et une indemnité forfaitaire de recouvrement de 40 €. Payez le relevé, ou dites au formateur ce qui bloque.`,
+      cibleType: "TrainerStatement",
+      cibleId: r.id,
+    });
+  }
+  return out;
+}
+
+/**
  * 🔴 UNE RC PRO QUI TOMBE HORS SOUS-TRAITANCE NE DISAIT RIEN.
  *
  * Audit du moteur, trou n°11 — implémenté PARTIELLEMENT, et le partiel est le
@@ -4145,6 +4233,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "emargement_partiel", fn: regleEmargementPartiel },
   { nom: "effectif_depasse", fn: regleEffectifDepasse },
   { nom: "session_realisee_non_facturee", fn: regleSessionRealiseeNonFacturee },
+  // 2026-09-09 — la première règle du moteur qui surveille l'argent qu'on DOIT.
+  { nom: "releve_formateur_echu", fn: regleReleveFormateurEchu },
   { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
 ];
 

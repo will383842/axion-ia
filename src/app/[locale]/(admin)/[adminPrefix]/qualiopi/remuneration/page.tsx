@@ -11,7 +11,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AlertTriangle, Calculator, Euro, FileWarning, Users } from "lucide-react";
+import { AlertTriangle, Calculator, Clock, Euro, FileWarning, Users } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -23,6 +23,7 @@ import { runRemunerationFormAction } from "@/server/actions/qualiopi/trainer-rem
 import {
   honorairesSousTraitanceAnnee,
   listAnomaliesPeriode,
+  listRelevesDus,
   listRelevesPeriode,
 } from "@/server/qualiopi/remuneration/queries";
 import { periodeDeRattachement } from "@/server/qualiopi/remuneration/run";
@@ -66,14 +67,21 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
   const periode = { year, month };
 
   const base = `/${locale}/${adminPrefix}/qualiopi/remuneration`;
-  const [releves, anomalies, bpf] = await Promise.all([
+  const [releves, anomalies, bpf, dus] = await Promise.all([
     listRelevesPeriode(periode),
     listAnomaliesPeriode(periode),
     honorairesSousTraitanceAnnee(year),
+    listRelevesDus(),
   ]);
 
   const totalTtc = releves.reduce((t, r) => t + r.totalTtcCents, 0);
   const aPayer = releves.filter((r) => r.statut !== "paye" && r.statut !== "annule").length;
+
+  // Ce qu'on doit, toutes périodes confondues — la question à laquelle l'écran
+  // par période ne pouvait pas répondre.
+  const totalDuTtc = dus.reduce((t, r) => t + r.totalTtcCents, 0);
+  const enRetard = dus.filter((r) => r.retardJours !== null);
+  const totalEchuTtc = enRetard.reduce((t, r) => t + r.totalTtcCents, 0);
 
   return (
     <AdminPageShell>
@@ -198,6 +206,114 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
           </ul>
         </AdminCard>
       )}
+
+      {/*
+        ── Ce qu'on doit ────────────────────────────────────────────────────
+
+        🔴 2026-09-09 — CET ÉCRAN NE SAVAIT REGARDER QU'UN MOIS À LA FOIS.
+        Un relevé de juillet impayé disparaissait dès qu'on affichait août : il
+        fallait savoir qu'il existait pour aller le chercher. « Qu'est-ce qu'on
+        doit, à qui, échu ou à venir » n'avait aucune réponse — et la colonne
+        `echeanceAt`, pourtant présente et indexée depuis le 2026-07-09, n'était
+        écrite par personne.
+
+        Placé AVANT le BPF et les relevés du mois : c'est la seule section de
+        cette page qui porte une échéance, donc la seule qui se périme.
+      */}
+      <AdminCard>
+        <h2 className="admin-h2">Ce qu&apos;on doit — toutes périodes</h2>
+        <p className="admin-muted">
+          Relevés validés ou facturés qui ne sont pas réglés. Le délai contractuel est de 30 jours à
+          compter de l&apos;émission de la facture (clause 4 du contrat de sous-traitance) ; passé
+          l&apos;échéance, les pénalités et l&apos;indemnité de 40 € courent de plein droit, sans
+          mise en demeure.
+        </p>
+
+        <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2">
+          <AdminStatCard
+            label="Dû aux formateurs"
+            value={euros(totalDuTtc)}
+            icon={Euro}
+            tone={totalDuTtc > 0 ? "info" : "default"}
+          />
+          <AdminStatCard
+            label={
+              enRetard.length > 0 ? `Échu — ${euros(totalEchuTtc)} TTC` : "Aucun relevé en retard"
+            }
+            value={enRetard.length}
+            icon={Clock}
+            tone={enRetard.length > 0 ? "destructive" : "success"}
+          />
+        </div>
+
+        {dus.length === 0 ? (
+          <AdminEmptyState
+            icon={<Clock size={24} />}
+            title="Rien à payer"
+            description="Aucun relevé validé ou facturé n'attend son règlement."
+          />
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">Formateur</th>
+                <th scope="col">Période</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Échéance</th>
+                <th scope="col" className="text-right">
+                  TTC dû
+                </th>
+                <th scope="col">
+                  <span className="sr-only">Ouvrir</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {dus.map((r) => (
+                <tr key={r.id}>
+                  <td>{r.trainerNom}</td>
+                  <td className="tabular-nums">
+                    {MOIS_FR[r.periodeMonth - 1]} {r.periodeYear}
+                  </td>
+                  <td>
+                    <AdminBadge tone={TON_STATUT_RELEVE[r.statut]} dot>
+                      {LIBELLE_STATUT_RELEVE[r.statut]}
+                    </AdminBadge>
+                  </td>
+                  <td>
+                    {r.echeance === null ? (
+                      // Pas de facture, donc pas d'exigibilité. On le DIT plutôt
+                      // que de laisser une case vide, qu'un lecteur prendrait
+                      // pour une donnée manquante.
+                      <span className="admin-muted">pas encore facturé</span>
+                    ) : (
+                      <>
+                        <span className="tabular-nums">
+                          {r.echeance.toLocaleDateString("fr-FR")}
+                        </span>
+                        {r.retardJours !== null && (
+                          <>
+                            {" "}
+                            <AdminBadge tone="destructive" dot>
+                              en retard de {r.retardJours} j
+                            </AdminBadge>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </td>
+                  <td className="text-right tabular-nums">{euros(r.totalTtcCents)}</td>
+                  <td>
+                    <Link href={`${base}/${r.id}`} className="admin-button-ghost">
+                      Ouvrir
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </AdminCard>
 
       {/* ── Lien BPF ──────────────────────────────────────────────────────── */}
       <AdminCard>

@@ -47,6 +47,11 @@ vi.mock("@/lib/prisma", () => ({
     // lèverait sur `undefined` et le fail-soft PAR RÈGLE l'avalerait : elle serait
     // inerte partout, tests verts compris. Même famille que `mockIdentite` ci-dessous.
     formation: { findMany: vi.fn(), count: vi.fn() },
+    // 2026-09-09 — `releve_formateur_echu`, la première règle qui surveille
+    // l'argent qu'on DOIT. Même piège que les six mocks ci-dessus : sans lui,
+    // la règle lirait un mock non configuré, lèverait, et le fail-soft PAR
+    // RÈGLE avalerait l'exception — inerte partout, tests verts compris.
+    trainerStatement: { findMany: vi.fn() },
   },
 }));
 
@@ -120,6 +125,11 @@ const mp = prisma as unknown as {
   offreSite: { findMany: ReturnType<typeof vi.fn> };
   interventionDocument: { findMany: ReturnType<typeof vi.fn> };
   formation: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
+  // 🔑 CE CAST EST TENU À LA MAIN, et il ne suit PAS la fabrique de `vi.mock`
+  // ci-dessus. Ajouter le modèle à la fabrique sans l'ajouter ici laisse Vitest
+  // parfaitement vert — il n'exécute pas `tsc` — et ne rougit qu'en CI, à
+  // l'étape « TypeScript strict ». C'est arrivé le 2026-09-09.
+  trainerStatement: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -165,6 +175,8 @@ function setupEmptyMocks() {
   mp.formation.findMany.mockResolvedValue([]);
   // R01e : aucune formation ne porte de code RNCP/RS par défaut → règle muette.
   mp.formation.count.mockResolvedValue(0);
+  // Aucun relevé d'honoraires en attente de paiement par défaut.
+  mp.trainerStatement.findMany.mockResolvedValue([]);
   // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
   // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
   // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
@@ -3596,5 +3608,189 @@ describe("🔴 attestation_non_parvenue — produite N'EST PAS parvenue", () => 
     expect(a).toBeDefined();
     expect(a!.message).toMatch(/n'a pas été produite/);
     expect(a!.message).not.toMatch(/Ne la régénérez pas/);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// releve_formateur_echu — la première règle qui surveille l'argent qu'on DOIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("releve_formateur_echu", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  /** Un relevé facturé, non payé, dont l'échéance est dépassée de `retard` jours. */
+  function releveEchu(retard: number, extra: Record<string, unknown> = {}) {
+    const dateFacture = new Date(Date.now() - (30 + retard) * 86_400_000);
+    return {
+      id: "st-001",
+      statut: "facture_recue",
+      dateFacture,
+      echeanceAt: null,
+      payeAt: null,
+      numeroFacture: "F-2026-014",
+      periodeYear: 2026,
+      periodeMonth: 7,
+      totalTtcCents: 144_000,
+      trainer: { nom: "Roux", prenom: "Camille" },
+      ...extra,
+    };
+  }
+
+  it("lève l'alerte sur un relevé échu, et la chiffre", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(10)]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "releve_formateur_echu");
+    expect(a).toBeDefined();
+    expect(a!.niveau).toBe("important");
+    expect(a!.cibleType).toBe("TrainerStatement");
+    expect(a!.cibleId).toBe("st-001");
+    // Qui, combien, depuis quand : les trois choses qu'un opérateur doit lire
+    // sans ouvrir la fiche.
+    expect(a!.message).toMatch(/Camille Roux/);
+    expect(a!.message).toMatch(/1\s?440,00/);
+    expect(a!.message).toMatch(/dépassée de 10 jours/);
+  });
+
+  it("🔴 voit le retard SANS la colonne `echeanceAt` — c'est tout l'enjeu", async () => {
+    // `TrainerStatement.echeanceAt` a existé, INDEXÉE, sans qu'une seule ligne
+    // de code ne l'écrive. Une règle qui filtrerait en SQL sur `echeanceAt < now`
+    // serait verte, muette et vide pour toujours : aucune comparaison SQL n'est
+    // vraie pour NULL. Ce test EST le contre-témoin de ce défaut.
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(3, { echeanceAt: null })]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(true);
+
+    // Et la règle n'a pas demandé à SQL de filtrer sur l'échéance : le `where`
+    // ne porte que le statut et l'absence de paiement.
+    const where = mp.trainerStatement.findMany.mock.calls[0]?.[0]?.where as Record<string, unknown>;
+    expect(where).toBeDefined();
+    expect(
+      Object.keys(where),
+      "la règle filtre sur echeanceAt en SQL : elle redeviendrait muette sur tout le stock",
+    ).not.toContain("echeanceAt");
+  });
+
+  it("se tait avant l'échéance", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(-5)]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(false);
+  });
+
+  it("🔴 se tait sur un relevé VALIDÉ mais jamais facturé", async () => {
+    // Sans facture, pas d'échéance. Lui en inventer une lui donnerait une
+    // ancienneté de dette devinée — et l'alerte serait insoluble tant que le
+    // formateur n'a pas facturé. Ce trou-là est celui de l'autofacturation.
+    mp.trainerStatement.findMany.mockResolvedValue([
+      releveEchu(90, { statut: "valide", dateFacture: null, numeroFacture: null }),
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(false);
+  });
+
+  it("se tait sur un relevé payé, même payé en retard", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([
+      releveEchu(40, { statut: "paye", payeAt: new Date() }),
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(false);
+  });
+
+  it("🔑 la règle n'est pas en échec silencieux", async () => {
+    // Le fail-soft PAR RÈGLE avale les exceptions : une règle cassée ne rougit
+    // nulle part ailleurs. Six mocks manquants ont déjà rendu six règles inertes
+    // dans ce fichier, tests verts compris.
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(2)]);
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("releve_formateur_echu");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cliquet — la dette de règles INERTES ne grossit pas, et ne se périme pas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 CE FICHIER A L'AIR DE COUVRIR L'ÉVALUATEUR. IL N'EN COUVRE QU'UNE PARTIE.
+ *
+ * Le prisma mocké est déclaré DEUX FOIS — la fabrique passée à `vi.mock`, et le
+ * cast `mp` écrit à la main — et aucune des deux ne porte tous les modèles que
+ * les règles lisent. Une règle dont le modèle manque LÈVE ; `evaluerAlertes`
+ * attrape en fail-soft PAR RÈGLE, passe à la suivante, et la suite reste verte
+ * pendant que stderr répète « erreur règle … ». Ces règles ne sont donc pas
+ * mesurées : elles sont ABSOUTES. Un témoin qui ne regarde rien rend le même
+ * vert qu'un témoin satisfait.
+ *
+ * ## Pourquoi un CLIQUET et pas « zéro erreur »
+ *
+ * Un témoin « aucune règle en échec » serait rouge dès son écriture : la dette
+ * préexiste, mesurée à SIX règles le 2026-09-09. Poser une gate sur un seuil
+ * déjà dépassé ouvre un rouge permanent que personne ne peut fermer dans sa
+ * propre PR — c'est la doctrine que ce dépôt s'est donnée après le bucket
+ * « Shell partagé » : **seuil aligné d'abord, blocage ensuite**.
+ *
+ * ## Il rougit dans les DEUX sens, et les deux sont utiles
+ *
+ *   · une SEPTIÈME règle devient inerte → rouge. C'est le cas qui compte : une
+ *     règle ajoutée sans son modèle part en production, tombe à chaque balayage,
+ *     et rien ne le dit ;
+ *   · une règle est RÉPARÉE sans que la liste bouge → rouge aussi. Un cliquet
+ *     qui ne rougirait que dans un sens laisserait la liste se périmer, et une
+ *     liste périmée absout exactement ce qu'elle prétend surveiller.
+ *
+ * ⚠️ Ce cliquet ne RÉPARE rien. Compléter le mock ferait s'exécuter six règles
+ * qui ne s'exécutaient pas, sur 178 tests qui ne les attendent pas : c'est un
+ * chantier à part, avec son propre risque de faux rouges. Le cliquet empêche
+ * entre-temps que la dette grossisse — le seul risque qu'une gate sache traiter.
+ */
+const REGLES_INERTES_CONNUES = [
+  "formateur_desactive_encore_affecte",
+  "formateur_mission_expiree",
+  "formateur_mission_refusee",
+  "formateur_mission_sans_reponse",
+  "formateur_mission_sans_reponse_delai",
+  "stagiaires_non_prevenus_changement_formateur",
+] as const;
+
+describe("cliquet des règles inertes", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  it("🔴 l'ensemble des règles en échec est EXACTEMENT la dette connue", async () => {
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(
+      [...reglesEnEchec].sort(),
+      "La liste des règles INERTES a bougé.\n" +
+        "  · une règle EN PLUS : son modèle Prisma manque au mock ET au cast `mp` " +
+        "ci-dessus. Elle lève, le fail-soft l'avale, elle n'est mesurée par rien — " +
+        "et elle tombera de la même façon en production si elle y lit un modèle absent. " +
+        "Ajoutez le modèle aux DEUX endroits ; ne l'ajoutez pas à cette liste.\n" +
+        "  · une règle EN MOINS : vous venez d'en réparer une. Retirez-la de " +
+        "`REGLES_INERTES_CONNUES` — la dette a baissé, le cliquet doit le savoir.",
+    ).toEqual([...REGLES_INERTES_CONNUES]);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : le mécanisme mesure bien quelque chose", async () => {
+    // Si `evaluerAlertesDetaille` cessait de remplir `reglesEnEchec` — champ
+    // renommé, fail-soft retiré — le test ci-dessus deviendrait une comparaison
+    // de deux listes vides, et il verdirait en ne mesurant plus rien.
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec.length).toBeGreaterThan(0);
+  });
+
+  it("🔴 `releve_formateur_echu` n'est PAS dans la dette", async () => {
+    // La règle de cette PR lit `trainerStatement`, présent au mock ET au cast.
+    // Ce test dit explicitement ce que le cliquet garantit pour elle.
+    expect(REGLES_INERTES_CONNUES as readonly string[]).not.toContain("releve_formateur_echu");
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("releve_formateur_echu");
   });
 });

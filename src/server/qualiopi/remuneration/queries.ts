@@ -9,6 +9,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { echeanceEffective, joursDeRetard, STATUTS_RELEVE_DU } from "./echeance";
 import type { FeeLineStatut, Periode, StatementStatut } from "./run";
 import type {
   CompensationModel,
@@ -88,6 +89,10 @@ export interface ReleveDetail extends ReleveListe {
   montantFactureTtcCents: number | null;
   payeAt: Date | null;
   moyenPaiement: string | null;
+  /** Échéance effective (colonne, ou `dateFacture + 30 j`). `null` sans facture. */
+  echeance: Date | null;
+  /** Jours de retard, `null` si le relevé n'est pas en retard. */
+  retardJours: number | null;
   lignes: LigneListe[];
 }
 
@@ -97,7 +102,7 @@ export interface ReleveDetail extends ReleveListe {
  * pèse pas sur la facture mais explique le mois : la cacher rendrait le total
  * incompréhensible (« pourquoi 3 jours animés et 2 facturés ? »).
  */
-export async function getReleveDetail(id: string): Promise<ReleveDetail | null> {
+export async function getReleveDetail(id: string, now = new Date()): Promise<ReleveDetail | null> {
   try {
     const r = await prisma.trainerStatement.findUnique({
       where: { id },
@@ -114,6 +119,7 @@ export async function getReleveDetail(id: string): Promise<ReleveDetail | null> 
         numeroFacture: true,
         dateFacture: true,
         montantFactureTtcCents: true,
+        echeanceAt: true,
         payeAt: true,
         moyenPaiement: true,
         trainer: { select: { nom: true, prenom: true } },
@@ -158,6 +164,8 @@ export async function getReleveDetail(id: string): Promise<ReleveDetail | null> 
       montantFactureTtcCents: r.montantFactureTtcCents,
       payeAt: r.payeAt,
       moyenPaiement: r.moyenPaiement,
+      echeance: echeanceEffective(r),
+      retardJours: joursDeRetard(r, now),
       nbLignes: lignes.length,
       lignes: lignes.map((l) => ({
         id: l.id,
@@ -237,6 +245,80 @@ export async function honorairesSousTraitanceAnnee(annee: number): Promise<Honor
     };
   } catch {
     return { annee, totalHtCents: 0, parFormateur: [] };
+  }
+}
+
+export interface ReleveDu {
+  id: string;
+  trainerNom: string;
+  periodeYear: number;
+  periodeMonth: number;
+  statut: StatementStatut;
+  totalTtcCents: number;
+  numeroFacture: string | null;
+  /** Échéance RÉELLE : colonne posée, ou `dateFacture + 30 j` pour le stock. */
+  echeance: Date | null;
+  /** Jours écoulés depuis l'échéance, `null` si le relevé n'est pas en retard. */
+  retardJours: number | null;
+}
+
+/**
+ * Ce que l'organisme DOIT aux formateurs, toutes périodes confondues.
+ *
+ * 🔴 L'écran de rémunération est PAR PÉRIODE, et c'est ce qui rendait la dette
+ * invisible. Un relevé de juillet impayé n'apparaît plus dès qu'on affiche août :
+ * il faut savoir qu'il existe pour aller le chercher. La question « qu'est-ce
+ * qu'on doit, à qui, échu ou à venir » n'avait donc aucune réponse à l'écran —
+ * et aucune alerte ne la posait non plus (cf. `releve_formateur_echu`).
+ *
+ * ⚠️ Le tri est par ÉCHÉANCE croissante, le plus en retard d'abord, et il se
+ * fait EN MÉMOIRE : trier en SQL sur `echeanceAt` remonterait les lignes du
+ * stock (colonne nulle) au mauvais bout de la liste, exactement là où on ne les
+ * regarde pas. Le volume est celui des relevés non soldés — quelques dizaines.
+ *
+ * Un relevé `valide` sans facture n'a pas d'échéance : il apparaît, sans retard,
+ * en fin de liste. C'est voulu — la dette existe, son exigibilité n'est pas
+ * encore née.
+ */
+export async function listRelevesDus(now = new Date()): Promise<ReleveDu[]> {
+  try {
+    const rows = await prisma.trainerStatement.findMany({
+      where: { statut: { in: [...STATUTS_RELEVE_DU] }, payeAt: null },
+      select: {
+        id: true,
+        statut: true,
+        periodeYear: true,
+        periodeMonth: true,
+        totalTtcCents: true,
+        numeroFacture: true,
+        dateFacture: true,
+        echeanceAt: true,
+        payeAt: true,
+        trainer: { select: { nom: true, prenom: true } },
+      },
+      take: 200,
+    });
+
+    return rows
+      .map((r) => ({
+        id: r.id,
+        trainerNom: `${r.trainer.prenom} ${r.trainer.nom}`.trim(),
+        periodeYear: r.periodeYear,
+        periodeMonth: r.periodeMonth,
+        statut: r.statut,
+        totalTtcCents: r.totalTtcCents,
+        numeroFacture: r.numeroFacture,
+        echeance: echeanceEffective(r),
+        retardJours: joursDeRetard(r, now),
+      }))
+      .sort((a, b) => {
+        // Sans échéance = pas encore exigible : en fin de liste, jamais en tête.
+        if (a.echeance === null) return b.echeance === null ? 0 : 1;
+        if (b.echeance === null) return -1;
+        return a.echeance.getTime() - b.echeance.getTime();
+      });
+  } catch {
+    return [];
   }
 }
 
