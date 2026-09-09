@@ -1392,6 +1392,25 @@ async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
   const nda = await getQualiopiConfig("nda_numero");
   if (typeof nda !== "string" || nda.trim() === "") return [];
 
+  // 🔴 2026-09-07 — LE GARDE-FOU F56 S'ARRÊTAIT UNE QUESTION TROP TÔT.
+  //
+  // Il demandait « y a-t-il un NDA ? » et concluait, si oui, que le bilan de
+  // l'année précédente était dû. Mais un NDA obtenu en 2026 ne crée aucune
+  // obligation pour 2025 : l'organisme n'existait pas. Mesuré sur ce système —
+  // société constituée en juillet 2026, activité ouverte le 1er septembre 2026,
+  // et le tableau de bord réclamait en CRITIQUE un BPF 2025.
+  //
+  // 🔑 C'est le même défaut que celui que F56 corrigeait, d'un cran plus loin :
+  // l'obligation ne naît pas de l'EXISTENCE de la déclaration, mais de son
+  // ANTÉRIORITÉ à l'année du bilan. Et c'est le cas de tout organisme
+  // nouvellement déclaré — donc le cas le plus fréquent au démarrage, celui
+  // qu'un certificateur voit en premier.
+  //
+  // Un organisme déclaré EN COURS d'année N doit bien le BPF de N, même à zéro
+  // d'activité : le test porte sur l'année, pas sur une date.
+  const anneeDeclaration = await getQualiopiConfig("nda_annee_declaration");
+  if (typeof anneeDeclaration === "number" && anneeDeclaration > anneeBpf) return [];
+
   const anneeDeposee = await getQualiopiConfig("bpf_annee_deposee");
   const bpfDepose = typeof anneeDeposee === "number" && anneeDeposee >= anneeBpf;
   if (bpfDepose) return [];

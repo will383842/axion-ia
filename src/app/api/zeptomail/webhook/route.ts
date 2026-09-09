@@ -28,7 +28,7 @@ import { notify } from "@/server/notifications";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-signature";
 import { lireRebond, FENETRE_RATTACHEMENT_HEURES } from "@/server/email/bounce-service";
-import { noterAppelWebhook } from "@/server/email/webhook-battement";
+import { noterAppelRecu, noterAppelWebhook } from "@/server/email/webhook-battement";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -73,6 +73,24 @@ export async function POST(req: NextRequest): Promise<Response> {
   // webhook qui échoue plusieurs fois de suite : répondre 500 tant que la clé
   // n'est pas posée détruirait l'abonnement que Will vient de créer.
   if (!cle) return Response.json({ ok: true, skipped: "not_configured" });
+
+  // 🔑 Battement des appels RECUS, pose AVANT le controle de taille, avant la
+  // limite de debit et surtout avant la signature.
+  //
+  // Sans lui, un appel refuse ne laissait AUCUNE trace lisible : le battement
+  // n'est appele qu'apres une signature valide, et cette route rend `200` sur
+  // signature invalide (choix delibere, cf. plus bas). ZeptoMail lisait donc un
+  // succes, ne reessayait pas, et le battement affichait `JAMAIS` — exactement
+  // comme si personne n'avait appele. Deux pannes opposees, un seul zero :
+  // « ils ne nous appellent pas » et « ils nous appellent et on les refuse »
+  // demandent des gestes contraires (creer l'abonnement / resynchroniser la cle).
+  //
+  // Mesure du 2026-09-07 qui a rendu ce battement necessaire : la cle EST posee
+  // sur les deux conteneurs, la route EST armee, le battement authentifie disait
+  // `JAMAIS` — et rien, nulle part, ne permettait de trancher laquelle des deux
+  // pannes on regardait. Les journaux applicatifs n'aident pas : en production
+  // Next ne journalise aucune requete.
+  void noterAppelRecu();
 
   const longueurDeclaree = Number(req.headers.get("content-length") ?? "0");
   if (Number.isFinite(longueurDeclaree) && longueurDeclaree > MAX_BODY_BYTES) {

@@ -2313,7 +2313,13 @@ async function handleEmailSante(): Promise<void> {
     // ouvrir leur console : `JAMAIS` après un appel de test depuis leur
     // interface signifie que l'abonnement n'atteint pas la route.
     // Cf. `server/email/webhook-battement.ts`.
-    const battement = `dernier appel webhook : ${sante.dernierAppelWebhook ?? "JAMAIS"}`;
+    // Les DEUX battements, toujours ensemble : leur ECART est le diagnostic.
+    // « recu JAMAIS » = rien n atteint la route. « recu <date> + authentifie
+    // JAMAIS » = ZeptoMail nous atteint et la signature est refusee. N afficher
+    // que « authentifie » rendait ces deux pannes indiscernables.
+    const battement =
+      `webhook recu : ${sante.dernierAppelRecu ?? "JAMAIS"} · authentifie : ` +
+      `${sante.dernierAppelWebhook ?? "JAMAIS"}`;
 
     if (sante.alertesLevees.length === 0) {
       console.log(
