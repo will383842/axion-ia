@@ -429,9 +429,15 @@ describe("G5 — le canal de remise est une DÉCISION, plus un écart subi (M19)
     }
   });
 
-  it("les 12 types `jamais` restent sans canal bénéficiaire (pièces organisme ↔ financeur)", () => {
+  it("les types `jamais` restent sans canal bénéficiaire (pièces organisme ↔ financeur)", () => {
     const jamais = TYPES_AVEC_JALON.filter((t) => jalonPour(t) === "jamais");
-    expect(jamais.length).toBe(12);
+    // 🔑 Le NOMBRE n'est pas ce que ce test protège, et l'y figer le rendait
+    // faux à chaque type ajouté — 12 le 2026-08-26, 13 depuis
+    // `autofacture_honoraires`. Ce qui compte est l'INVARIANT de la boucle
+    // ci-dessous : aucun type à jalon `jamais` ne porte de canal bénéficiaire.
+    // Le compteur reste, mais comme CONTRE-TÉMOIN : sans lui, un
+    // `TYPES_AVEC_JALON` devenu vide ferait passer une boucle qui ne tourne pas.
+    expect(jamais.length).toBeGreaterThanOrEqual(12);
     for (const type of jamais) {
       expect(CANAL_DE_REMISE[type as keyof typeof CANAL_DE_REMISE]).toBe("aucun");
     }
