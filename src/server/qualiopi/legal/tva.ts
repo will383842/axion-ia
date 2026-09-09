@@ -61,6 +61,17 @@ export function tauxTvaLigne(
   ligne: { tauxTvaPercent?: number },
   tauxStandard: number = TAUX_TVA_STANDARD,
 ): number {
+  // ⛔ AUCUN VERROU ICI, et c'est une correction de conception (ADR 0050 §3).
+  //
+  // Cette fonction sert DEUX moments qu'elle ne peut pas distinguer : le calcul
+  // d'une pièce qu'on crée, et le RE-RENDU d'une pièce déjà émise. Y poser le
+  // verrou réimprimait à 20 % une facture partie exonérée — c'est-à-dire
+  // falsifier un document opposable au lieu d'empêcher un document futur.
+  //
+  // Le verrou vit donc au point de CRÉATION (`regimeTvaDepuisConfig` pour le
+  // régime, `normaliserLignesPourActivite` pour le taux de ligne). Ici, on
+  // reproduit fidèlement ce qu'on nous donne — c'est tout ce qu'un moteur de
+  // rendu doit faire.
   if (typeof ligne.tauxTvaPercent === "number" && Number.isFinite(ligne.tauxTvaPercent)) {
     return Math.max(0, ligne.tauxTvaPercent);
   }
@@ -71,6 +82,96 @@ export function tauxTvaLigne(
     case "franchise_293b":
       return 0;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 LE VERROU — ordre permanent de Will, enfin appliqué par le code
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Le régime RÉELLEMENT appliqué. Toujours `assujetti`.
+ *
+ * ## L'ordre existait, le code ne le faisait pas
+ *
+ * Ordre permanent de Will : **« TVA toujours facturée, jamais d'exonération »**.
+ * Or `exoneration_261` et `franchise_293b` étaient des chemins de première
+ * classe : le régime est relu depuis la config à chaque émission (huit sites),
+ * et il suffisait d'un `regime_tva` mal saisi pour émettre des factures à 0 %.
+ * Le défaut était bien `assujetti` — donc rien de faux ne partait — mais **rien
+ * ne l'empêchait**, et une facture émise fige son régime : la corriger après
+ * coup suppose un avoir, pas une modification.
+ *
+ * ## Pourquoi le verrou est ICI, et pas aux huit lectures de config
+ *
+ * Verrouiller à la lecture demande de ne pas en oublier une, aujourd'hui **et à
+ * chaque site ajouté demain**. Verrouiller à l'USAGE couvre tous les chemins
+ * par construction : quelle que soit la façon dont un appelant obtient son
+ * régime, il finit par passer par `tauxTvaLigne`, `computeTotauxFacture` ou
+ * `mentionTva` — les trois seules portes qui transforment un régime en argent
+ * ou en mention légale.
+ *
+ * ## ⚠️ Comment LEVER ce verrou, le jour venu
+ *
+ * L'exonération de l'art. 261-4-4° n'est pas une case à cocher : elle exige
+ * l'attestation DREETS (Cerfa 3511), le NDA et un BPF à jour. Le jour où ces
+ * pièces existent, on lève le verrou **par un ADR et cette fonction**, pas en
+ * changeant un réglage. Les régimes restent définis et testés : ce qui est
+ * verrouillé, c'est leur ATTEINTE, pas leur existence.
+ */
+export function regimeTvaApplique(regime: RegimeTva): RegimeTva {
+  if (regime === "assujetti") return regime;
+  // On ne lève pas : une facture en cours d'émission ne doit pas échouer sur un
+  // réglage. On corrige, et on le DIT — un verrou muet laisserait croire que la
+  // configuration a été prise en compte.
+  console.error(
+    `[tva] régime « ${regime} » IGNORÉ : ordre permanent « TVA toujours facturée, ` +
+      "jamais d'exonération ». Le taux standard s'applique. Pour lever ce verrou : " +
+      "attestation DREETS (Cerfa 3511) + ADR, puis `regimeTvaApplique`.",
+  );
+  return "assujetti";
+}
+
+/**
+ * Le taux d'une ligne ne peut pas descendre sous le standard tant que le régime
+ * appliqué est `assujetti`.
+ *
+ * 🔑 C'est la moitié DISCRÈTE du verrou, et la plus dangereuse. Le régime est
+ * visible dans la config ; un `tauxTvaPercent: 0` posé sur une ligne ne l'est
+ * pas — il court-circuitait tout, régime compris, sans qu'aucun écran ne le
+ * dise. Une exonération de fait, ligne par ligne.
+ *
+ * ⚠️ Un taux SUPÉRIEUR reste accepté : le verrou existe pour ne jamais
+ * sous-facturer la TVA, pas pour figer un taux. Une ligne à 5,5 % ou 10 %
+ * (taux réduits) reste possible s'ils s'appliquent un jour, une ligne à 0 %
+ * non.
+ */
+export function clampTauxLigneCreation(taux: number, tauxStandard: number): number {
+  if (taux >= tauxStandard) return taux;
+  console.error(
+    `[tva] taux de ligne ${taux} % RELEVÉ à ${tauxStandard} % : sous le régime ` +
+      "`assujetti`, un taux inférieur au standard est une exonération de fait — " +
+      "ordre permanent « TVA toujours facturée ».",
+  );
+  return tauxStandard;
+}
+
+/**
+ * Le régime à employer, lu depuis une valeur de configuration.
+ *
+ * 🔑 LA QUATRIÈME PORTE, et c'est un test existant qui l'a trouvée. Le verrou
+ * posé sur les trois portes d'USAGE corrigeait les montants et la mention, mais
+ * pas ce que la facture ENREGISTRE : `facturation-service` persistait le régime
+ * brut de la config. Une facture serait née avec `regimeTva: "exoneration_261"`
+ * ET 20 % de TVA — un enregistrement qui se contredit lui-même, exactement ce
+ * qu'on refuse pour la mention imprimée.
+ *
+ * ⚠️ Les deux verrous sont COMPLÉMENTAIRES, aucun ne remplace l'autre :
+ *  - celui-ci protège ce qui est LU et ENREGISTRÉ, aux sites qui l'emploient ;
+ *  - celui des trois portes protège les chemins qui ne passeraient pas par ici,
+ *    y compris ceux écrits demain par quelqu'un qui n'aura pas lu l'ADR 0050.
+ */
+export function regimeTvaDepuisConfig(valeur: unknown): RegimeTva {
+  return isRegimeTva(valeur) ? regimeTvaApplique(valeur) : REGIME_TVA_DEFAUT;
 }
 
 export interface LigneFacturable {
@@ -139,6 +240,10 @@ export function computeTotauxFacture(
 export function mentionTvaKey(
   regime: RegimeTva,
 ): "factureExonerationTva" | "factureFranchiseTva" | null {
+  // ⛔ AUCUN VERROU ICI non plus : une facture émise sous exonération DOIT
+  // continuer à porter sa mention quand on la re-rend. C'est le régime figé de
+  // la pièce, et c'est ce qui la rend opposable. Le verrou empêche d'en créer
+  // de nouvelles ; il ne réécrit pas celles qui existent.
   switch (regime) {
     case "exoneration_261":
       return "factureExonerationTva";

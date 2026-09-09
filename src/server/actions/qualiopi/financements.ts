@@ -44,6 +44,7 @@ import {
 import {
   computeTotauxFacture,
   isRegimeTva,
+  regimeTvaDepuisConfig,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
@@ -704,7 +705,7 @@ export async function genererFactureFormationAction(input: {
   // Qualiopi n'a aucun effet sur la TVA : le régime est lu depuis la config et
   // figé sur la facture (snapshot). Défaut « assujetti » (20 %).
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
@@ -997,6 +998,10 @@ export async function genererFacturePdfAction(input: {
   // Reconstruction de FactureData pour le renderer
   const identite = await getOrganismeIdentite();
   // Régime de TVA figé sur la facture (snapshot) + taux standard courant.
+  // ⛔ PAS `regimeTvaDepuisConfig` ICI (ADR 0050 §7) : on RE-REND une facture
+  // déjà émise. Lui appliquer le verrou réimprimerait à 20 % une pièce qui est
+  // partie exonérée — c'est-à-dire falsifier un document opposable, au lieu
+  // d'empêcher un document futur.
   const regimeTva: RegimeTva = isRegimeTva(facture.regimeTva)
     ? facture.regimeTva
     : REGIME_TVA_DEFAUT;

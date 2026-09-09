@@ -19,8 +19,7 @@ import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   computeTotauxFacture,
-  isRegimeTva,
-  REGIME_TVA_DEFAUT,
+  regimeTvaDepuisConfig,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
@@ -63,7 +62,7 @@ export async function genererBrouillonsPlansEchus(
   });
 
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
 
   let generes = 0;
@@ -185,7 +184,7 @@ export async function emettreFactureBrouillon(
   // l'émission, que la règle « exonération 261 = formation/1-to-1 seulement »
   // s'applique avec le régime en vigueur au moment de l'émission.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
   const lignesBrutes = (facture.lignes ?? []) as unknown as LigneFacture[];
   if (facture.activite === null && regimeTva === "exoneration_261") {

@@ -33,9 +33,8 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { regimeEstimationMutualisee } from "@/server/qualiopi/financements/estimation-certification";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
-  isRegimeTva,
+  regimeTvaDepuisConfig,
   mentionTva,
-  REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
@@ -205,8 +204,7 @@ export async function createDevisAction(
   // rien à afficher, mais pas pour une colonne d'archive : une chaîne vide
   // rendrait « assujetti » et « non renseigné » indiscernables plus tard.
   const mentionTvaCreation =
-    mentionTva(isRegimeTva(regimeTvaCreation) ? regimeTvaCreation : REGIME_TVA_DEFAUT) ??
-    LEGAL_MENTIONS.factureTvaAssujetti;
+    mentionTva(regimeTvaDepuisConfig(regimeTvaCreation)) ?? LEGAL_MENTIONS.factureTvaAssujetti;
 
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
@@ -386,7 +384,7 @@ export async function sendDevisAction(
 
     // Régime + taux (snapshot config) et normalisation TVA par activité.
     const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-    const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+    const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
     const tauxStandard =
       (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
 

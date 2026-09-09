@@ -39,8 +39,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import {
   computeTotauxFacture,
-  isRegimeTva,
-  REGIME_TVA_DEFAUT,
+  regimeTvaDepuisConfig,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
@@ -273,7 +272,7 @@ export async function genererFactureFormation(
 
   // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
-  const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
+  const regimeTva: RegimeTva = regimeTvaDepuisConfig(regimeTvaConfig);
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
