@@ -62,7 +62,12 @@ charger() {
 for v in R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_ENDPOINT R2_BUCKET_NAME; do charger "$v"; done
 
 WORK=$(mktemp -d); chmod 700 "${WORK}"
-trap 'rm -rf "${WORK}"' EXIT INT TERM
+# ⚠️ Le piège est gardé par le PID : sans cela il se déclenche AUSSI dans les
+# sous-processus des substitutions de commande — mesuré sous Git Bash le
+# 2026-09-03, le dossier de travail disparaissait au milieu de l'étape 5 et le
+# contrôle suivant répondait « absente » faute de pouvoir chercher.
+PID_PRINCIPAL=$BASHPID
+trap '[ "$BASHPID" = "$PID_PRINCIPAL" ] && rm -rf "${WORK}"' EXIT INT TERM
 
 # ─── 1. État du coffre ───────────────────────────────────────────────────────
 echo "── 1/5 · état du coffre ────────────────────────────────────────────────"
@@ -185,6 +190,12 @@ print("   %d entrées lues, %d valeurs à essayer" % (len(items), len(lignes)))
 PY
 [ -s "${WORK}/candidats.tsv" ] || { echo "❌ Aucune valeur exploitable dans le coffre."; exit 1; }
 
+# Tenus en mémoire : plus aucune étape ne dépend de la survie d'un fichier
+# temporaire, et le contenu du coffre ne traîne pas sur le disque plus
+# longtemps que nécessaire.
+CANDIDATS=$(cat "${WORK}/candidats.tsv")
+rm -f "${WORK}/candidats.tsv" "${WORK}/items.json"
+
 # ─── 4. Laquelle ouvre l'archive ? ───────────────────────────────────────────
 echo ""
 echo "── 4/5 · laquelle ouvre l'archive ? ────────────────────────────────────"
@@ -207,7 +218,7 @@ while IFS=$'\t' read -r ENTREE CHAMP VALEUR; do
       break 2
     fi
   done
-done < "${WORK}/candidats.tsv"
+done <<< "${CANDIDATS}"
 
 echo "   ${ESSAIS} valeurs essayées"
 echo ""
@@ -294,7 +305,7 @@ else
             OU="${E2} → ${C2}"; break 2
           fi
         done
-      done < "${WORK}/candidats.tsv"
+      done <<< "${CANDIDATS}"
       if [ -n "${OU}" ]; then
         echo "   🟢 ${NOM} (${LONGUEUR} car.) : au coffre — ${OU}"
       else
