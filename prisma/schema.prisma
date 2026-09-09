@@ -696,6 +696,19 @@ model EmailLog {
   /// fournisseur, la réécrire lui ferait dire ce qu'on aurait supposé.
   bounceReason      String?        @map("bounce_reason") @db.Text
   bouncedAt         DateTime?      @map("bounced_at")
+  /// 🔴 Échéance d'envoi — posée à l'enfilage, `createdAt + delayMs`.
+  ///
+  /// Sans elle, `verifierSanteEmails()` lisait « en attente depuis plus de
+  /// 15 minutes » comme « la file n'est pas consommée », et comptait donc
+  /// comme BLOQUÉ tout envoi volontairement différé. `health.ts` avait écrit
+  /// l'avertissement lui-même — « les envois différés volontairement au-delà
+  /// de cette fenêtre déclencheraient un faux positif ; si cela change, il
+  /// faudra porter la date d'échéance sur la ligne » — puis les relances
+  /// apporteur à J+2 et J+7 sont arrivées et personne n'a porté la date.
+  ///
+  /// Nullable pour les lignes antérieures à ce champ : la surveillance
+  /// retombe alors sur `createdAt`, c'est-à-dire sur son comportement d'avant.
+  dueAt             DateTime?      @map("due_at")
   createdAt         DateTime       @default(now()) @map("created_at")
   updatedAt         DateTime       @updatedAt @map("updated_at")
 
