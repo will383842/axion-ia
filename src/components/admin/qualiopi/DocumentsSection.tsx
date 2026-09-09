@@ -212,6 +212,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   attestation_partielle: "Attestation partielle de formation",
   certificat_realisation: "Certificat de réalisation (R.6313-3)",
   facture: "Facture",
+  autofacture_honoraires: "Facture d'honoraires (autofacturation)",
   devis: "Devis",
   avoir: "Avoir",
   kit_opco: "Kit OPCO",

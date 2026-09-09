@@ -113,6 +113,14 @@ export const CANAL_DE_REMISE: Record<DocumentType, CanalRemise> = {
   // Jalon `jamais` : pièces organisme ↔ financeur / intervenant — pas de canal
   // bénéficiaire, et c'est la doctrine (`piece-remise.ts`).
   facture: "aucun",
+  // ⚠️ « aucun » comme la facture, et pour une raison DIFFÉRENTE qu'il faut
+  // écrire. Une facture client n'a pas de canal ici parce que son envoi est un
+  // geste commercial. Une autofacture n'en a pas parce que sa transmission est
+  // une OBLIGATION contractuelle attachée à l'émission (clause 4 bis) : elle est
+  // faite par l'action qui émet la pièce, pas par un jalon du parcours de
+  // formation. La ranger dans un canal de remise stagiaire n'aurait aucun sens —
+  // le destinataire n'est pas un stagiaire.
+  autofacture_honoraires: "aucun",
   avoir: "aucun",
   devis: "aucun",
   kit_opco: "aucun",

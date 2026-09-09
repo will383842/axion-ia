@@ -5184,6 +5184,32 @@ model TrainerStatement {
   factureUrl             String?   @map("facture_url") @db.Text
   echeanceAt             DateTime? @map("echeance_at")
 
+  // ── Autofacturation (émission PAR l'organisme, au nom du sous-traitant) ──
+  //
+  // 🔑 `numeroFacture` / `dateFacture` ci-dessus restent la SEULE identité de la
+  // pièce, qu'elle vienne du formateur ou de nous : deux jeux de colonnes pour
+  // la même facture finiraient par se contredire. Ces trois-ci ne disent pas
+  // « quelle facture », elles disent « qui l'a émise, et où en est le droit de
+  // contestation » — ce que le rapprochement classique n'a pas à porter.
+  //
+  /// Émission par nous, sous mandat. `null` = facture reçue du formateur.
+  /// C'est ce champ, et lui seul, qui distingue une pièce d'autofacturation.
+  autofactureAt       DateTime? @map("autofacture_at")
+  /// Transmission au sous-traitant. La clause l'exige « dès son émission » :
+  /// une autofacture émise et jamais transmise prive le formateur du droit de
+  /// contester, donc vide la clause de sa contrepartie.
+  autofactureTransmiseAt DateTime? @map("autofacture_transmise_at")
+  /// Fin de la fenêtre de contestation (8 jours, clause 4 bis). Passé ce terme
+  /// la facture est réputée acceptée. Stockée et non recalculée : le délai
+  /// court depuis la TRANSMISSION, et un changement de règle ne doit pas
+  /// rouvrir rétroactivement des fenêtres déjà closes.
+  contestationAvantAt DateTime? @map("contestation_avant_at")
+  /// Contestation reçue. Bloque le paiement : payer une pièce contestée
+  /// reviendrait à acter un désaccord, exactement comme le fait déjà la garde
+  /// « facture conforme ».
+  contesteeAt         DateTime? @map("contestee_at")
+  contestationMotif   String?   @map("contestation_motif") @db.Text
+
   // ── Paiement ──
   payeAt            DateTime? @map("paye_at")
   moyenPaiement     String?   @map("moyen_paiement") @db.VarChar(30)
@@ -5606,6 +5632,37 @@ model Trainer {
   /// 27. Cf. `PROCEDURE-SOUS-TRAITANCE.md` § 4.2.
   rcProAttestationUrl          String?       @map("rc_pro_attestation_url") @db.Text
   rcProEcheanceAt              DateTime?     @map("rc_pro_echeance_at")
+
+  // ── Autofacturation (mandat de facturation, clause 4 bis du contrat) ──────
+  //
+  // 🔴 Ces quatre colonnes existent pour une raison unique : SANS ELLES, LE CODE
+  // NE PEUT PAS REFUSER D'ÉMETTRE. Une facture d'autofacturation à laquelle il
+  // manque un seul des quatre éléments réglementaires — mandat écrit et
+  // préalable, mention « Autofacturation », émission au nom et pour le compte du
+  // sous-traitant, droit de contestation — n'est pas régulière, et la TVA
+  // qu'elle porte n'est pas déductible. Le mandat et l'identité fiscale sont les
+  // deux qui ne peuvent pas se déduire du code.
+  //
+  /// SIRET du sous-traitant — mention obligatoire de SA facture (art. 242
+  /// nonies A CGI). Nous l'émettons en son nom : l'omettre viderait la pièce.
+  siret                        String?       @map("siret") @db.VarChar(14)
+  /// N° de TVA intracommunautaire du sous-traitant. Obligatoire s'il est
+  /// ASSUJETTI, sans objet en franchise 293 B ou en exonération formation —
+  /// d'où le nullable : `verifierEligibiliteAutofacture` croise la colonne avec
+  /// `regimeTvaHonoraires` plutôt que d'exiger la valeur pour tout le monde.
+  numeroTvaIntracom            String?       @map("numero_tva_intracom") @db.VarChar(20)
+  /// Date de SIGNATURE du mandat de facturation. `null` = pas de mandat : le
+  /// sous-traitant émet lui-même ses factures (repli explicite de la clause).
+  ///
+  /// ⚠️ Le mandat doit être PRÉALABLE. Une autofacture datée d'avant cette date
+  /// serait irrégulière même si le mandat existe aujourd'hui — d'où une DATE et
+  /// non un booléen.
+  mandatAutofacturationSigneAt DateTime?     @map("mandat_autofacturation_signe_at")
+  /// Date de RÉVOCATION du mandat. Révocable à tout moment par écrit, sans effet
+  /// rétroactif sur les factures déjà émises : on conserve donc les deux dates
+  /// plutôt que d'effacer la signature.
+  mandatAutofacturationRevoqueAt DateTime?   @map("mandat_autofacturation_revoque_at")
+
   actif                        Boolean       @default(true)
   createdAt                    DateTime      @default(now()) @map("created_at")
   updatedAt                    DateTime      @updatedAt @map("updated_at")
@@ -6413,6 +6470,18 @@ enum DocumentType {
   /// était rédigée hors application (fichier Markdown relu à la main), donc
   /// ni numérotée, ni horodatée, ni versée au registre des documents.
   procedure_sous_traitance
+  /// Facture d'honoraires établie PAR l'organisme, au nom et pour le compte du
+  /// sous-traitant, sous mandat de facturation (autofacturation).
+  ///
+  /// 🔑 C'est la seule pièce du registre dont l'organisme n'est PAS le vendeur.
+  /// Le vendeur est le formateur, l'acheteur est l'organisme — l'inverse de
+  /// `facture`. Un gabarit partagé aurait imprimé le SIRET et le NDA de
+  /// l'organisme là où la loi attend ceux du sous-traitant.
+  ///
+  /// ⚠️ Valeur ajoutée à l'énumération AVANT tout code qui l'émet (contrat
+  /// app/worker : le worker tourne du code plus récent que l'app pendant ~50 min
+  /// après chaque fusion, et c'est l'entrypoint de l'APP qui joue la migration).
+  autofacture_honoraires
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,

@@ -65,6 +65,18 @@ const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   // s'applique — mais sans bloquer non plus : `generateDocument` les déclasse
   // en SPÉCIMEN au lieu de refuser.
   facture: ["raisonSociale", "siret", "adresseSiege"],
+  // Autofacturation : mêmes champs, mais pour un rôle INVERSE. Sur cette pièce
+  // l'organisme n'est pas le vendeur, il est l'ACHETEUR — et l'art. L.441-9
+  // C. com. impose « le nom des parties ainsi que leur adresse » des DEUX côtés.
+  // Le SIRET de l'acheteur n'est pas exigé par L.441-9 ; il l'est ici parce que
+  // c'est nous qui écrivons la pièce, et qu'une facture d'achat sans le SIRET du
+  // preneur est refusée par tout circuit comptable qui la reprend.
+  //
+  // ⚠️ L'identité du VENDEUR (le sous-traitant) n'est pas gardée ici : elle ne
+  // vit pas dans `OrganismeIdentite`. Elle l'est par
+  // `verifierEligibiliteAutofacture`, qui REFUSE l'émission plutôt que de
+  // déclasser en spécimen — un spécimen serait un faux document d'achat.
+  autofacture_honoraires: ["raisonSociale", "siret", "adresseSiege"],
   // Convention / contrat : identité de l'OF prestataire.
   //
   // 🔴 `qualiopi` a été RETIRÉ de ces trois listes (audit certification
