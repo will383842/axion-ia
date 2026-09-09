@@ -9,7 +9,7 @@
 // la chrome admin (sidebar, header) via le layout parent.
 
 import { useEffect } from "react";
-import * as Sentry from "@sentry/nextjs";
+import { capturerErreurDeFrontiere } from "@/lib/observability/sentry-client-lazy";
 import { AdminErrorState } from "@/components/admin/ui";
 
 export default function AdminErrorBoundary({
@@ -27,11 +27,13 @@ export default function AdminErrorBoundary({
     console.error("[ADMIN ERROR BOUNDARY] digest:", error.digest);
     console.error("[ADMIN ERROR BOUNDARY] name:", error.name);
     console.error("[ADMIN ERROR BOUNDARY] cause:", error.cause);
-    // Sentry capture côté client — préserve l'instrumentation existante.
-    Sentry.captureException(error, {
-      tags: { route: "admin", boundary: "adminPrefix-root" },
-      extra: { digest: error.digest },
-    });
+    // 🔴 2026-09-09 — CETTE CAPTURE EXISTAIT DEPUIS MAI ET NE RAPPORTAIT RIEN.
+    // `Sentry.captureException` sans client attaché ne lève pas : elle
+    // abandonne l'événement en silence. Or le SDK ne s'initialise qu'à
+    // l'inactivité du fil principal (repli 3 s, `instrumentation-client.ts`),
+    // et une erreur de console admin arrive avant. L'instrumentation paraissait
+    // donc en place — c'est le pire état pour un instrument.
+    void capturerErreurDeFrontiere(error, "admin-error");
   }, [error]);
 
   // Audit deploy-unstuck 2026-05-18 — affichage détail en prod aussi
