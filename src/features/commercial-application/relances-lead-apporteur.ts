@@ -23,6 +23,7 @@
 
 import { emailsQueue, enqueueEmail } from "@/server/queue/queues";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { marquerAnnule } from "@/server/email/email-log";
 
 export const RELANCES_LEAD_APPORTEUR = [
   { etape: "j2", delaiMs: 2 * 24 * 60 * 60 * 1000 },
@@ -87,12 +88,25 @@ export async function annulerRelancesLeadApporteur(email: string): Promise<numbe
   if (!emailKey || !emailsQueue) return 0;
   let retires = 0;
   for (const r of RELANCES_LEAD_APPORTEUR) {
+    const jobId = jobIdRelance(r.etape, emailKey);
     try {
-      const n = await emailsQueue.remove(jobIdRelance(r.etape, emailKey));
+      const n = await emailsQueue.remove(jobId);
       if (n === 1) retires += 1;
     } catch {
       // Un job déjà parti, ou déjà retiré : rien à faire.
     }
+    // 🔴 2026-09-09 — RETIRER LE JOB NE SUFFISAIT PAS.
+    //
+    // La ligne « en attente » posée à l'enfilage n'était refermée par personne :
+    // le worker la clôt à l'exécution, et un job annulé n'est jamais exécuté.
+    // Elle restait donc `pending` POUR TOUJOURS, et son échéance passée elle se
+    // présentait comme un envoi bloqué. Deux lignes dans cet état en production.
+    //
+    // Appelé HORS du `try` du retrait, et pour les deux issues : `remove()` rend
+    // aussi 0 quand le job a déjà été retiré par un passage précédent, et la
+    // ligne, elle, peut être restée ouverte. `marquerAnnule` ne touche que les
+    // lignes encore `pending` — un envoi réellement parti n'est jamais réécrit.
+    await marquerAnnule(jobId, "Relance annulée : le dossier complet est arrivé avant l'échéance.");
   }
   return retires;
 }
