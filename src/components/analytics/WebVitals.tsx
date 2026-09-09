@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useReportWebVitals } from "next/web-vitals";
 import { onINP } from "web-vitals/attribution";
 import { usePathname } from "next/navigation";
-import { urlPorteUnSecret } from "@/lib/analytics/routes-privees";
+import { urlEstConsoleAdmin, urlPorteUnSecret } from "@/lib/analytics/routes-privees";
 import { useLocale } from "next-intl";
 
 const VITALS_ENDPOINT = "/api/vitals";
@@ -268,10 +268,14 @@ function observeFrameDegradations(
 // (private app, déjà loguée Sentry), génère du bruit /api/vitals 429
 // (re-renders fréquents tables/forms → LoAF observer spam) et pollue la
 // console DevTools utilisateur admin (vu incident Will 2026-05-17).
-function isAdminRoute(pathname: string | null): boolean {
-  if (!pathname) return false;
-  return /^\/(fr|en)?\/?[^/]*admin/i.test(pathname);
-}
+//
+// 2026-09-09 — le motif vit désormais dans `routes-privees.ts`
+// (`urlEstConsoleAdmin`). Il était ici en copie privée, et `SpeculationRules`
+// en avait écrit une SECONDE, différente, qui ne pouvait jamais être vraie :
+// la console recevait donc des règles de préchargement pendant que ce
+// fichier-ci la sautait correctement. Deux gardes rédigées séparément pour le
+// même périmètre divergent ; il n'y en a plus qu'une.
+const isAdminRoute = urlEstConsoleAdmin;
 
 export function WebVitals() {
   const pathname = usePathname();
