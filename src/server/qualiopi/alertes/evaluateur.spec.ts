@@ -899,6 +899,60 @@ describe("evaluerAlertes — BPF", () => {
 
     expect(alertes.filter((x) => x.code.startsWith("bpf_"))).toHaveLength(0);
   });
+
+  // 🔴 2026-09-07 — LE GARDE-FOU F56 S'ARRÊTAIT UNE QUESTION TROP TÔT.
+  //
+  // Il demandait « y a-t-il un NDA ? ». Il manquait « DEPUIS QUAND ? ». Un NDA
+  // obtenu en 2026 ne crée aucune obligation pour 2025 : l'organisme n'existait
+  // pas. Constaté en production ce jour-là — société constituée en juillet 2026,
+  // activité ouverte le 1er septembre 2026, et le tableau de bord affichait en
+  // CRITIQUE « Le BPF 2025 aurait dû être déposé avant le 31 mai ».
+  //
+  // C'est le cas de TOUT organisme nouvellement déclaré, donc le plus fréquent
+  // au démarrage — et le premier qu'un certificateur voit.
+  it("ne crée AUCUNE alerte BPF pour une année ANTÉRIEURE à la déclaration", async () => {
+    const anneeCourante = new Date().getFullYear();
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "bpf_annee_deposee") return Promise.resolve(0);
+      if (key === "nda_numero") return Promise.resolve("84691234567");
+      // Déclaré CETTE année : le bilan de l'année précédente n'est pas dû.
+      if (key === "nda_annee_declaration") return Promise.resolve(anneeCourante);
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+
+    expect(alertes.filter((x) => x.code.startsWith("bpf_"))).toHaveLength(0);
+  });
+
+  // 🔑 TÉMOIN POSITIF, indispensable : sans lui, une règle qui ne lèverait PLUS
+  // JAMAIS d'alerte BPF passerait le test ci-dessus au vert. « Aucune alerte »
+  // est le rendu attendu du cas correct ET celui d'une règle morte.
+  it("TÉMOIN POSITIF : un organisme déclaré AVANT l'année du bilan le doit bien", async () => {
+    const anneeBpf = new Date().getFullYear() - 1;
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "bpf_annee_deposee") return Promise.resolve(0);
+      if (key === "nda_numero") return Promise.resolve("84691234567");
+      // Déclaré l'année du bilan : l'obligation existe (même à zéro d'activité).
+      if (key === "nda_annee_declaration") return Promise.resolve(anneeBpf);
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    const bpf = alertes.filter((x) => x.code.startsWith("bpf_"));
+
+    // Les seuils BPF sont des dates légales : avant le 1er avril, rien n'est dû
+    // encore. On n'exige donc l'alerte que dans la fenêtre où elle existe.
+    const now = new Date();
+    if (now >= new Date(`${now.getFullYear()}-04-01`)) {
+      expect(
+        bpf.length,
+        "la règle BPF ne lève plus rien : le test d'antériorité l'a peut-être rendue muette",
+      ).toBeGreaterThanOrEqual(1);
+    }
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

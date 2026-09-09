@@ -174,7 +174,7 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
             placeholder="Rechercher slug ville…"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="admin-input text-[length:var(--text-admin-sm)]"
+            className="admin-input admin-input-sm"
             aria-label="Recherche slug ville"
           />
           <select

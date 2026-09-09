@@ -238,10 +238,10 @@ export function SubmissionFilters({ initial, hideCategory = false }: FiltersProp
             quand on applique un filtre). */}
       </div>
       <div className="admin-filters-actions">
-        <button type="submit" className="admin-button-secondary">
+        <button type="submit" className="admin-button-ghost">
           Appliquer
         </button>
-        <button type="button" onClick={handleReset} className="admin-button-ghost">
+        <button type="button" onClick={handleReset} className="admin-button-secondary">
           Réinitialiser
         </button>
       </div>

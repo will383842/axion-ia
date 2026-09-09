@@ -1392,6 +1392,25 @@ async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
   const nda = await getQualiopiConfig("nda_numero");
   if (typeof nda !== "string" || nda.trim() === "") return [];
 
+  // 🔴 2026-09-07 — LE GARDE-FOU F56 S'ARRÊTAIT UNE QUESTION TROP TÔT.
+  //
+  // Il demandait « y a-t-il un NDA ? » et concluait, si oui, que le bilan de
+  // l'année précédente était dû. Mais un NDA obtenu en 2026 ne crée aucune
+  // obligation pour 2025 : l'organisme n'existait pas. Mesuré sur ce système —
+  // société constituée en juillet 2026, activité ouverte le 1er septembre 2026,
+  // et le tableau de bord réclamait en CRITIQUE un BPF 2025.
+  //
+  // 🔑 C'est le même défaut que celui que F56 corrigeait, d'un cran plus loin :
+  // l'obligation ne naît pas de l'EXISTENCE de la déclaration, mais de son
+  // ANTÉRIORITÉ à l'année du bilan. Et c'est le cas de tout organisme
+  // nouvellement déclaré — donc le cas le plus fréquent au démarrage, celui
+  // qu'un certificateur voit en premier.
+  //
+  // Un organisme déclaré EN COURS d'année N doit bien le BPF de N, même à zéro
+  // d'activité : le test porte sur l'année, pas sur une date.
+  const anneeDeclaration = await getQualiopiConfig("nda_annee_declaration");
+  if (typeof anneeDeclaration === "number" && anneeDeclaration > anneeBpf) return [];
+
   const anneeDeposee = await getQualiopiConfig("bpf_annee_deposee");
   const bpfDepose = typeof anneeDeposee === "number" && anneeDeposee >= anneeBpf;
   if (bpfDepose) return [];
@@ -3073,6 +3092,39 @@ async function regleMissionFormateurExpiree(now: Date): Promise<AlerteCandidate[
       session: {
         statut: { in: ["planifiee", "en_cours"] },
         dateDebut: { lte: now, gte: daysAgo(365, now) },
+        // 🔴 2026-09-06 — CETTE ALERTE ÉTAIT INEFFAÇABLE, ET C'EST PIRE QU'UNE
+        // ALERTE ABSENTE.
+        //
+        // Sa condition est un fait PASSÉ qui ne peut plus changer : la
+        // proposition a expiré, la session a démarré, aucun accord n'est tracé.
+        // Et `repondreMission` refuse toute réponse dès que `dateDebut <= now`
+        // — délibérément, deux formateurs convaincus d'animer la même journée
+        // serait pire. Rien ne peut donc faire disparaître la cause.
+        //
+        // La résoudre à la main ne suffisait pas : `creerOuDedup` ne dédoublonne
+        // que sur les alertes NON résolues, donc le balayage suivant la RECRÉE.
+        // `resolutionAuto` n'y change rien — il pilote la résolution automatique,
+        // pas la re-création. Vécu le 2026-09-06 sur AXI-SESS-2026-001 : résolue
+        // à la main, revenue dans l'heure.
+        //
+        // Une critique qui revient chaque matin sans qu'aucun geste ne puisse la
+        // fermer apprend à ignorer les critiques — c'est la doctrine du catalogue
+        // (constat `D3-4-06`), et elle se retournait ici contre elle-même.
+        //
+        // 🔑 Le remède n'est pas de la taire, c'est de lui donner une SORTIE.
+        // L'alerte pose une question précise — « la session a-t-elle été
+        // animée ? » — et prescrit deux issues : le vérifier, ou consigner un
+        // incident. On cesse donc de la lever quand l'une des deux est fournie :
+        //
+        //   · une TRACE DE PRÉSENCE existe → la session a bien été animée. La
+        //     vérification demandée est faite, et par une preuve opposable
+        //     plutôt que par un clic ;
+        //   · un INCIDENT est consigné sur la session → l'organisme a instruit
+        //     le cas, ce qui est l'autre issue que le message prescrit.
+        //
+        // Tant qu'aucune des deux n'existe, l'alerte reste — et elle le doit.
+        enrollments: { none: { emargementSignatures: { some: { revokedAt: null } } } },
+        incidents: { none: {} },
       },
     },
     select: {

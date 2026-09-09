@@ -71,14 +71,45 @@ function isStub(): boolean {
 export async function creerOuDedup(input: AlerteInput): Promise<AlerteSysteme | null> {
   if (isStub()) return null;
 
+  const cible = input.cibleId !== undefined ? { cibleId: input.cibleId } : { cibleId: null };
+
   const existing = await prisma.alerteSysteme.findFirst({
-    where: {
-      code: input.code,
-      resolue: false,
-      ...(input.cibleId !== undefined ? { cibleId: input.cibleId } : { cibleId: null }),
-    },
+    where: { code: input.code, resolue: false, ...cible },
   });
   if (existing) return null;
+
+  // 🔴 2026-09-07 — `resolutionAuto: false` NE TENAIT PAS SA PROMESSE.
+  //
+  // Le `findFirst` ci-dessus ne regarde que les alertes NON résolues. Une alerte
+  // fermée à la main était donc RECRÉÉE à l'identique au balayage suivant, dès
+  // que sa règle produisait encore le candidat. Pour un code dont la cause est un
+  // fait PASSÉ — une session démarrée sans accord tracé, un taux de satisfaction
+  // déjà mesuré sous le seuil —, aucun geste humain ne pouvait la fermer :
+  // l'administrateur cliquait « Résoudre » et la retrouvait le lendemain matin.
+  //
+  // Vécu le 2026-09-06 sur `formateur_mission_expiree` (corrigé au cas par cas
+  // par #1016) ; l'audit qui a suivi a trouvé SEPT autres codes dans la même
+  // situation — `resolutionAuto: false` ET produits par `evaluerAlertes`.
+  //
+  // 🔑 Le drapeau ne pilotait QUE la résolution automatique, jamais la
+  // re-création. Son nom disait l'inverse de ce qu'il faisait, et c'est ce qui
+  // rendait le défaut invisible : on lisait « la fermeture est un acte humain »
+  // là où le code disait « la fermeture ne tient pas ».
+  //
+  // ⚠️ La comparaison porte sur le MESSAGE, et pas seulement sur (code, cible).
+  // Un « ne jamais recréer après résolution » serait faux : une habilitation
+  // renouvelée puis ré-expirée des années plus tard doit crier de nouveau. Le
+  // message porte la donnée qui distingue les deux cas — la date d'échéance, la
+  // valeur mesurée, le nom de la pièce. Message identique = la même chose est
+  // redite à quelqu'un qui a déjà répondu ; message différent = un fait NOUVEAU,
+  // et l'alerte doit revenir.
+  if (ALERTE_CATALOGUE[input.code]?.resolutionAuto === false) {
+    const dejaTraitee = await prisma.alerteSysteme.findFirst({
+      where: { code: input.code, resolue: true, message: input.message, ...cible },
+      select: { id: true },
+    });
+    if (dejaTraitee) return null;
+  }
 
   try {
     return await prisma.alerteSysteme.create({

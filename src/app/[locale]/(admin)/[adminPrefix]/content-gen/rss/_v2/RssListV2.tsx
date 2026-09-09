@@ -111,16 +111,13 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
               <form action={doToggle}>
                 <input type="hidden" name="id" value={s.id} />
                 <input type="hidden" name="enabled" value={(!s.enabled).toString()} />
-                <button
-                  type="submit"
-                  className="admin-button-ghost text-[length:var(--text-admin-xs)]"
-                >
+                <button type="submit" className="admin-button-ghost admin-button-xs">
                   {s.enabled ? "Désactiver" : "Activer"}
                 </button>
               </form>
               <Link
                 href={`/fr/${adminPrefix}/content-gen/rss/${s.id}`}
-                className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+                className="admin-button-ghost admin-button-xs"
               >
                 Éditer
               </Link>

@@ -91,7 +91,7 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
       />
 
       <div className="mb-[var(--space-admin-6)]">
-        <Link href={`${devisBase}/new`} className="admin-button inline-block">
+        <Link href={`${devisBase}/new`} className="admin-button">
           + Nouveau devis
         </Link>
       </div>

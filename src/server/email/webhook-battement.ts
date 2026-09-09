@@ -35,11 +35,28 @@
 // Console ZeptoMail -> Webhooks -> le webhook des rebonds -> « Test ». Puis,
 // dans les journaux Coolify de l'application web, chercher `email-sante:` :
 //
-//   - `dernier appel webhook : 2026-09-01T...`  -> l'abonnement existe et porte.
-//   - `dernier appel webhook : JAMAIS`          -> ZeptoMail n'atteint pas la
-//     route. Verifier l'URL enregistree, puis que la cle des deux cotes est la
-//     meme (une cle differente rend 401, et ZeptoMail desabonne au bout de
-//     plusieurs echecs).
+//   - `authentifie : 2026-09-01T...`  -> l'abonnement existe ET la cle concorde.
+//   - `recu : <date>` + `authentifie : JAMAIS`  -> ZeptoMail NOUS ATTEINT, mais
+//     la signature est refusee : cle desynchronisee entre les deux cotes.
+//   - `recu : JAMAIS`  -> rien n'atteint la route. Verifier l'URL enregistree
+//     dans la console ZeptoMail, et que le webhook y existe bel et bien.
+//
+// ⚠️ CE QUE CE MODULE NE SAVAIT PAS DIRE AVANT LE 2026-09-07, et qui l'a rendu
+// muet pendant une semaine : `noterAppelWebhook()` n'etait appele qu'APRES la
+// verification de signature. Un appel refuse ne laissait donc AUCUNE trace ici
+// — et la route rend `200 {ok:true, ignored:"invalid_signature"}`, pas 401
+// (choix delibere : ZeptoMail sonde l'URL en POST NON SIGNE avant d'autoriser
+// la creation du webhook, un 401 fermait le cercle). ZeptoMail lisait donc un
+// succes, ne reessayait pas, et `JAMAIS` s'affichait aussi bien pour
+// « personne n'appelle » que pour « on appelle et on est refuse ».
+//
+// 🔑 Deux pannes, un seul zero : c'est la definition d'un instrument qui ne
+// mesure pas. D'ou les DEUX battements ci-dessous — `recu` est pose AVANT la
+// signature, `authentifie` apres. Leur ECART est le diagnostic.
+//
+// ⚠️ Le paragraphe ci-dessus disait « un POST non signe rend 401 ». C'etait vrai
+// le 2026-09-01, ca ne l'est plus. Un lecteur qui teste aujourd'hui obtient 200
+// et conclurait « clé absente » — l'inverse de la verite.
 //
 // ## Stockage
 //
@@ -50,8 +67,17 @@
 
 import { redis } from "@/lib/redis";
 
-/** Cle unique. Pas de TTL : un battement qui expire ne se distingue pas d'une absence. */
+/** Pas de TTL : un battement qui expire ne se distingue pas d'une absence. */
 const CLE = "zeptomail:webhook:dernier-appel";
+
+/**
+ * Battement des appels RECUS, quelle que soit l'issue de la signature.
+ *
+ * Pose avant toute verification : c'est ce qui permet de distinguer
+ * « ZeptoMail ne nous appelle pas » de « ZeptoMail nous appelle et on le
+ * refuse ». Sans lui, les deux rendent `JAMAIS`.
+ */
+const CLE_RECU = "zeptomail:webhook:dernier-appel-recu";
 
 /**
  * Note qu'un appel AUTHENTIFIE vient d'arriver.
@@ -74,6 +100,26 @@ export async function noterAppelWebhook(maintenant: Date = new Date()): Promise<
 }
 
 /**
+ * Note qu'un appel vient d'arriver sur la route, AVANT toute verification.
+ *
+ * A appeler des que la cle de webhook est connue presente, donc avant le
+ * controle de taille, avant la limite de debit et surtout avant la signature :
+ * la question a laquelle ce battement repond est « quelque chose atteint-il
+ * cette route ? », pas « cet appel etait-il valide ? ».
+ *
+ * Fail-soft, meme raison que {@link noterAppelWebhook} : une panne Redis ne
+ * doit jamais faire echouer le webhook, sous peine de faire desabonner
+ * ZeptoMail — on detruirait l'abonnement qu'on surveille.
+ */
+export async function noterAppelRecu(maintenant: Date = new Date()): Promise<void> {
+  try {
+    await redis.set(CLE_RECU, maintenant.toISOString());
+  } catch {
+    // Silence volontaire : l'absence de battement se lira comme « JAMAIS ».
+  }
+}
+
+/**
  * Delai au-dela duquel on abandonne la lecture.
  *
  * 🔴 Sans cette borne, la lecture PEND quand Redis est injoignable — et elle
@@ -88,6 +134,20 @@ export async function noterAppelWebhook(maintenant: Date = new Date()): Promise<
 const DELAI_LECTURE_MS = 1_500;
 
 /**
+ * Date ISO du dernier appel RECU sur la route, authentifie ou non.
+ *
+ * Compare a {@link lireDernierAppelWebhook}, il repond a une autre question :
+ * non pas « un appel valide est-il arrive ? » mais « quelque chose atteint-il
+ * cette route ? ». Un ecart entre les deux — recu date, authentifie JAMAIS —
+ * designe une cle desynchronisee, et rien d autre.
+ *
+ * Ne leve jamais, et ne depasse jamais {@link DELAI_LECTURE_MS}.
+ */
+export async function lireDernierAppelRecu(): Promise<string | null> {
+  return lireBattement(CLE_RECU);
+}
+
+/**
  * Date ISO du dernier appel authentifie, ou `null` si aucun n'a jamais ete vu.
  *
  * `null` ne signifie pas « casse » : il signifie « jamais observe ». La nuance
@@ -96,9 +156,14 @@ const DELAI_LECTURE_MS = 1_500;
  * Ne leve jamais, et ne depasse jamais {@link DELAI_LECTURE_MS}.
  */
 export async function lireDernierAppelWebhook(): Promise<string | null> {
+  return lireBattement(CLE);
+}
+
+/** Lecture bornee et fail-soft, commune aux deux battements. */
+async function lireBattement(cle: string): Promise<string | null> {
   try {
     const valeur = await Promise.race([
-      redis.get(CLE),
+      redis.get(cle),
       new Promise<null>((resoudre) => setTimeout(() => resoudre(null), DELAI_LECTURE_MS)),
     ]);
     return typeof valeur === "string" && valeur.length > 0 ? valeur : null;

@@ -413,7 +413,7 @@ export function LiensEmargement({
                 <button
                   type="button"
                   onClick={() => void copier(l.url, l.enrollmentId)}
-                  className="admin-button-ghost text-[length:var(--text-admin-sm)]"
+                  className="admin-button-ghost admin-button-sm"
                 >
                   {copie === l.enrollmentId ? "Copié" : "Copier le lien"}
                 </button>
