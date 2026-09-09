@@ -88,6 +88,11 @@ export const LIBELLE_STATUT_MISSION: Record<MissionFormateurStatut, string> = {
   retiree: "Retirée par l'organisme",
   expiree: "Expirée sans réponse",
   sans_reponse: "Sans réponse dans le délai",
+  // Le libellé DIT que l'accord vient d'ailleurs. « Acceptée » tout court
+  // laisserait croire au geste du formateur dans l'outil ; l'écran et le PDF
+  // seraient alors indiscernables d'une acceptation par lien, ce qui est
+  // exactement ce que la valeur d'énumération sépare.
+  accord_hors_outil: "Accord consigné hors outil",
 };
 
 /** Les réponses qu'un formateur peut donner — et rien d'autre. */
@@ -957,4 +962,128 @@ export async function statsMissionsFormateur(
   } catch {
     return STATS_VIDES;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Accord donné HORS de l'outil
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Longueur minimale du motif — c'est l'auditeur qui le lit, pas nous. */
+export const MOTIF_ACCORD_HORS_OUTIL_MIN = 15;
+
+export type ResultatAccordHorsOutil =
+  | { readonly ok: true; readonly missionId: string }
+  | { readonly ok: false; readonly erreur: string };
+
+/**
+ * Consigne un accord donné hors de l'outil sur la sollicitation d'une session.
+ *
+ * ══════════════════════════════════════════════════════════════════════════
+ * 🔴 POURQUOI CE GESTE EXISTE — L'ALERTE LE RÉCLAMAIT SANS L'OFFRIR
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * Vécu en production le 2026-09-06 sur `AXI-SESS-2026-001`. La proposition a
+ * expiré sans réponse ; la session a pourtant été animée — la stagiaire a signé
+ * son émargement le jour même. L'alerte critique `formateur_mission_expiree`
+ * dit alors, mot pour mot :
+ *
+ *     « vérifiez que la session a bien été animée, et consignez un incident si
+ *       elle ne l'a pas été »
+ *
+ * Deux branches. L'écran n'en offrait qu'UNE — « Déclarer une absence ». Le
+ * bouton « Proposer à nouveau » est conditionné à `sessionAVenir`
+ * (`MissionFormateurPanel`), donc absent dès que la session a démarré. La
+ * branche « elle a bien été animée » n'avait **aucun geste**, et l'alerte est
+ * `resolutionAuto` : elle ne pouvait plus s'éteindre.
+ *
+ * Une alerte critique inextinguible n'apprend qu'une chose à celui qui la lit :
+ * à ignorer les critiques. C'est exactement ce que le catalogue redoute.
+ *
+ * ══════════════════════════════════════════════════════════════════════════
+ * ⚠️ POURQUOI PAS `acceptee`
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * `acceptee` signifie « le formateur a répondu par son lien » : la ligne porte
+ * alors la trace horodatée de SON geste. L'écrire pour un accord recueilli au
+ * téléphone **fabriquerait** cette trace.
+ *
+ * Le dépôt refuse déjà la symétrie inverse, et pour la même raison — le
+ * commentaire de `sans_reponse` dit « un silence n'est pas un refus », parce
+ * qu'inscrire un refus que personne n'a formulé salirait la pièce de pilotage.
+ * Un accord que personne n'a cliqué la salirait autant.
+ *
+ * L'accord EXISTE ; c'est sa preuve qui est ailleurs. On la consigne pour ce
+ * qu'elle est : l'organisme atteste, se nomme, se date, se justifie.
+ *
+ * ⚠️ Le motif est OBLIGATOIRE. Sans auteur ni motif, ce n'est pas une preuve,
+ * c'est une affirmation — même exigence que sur l'annulation d'une pièce.
+ */
+export async function consignerAccordHorsOutil(input: {
+  sessionId: string;
+  trainerId: string;
+  motif: string;
+  parAdminId: string;
+}): Promise<ResultatAccordHorsOutil> {
+  if (isStub()) return { ok: false, erreur: "Indisponible en mode build (stub)" };
+
+  const motif = input.motif.trim();
+  if (motif.length < MOTIF_ACCORD_HORS_OUTIL_MIN) {
+    return {
+      ok: false,
+      erreur:
+        `Le motif doit faire au moins ${MOTIF_ACCORD_HORS_OUTIL_MIN} caractères : ` +
+        "c'est lui que l'auditeur lira pour savoir d'où vient cet accord.",
+    };
+  }
+
+  const mission = await prisma.missionFormateur.findFirst({
+    where: { sessionId: input.sessionId, trainerId: input.trainerId },
+    orderBy: { solliciteAt: "desc" },
+    select: { id: true, statut: true },
+  });
+  if (mission === null) {
+    return {
+      ok: false,
+      erreur:
+        "Aucune sollicitation pour ce formateur sur cette session : il n'y a pas " +
+        "d'accord à consigner. Proposez-lui la mission d'abord.",
+    };
+  }
+  // Une mission qui a DÉJÀ une réponse ne se réécrit pas : ni un refus, ni une
+  // acceptation, ni un retrait délibéré. Consigner par-dessus effacerait le
+  // geste de quelqu'un — c'est la trace qu'on vient protéger.
+  if (mission.statut === "acceptee") {
+    return { ok: false, erreur: "Le formateur a déjà accepté cette mission par son lien." };
+  }
+  if (mission.statut === "accord_hors_outil") {
+    return { ok: false, erreur: "L'accord a déjà été consigné pour cette mission." };
+  }
+  if (mission.statut === "refusee" || mission.statut === "retiree") {
+    return {
+      ok: false,
+      erreur:
+        "Cette mission porte déjà une décision (refus ou retrait). Consigner un " +
+        "accord par-dessus effacerait cette trace.",
+    };
+  }
+
+  try {
+    await prisma.missionFormateur.update({
+      where: { id: mission.id },
+      data: {
+        statut: "accord_hors_outil",
+        accordHorsOutilAt: new Date(),
+        accordHorsOutilParId: input.parAdminId,
+        accordHorsOutilMotif: motif,
+      },
+    });
+  } catch (err) {
+    console.error(
+      `[mission-formateur] accord hors outil impossible (mission ${mission.id}):`,
+      err instanceof Error ? err.message : String(err),
+    );
+    return { ok: false, erreur: "Erreur lors de l'enregistrement de l'accord." };
+  }
+
+  return { ok: true, missionId: mission.id };
 }

@@ -25,6 +25,8 @@ import {
   repondreMission,
   REPONSES_MISSION,
   FAITS_ABSENCE,
+  consignerAccordHorsOutil,
+  MOTIF_ACCORD_HORS_OUTIL_MIN,
   type ReponseMission,
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { ecrireApresDelai } from "@/server/qualiopi/trainers/message-apres-delai";
@@ -233,4 +235,52 @@ export async function declarerAbsenceFormateurAction(
     session,
   });
   return { data: { incidentId: incident.id } };
+}
+
+/**
+ * Consigne un accord donné hors de l'outil (téléphone, courriel, de vive voix).
+ *
+ * 🔴 C'est la branche manquante de `formateur_mission_expiree`. L'alerte demande
+ * de « vérifier que la session a bien été animée » OU de consigner un incident ;
+ * l'écran n'offrait que le second. Sur une session déjà démarrée, le bouton
+ * « Proposer à nouveau » disparaît (`sessionAVenir`), et l'alerte — qui est
+ * `resolutionAuto` — ne pouvait plus s'éteindre par aucun geste.
+ *
+ * ⚠️ N'écrit PAS `acceptee` : cf. `consignerAccordHorsOutil`. On ne fabrique pas
+ * la trace d'un clic qui n'a pas eu lieu.
+ */
+const accordHorsOutilSchema = z.object({
+  sessionId: z.string().uuid(),
+  trainerId: z.string().uuid(),
+  motif: z.string().trim().min(MOTIF_ACCORD_HORS_OUTIL_MIN).max(2000),
+});
+
+export async function consignerAccordHorsOutilAction(
+  input: z.infer<typeof accordHorsOutilSchema>,
+): Promise<ActionResult<{ missionId: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = accordHorsOutilSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      error: `Motif obligatoire (${MOTIF_ACCORD_HORS_OUTIL_MIN} caractères minimum) — il est lu par l'auditeur.`,
+    };
+  }
+  const v = parsed.data;
+
+  const r = await consignerAccordHorsOutil({
+    sessionId: v.sessionId,
+    trainerId: v.trainerId,
+    motif: v.motif,
+    parAdminId: session.userId,
+  });
+  if (!r.ok) return { error: r.erreur };
+
+  await logQualiopiActivity({
+    action: "qualiopi.session.accord_formateur_hors_outil",
+    targetType: "MissionFormateur",
+    targetId: r.missionId,
+    changes: { sessionId: v.sessionId, trainerId: v.trainerId, motif: v.motif },
+    session,
+  });
+  return { data: { missionId: r.missionId } };
 }
