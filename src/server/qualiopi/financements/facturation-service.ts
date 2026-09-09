@@ -40,7 +40,6 @@ import { readFormationForDocs } from "@/server/qualiopi/formations/formation-sna
 import {
   computeTotauxFacture,
   regimeTvaDepuisConfig,
-  REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";

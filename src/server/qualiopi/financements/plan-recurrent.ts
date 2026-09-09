@@ -20,7 +20,6 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   computeTotauxFacture,
   regimeTvaDepuisConfig,
-  REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";

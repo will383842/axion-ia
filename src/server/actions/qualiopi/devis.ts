@@ -35,7 +35,6 @@ import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   regimeTvaDepuisConfig,
   mentionTva,
-  REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";

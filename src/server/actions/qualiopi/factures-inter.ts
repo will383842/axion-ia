@@ -30,7 +30,6 @@ import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   computeTotauxFacture,
   regimeTvaDepuisConfig,
-  REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
