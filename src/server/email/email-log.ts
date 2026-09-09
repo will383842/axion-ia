@@ -41,6 +41,16 @@ export interface EntreeJournal {
   jobId?: string | undefined;
   entityType?: string | undefined;
   entityId?: string | undefined;
+  /**
+   * Échéance d'envoi — `maintenant + delayMs`. Posée par `enqueueEmail`, qui
+   * est le seul endroit où le délai est connu.
+   *
+   * 🔑 Elle existe pour que `verifierSanteEmails()` puisse distinguer « en
+   * attente parce que la file est morte » de « en attente parce que ce n'est
+   * pas encore l'heure ». Les deux états rendaient la MÊME ligne `pending`
+   * ancienne, et la surveillance les confondait (cf. `health.ts`).
+   */
+  dueAt?: Date | undefined;
 }
 
 /**
@@ -74,6 +84,7 @@ export async function journaliserEnAttente(entree: EntreeJournal): Promise<void>
         ...(entree.entityType ? { entityType: entree.entityType } : {}),
         ...(entree.entityId ? { entityId: entree.entityId } : {}),
         ...(entree.jobId ? { jobId: entree.jobId } : {}),
+        ...(entree.dueAt ? { dueAt: entree.dueAt } : {}),
       },
     });
   } catch (e) {
