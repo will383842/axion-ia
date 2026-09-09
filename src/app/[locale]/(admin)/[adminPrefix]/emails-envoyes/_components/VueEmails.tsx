@@ -71,6 +71,7 @@ export function VueEmails({
     if (f.statut) p.set("statut", f.statut);
     if (f.gabarit) p.set("gabarit", f.gabarit);
     if (f.destinataire) p.set("destinataire", f.destinataire);
+    if (f.sessionId) p.set("session", f.sessionId);
     // Tout changement de filtre ramène en page 1 : rester en page 7 d'un jeu
     // qui n'en compte plus que 2 afficherait un tableau vide sans raison
     // visible.
@@ -220,6 +221,20 @@ export function VueEmails({
         }
       />
 
+      {/* 🔴 2026-09-07 — LES COMPTEURS NE SUIVAIENT PAS LE FILTRE.
+          On lisait « Envoyés 197 » au-dessus d'une liste de trois lignes
+          filtrées sur une stagiaire, et rien ne disait que les deux nombres ne
+          répondaient pas à la même question. Sur un écran qu'on montre à un
+          auditeur, c'est pire qu'un chiffre faux : un chiffre VRAI posé sur la
+          mauvaise question, que personne ne songe à vérifier.
+          Ils se restreignent désormais au périmètre — et le disent. */}
+      {filtres.destinataire !== null || filtres.sessionId !== null ? (
+        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Les compteurs ci-dessous portent sur le <strong>périmètre filtré</strong>, pas sur
+          l&apos;ensemble du journal.
+        </p>
+      ) : null}
+
       <div className="admin-kpi-grid">
         <AdminStatCard
           label="Envoyés"
@@ -293,6 +308,76 @@ export function VueEmails({
           .
         </span>
       </p>
+
+      {/* 🔴 2026-09-07 — LE FILTRE EXISTAIT, MAIS SEULEMENT DANS L'URL.
+          `destinataire` était lu par la page depuis le premier jour et n'avait
+          aucun champ à l'écran : il fallait fabriquer l'URL à la main. Un
+          auditeur assis à côté ne le devine pas, et personne ne s'en souvient
+          six mois plus tard. Une fonction qu'on ne peut pas trouver n'existe
+          pas. */}
+      <form
+        method="get"
+        action={base}
+        className="mt-[var(--space-admin-5)] flex flex-wrap items-end gap-[var(--space-admin-3)]"
+      >
+        {/* Les filtres en cours voyagent avec la recherche, sinon chercher une
+            adresse remettrait la fenêtre et la session à zéro. */}
+        <input type="hidden" name="fenetre" value={String(filtres.jours)} />
+        {filtres.statut ? <input type="hidden" name="statut" value={filtres.statut} /> : null}
+        {filtres.gabarit ? <input type="hidden" name="gabarit" value={filtres.gabarit} /> : null}
+        {filtres.sessionId ? (
+          <input type="hidden" name="session" value={filtres.sessionId} />
+        ) : null}
+        <label className="flex flex-col gap-[var(--space-admin-1)]">
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Destinataire
+          </span>
+          <input
+            type="search"
+            name="destinataire"
+            defaultValue={filtres.destinataire ?? ""}
+            placeholder="prenom.nom@exemple.fr"
+            className="admin-input"
+            style={{ minWidth: "18rem" }}
+          />
+        </label>
+        <button type="submit" className="admin-button admin-button-sm">
+          Filtrer
+        </button>
+        {filtres.destinataire ? (
+          <Link href={lien({ destinataire: null, page: 1 })} className="admin-link">
+            Effacer le destinataire
+          </Link>
+        ) : null}
+      </form>
+
+      {/* La session filtrée est NOMMÉE, jamais laissée en UUID : un auditeur doit
+          lire « la formation du 5 septembre chez SCI Invest Sun », pas un
+          identifiant technique dont il ne peut rien vérifier. */}
+      {donnees.session !== null ? (
+        <p className="admin-alert admin-alert-info mt-[var(--space-admin-3)]">
+          <span>
+            Journal restreint à la session <strong>{donnees.session.numero}</strong> —{" "}
+            {donnees.session.titre}
+            {donnees.session.client === null ? "" : ` · ${donnees.session.client}`} · du{" "}
+            {donnees.session.dateDebut.toLocaleDateString("fr-FR")}.{" "}
+            <Link href={lien({ sessionId: null, page: 1 })} className="admin-link">
+              Retirer ce filtre
+            </Link>
+          </span>
+        </p>
+      ) : filtres.sessionId !== null ? (
+        <p className="admin-alert admin-alert-warning mt-[var(--space-admin-3)]">
+          <span>
+            Aucune session ne porte cet identifiant. Le journal est donc vide —{" "}
+            <strong>et non « aucun envoi »</strong> :{" "}
+            <Link href={lien({ sessionId: null, page: 1 })} className="admin-link">
+              retirer ce filtre
+            </Link>{" "}
+            pour voir le journal complet.
+          </span>
+        </p>
+      ) : null}
 
       <section className="mt-[var(--space-admin-5)]">
         <nav aria-label="Statut" className="flex flex-wrap gap-[var(--space-admin-2)]">

@@ -98,7 +98,25 @@ export type FiltresEmails = {
   statut: EmailLogStatus | null;
   gabarit: string | null;
   destinataire: string | null;
+  /**
+   * Session de formation dont on veut le journal — la question de l'auditeur.
+   *
+   * « Montrez-moi ce qui est parti pour la formation de telle date, chez tel
+   * client, à tel stagiaire. » Le journal n'indexait que le destinataire : pour
+   * une session à douze inscrits il fallait douze recherches et un recollement
+   * à la main. Ici la session résout elle-même ses entités liées.
+   */
+  sessionId: string | null;
   page: number;
+};
+
+/** La session filtrée, telle qu'on la NOMME à l'écran (jamais un UUID nu). */
+export type SessionFiltree = {
+  id: string;
+  numero: string;
+  titre: string;
+  client: string | null;
+  dateDebut: Date;
 };
 
 export type LigneEmail = {
@@ -138,7 +156,55 @@ export type ChargementEmails = {
   };
   /** Gabarits présents sur la fenêtre, pour alimenter le filtre. */
   gabarits: Array<{ nom: string; envois: number }>;
+  /** La session filtrée, si le filtre porte sur une session. */
+  session: SessionFiltree | null;
 };
+
+/**
+ * Les identifiants d'entités qu'une session « couvre » dans le journal.
+ *
+ * 🔑 On passe par `entityId`, pas par le destinataire. Deux raisons, et la
+ * seconde est celle qui compte pour un auditeur :
+ *
+ *   · une adresse peut servir à plusieurs sessions (un référent formation qui
+ *     inscrit ses collègues deux fois dans l'année) — filtrer par adresse
+ *     mélangerait deux dossiers ;
+ *   · l'`entityId` est ce que l'envoi a RÉELLEMENT visé au moment où il est
+ *     parti. C'est un lien de causalité, pas une ressemblance de chaîne.
+ *
+ * On ratisse les quatre familles d'entités qu'une session engendre : ses
+ * inscriptions (convocation, rappels, émargement, attestation), ses pièces
+ * (convention, devis, facture, exemplaire signé), ses questionnaires
+ * (positionnement, satisfaction, suivi à froid) et ses missions de formateur.
+ *
+ * ⚠️ Rend `[]` si la session n'existe pas — et l'appelant doit alors filtrer sur
+ * une liste VIDE plutôt que de ne pas filtrer du tout. Un identifiant erroné
+ * doit rendre zéro ligne, jamais tout le journal : sinon l'auditeur lirait le
+ * courrier d'autres dossiers en croyant lire le sien.
+ */
+async function idsLiesALaSession(sessionId: string): Promise<string[]> {
+  const s = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      enrollments: { select: { id: true, questionnaires: { select: { id: true } } } },
+      documents: { select: { id: true } },
+      sessionFormateurs: { select: { id: true } },
+      missionsFormateur: { select: { id: true } },
+    },
+  });
+  if (s === null) return [];
+
+  const ids = [s.id];
+  for (const e of s.enrollments) {
+    ids.push(e.id);
+    for (const q of e.questionnaires) ids.push(q.id);
+  }
+  for (const d of s.documents) ids.push(d.id);
+  for (const f of s.sessionFormateurs) ids.push(f.id);
+  for (const m of s.missionsFormateur) ids.push(m.id);
+  return ids;
+}
 
 /** Normalise la fenêtre reçue de l'URL. `0` = pas de borne de date. */
 export function lireFenetreEmails(brut: string | undefined): number {
@@ -171,6 +237,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     pages: 1,
     parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0, annules: 0, rebondsDurs: 0 },
     gabarits: [],
+    session: null,
   };
 
   const depuis = new Date();
@@ -180,11 +247,62 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
   // Le destinataire est une colonne `citext` : la comparaison est déjà
   // insensible à la casse côté Postgres, pas besoin de `mode: "insensitive"`.
   const recherche = filtres.destinataire?.trim();
-  const where = {
+
+  // 🔴 2026-09-07 — LE PÉRIMÈTRE, ET POURQUOI IL EST EXTRAIT.
+  //
+  // Les compteurs de tête ignoraient le filtre de destinataire. On lisait donc
+  // « Envoyés 197 » au-dessus d'une liste de TROIS lignes filtrées sur une
+  // stagiaire — et rien ne disait que les deux nombres ne parlaient pas de la
+  // même chose. Sur un écran qu'on montre à un auditeur, c'est pire qu'un
+  // chiffre faux : c'est un chiffre vrai posé sur la mauvaise question.
+  //
+  // Le périmètre est ce que le filtre DÉLIMITE : fenêtre, destinataire, session.
+  // Tout ce qui compte doit s'y restreindre.
+  //
+  // ⚠️ Le STATUT reste hors périmètre, et c'est délibéré (déjà documenté plus
+  // bas) : sinon filtrer sur « Envoyé » afficherait toujours « 0 échec ». Le
+  // gabarit, lui, entre dans les compteurs mais pas dans la liste des gabarits —
+  // sans quoi choisir une puce ferait disparaître toutes les autres.
+  let perimetre: Record<string, unknown> = {
     ...fenetre,
+    ...(recherche ? { recipient: { contains: recherche } } : {}),
+  };
+
+  let session: SessionFiltree | null = null;
+  if (filtres.sessionId !== null) {
+    const s = await prisma.trainingSession
+      .findUnique({
+        where: { id: filtres.sessionId },
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          dateDebut: true,
+          client: { select: { raisonSociale: true } },
+        },
+      })
+      .catch(() => null);
+    if (s !== null) {
+      session = {
+        id: s.id,
+        numero: s.numero,
+        titre: s.titreSession,
+        client: s.client?.raisonSociale ?? null,
+        dateDebut: s.dateDebut,
+      };
+    }
+    // ⚠️ Même si la session est introuvable, on filtre sur la liste d'ids —
+    // vide dans ce cas. Un identifiant erroné doit rendre ZÉRO ligne, jamais le
+    // journal entier : un auditeur lirait le courrier d'un autre dossier en
+    // croyant lire le sien.
+    const ids = await idsLiesALaSession(filtres.sessionId).catch(() => [] as string[]);
+    perimetre = { ...perimetre, entityId: { in: ids } };
+  }
+
+  const where = {
+    ...perimetre,
     ...(filtres.statut ? { status: filtres.statut } : {}),
     ...(filtres.gabarit ? { template: filtres.gabarit } : {}),
-    ...(recherche ? { recipient: { contains: recherche } } : {}),
   };
 
   // Chaque lecture est isolée : au build (base stub, ADR 0026) elles rendent du
@@ -219,18 +337,18 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
       // afficheraient toujours « 0 échec » dès qu'on filtre sur les envois.
       prisma.emailLog.groupBy({
         by: ["status"],
-        where: { ...fenetre, ...(filtres.gabarit ? { template: filtres.gabarit } : {}) },
+        where: { ...perimetre, ...(filtres.gabarit ? { template: filtres.gabarit } : {}) },
         _count: { _all: true },
       }),
       prisma.emailLog.groupBy({
         by: ["template"],
-        where: fenetre,
+        where: perimetre,
         _count: { _all: true },
         orderBy: { _count: { template: "desc" } },
       }),
       prisma.emailLog.count({
         where: {
-          ...fenetre,
+          ...perimetre,
           ...(filtres.gabarit ? { template: filtres.gabarit } : {}),
           status: "bounced",
           bounceType: "hard",
@@ -263,6 +381,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
         rebondsDurs,
       },
       gabarits: gabaritsBruts.map((g) => ({ nom: g.template, envois: g._count._all })),
+      session,
     };
   } catch {
     return vide;

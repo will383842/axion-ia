@@ -52,6 +52,10 @@ export default async function EmailsEnvoyesPage({
     statut: lireStatutEmail(sp.statut),
     gabarit: sp.gabarit?.slice(0, 60) ?? null,
     destinataire: sp.destinataire?.slice(0, 120) ?? null,
+    // Filtre par session — l'entrée de l'auditeur (« montrez-moi cette
+    // formation »). Un UUID ne dépasse pas 36 caractères ; au-delà c'est du
+    // bruit, et `chargerEmails` rendra zéro ligne plutôt que le journal entier.
+    sessionId: sp.session?.slice(0, 40) ?? null,
     page: lirePage(sp.page),
   };
 
