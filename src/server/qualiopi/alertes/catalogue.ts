@@ -1203,6 +1203,46 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  /**
+   * 🔴 TOUTE LA FACTURATION REGARDAIT DANS UN SEUL SENS (2026-09-09).
+   *
+   * Les six codes ci-dessus surveillent l'argent qu'on nous DOIT. Aucun ne
+   * surveillait l'argent qu'on doit : un relevé d'honoraires de formateur
+   * pouvait dépasser son échéance sans qu'aucune surface ne le dise — ni alerte,
+   * ni colonne, ni compteur. Le seul rappel possible était le formateur lui-même.
+   *
+   * Ce n'est pas symétrique d'un impayé client, c'est PIRE : un client qui ne
+   * paie pas nous coûte de la trésorerie, un sous-traitant qu'on paie en retard
+   * nous coûte des pénalités de plein droit (taux BCE + 10 points, art. L.441-10)
+   * et une indemnité forfaitaire de 40 € par facture (art. D.441-5), sans mise
+   * en demeure. Le contrat de sous-traitance les stipule désormais noir sur blanc
+   * (clause 4, PR #1024) — l'organisme s'est lui-même donné une horloge, il lui
+   * fallait un cadran.
+   *
+   * ⚠️ `important` et non `critique`, et ce n'est pas de la prudence : la dette
+   * est certaine, son montant est arrêté, le geste est un virement. C'est une
+   * file à traiter, pas un sursaut. Un second palier d'escalade — J+15, J+30 —
+   * a été délibérément écarté : ce catalogue a déjà payé le prix de deux signaux
+   * concurrents pour un même fait (cf. `facture_impayee_j30`, plus émis depuis
+   * le 2026-08-02).
+   *
+   * ⚠️ Ne PAS transposer ce raisonnement à une commission d'apporteur : là, la
+   * commission est acquise à l'encaissement, et un « retard » avant encaissement
+   * n'existe pas. Il ne s'agit pas d'une dette échue mais d'un droit non encore né.
+   *
+   * `resolutionAuto` : disparaît d'elle-même dès que le relevé est payé — le
+   * balayage quotidien la reverrait sinon comme candidate à chaque passage.
+   *
+   * `direction` : payer ENGAGE l'organisme, exactement comme émettre une facture.
+   * Même frontière que les six codes voisins, et que l'habilitation
+   * `remunerer_formateur` qui garde le geste.
+   */
+  releve_formateur_echu: {
+    niveau: "important",
+    titre: "Honoraires de formateur échus",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
 
   // ── Dossiers de financement (suivi OPCO / France Travail) ────────────────
   // 🔴 2026-07-31 — `echeanceFinanceurAt` existait au schéma (« les OPCO paient

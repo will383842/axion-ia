@@ -47,6 +47,11 @@ vi.mock("@/lib/prisma", () => ({
     // lèverait sur `undefined` et le fail-soft PAR RÈGLE l'avalerait : elle serait
     // inerte partout, tests verts compris. Même famille que `mockIdentite` ci-dessous.
     formation: { findMany: vi.fn(), count: vi.fn() },
+    // 2026-09-09 — `releve_formateur_echu`, la première règle qui surveille
+    // l'argent qu'on DOIT. Même piège que les six mocks ci-dessus : sans lui,
+    // la règle lirait un mock non configuré, lèverait, et le fail-soft PAR
+    // RÈGLE avalerait l'exception — inerte partout, tests verts compris.
+    trainerStatement: { findMany: vi.fn() },
   },
 }));
 
@@ -165,6 +170,8 @@ function setupEmptyMocks() {
   mp.formation.findMany.mockResolvedValue([]);
   // R01e : aucune formation ne porte de code RNCP/RS par défaut → règle muette.
   mp.formation.count.mockResolvedValue(0);
+  // Aucun relevé d'honoraires en attente de paiement par défaut.
+  mp.trainerStatement.findMany.mockResolvedValue([]);
   // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
   // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
   // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
@@ -3596,5 +3603,105 @@ describe("🔴 attestation_non_parvenue — produite N'EST PAS parvenue", () => 
     expect(a).toBeDefined();
     expect(a!.message).toMatch(/n'a pas été produite/);
     expect(a!.message).not.toMatch(/Ne la régénérez pas/);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// releve_formateur_echu — la première règle qui surveille l'argent qu'on DOIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("releve_formateur_echu", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  /** Un relevé facturé, non payé, dont l'échéance est dépassée de `retard` jours. */
+  function releveEchu(retard: number, extra: Record<string, unknown> = {}) {
+    const dateFacture = new Date(Date.now() - (30 + retard) * 86_400_000);
+    return {
+      id: "st-001",
+      statut: "facture_recue",
+      dateFacture,
+      echeanceAt: null,
+      payeAt: null,
+      numeroFacture: "F-2026-014",
+      periodeYear: 2026,
+      periodeMonth: 7,
+      totalTtcCents: 144_000,
+      trainer: { nom: "Roux", prenom: "Camille" },
+      ...extra,
+    };
+  }
+
+  it("lève l'alerte sur un relevé échu, et la chiffre", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(10)]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "releve_formateur_echu");
+    expect(a).toBeDefined();
+    expect(a!.niveau).toBe("important");
+    expect(a!.cibleType).toBe("TrainerStatement");
+    expect(a!.cibleId).toBe("st-001");
+    // Qui, combien, depuis quand : les trois choses qu'un opérateur doit lire
+    // sans ouvrir la fiche.
+    expect(a!.message).toMatch(/Camille Roux/);
+    expect(a!.message).toMatch(/1\s?440,00/);
+    expect(a!.message).toMatch(/dépassée de 10 jours/);
+  });
+
+  it("🔴 voit le retard SANS la colonne `echeanceAt` — c'est tout l'enjeu", async () => {
+    // `TrainerStatement.echeanceAt` a existé, INDEXÉE, sans qu'une seule ligne
+    // de code ne l'écrive. Une règle qui filtrerait en SQL sur `echeanceAt < now`
+    // serait verte, muette et vide pour toujours : aucune comparaison SQL n'est
+    // vraie pour NULL. Ce test EST le contre-témoin de ce défaut.
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(3, { echeanceAt: null })]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(true);
+
+    // Et la règle n'a pas demandé à SQL de filtrer sur l'échéance : le `where`
+    // ne porte que le statut et l'absence de paiement.
+    const where = mp.trainerStatement.findMany.mock.calls[0]?.[0]?.where as Record<string, unknown>;
+    expect(where).toBeDefined();
+    expect(
+      Object.keys(where),
+      "la règle filtre sur echeanceAt en SQL : elle redeviendrait muette sur tout le stock",
+    ).not.toContain("echeanceAt");
+  });
+
+  it("se tait avant l'échéance", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(-5)]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(false);
+  });
+
+  it("🔴 se tait sur un relevé VALIDÉ mais jamais facturé", async () => {
+    // Sans facture, pas d'échéance. Lui en inventer une lui donnerait une
+    // ancienneté de dette devinée — et l'alerte serait insoluble tant que le
+    // formateur n'a pas facturé. Ce trou-là est celui de l'autofacturation.
+    mp.trainerStatement.findMany.mockResolvedValue([
+      releveEchu(90, { statut: "valide", dateFacture: null, numeroFacture: null }),
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(false);
+  });
+
+  it("se tait sur un relevé payé, même payé en retard", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([
+      releveEchu(40, { statut: "paye", payeAt: new Date() }),
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "releve_formateur_echu")).toBe(false);
+  });
+
+  it("🔑 la règle n'est pas en échec silencieux", async () => {
+    // Le fail-soft PAR RÈGLE avale les exceptions : une règle cassée ne rougit
+    // nulle part ailleurs. Six mocks manquants ont déjà rendu six règles inertes
+    // dans ce fichier, tests verts compris.
+    mp.trainerStatement.findMany.mockResolvedValue([releveEchu(2)]);
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("releve_formateur_echu");
   });
 });

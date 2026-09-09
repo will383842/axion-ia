@@ -195,6 +195,10 @@ const CODES_ATTENDUS: string[] = [
   "effectif_depasse",
   // Trou n°10 : toute la chaîne de recouvrement part d'une facture qui EXISTE.
   "session_realisee_non_facturee",
+  // 🔴 2026-09-09 — les sept codes de facturation surveillaient tous l'argent
+  // qu'on nous doit ; aucun ne surveillait l'argent qu'on doit. Un relevé
+  // d'honoraires échu n'avait AUCUNE surface : le seul rappel était le formateur.
+  "releve_formateur_echu",
   // 🔴 Trou n°5 — CINQ CODES ÉMIS SANS ENTRÉE ICI, le défaut du 2026-08-05
   // revenu. Sans entrée : pas de guichet (`sansGuichet`, aucune boîte) et
   // absence de `codesAutoResolution` (ouvertes pour toujours). Tous levés hors

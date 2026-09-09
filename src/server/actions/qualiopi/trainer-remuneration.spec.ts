@@ -207,6 +207,35 @@ describe("transitionStatementAction — gate « facture conforme »", () => {
     });
     expect("error" in sansMontant && sansMontant.error).toContain("montant");
   });
+
+  /**
+   * 🔴 LA GARDE DE L'ÉCHÉANCE — sans elle, tout le pilotage retombe muet.
+   *
+   * `TrainerStatement.echeanceAt` a existé au schéma, INDEXÉE, pendant deux mois
+   * sans qu'une seule ligne de code ne l'écrive. L'alerte `releve_formateur_echu`
+   * et l'écran « Ce qu'on doit » survivent au repli (`echeanceEffective`), mais
+   * la colonne, elle, ne se répare que d'ici : c'est le SEUL chemin qui fait
+   * entrer une facture d'honoraires dans le système.
+   */
+  it("🔴 pose l'échéance à 30 jours en entrant en `facture_recue`", async () => {
+    mockStatementFindUnique.mockResolvedValue(releve({ statut: "valide" }));
+    await transitionStatementAction({
+      id: ID,
+      to: "facture_recue",
+      numeroFacture: "F-9",
+      dateFacture: "2026-07-01",
+      montantFactureTtcEuros: 1200,
+    });
+
+    const data = tx.trainerStatement.update.mock.calls.at(-1)?.[0]?.data as Record<string, unknown>;
+    const echeance = data["echeanceAt"] as Date;
+    expect(echeance, "aucune échéance posée — le relevé sort du pilotage").toBeInstanceOf(Date);
+    const jours = Math.round((echeance.getTime() - new Date("2026-07-01").getTime()) / 86_400_000);
+    // 30 jours : clause 4 du contrat de sous-traitance. Le plafond d'ordre
+    // public de l'art. L.441-10 est à 60 — une dérive au-delà rendrait la
+    // stipulation réputée non écrite.
+    expect(jours).toBe(30);
+  });
 });
 
 describe("transitionStatementAction — gel et dégel des lignes", () => {

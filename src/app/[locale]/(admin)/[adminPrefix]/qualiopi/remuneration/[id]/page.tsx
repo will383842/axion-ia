@@ -124,6 +124,34 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
             )}
           </p>
         )}
+        {/*
+          🔴 L'échéance ne s'affichait NULLE PART, alors que la colonne existe
+          depuis le 2026-07-09. On ne pouvait pas savoir, en ouvrant un relevé,
+          si on était en retard de payer — et l'échéance est ce qui déclenche les
+          pénalités de plein droit stipulées à la clause 4 du contrat.
+        */}
+        {releve.echeance !== null && releve.payeAt === null && (
+          <p
+            className={
+              releve.retardJours === null
+                ? "admin-muted mt-[var(--space-admin-2)]"
+                : "admin-alert admin-alert-error mt-[var(--space-admin-3)]"
+            }
+            role={releve.retardJours === null ? undefined : "alert"}
+          >
+            {releve.retardJours === null ? (
+              <>À régler avant le {releve.echeance.toLocaleDateString("fr-FR")}.</>
+            ) : (
+              <>
+                Échéance dépassée depuis {releve.retardJours} jour
+                {releve.retardJours > 1 ? "s" : ""} (le{" "}
+                {releve.echeance.toLocaleDateString("fr-FR")}). Les pénalités au taux BCE majoré de
+                10 points et l&apos;indemnité forfaitaire de 40 € courent de plein droit, sans mise
+                en demeure.
+              </>
+            )}
+          </p>
+        )}
         {ecartFacture && (
           <div className="admin-alert admin-alert-error mt-[var(--space-admin-3)]" role="alert">
             La facture reçue ne correspond pas au montant dû. Le paiement restera bloqué tant que
