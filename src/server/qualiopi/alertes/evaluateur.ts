@@ -3903,6 +3903,80 @@ async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /**
+ * 🔴 UNE AUTOFACTURE ÉMISE QUE PERSONNE N'A REÇUE (2026-09-10).
+ *
+ * L'organisme a établi la facture au nom du sous-traitant et l'envoi n'est pas
+ * parti. La pièce EXISTE, elle porte une échéance, et le relevé affiche
+ * « Facture reçue » : rien ne distingue une facture reçue d'une facture ignorée.
+ *
+ * Ce n'est pas seulement un formateur mal prévenu. AUCUN délai de contestation
+ * n'a couru — le droit de contester sous huit jours est l'une des quatre
+ * conditions qui rendent l'autofacturation régulière, et payer la pièce
+ * reviendrait à solder une facture que son fournisseur n'a jamais pu contester.
+ *
+ * ⚠️ POURQUOI UNE ALERTE ALORS QU'UN ÉCRAN LE DIT DÉJÀ. Le badge « non
+ * transmise » de « Ce qu'on doit » suppose que quelqu'un ouvre l'écran. Une
+ * alerte va chercher. Et c'est exactement le cas où l'on ne peut pas compter
+ * sur le passage d'un opérateur : un échec d'envoi ne fait aucun bruit, ne
+ * bloque rien, et laisse derrière lui un relevé d'apparence normale.
+ *
+ * ⚠️ AUCUN DÉLAI DE GRÂCE, contrairement à la plupart des règles de ce moteur.
+ * Une transmission qui aboutit s'écrit dans la même seconde que l'émission ;
+ * attendre un jour ne distinguerait rien de plus, et ferait courir un jour de
+ * plus sur une pièce impayable. `resolutionAuto` la referme dès la reprise.
+ *
+ * 🔑 C'est pourquoi `now` est INUTILISÉ ici — préfixé `_` — alors que presque
+ * toutes les autres règles de ce moteur s'en servent. L'horloge ne sert qu'à
+ * comparer une date à un seuil ; cette règle n'a pas de seuil, seulement un
+ * état. Le paramètre reste pour la signature commune de `RegleFn`.
+ */
+async function regleAutofactureNonTransmise(_now: Date): Promise<AlerteCandidate[]> {
+  const releves = await prisma.trainerStatement.findMany({
+    where: { autofactureAt: { not: null }, autofactureTransmiseAt: null, payeAt: null },
+    select: {
+      id: true,
+      numeroFacture: true,
+      autofactureAt: true,
+      totalTtcCents: true,
+      periodeYear: true,
+      periodeMonth: true,
+      trainer: { select: { nom: true, prenom: true, email: true } },
+    },
+    take: 200,
+  });
+
+  const out: AlerteCandidate[] = [];
+  for (const r of releves) {
+    // Garde applicative doublant le `where` : le filtre SQL est l'autorité, mais
+    // une règle qui n'en dépend QUE de lui n'est vérifiable par aucun test.
+    if (r.autofactureAt === null) continue;
+    const qui = `${r.trainer.prenom} ${r.trainer.nom}`.trim();
+    const montant = (r.totalTtcCents / 100).toLocaleString("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+    });
+    const sansEmail = !r.trainer.email;
+    out.push({
+      code: "autofacture_non_transmise",
+      niveau: "critique",
+      titre: "Autofacture émise et jamais transmise",
+      message:
+        `La facture ${r.numeroFacture ?? "d'honoraires"} de ${qui} (${montant} TTC, période ` +
+        `${String(r.periodeMonth).padStart(2, "0")}/${r.periodeYear}) a été établie le ` +
+        `${r.autofactureAt.toLocaleDateString("fr-FR")} EN SON NOM, et ne lui a jamais été ` +
+        `transmise. Aucun délai de contestation n'a couru : la payer reviendrait à solder une ` +
+        `pièce qu'il n'a jamais pu contester, et la régularité de l'autofacturation en dépend. ` +
+        (sansEmail
+          ? `Le formateur n'a pas d'adresse e-mail — renseignez-la sur sa fiche, puis reprenez l'envoi.`
+          : `Reprenez l'envoi depuis la fiche du relevé (« Transmettre au formateur »).`),
+      cibleType: "TrainerStatement",
+      cibleId: r.id,
+    });
+  }
+  return out;
+}
+
+/**
  * 🔴 UNE RC PRO QUI TOMBE HORS SOUS-TRAITANCE NE DISAIT RIEN.
  *
  * Audit du moteur, trou n°11 — implémenté PARTIELLEMENT, et le partiel est le
@@ -4235,6 +4309,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "session_realisee_non_facturee", fn: regleSessionRealiseeNonFacturee },
   // 2026-09-09 — la première règle du moteur qui surveille l'argent qu'on DOIT.
   { nom: "releve_formateur_echu", fn: regleReleveFormateurEchu },
+  // 2026-09-10 — l'état le plus dangereux du circuit d'autofacturation.
+  { nom: "autofacture_non_transmise", fn: regleAutofactureNonTransmise },
   { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
 ];
 

@@ -3794,3 +3794,75 @@ describe("cliquet des règles inertes", () => {
     expect(reglesEnEchec).not.toContain("releve_formateur_echu");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// autofacture_non_transmise — la pièce que personne n'a reçue
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("autofacture_non_transmise", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  function piece(over: Record<string, unknown> = {}) {
+    return {
+      id: "st-af-1",
+      numeroFacture: "AXI-AUTOF-2026-001",
+      autofactureAt: new Date("2026-09-08T10:00:00.000Z"),
+      totalTtcCents: 144_000,
+      periodeYear: 2026,
+      periodeMonth: 8,
+      trainer: { nom: "Roux", prenom: "Camille", email: "camille@example.test" },
+      ...over,
+    };
+  }
+
+  it("🔴 lève en CRITIQUE, et dit pourquoi ça ne se rattrape pas", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([piece()]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "autofacture_non_transmise");
+    expect(a).toBeDefined();
+    // `critique` et non `important` : un retard de paiement se rattrape en
+    // payant ; une pièce non transmise met en défaut la RÉGULARITÉ du document.
+    expect(a!.niveau).toBe("critique");
+    expect(a!.cibleType).toBe("TrainerStatement");
+    expect(a!.message).toMatch(/Camille Roux/);
+    expect(a!.message).toMatch(/contestation/i);
+  });
+
+  it("🔑 le geste DIFFÈRE quand le formateur n'a pas d'e-mail", async () => {
+    // Contre-témoin : les deux branches ne doivent pas rendre le même conseil,
+    // sinon le code aurait deux conditions et un seul remède — et le remède
+    // serait faux pour la moitié des cas. « Reprenez l'envoi » ne mène nulle
+    // part quand il n'y a pas d'adresse.
+    mp.trainerStatement.findMany.mockResolvedValue([
+      piece({ trainer: { nom: "Roux", prenom: "Camille", email: null } }),
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "autofacture_non_transmise");
+    expect(a!.message).toMatch(/adresse e-mail/i);
+    expect(a!.message).not.toMatch(/Reprenez l'envoi depuis la fiche/);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : une pièce TRANSMISE ne lève rien", async () => {
+    // Sans lui, la règle pourrait alerter sur toute autofacture — on mesurerait
+    // « il existe une autofacture » au lieu de « elle n'est pas partie ».
+    // Le filtre SQL le fait ; ce test le rend vérifiable.
+    const where = { autofactureTransmiseAt: null };
+    mp.trainerStatement.findMany.mockImplementation(
+      async (args: { where?: Record<string, unknown> }) =>
+        args?.where !== undefined && "autofactureTransmiseAt" in args.where ? [] : [piece()],
+    );
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "autofacture_non_transmise")).toBe(false);
+    expect(Object.keys(where)).toContain("autofactureTransmiseAt");
+  });
+
+  it("🔑 la règle n'est pas en échec silencieux", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([piece()]);
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("autofacture_non_transmise");
+  });
+});

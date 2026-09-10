@@ -198,6 +198,10 @@ const CODES_ATTENDUS: string[] = [
   // 🔴 2026-09-09 — les sept codes de facturation surveillaient tous l'argent
   // qu'on nous doit ; aucun ne surveillait l'argent qu'on doit. Un relevé
   // d'honoraires échu n'avait AUCUNE surface : le seul rappel était le formateur.
+  // 🔴 2026-09-10 — l'état le plus dangereux du circuit d'autofacturation :
+  // la pièce existe, le relevé dit « Facture reçue », et le formateur ignore
+  // qu'elle existe. Aucun délai de contestation n'a couru.
+  "autofacture_non_transmise",
   "releve_formateur_echu",
   // 🔴 Trou n°5 — CINQ CODES ÉMIS SANS ENTRÉE ICI, le défaut du 2026-08-05
   // revenu. Sans entrée : pas de guichet (`sansGuichet`, aucune boîte) et
