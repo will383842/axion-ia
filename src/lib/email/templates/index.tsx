@@ -120,6 +120,10 @@ import { VivierInformationEmail, vivierInformationSubject } from "./vivier-infor
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
+import {
+  AutofactureTransmissionEmail,
+  autofactureTransmissionSubject,
+} from "./autofacture-transmission";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -324,6 +328,10 @@ const TEMPLATES: TemplateMap = {
     component: PieceExemplaireSigneEmail,
   },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
+  "autofacture-transmission": {
+    subject: autofactureTransmissionSubject,
+    component: AutofactureTransmissionEmail,
+  },
   // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12)
   "candidature-commercial-confirmee": {
     subject: candidatureCommercialConfirmeeSubject,

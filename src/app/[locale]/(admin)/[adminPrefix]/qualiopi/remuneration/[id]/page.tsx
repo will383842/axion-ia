@@ -20,6 +20,11 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { transitionStatementFormAction } from "@/server/actions/qualiopi/trainer-remuneration";
+import {
+  contesterAutofactureFormAction,
+  emettreAutofactureFormAction,
+  transmettreAutofactureFormAction,
+} from "@/server/actions/qualiopi/autofacture";
 import { getReleveDetail } from "@/server/qualiopi/remuneration/queries";
 import { transitionsPossibles } from "@/server/qualiopi/remuneration/run";
 import {
@@ -163,6 +168,127 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
             Payé le {releve.payeAt.toLocaleDateString("fr-FR")}
             {releve.moyenPaiement !== null && <> par {releve.moyenPaiement}</>}
           </p>
+        )}
+      </AdminCard>
+
+      {/*
+        ── Autofacturation ───────────────────────────────────────────────────
+
+        🔴 CETTE CARTE EXISTE POUR RENDRE VISIBLE UNE DISTINCTION QUE RIEN
+        D'AUTRE NE MONTRE : émise ≠ transmise.
+
+        La fenêtre de contestation de huit jours court depuis la TRANSMISSION.
+        Une pièce émise dont l'envoi n'est pas parti n'ouvre AUCUN délai — et
+        sans cette carte, l'opérateur verrait « facture reçue » sur le relevé et
+        croirait l'affaire close. Il paierait à l'échéance une facture que le
+        formateur n'a jamais vue, sans lui avoir laissé la possibilité de la
+        contester : la quatrième condition de régularité serait perdue en
+        silence.
+      */}
+      <AdminCard>
+        <h2 className="admin-h2">Autofacturation</h2>
+
+        {releve.autofacture.emiseAt === null ? (
+          <>
+            <p className="admin-muted">
+              Établir la facture d&apos;honoraires <strong>au nom et pour le compte</strong> du
+              formateur, sur mandat. La pièce porte SON SIRET, SON régime de TVA et la mention «
+              Autofacturation », et lui est transmise aussitôt — c&apos;est cette transmission qui
+              ouvre ses huit jours pour contester.
+            </p>
+            <p className="admin-muted">
+              Sans mandat en vigueur, sans SIRET ou sans régime de TVA renseignés sur sa fiche,
+              l&apos;émission est refusée : la pièce serait irrégulière et sa TVA non déductible.
+            </p>
+            {releve.statut !== "valide" ? (
+              <p className="admin-muted">
+                Le relevé doit d&apos;abord être <strong>validé</strong> : la facture est émise
+                après constat des interventions et des heures animées.
+              </p>
+            ) : (
+              <form action={emettreAutofactureFormAction} className="mt-[var(--space-admin-3)]">
+                <input type="hidden" name="statementId" value={releve.id} />
+                <input type="hidden" name="retour" value={retour} />
+                <button type="submit" className="admin-button">
+                  Émettre l&apos;autofacture
+                </button>
+              </form>
+            )}
+          </>
+        ) : (
+          <>
+            <p>
+              Facture <strong>{releve.numeroFacture ?? "—"}</strong> établie le{" "}
+              {releve.autofacture.emiseAt.toLocaleDateString("fr-FR")} au nom du formateur.
+            </p>
+
+            {releve.autofacture.transmiseAt === null ? (
+              <>
+                {/* 🔴 L'état le plus dangereux du circuit, et il est DIT. */}
+                <div className="admin-alert admin-alert-error" role="alert">
+                  Pièce émise mais <strong>NON TRANSMISE</strong> : l&apos;envoi n&apos;est pas
+                  parti. Aucun délai de contestation ne court, et le formateur ignore que cette
+                  facture existe. Ne payez pas sans la lui avoir transmise.
+                </div>
+                <form
+                  action={transmettreAutofactureFormAction}
+                  className="mt-[var(--space-admin-3)]"
+                >
+                  <input type="hidden" name="statementId" value={releve.id} />
+                  <input type="hidden" name="retour" value={retour} />
+                  <button type="submit" className="admin-button">
+                    Transmettre au formateur
+                  </button>
+                </form>
+              </>
+            ) : (
+              <p className="admin-muted">
+                Transmise le {releve.autofacture.transmiseAt.toLocaleDateString("fr-FR")}
+                {releve.autofacture.contestationAvantAt !== null && (
+                  <>
+                    {" "}
+                    — contestation possible jusqu&apos;au{" "}
+                    {releve.autofacture.contestationAvantAt.toLocaleDateString("fr-FR")} inclus,
+                    après quoi la facture est réputée acceptée.
+                  </>
+                )}
+              </p>
+            )}
+
+            {releve.autofacture.contesteeAt !== null ? (
+              <div className="admin-alert admin-alert-error mt-[var(--space-admin-3)]" role="alert">
+                <strong>
+                  Contestée le {releve.autofacture.contesteeAt.toLocaleDateString("fr-FR")}
+                </strong>{" "}
+                — le paiement est bloqué.
+                {releve.autofacture.contestationMotif !== null && (
+                  <> Motif : « {releve.autofacture.contestationMotif} »</>
+                )}
+              </div>
+            ) : (
+              /*
+                ⚠️ Le formulaire reste offert même après le terme des huit jours.
+                Passé ce délai la facture est « réputée acceptée » — mais cela ne
+                fait pas disparaître un désaccord que le formateur exprime. Le
+                refuser effacerait un fait et laisserait partir un virement sur
+                une pièce contestée. L'arbitrage reste humain ; l'écran le rend
+                possible, il ne le préempte pas.
+              */
+              <form action={contesterAutofactureFormAction} className="mt-[var(--space-admin-4)]">
+                <input type="hidden" name="statementId" value={releve.id} />
+                <input type="hidden" name="retour" value={retour} />
+                <div className="admin-field">
+                  <label className="admin-label" htmlFor="motif">
+                    Le formateur conteste ? Enregistrez son motif — cela bloque le paiement
+                  </label>
+                  <textarea id="motif" name="motif" rows={2} className="admin-input" required />
+                </div>
+                <button type="submit" className="admin-button-ghost mt-[var(--space-admin-2)]">
+                  Enregistrer la contestation
+                </button>
+              </form>
+            )}
+          </>
         )}
       </AdminCard>
 

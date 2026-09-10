@@ -87,7 +87,11 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // `libellePiece` ci-dessous. Le rappel de la veille (ADR 0048 §4.3) fait le
     // 51ᵉ. Deux gabarits, un seul chiffre — c'est exactement ce que cette garde
     // existe pour attraper, et elle l'a attrapé.
-    expect(tous.length).toBe(51);
+    // 🔴 2026-09-10 — RELEVÉ À 52 : `autofacture-transmission` (lot 2 de
+    // l'autofacturation). Ses trois champs sont déclarés ci-dessous — c'est la
+    // garde suivante qui l'a exigé, et elle avait raison : un aperçu troué se
+    // découvre en réunion, pas en test.
+    expect(tous.length).toBe(52);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

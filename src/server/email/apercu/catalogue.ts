@@ -227,6 +227,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "chaque signataire, sauf l'organisme",
     source: "server/qualiopi/documents/signature/transmission-exemplaire.ts",
   },
+  "autofacture-transmission": {
+    categorie: "commerce",
+    quand:
+      "Émission d'une autofacture d'honoraires — envoi DIRECT, jamais garé : il ouvre le délai de contestation de 8 jours",
+    destinataire: "le formateur sous-traitant",
+    source: "server/actions/qualiopi/autofacture.ts",
+  },
   "facture-envoi": {
     categorie: "commerce",
     quand: "Émission d'une facture — passe par la corbeille de validation",
