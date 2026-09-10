@@ -20,10 +20,23 @@
  *     sont des workflows (accepter, refuser, émettre) : deux onglets n'y font
  *     rien perdre, chaque action est idempotente ou refusée par sa transition.
  *
- * Restent les deux endroits où l'on SAISIT du texte long, donc où un écrasement
- * coûte du travail réel : l'éditeur d'articles (`Article`) et la console
- * éditoriale (`EdPublication`). Le premier est branché ; le second réutilisera
- * ce module sans le modifier.
+ * ## 🔴 LA CONSOLE ÉDITORIALE A DÉJÀ CE VERROU, ET LE SIEN EST MEILLEUR
+ *
+ * `EdPublication` porte un COMPTEUR (`versionCourante Int`), incrémenté à chaque
+ * modification du corps, et `modifierPublicationAction` refuse déjà d'écrire
+ * quand le compteur a bougé — avec un message qui dit quoi faire. C'est en
+ * place, testé, et **ce module n'a rien à y apporter**.
+ *
+ * Un compteur vaut mieux qu'une date, et il faut le dire plutôt que de laisser
+ * croire l'inverse : il est insensible aux horloges, à la précision de
+ * sérialisation, et deux écritures dans la même milliseconde restent
+ * distinguables. Ce module n'utilise `updatedAt` que parce qu'`Article` n'a pas
+ * de compteur et qu'en ajouter un demanderait une migration.
+ *
+ * ⚠️ **NE PAS poser ce module sur la console éditoriale.** Son champ s'appelle
+ * aussi `versionAttendue` mais porte un ENTIER. Voir la note de
+ * {@link lireVersionAttendue} : la collision de nom a bien failli être une
+ * panne, pas une gêne.
  *
  * ## Le protocole, en trois temps
  *
@@ -49,8 +62,21 @@
  * à une garantie forte.
  */
 
-/** Nom du champ caché porté par les formulaires. Une seule écriture, partagée. */
-export const CHAMP_VERSION_ATTENDUE = "versionAttendue";
+/**
+ * Nom du champ caché porté par les formulaires.
+ *
+ * 🔴 LE SUFFIXE `Iso` N'EST PAS DÉCORATIF. Ce champ s'est d'abord appelé
+ * `versionAttendue` — le nom EXACT qu'utilise déjà la console éditoriale pour un
+ * ENTIER (`versionCourante`). Deux champs homonymes portant des types
+ * différents, dans le même dépôt, sur le même genre de formulaire.
+ *
+ * 🔑 La collision n'était pas une gêne de lecture, c'était une panne : `new
+ * Date("3")` rend une date VALIDE (mars 2001). Un compteur lu comme une date
+ * aurait donné une version « attendue » de 2001, donc systématiquement périmée,
+ * donc **toute sauvegarde refusée** — exactement le mode de panne que ce module
+ * documente comme celui qui fait retirer un verrou.
+ */
+export const CHAMP_VERSION_ATTENDUE = "versionAttendueIso";
 
 /** Nom du champ qui autorise l'écrasement délibéré. */
 export const CHAMP_FORCER_ECRASEMENT = "forcerEcrasement";
@@ -70,11 +96,26 @@ export interface ConflitDeVersion {
   readonly versionLocale: string;
 }
 
-/** Lit la version attendue dans un `FormData`. Rend `null` si absente ou illisible. */
+/**
+ * Lit la version attendue dans un `FormData`. Rend `null` si absente ou illisible.
+ *
+ * ⚠️ **On exige la FORME ISO-8601, pas « ce que `Date` accepte ».** `new Date()`
+ * est extraordinairement permissif : `"3"` devient mars 2001, `"2026"` devient
+ * le 1ᵉʳ janvier 2026. Se contenter de « la date est-elle valide ? » laisserait
+ * un compteur, un identifiant ou une année nue produire une version plausible
+ * et fausse — et un verrou qui compare des dates fausses refuse tout.
+ *
+ * 🔑 Le repli est `null`, c'est-à-dire « pas de verrou », JAMAIS « périmé ». Une
+ * garde de concurrence doit échouer dans le sens qui laisse passer : un refus
+ * injustifié se voit tout de suite et fait retirer la garde ; une protection
+ * absente ne fait que rendre le comportement d'avant.
+ */
+const FORME_ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/;
+
 export function lireVersionAttendue(formData: FormData): string | null {
   const brut = formData.get(CHAMP_VERSION_ATTENDUE);
-  if (typeof brut !== "string" || brut.trim() === "") return null;
-  const d = new Date(brut);
+  if (typeof brut !== "string" || !FORME_ISO.test(brut.trim())) return null;
+  const d = new Date(brut.trim());
   return Number.isNaN(d.getTime()) ? null : d.toISOString();
 }
 
