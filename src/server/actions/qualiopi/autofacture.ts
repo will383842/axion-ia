@@ -60,6 +60,7 @@ import {
 } from "@/server/qualiopi/remuneration/autofacturation";
 import { verifierTotauxConformes } from "@/server/qualiopi/remuneration/autofacture-pieces";
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
+import { resoudreMandat } from "@/server/qualiopi/remuneration/mandat-source";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -177,7 +178,20 @@ export async function emettreAutofactureAction(
   // 🔑 On rend TOUS les motifs, jamais le premier : un opérateur qui corrige un
   // obstacle, réessaie, en découvre un deuxième, corrige, réessaie… n'apprend
   // jamais combien il en reste.
-  const verdict = verifierEligibiliteAutofacture(releve, releve.trainer, maintenant);
+  // 🔑 LE MANDAT PEUT VENIR DE DEUX ENDROITS, et le sous-traitant n'a signé
+  // qu'une fois. Saisie manuelle sur la fiche (mandat papier, ou signé hors de
+  // l'outil), ou article 4 bis du contrat de sous-traitance qu'il a signé
+  // électroniquement. La saisie gagne toujours : voir `resoudreMandat`.
+  const mandat = await resoudreMandat(releve.trainerId, releve.trainer);
+  const verdict = verifierEligibiliteAutofacture(
+    releve,
+    {
+      ...releve.trainer,
+      mandatAutofacturationSigneAt: mandat.signeAt,
+      mandatAutofacturationRevoqueAt: mandat.revoqueAt,
+    },
+    maintenant,
+  );
   if (!verdict.eligible) {
     return {
       error: verdict.refus.map((m) => LIBELLE_REFUS_AUTOFACTURE[m]).join("\n\n"),
@@ -296,7 +310,16 @@ export async function emettreAutofactureAction(
     action: "qualiopi.autofacture.emission",
     targetType: "TrainerStatement",
     targetId: releve.id,
-    changes: { numero, documentId: doc.id, hashSha256: doc.hashSha256 },
+    changes: {
+      numero,
+      documentId: doc.id,
+      hashSha256: doc.hashSha256,
+      // 🔑 D'où venait le mandat au moment de l'émission. Sans cette trace, une
+      // pièce émise sous mandat papier et une pièce émise sous mandat dérivé du
+      // contrat sont indiscernables dans le registre — et c'est exactement ce
+      // qu'un contrôle demanderait à établir.
+      mandat: mandat.origine,
+    },
     session,
   });
 
