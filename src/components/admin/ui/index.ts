@@ -28,11 +28,7 @@
 //   - AdminStatCard
 //   - AdminPagination
 //   - AdminSubmitButton (promu)
-//   - AdminKeyboardHint
-//   - AdminFilterChip
-//   - AdminAutosaveIndicator (+ AdminAutosaveStatus)
 //   - AdminBulkActions
-//   - AdminInlineEdit
 
 export { AdminSessionExpiryWarning } from "./AdminSessionExpiryWarning";
 export { AdminConflictDialog } from "./AdminConflictDialog";
@@ -79,12 +75,7 @@ export { AdminSubmitButton } from "./AdminSubmitButton";
 // à l'identique, la migration des pages peut être progressive.
 export { AdminButton } from "./AdminButton";
 export type { AdminButtonProps } from "./AdminButton";
-export { AdminKeyboardHint } from "./AdminKeyboardHint";
-export { AdminFilterChip } from "./AdminFilterChip";
-export { AdminAutosaveIndicator } from "./AdminAutosaveIndicator";
-export type { AdminAutosaveStatus } from "./AdminAutosaveIndicator";
 export { AdminBulkActions } from "./AdminBulkActions";
-export { AdminInlineEdit } from "./AdminInlineEdit";
 
 // PR 5 — sidebar v2 + topbar + user menu + notifications
 export { AdminSidebarNav } from "./AdminSidebarNav";
@@ -98,10 +89,22 @@ export { AdminFilterTabs } from "./AdminFilterTabs";
 export type { AdminFilterTabOption } from "./AdminFilterTabs";
 
 // PR 12 — polish UX (additive only, opt-in par les V2)
-export { AdminShortcutListener } from "./AdminShortcutListener";
-export type { AdminShortcut } from "./AdminShortcutListener";
+//
+// 🔴 2026-09-09 — SIX PRIMITIVES SUPPRIMÉES, ÉCRITES POUR DES ÉCRANS QUI NE SONT
+// JAMAIS VENUS. `AdminKeyboardHint`, `AdminFilterChip`, `AdminAutosaveIndicator`,
+// `AdminInlineEdit`, `AdminShortcutListener`, `AdminUndoToast` : livrées en mai
+// 2026, **zéro appelant** pendant quatre mois, et une seule portait un test.
+// Elles restent dans l'historique git, récupérables en une commande — mais du
+// code que personne n'appelle n'est pas gratuit : il se relit, il se migre, il
+// se compte dans les cliquets, et il donne l'illusion d'une bibliothèque plus
+// riche qu'elle ne l'est.
+//
+// ⚠️ `AdminConflictDialog` est GARDÉE, et ce n'est pas un oubli. Les six
+// ci-dessus étaient des enjolivures ; celle-là protège d'une PERTE DE DONNÉES
+// silencieuse (même fiche ouverte dans deux onglets, dernier write gagne). La
+// supprimer se décide en sachant si le cas se produit — c'est une question à
+// Will, pas une lecture de code.
 export { AdminFormDirtyGuard } from "./AdminFormDirtyGuard";
-export { AdminUndoToast } from "./AdminUndoToast";
 
 // Sprint correctif SP-01 — error UI inline formulaires
 export { AdminFormError } from "./AdminFormError";

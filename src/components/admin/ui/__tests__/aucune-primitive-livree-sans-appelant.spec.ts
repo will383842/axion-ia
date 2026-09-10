@@ -50,15 +50,25 @@ const ZONES = [
  * CETTE LISTE NE DOIT QUE DIMINUER. Retirer une entrée quand la primitive est
  * enfin utilisée — ou quand elle est supprimée du dépôt.
  */
-const SANS_APPELANT_CONNUES: readonly string[] = [
-  "AdminAutosaveIndicator",
-  "AdminConflictDialog",
-  "AdminFilterChip",
-  "AdminInlineEdit",
-  "AdminKeyboardHint",
-  "AdminShortcutListener",
-  "AdminUndoToast",
-];
+/**
+ * 🔴 2026-09-09 — SIX DES SEPT ONT ÉTÉ SUPPRIMÉES.
+ *
+ * `AdminAutosaveIndicator`, `AdminFilterChip`, `AdminInlineEdit`,
+ * `AdminKeyboardHint`, `AdminShortcutListener`, `AdminUndoToast` : livrées en
+ * mai 2026 « en anticipation d'un écran futur », **zéro appelant** pendant
+ * quatre mois, une seule portait un test. Retirées du dépôt ; l'historique git
+ * les garde.
+ *
+ * ⚠️ `AdminConflictDialog` RESTE, et la distinction est délibérée. Les six
+ * autres étaient des enjolivures d'interface ; celle-là est la seule qui
+ * protège d'une PERTE DE DONNÉES silencieuse — même fiche ouverte dans deux
+ * onglets, dernier écrivain gagne, modifications de l'autre onglet écrasées
+ * sans un mot. La supprimer demande de savoir si ce cas se produit ; c'est une
+ * question à poser, pas une lecture de code. Elle est donc gelée ici, seule,
+ * jusqu'à cet arbitrage — et le troisième test ci-dessous la fera sortir de la
+ * liste dès qu'elle sera branchée.
+ */
+const SANS_APPELANT_CONNUES: readonly string[] = ["AdminConflictDialog"];
 
 /** Tous les fichiers `.tsx` de production sous une zone. */
 function fichiers(dossier: string, acc: string[] = []): string[] {
