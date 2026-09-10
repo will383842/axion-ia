@@ -3,10 +3,15 @@ pnpm exec lint-staged
 pnpm anti-siren:check
 pnpm anti-hex:check
 pnpm use-client:check
-# ⚠️ Ce hook ne tourne PAS en worktree (husky n'y est pas installé), et
-# plusieurs sessions travaillent en worktree. Le câblage qui porte réellement
-# est celui de `ci.yml` — celui-ci n'est qu'un raccourci de confort qui fait
-# gagner un aller-retour de CI quand on commite depuis le dépôt principal.
+# ⚠️ CORRIGÉ le 2026-09-10 — CE HOOK TOURNE BIEN EN WORKTREE.
+# La ligne précédente affirmait le contraire (« husky n'y est pas installé »),
+# et deux sessions s'y sont fiées. C'est faux : un worktree partage le `.git` du
+# dépôt principal, donc `core.hooksPath` s'applique. Mesuré — un commit dans un
+# worktree a déclenché ce hook et l'a fait tourner ~6 minutes (typecheck compris).
+# Une affirmation commode sur ce qui NE tourne pas se vérifie comme le reste.
+#
+# Le câblage qui porte réellement reste celui de `ci.yml` ; celui-ci n'est qu'un
+# raccourci de confort — mais il coûte le temps qu'il coûte, y compris ici.
 pnpm radius:check
 pnpm typecheck
 
