@@ -52,6 +52,16 @@ vi.mock("@/lib/prisma", () => ({
     // la règle lirait un mock non configuré, lèverait, et le fail-soft PAR
     // RÈGLE avalerait l'exception — inerte partout, tests verts compris.
     trainerStatement: { findMany: vi.fn() },
+    // 🔴 2026-09-10 — LES TROIS MODÈLES QUI RENDAIENT SIX RÈGLES INERTES.
+    //
+    // Absents du mock, ils faisaient LEVER leurs règles ; le fail-soft PAR RÈGLE
+    // avalait l'exception, et 178 tests restaient verts pendant que stderr
+    // répétait « erreur règle … ». Ces six règles n'étaient pas mesurées : elles
+    // étaient ABSOUTES. Le cliquet posé le 2026-09-09 mesurait la dette ;
+    // celui-ci la referme.
+    sessionFormateur: { findMany: vi.fn() },
+    missionFormateur: { findMany: vi.fn() },
+    sessionFormateurRetire: { findMany: vi.fn() },
   },
 }));
 
@@ -130,6 +140,9 @@ const mp = prisma as unknown as {
   // parfaitement vert — il n'exécute pas `tsc` — et ne rougit qu'en CI, à
   // l'étape « TypeScript strict ». C'est arrivé le 2026-09-09.
   trainerStatement: { findMany: ReturnType<typeof vi.fn> };
+  sessionFormateur: { findMany: ReturnType<typeof vi.fn> };
+  missionFormateur: { findMany: ReturnType<typeof vi.fn> };
+  sessionFormateurRetire: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -177,6 +190,12 @@ function setupEmptyMocks() {
   mp.formation.count.mockResolvedValue(0);
   // Aucun relevé d'honoraires en attente de paiement par défaut.
   mp.trainerStatement.findMany.mockResolvedValue([]);
+  // Les six règles du cycle de vie du formateur : aucune affectation, aucune
+  // mission, aucun retrait par défaut → elles s'exécutent et se taisent, au lieu
+  // de lever et d'être absoutes.
+  mp.sessionFormateur.findMany.mockResolvedValue([]);
+  mp.missionFormateur.findMany.mockResolvedValue([]);
+  mp.sessionFormateurRetire.findMany.mockResolvedValue([]);
   // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
   // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
   // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
@@ -3716,81 +3735,86 @@ describe("releve_formateur_echu", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * 🔴 CE FICHIER A L'AIR DE COUVRIR L'ÉVALUATEUR. IL N'EN COUVRE QU'UNE PARTIE.
+ * 🔴 CE FICHIER A EU L'AIR DE COUVRIR L'ÉVALUATEUR SANS LE FAIRE, ET C'EST
+ * MAINTENANT REFERMÉ.
  *
  * Le prisma mocké est déclaré DEUX FOIS — la fabrique passée à `vi.mock`, et le
- * cast `mp` écrit à la main — et aucune des deux ne porte tous les modèles que
- * les règles lisent. Une règle dont le modèle manque LÈVE ; `evaluerAlertes`
- * attrape en fail-soft PAR RÈGLE, passe à la suivante, et la suite reste verte
- * pendant que stderr répète « erreur règle … ». Ces règles ne sont donc pas
- * mesurées : elles sont ABSOUTES. Un témoin qui ne regarde rien rend le même
- * vert qu'un témoin satisfait.
+ * cast `mp` écrit à la main. Trois modèles manquaient aux deux
+ * (`sessionFormateur`, `missionFormateur`, `sessionFormateurRetire`), si bien
+ * que SIX règles LEVAIENT à chaque passage. `evaluerAlertes` attrape en
+ * fail-soft PAR RÈGLE, passe à la suivante, et la suite restait verte pendant
+ * que stderr répétait « erreur règle … ». Ces six règles n'étaient pas
+ * mesurées : elles étaient ABSOUTES.
  *
- * ## Pourquoi un CLIQUET et pas « zéro erreur »
+ * Le 2026-09-09, un CLIQUET a figé la dette à six pour l'empêcher de grossir.
+ * Le 2026-09-10, les trois modèles sont ajoutés et la dette tombe à ZÉRO — sans
+ * qu'aucun des 178 autres tests ne bouge : faire s'exécuter six règles qui ne
+ * s'exécutaient pas n'a rien cassé, ce qui était le risque redouté.
  *
- * Un témoin « aucune règle en échec » serait rouge dès son écriture : la dette
- * préexiste, mesurée à SIX règles le 2026-09-09. Poser une gate sur un seuil
- * déjà dépassé ouvre un rouge permanent que personne ne peut fermer dans sa
- * propre PR — c'est la doctrine que ce dépôt s'est donnée après le bucket
- * « Shell partagé » : **seuil aligné d'abord, blocage ensuite**.
- *
- * ## Il rougit dans les DEUX sens, et les deux sont utiles
- *
- *   · une SEPTIÈME règle devient inerte → rouge. C'est le cas qui compte : une
- *     règle ajoutée sans son modèle part en production, tombe à chaque balayage,
- *     et rien ne le dit ;
- *   · une règle est RÉPARÉE sans que la liste bouge → rouge aussi. Un cliquet
- *     qui ne rougirait que dans un sens laisserait la liste se périmer, et une
- *     liste périmée absout exactement ce qu'elle prétend surveiller.
- *
- * ⚠️ Ce cliquet ne RÉPARE rien. Compléter le mock ferait s'exécuter six règles
- * qui ne s'exécutaient pas, sur 178 tests qui ne les attendent pas : c'est un
- * chantier à part, avec son propre risque de faux rouges. Le cliquet empêche
- * entre-temps que la dette grossisse — le seul risque qu'une gate sache traiter.
+ * ⚠️ LE CLIQUET RESTE, ET IL GARDE MAINTENANT LE ZÉRO. Une règle ajoutée demain
+ * sans son modèle rougit ici, et non plus « dans six mois quand quelqu'un lira
+ * stderr ». C'est la seule forme de garde qui vaille pour ce défaut : il ne se
+ * voit nulle part ailleurs.
  */
-const REGLES_INERTES_CONNUES = [
-  "formateur_desactive_encore_affecte",
-  "formateur_mission_expiree",
-  "formateur_mission_refusee",
-  "formateur_mission_sans_reponse",
-  "formateur_mission_sans_reponse_delai",
-  "stagiaires_non_prevenus_changement_formateur",
-] as const;
-
-describe("cliquet des règles inertes", () => {
+describe("aucune règle ne doit être INERTE", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     setupEmptyMocks();
     mockGetConfig.mockResolvedValue("");
   });
 
-  it("🔴 l'ensemble des règles en échec est EXACTEMENT la dette connue", async () => {
+  it("🔴 AUCUNE règle ne lève sur un balayage à vide", async () => {
     const { reglesEnEchec } = await evaluerAlertesDetaille();
     expect(
       [...reglesEnEchec].sort(),
-      "La liste des règles INERTES a bougé.\n" +
-        "  · une règle EN PLUS : son modèle Prisma manque au mock ET au cast `mp` " +
-        "ci-dessus. Elle lève, le fail-soft l'avale, elle n'est mesurée par rien — " +
-        "et elle tombera de la même façon en production si elle y lit un modèle absent. " +
-        "Ajoutez le modèle aux DEUX endroits ; ne l'ajoutez pas à cette liste.\n" +
-        "  · une règle EN MOINS : vous venez d'en réparer une. Retirez-la de " +
-        "`REGLES_INERTES_CONNUES` — la dette a baissé, le cliquet doit le savoir.",
-    ).toEqual([...REGLES_INERTES_CONNUES]);
+      "Une règle LÈVE au lieu de s'exécuter. Le fail-soft PAR RÈGLE avale " +
+        "l'exception : elle ne sera mesurée par RIEN, ici comme en production, et " +
+        "la suite restera verte. La cause est presque toujours un modèle Prisma " +
+        "absent — il doit être ajouté à la fabrique `vi.mock` ET au cast `mp`, les " +
+        "deux étant tenus séparément.",
+    ).toEqual([]);
   });
 
-  it("🔑 CONTRE-TÉMOIN : le mécanisme mesure bien quelque chose", async () => {
-    // Si `evaluerAlertesDetaille` cessait de remplir `reglesEnEchec` — champ
-    // renommé, fail-soft retiré — le test ci-dessus deviendrait une comparaison
-    // de deux listes vides, et il verdirait en ne mesurant plus rien.
+  /**
+   * 🔑 LE CONTRE-TÉMOIN, ET IL EST INDISPENSABLE.
+   *
+   * Le test ci-dessus compare deux listes vides. Si `evaluerAlertesDetaille`
+   * cessait de remplir `reglesEnEchec` — champ renommé, fail-soft retiré,
+   * boucle qui ne tourne plus — il resterait VERT en ne mesurant plus rien.
+   * C'est le motif « un témoin qui ne regarde rien rend le même vert qu'un
+   * témoin satisfait », payé plusieurs fois dans ce dépôt.
+   *
+   * On casse donc délibérément UN modèle, et on exige que la règle qui le lit
+   * apparaisse. Le témoin prouve alors qu'il SAIT voir un échec — ce qu'aucune
+   * assertion sur une liste vide ne peut établir.
+   */
+  it("🔑 CONTRE-TÉMOIN : un modèle cassé fait bien apparaître sa règle", async () => {
+    mp.missionFormateur.findMany.mockRejectedValue(new Error("modèle cassé (test)"));
     const { reglesEnEchec } = await evaluerAlertesDetaille();
-    expect(reglesEnEchec.length).toBeGreaterThan(0);
+    expect(
+      reglesEnEchec.length,
+      "le mécanisme de détection ne voit plus rien : le test ci-dessus ne mesure plus",
+    ).toBeGreaterThan(0);
+    expect(reglesEnEchec).toContain("formateur_mission_refusee");
   });
 
-  it("🔴 `releve_formateur_echu` n'est PAS dans la dette", async () => {
-    // La règle de cette PR lit `trainerStatement`, présent au mock ET au cast.
-    // Ce test dit explicitement ce que le cliquet garantit pour elle.
-    expect(REGLES_INERTES_CONNUES as readonly string[]).not.toContain("releve_formateur_echu");
+  it("les six règles autrefois inertes s'exécutent VRAIMENT", async () => {
+    // Témoin positif nominatif : `reglesEnEchec` vide pourrait aussi vouloir
+    // dire que ces règles ont disparu du tableau `REGLES`. On vérifie donc
+    // qu'elles y sont ET qu'elles passent.
     const { reglesEnEchec } = await evaluerAlertesDetaille();
-    expect(reglesEnEchec).not.toContain("releve_formateur_echu");
+    for (const nom of [
+      "formateur_desactive_encore_affecte",
+      "stagiaires_non_prevenus_changement_formateur",
+      "formateur_mission_refusee",
+      "formateur_mission_sans_reponse",
+      "formateur_mission_sans_reponse_delai",
+      "formateur_mission_expiree",
+    ]) {
+      expect(reglesEnEchec, `« ${nom} » lève encore`).not.toContain(nom);
+    }
+    expect(mp.missionFormateur.findMany).toHaveBeenCalled();
+    expect(mp.sessionFormateur.findMany).toHaveBeenCalled();
+    expect(mp.sessionFormateurRetire.findMany).toHaveBeenCalled();
   });
 });
