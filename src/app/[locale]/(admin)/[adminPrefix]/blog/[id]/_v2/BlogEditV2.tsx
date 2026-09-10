@@ -21,8 +21,14 @@ interface TagOption {
   nameFr: string;
 }
 
+// ⚠️ COPIE de l'interface de `BlogForm`. Les deux ont derive une fois deja :
+// `updatedAt` a du etre ajoute ici APRES coup, sinon la prop traversait au
+// runtime sans exister au type — et la prochaine relecture aurait conclu que le
+// verrou optimiste n'etait pas cable.
 interface ArticleInitial {
   id: string;
+  /** `updatedAt` au chargement — verrou optimiste, cf. `server/concurrence`. */
+  updatedAt?: Date | string | null;
   authorId: string | null;
   categoryId: string | null;
   featuredImage: string | null;

@@ -59,16 +59,21 @@ const ZONES = [
  * quatre mois, une seule portait un test. Retirées du dépôt ; l'historique git
  * les garde.
  *
- * ⚠️ `AdminConflictDialog` RESTE, et la distinction est délibérée. Les six
- * autres étaient des enjolivures d'interface ; celle-là est la seule qui
- * protège d'une PERTE DE DONNÉES silencieuse — même fiche ouverte dans deux
- * onglets, dernier écrivain gagne, modifications de l'autre onglet écrasées
- * sans un mot. La supprimer demande de savoir si ce cas se produit ; c'est une
- * question à poser, pas une lecture de code. Elle est donc gelée ici, seule,
- * jusqu'à cet arbitrage — et le troisième test ci-dessous la fera sortir de la
- * liste dès qu'elle sera branchée.
+ * ✅ 2026-09-10 — `AdminConflictDialog` EST BRANCHÉE : LA LISTE EST VIDE.
+ *
+ * Elle était la seule des sept à protéger d'une PERTE DE DONNÉES (même fiche
+ * ouverte dans deux onglets, dernier écrivain gagne, modifications de l'autre
+ * écrasées sans un mot). Will a tranché le 2026-09-10 : le cas se produit, ou
+ * peut se produire. Elle sert désormais l'éditeur d'articles, par le verrou
+ * optimiste de `server/concurrence/version-attendue.ts`.
+ *
+ * 🔑 LE TROISIÈME TEST A VIDÉ CETTE LISTE TOUT SEUL. Au premier lancement
+ * après le branchement, il a rougi — « ces primitives sont désormais utilisées,
+ * retirez-les » — sans qu'on ait à y penser. C'est exactement ce qu'on attend
+ * d'un cliquet : qu'il réclame sa propre mise à jour au lieu de vieillir en
+ * silence. Plus aucune primitive de la console n'est livrée sans appelant.
  */
-const SANS_APPELANT_CONNUES: readonly string[] = ["AdminConflictDialog"];
+const SANS_APPELANT_CONNUES: readonly string[] = [];
 
 /** Tous les fichiers `.tsx` de production sous une zone. */
 function fichiers(dossier: string, acc: string[] = []): string[] {

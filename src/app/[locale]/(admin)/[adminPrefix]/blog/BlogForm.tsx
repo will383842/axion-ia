@@ -1,9 +1,14 @@
 "use client";
 // use-client: useActionState + useState pour wizard tabs FR/EN + Tiptap editor bind.
 
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { upsertArticleAction, type UpsertArticleState } from "@/features/admin-blog/actions";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
+import { AdminConflictDialog } from "@/components/admin/ui";
+import {
+  CHAMP_FORCER_ECRASEMENT,
+  CHAMP_VERSION_ATTENDUE,
+} from "@/server/concurrence/version-attendue";
 
 const init: UpsertArticleState = { ok: false, error: "" };
 
@@ -28,6 +33,12 @@ interface ArticleInitial {
   readingTime: number | null;
   commentsEnabled: boolean;
   tagIds: string[];
+  /**
+   * `updatedAt` au moment du chargement. Renvoye tel quel a la sauvegarde pour
+   * que l'action detecte un ecrasement. Optionnel : un ecran qui ne le fournit
+   * pas retrouve exactement le comportement d'avant — jamais un refus.
+   */
+  updatedAt?: Date | string | null;
   fr: TranslationInitial;
   en: TranslationInitial;
 }
@@ -52,6 +63,19 @@ export function BlogForm({ authors, categories, tags, initial }: Props) {
   const [state, formAction, pending] = useActionState(upsertArticleAction, init);
   const [activeLocale, setActiveLocale] = useState<"fr" | "en">("fr");
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set(initial?.tagIds ?? []));
+  // 🔑 Le formulaire n'est PAS re-soumis par du code : on arme le champ cache
+  // puis on demande au navigateur de renvoyer le formulaire. Reconstruire la
+  // soumission a la main obligerait a recopier les champs — dont le corps
+  // Tiptap — et une recopie derive.
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const forcerRef = useRef<HTMLInputElement | null>(null);
+  const conflit = !state.ok && "conflit" in state ? state.conflit : null;
+
+  function ecraser() {
+    if (!forcerRef.current || !formRef.current) return;
+    forcerRef.current.value = "1";
+    formRef.current.requestSubmit();
+  }
 
   function toggleTag(tagId: string) {
     setSelectedTags((prev) => {
@@ -63,8 +87,20 @@ export function BlogForm({ authors, categories, tags, initial }: Props) {
   }
 
   return (
-    <form action={formAction} className="admin-form">
+    <form ref={formRef} action={formAction} className="admin-form">
       {initial?.id && <input type="hidden" name="id" value={initial.id} />}
+      {/* Verrou optimiste — la version chargee part avec la sauvegarde. */}
+      {initial?.updatedAt ? (
+        <input
+          type="hidden"
+          name={CHAMP_VERSION_ATTENDUE}
+          value={new Date(initial.updatedAt).toISOString()}
+        />
+      ) : null}
+      {/* Arme UNIQUEMENT par le bouton « Ecraser » du dialogue de conflit.
+          Remis a vide a chaque rendu : un ecrasement ne doit jamais etre
+          reconduit silencieusement a la sauvegarde suivante. */}
+      <input ref={forcerRef} type="hidden" name={CHAMP_FORCER_ECRASEMENT} defaultValue="" />
 
       {/* Bloc structurel */}
       <div className="admin-form-row">
@@ -231,11 +267,27 @@ export function BlogForm({ authors, categories, tags, initial }: Props) {
         <TranslationFields prefix="en" initial={initial?.en} disabled={pending} />
       </div>
 
+      {conflit ? (
+        <AdminConflictDialog
+          open
+          resourceLabel="cet article"
+          serverUpdatedAt={conflit.versionServeur}
+          localUpdatedAt={conflit.versionLocale}
+          onOverride={ecraser}
+          onCancel={() => {
+            // Rien a defaire : aucune ecriture n'a eu lieu. On rend la main a
+            // l'editeur, qui garde sa saisie intacte — c'est tout l'interet
+            // d'avoir verifie AVANT d'ecrire.
+            if (forcerRef.current) forcerRef.current.value = "";
+          }}
+        />
+      ) : null}
+
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
           {state.created ? "Article créé" : "Article mis à jour"}.
         </p>
-      ) : state.error ? (
+      ) : "error" in state && state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">
           {state.error}
         </p>

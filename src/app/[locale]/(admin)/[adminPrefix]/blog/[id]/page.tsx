@@ -37,6 +37,11 @@ export default async function EditBlogPage({ params }: PageProps) {
 
   const initialPayload = {
     id: article.id,
+    // Verrou optimiste (2026-09-10) : la version chargee repart avec la
+    // sauvegarde, pour que l'action detecte un ecrasement. Sans cette ligne le
+    // champ cache reste vide et la garde ne s'arme JAMAIS — elle serait posee
+    // partout ailleurs et ne protegerait rien.
+    updatedAt: article.updatedAt,
     authorId: article.authorId,
     categoryId: article.categoryId,
     featuredImage: article.featuredImage,

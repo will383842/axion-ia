@@ -181,8 +181,21 @@ const upsertSchema = z.object({
   en: translationSchema,
   tagIds: z.array(z.string().uuid()).default([]),
 });
+import {
+  conflitDeVersion,
+  ecrasementForce,
+  lireVersionAttendue,
+  versionPerimee,
+  type ConflitDeVersion,
+} from "@/server/concurrence/version-attendue";
+
 export type UpsertArticleState =
-  { ok: true; id: string; created: boolean } | { ok: false; error: string };
+  | { ok: true; id: string; created: boolean }
+  | { ok: false; error: string }
+  // Verrou optimiste (2026-09-10) — la base a bouge sous l'editeur. L'ecran
+  // ouvre `AdminConflictDialog` ; ce n'est PAS une erreur de saisie, et le
+  // confondre avec `error` afficherait un message rouge la ou il faut un choix.
+  | { ok: false; conflit: ConflitDeVersion };
 
 export async function upsertArticleAction(
   _prev: UpsertArticleState,
@@ -246,6 +259,29 @@ export async function upsertArticleAction(
     readingTime: parsed.data.readingTime ?? null,
     commentsEnabled: parsed.data.commentsEnabled,
   };
+
+  // 🔴 VERROU OPTIMISTE — AVANT TOUTE ECRITURE.
+  //
+  // `AdminConflictDialog` decrit ce risque depuis mai 2026 et n'etait branchee
+  // nulle part : « Will ouvre la meme fiche dans 2 onglets et edite dans les 2.
+  // Sans protection : dernier write gagne silencieusement, modifs externes
+  // ecrasees. » Un article est du texte long : l'onglet oublie est le cas
+  // NORMAL, pas le cas rare.
+  //
+  // 🔑 La verification est ici et pas dans la transaction plus bas, parce qu'un
+  // conflit n'est pas une erreur : il ne doit RIEN annuler ni journaliser, il
+  // doit rendre la main a l'utilisateur avec ses deux dates. La placer dans le
+  // `try` la ferait passer pour un echec technique.
+  const versionAttendue = lireVersionAttendue(formData);
+  if (parsed.data.id && versionAttendue !== null && !ecrasementForce(formData)) {
+    const enBase = await prisma.article.findUnique({
+      where: { id: parsed.data.id },
+      select: { updatedAt: true },
+    });
+    if (enBase && versionPerimee(enBase.updatedAt, versionAttendue)) {
+      return { ok: false, conflit: conflitDeVersion(enBase.updatedAt, versionAttendue) };
+    }
+  }
 
   try {
     const created = !parsed.data.id;
