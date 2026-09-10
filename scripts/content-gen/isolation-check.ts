@@ -540,6 +540,16 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   //   de chute de position PRÉVIENNE réellement : elle se contentait d'un
   //   `console.warn` sous un commentaire affirmant à tort qu'une alerte Telegram
   //   était câblée ailleurs. Consommateur légitime, pas une fuite de périmètre.
+  // - .husky/pre-commit (2026-09-10) : le hook ÉNUMÈRE les contrôles de Gate A
+  //   qu'il ne joue pas, dont `content-gen:isolation-check`. Le marqueur vient
+  //   donc de cette garde ELLE-MÊME, nommée dans une liste de commentaires.
+  //   🔑 Un shell hook ne peut rien importer de `src/server/content-gen` : il
+  //   n'y a pas de fuite de périmètre possible, seulement une citation. Sans
+  //   cette entrée, la garde interdirait qu'on la NOMME — donc qu'on documente
+  //   son existence — et c'est exactement ce qu'elle a fait sur la PR qui
+  //   ajoutait cette documentation. Même famille que `admin-nav.test.ts` et
+  //   `services-ssot.spec.ts` ci-dessus : marqueur cité, jamais importé.
+  /^\.husky\/pre-commit$/,
   /^prisma\/migrations\/\d+_content_template_history\/migration\.sql$/,
   /^scripts\/activate-content-gen-value-metier\.ts$/,
   /^scripts\/depublish-en-translations\.ts$/,
