@@ -74,7 +74,27 @@ export type TypeGabaritSignable =
  * |---|---|---|
  * | `convention` | 2 | 16/08 — clause de défaillance du financeur ajoutée en section 5 (refus, réduction, caducité ou non-paiement du financeur : les sommes demeurent dues par le client) |
  * | `convention_tripartite` | 2 | 16/08 — trois mentions L.6353-1 + cinq sections de fond (obligations, RGPD, propriété intellectuelle, responsabilité, droit applicable) ; annexes 5 → 10, signatures 6 → 11 |
+ * | `contrat_sous_traitance` | 2 | 09/09 — clause 4 enrichie (délai de paiement 30 j, pénalités BCE + 10 pts, indemnité de 40 €, absence d'escompte ; fait générateur de la facturation) et article **4 bis** ajouté (mandat de facturation / autofacturation) |
  * | les autres | 1 | texte inchangé depuis l'origine |
+ *
+ * 🔴 L'INCRÉMENT DU `contrat_sous_traitance` EST ARRIVÉ AVEC UN JOUR DE RETARD,
+ * et le raconter vaut mieux que le masquer. Le 09/09, trois clauses de fond ont
+ * été ajoutées au contrat de sous-traitance **sans toucher cette table**. La
+ * règle d'usage était pourtant écrite vingt lignes plus bas, dans ce fichier,
+ * depuis le 16/08.
+ *
+ * 🔑 Un commentaire ne protège pas un autre fichier. C'est le même motif que le
+ * `server-only` qui tuait deux crons en silence : la consigne existait, à
+ * l'endroit exact où elle se lit, et elle n'a rien empêché parce que rien ne
+ * l'EXÉCUTAIT. D'où `gabarit-empreinte.spec.ts`, ajouté le 10/09 : le texte
+ * d'un gabarit signable ne peut plus changer sans que quelqu'un tranche entre
+ * « c'est de fond » et « c'est cosmétique ».
+ *
+ * ⚠️ Conséquence de cet oubli, et elle est nulle en pratique : aucun contrat de
+ * sous-traitance n'avait été signé sous la v1 (vérifié auprès de Will le
+ * 10/09). Si l'un l'avait été, sa copie signée aurait été re-rendue avec des
+ * clauses que son signataire n'a jamais lues — exactement ce que ce module
+ * existe pour empêcher.
  *
  * ⚠️ Le `devis` reste en 1 : la garde de certification du 16/08 change ce qui
  * est CALCULÉ (les montants entrent ou non dans l'instantané), pas le texte du
@@ -85,7 +105,7 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   convention: 2,
   convention_tripartite: 2,
   contrat_formation: 1,
-  contrat_sous_traitance: 1,
+  contrat_sous_traitance: 2,
   releve_connexion: 1,
   lettre_mission: 1,
 };
