@@ -20,3 +20,29 @@ if command -v gitleaks >/dev/null 2>&1; then
     exit 1
   }
 fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️ CE HOOK NE COUVRE PAS GATE A. Mesuré le 2026-09-10 contre `ci.yml` :
+# il joue 4 des 15 contrôles du job `gate-a` (+ typecheck, + lint sur les seuls
+# fichiers staged via lint-staged).
+#
+# NE SONT PAS JOUÉS ICI :
+#   format:check · zod:check · contrast:check · i18n:check · positionnement:check
+#   admin-gardes:check · admin-nav:routes-check
+#   content-gen:isolation-check · image-bank:isolation-check · qualiopi:isolation-check
+#   test:coverage      ← la suite Vitest ENTIÈRE
+#
+# Le piège n'est pas l'absence : c'est que ce hook rend plusieurs verts d'affilée,
+# ce qui RESSEMBLE à une couverture complète. Un commit vert ici ne dit rien de
+# Gate A. Le 2026-09-09, trois PR ont été poussées vertes en local puis rougies
+# par Gate A — deux sur une garde statique, une sur `test:coverage`.
+#
+# 🔑 `test:coverage` est le plus coûteux à substituer : la suite entière tombe en
+# OOM sur cette machine. Le substitut correct n'est pas « les répertoires que je
+# crois concernés » mais, pour un ajout de valeur d'énumération ou de constante
+# partagée, dériver le périmètre du nom du type ET des tables touchées ET des
+# dossiers scannés par les gardes de conformité (`documents/templates/*.spec.tsx`) :
+#     git grep -l <NomDuType> -- '**/*.spec.ts' '**/*.spec.tsx'
+# puis lancer exactement ces fichiers.
+# ─────────────────────────────────────────────────────────────────────────────
+echo "ℹ️  pre-commit : 4/15 contrôles Gate A joués — voir le commentaire en fin de .husky/pre-commit"
