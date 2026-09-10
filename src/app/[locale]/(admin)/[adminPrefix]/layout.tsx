@@ -135,8 +135,28 @@ export const dynamic = "force-dynamic";
  *
  * Ça ne se voit pas en lisant une page : il faut ouvrir un onglet.
  */
+/**
+ * 🔴 2026-09-10 — LA MARQUE ÉTAIT DOUBLÉE, ET LE BLOC CI-DESSUS L'IGNORAIT.
+ *
+ * Constaté au navigateur, en production, sur `/fr/<préfixe>/` : l'onglet lisait
+ * **« Console admin | Axion-IA · Axion-IA »**. Le correctif de 2026 avait bien
+ * retiré le titre marketing des 171 pages sans titre propre, mais il laissait
+ * la marque deux fois.
+ *
+ * 🔑 LA CAUSE : `title.default` d'un segment ENFANT subit le `template` du
+ * PARENT. `src/app/[locale]/layout.tsx` déclare `template: "%s · Axion-IA"`, et
+ * seul `title.absolute` y échappe. Le `template: "%s"` posé ici gouverne les
+ * ENFANTS de ce layout — il ne protège pas son propre `default`.
+ *
+ * ⚠️ NE PAS « corriger » en remplaçant `default` par `absolute`. `absolute` ne
+ * sert PAS de repli aux segments enfants : les 171 pages sans titre propre
+ * remonteraient chercher plus haut et retrouveraient le titre du site
+ * marketing — exactement le défaut que ce bloc existe pour empêcher. Le seul
+ * geste sûr est de retirer la marque d'ici et de laisser le parent la poser une
+ * fois : l'onglet lit « Console admin · Axion-IA ».
+ */
 export const metadata: Metadata = {
-  title: { default: "Console admin | Axion-IA", template: "%s" },
+  title: { default: "Console admin", template: "%s" },
   robots: { index: false, follow: false },
 };
 
