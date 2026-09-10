@@ -132,6 +132,15 @@ const JALONS: Readonly<Record<string, JalonRemise>> = {
   //    organisme ↔ intervenant. Elles portent des montants, des barèmes et des
   //    conditions qui ne concernent pas la personne formée.
   facture: "jamais",
+  // ⚠️ `jamais`, et la raison DIFFÈRE de celle de la facture juste au-dessus.
+  // Une facture client n'est pas remise au jalon parce que son envoi est un
+  // geste commercial. Une autofacture ne l'est pas parce que son destinataire
+  // n'est PAS un stagiaire : c'est le sous-traitant, et sa transmission est une
+  // obligation contractuelle attachée à l'émission (clause 4 bis du contrat de
+  // sous-traitance), pas une conséquence d'un jalon du parcours de formation.
+  // La ranger dans un canal de remise stagiaire l'aurait rendue visible au
+  // mauvais lecteur.
+  autofacture_honoraires: "jamais",
   avoir: "jamais",
   devis: "jamais",
   kit_opco: "jamais",

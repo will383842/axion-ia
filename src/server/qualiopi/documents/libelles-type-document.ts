@@ -81,6 +81,7 @@ export const LIBELLES_TYPE_DOCUMENT: Record<DocumentType, string> = {
   attestation_partielle: "Attestation partielle de formation",
   certificat_realisation: "Certificat de réalisation",
   facture: "Facture",
+  autofacture_honoraires: "Facture d'honoraires (autofacturation)",
   devis: "Devis",
   avoir: "Avoir",
   kit_opco: "Kit OPCO",

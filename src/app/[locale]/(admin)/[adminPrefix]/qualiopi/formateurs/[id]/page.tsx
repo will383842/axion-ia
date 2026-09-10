@@ -17,6 +17,7 @@ import {
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
+import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
 import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
 import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
@@ -327,6 +328,34 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           prochaineVerifAt={trainer.sousTraitantProchaineVerifAt}
           rcProAttestationUrl={trainer.rcProAttestationUrl}
           rcProEcheanceAt={trainer.rcProEcheanceAt}
+        />
+      )}
+
+      {/*
+        Identité fiscale du sous-traitant et mandat de facturation — 2026-09-09.
+
+        Placé JUSTE APRÈS les pièces de sous-traitance : c'est la même famille de
+        geste (consigner ce qui figure sur une pièce), et le mandat de
+        facturation est une clause du contrat-cadre saisi au-dessus.
+
+        🔴 Cinq colonnes n'avaient AUCUN écrivain avant ce panneau, dont
+        `regimeTvaHonoraires`, en base depuis le 2026-07-09 : le moteur de
+        rémunération levait une anomalie « régime de TVA non renseigné » que rien
+        ne permettait de fermer autrement qu'en base.
+
+        Sous-traitants seulement : un salarié ne facture pas, et un mandat
+        d'autofacturation n'a aucun sens pour lui.
+      */}
+      {trainer.statut === "sous_traitant" && (
+        <TrainerFacturationPanel
+          trainerId={trainer.id}
+          initial={{
+            siret: trainer.siret,
+            numeroTvaIntracom: trainer.numeroTvaIntracom,
+            regimeTvaHonoraires: trainer.regimeTvaHonoraires,
+            mandatAutofacturationSigneAt: trainer.mandatAutofacturationSigneAt,
+            mandatAutofacturationRevoqueAt: trainer.mandatAutofacturationRevoqueAt,
+          }}
         />
       )}
 

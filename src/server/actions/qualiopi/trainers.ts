@@ -149,6 +149,41 @@ const sousTraitancePiecesSchema = z.object({
   rcProEcheanceAt: z.coerce.date().nullable().optional(),
 });
 
+/**
+ * Identité fiscale du sous-traitant et mandat de facturation (autofacturation).
+ *
+ * 🔴 CINQ COLONNES SANS AUCUN ÉCRIVAIN — le défaut « code complet sans
+ * appelant » que ce fichier a déjà payé une fois, relevé six fois dans l'audit
+ * du 2026-08-03 et corrigé juste au-dessus pour les pièces de sous-traitance.
+ *
+ * `regimeTvaHonoraires` existe depuis le commissionnement (2026-07-09) et
+ * n'était réglable par AUCUN écran : le moteur de rémunération lève une anomalie
+ * `regime_tva_absent` que personne ne pouvait fermer autrement qu'en base. Les
+ * quatre autres (`siret`, `numeroTvaIntracom`, et les deux dates de mandat)
+ * arrivent avec l'autofacturation et auraient eu exactement le même sort :
+ * `verifierEligibiliteAutofacture` aurait refusé d'émettre pour toujours, en
+ * disant « renseignez-le sur sa fiche » sur une fiche où rien ne se renseigne.
+ *
+ * Tous les champs sont `.nullable().optional()` : `null` efface, `undefined`
+ * laisse intact. Sans cette distinction, enregistrer le SIRET effacerait le
+ * mandat.
+ */
+const facturationSousTraitantSchema = z.object({
+  id: z.string().uuid(),
+  siret: z
+    .string()
+    .regex(/^\d{14}$/, "Le SIRET compte 14 chiffres")
+    .nullable()
+    .optional(),
+  numeroTvaIntracom: z.string().max(20).nullable().optional(),
+  regimeTvaHonoraires: z
+    .enum(["franchise_293b", "exonere_formation", "assujetti_20"])
+    .nullable()
+    .optional(),
+  mandatAutofacturationSigneAt: z.coerce.date().nullable().optional(),
+  mandatAutofacturationRevoqueAt: z.coerce.date().nullable().optional(),
+});
+
 const setActifSchema = z.object({
   id: z.string().uuid(),
   actif: z.boolean(),
@@ -481,6 +516,82 @@ export async function updateTrainerSousTraitancePiecesAction(
 
   await logQualiopiActivity({
     action: "qualiopi.trainer.sous_traitance_pieces",
+    targetType: "Trainer",
+    targetId: id,
+    changes: v,
+    session,
+  });
+
+  return { data: { id } };
+}
+
+/**
+ * Enregistre l'identité fiscale du sous-traitant et l'état de son mandat.
+ *
+ * ⚠️ CE QUE CETTE ACTION NE FAIT PAS, ET C'EST VOULU : elle n'émet rien, ne
+ * signe rien, ne vérifie pas qu'un contrat a été signé. Elle CONSIGNE ce qu'un
+ * humain a constaté sur une pièce papier ou électronique — comme
+ * `updateTrainerSousTraitancePiecesAction` juste au-dessus consigne un contrat
+ * cadre. La régularité de l'autofacture se juge ensuite sur ces dates
+ * (`mandatEnVigueur`), jamais sur une case cochée.
+ *
+ * 🔴 LA DATE DE SIGNATURE EST CELLE DE LA PIÈCE, PAS CELLE DE LA SAISIE. Un
+ * mandat signé le 1er et consigné le 20 couvre les factures du 5 : c'est
+ * pourquoi le champ est une date saisissable et non un `new Date()` posé ici.
+ * L'inverse — horodater à la saisie — aurait rendu irrégulières des pièces
+ * régulières, en silence.
+ */
+export async function updateTrainerFacturationAction(
+  input: z.infer<typeof facturationSousTraitantSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  // Acte ENGAGEANT : ces valeurs décident si l'organisme peut émettre une
+  // facture au nom d'un tiers, et quel taux de TVA elle portera. Même
+  // habilitation que le paiement des honoraires — `requireAdminWrite`
+  // autoriserait un compte éditorial à ouvrir ce droit.
+  const session = await requireHabilitation("remunerer_formateur");
+  const parsed = facturationSousTraitantSchema.safeParse(input);
+  if (!parsed.success) {
+    const premier = parsed.error.issues[0];
+    return { error: premier?.message ?? "Données invalides" };
+  }
+  const { id, ...v } = parsed.data;
+
+  // Une révocation ANTÉRIEURE à la signature n'a pas de sens : elle rendrait
+  // `mandatEnVigueur` faux à toutes les dates, sans jamais dire pourquoi.
+  if (
+    v.mandatAutofacturationSigneAt != null &&
+    v.mandatAutofacturationRevoqueAt != null &&
+    v.mandatAutofacturationRevoqueAt.getTime() <= v.mandatAutofacturationSigneAt.getTime()
+  ) {
+    return {
+      error:
+        "La date de révocation doit être postérieure à la signature : un mandat révoqué avant d'être signé n'a jamais été en vigueur.",
+    };
+  }
+
+  try {
+    await prisma.trainer.update({
+      where: { id },
+      data: {
+        ...(v.siret !== undefined ? { siret: v.siret } : {}),
+        ...(v.numeroTvaIntracom !== undefined ? { numeroTvaIntracom: v.numeroTvaIntracom } : {}),
+        ...(v.regimeTvaHonoraires !== undefined
+          ? { regimeTvaHonoraires: v.regimeTvaHonoraires }
+          : {}),
+        ...(v.mandatAutofacturationSigneAt !== undefined
+          ? { mandatAutofacturationSigneAt: v.mandatAutofacturationSigneAt }
+          : {}),
+        ...(v.mandatAutofacturationRevoqueAt !== undefined
+          ? { mandatAutofacturationRevoqueAt: v.mandatAutofacturationRevoqueAt }
+          : {}),
+      },
+    });
+  } catch {
+    return { error: "Erreur lors de l'enregistrement des informations de facturation." };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.facturation_sous_traitant",
     targetType: "Trainer",
     targetId: id,
     changes: v,

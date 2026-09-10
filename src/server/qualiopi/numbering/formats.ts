@@ -24,6 +24,19 @@ export const NUMBERING_PREFIX = {
   offre: "AXI-OFF",
   audit: "AXI-AUD",
   avoir: "AXI-AVO",
+  // 🔴 SÉRIE PROPRE À L'AUTOFACTURATION — ne JAMAIS la fondre dans `facture`.
+  //
+  // `AXI-FACT` numérote les factures que l'organisme émet POUR SON COMPTE : sa
+  // chronologie est celle de ses ventes, et c'est elle que l'administration lit
+  // pour vérifier la continuité de la séquence. Une facture d'autofacturation
+  // n'est pas une vente : c'est la facture du SOUS-TRAITANT, que nous établissons
+  // en son nom et pour son compte sous mandat. L'intercaler dans la série des
+  // ventes y injecterait des pièces d'achat et ferait mentir la seule chose
+  // qu'un numéro de facture doit garantir.
+  //
+  // La série reste chronologique et continue, ce que le mandat exige — mais
+  // c'est SA chronologie.
+  autofacture: "AXI-AUTOF",
   // 🔴 V19 — série PROPRE au registre des pièces émises (`documents_generes`).
   // Sans elle, ce registre EMPRUNTAIT AXI-FORM / AXI-SESS / AXI-DEV aux tables
   // métier : `AXI-FORM-2026-001` désigne à la fois une formation du catalogue
@@ -104,7 +117,7 @@ export function formatDocumentNumber(
  * valide rien.
  */
 export const DOCUMENT_NUMBER_REGEX =
-  /^AXI-(?:(?:FORM|SESS|ATT|CERT|FACT|REC|DEV|OFF|AUD|AVO|DOC|COACH)-\d{4}-\d{3,}(?:-R\d{2,})?|CLI-\d{3,})$/;
+  /^AXI-(?:(?:FORM|SESS|ATT|CERT|FACT|AUTOF|REC|DEV|OFF|AUD|AVO|DOC|COACH)-\d{4}-\d{3,}(?:-R\d{2,})?|CLI-\d{3,})$/;
 
 /** `true` si la chaîne est un numéro de document officiel bien formé. */
 export function isValidDocumentNumber(value: string): boolean {
@@ -124,6 +137,11 @@ export const ENTITY_REGISTER_TYPES = [
   "session",
   "devis",
   "facture",
+  // L'autofacture identifie un OBJET MÉTIER (la facture d'honoraires du
+  // sous-traitant, portée par `trainer_statements.numero_facture`), pas un
+  // tirage PDF : elle appartient donc au registre des entités, jamais à celui
+  // des pièces émises. L'intersection des deux doit rester vide.
+  "autofacture",
   "avoir",
   "client",
   "reclamation",

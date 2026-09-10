@@ -71,6 +71,10 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   certificat_realisation: "certificat",
   // Cote de classement interne — le PDF porte le numéro comptable de l'entité.
   facture: "document",
+  // Idem : le PDF porte le numéro de la pièce comptable (série `AXI-AUTOF`,
+  // portée par `trainer_statements.numero_facture`), celui-ci n'est que la cote
+  // de classement du TIRAGE. C'est exactement la séparation V19.
+  autofacture_honoraires: "document",
   devis: "document",
   avoir: "document",
   kit_opco: "document",
