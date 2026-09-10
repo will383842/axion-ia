@@ -72,6 +72,11 @@ function releve(over: Record<string, unknown> = {}): Record<string, unknown> {
     numeroFacture: "F-001",
     dateFacture: new Date("2026-07-01T00:00:00Z"),
     montantFactureTtcCents: 108_000,
+    // Forme RÉELLE de la ligne : Prisma rend `null`, jamais `undefined`. Une
+    // fixture qui omet un champ fait mesurer aux tests une forme qui n'existe
+    // pas en base.
+    contesteeAt: null,
+    contestationMotif: null,
     ...over,
   };
 }
@@ -217,6 +222,51 @@ describe("transitionStatementAction — gate « facture conforme »", () => {
    * la colonne, elle, ne se répare que d'ici : c'est le SEUL chemin qui fait
    * entrer une facture d'honoraires dans le système.
    */
+  /**
+   * 🔴 UNE PIÈCE CONTESTÉE NE SE PAIE PAS.
+   *
+   * Même raisonnement que la garde « facture conforme » juste au-dessus : un
+   * écart de montant est un DÉSACCORD, et le régler par un virement revient à
+   * l'acter au lieu de le trancher. Une contestation est un désaccord que le
+   * sous-traitant a formulé lui-même — a fortiori.
+   *
+   * ⚠️ Ce test existe parce qu'une MUTATION l'a réclamé : la garde avait été
+   * écrite sans lui, et neutraliser la condition laissait les 29 tests de ce
+   * fichier au vert. Une garde qu'aucun test ne tient n'est pas une garde,
+   * c'est une intention.
+   */
+  it("🔴 REFUSE de payer une autofacture CONTESTÉE", async () => {
+    const contesteeAt = new Date("2026-09-08T00:00:00Z");
+    mockStatementFindUnique.mockResolvedValue(
+      releve({ contesteeAt, contestationMotif: "2 jours animés, pas 3" }),
+    );
+    const res = await transitionStatementAction({
+      id: ID,
+      to: "paye",
+      moyenPaiement: "virement",
+    });
+    expect("error" in res).toBe(true);
+    if (!("error" in res)) return;
+    // Le refus DIT le motif reçu : sans lui, l'opérateur doit aller le chercher
+    // ailleurs pour comprendre ce qu'il doit régler.
+    expect(res.error).toMatch(/CONTESTÉE/);
+    expect(res.error).toMatch(/2 jours animés, pas 3/);
+    expect(mockTransaction).not.toHaveBeenCalled();
+  });
+
+  it("🔑 CONTRE-TÉMOIN : sans contestation, le même paiement PASSE", async () => {
+    // Sans lui, le test ci-dessus resterait vert si la transition refusait
+    // TOUT paiement — on mesurerait un blocage général au lieu du blocage
+    // sur contestation.
+    mockStatementFindUnique.mockResolvedValue(releve({ contesteeAt: null }));
+    const res = await transitionStatementAction({
+      id: ID,
+      to: "paye",
+      moyenPaiement: "virement",
+    });
+    expect(res).toEqual({ data: { id: ID, statut: "paye" } });
+  });
+
   it("🔴 pose l'échéance à 30 jours en entrant en `facture_recue`", async () => {
     mockStatementFindUnique.mockResolvedValue(releve({ statut: "valide" }));
     await transitionStatementAction({

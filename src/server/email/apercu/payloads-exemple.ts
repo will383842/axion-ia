@@ -52,6 +52,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   contactName: "Camille Dupont",
   contactNom: "Camille Dupont",
   contactSurPlace: "Camille Dupont — 06 00 00 00 00",
+  contestationAvantLabel: "18 septembre 2026",
   contexte: "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   conversations: 38,
   dateCandidature: "28 août 2026",
@@ -131,6 +132,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   offerTitle: "Piloter son activité avec l'IA",
   offre: "Piloter son activité avec l'IA",
   oppositionUrl: "https://exemple.invalid/lien-de-demonstration",
+  periodeLabel: "août 2026",
   originalSubmissionExcerpt:
     "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   ouvertParOrganisme: true,
@@ -173,6 +175,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   code: "FACTURE_IMPAYEE",
   titre: "Facture arrivée à échéance sans règlement",
   guichet: "Administration",
+  sousTraitantNom: "Camille Roux",
   telephone: "+33 7 00 00 00 00",
   titreFormation: "Piloter son activité avec l'IA",
   ton: "professionnel",

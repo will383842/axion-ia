@@ -183,6 +183,10 @@ export async function transitionStatementAction(
       numeroFacture: true,
       dateFacture: true,
       montantFactureTtcCents: true,
+      // Autofacturation : une pièce CONTESTÉE ne se paie pas (cf. la garde
+      // juste en dessous).
+      contesteeAt: true,
+      contestationMotif: true,
     },
   });
   if (releve === null) return { error: "Relevé introuvable." };
@@ -204,6 +208,31 @@ export async function transitionStatementAction(
   }
 
   if (v.to === "paye") {
+    /**
+     * 🔴 UNE FACTURE CONTESTÉE NE SE PAIE PAS.
+     *
+     * C'est le même raisonnement que la garde « facture conforme » vingt lignes
+     * plus bas : un écart de montant est un DÉSACCORD, et le régler par un
+     * virement revient à l'acter au lieu de le trancher. Une contestation est
+     * un désaccord que le sous-traitant a formulé lui-même — a fortiori.
+     *
+     * ⚠️ Le blocage vit ICI, dans la transition, et non dans l'écran. Un écran
+     * qui cache un bouton empêche un clic ; il n'empêche pas l'action. La
+     * matrice de transition est le seul endroit par lequel un paiement passe.
+     *
+     * Levée : consigner l'accord obtenu en corrigeant le relevé, ou en
+     * annulant la pièce contestée. On ne rend PAS ce blocage franchissable
+     * d'un clic — ce serait une case à cocher pour ignorer un litige.
+     */
+    // `!= null` et non `!== null` : si un jour ce champ disparaît du `select`,
+    // `undefined` passerait le test strict et ferait PLANTER le paiement sur
+    // `.toLocaleDateString()`. Une garde ne doit jamais casser le chemin
+    // qu'elle protège — surtout pas celui qui sort de l'argent.
+    if (releve.contesteeAt != null) {
+      return {
+        error: `Facture CONTESTÉE le ${releve.contesteeAt.toLocaleDateString("fr-FR")} : le paiement est bloqué. Motif reçu : « ${releve.contestationMotif ?? "non précisé"} ». Réglez le désaccord — corrigez le relevé, ou annulez la pièce — avant de payer.`,
+      };
+    }
     // Le montant peut avoir été saisi maintenant, ou l'avoir été en `facture_recue`.
     const factureTtc = v.montantFactureTtcEuros ?? releve.montantFactureTtcCents;
     if (factureTtc === null || factureTtc === undefined) {

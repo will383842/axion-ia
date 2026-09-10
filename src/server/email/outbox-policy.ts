@@ -117,6 +117,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
   "facture-envoi": "Envoi d'une facture",
+  "autofacture-transmission": "Transmission d'une facture d'honoraires (autofacturation)",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
   "qualiopi-rappel-j1": "Rappel de la veille (avec le lien de connexion)",

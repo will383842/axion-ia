@@ -93,6 +93,21 @@ export interface ReleveDetail extends ReleveListe {
   echeance: Date | null;
   /** Jours de retard, `null` si le relevé n'est pas en retard. */
   retardJours: number | null;
+  /**
+   * Autofacturation — l'état des trois moments qui comptent.
+   *
+   * 🔑 `emiseAt` sans `transmiseAt` n'est PAS un détail d'affichage : la
+   * fenêtre de contestation court depuis la TRANSMISSION, donc une pièce émise
+   * et non transmise n'ouvre aucun délai. L'écran doit pouvoir le dire, et
+   * proposer de réessayer.
+   */
+  autofacture: {
+    emiseAt: Date | null;
+    transmiseAt: Date | null;
+    contestationAvantAt: Date | null;
+    contesteeAt: Date | null;
+    contestationMotif: string | null;
+  };
   lignes: LigneListe[];
 }
 
@@ -120,6 +135,11 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         dateFacture: true,
         montantFactureTtcCents: true,
         echeanceAt: true,
+        autofactureAt: true,
+        autofactureTransmiseAt: true,
+        contestationAvantAt: true,
+        contesteeAt: true,
+        contestationMotif: true,
         payeAt: true,
         moyenPaiement: true,
         trainer: { select: { nom: true, prenom: true } },
@@ -166,6 +186,13 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
       moyenPaiement: r.moyenPaiement,
       echeance: echeanceEffective(r),
       retardJours: joursDeRetard(r, now),
+      autofacture: {
+        emiseAt: r.autofactureAt,
+        transmiseAt: r.autofactureTransmiseAt,
+        contestationAvantAt: r.contestationAvantAt,
+        contesteeAt: r.contesteeAt,
+        contestationMotif: r.contestationMotif,
+      },
       nbLignes: lignes.length,
       lignes: lignes.map((l) => ({
         id: l.id,

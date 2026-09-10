@@ -9,6 +9,12 @@ import type { Locale } from "../../../prisma/generated/client";
 // ============================================================
 
 export type EmailJobName =
+  // 🔴 Transmission de la facture d'honoraires établie SOUS MANDAT au nom du
+  // sous-traitant. Cet envoi n'est pas une courtoisie : il OUVRE le délai de
+  // huit jours pendant lequel le sous-traitant peut contester la pièce
+  // (clause 4 bis). Un formateur qui n'a rien reçu ne conteste pas, et une
+  // pièce non contestée est réputée acceptée.
+  | "autofacture-transmission"
   | "audit-confirmed"
   | "implementation-confirmed"
   | "newsletter-confirm-optin"
