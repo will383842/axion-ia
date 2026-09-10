@@ -287,6 +287,21 @@ export interface ReleveDu {
   echeance: Date | null;
   /** Jours écoulés depuis l'échéance, `null` si le relevé n'est pas en retard. */
   retardJours: number | null;
+  /**
+   * 🔴 Autofacture ÉMISE et JAMAIS TRANSMISE — l'état le plus dangereux du
+   * circuit, et le seul que cet écran ne savait pas montrer.
+   *
+   * Une telle pièce s'affiche « Facture reçue » avec une échéance, comme
+   * n'importe quelle autre : rien ne distingue une facture que le formateur a
+   * reçue d'une facture qu'il ignore. Or celle-ci n'a ouvert AUCUN délai de
+   * contestation, et la payer à l'échéance reviendrait à régler une pièce
+   * qu'il n'a jamais pu contester — la quatrième condition de régularité,
+   * perdue en silence.
+   *
+   * La fiche du relevé le disait déjà. Mais la fiche, il faut l'ouvrir : c'est
+   * ICI qu'on décide de payer.
+   */
+  autofactureNonTransmise: boolean;
 }
 
 /**
@@ -314,6 +329,8 @@ export async function listRelevesDus(now = new Date()): Promise<ReleveDu[]> {
       select: {
         id: true,
         statut: true,
+        autofactureAt: true,
+        autofactureTransmiseAt: true,
         periodeYear: true,
         periodeMonth: true,
         totalTtcCents: true,
@@ -337,6 +354,7 @@ export async function listRelevesDus(now = new Date()): Promise<ReleveDu[]> {
         numeroFacture: r.numeroFacture,
         echeance: echeanceEffective(r),
         retardJours: joursDeRetard(r, now),
+        autofactureNonTransmise: r.autofactureAt !== null && r.autofactureTransmiseAt === null,
       }))
       .sort((a, b) => {
         // Sans échéance = pas encore exigible : en fin de liste, jamais en tête.

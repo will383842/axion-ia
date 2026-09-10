@@ -1237,6 +1237,44 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * Même frontière que les six codes voisins, et que l'habilitation
    * `remunerer_formateur` qui garde le geste.
    */
+  /**
+   * 🔴 UNE AUTOFACTURE ÉMISE QUE PERSONNE N'A REÇUE.
+   *
+   * L'organisme a établi la facture au nom du sous-traitant, et l'envoi n'est
+   * pas parti — file indisponible, adresse absente, e-mail garé. La pièce
+   * EXISTE, elle porte une échéance, et le relevé affiche « Facture reçue ».
+   * Rien ne distingue une facture reçue d'une facture ignorée.
+   *
+   * Deux conséquences, et la seconde est la grave :
+   *   · le formateur ne sait pas qu'on lui doit cette somme sous 30 jours ;
+   *   · surtout, AUCUN délai de contestation n'a couru. Le droit de contester
+   *     sous huit jours est l'une des QUATRE conditions qui rendent
+   *     l'autofacturation régulière. Payer la pièce reviendrait à solder une
+   *     facture que son fournisseur n'a jamais pu contester.
+   *
+   * ⚠️ `critique`, contrairement à `releve_formateur_echu` juste en dessous, et
+   * la différence n'est pas d'humeur : un retard de paiement coûte des
+   * pénalités chiffrables et se rattrape en payant. Une pièce non transmise met
+   * en défaut la RÉGULARITÉ du document — la TVA qu'il porte cesse d'être
+   * déductible, et cela ne se rattrape pas après coup.
+   *
+   * ⚠️ Un écran l'affiche déjà (badge « non transmise » sur « Ce qu'on doit »).
+   * Ce n'est PAS un doublon : un badge n'aide que si quelqu'un ouvre l'écran,
+   * une alerte va CHERCHER. C'est précisément le cas où l'on ne peut pas
+   * compter sur le passage d'un opérateur — un échec d'envoi est silencieux par
+   * nature.
+   *
+   * `resolutionAuto` : disparaît d'elle-même dès que la transmission aboutit.
+   *
+   * `direction` : la reprise d'envoi engage la pièce vis-à-vis d'un tiers, même
+   * frontière que l'émission.
+   */
+  autofacture_non_transmise: {
+    niveau: "critique",
+    titre: "Autofacture émise et jamais transmise",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   releve_formateur_echu: {
     niveau: "important",
     titre: "Honoraires de formateur échus",
