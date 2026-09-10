@@ -279,6 +279,21 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
                     <AdminBadge tone={TON_STATUT_RELEVE[r.statut]} dot>
                       {LIBELLE_STATUT_RELEVE[r.statut]}
                     </AdminBadge>
+                    {/*
+                      🔴 « Facture reçue » ne distingue pas une facture que le
+                      formateur a REÇUE d'une facture qu'il IGNORE. Une
+                      autofacture émise et non transmise n'a ouvert aucun délai
+                      de contestation : la payer à l'échéance réglerait une
+                      pièce qu'il n'a jamais pu contester.
+                    */}
+                    {r.autofactureNonTransmise && (
+                      <>
+                        {" "}
+                        <AdminBadge tone="destructive" dot>
+                          non transmise
+                        </AdminBadge>
+                      </>
+                    )}
                   </td>
                   <td>
                     {r.echeance === null ? (
