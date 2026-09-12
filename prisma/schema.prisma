@@ -5605,6 +5605,25 @@ model Trainer {
   formationsHabilitees         String[]      @default([]) @map("formations_habilitees")
   dateEmbauche                 DateTime?     @map("date_embauche")
   tarifJourneeHtCents          Int?          @map("tarif_journee_ht_cents")
+
+  /// Fixe mensuel BRUT d'un formateur SALARIÉ, en centimes. `null` = pas de
+  /// part fixe commissionnée (ou formateur non salarié).
+  ///
+  /// 🔴 CE CHAMP N'EST PAS UN SALAIRE, et le confondre coûterait cher. C'est le
+  /// montant sur lequel ses commissions viennent S'IMPUTER : le fixe est une
+  /// AVANCE récupérable, et le salarié ne perçoit un complément qu'au-delà.
+  /// Décision de Will du 2026-09-12, avec REPORT — un mois sous le fixe creuse
+  /// une dette que les mois forts remboursent (cf. `avance-recuperable.ts`).
+  ///
+  /// ⛔ L'outil ne PAIE personne avec ce chiffre : il dit combien verser EN PLUS
+  /// du fixe, à porter en paie. Aucun brut/net, aucune cotisation — ce sont des
+  /// calculs de paie, et les inventer ici donnerait un chiffre faux avec l'air
+  /// d'être juste.
+  fixeMensuelBrutCents         Int?          @map("fixe_mensuel_brut_cents")
+  /// Dette d'avance REPRISE d'avant l'entrée dans l'outil, en centimes.
+  /// Permet de démarrer le déroulé sans réécrire l'historique des mois passés.
+  avanceRepriseCents           Int?          @map("avance_reprise_cents")
+
   /// Sous-traitant (off.19/27) : NDA propre + vérification data.gouv.fr. [T11]
   sousTraitantNda              String?       @map("sous_traitant_nda") @db.VarChar(20)
   sousTraitantVerifieAt        DateTime?     @map("sous_traitant_verifie_at")

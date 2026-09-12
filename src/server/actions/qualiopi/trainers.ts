@@ -184,6 +184,36 @@ const facturationSousTraitantSchema = z.object({
   mandatAutofacturationRevoqueAt: z.coerce.date().nullable().optional(),
 });
 
+/**
+ * Fixe RÉCUPÉRABLE d'un formateur salarié.
+ *
+ * 🔴 SÉPARÉ de `facturationSousTraitantSchema`, et pas par goût du découpage :
+ * les deux visent des statuts DIFFÉRENTS et des actes différents. Un salarié n'a
+ * ni SIRET ni mandat ; un indépendant n'a pas de fixe à rembourser. Les fondre
+ * dans un seul formulaire afficherait à chacun des champs qui ne le concernent
+ * pas — et un champ affiché finit par être rempli.
+ *
+ * ⛔ CE N'EST PAS UN SALAIRE. C'est le montant sur lequel les commissions
+ * s'imputent avant de donner droit à un complément. L'outil ne paie personne
+ * avec : il dit combien porter EN PLUS sur la paie.
+ */
+const fixeRecuperableSchema = z.object({
+  id: z.string().uuid(),
+  /** Euros à la saisie, centimes en base — un gestionnaire saisit des euros. */
+  fixeMensuelBrutEuros: z.coerce
+    .number()
+    .nonnegative()
+    .nullable()
+    .optional()
+    .transform((v) => (v === null || v === undefined ? v : Math.round(v * 100))),
+  avanceRepriseEuros: z.coerce
+    .number()
+    .nonnegative()
+    .nullable()
+    .optional()
+    .transform((v) => (v === null || v === undefined ? v : Math.round(v * 100))),
+});
+
 const setActifSchema = z.object({
   id: z.string().uuid(),
   actif: z.boolean(),
@@ -592,6 +622,51 @@ export async function updateTrainerFacturationAction(
 
   await logQualiopiActivity({
     action: "qualiopi.trainer.facturation_sous_traitant",
+    targetType: "Trainer",
+    targetId: id,
+    changes: v,
+    session,
+  });
+
+  return { data: { id } };
+}
+
+/**
+ * Enregistre le fixe récupérable d'un formateur salarié.
+ *
+ * ⚠️ Acte ENGAGEANT : ce montant décide de ce qu'un salarié perçoit en plus de
+ * son fixe. Même habilitation que le paiement des honoraires — `requireAdminWrite`
+ * autoriserait un compte éditorial à changer une rémunération.
+ *
+ * 🔑 `null` EFFACE, `undefined` laisse intact. Sans cette distinction, retirer
+ * le fixe d'un salarié qui passe indépendant serait impossible autrement qu'en
+ * base — et un fixe résiduel ferait absorber ses commissions par une avance
+ * qui n'existe plus.
+ */
+export async function updateTrainerFixeRecuperableAction(
+  input: z.input<typeof fixeRecuperableSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  const session = await requireHabilitation("remunerer_formateur");
+  const parsed = fixeRecuperableSchema.safeParse(input);
+  if (!parsed.success) return { error: "Montant invalide." };
+  const { id, ...v } = parsed.data;
+
+  try {
+    await prisma.trainer.update({
+      where: { id },
+      data: {
+        ...(v.fixeMensuelBrutEuros !== undefined
+          ? { fixeMensuelBrutCents: v.fixeMensuelBrutEuros }
+          : {}),
+        ...(v.avanceRepriseEuros !== undefined ? { avanceRepriseCents: v.avanceRepriseEuros } : {}),
+      },
+    });
+  } catch {
+    return { error: "Erreur lors de l'enregistrement du fixe." };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.fixe_recuperable",
     targetType: "Trainer",
     targetId: id,
     changes: v,

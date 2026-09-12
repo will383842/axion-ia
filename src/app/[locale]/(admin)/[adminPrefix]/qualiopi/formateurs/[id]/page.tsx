@@ -18,6 +18,8 @@ import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
+import { TrainerFixePanel } from "@/components/admin/qualiopi/TrainerFixePanel";
+import { lireSituationFixe } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
 import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
@@ -185,6 +187,19 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   // empêchent d'envoyer le formateur chez un client ; les « alerte » signalent
   // une règle non tranchée (seuil URSSAF) ou une pièce à rafraîchir.
   const conformite = await getTrainerConformite(trainer.id, now.getUTCFullYear(), now);
+
+  /*
+    Le déroulé du fixe récupérable, calculé CÔTÉ SERVEUR.
+
+    🔑 Le panneau ne recalcule rien : il affiche. Refaire l'imputation dans le
+    navigateur donnerait une seconde implémentation du même calcul d'argent, et
+    les deux finiraient par diverger — la pire divergence possible, puisqu'elle
+    porterait sur ce qu'on verse à quelqu'un.
+  */
+  const situationFixe =
+    trainer.statut === "salarie" || trainer.statut === "dirigeant"
+      ? await lireSituationFixe(trainer.id)
+      : null;
   const bloquants = conformite?.manquements.filter((m) => m.gravite === "bloquant") ?? [];
   const alertes = conformite?.manquements.filter((m) => m.gravite === "alerte") ?? [];
 
@@ -356,6 +371,29 @@ export default async function FicheFormateurPage({ params }: PageProps) {
             mandatAutofacturationSigneAt: trainer.mandatAutofacturationSigneAt,
             mandatAutofacturationRevoqueAt: trainer.mandatAutofacturationRevoqueAt,
           }}
+        />
+      )}
+
+      {/*
+        Fixe récupérable sur commissions — 2026-09-12.
+
+        🔴 Le pendant EXACT du panneau ci-dessus, pour l'autre moitié du vivier.
+        Un indépendant a une identité fiscale et un mandat ; un salarié a un fixe
+        sur lequel ses commissions s'imputent. Jusqu'ici, seul le premier avait
+        un écran — et le second n'apparaissait dans aucun suivi de rémunération.
+
+        ⚠️ `dirigeant` inclus : lui aussi peut animer des formations contre un
+        fixe. L'exclure aurait recréé, une marche plus bas, l'asymétrie qu'on
+        vient de corriger.
+      */}
+      {(trainer.statut === "salarie" || trainer.statut === "dirigeant") && (
+        <TrainerFixePanel
+          trainerId={trainer.id}
+          initial={{
+            fixeMensuelBrutCents: trainer.fixeMensuelBrutCents,
+            avanceRepriseCents: trainer.avanceRepriseCents,
+          }}
+          situation={situationFixe}
         />
       )}
 
