@@ -134,6 +134,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le formateur",
     source: "server/qualiopi/trainers/mission-formateur.ts",
   },
+  "formateur-contrat-travail": {
+    categorie: "formation",
+    quand:
+      "À la demande, depuis la fiche du formateur salarié — une fois son contrat établi et RELU. Jamais automatique : c'est la relecture qui décide de l'envoi.",
+    destinataire: "le formateur salarié",
+    source: "server/actions/qualiopi/trainer-contrat.ts",
+  },
   "formateur-convocation-j7": {
     categorie: "formation",
     quand:

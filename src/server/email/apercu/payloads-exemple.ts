@@ -80,6 +80,13 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   familleLabel: "Audit IA",
   formateurNom: "Camille Dupont",
   formateurPrenomNom: "Camille Dupont",
+  // Contrat de travail du salarié (2026-09-12). ⚠️ Une date d'embauche AU
+  // PASSÉ : l'aperçu sert à relire le texte, et une date future ferait lire
+  // « entrée en fonction le … » comme une projection plutôt qu'un fait.
+  natureContrat: "CDI",
+  poste: "Formateur en intelligence artificielle",
+  dateEmbauche: "01/10/2026",
+  numeroPiece: "AXI-DOC-2026-050",
   fteRecovered: 0.4,
   headcount: 24,
   // `format` et `moment` servent aux DEUX familles de rappel (rendez-vous

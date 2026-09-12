@@ -226,6 +226,32 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     marquée COPIE et le dernier tirage est celui qui fait foi. Le lien serait
     faux si l'on montrait le premier.
   */
+  /*
+    🔴 « PRÉVENU LE … » — la trace de l'annonce, lue dans le journal des e-mails.
+
+    Sans elle, l'écran ne pourrait dire que « établi », et l'opérateur n'aurait
+    aucun moyen de savoir si le salarié a été mis au courant. Il réenverrait par
+    prudence, ou n'enverrait rien en croyant que c'est fait — deux erreurs
+    symétriques que la même absence produit.
+
+    ⚠️ On ne compte QUE les états qui prouvent un départ. `pending` n'est pas un
+    envoi (le message est en file), `failed` et `annule` non plus. `bounced` est
+    délibérément INCLUS : le message est bien parti, il a été refusé ensuite —
+    l'écran doit le dire comme un envoi, et le rebond se traite ailleurs.
+  */
+  const contratNotifie = estSalarie
+    ? await prisma.emailLog.findFirst({
+        where: {
+          template: "formateur-contrat-travail",
+          entityType: "Trainer",
+          entityId: trainer.id,
+          status: { in: ["sent", "bounced"] },
+        },
+        orderBy: { sentAt: "desc" },
+        select: { sentAt: true, status: true },
+      })
+    : null;
+
   const contratTravail = estSalarie
     ? await prisma.documentGenere.findFirst({
         where: { type: "contrat_travail", trainerId: trainer.id, annuleeAt: null },
@@ -461,6 +487,14 @@ export default async function FicheFormateurPage({ params }: PageProps) {
                   documentId: contratTravail.id,
                   numero: contratTravail.numero,
                   emisLe: contratTravail.createdAt.toLocaleDateString("fr-FR"),
+                }
+          }
+          notification={
+            contratNotifie === null || contratNotifie.sentAt === null
+              ? null
+              : {
+                  leLisible: contratNotifie.sentAt.toLocaleDateString("fr-FR"),
+                  rebond: contratNotifie.status === "bounced",
                 }
           }
         />

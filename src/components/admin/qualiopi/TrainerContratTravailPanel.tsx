@@ -17,12 +17,18 @@
  *
  *   1. ENREGISTRER — ne produit rien, se rejoue autant de fois qu'on veut ;
  *   2. ÉTABLIR LE CONTRAT — produit la pièce, numérotée et hashée ;
- *   3. RELIRE puis envoyer en signature — le PDF s'ouvre, et l'envoi est un
- *      geste distinct, depuis le bloc « Documents » de la fiche.
+ *   3. RELIRE — le PDF s'ouvre ; c'est ici qu'on attrape une mention fausse ;
+ *   4. PRÉVENIR LE SALARIÉ — le message qui l'envoie lire et signer.
  *
  * Will a demandé la relecture avant l'envoi. Un bouton unique « établir et
  * envoyer » ne l'aurait pas permise : la pièce serait partie dans le même geste
  * que la saisie.
+ *
+ * 🔴 LE QUATRIÈME GESTE MANQUAIT, ET C'ÉTAIT LE PLUS INVISIBLE DES DÉFAUTS. La
+ * pièce était produite, signable, lisible depuis l'espace du salarié — et rien
+ * ne l'y envoyait. Quelqu'un qu'on vient d'embaucher n'ouvre pas un « espace
+ * formateur » de sa propre initiative : il attend qu'on lui dise. Le lecteur
+ * existait, personne ne lui indiquait le chemin.
  *
  * ## Ce que l'écran REFUSE de faire
  *
@@ -38,6 +44,7 @@ import { useRouter } from "next/navigation";
 
 import {
   genererContratTravailAction,
+  notifierContratTravailAction,
   updateTrainerContratAction,
 } from "@/server/actions/qualiopi/trainer-contrat";
 import { plafondLegalEssaiMois } from "@/server/qualiopi/trainers/contrat-travail";
@@ -84,6 +91,14 @@ export interface TrainerContratTravailPanelProps {
    * n'existe pas est le symétrique exact d'un écrivain qui n'existe pas.
    */
   contratExistant: { documentId: string; numero: string; emisLe: string } | null;
+  /**
+   * L'annonce faite au salarié, si elle a eu lieu. `null` = jamais prévenu.
+   *
+   * 🔑 Lu dans le journal des e-mails, pas déduit : sans cette trace,
+   * l'opérateur réenverrait par prudence ou n'enverrait rien en croyant que
+   * c'est fait — deux erreurs symétriques que la même absence produit.
+   */
+  notification: { leLisible: string; rebond: boolean } | null;
 }
 
 export function TrainerContratTravailPanel({
@@ -92,6 +107,7 @@ export function TrainerContratTravailPanel({
   conventionRenseignee,
   hrefConfig,
   contratExistant,
+  notification,
 }: TrainerContratTravailPanelProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -155,6 +171,19 @@ export function TrainerContratTravailPanel({
       if ("error" in res) setError(res.error);
       else {
         setOk("Mentions enregistrées. Vous pouvez établir le contrat.");
+        router.refresh();
+      }
+    });
+  }
+
+  function prevenir() {
+    setError(null);
+    setOk(null);
+    startTransition(async () => {
+      const res = await notifierContratTravailAction({ trainerId });
+      if ("error" in res) setError(res.error);
+      else {
+        setOk(`Message envoyé à ${res.data.destinataire}.`);
         router.refresh();
       }
     });
@@ -402,6 +431,23 @@ export function TrainerContratTravailPanel({
                   Sans terme, le contrat est réputé à durée indéterminée (art. L.1242-12).
                 </span>
               </div>
+              {/*
+                ⚠️ LE DÉLAI DE TRANSMISSION, DIT SANS ÊTRE CALCULÉ.
+
+                L'art. L.1242-13 fait courir DEUX JOURS OUVRABLES depuis
+                l'embauche. On énonce la règle et on ne fabrique pas de date :
+                « jours ouvrables » suppose les fériés et les samedis, et une
+                date fausse sur un délai de requalification serait pire que pas
+                de date du tout — elle ferait croire qu'on a jusque-là.
+              */}
+              <div className="sm:col-span-2">
+                <p className="admin-alert admin-alert-warning" role="status">
+                  <strong>Délai de transmission.</strong> Un CDD doit être remis au salarié dans les{" "}
+                  <strong>deux jours ouvrables</strong> suivant son embauche (art. L.1242-13).
+                  Au-delà, il est requalifiable en CDI. Établissez-le, relisez-le, puis prévenez le
+                  salarié sans attendre.
+                </p>
+              </div>
               <div className={`${fieldCls} sm:col-span-2`}>
                 <label htmlFor="ct-motif" className={labelCls}>
                   Motif de recours au CDD
@@ -457,7 +503,48 @@ export function TrainerContratTravailPanel({
               Relire {contratExistant.numero} ({contratExistant.emisLe})
             </a>
           )}
+          {/*
+            ⛔ Le bouton n'apparaît QU'APRÈS l'établissement. Proposer « prévenir »
+            sur un salarié sans contrat enverrait quelqu'un ouvrir un espace vide —
+            pire que le silence qu'on corrige : le silence n'engage rien, l'annonce
+            fausse fait perdre confiance dans tout ce qui suivra.
+          */}
+          {contratExistant !== null && (
+            <button
+              type="button"
+              className="admin-button-secondary"
+              disabled={isPending}
+              onClick={prevenir}
+            >
+              {notification === null ? "Prévenir le salarié" : "Prévenir à nouveau"}
+            </button>
+          )}
         </div>
+
+        {/*
+          🔑 L'ÉTAT DE L'ANNONCE, DIT DANS LES DEUX SENS. « Jamais prévenu » est
+          une information au même titre que « prévenu le 12/09 » : sans elle,
+          l'absence de ligne se lirait comme « rien à signaler ».
+        */}
+        {contratExistant !== null &&
+          (notification === null ? (
+            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Le salarié n&apos;a <strong>pas encore été prévenu</strong> : rien ne l&apos;a envoyé
+              vers son espace.
+            </p>
+          ) : notification.rebond ? (
+            <p
+              className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-danger)]"
+              role="alert"
+            >
+              Message envoyé le {notification.leLisible}, mais <strong>refusé</strong> par la
+              messagerie du destinataire. Vérifiez son adresse e-mail : il ne l&apos;a pas reçu.
+            </p>
+          ) : (
+            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Salarié prévenu le {notification.leLisible}.
+            </p>
+          ))}
       </form>
     </section>
   );
