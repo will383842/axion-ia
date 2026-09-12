@@ -26,6 +26,7 @@ import {
   listRelevesPeriode,
 } from "@/server/qualiopi/remuneration/queries";
 import { listDuFormateurs } from "@/server/qualiopi/remuneration/pilotage-formateurs";
+import { DELAI_PAIEMENT_HONORAIRES_JOURS } from "@/server/qualiopi/remuneration/echeance";
 import { periodeDeRattachement } from "@/server/qualiopi/remuneration/run";
 import {
   euros,
@@ -97,9 +98,20 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
 
   return (
     <AdminPageShell>
+      {/*
+        🔴 Ce sous-titre affirmait « Un salarié produit des lignes analytiques,
+        jamais de relevé » — vrai sur la MÉCANIQUE, et devenu faux sur ce que la
+        page MONTRE depuis qu'elle porte « Ce qu'on doit — tous les formateurs ».
+        Un en-tête qui contredit sa propre page à deux écrans d'intervalle
+        apprend au lecteur à ne plus lire les en-têtes.
+
+        ⚠️ La distinction n'est pas perdue pour autant : elle est DITE là où elle
+        compte, dans la section « Ce qu'on doit », qui explique qu'un salarié
+        reçoit un complément de paie et non un virement sur facture.
+      */}
       <AdminPageHeader
         title="Rémunération des formateurs"
-        description="Relevés mensuels d'honoraires des indépendants. Un salarié produit des lignes analytiques, jamais de relevé."
+        description="Ce qu'on doit à chaque formateur, quel que soit son statut — et le calcul mensuel des honoraires des indépendants."
       />
 
       {sp.ok !== undefined && (
@@ -236,10 +248,11 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
         <h2 className="admin-h2">Ce qu&apos;on doit — tous les formateurs</h2>
         <p className="admin-muted">
           Indépendants, salariés et dirigeants dans une seule vue. Pour un{" "}
-          <strong>indépendant</strong>, la somme est réglée par virement, sous 30 jours à compter de
-          l&apos;émission de sa facture (clause 4 du contrat) ; passé l&apos;échéance, les pénalités
-          et l&apos;indemnité de 40 € courent de plein droit. Pour un <strong>salarié</strong>,
-          c&apos;est un complément à porter sur sa paie, après imputation de son fixe.
+          <strong>indépendant</strong>, la somme est réglée par virement, sous{" "}
+          {DELAI_PAIEMENT_HONORAIRES_JOURS} jours à compter de l&apos;émission de sa facture (clause
+          4 du contrat) ; passé l&apos;échéance, les pénalités et l&apos;indemnité de 40 € courent
+          de plein droit. Pour un <strong>salarié</strong>, c&apos;est un complément à porter sur sa
+          paie, après imputation de son fixe.
         </p>
 
         <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
