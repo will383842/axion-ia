@@ -4963,6 +4963,17 @@ enum TypeActionQualiopi {
   handicap
 }
 
+/// Nature du contrat de travail d'un formateur SALARIÉ.
+///
+/// ⛔ Ne concerne QUE les salariés. Un sous-traitant a un contrat de
+/// sous-traitance (relation commerciale), un dirigeant son mandat social :
+/// leur appliquer un contrat de travail serait la requalification qu'on passe
+/// son temps à éviter.
+enum TypeContratTravail {
+  cdi
+  cdd
+}
+
 enum TrainerStatut {
   salarie
   sous_traitant
@@ -5620,6 +5631,46 @@ model Trainer {
   /// calculs de paie, et les inventer ici donnerait un chiffre faux avec l'air
   /// d'être juste.
   fixeMensuelBrutCents         Int?          @map("fixe_mensuel_brut_cents")
+
+  // ── Contrat de travail (formateurs SALARIÉS) ──────────────────────────────
+  //
+  // 🔑 CES CHAMPS SONT LES MENTIONS QUE LE CONTRAT DOIT PORTER, et rien de
+  // plus. Chacun figure sur la pièce ; aucun n'est collecté « au cas où ».
+  //
+  // ⛔ LE NUMÉRO DE SÉCURITÉ SOCIALE EST DÉLIBÉRÉMENT ABSENT. Il est exigé sur
+  // le BULLETIN DE PAIE, pas sur le contrat de travail — et la paie se fait
+  // hors de cet outil. Le stocker ici collecterait une donnée sensible sans
+  // finalité dans le traitement : c'est exactement ce que la minimisation
+  // interdit, et ce que le registre RGPD aurait à justifier.
+  //
+  /// Nature du contrat. `null` = aucun contrat de travail établi.
+  contratType                  TypeContratTravail? @map("contrat_type")
+  /// Date de naissance — identifie la partie au contrat (homonymes).
+  dateNaissance                DateTime?     @map("date_naissance")
+  lieuNaissance                String?       @map("lieu_naissance") @db.VarChar(120)
+  /// Adresse PERSONNELLE du salarié. Distincte d'`adresseProfessionnelle`, qui
+  /// est celle d'exercice d'un indépendant : un contrat de travail identifie le
+  /// salarié à son domicile.
+  adressePersonnelle           String?       @map("adresse_personnelle") @db.Text
+  /// Intitulé du poste, tel qu'il figurera au contrat et sur le bulletin.
+  contratPoste                 String?       @map("contrat_poste") @db.VarChar(160)
+  /// Classification et coefficient de la convention collective. Ce sont EUX qui
+  /// déterminent le minimum conventionnel — une classification fausse se paie
+  /// en rappel de salaire, d'où la saisie explicite plutôt qu'un défaut.
+  contratClassification        String?       @map("contrat_classification") @db.VarChar(120)
+  /// Durée hebdomadaire de travail, en heures (35 = temps plein).
+  contratDureeHebdoHeures      Decimal?      @map("contrat_duree_hebdo_heures") @db.Decimal(5, 2)
+  /// Durée de la période d'essai, en mois. Plafonnée par la loi et par la
+  /// convention : saisie, jamais devinée.
+  contratPeriodeEssaiMois      Int?          @map("contrat_periode_essai_mois")
+  /// Lieu habituel de travail (art. L.1221-1 : mention du lieu d'exécution).
+  contratLieuTravail           String?       @map("contrat_lieu_travail") @db.Text
+  /// Terme du CDD. NULL pour un CDI — et un CDD sans terme ni motif est
+  /// requalifiable en CDI, ce que la garde d'émission refuse.
+  contratDateFin               DateTime?     @map("contrat_date_fin")
+  /// Motif de recours au CDD (art. L.1242-2). Obligatoire sur un CDD : son
+  /// absence entraîne la requalification en CDI.
+  contratMotifCdd              String?       @map("contrat_motif_cdd") @db.Text
   /// Dette d'avance REPRISE d'avant l'entrée dans l'outil, en centimes.
   /// Permet de démarrer le déroulé sans réécrire l'historique des mois passés.
   avanceRepriseCents           Int?          @map("avance_reprise_cents")
