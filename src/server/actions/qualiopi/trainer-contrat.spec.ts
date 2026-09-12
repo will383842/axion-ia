@@ -30,13 +30,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockTrainerFindUnique = vi.fn();
+const mockTrainerUpdate = vi.fn();
 const mockDocFindFirst = vi.fn();
 const mockEnqueueEmail = vi.fn();
 const mockLog = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    trainer: { findUnique: (...a: unknown[]) => mockTrainerFindUnique(...a) },
+    trainer: {
+      findUnique: (...a: unknown[]) => mockTrainerFindUnique(...a),
+      update: (...a: unknown[]) => mockTrainerUpdate(...a),
+    },
     documentGenere: { findFirst: (...a: unknown[]) => mockDocFindFirst(...a) },
   },
 }));
@@ -51,7 +55,7 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => mockEnqueueEmail(...a),
 }));
 
-import { notifierContratTravailAction } from "./trainer-contrat";
+import { consignerRemiseContratAction, notifierContratTravailAction } from "./trainer-contrat";
 
 const ID = "11111111-1111-4111-8111-111111111111";
 
@@ -76,6 +80,7 @@ function piece(o: Record<string, unknown> = {}) {
 beforeEach(() => {
   vi.clearAllMocks();
   mockTrainerFindUnique.mockResolvedValue(salarie());
+  mockTrainerUpdate.mockResolvedValue({});
   mockDocFindFirst.mockResolvedValue(piece());
   mockEnqueueEmail.mockResolvedValue({ enqueued: true });
   mockLog.mockResolvedValue(undefined);
@@ -206,5 +211,94 @@ describe("🔴 les refus — chacun évite une situation précise", () => {
     mockEnqueueEmail.mockResolvedValue({ enqueued: false, garePourValidation: true });
     const res = await notifierContratTravailAction({ trainerId: ID });
     expect("error" in res && res.error).toMatch(/garé/i);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// consignerRemiseContratAction — le seul fait que le logiciel ne voyait pas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 Ce geste ferme l'alerte `contrat_cdd_non_remis`, qui est `critique` et
+ * `resolutionAuto: true` : elle ne s'éteint QUE si cette date se pose. Sans lui,
+ * elle ordonnerait l'impossible — le défaut exact du 2026-09-06 sur
+ * `exemplaire_signe_non_transmis`.
+ *
+ * ⛔ Et il est SÉPARÉ de la notification. « On lui a dit » et « il l'a » sont
+ * deux faits ; les confondre donnerait une remise consignée pour quelqu'un qui
+ * n'a jamais ouvert le message — une trace fausse, pire qu'une trace absente
+ * parce qu'elle se défend.
+ */
+describe("consignerRemiseContratAction — la remise devient observable", () => {
+  it("consigne la date, à minuit UTC", async () => {
+    // ⚠️ UTC : une date de remise n'a pas d'heure, et la traiter en heure locale
+    // la décalerait d'un jour pour la moitié de l'année — sur une valeur qui
+    // sert de preuve.
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: "2026-09-11" });
+    expect("data" in res && res.data.efface).toBe(false);
+    const data = mockTrainerUpdate.mock.calls[0]?.[0] as { data: { contratRemisAt: Date } };
+    expect(data.data.contratRemisAt.toISOString()).toBe("2026-09-11T00:00:00.000Z");
+  });
+
+  it("🔑 `null` EFFACE — on doit pouvoir revenir sur une saisie fausse", async () => {
+    // Une date consignée par erreur éteindrait l'alerte sur un contrat jamais
+    // remis. Sans chemin de retour, la seule correction serait en base.
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: null });
+    expect("data" in res && res.data.efface).toBe(true);
+    const data = mockTrainerUpdate.mock.calls[0]?.[0] as { data: { contratRemisAt: Date | null } };
+    expect(data.data.contratRemisAt).toBeNull();
+  });
+
+  it("🔴 refuse une date DANS LE FUTUR", async () => {
+    // Elle éteindrait l'alerte par anticipation — très exactement ce que cette
+    // alerte existe pour empêcher.
+    const demain = new Date(Date.now() + 2 * 86_400_000).toISOString().slice(0, 10);
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: demain });
+    expect("error" in res && res.error).toMatch(/futur/i);
+    expect(mockTrainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("accepte une date PASSÉE : la remise a pu avoir lieu la veille", async () => {
+    // 🔑 Témoin discriminant du précédent. Une garde qui refuserait tout sauf
+    // aujourd'hui passerait le test du futur en cassant le cas normal — celui
+    // où l'on saisit le lendemain ce qu'on a remis la veille.
+    const hier = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: hier });
+    expect("data" in res).toBe(true);
+  });
+
+  it("refuse un formateur qui n'est pas SALARIÉ", async () => {
+    mockTrainerFindUnique.mockResolvedValue(salarie({ statut: "sous_traitant" }));
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: "2026-09-11" });
+    expect("error" in res).toBe(true);
+    expect(mockTrainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse une date mal formée, sans rien écrire", async () => {
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: "11/09/2026" });
+    expect("error" in res && res.error).toMatch(/invalide/i);
+    expect(mockTrainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse un formateur introuvable", async () => {
+    mockTrainerFindUnique.mockResolvedValue(null);
+    const res = await consignerRemiseContratAction({ trainerId: ID, remisLe: "2026-09-11" });
+    expect("error" in res).toBe(true);
+    expect(mockTrainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔑 le journal DISTINGUE consigner et effacer", async () => {
+    // Consigner une remise est un fait opposable ; l'effacer revient à dire
+    // qu'on s'était trompé. Les ranger sous la même action rendrait le second
+    // invisible à la relecture.
+    await consignerRemiseContratAction({ trainerId: ID, remisLe: "2026-09-11" });
+    expect((mockLog.mock.calls[0]?.[0] as { action: string }).action).toBe(
+      "qualiopi.trainer.remise_contrat",
+    );
+    mockLog.mockClear();
+    await consignerRemiseContratAction({ trainerId: ID, remisLe: null });
+    expect((mockLog.mock.calls[0]?.[0] as { action: string }).action).toBe(
+      "qualiopi.trainer.remise_contrat.effacee",
+    );
   });
 });

@@ -43,6 +43,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import {
+  consignerRemiseContratAction,
   genererContratTravailAction,
   notifierContratTravailAction,
   updateTrainerContratAction,
@@ -99,6 +100,14 @@ export interface TrainerContratTravailPanelProps {
    * c'est fait — deux erreurs symétriques que la même absence produit.
    */
   notification: { leLisible: string; rebond: boolean } | null;
+  /**
+   * Date à laquelle le salarié a REÇU son exemplaire. `null` = non consignée.
+   *
+   * ⛔ Distincte de `notification` : « on lui a dit » et « il l'a » sont deux
+   * faits, et c'est leur confusion qui rendrait la trace fausse au moment exact
+   * où elle compte — devant quelqu'un qui demande la preuve de la remise.
+   */
+  remisLe: string | null;
 }
 
 export function TrainerContratTravailPanel({
@@ -108,6 +117,7 @@ export function TrainerContratTravailPanel({
   hrefConfig,
   contratExistant,
   notification,
+  remisLe,
 }: TrainerContratTravailPanelProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -130,6 +140,7 @@ export function TrainerContratTravailPanel({
   const [lieuTravail, setLieuTravail] = useState(initial.contratLieuTravail ?? "");
   const [dateFin, setDateFin] = useState(versChampDate(initial.contratDateFin));
   const [motifCdd, setMotifCdd] = useState(initial.contratMotifCdd ?? "");
+  const [remise, setRemise] = useState(remisLe ?? "");
 
   // Plafond LÉGAL de la période d'essai, dérivé de la classification saisie.
   // ⚠️ La convention peut en fixer un plus COURT, auquel cas c'est le sien qui
@@ -171,6 +182,27 @@ export function TrainerContratTravailPanel({
       if ("error" in res) setError(res.error);
       else {
         setOk("Mentions enregistrées. Vous pouvez établir le contrat.");
+        router.refresh();
+      }
+    });
+  }
+
+  function consignerRemise(efface: boolean) {
+    setError(null);
+    setOk(null);
+    startTransition(async () => {
+      const res = await consignerRemiseContratAction({
+        trainerId,
+        remisLe: efface || remise.trim() === "" ? null : remise,
+      });
+      if ("error" in res) setError(res.error);
+      else {
+        setOk(
+          res.data.efface
+            ? "Date de remise effacée."
+            : "Remise consignée. L'alerte s'éteindra au prochain balayage.",
+        );
+        if (res.data.efface) setRemise("");
         router.refresh();
       }
     });
@@ -520,6 +552,76 @@ export function TrainerContratTravailPanel({
             </button>
           )}
         </div>
+
+        {/*
+          ── LA REMISE, LE SEUL FAIT QUE LE LOGICIEL NE VOYAIT PAS ──────────────
+
+          🔴 Le contrat était produit, le salarié prévenu, la pièce dans son
+          espace. Restait « est-ce qu'il a son exemplaire ? », et la réponse ne
+          reposait sur rien d'observable. Si la remise a lieu, tout va bien ; si
+          elle n'a pas lieu, rien ne le dit et personne ne l'apprend avant un
+          conseil de prud'hommes.
+
+          ⛔ CE N'EST PAS « prévenu le … » JUSTE AU-DESSUS. Annoncer qu'une pièce
+          est disponible n'est pas la remettre, et consigner l'un pour l'autre
+          donnerait une trace FAUSSE — pire qu'une trace absente, parce qu'elle
+          se défend.
+
+          ⚠️ La date est SAISIE : une remise a pu avoir lieu la veille, ou le jour
+          de l'embauche pendant que personne n'était devant l'écran. Un bouton
+          « aujourd'hui » ferait dire à la trace autre chose que ce qui s'est
+          passé, sur la pièce même qu'on produirait pour le prouver.
+        */}
+        {contratExistant !== null && (
+          <div className="flex flex-col gap-[var(--space-admin-2)]">
+            <label className={labelCls} htmlFor="ct-remise">
+              Exemplaire remis au salarié le
+            </label>
+            <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+              <input
+                id="ct-remise"
+                type="date"
+                className={`${inputCls} max-w-[14rem]`}
+                value={remise}
+                disabled={isPending}
+                onChange={(e) => setRemise(e.target.value)}
+              />
+              <button
+                type="button"
+                className="admin-button-secondary"
+                disabled={isPending || remise.trim() === ""}
+                onClick={() => consignerRemise(false)}
+              >
+                Consigner la remise
+              </button>
+              {remisLe !== null && (
+                <button
+                  type="button"
+                  className="admin-button-ghost"
+                  disabled={isPending}
+                  onClick={() => consignerRemise(true)}
+                >
+                  Effacer
+                </button>
+              )}
+            </div>
+            {remisLe === null && type === "cdd" ? (
+              <span
+                className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-danger)]"
+                role="status"
+              >
+                Remise non consignée. Sur un CDD, c&apos;est elle qui éteint l&apos;alerte — et le
+                délai de l&apos;article L.1242-13 court depuis l&apos;embauche.
+              </span>
+            ) : (
+              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {remisLe === null
+                  ? "Consignez la date à laquelle il a reçu son exemplaire — ce n'est pas la date du message ci-dessous."
+                  : "C'est cette date qui prouve la remise, pas l'envoi du message."}
+              </span>
+            )}
+          </div>
+        )}
 
         {/*
           🔑 L'ÉTAT DE L'ANNONCE, DIT DANS LES DEUX SENS. « Jamais prévenu » est

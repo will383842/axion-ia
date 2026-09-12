@@ -3631,6 +3631,122 @@ describe("🔴 attestation_non_parvenue — produite N'EST PAS parvenue", () => 
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// contrat_cdd_non_remis — le dernier maillon était un humain qu'on supposait
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("contrat_cdd_non_remis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  /** Un salarié en CDD, embauché il y a `jours`, dont le contrat est établi. */
+  function salarieCdd(jours: number, extra: Record<string, unknown> = {}) {
+    return {
+      id: "trn-001",
+      nom: "Martin",
+      prenom: "Camille",
+      statut: "salarie",
+      contratType: "cdd",
+      dateEmbauche: new Date(Date.now() - jours * 86_400_000),
+      contratRemisAt: null,
+      documentsGeneres: [{ id: "doc-1" }],
+      ...extra,
+    };
+  }
+
+  it("🔴 lève une alerte CRITIQUE, et nomme la requalification", async () => {
+    // Le niveau n'est pas d'humeur : passé le délai, c'est la NATURE du contrat
+    // qui bascule. Une alerte qui dirait seulement « à faire » se rangerait
+    // derrière les retards de paiement, qui eux se rattrapent en payant.
+    mp.trainer.findMany.mockResolvedValue([salarieCdd(3)]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "contrat_cdd_non_remis");
+    expect(a).toBeDefined();
+    expect(a!.niveau).toBe("critique");
+    expect(a!.cibleType).toBe("Trainer");
+    expect(a!.cibleId).toBe("trn-001");
+    expect(a!.message).toMatch(/Camille Martin/);
+    expect(a!.message).toMatch(/requalifiable/i);
+    expect(a!.message).toMatch(/L\.1242-13/);
+    // Le geste qui l'éteint doit être NOMMÉ : une alerte sans geste est un
+    // reproche.
+    expect(a!.message).toMatch(/consignez la date/i);
+  });
+
+  it("🔴 s'arme DÈS LE JOUR de l'embauche, pas à J+2", async () => {
+    // Le décompte des jours ouvrables suppose les fériés, dont deux mobiles.
+    // Une alerte n'a pas à prononcer un verdict après coup : elle rappelle
+    // pendant qu'il est encore temps de remettre la pièce dans les délais.
+    mp.trainer.findMany.mockResolvedValue([salarieCdd(0)]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "contrat_cdd_non_remis")).toBe(true);
+  });
+
+  it("🔑 se tait dès que la remise est CONSIGNÉE", async () => {
+    // Témoin de la résolution automatique : c'est la date qui ferme l'alerte,
+    // et rien d'autre.
+    mp.trainer.findMany.mockResolvedValue([
+      salarieCdd(3, { contratRemisAt: new Date(Date.now() - 86_400_000) }),
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "contrat_cdd_non_remis")).toBe(false);
+  });
+
+  it("🔴 se tait quand AUCUN contrat n'a été établi", async () => {
+    // Sans pièce produite il n'y a rien à remettre. Réclamer la remise d'un
+    // document inexistant enverrait chercher une erreur là où il n'y a qu'une
+    // étape non faite.
+    mp.trainer.findMany.mockResolvedValue([salarieCdd(3, { documentsGeneres: [] })]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "contrat_cdd_non_remis")).toBe(false);
+  });
+
+  it("⚠️ ne vise PAS un CDI : son retard ne requalifie rien", async () => {
+    // Une alerte sans conséquence attachée apprend à ignorer la famille
+    // entière — et c'est la vraie qu'on rate ensuite.
+    mp.trainer.findMany.mockResolvedValue([salarieCdd(3, { contratType: "cdi" })]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "contrat_cdd_non_remis")).toBe(false);
+  });
+
+  it("🔑 le filtre SQL nomme bien le CDD, l'absence de remise et l'embauche", async () => {
+    // Avec un mock, la seule façon d'éprouver un filtre est de LIRE l'argument
+    // passé : le mock rend ce qu'on lui dit quel que soit le `where`. Un
+    // « simplifions la requête » emporterait ces bornes sans bruit, et la règle
+    // balaierait tout le vivier à chaque passage.
+    mp.trainer.findMany.mockResolvedValue([]);
+    await evaluerAlertes();
+
+    const appel = mp.trainer.findMany.mock.calls.find((c: unknown[]) => {
+      const w = (c[0] as { where?: Record<string, unknown> })?.where;
+      return w !== undefined && w["contratType"] === "cdd";
+    });
+    expect(appel, "la règle n'a pas interrogé les CDD").toBeDefined();
+    const where = (appel![0] as { where: Record<string, unknown> }).where;
+    expect(where["statut"]).toBe("salarie");
+    expect(where["contratRemisAt"]).toBeNull();
+    expect(where["actif"]).toBe(true);
+  });
+
+  it("🔴 ne lève pas pour une embauche À VENIR", async () => {
+    // Un CDD signé trois semaines à l'avance n'est en retard de rien : c'est
+    // l'entrée en fonction qui arme le délai, pas la date du contrat.
+    mp.trainer.findMany.mockResolvedValue([salarieCdd(-20)]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "contrat_cdd_non_remis")).toBe(false);
+  });
+
+  it("🔑 la règle ne LÈVE pas — sans quoi elle serait muette en production", async () => {
+    mp.trainer.findMany.mockResolvedValue([salarieCdd(3)]);
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("contrat_cdd_non_remis");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // releve_formateur_echu — la première règle qui surveille l'argent qu'on DOIT
 // ─────────────────────────────────────────────────────────────────────────────
 

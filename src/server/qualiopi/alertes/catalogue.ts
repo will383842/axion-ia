@@ -1314,6 +1314,48 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  /**
+   * 🔴 UN CDD ÉTABLI DONT LA REMISE N'EST PAS CONSIGNÉE (2026-09-13).
+   *
+   * Le contrat est produit, le salarié est prévenu, la pièce l'attend dans son
+   * espace. Reste le fait que le logiciel ne voyait pas : EST-CE QU'IL A SON
+   * EXEMPLAIRE ? Le contrat annonce lui-même « deux exemplaires originaux ». Si
+   * la remise a lieu, tout va bien ; sinon, rien ne le dit et rien ne compte
+   * les jours.
+   *
+   * ⚠️ `critique`, et c'est la seule alerte de cette famille à l'être. La
+   * comparaison avec ses voisines explique pourquoi :
+   *   · un honoraire échu coûte des pénalités CHIFFRABLES et se rattrape en
+   *     payant — `important` ;
+   *   · une autofacture non transmise met en défaut la RÉGULARITÉ d'une pièce,
+   *     donc la déductibilité de sa TVA — `critique` ;
+   *   · ici, c'est la NATURE DU CONTRAT qui bascule. Passé le délai de l'art.
+   *     L.1242-13, le CDD est requalifiable en contrat à durée indéterminée
+   *     (art. L.1245-1). Cela ne se répare pas après coup, et la somme en jeu
+   *     n'est pas une pénalité de retard : c'est un contrat de travail
+   *     permanent qu'on n'a pas voulu.
+   *
+   * ⚠️ NE VISE QUE LE CDD. Un CDI doit aussi être remis, mais son retard ne
+   * requalifie rien — une alerte sans conséquence attachée apprend à ignorer la
+   * famille entière, et c'est la vraie qu'on rate ensuite.
+   *
+   * ⚠️ Elle s'arme DÈS LE JOUR DE L'EMBAUCHE, pas à J+2 ouvrables. Le décompte
+   * des jours ouvrables suppose les fériés, dont deux mobiles ; une date fausse
+   * sur un délai de requalification ferait croire qu'on a jusque-là. Une alerte
+   * n'a pas à prononcer un verdict après coup — elle rappelle pendant qu'il est
+   * encore temps.
+   *
+   * `resolutionAuto` : s'éteint dès que la date de remise est consignée. C'est
+   * le geste que le message prescrit, et il existe sur la fiche du formateur.
+   *
+   * `direction` : la remise d'un contrat de travail engage l'employeur.
+   */
+  contrat_cdd_non_remis: {
+    niveau: "critique",
+    titre: "CDD établi : la remise au salarié n'est pas consignée",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
 
   // ── Dossiers de financement (suivi OPCO / France Travail) ────────────────
   // 🔴 2026-07-31 — `echeanceFinanceurAt` existait au schéma (« les OPCO paient

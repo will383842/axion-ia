@@ -5684,6 +5684,18 @@ model Trainer {
   /// Motif de recours au CDD (art. L.1242-2). Obligatoire sur un CDD : son
   /// absence entraîne la requalification en CDI.
   contratMotifCdd              String?       @map("contrat_motif_cdd") @db.Text
+  /// Date à laquelle le salarié a REÇU son exemplaire du contrat.
+  ///
+  /// 🔴 Ce n'est PAS la date d'émission de la pièce, ni celle du message qui
+  /// l'annonce. C'est le fait que le logiciel ne voyait pas : « est-ce qu'il a
+  /// son exemplaire ? ». Sans elle, la conformité reposait sur un geste que
+  /// rien n'observait — et son absence ne se découvrait pas.
+  ///
+  /// ⚠️ Elle compte surtout pour un CDD : l'art. L.1242-13 impose sa
+  /// transmission dans les deux jours ouvrables suivant l'embauche, et le
+  /// manquement REQUALIFIE le contrat en CDI (art. L.1245-1). Une alerte
+  /// surveille son absence pendant que le délai court.
+  contratRemisAt               DateTime?     @map("contrat_remis_at")
   /// Dette d'avance REPRISE d'avant l'entrée dans l'outil, en centimes.
   /// Permet de démarrer le déroulé sans réécrire l'historique des mois passés.
   avanceRepriseCents           Int?          @map("avance_reprise_cents")
