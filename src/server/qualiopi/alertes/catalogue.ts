@@ -1281,6 +1281,39 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  /**
+   * 🔴 UN RELEVÉ VALIDÉ QUI N'A PAS PU SE FACTURER (2026-09-12).
+   *
+   * Depuis que l'émission est automatique, un relevé validé produit sa facture
+   * sans qu'on clique. Quand elle ne part pas, le silence est TOTAL : plus
+   * personne n'attend de bouton, le relevé reste « validé », et le formateur
+   * attend un argent que rien ne réclame.
+   *
+   * 🔑 Cette alerte porte la LISTE COMPLÈTE de ce qui manque, jamais le premier
+   * motif. C'est la propriété que `verifierEligibiliteAutofacture` établit et
+   * qu'il serait absurde de perdre ici : un opérateur qui corrige le SIRET,
+   * attend le balayage du lendemain et découvre alors le numéro de TVA met une
+   * semaine à franchir quatre obstacles qu'il aurait pu lever en une fois.
+   *
+   * ⚠️ NE COUVRE QUE LES MANQUES DE DONNÉES. Les sept motifs de refus se rangent
+   * en trois familles, et deux ne doivent RIEN produire ici :
+   *   · `releve_non_valide` — ce n'est pas un refus, c'est le déclencheur ;
+   *   · `releve_sans_montant` et `facture_deja_presente` — un silence légitime.
+   * Alerter dessus apprendrait à ignorer cette alerte, ce qui la tuerait.
+   *
+   * ⚠️ `important` et non `critique` : l'argent est dû et connu, rien n'est
+   * perdu, et le geste est une saisie sur une fiche. La marche au-dessus est
+   * réservée à ce qui ne se rattrape pas — `autofacture_non_transmise` met en
+   * défaut la régularité d'une pièce déjà émise, pas celle-ci.
+   *
+   * `resolutionAuto` : disparaît dès que la donnée est saisie et la pièce émise.
+   */
+  autofacture_a_emettre: {
+    niveau: "important",
+    titre: "Relevé validé : la facture d'honoraires n'a pas pu être émise",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
 
   // ── Dossiers de financement (suivi OPCO / France Travail) ────────────────
   // 🔴 2026-07-31 — `echeanceFinanceurAt` existait au schéma (« les OPCO paient

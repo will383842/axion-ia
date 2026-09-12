@@ -1566,6 +1566,25 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "30 6 * * *",
         jobId: "formation-crons-factures-retard-cron",
       },
+      // 🔴 Rattrapage des AUTOFACTURES non émises — HORAIRE (2026-09-12).
+      //
+      // L'émission part à la validation du relevé, en fail-soft. Quand elle
+      // échoue, plus personne n'attend de bouton : sans ce passage, le silence
+      // serait définitif. Même motif que `exemplaires-non-transmis`.
+      //
+      // HORAIRE et non quotidien : un relevé validé à 9 h ne doit pas attendre
+      // le lendemain, et le délai de 30 jours du formateur court depuis
+      // l'émission.
+      //
+      // `:50` — la seule minute libre de l'heure : convocation-j5 (:00),
+      // liens-emargement-j0 (:05), documents-auto (:15), email-sante (:20),
+      // exemplaires-non-transmis (:35), formateur-rappel-j1 (:40),
+      // rappel-j1 (:45).
+      {
+        type: "formation-crons.autofactures",
+        pattern: "50 * * * *",
+        jobId: "formation-crons-autofactures-cron",
+      },
       // Hub facturation Phase 5 — brouillons des plans récurrents (émission
       // manuelle), daily 05:00 UTC
       {

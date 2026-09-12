@@ -3890,3 +3890,89 @@ describe("autofacture_non_transmise", () => {
     expect(reglesEnEchec).not.toContain("autofacture_non_transmise");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// autofacture_a_emettre — la trace que l'automatique a supprimée
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("autofacture_a_emettre", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  function valide(trainerOver: Record<string, unknown> = {}) {
+    return {
+      id: "st-ae-1",
+      statut: "valide",
+      tvaRegime: "assujetti_20",
+      totalTtcCents: 144_000,
+      numeroFacture: null,
+      autofactureAt: null,
+      periodeYear: 2026,
+      periodeMonth: 8,
+      trainer: {
+        nom: "Roux",
+        prenom: "Camille",
+        siret: "93812345600017",
+        numeroTvaIntracom: "FR55938123456",
+        adresseProfessionnelle: "12 rue des Alpes, 38000 Grenoble",
+        mandatAutofacturationSigneAt: new Date("2026-08-01T00:00:00.000Z"),
+        mandatAutofacturationRevoqueAt: null,
+        ...trainerOver,
+      },
+    };
+  }
+
+  it("🔴 alerte quand une donnée manque, et NOMME le geste", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([valide({ siret: null })]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "autofacture_a_emettre");
+    expect(a).toBeDefined();
+    expect(a!.niveau).toBe("important");
+    expect(a!.message).toMatch(/SIRET/i);
+    expect(a!.message).toMatch(/Camille Roux/);
+  });
+
+  it("🔴 rend TOUS les manques à la fois, pas le premier", async () => {
+    // Corriger le SIRET, attendre le balayage du lendemain et découvrir alors
+    // le numéro de TVA coûte une semaine pour quatre obstacles qu'on pouvait
+    // lever en une fois.
+    mp.trainerStatement.findMany.mockResolvedValue([
+      valide({ siret: null, numeroTvaIntracom: null, adresseProfessionnelle: null }),
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "autofacture_a_emettre");
+    expect(a!.message).toMatch(/SIRET/i);
+    expect(a!.message).toMatch(/TVA/i);
+    expect(a!.message).toMatch(/adresse/i);
+    expect(a!.message).toMatch(/3 choses/);
+  });
+
+  it("🔑 se tait quand tout est en ordre", async () => {
+    // Contre-témoin : sans lui, la règle pourrait alerter sur TOUT relevé
+    // validé — on mesurerait « il existe un relevé » au lieu de « il lui
+    // manque quelque chose ».
+    mp.trainerStatement.findMany.mockResolvedValue([valide()]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "autofacture_a_emettre")).toBe(false);
+  });
+
+  it("🔴 n'interroge QUE les indépendants", async () => {
+    // Un salarié n'est pas payé sur facture : lui réclamer un SIRET chaque
+    // jour produirait une alerte qu'aucun geste ne peut fermer.
+    await evaluerAlertes();
+    const where = mp.trainerStatement.findMany.mock.calls
+      .map((c: unknown[]) => (c[0] as { where?: Record<string, unknown> })?.where)
+      .find((w) => w !== undefined && "autofactureAt" in w && w["statut"] === "valide");
+    expect(where).toBeDefined();
+    expect((where as Record<string, unknown>)["trainer"]).toEqual({ statut: "sous_traitant" });
+  });
+
+  it("🔑 la règle n'est pas en échec silencieux", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([valide({ siret: null })]);
+    const { reglesEnEchec } = await evaluerAlertesDetaille();
+    expect(reglesEnEchec).not.toContain("autofacture_a_emettre");
+  });
+});
